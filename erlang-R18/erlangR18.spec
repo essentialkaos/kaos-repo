@@ -39,7 +39,7 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           18
-%define ver_min           0
+%define ver_min           1
 %define realname          erlang
 
 ###############################################################################
@@ -1183,6 +1183,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 18.1-0-0
+- Updated to latest stable release
+
 * Mon Jul 20 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0-1
 - Fixed bug with crypto module
 - Fixed wrong dependencies in stack package

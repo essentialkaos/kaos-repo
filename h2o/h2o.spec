@@ -46,11 +46,11 @@
 
 Summary:              Very fast HTTP server written in C
 Name:                 h2o
-Version:              1.4.4
+Version:              1.5.0
 Release:              0%{?dist}
 License:              Copyright (c) 2014 DeNA Co., Ltd.
 Group:                System Environment/Daemons
-Vendor:               DeNA Co., Ltd. / ESSENTIALKAOS
+Vendor:               DeNA Co., Ltd.
 URL:                  https://github.com/h2o/h2o
 
 Source0:              https://github.com/h2o/%{name}/archive/v%{version}.tar.gz
@@ -172,6 +172,43 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 
+- [http2] enable http2-reprioritize-blocking-assets by 
+  default #528 (Kazuho Oku)
+- [ssl] fix issues with neverbleed #520 (Kazuho Oku)
+- [mruby] provide env- ['rack.errors'], env- ['SERVER_SOFTWARE'] #517 #519
+  (Masayoshi Takahashi, Kazuho Oku)
+- [ssl] add support for neverbleed - the OpenSSL / LibreSSL privilege
+  separation engine #520 (Kazuho Oku)
+- [http2] fix crash when http2-reprioritize-blocking-assets,
+  file.custom-handler are used together #511 #514 (Kazuho Oku)
+- [serurity fix]- [file] fix directory traversal (CVE-2015-5638) (Kazuho Oku)
+- [mruby] fix build failure when oniguruma is already installed #501 #506
+  (Kazuho Oku)
+- [mruby] update sample mruby app to use rack-based API #498 (Masayoshi 
+  Takahashi)
+- [core] introduce is_compressible and priority attributes to MIME
+  map #436 #496 (Kazuho Oku)
+- [access-log] fix bug that emitted unnecessary NUL char in certain
+  conditions #462 #463 (Kazuho Oku)
+- [fastcgi] support for http2 server-push using link: rel=preload
+  header #446 (Kazuho Oku)
+- [file] send etag and vary headers on 304 response #439 (Kazuho Oku)
+- [file] sort directory listing #412 #474 (Kazuho Oku)
+- [gzip] introduce support for on-the-fly gzip #413 #457 (Justin Zhu)
+- [http2] introduce cookie-based implementation of cache-aware
+  server-push #421 #432 (Kazuho Oku)
+- [http2] improve HPACK compression ratio of server-push #450 (Kazuho Oku)
+- [http2] never push if client requested not to #464 (Kazuho Oku)
+- [http2] send content-length if possible #472 (Kazuho Oku)
+- [mruby] production-level support using Rack-based
+  interface #467 #475 #489 (Kazuho Oku)
+- [reproxy] support delegation using relative URL #468 (Kazuho Oku)
+- [reproxy] preserve method if status is 307 or 308 #491 (Kazuho Oku)
+- [ssl] improved error handling of openssl ocsp 
+  command #449 #454 (Tatsuhiro Tsujikawa)
+- [ssl] use libressl on ARM as well #485 (Kazuho Oku)
+
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
 - [misc] fix install error of libh2o-evloop in case development files of 
   OpenSSL cannot be found #443 (Kazuho Oku)

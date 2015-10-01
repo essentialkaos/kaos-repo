@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         0.9.3
+Version:         0.9.4
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -51,6 +51,18 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
+- Fixed inability to parse color due to a missing POSIX extension. ERR:
+    Invalid bg/fg color pairs
+- Added `%~` specifier to move forward through a log string until a non-space
+    char is found.
+- Added the ability to parse static files containing a query string
+    `--all-static-files`.
+- Added the ability to parse native Squid access.log format.
+- Added the ability to log invalid requests to a file `--invalid-requests`.
+- Added additional overall metric - total valid requests.
+- Fixed a few issues in the configuration script.
+
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-0
 - Added the ability to set custom colors on the terminal output.
 - Added the ability to process logs incrementally.

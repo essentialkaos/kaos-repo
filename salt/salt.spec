@@ -41,15 +41,9 @@
 
 ########################################################################################
 
-%define salttesting       SaltTesting
-%define salttesting_ver   2014.8.5
-
-
-########################################################################################
-
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2015.5.5
+Version:          2015.8.0
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -97,7 +91,7 @@ servers, handle them quickly and through a simple and manageable interface.
 ########################################################################################
 
 %package master
-Summary:          Management component for salt, a parallel remote execution system 
+Summary:          Management component for salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name} = %{version}-%{release}
 
@@ -107,7 +101,7 @@ The Salt master is the central server to which all minions connect.
 ########################################################################################
 
 %package minion
-Summary:          Client component for salt, a parallel remote execution system 
+Summary:          Client component for salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name} = %{version}-%{release}
 
@@ -182,9 +176,11 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc %{_mandir}/man1/%{name}-call.1.*
 %doc %{_mandir}/man1/%{name}-minion.1.*
+%doc %{_mandir}/man1/%{name}-proxy.1.*
 %config(noreplace) %{_sysconfdir}/%{name}/minion
-%{_bindir}/%{name}-minion
 %{_bindir}/%{name}-call
+%{_bindir}/%{name}-minion
+%{_bindir}/%{name}-proxy
 %{_initrddir}/%{name}-minion
 
 %files master
@@ -199,6 +195,7 @@ rm -rf %{buildroot}
 %doc %{_mandir}/man1/%{name}-syndic.1.*
 %doc %{_mandir}/man1/%{name}-unity.1.*
 %config(noreplace) %{_sysconfdir}/%{name}/master
+%{_bindir}/spm
 %{_bindir}/%{name}
 %{_bindir}/%{name}-api
 %{_bindir}/%{name}-cloud
@@ -215,6 +212,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Mon Sep 21 2015 Gleb Goncharov <inbox@gongled.ru> - 2015.8.0-0
+- Updated to 2015.8.0
+
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 2015.5.5-0
 - Updated to 2015.5.5
 

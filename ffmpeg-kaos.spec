@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           2.7.2
+Version:           2.8
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -152,6 +152,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
+- Updated to version 2.8
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.7.2-0
 - Updated to version 2.7.2
 

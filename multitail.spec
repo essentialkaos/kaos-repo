@@ -40,7 +40,7 @@
 
 Summary:          View one or multiple files like tail but with multiple windows
 Name:             multitail
-Version:          6.4.1
+Version:          6.4.2
 Release:          0%{?dist}
 License:          GPL
 Group:            Applications/Text
@@ -109,6 +109,9 @@ rm -rf %{buildroot}
 ###########################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.2-0
+- Updated to lastes stable release
+
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.1-0
 - Updated to lastes stable release
 

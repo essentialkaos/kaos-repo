@@ -37,7 +37,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.0.3
+Version:            3.0.4
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -178,6 +178,44 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0
+- [FIX] A number of bugs related to replication PSYNC and the (yet experimental)
+        diskless replication feature were fixed. The bugs could lead to
+        inconsistency between masters and slaves. (Salvatore Sanfilippo, Oran
+        Agra fixed the issue found by Yuval Inbar)
+- [FIX] A replication bug in the context of PSYNC partial resynchonization was
+        found and fixed. This bug happens even when diskless replication is off
+        in the case different slaves connect at different times while the master
+        is creating an RDB file, and later a partial resynchronization is
+        attempted by a slave that connected not as the first one. (Salvatore
+        Sanfilippo, Oran Agra)
+- [FIX] Chained replication and PSYNC interactions leading to potential stale
+        chained slaves data set, see issue #2694. (Salvatore Sanfilippo fixed
+        an issue reported by "GeorgeBJ" user at Github)
+- [FIX] redis-cli --scan iteration fixed when returned cursor overflows
+        32 bit signed integer. (Ofir Luzon, Yuval Inbar)
+- [FIX] Sentinel: fixed a bug during the master switch process, where for a
+        failed conditional check, the new configuration is rewritten, during
+        a small window of time, in a corrupted way where the master is
+        also reported to be one of the slaves. This bug is rare to trigger
+        but apparently it happens in the wild, and the effect is to see
+        a replication loop where the master will try to replicate with itself.
+        The bug was found by Jan-Erik Rediger using a static analyzer and
+        fixed by Salvatore Sanfilippo.
+- [FIX] Sentinel lack of arity checks for certain commands.
+        (Rogerio Goncalves, Salvatore Sanfilippo)
+
+- [NEW] Replication internals rewritten in order to be more resistant to bugs.
+        The replication handshake in the slave side was rewritten as a non
+        blocking state machine. (Salvatore Sanfilippo, Oran Agra)
+- [NEW] New "replication capabilities" feature introduced in order to signal
+        from the master to the slave what are the features supported, so that
+        the master can choose the kind of replication to start (diskless or
+        not) when master and slave are of different versions. (Oran Agra,
+        Salvatore Sanfilippo)
+- [NEW] Log clients details when SLAVEOF command is received. (Salvatore
+        Sanfilippo with inputs from Nick Craver and Marc Gravell). 
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - [FIX] Fix blocking operations timeout precision when HZ is at its default
         value (not increased) and there are thousands of clients connected

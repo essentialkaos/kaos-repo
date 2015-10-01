@@ -46,7 +46,7 @@
 
 Summary:           The RabbitMQ server
 Name:              %{_basename}-server
-Version:           3.5.4
+Version:           3.5.5
 Release:           0%{?dist}
 License:           MPLv1.1
 Group:             Applications/Internet
@@ -157,6 +157,9 @@ done
 ###############################################################################
 
 %changelog
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.5-0
+- Updated to latest release
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.4-0
 - Updated to latest release
 
