@@ -1,0 +1,44 @@
+diff -urN redis-2.8.18-orig/redis.conf redis-2.8.18/redis.conf
+--- redis-2.8.18-orig/redis.conf	2014-12-04 15:14:58.529790786 +0100
++++ redis-2.8.18/redis.conf	2014-12-04 15:26:05.000000000 +0100
+@@ -34,11 +34,11 @@
+ 
+ # By default Redis does not run as a daemon. Use 'yes' if you need it.
+ # Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
+-daemonize no
++daemonize yes
+ 
+ # When running daemonized, Redis writes a pid file in /var/run/redis.pid by
+ # default. You can specify a custom pid file location here.
+-pidfile /var/run/redis.pid
++pidfile /var/run/redis/redis.pid
+ 
+ # Accept connections on the specified port, default is 6379.
+ # If port 0 is specified Redis will not listen on a TCP socket.
+@@ -100,7 +100,7 @@
+ # Specify the log file name. Also the empty string can be used to force
+ # Redis to log on the standard output. Note that if you use standard
+ # output for logging but daemonize, logs will be sent to /dev/null
+-logfile ""
++logfile /var/log/redis/redis.log
+ 
+ # To enable logging to the system logger, just set 'syslog-enabled' to yes,
+ # and optionally update the other syslog parameters to suit your needs.
+@@ -115,7 +115,7 @@
+ # Set the number of databases. The default database is DB 0, you can select
+ # a different one on a per-connection basis using SELECT <dbid> where
+ # dbid is a number between 0 and 'databases'-1
+-databases 16
++databases 96
+ 
+ ################################ SNAPSHOTTING  ################################
+ #
+@@ -184,7 +184,7 @@
+ # The Append Only File will also be created inside this directory.
+ #
+ # Note that you must specify a directory here, not a file name.
+-dir ./
++dir /var/lib/redis/
+ 
+ ################################# REPLICATION #################################
+ 

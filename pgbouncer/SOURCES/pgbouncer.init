@@ -1,0 +1,177 @@
+#!/bin/bash
+#
+# pgbouncer Start PgBouncer connection pooler daemon
+#
+# chkconfig: - 64 36
+# description: PgBouncer is a connection pooler for PostgreSQL.
+#              This service starts the PgBouncer daemon.
+
+## BEGIN INIT INFO
+# Provides: pgbouncer
+# Required-Start: $local_fs $remote_fs $network $syslog $named
+# Required-Stop: $local_fs $remote_fs $network $syslog $named
+# Should-Start: postgresql
+# Short-Description: Start PgBouncer connection pooler daemon
+# Description: PgBouncer is a connection pooler for PostgreSQL.
+#              This service starts the PgBouncer daemon.
+### END INIT INFO
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+MULTIBOUNCER="/etc/init.d/multibouncer"
+
+###############################################################################
+
+kv[prog_name]="pgbouncer"
+kv[search_pattern]="pgbouncer"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/bin/pgbouncer}
+user=${USER:-pgbouncer}
+conf_file=${CONF_FILE:-/etc/pgbouncer/pgbouncer.ini}
+log_dir=${LOG_DIR:-/var/log/pgbouncer}
+
+kv[user]="$user"
+
+kv[pid_file]=$(kv.readProperty "$conf_file" "pidfile")
+
+kv[oom_adj]="$OOM_DISABLE"
+
+is_restart=""
+
+###############################################################################
+
+kv.addCommand "reload" "Reload ${kv[prog_name]} config and update changeable settings" "reload"
+kv.addCommand "pause"  "Pause processing new queries"                                  "pause"
+kv.addCommand "resume" "Resume work from previous pause command"                       "resume"
+
+kv.addHandler "start"    "startHandler"
+kv.addHandler "start"    "preStartHandler" "pre"
+kv.addHandler "stop"     "stopHandler"
+kv.addHandler "restart"  "restartHandler"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+reload() {
+  kv.showProcessMessage "Reloading config"
+
+  kv.sendSignal "$SIGNAL_HUP"
+
+  kv.showStatusMessage $ACTION_OK
+  return $ACTION_OK
+}
+
+pause() {
+  kv.showProcessMessage "Pausing"
+
+  kv.sendSignal "$SIGNAL_USR1"
+  
+  kv.showStatusMessage $ACTION_OK
+  return $ACTION_OK
+}
+
+resume() {
+  kv.showProcessMessage "Resuming"
+
+  kv.sendSignal "$SIGNAL_USR2"
+  
+  kv.showStatusMessage $ACTION_OK
+  return $ACTION_OK
+}
+
+###############################################################################
+
+preStartHandler() {
+  local port=$(kv.readProperty "$conf_file" "listen_port")
+
+  if [[ -z "${kv[pid_file]}" || -z "$port" ]] ; then
+    kv.error "Can't read properties from configuration file"
+  fi
+
+  if kv.isBoundPort "$port" ; then
+    kv.error "Port $port already bound"
+  fi
+}
+
+startHandler() {
+  if [[ -z "$is_restart" ]] ; then
+    kv.run "$binary" "-d -q $conf_file"
+  else 
+    kv.run "$binary" "-R -d -q $conf_file"
+  fi
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopHandler() {
+  kv.sendSignal "$SIGNAL_TERM"
+
+  kv.getStopStatus
+
+  return $?
+}
+
+restartHandler() {
+  is_restart=true
+  return $ACTION_OK
+}
+
+###############################################################################
+
+prepare() {
+  if [[ $USER_ID -ne 0 ]] ; then
+    return
+  fi
+
+  if [[ -f $MULTIBOUNCER ]] ; then
+    kv.warn "Looks like you have multibouncer installed on system."
+    kv.warn "We highly recommend to use multibouncer for working with pgbouncer instances."
+    kv.exit 0
+  fi
+
+  if [[ ! -r $binary ]] ; then
+    kv.error "Binary file $binary must be readable."
+  fi
+
+  if [[ ! -x $binary ]] ; then
+    kv.error "Binary file $binary must be executable."
+  fi
+
+  if [[ ! -f $conf_file ]] ; then
+    kv.error "Configuration file $conf_file is not exist."
+  fi
+
+  if ! kv.hasUser "$user" ; then
+    kv.error "User $user is not exist on system." 
+  fi
+
+  if [[ ! -d $log_dir ]] ; then
+    mkdir -p $log_dir &> /dev/null
+
+    if [[ $? -ne 0 ]] ; then
+      kv.error "Can't create logs directory $log_dir" 
+    fi
+
+    chown $user:$user $log_dir -R &> /dev/null
+  fi
+
+  if [[ -z "${kv[pid_file]}" ]] ; then
+    kv.error "Can't read pid property from configuration file"
+  fi
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@
+

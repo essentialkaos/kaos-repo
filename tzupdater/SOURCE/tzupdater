@@ -1,0 +1,36 @@
+#!/bin/bash
+
+########################################################################################
+
+main() {
+  if [[ `id -u` != "0" ]] ; then
+    echo "This utility require root privileges."
+    exit 1
+  fi
+
+  if ! hasJava ; then
+    echo "Java not installed on system."
+    exit 1
+  fi
+
+  if ! isOraceJava ; then
+    echo "TZUpdater works only with Oracle java and not support OpenJDK."
+    exit 1
+  fi
+
+  java -jar /usr/local/share/tzupdater/tzupdater.jar $@
+}
+
+hasJava() {
+  type -p java &> /dev/null
+
+  return $?
+}
+
+isOraceJava() {
+  [[ -n `java -version 2>&1 | grep "HotSpot"` ]] && return 0 || return 1
+}
+
+########################################################################################
+
+main $@

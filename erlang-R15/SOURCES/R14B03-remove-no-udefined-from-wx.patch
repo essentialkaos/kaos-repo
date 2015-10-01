@@ -1,0 +1,20 @@
+--- otp_src_R14B03/lib/wx/configure.orig	2011-07-24 15:09:46.862365947 +0200
++++ otp_src_R14B03/lib/wx/configure	2011-07-24 15:15:03.664387910 +0200
+@@ -4848,7 +4848,7 @@
+ 
+       echo "$as_me:$LINENO: result: yes (version $WX_VERSION)" >&5
+ echo "${ECHO_T}yes (version $WX_VERSION)" >&6
+-      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
++      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs | sed 's!-Wl,--no-undefined!!g'`
+ 
+                               echo "$as_me:$LINENO: checking for wxWidgets static library" >&5
+ echo $ECHO_N "checking for wxWidgets static library... $ECHO_C" >&6
+@@ -5090,7 +5090,7 @@
+ 
+       echo "$as_me:$LINENO: result: yes (version $WX_VERSION)" >&5
+ echo "${ECHO_T}yes (version $WX_VERSION)" >&6
+-      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs`
++      WX_LIBS=`$WX_CONFIG_WITH_ARGS --libs | sed 's!-Wl,--no-undefined!!g'`
+ 
+                               echo "$as_me:$LINENO: checking for wxWidgets static library" >&5
+ echo $ECHO_N "checking for wxWidgets static library... $ECHO_C" >&6

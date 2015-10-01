@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# teamspeak3        Startup script for teamspeak3
+
+# chkconfig: - 85 15
+# processname: teamspeak3
+# pidfile: /var/run/teamspeak3.pid
+# description: VoIP communication system
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="teamspeak3"
+kv[search_pattern]="ts3server"
+
+kv.readSysconfig
+
+dir=${DIR:-/opt/teamspeak3}
+log=${LOG:-/opt/teamspeak3/ts3server.log}
+user=${USER:-teamspeak}
+binary=$dir/ts3server
+
+kv[pid_dir]=/var/run/teamspeak3
+
+kv[user]="$user"
+kv[dir]="$dir"
+kv[log]="$log"
+
+###############################################################################
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+
+###############################################################################
+
+startServiceHandler() {
+  export LD_LIBRARY_PATH="${dir}:${LD_LIBRARY_PATH}"
+
+  kv.daemonize "$binary"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess $pid 
+    fi
+
+    return $ACTION_ERROR
+  fi
+}
+
+###############################################################################
+
+kv.go $@

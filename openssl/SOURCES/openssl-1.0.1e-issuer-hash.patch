@@ -1,0 +1,11 @@
+diff -up openssl-1.0.1e/crypto/x509/x509_cmp.c.issuer-hash openssl-1.0.1e/crypto/x509/x509_cmp.c
+--- openssl-1.0.1e/crypto/x509/x509_cmp.c.issuer-hash	2013-02-11 16:26:04.000000000 +0100
++++ openssl-1.0.1e/crypto/x509/x509_cmp.c	2013-02-19 12:46:11.315788592 +0100
+@@ -85,6 +85,7 @@ unsigned long X509_issuer_and_serial_has
+ 	char *f;
+ 
+ 	EVP_MD_CTX_init(&ctx);
++	EVP_MD_CTX_set_flags(&ctx, EVP_MD_CTX_FLAG_NON_FIPS_ALLOW);
+ 	f=X509_NAME_oneline(a->cert_info->issuer,NULL,0);
+ 	if (!EVP_DigestInit_ex(&ctx, EVP_md5(), NULL))
+ 		goto err;

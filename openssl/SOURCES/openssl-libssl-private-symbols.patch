@@ -1,0 +1,64 @@
+From 89d5aecbc62842651cf22e48c405eb435feb0df3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Cristian=20Rodr=C3=ADguez?= <crrodriguez@opensuse.org>
+Date: Wed, 24 Jul 2013 23:29:05 -0400
+Subject: [PATCH 5/5] libssl: Hide library private symbols
+
+This patch only contains the libssl part (the easy one)
+patch to libcrypto will follow after it is complete and good enough.
+
+It hides all the library symbols that are not part of the public
+API/ABI when GCC 4 or later is used.
+---
+ ssl/kssl_lcl.h | 9 +++++++++
+ ssl/ssl_locl.h | 8 ++++++++
+ 2 files changed, 17 insertions(+)
+
+Index: openssl-1.0.1g/ssl/kssl_lcl.h
+===================================================================
+--- openssl-1.0.1g.orig/ssl/kssl_lcl.h
++++ openssl-1.0.1g/ssl/kssl_lcl.h
+@@ -61,6 +61,10 @@
+ 
+ #include <openssl/kssl.h>
+ 
++#if defined(__GNUC__) && __GNUC__ >= 4
++#pragma GCC visibility push(hidden)
++#endif
++
+ #ifndef OPENSSL_NO_KRB5
+ 
+ #ifdef  __cplusplus
+@@ -84,4 +88,9 @@ int kssl_tgt_is_available(KSSL_CTX *kssl
+ }
+ #endif
+ #endif	/* OPENSSL_NO_KRB5	*/
++
++#if defined(__GNUC__) && __GNUC__ >= 4
++#pragma GCC visibility pop
++#endif
++
+ #endif	/* KSSL_LCL_H 	*/
+Index: openssl-1.0.1g/ssl/ssl_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/ssl/ssl_locl.h
++++ openssl-1.0.1g/ssl/ssl_locl.h
+@@ -165,6 +165,10 @@
+ #include <openssl/ssl.h>
+ #include <openssl/symhacks.h>
+ 
++#if defined(__GNUC__) && __GNUC__ >= 4
++#pragma GCC visibility push(hidden)
++#endif
++
+ #ifdef OPENSSL_BUILD_SHLIBSSL
+ # undef OPENSSL_EXTERN
+ # define OPENSSL_EXTERN OPENSSL_EXPORT
+@@ -1174,4 +1178,8 @@ void tls_fips_digest_extra(
+ 	const EVP_CIPHER_CTX *cipher_ctx, EVP_MD_CTX *mac_ctx,
+ 	const unsigned char *data, size_t data_len, size_t orig_len);
+ 
++#if defined(__GNUC__) && __GNUC__ >= 4
++#pragma GCC visibility pop
++#endif
++
+ #endif

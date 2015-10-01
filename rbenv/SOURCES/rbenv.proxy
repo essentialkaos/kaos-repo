@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ -z $RBENV_ROOT ]] ; then
+  . /etc/profile.d/rbenv.sh
+fi
+
+/usr/local/rbenv/libexec/rbenv $@

@@ -1,0 +1,5 @@
+# Sysconfig file for twemproxy
+
+BINARY=""
+USER=""
+CONFIG=""

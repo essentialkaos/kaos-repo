@@ -1,0 +1,10 @@
+# Sysconfig file for teamspeak3
+
+# Path to working dir
+DIR=""
+
+# User
+USER=""
+
+# Path to log file
+LOG=""

@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# ejabberd    Start and stop ejabberd.
+
+# chkconfig: - 40 60
+# description: ejabberd
+# processname: ejabberd
+# pidfile: /var/run/ejabberd.pid
+
+### BEGIN INIT INFO
+# Provides: ejabberd
+# Required-Start: network
+# Required-Stop: network
+# Default-Start:
+# Default-Stop: 0 1 6
+# Short-Description: Start and stop ejabberd
+# Description: A distributed, fault-tolerant Jabber/XMPP server
+### END INIT INFO
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="ejabberd"
+kv[search_pattern]="-ejabberd"
+
+kv.readSysconfig
+
+user=${USER:-ejabberd}
+binary=${BINARY:-/usr/sbin/ejabberdctl}
+conf_file=${CONF_FILE:-/etc/ejabberd/ejabberd.yml}
+ctl_file=${CONF_FILE:-/etc/ejabberd/ejabberdctl.cfg}
+log_dir=${LOG_DIR:-/var/log/ejabberd}
+spool_dir=${SPOOL_DIR:-/var/lib/ejabberd/spool}
+
+kv[file_limit]=10240
+kv[user]="$user"
+kv[pid_dir]="/var/run/ejabberd"
+
+###############################################################################
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist."
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable."
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist."
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable."
+
+  [[ ! -f $ctl_file ]] && has_errors=true && kv.error "Error! File <$ctl_file> is not exist."
+  [[ ! -r $ctl_file ]] && has_errors=true && kv.error "Error! File <$ctl_file> is not readable."
+
+  [[ -d $log_dir ]] && has_errors=true && kv.error "Error! Directory <$log_dir> is not exist."
+  [[ -d $spool_dir ]] && has_errors=true && kv.error "Error! Directory <$spool_dir> is not exist."
+
+  [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty."
+  
+  if ! kv.hasUser "${kv[user]}" ; then
+    has_errors=true && kv.error "User <${kv[user]}> not found in /etc/passwd file."
+  fi
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+startServiceHandler() {
+  kv.run "$binary start --config $conf_file --ctl-config $ctl_file --logs $log_dir --spool $spool_dir"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  sleep 5
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess $pid 
+    fi
+
+    return $ACTION_ERROR
+  fi
+}
+
+###############################################################################
+
+kv.go $@

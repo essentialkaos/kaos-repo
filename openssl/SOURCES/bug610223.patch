@@ -1,0 +1,13 @@
+@@ -1,8 +1,8 @@
+-Index: openssl-1.0.0/Configure
++Index: openssl-1.0.1g/Configure
+ ===================================================================
+---- openssl-1.0.0.orig/Configure
+-+++ openssl-1.0.0/Configure
+-@@ -1673,7 +1673,8 @@ while (<IN>)
++--- openssl-1.0.1g.orig/Configure
+++++ openssl-1.0.1g/Configure
++@@ -1804,7 +1804,8 @@ while (<IN>)
+      }
+    elsif (/^#define\s+ENGINESDIR/)
+      {

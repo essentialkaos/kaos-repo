@@ -1,0 +1,94 @@
+diff -Naur xl2tpd-1.3.1-orig/examples/chapsecrets.sample xl2tpd-1.3.1/examples/chapsecrets.sample
+--- xl2tpd-1.3.1-orig/examples/chapsecrets.sample	2011-10-06 15:22:05.000000000 -0400
++++ xl2tpd-1.3.1/examples/chapsecrets.sample	2012-06-12 12:08:26.850851970 -0400
+@@ -1,7 +1,10 @@
+-# Secrets for authentication using CHAP
+-# client        server  secret                  IP addresses
+-jacco           *       "mysecret"              192.168.1.128/25
+-*               jacco   "mysecret"              192.168.1.128/25
+-sam             *       "rumpelstiltskin"       192.168.1.5
+-*               sam     "rumpelstiltskin"       192.168.1.5
+-
++# Secrets for authentication on server using CHAP
++# See /etc/ppp/options.xl2tpd on how to use Windows authentication
++# client	server	secret			IP addresses
++jacco		*	"mysecret"		192.168.1.128/25 # Dynamic IP
++sam		*	"rumpelstiltskin"	192.168.1.5	 # Static IP
++#
++# Secrets for authentication on client using CHAP
++# client	server	secret			IP addresses
++*		jacco	"mysecret"
++*		sam	"rumpelstiltskin"
+diff -Naur xl2tpd-1.3.1-orig/examples/README xl2tpd-1.3.1/examples/README
+--- xl2tpd-1.3.1-orig/examples/README	2011-10-06 15:22:05.000000000 -0400
++++ xl2tpd-1.3.1/examples/README	2012-06-12 12:08:26.850851970 -0400
+@@ -1,2 +1,4 @@
+-These are example files for use with xl2tpd. The xl2tpd*conf files are
+-examples to use xl2tpd with Openswan's IPsec. See www.openswan.org
++These are example files for use with xl2tpd.
++
++Openswan carries config examples for use with l2tp-over-ipsec.
++See http://www.openswan.org/
+diff -Naur xl2tpd-1.3.1-orig/examples/xl2tpd.conf xl2tpd-1.3.1/examples/xl2tpd.conf
+--- xl2tpd-1.3.1-orig/examples/xl2tpd.conf	2011-10-06 15:22:05.000000000 -0400
++++ xl2tpd-1.3.1/examples/xl2tpd.conf	2012-06-12 12:27:00.922911049 -0400
+@@ -14,6 +14,11 @@
+ ; in the example below). Yet another IP address (local ip, e.g. 192.168.1.99)
+ ; will be used by xl2tpd as its address on pppX interfaces.
+ 
++
++; IMPORTANT: always set listen-addr to a specific address, to work around a
++; udpfromto bug!!!
++
++
+ [global]
+ ; listen-addr = 192.168.1.98
+ ;
+@@ -24,14 +29,15 @@
+ ;  when using any of the SAref kernel patches for kernels up to 2.6.35.
+ ; ipsec refinfo = 30
+ ;
+-; forceuserspace = yes
++; force userspace = yes
+ ;
+ ; debug tunnel = yes
+ 
+ [lns default]
+ ip range = 192.168.1.128-192.168.1.254
+ local ip = 192.168.1.99
+-require chap = yes
++; leave chap unspecified for maximum compatibility with windows, iOS, etc
++; require chap = yes
+ refuse pap = yes
+ require authentication = yes
+ name = LinuxVPNserver
+diff -aur xl2tpd-1.3.1-orig/examples/ppp-options.xl2tpd xl2tpd-1.3.1/examples/ppp-options.xl2tpd
+--- xl2tpd-1.3.1-orig/examples/ppp-options.xl2tpd	2011-10-06 15:22:05.000000000 -0400
++++ xl2tpd-1.3.1/examples/ppp-options.xl2tpd	2012-07-19 10:54:13.810503823 -0400
+@@ -1,9 +1,10 @@
+ ipcp-accept-local
+ ipcp-accept-remote
+-ms-dns  192.168.1.1
+-ms-dns  192.168.1.3
+-ms-wins 192.168.1.2
+-ms-wins 192.168.1.4
++ms-dns  8.8.8.8
++# ms-dns  192.168.1.1
++# ms-dns  192.168.1.3
++# ms-wins 192.168.1.2
++# ms-wins 192.168.1.4
+ noccp
+ auth
+ crtscts
+@@ -15,3 +16,11 @@
+ lock
+ proxyarp
+ connect-delay 5000
++# To allow authentication against a Windows domain EXAMPLE, and require the
++# user to be in a group "VPN Users". Requires the samba-winbind package
++# require-mschap-v2
++# plugin winbind.so
++# ntlm_auth-helper '/usr/bin/ntlm_auth --helper-protocol=ntlm-server-1 --require-membership-of="EXAMPLE\\VPN Users"' 
++# You need to join the domain on the server, for example using samba:
++# http://rootmanager.com/ubuntu-ipsec-l2tp-windows-domain-auth/setting-up-openswan-xl2tpd-with-native-windows-clients-lucid.html
++

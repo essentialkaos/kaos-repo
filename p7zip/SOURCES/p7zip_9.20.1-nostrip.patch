@@ -1,0 +1,24 @@
+diff -Naupr p7zip_9.20.1.orig/makefile.linux_amd64_asm p7zip_9.20.1/makefile.linux_amd64_asm
+--- p7zip_9.20.1.orig/makefile.linux_amd64_asm	2009-12-22 19:11:03.000000000 +0100
++++ p7zip_9.20.1/makefile.linux_amd64_asm	2011-07-26 14:43:58.275086735 +0200
+@@ -2,7 +2,7 @@
+ OPTFLAGS=-O
+ 
+ # use "-m32" to have a 32bits executable
+-ALLFLAGS=-m64 ${OPTFLAGS} -pipe -s \
++ALLFLAGS=-m64 ${OPTFLAGS} -pipe \
+     	-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE \
+ 	-DNDEBUG -D_REENTRANT -DENV_UNIX \
+ 	-D_7ZIP_LARGE_PAGES \
+diff -Naupr p7zip_9.20.1.orig/makefile.linux_x86_asm_gcc_4.X p7zip_9.20.1/makefile.linux_x86_asm_gcc_4.X
+--- p7zip_9.20.1.orig/makefile.linux_x86_asm_gcc_4.X	2011-01-11 21:57:50.000000000 +0100
++++ p7zip_9.20.1/makefile.linux_x86_asm_gcc_4.X	2011-07-26 14:44:14.945027628 +0200
+@@ -4,7 +4,7 @@
+ 
+ OPTFLAGS=-O
+ 
+-ALLFLAGS=${OPTFLAGS} -pipe -m32 -s \
++ALLFLAGS=${OPTFLAGS} -pipe -m32 \
+     	-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE \
+ 	-DNDEBUG -D_REENTRANT -DENV_UNIX \
+ 	-D_7ZIP_LARGE_PAGES \

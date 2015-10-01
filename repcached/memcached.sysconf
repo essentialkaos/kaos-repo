@@ -1,0 +1,8 @@
+# Sysconfig for memcached service
+
+PORT=""
+USER=""
+MAX_CONN=""
+CACHE_SIZE=""
+MASTER_IP=""
+MASTER_PORT=""

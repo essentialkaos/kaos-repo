@@ -1,0 +1,13 @@
+/var/log/h2o/*.log {
+    daily
+    missingok
+    rotate 62
+    compress
+    delaycompress
+    notifempty
+    create 640 h2o root
+    sharedscripts
+    postrotate
+        [ -f /var/run/h2o.pid ] && kill -USR1 `cat /var/run/h2o.pid`
+    endscript
+}

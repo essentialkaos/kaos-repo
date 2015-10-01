@@ -1,0 +1,74 @@
+#! /bin/bash
+
+# chkconfig: - 55 45
+# description:  Twitter's twemproxy
+# processname: twemproxy
+# config: /etc/sysconfig/twemproxy
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="twemproxy"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/sbin/twemproxy}
+config=${CONFIG:-/etc/twemproxy/twemproxy.yml}
+
+kv[user]="${USER:-nobody}"
+kv[pid_dir]="/var/run/twemproxy"
+kv[search_pattern]="$binary"
+
+###############################################################################
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Binary $binary must be executable file."
+
+  if ! kv.hasUser "${kv[user]}" ; then
+    has_errors=true && kv.error "User ${kv[user]} is not exist."
+  fi
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+###############################################################################
+
+startServiceHandler() {
+
+  kv.run "$binary -d -p ${kv[pid_file]} -c $config"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal $SIGNAL_TERM
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    kv.killProcess $pid   
+    return $ACTION_FORCED
+  fi 
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@

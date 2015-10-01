@@ -1,0 +1,75 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          salt-master
+# Required-Start:    $all
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Salt master control daemon
+# Description:       This is a daemon that controls the Salt minions.
+### END INIT INFO
+
+
+# chkconfig header
+
+# chkconfig: 345 96 05
+# description:  This is a daemon that controls the Salt minions
+#
+# processname: /usr/bin/salt-master
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="salt-master"
+
+kv.readSysconfig "salt"
+
+binary=/usr/bin/${kv[prog_name]}
+args=${MASTER_ARGS}
+debug=${MASTER_DEBUG}
+
+kv[search_pattern]="$binary -d"
+kv[pid_file]=$(kv.readProperty "/etc/salt/master" "pidfile" ":")
+
+###############################################################################
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+###############################################################################
+
+startServiceHandler() {
+
+  if [[ -n "$debug" ]] ; then
+    kv.run "python $binary -l debug -d $args &> /dev/null"
+  else
+    kv.run "python $binary -d $args &> /dev/null"
+  fi
+
+  if kv.getStartStatus ; then
+    return $ACTION_OK
+  else
+    return $ACTION_ERROR
+  fi
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal $SIGNAL_TERM
+
+  if kv.getStopStatus "$pid" ; then
+    return $ACTION_OK
+  else
+    kv.killProcess $pid   
+    return $ACTION_FORCED
+  fi 
+}
+
+###############################################################################
+
+kv.go $@

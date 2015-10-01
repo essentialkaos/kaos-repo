@@ -1,0 +1,127 @@
+#!/bin/bash
+
+# h2o        Very fast HTTP server written in C
+
+# chkconfig: - 85 15
+# processname: h2o
+# config: /etc/h2o/h2o.conf
+# config: /etc/sysconfig/h2o
+# pidfile: /var/run/h2o.pid
+# description: H2O is a very fast HTTP server written in C
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+kv.require "2.6"
+
+###############################################################################
+
+kv[prog_name]="h2o"
+kv[search_pattern]="h2o"
+kv[user]="h2o"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/bin/h2o}
+conf_file=${CONF_FILE:-/etc/h2o/h2o.conf}
+
+###############################################################################
+
+kv.addCommand "start"        "Start ${kv[prog_name]} webserver"
+kv.addCommand "stop"         "Stop ${kv[prog_name]} webserver"
+kv.addCommand "restart"      "Restart (stop+start) ${kv[prog_name]} webserver" "restart"
+kv.addCommand "status"       "Show current status of ${kv[prog_name]}"
+kv.addCommand "check"        "Validate config" "check"
+
+kv.addCommandAlias "check"   "configtest"
+kv.addCommandAlias "restart" "condrestart"
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -x $binary ]] && has_errors=true && kv.error "<BINARY> must be executable file."
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "<CONF_FILE> must be readable file."
+  [[ ! -s $conf_file ]] && has_errors=true && kv.error "<CONF_FILE> can't be empty."
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+check() {
+  kv.showProcessMessage "Checking ${kv[prog_name]} config"
+
+  testServiceConfig true
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  if [[ $status -ne 0 ]] ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+
+  return $ACTION_OK
+}
+
+restart() {
+  if check ; then
+    kv.restart
+  fi
+
+  return
+}
+
+###############################################################################
+
+startServiceHandler() { 
+  kv.daemonize $binary -c $conf_file
+
+  if kv.getStartStatus ; then
+    return $ACTION_OK 
+  fi
+
+  return $ACTION_ERROR
+}
+
+stopServiceHandler() {
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
+}
+
+###############################################################################
+
+testServiceConfig() {
+  local quiet="$1"
+
+  if [[ $quiet ]] ; then
+    $binary -t -c $conf_file &> /dev/null
+  else
+    $binary -t -c $conf_file
+  fi
+
+  local status=$?
+
+  [[ -f ${kv[pid_file]} && ! -s ${kv[pid_file]} ]] && kv.removePid
+
+  [[ $status -eq $ACTION_OK ]] && return $ACTION_OK || return $ACTION_ERROR
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@
+

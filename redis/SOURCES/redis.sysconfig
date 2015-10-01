@@ -1,0 +1,8 @@
+# Sysconfig for redis service
+
+BINARY=""
+CLI=""
+CONF_FILE=""
+USER=""
+DELAY_START=""
+DELAY_STOP=""

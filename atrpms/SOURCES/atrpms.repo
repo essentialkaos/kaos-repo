@@ -1,0 +1,17 @@
+[atrpms]
+name=Red Hat Enterprise Linux $releasever - $basearch - ATrpms
+failovermethod=priority
+baseurl=http://mirror.yandex.ru/fedora/atrpms/el$releasever-$basearch/atrpms/stable
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-atrpms
+exclude=setuptools
+
+[atrpms-source]
+name=Red Hat Enterprise Linux $releasever - $basearch - ATrpms - Source
+failovermethod=priority
+baseurl=http://mirror.yandex.ru/fedora/atrpms/src/el$releasever-$basearch/atrpms/stable
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-atrpms
+exclude=setuptools

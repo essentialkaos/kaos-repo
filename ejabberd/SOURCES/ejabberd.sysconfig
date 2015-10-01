@@ -1,0 +1,7 @@
+# Sysconfig file for ejabberd
+
+USER=""
+BINARY=""
+CONF_FILE=""
+LOG_DIR=""
+SPOOL_DIR=""

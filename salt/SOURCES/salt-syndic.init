@@ -1,0 +1,81 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          salt-syndic
+# Required-Start:    $all
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Salt syndic master-minion passthrough daemon
+# Description:       This is a the Salt syndic daemon that enables Salt master-minion
+#                    remote control passthrough.
+### END INIT INFO
+
+
+# chkconfig header
+
+# chkconfig: - 99 99 
+# description:  This is a the Salt syndic daemon that enables Salt master-minion remote control passthrough.
+#
+# processname: /usr/bin/salt-syndic
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="salt-syndic"
+
+kv.readSysconfig "salt"
+
+binary=/usr/bin/${kv[prog_name]}
+args=${SYNDIC_ARGS}
+debug=${SYNDIC_DEBUG}
+
+kv[search_pattern]="$binary -d"
+kv[pid_file]=$(kv.readProperty "/etc/salt/master" "syndic_pidfile" ":")
+
+###############################################################################
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+###############################################################################
+
+startServiceHandler() {
+
+  if [[ -n "$debug" ]] ; then
+    kv.run "python $binary -l debug -d $args &> /dev/null"
+  else
+    kv.run "python $binary -d $args &> /dev/null"
+  fi
+
+  # https://github.com/saltstack/salt/issues/23026
+  sleep 3
+  pid=$(kv.findPid)
+
+  if [[ -n "$pid" ]] ; then
+    echo "$pid" > ${kv[pid_file]}
+    return $ACTION_OK
+  else
+    return $ACTION_ERROR
+  fi
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal $SIGNAL_TERM
+
+  if kv.getStopStatus "$pid" ; then
+    return $ACTION_OK
+  else
+    kv.killProcess $pid   
+    return $ACTION_FORCED
+  fi 
+}
+
+###############################################################################
+
+kv.go $@

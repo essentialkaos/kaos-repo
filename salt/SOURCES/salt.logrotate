@@ -1,0 +1,7 @@
+/var/log/salt/* {
+    weekly
+    missingok
+    rotate 24
+    compress
+    notifempty
+}

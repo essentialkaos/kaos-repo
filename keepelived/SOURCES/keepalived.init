@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# keepalived   High Availability monitor built upon LVS and VRRP
+#
+# chkconfig:   - 86 14
+# description: Robust keepalive facility to the Linux Virtual Server project \
+#              with multilayer TCP/IP stack checks.
+
+### BEGIN INIT INFO
+# Provides: keepalived
+# Required-Start: $local_fs $network $named $syslog
+# Required-Stop: $local_fs $network $named $syslog
+# Should-Start: smtpdaemon httpd
+# Should-Stop: smtpdaemon httpd
+# Default-Start: 
+# Default-Stop: 0 1 2 3 4 5 6
+# Short-Description: High Availability monitor built upon LVS and VRRP
+# Description:       Robust keepalive facility to the Linux Virtual Server
+#                    project with multilayer TCP/IP stack checks.
+### END INIT INFO
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="keepalived"
+kv[search_pattern]="keepalived"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/sbin/keepalived}
+options=${KEEPALIVED_OPTIONS:--D}
+config=${CONFIG:-/etc/keepalived/keepalived.conf}
+
+###############################################################################
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+kv.addCommand "reload"  "Reload and apply config"  "reload"
+
+###############################################################################
+
+prepare() {
+  local has_errors
+
+  [[ ! -x $binary ]] && has_errors=true && kv.error "<BINARY> must be executable file."
+  [[ ! -r $config ]] && has_errors=true && kv.error "<CONF_FILE> must be readable file."
+  [[ ! -s $config ]] && has_errors=true && kv.error "<CONF_FILE> can't be empty."
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+reload() {
+  if ! kv.statusIs "$STATUS_WORKS" ; then
+    kv.show "You must start service before this command usage." $BROWN
+    return $ACTION_ERROR
+  fi
+
+  kv.showProcessMessage "Reloading config for ${kv[prog_name]}"
+
+  reloadConfigHandler
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  return $status
+}
+
+###############################################################################
+
+startServiceHandler() {
+  $binary $options -f $config
+
+  [[ $? -ne 0 ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  kv.sendSignal "$SIGNAL_TERM"
+  
+  kv.getStopStatus
+
+  return $?
+}
+
+reloadConfigHandler() {
+  kv.sendSignal $SIGNAL_HUP
+  return $ACTION_OK
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@

@@ -1,0 +1,622 @@
+From c4251c714a2fa6263e77103561b3dc4f6f5fed40 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Cristian=20Rodr=C3=ADguez?= <crrodriguez@opensuse.org>
+Date: Mon, 21 Oct 2013 01:48:05 -0300
+Subject: [PATCH] libcrypto: Hide library-private symbols
+
+---
+ apps/Makefile                    |  2 +-
+ crypto/asn1/asn1_locl.h          |  4 ++++
+ crypto/bn/bn_lcl.h               |  4 ++++
+ crypto/camellia/cmll_locl.h      |  3 +++
+ crypto/cast/cast_lcl.h           |  2 ++
+ crypto/cms/cms_lcl.h             |  5 ++++-
+ crypto/des/des_locl.h            |  2 ++
+ crypto/dsa/dsa_locl.h            |  2 +-
+ crypto/ec/ec_lcl.h               |  4 ++++
+ crypto/ecdh/ech_locl.h           |  4 +++-
+ crypto/ecdsa/ecs_locl.h          |  4 ++++
+ crypto/engine/eng_int.h          |  4 +++-
+ crypto/engine/eng_rsax.c         |  2 +-
+ crypto/evp/e_aes.c               | 10 ++++++++++
+ crypto/evp/e_aes_cbc_hmac_sha1.c |  4 ++++
+ crypto/evp/evp_locl.h            |  4 ++++
+ crypto/md4/md4_locl.h            |  2 +-
+ crypto/md5/md5_locl.h            |  2 +-
+ crypto/modes/modes_lcl.h         |  4 +++-
+ crypto/o_str.h                   |  4 ++++
+ crypto/o_time.h                  |  4 ++++
+ crypto/ripemd/rmd_locl.h         |  2 +-
+ crypto/rsa/rsa_locl.h            |  2 +-
+ crypto/sha/sha256.c              |  2 +-
+ crypto/sha/sha512.c              |  2 +-
+ crypto/sha/sha_locl.h            |  2 +-
+ crypto/store/str_locl.h          |  4 +++-
+ crypto/ui/ui_locl.h              |  4 +++-
+ crypto/whrlpool/wp_locl.h        |  2 +-
+ crypto/x509v3/ext_dat.h          |  3 +++
+ crypto/x509v3/pcy_int.h          |  3 +++
+ 31 files changed, 85 insertions(+), 17 deletions(-)
+
+Index: openssl-1.0.1g/apps/Makefile
+===================================================================
+--- openssl-1.0.1g.orig/apps/Makefile
++++ openssl-1.0.1g/apps/Makefile
+@@ -20,7 +20,7 @@ EXE_EXT=
+ 
+ SHLIB_TARGET=
+ 
+-CFLAGS= -DMONOLITH $(INCLUDES) $(CFLAG)
++CFLAGS= -fvisibility=hidden -DMONOLITH $(INCLUDES) $(CFLAG)
+ 
+ GENERAL=Makefile makeapps.com install.com
+ 
+Index: openssl-1.0.1g/crypto/asn1/asn1_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/asn1/asn1_locl.h
++++ openssl-1.0.1g/crypto/asn1/asn1_locl.h
+@@ -58,6 +58,8 @@
+ 
+ /* Internal ASN1 structures and functions: not for application use */
+ 
++#pragma GCC visibility push(hidden)
++
+ /* ASN1 print context structure */
+ 
+ struct asn1_pctx_st
+@@ -143,3 +145,5 @@ struct x509_crl_method_st
+ 				ASN1_INTEGER *ser, X509_NAME *issuer);
+ 	int (*crl_verify)(X509_CRL *crl, EVP_PKEY *pk);
+ 	};
++
++#pragma GCC visibility pop
+Index: openssl-1.0.1g/crypto/bn/bn_lcl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/bn/bn_lcl.h
++++ openssl-1.0.1g/crypto/bn/bn_lcl.h
+@@ -483,6 +483,8 @@ extern "C" {
+ #undef bn_div_words
+ #endif
+ 
++#pragma GCC visibility push(hidden)
++
+ void bn_mul_normal(BN_ULONG *r,BN_ULONG *a,int na,BN_ULONG *b,int nb);
+ void bn_mul_comba8(BN_ULONG *r,BN_ULONG *a,BN_ULONG *b);
+ void bn_mul_comba4(BN_ULONG *r,BN_ULONG *a,BN_ULONG *b);
+@@ -508,6 +510,8 @@ BN_ULONG bn_sub_part_words(BN_ULONG *r,
+ 	int cl, int dl);
+ int bn_mul_mont(BN_ULONG *rp, const BN_ULONG *ap, const BN_ULONG *bp, const BN_ULONG *np,const BN_ULONG *n0, int num);
+ 
++#pragma GCC visibility pop
++
+ #ifdef  __cplusplus
+ }
+ #endif
+Index: openssl-1.0.1g/crypto/camellia/cmll_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/camellia/cmll_locl.h
++++ openssl-1.0.1g/crypto/camellia/cmll_locl.h
+@@ -68,6 +68,8 @@
+ #ifndef HEADER_CAMELLIA_LOCL_H
+ #define HEADER_CAMELLIA_LOCL_H
+ 
++#pragma GCC visibility push(hidden)
++
+ typedef unsigned int  u32;
+ typedef unsigned char u8;
+ 
+@@ -83,4 +85,5 @@ void Camellia_DecryptBlock(int keyBitLen
+ 		const KEY_TABLE_TYPE keyTable, u8 plaintext[]);
+ int private_Camellia_set_key(const unsigned char *userKey, const int bits,
+ 			     CAMELLIA_KEY *key);
++#pragma GCC visibility pop
+ #endif /* #ifndef HEADER_CAMELLIA_LOCL_H */
+Index: openssl-1.0.1g/crypto/cast/cast_lcl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/cast/cast_lcl.h
++++ openssl-1.0.1g/crypto/cast/cast_lcl.h
+@@ -217,6 +217,7 @@
+ 	}
+ #endif
+ 
++#pragma GCC visibility push(hidden)
+ extern const CAST_LONG CAST_S_table0[256];
+ extern const CAST_LONG CAST_S_table1[256];
+ extern const CAST_LONG CAST_S_table2[256];
+@@ -225,3 +226,4 @@ extern const CAST_LONG CAST_S_table4[256
+ extern const CAST_LONG CAST_S_table5[256];
+ extern const CAST_LONG CAST_S_table6[256];
+ extern const CAST_LONG CAST_S_table7[256];
++#pragma GCC visibility pop
+Index: openssl-1.0.1g/crypto/cms/cms_lcl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/cms/cms_lcl.h
++++ openssl-1.0.1g/crypto/cms/cms_lcl.h
+@@ -426,6 +426,8 @@ DECLARE_ASN1_ALLOC_FUNCTIONS(CMS_IssuerA
+ #define CMS_RECIPINFO_ISSUER_SERIAL	0
+ #define CMS_RECIPINFO_KEYIDENTIFIER	1
+ 
++#pragma GCC visibility push(hidden)
++
+ BIO *cms_content_bio(CMS_ContentInfo *cms);
+ 
+ CMS_ContentInfo *cms_Data_create(void);
+@@ -466,7 +468,8 @@ CMS_EnvelopedData *cms_get0_enveloped(CM
+ /* PWRI routines */
+ int cms_RecipientInfo_pwri_crypt(CMS_ContentInfo *cms, CMS_RecipientInfo *ri,
+ 							int en_de);
+-	
++
++#pragma GCC visibility pop
+ #ifdef  __cplusplus
+ }
+ #endif
+Index: openssl-1.0.1g/crypto/des/des_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/des/des_locl.h
++++ openssl-1.0.1g/crypto/des/des_locl.h
+@@ -421,10 +421,12 @@
+ 	PERM_OP(l,r,tt, 4,0x0f0f0f0fL); \
+ 	}
+ 
++#pragma GCC visibility push(hidden)
+ extern const DES_LONG DES_SPtrans[8][64];
+ 
+ void fcrypt_body(DES_LONG *out,DES_key_schedule *ks,
+ 		 DES_LONG Eswap0, DES_LONG Eswap1);
++#pragma GCC visibility pop
+ 
+ #ifdef OPENSSL_SMALL_FOOTPRINT
+ #undef DES_UNROLL
+Index: openssl-1.0.1g/crypto/dsa/dsa_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/dsa/dsa_locl.h
++++ openssl-1.0.1g/crypto/dsa/dsa_locl.h
+@@ -57,4 +57,4 @@
+ int dsa_builtin_paramgen(DSA *ret, size_t bits, size_t qbits,
+ 	const EVP_MD *evpmd, const unsigned char *seed_in, size_t seed_len,
+ 	unsigned char *seed_out,
+-	int *counter_ret, unsigned long *h_ret, BN_GENCB *cb);
++	int *counter_ret, unsigned long *h_ret, BN_GENCB *cb) __attribute__ ((visibility ("hidden")));
+Index: openssl-1.0.1g/crypto/ec/ec_lcl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/ec/ec_lcl.h
++++ openssl-1.0.1g/crypto/ec/ec_lcl.h
+@@ -88,6 +88,8 @@
+ /* Structure details are not part of the exported interface,
+  * so all this may change in future versions. */
+ 
++#pragma GCC visibility push(hidden)
++
+ struct ec_method_st {
+ 	/* Various method flags */
+ 	int flags;
+@@ -444,3 +446,5 @@ void ec_GFp_nistp_points_make_affine_int
+ 	void (*felem_contract)(void *out, const void *in));
+ void ec_GFp_nistp_recode_scalar_bits(unsigned char *sign, unsigned char *digit, unsigned char in);
+ #endif
++
++#pragma GCC visibility pop
+Index: openssl-1.0.1g/crypto/ecdh/ech_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/ecdh/ech_locl.h
++++ openssl-1.0.1g/crypto/ecdh/ech_locl.h
+@@ -58,6 +58,8 @@
+ 
+ #include <openssl/ecdh.h>
+ 
++#pragma GCC visibility push(hidden)
++
+ #ifdef  __cplusplus
+ extern "C" {
+ #endif
+@@ -98,5 +100,5 @@ ECDH_DATA *ecdh_check(EC_KEY *);
+ #ifdef  __cplusplus
+ }
+ #endif
+-
++#pragma GCC visibility pop
+ #endif /* HEADER_ECH_LOCL_H */
+Index: openssl-1.0.1g/crypto/ecdsa/ecs_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/ecdsa/ecs_locl.h
++++ openssl-1.0.1g/crypto/ecdsa/ecs_locl.h
+@@ -61,6 +61,8 @@
+ 
+ #include <openssl/ecdsa.h>
+ 
++#pragma GCC visibility push(hidden)
++
+ #ifdef  __cplusplus
+ extern "C" {
+ #endif
+@@ -112,4 +114,6 @@ ECDSA_DATA *ecdsa_check(EC_KEY *eckey);
+ }
+ #endif
+ 
++#pragma GCC visibility pop
++
+ #endif /* HEADER_ECS_LOCL_H */
+Index: openssl-1.0.1g/crypto/engine/eng_int.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/engine/eng_int.h
++++ openssl-1.0.1g/crypto/engine/eng_int.h
+@@ -68,6 +68,8 @@
+ /* Take public definitions from engine.h */
+ #include <openssl/engine.h>
+ 
++#pragma GCC visibility push(hidden)
++
+ #ifdef  __cplusplus
+ extern "C" {
+ #endif
+@@ -202,5 +204,5 @@ struct engine_st
+ #ifdef  __cplusplus
+ }
+ #endif
+-
++#pragma GCC visibility pop
+ #endif /* HEADER_ENGINE_INT_H */
+Index: openssl-1.0.1g/crypto/engine/eng_rsax.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/engine/eng_rsax.c
++++ openssl-1.0.1g/crypto/engine/eng_rsax.c
+@@ -262,7 +262,7 @@ static int mod_exp_pre_compute_data_512(
+ void mod_exp_512(UINT64 *result, /* 512 bits, 8 qwords */
+ 		 UINT64 *g,      /* 512 bits, 8 qwords */
+ 		 UINT64 *exp,    /* 512 bits, 8 qwords */
+-		 struct mod_ctx_512 *data);
++		 struct mod_ctx_512 *data) __attribute__ ((visibility ("hidden")));
+ 
+ typedef struct st_e_rsax_mod_ctx
+ {
+Index: openssl-1.0.1g/crypto/evp/e_aes.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/evp/e_aes.c
++++ openssl-1.0.1g/crypto/evp/e_aes.c
+@@ -108,6 +108,8 @@ typedef struct
+ 
+ #define MAXBITCHUNK	((size_t)1<<(sizeof(size_t)*8-4))
+ 
++#pragma GCC visibility push(hidden)
++
+ #ifdef VPAES_ASM
+ int vpaes_set_encrypt_key(const unsigned char *userKey, int bits,
+ 			AES_KEY *key);
+@@ -125,6 +127,7 @@ void vpaes_cbc_encrypt(const unsigned ch
+ 			const AES_KEY *key,
+ 			unsigned char *ivec, int enc);
+ #endif
++
+ #ifdef BSAES_ASM
+ void bsaes_cbc_encrypt(const unsigned char *in, unsigned char *out,
+ 			size_t length, const AES_KEY *key,
+@@ -139,6 +142,9 @@ void bsaes_xts_decrypt(const unsigned ch
+ 			size_t len, const AES_KEY *key1,
+ 			const AES_KEY *key2, const unsigned char iv[16]);
+ #endif
++
++#pragma GCC visibility pop
++
+ #ifdef AES_CTR_ASM
+ void AES_ctr32_encrypt(const unsigned char *in, unsigned char *out,
+ 			size_t blocks, const AES_KEY *key,
+@@ -173,6 +179,8 @@ extern unsigned int OPENSSL_ia32cap_P[2]
+  */
+ #define	AESNI_CAPABLE	(OPENSSL_ia32cap_P[1]&(1<<(57-32)))
+ 
++#pragma GCC visibility push(hidden)
++
+ int aesni_set_encrypt_key(const unsigned char *userKey, int bits,
+ 			AES_KEY *key);
+ int aesni_set_decrypt_key(const unsigned char *userKey, int bits,
+@@ -226,6 +234,8 @@ void aesni_ccm64_decrypt_blocks (const u
+ 			const unsigned char ivec[16],
+ 			unsigned char cmac[16]);
+ 
++#pragma GCC visibility pop
++
+ static int aesni_init_key(EVP_CIPHER_CTX *ctx, const unsigned char *key,
+ 		   const unsigned char *iv, int enc)
+ 	{
+Index: openssl-1.0.1g/crypto/evp/e_aes_cbc_hmac_sha1.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/evp/e_aes_cbc_hmac_sha1.c
++++ openssl-1.0.1g/crypto/evp/e_aes_cbc_hmac_sha1.c
+@@ -97,6 +97,8 @@ typedef struct
+ extern unsigned int OPENSSL_ia32cap_P[2];
+ #define AESNI_CAPABLE   (1<<(57-32))
+ 
++#pragma GCC visibility push(hidden)
++
+ int aesni_set_encrypt_key(const unsigned char *userKey, int bits,
+ 			      AES_KEY *key);
+ int aesni_set_decrypt_key(const unsigned char *userKey, int bits,
+@@ -112,6 +114,8 @@ void aesni_cbc_sha1_enc (const void *inp
+ 		const AES_KEY *key, unsigned char iv[16],
+ 		SHA_CTX *ctx,const void *in0);
+ 
++#pragma GCC visibility pop
++
+ #define data(ctx) ((EVP_AES_HMAC_SHA1 *)(ctx)->cipher_data)
+ 
+ static int aesni_cbc_hmac_sha1_init_key(EVP_CIPHER_CTX *ctx,
+Index: openssl-1.0.1g/crypto/evp/evp_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/evp/evp_locl.h
++++ openssl-1.0.1g/crypto/evp/evp_locl.h
+@@ -263,6 +263,8 @@ const EVP_CIPHER *EVP_##cname##_ecb(void
+ 			     EVP_CIPHER_get_asn1_iv, \
+ 			     NULL)
+ 
++#pragma GCC visibility push(hidden)
++
+ struct evp_pkey_ctx_st
+ 	{
+ 	/* Method associated with this operation */
+@@ -348,6 +350,8 @@ int PKCS5_v2_PBKDF2_keyivgen(EVP_CIPHER_
+ 			     ASN1_TYPE *param,
+ 			     const EVP_CIPHER *c, const EVP_MD *md, int en_de);
+ 
++#pragma GCC visibility pop
++
+ #ifdef OPENSSL_FIPS
+ 
+ #ifdef OPENSSL_DOING_MAKEDEPEND
+Index: openssl-1.0.1g/crypto/md4/md4_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/md4/md4_locl.h
++++ openssl-1.0.1g/crypto/md4/md4_locl.h
+@@ -65,7 +65,7 @@
+ #define MD4_LONG_LOG2 2 /* default to 32 bits */
+ #endif
+ 
+-void md4_block_data_order (MD4_CTX *c, const void *p,size_t num);
++void md4_block_data_order (MD4_CTX *c, const void *p,size_t num) __attribute__ ((visibility ("hidden")));
+ 
+ #define DATA_ORDER_IS_LITTLE_ENDIAN
+ 
+Index: openssl-1.0.1g/crypto/md5/md5_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/md5/md5_locl.h
++++ openssl-1.0.1g/crypto/md5/md5_locl.h
+@@ -74,7 +74,7 @@
+ # endif
+ #endif
+ 
+-void md5_block_data_order (MD5_CTX *c, const void *p,size_t num);
++void md5_block_data_order (MD5_CTX *c, const void *p,size_t num) __attribute__ ((visibility ("hidden")));
+ 
+ #define DATA_ORDER_IS_LITTLE_ENDIAN
+ 
+Index: openssl-1.0.1g/crypto/modes/modes_lcl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/modes/modes_lcl.h
++++ openssl-1.0.1g/crypto/modes/modes_lcl.h
+@@ -83,6 +83,8 @@ typedef unsigned char u8;
+ #define PUTU32(p,v)	((p)[0]=(u8)((v)>>24),(p)[1]=(u8)((v)>>16),(p)[2]=(u8)((v)>>8),(p)[3]=(u8)(v))
+ #endif
+ 
++#pragma GCC visibility push(hidden)
++
+ /* GCM definitions */
+ 
+ typedef struct { u64 hi,lo; } u128;
+@@ -125,4 +127,4 @@ struct ccm128_context {
+ 	block128_f block;
+ 	void *key;
+ };
+-
++#pragma GCC visibility pop
+Index: openssl-1.0.1g/crypto/o_str.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/o_str.h
++++ openssl-1.0.1g/crypto/o_str.h
+@@ -61,8 +61,12 @@
+ 
+ #include <stddef.h>		/* to get size_t */
+ 
++#pragma GCC visibility push(hidden)
++
+ int OPENSSL_strcasecmp(const char *str1, const char *str2);
+ int OPENSSL_strncasecmp(const char *str1, const char *str2, size_t n);
+ int OPENSSL_memcmp(const void *p1,const void *p2,size_t n);
+ 
++#pragma GCC visibility pop
++
+ #endif
+Index: openssl-1.0.1g/crypto/o_time.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/o_time.h
++++ openssl-1.0.1g/crypto/o_time.h
+@@ -61,7 +61,11 @@
+ 
+ #include <time.h>
+ 
++#pragma GCC visibility push(hidden)
++
+ struct tm *OPENSSL_gmtime(const time_t *timer, struct tm *result);
+ int OPENSSL_gmtime_adj(struct tm *tm, int offset_day, long offset_sec);
+ 
++#pragma GCC visibility pop
++
+ #endif
+Index: openssl-1.0.1g/crypto/ripemd/rmd_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/ripemd/rmd_locl.h
++++ openssl-1.0.1g/crypto/ripemd/rmd_locl.h
+@@ -76,7 +76,7 @@
+ # endif
+ #endif
+ 
+-void ripemd160_block_data_order (RIPEMD160_CTX *c, const void *p,size_t num);
++void ripemd160_block_data_order (RIPEMD160_CTX *c, const void *p,size_t num) __attribute__ ((visibility ("hidden")));
+ 
+ #define DATA_ORDER_IS_LITTLE_ENDIAN
+ 
+Index: openssl-1.0.1g/crypto/rsa/rsa_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/rsa/rsa_locl.h
++++ openssl-1.0.1g/crypto/rsa/rsa_locl.h
+@@ -1,4 +1,4 @@
+ extern int int_rsa_verify(int dtype, const unsigned char *m, unsigned int m_len,
+ 		unsigned char *rm, size_t *prm_len,
+ 		const unsigned char *sigbuf, size_t siglen,
+-		RSA *rsa);
++		RSA *rsa) __attribute__ ((visibility ("hidden")));
+Index: openssl-1.0.1g/crypto/sha/sha256.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/sha/sha256.c
++++ openssl-1.0.1g/crypto/sha/sha256.c
+@@ -110,7 +110,7 @@ int SHA224_Final (unsigned char *md, SHA
+ #ifndef SHA256_ASM
+ static
+ #endif
+-void sha256_block_data_order (SHA256_CTX *ctx, const void *in, size_t num);
++void sha256_block_data_order (SHA256_CTX *ctx, const void *in, size_t num) __attribute__ ((visibility ("hidden")));
+ 
+ #include "md32_common.h"
+ 
+Index: openssl-1.0.1g/crypto/sha/sha512.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/sha/sha512.c
++++ openssl-1.0.1g/crypto/sha/sha512.c
+@@ -94,7 +94,7 @@ fips_md_init(SHA512)
+ #ifndef SHA512_ASM
+ static
+ #endif
+-void sha512_block_data_order (SHA512_CTX *ctx, const void *in, size_t num);
++void sha512_block_data_order (SHA512_CTX *ctx, const void *in, size_t num) __attribute__ ((visibility ("hidden")));
+ 
+ int SHA512_Final (unsigned char *md, SHA512_CTX *c)
+ 	{
+Index: openssl-1.0.1g/crypto/sha/sha_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/sha/sha_locl.h
++++ openssl-1.0.1g/crypto/sha/sha_locl.h
+@@ -108,7 +108,7 @@ static void sha_block_data_order (SHA_CT
+ #ifndef SHA1_ASM
+ static
+ #endif
+-void sha1_block_data_order (SHA_CTX *c, const void *p,size_t num);
++void sha1_block_data_order (SHA_CTX *c, const void *p,size_t num) __attribute__ ((visibility ("hidden")));
+ 
+ #else
+ # error "Either SHA_0 or SHA_1 must be defined."
+Index: openssl-1.0.1g/crypto/store/str_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/store/str_locl.h
++++ openssl-1.0.1g/crypto/store/str_locl.h
+@@ -62,6 +62,8 @@
+ #include <openssl/crypto.h>
+ #include <openssl/store.h>
+ 
++#pragma GCC visibility push(hidden)
++
+ #ifdef  __cplusplus
+ extern "C" {
+ #endif
+@@ -120,5 +122,5 @@ struct store_st
+ #ifdef  __cplusplus
+ }
+ #endif
+-
++#pragma GCC visibility pop
+ #endif
+Index: openssl-1.0.1g/crypto/ui/ui_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/ui/ui_locl.h
++++ openssl-1.0.1g/crypto/ui/ui_locl.h
+@@ -66,6 +66,8 @@
+ #undef _
+ #endif
+ 
++#pragma GCC visibility push(hidden)
++
+ struct ui_method_st
+ 	{
+ 	char *name;
+@@ -149,5 +151,5 @@ struct ui_st
+ #define UI_FLAG_PRINT_ERRORS	0x0100
+ 	int flags;
+ 	};
+-
++#pragma GCC visibility pop
+ #endif
+Index: openssl-1.0.1g/crypto/whrlpool/wp_locl.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/whrlpool/wp_locl.h
++++ openssl-1.0.1g/crypto/whrlpool/wp_locl.h
+@@ -1,3 +1,3 @@
+ #include <openssl/whrlpool.h>
+ 
+-void whirlpool_block(WHIRLPOOL_CTX *,const void *,size_t);
++void whirlpool_block(WHIRLPOOL_CTX *,const void *,size_t) __attribute__ ((visibility ("hidden")));
+Index: openssl-1.0.1g/crypto/x509v3/ext_dat.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/x509v3/ext_dat.h
++++ openssl-1.0.1g/crypto/x509v3/ext_dat.h
+@@ -57,6 +57,8 @@
+  */
+ /* This file contains a table of "standard" extensions */
+ 
++#pragma GCC visibility push(hidden)
++
+ extern X509V3_EXT_METHOD v3_bcons, v3_nscert, v3_key_usage, v3_ext_ku;
+ extern X509V3_EXT_METHOD v3_pkey_usage_period, v3_sxnet, v3_info, v3_sinfo;
+ extern X509V3_EXT_METHOD v3_ns_ia5_list[], v3_alt[], v3_skey_id, v3_akey_id;
+@@ -126,6 +128,7 @@ static const X509V3_EXT_METHOD *standard
+ &v3_freshest_crl,
+ };
+ 
++#pragma GCC visibility pop
+ /* Number of standard extensions */
+ 
+ #define STANDARD_EXTENSION_COUNT (sizeof(standard_exts)/sizeof(X509V3_EXT_METHOD *))
+Index: openssl-1.0.1g/crypto/x509v3/pcy_int.h
+===================================================================
+--- openssl-1.0.1g.orig/crypto/x509v3/pcy_int.h
++++ openssl-1.0.1g/crypto/x509v3/pcy_int.h
+@@ -56,6 +56,7 @@
+  *
+  */
+ 
++#pragma GCC visibility push(hidden)
+ 
+ typedef struct X509_POLICY_DATA_st X509_POLICY_DATA;
+ 
+@@ -210,3 +211,5 @@ int policy_node_match(const X509_POLICY_
+ 		      const X509_POLICY_NODE *node, const ASN1_OBJECT *oid);
+ 
+ const X509_POLICY_CACHE *policy_cache_set(X509 *x);
++
++#pragma GCC visibility pop
+Index: openssl-1.0.1g/crypto/modes/gcm128.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/modes/gcm128.c
++++ openssl-1.0.1g/crypto/modes/gcm128.c
+@@ -651,9 +651,9 @@ static void gcm_gmult_1bit(u64 Xi[2],con
+ #  define GCM_FUNCREF_4BIT
+ extern unsigned int OPENSSL_ia32cap_P[2];
+ 
+-void gcm_init_clmul(u128 Htable[16],const u64 Xi[2]);
+-void gcm_gmult_clmul(u64 Xi[2],const u128 Htable[16]);
+-void gcm_ghash_clmul(u64 Xi[2],const u128 Htable[16],const u8 *inp,size_t len);
++void gcm_init_clmul(u128 Htable[16],const u64 Xi[2]) __attribute__ ((visibility ("hidden")));
++void gcm_gmult_clmul(u64 Xi[2],const u128 Htable[16]) __attribute__ ((visibility ("hidden")));
++void gcm_ghash_clmul(u64 Xi[2],const u128 Htable[16],const u8 *inp,size_t len) __attribute__ ((visibility ("hidden")));
+ 
+ #  if	defined(__i386) || defined(__i386__) || defined(_M_IX86)
+ #   define GHASH_ASM_X86
+Index: openssl-1.0.1g/crypto/evp/e_rc4_hmac_md5.c
+===================================================================
+--- openssl-1.0.1g.orig/crypto/evp/e_rc4_hmac_md5.c
++++ openssl-1.0.1g/crypto/evp/e_rc4_hmac_md5.c
+@@ -78,7 +78,7 @@ typedef struct
+ #define NO_PAYLOAD_LENGTH	((size_t)-1)
+ 
+ void rc4_md5_enc (RC4_KEY *key, const void *in0, void *out,
+-		MD5_CTX *ctx,const void *inp,size_t blocks);
++		MD5_CTX *ctx,const void *inp,size_t blocks) __attribute__ ((visibility ("hidden")));
+ 
+ #define data(ctx) ((EVP_RC4_HMAC_MD5 *)(ctx)->cipher_data)
+ 

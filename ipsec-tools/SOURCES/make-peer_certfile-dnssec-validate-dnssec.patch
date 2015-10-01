@@ -1,0 +1,51 @@
+Index: ipsec-tools/src/racoon/getcertsbyname.c
+===================================================================
+--- ipsec-tools.orig/src/racoon/getcertsbyname.c	2012-06-29 22:19:52.569078120 +1200
++++ ipsec-tools/src/racoon/getcertsbyname.c	2012-06-29 22:20:44.599749858 +1200
+@@ -213,6 +213,8 @@
+ 	char hostbuf[1024];	/* XXX */
+ 	int qtype, qclass, keytag, algorithm;
+ 	struct certinfo head, *cur;
++	struct __res_state *_resp = &_res;
++	u_long _res_options = 0;
+ 	int error = -1;
+ 
+ 	/* initialize res */
+@@ -222,6 +224,12 @@
+ 	cur = &head;
+ 
+ 	/* get CERT RR */
++	/* Bit bang _res libc resolver global, we are single threaded */
++	if ((_resp->options & RES_INIT) == 0 && res_init() == -1) {
++		goto end;
++	}
++	_res_options = _resp->options;
++	_resp->options |= (RES_USE_EDNS0|RES_USE_DNSSEC);
+ 	buflen = 512;
+ 	do {
+ 
+@@ -241,6 +249,8 @@
+ 			goto end;
+ 
+ 	} while (buflen < anslen);
++	/* Undo resolver options */
++	_resp->options = _res_options;
+ 
+ #ifdef DNSSEC_DEBUG
+ 	printf("get a DNS packet len=%d\n", anslen);
+@@ -253,6 +263,15 @@
+ 	qdcount = ntohs(hp->qdcount);
+ 	ancount = ntohs(hp->ancount);
+ 
++	/* Check if DNS server has validated answer or not */
++	if (hp->ad == 0 && hp->aa==0) {
++#ifdef DNSSEC_DEBUG
++		printf("answer is not authenticated.\n");
++#endif
++		h_errno = NO_RECOVERY;
++		goto end;
++	}
++
+ 	/* question section */
+ 	if (qdcount != 1) {
+ #ifdef DNSSEC_DEBUG

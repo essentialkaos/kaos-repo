@@ -1,0 +1,10 @@
+--- tests/unit/geos_unit.cpp.old	2010-05-27 12:47:42.844449588 +0300
++++ tests/unit/geos_unit.cpp	2010-05-27 12:47:59.134448617 +0300
+@@ -17,6 +17,7 @@
+ #include <cstdlib>
+ #include <iomanip>
+ #include <iostream>
++#include <stdlib.h>
+ 
+ namespace tut
+ {

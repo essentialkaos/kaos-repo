@@ -1,0 +1,389 @@
+###############################################################################
+
+%define _posixroot        /
+%define _root             /root
+%define _bin              /bin
+%define _sbin             /sbin
+%define _srv              /srv
+%define _home             /home
+%define _lib32            %{_posixroot}lib
+%define _lib64            %{_posixroot}lib64
+%define _libdir32         %{_prefix}%{_lib32}
+%define _libdir64         %{_prefix}%{_lib64}
+%define _logdir           %{_localstatedir}/log
+%define _rundir           %{_localstatedir}/run
+%define _lockdir          %{_localstatedir}/lock
+%define _cachedir         %{_localstatedir}/cache
+%define _spooldir         %{_localstatedir}/spool
+%define _loc_prefix       %{_prefix}/local
+%define _loc_exec_prefix  %{_loc_prefix}
+%define _loc_bindir       %{_loc_exec_prefix}/bin
+%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
+%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
+%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
+%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
+%define _loc_sbindir      %{_loc_exec_prefix}/sbin
+%define _loc_bindir       %{_loc_exec_prefix}/bin
+%define _loc_datarootdir  %{_loc_prefix}/share
+%define _loc_includedir   %{_loc_prefix}/include
+%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%define _pkgconfigdir     %{_libdir}/pkgconfig
+
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+
+%define __useradd         %{_sbindir}/useradd
+%define __groupadd        %{_sbindir}/groupadd
+%define __userdel         %{_sbindir}/userdel
+%define __getent          %{_bindir}/getent
+
+###############################################################################
+
+%define hp_user           %{name}
+%define hp_user_id        188
+%define hp_group          %{name}
+%define hp_group_id       188
+%define hp_homedir        %{_localstatedir}/lib/%{name}
+%define hp_confdir        %{_sysconfdir}/%{name}
+%define hp_datadir        %{_datadir}/%{name}
+
+###############################################################################
+
+Name:              haproxy
+Summary:           TCP/HTTP reverse proxy for high availability environments
+Version:           1.5.14
+Release:           0%{?dist}
+License:           GPLv2+
+URL:               http://haproxy.1wt.eu
+Group:             System Environment/Daemons
+
+Source0:           http://www.haproxy.org/download/1.5/src/%{name}-%{version}.tar.gz
+Source1:           %{name}.init
+Source2:           %{name}.cfg
+Source3:           %{name}.logrotate
+
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Requires(pre):     %{__groupadd}
+Requires(pre):     %{__useradd}
+Requires(post):    %{__chkconfig}
+Requires(preun):   %{__chkconfig}
+Requires(preun):   %{__service}
+Requires(postun):  %{__service}
+
+BuildRequires:     make gcc pcre-devel
+
+Requires:          pcre setup >= 2.8.14-14
+
+###############################################################################
+
+%description
+HAProxy is a free, fast and reliable solution offering high
+availability, load balancing, and proxying for TCP and HTTP-based
+applications. It is particularly suited for web sites crawling under
+very high loads while needing persistence or Layer7 processing.
+Supporting tens of thousands of connections is clearly realistic with
+modern hardware. Its mode of operation makes integration with existing
+architectures very easy and riskless, while still offering the
+possibility not to expose fragile web servers to the net.
+
+###############################################################################
+
+%prep
+%setup -q
+
+%build
+%ifarch %ix86 x86_64
+use_regparm="USE_REGPARM=1"
+%endif
+
+%{__make} %{?_smp_mflags} CPU="generic" TARGET="linux26" USE_PCRE=1 ${use_regparm}
+
+pushd contrib/halog
+  %{__make} halog
+popd
+
+%install
+rm -rf %{buildroot}
+
+%{__make} install-bin DESTDIR=%{buildroot} PREFIX=%{_prefix}
+%{__make} install-man DESTDIR=%{buildroot} PREFIX=%{_prefix}
+
+%{__install} -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
+%{__install} -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{name}.cfg
+%{__install} -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+
+%{__install} -dm 0755 %{buildroot}%{hp_homedir}
+%{__install} -dm 0755 %{buildroot}%{hp_datadir}
+%{__install} -dm 0755 %{buildroot}%{_bindir}
+
+%{__install} -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
+%{__install} -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
+
+for file in $(find . -type f -name '*.txt') ; do
+  iconv -f ISO-8859-1 -t UTF-8 -o $file.new $file && \
+  %{__touch} -r $file $file.new && \
+  %{__mv} $file.new $file
+done
+
+%clean
+%{__rm} -rf %{buildroot}
+
+%pre
+if [[ $1 -eq 1 ]] ; then
+  %{__getent} group %{hp_group} >/dev/null || %{__groupadd} -g %{hp_group_id} -r %{hp_group} 2>/dev/null
+  %{__getent} passwd %{hp_user} >/dev/null || %{__useradd} -r -u %{hp_user_id} -g %{hp_group} -d %{hp_homedir} -s /sbin/nologin %{hp_user} 2>/dev/null
+fi
+
+%post
+%{__chkconfig} --add %{name}
+
+%preun
+if [[ $1 -eq 0 ]]; then
+  %{__service} %{name} stop >/dev/null 2>&1
+  %{__chkconfig} --del %{name}
+fi
+
+%postun
+if [[ $1 -ge 1 ]]; then
+  %{__service} %{name} condrestart >/dev/null 2>&1 || :
+fi
+
+###############################################################################
+
+%files
+%defattr(-, root, root, -)
+%doc CHANGELOG LICENSE README doc/*
+%doc examples/url-switching.cfg
+%doc examples/acl-content-sw.cfg
+%doc examples/content-sw-sample.cfg
+%doc examples/cttproxy-src.cfg
+%doc examples/haproxy.cfg
+%doc examples/tarpit.cfg
+%dir %{hp_datadir}
+%dir %{hp_datadir}/*
+%dir %{hp_confdir}
+%config(noreplace) %{hp_confdir}/%{name}.cfg
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%{_initrddir}/%{name}
+%{_sbindir}/%{name}
+%{_bindir}/halog
+%{_sbindir}/%{name}-systemd-wrapper
+%{_mandir}/man1/%{name}.1.gz
+%attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
+
+###############################################################################
+
+%changelog
+* Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.14-0
+- BUILD/MINOR: tools: rename popcount to my_popcountl
+- BUG/MAJOR: buffers: make the buffer_slow_realign() function respect output data
+
+* Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.13-0
+- BUG/MINOR: check: fix tcpcheck error message
+- CLEANUP: deinit: remove codes for cleaning p->block_rules
+- DOC: Update doc about weight, act and bck fields in the statistics
+- MINOR: ssl: add a destructor to free allocated SSL ressources
+- BUG/MEDIUM: ssl: fix tune.ssl.default-dh-param value being overwritten
+- MEDIUM: ssl: replace standards DH groups with custom ones
+- BUG/MINOR: debug: display (null) in place of "meth"
+- BUG/MINOR: cfgparse: fix typo in 'option httplog' error message
+- BUG/MEDIUM: cfgparse: segfault when userlist is misused
+- BUG/MEDIUM: stats: properly initialize the scope before dumping stats
+- BUG/MEDIUM: http: don't forward client shutdown without NOLINGER except for tunnels
+- CLEANUP: checks: fix double usage of cur / current_step in tcp-checks
+- BUG/MEDIUM: checks: do not dereference head of a tcp-check at the end
+- CLEANUP: checks: simplify the loop processing of tcp-checks
+- BUG/MAJOR: checks: always check for end of list before proceeding
+- BUG/MEDIUM: checks: do not dereference a list as a tcpcheck struct
+- BUG/MEDIUM: peers: apply a random reconnection timeout
+- BUG/MINOR: ssl: fix smp_fetch_ssl_fc_session_id
+- MEDIUM: init: don't stop proxies in parent process when exiting
+- MINOR: peers: store the pointer to the signal handler
+- MEDIUM: peers: unregister peers that were never started
+- MEDIUM: config: propagate the table's process list to the peers sections
+- MEDIUM: init: stop any peers section not bound to the correct process
+- MEDIUM: config: validate that peers sections are bound to exactly one process
+- MAJOR: peers: allow peers section to be used with nbproc > 1
+- DOC: relax the peers restriction to single-process
+- CLEANUP: config: fix misleading information in error message.
+- MINOR: config: report the number of processes using a peers section in the error case
+- BUG/MEDIUM: config: properly compute the default number of processes for a proxy
+
+* Tue May 12 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.12-0
+- BUG/MINOR: ssl: Display correct filename in error message
+- DOC: Fix L4TOUT typo in documentation
+- BUG/MEDIUM: Do not consider an agent check as failed on L7 error
+- BUG/MINOR: pattern: error message missing
+- BUG/MEDIUM: pattern: some entries are not deleted with case insensitive match
+- BUG/MEDIUM: buffer: one byte miss in buffer free space check
+- BUG/MAJOR: http: don't read past buffer's end in http_replace_value
+- BUG/MEDIUM: http: the function "(req|res)-replace-value" doesn't respect the HTTP syntax
+- BUG/MEDIUM: peers: correctly configure the client timeout
+- BUG/MINOR: compression: consider the expansion factor in init
+- BUG/MEDIUM: http: hdr_cnt would not count any header when called without name
+- BUG/MEDIUM: listener: don't report an error when resuming unbound listeners
+- BUG/MEDIUM: init: don't limit cpu-map to the first 32 processes only
+- BUG/MEDIUM: stream-int: always reset si->ops when si->end is nullified
+- BUG/MEDIUM: http: remove content-length from chunked messages
+- DOC: http: update the comments about the rules for determining transfer-length
+- BUG/MEDIUM: http: do not restrict parsing of transfer-encoding to HTTP/1.1
+- BUG/MEDIUM: http: incorrect transfer-coding in the request is a bad request
+- BUG/MEDIUM: http: remove content-length form responses with bad transfer-encoding
+- MEDIUM: http: restrict the HTTP version token to 1 digit as per RFC7230
+- MEDIUM: http: add option-ignore-probes to get rid of the floods of 408
+- BUG/MINOR: config: clear proxy->table.peers.p for disabled proxies
+- MINOR: stick-table: don't attach to peers in stopped state
+- MEDIUM: config: initialize stick-tables after peers, not before
+- MEDIUM: peers: add the ability to disable a peers section
+- DOC: document option http-ignore-probes
+- DOC: fix the comments about the meaning of msg->sol in HTTP
+- BUG/MEDIUM: http: wait for the exact amount of body bytes in wait_for_request_body
+- BUG/MAJOR: http: prevent risk of reading past end with balance url_param
+- DOC: update the doc on the proxy protocol
+
+* Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.11-0
+- BUG/MEDIUM: backend: correctly detect the domain when use_domain_only is used
+- MINOR: ssl: load certificates in alphabetical order
+- BUG/MINOR: checks: prevent http keep-alive with http-check expect
+- BUG/MEDIUM: Do not set agent health to zero if server is disabled in config
+- MEDIUM/BUG: Only explicitly report "DOWN (agent)" if the agent health is zero
+- BUG/MINOR: stats:Fix incorrect printf type.
+- DOC: add missing entry for log-format and clarify the text
+- BUG/MEDIUM: http: fix header removal when previous header ends with pure LF
+- BUG/MEDIUM: channel: fix possible integer overflow on reserved size computation
+- BUG/MINOR: channel: compare to_forward with buf->i, not buf->size
+- MINOR: channel: add channel_in_transit()
+- MEDIUM: channel: make buffer_reserved() use channel_in_transit()
+- MEDIUM: channel: make bi_avail() use channel_in_transit()
+- BUG/MEDIUM: channel: don't schedule data in transit for leaving until connected
+- BUG/MAJOR: log: don't try to emit a log if no logger is set
+- BUG/MINOR: args: add missing entry for ARGT_MAP in arg_type_names
+- BUG/MEDIUM: http: make http-request set-header compute the string before removal
+- BUG/MINOR: http: fix incorrect header value offset in replace-hdr/replace-value
+- BUG/MINOR: http: abort request processing on filter failure
+
+* Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.10-0
+- DOC: fix a few typos
+- BUG/MINOR: http: fix typo: "401 Unauthorized" => "407 Unauthorized"
+- BUG/MINOR: parse: refer curproxy instead of proxy
+- DOC: httplog does not support 'no'
+- MINOR: map/acl/dumpstats: remove the "Done." message
+- BUG/MEDIUM: sample: fix random number upper-bound
+- BUG/MEDIUM: patterns: previous fix was incomplete
+- BUG/MEDIUM: payload: ensure that a request channel is available
+- BUG/MINOR: tcp-check: don't condition data polling on check type
+- BUG/MEDIUM: tcp-check: don't rely on random memory contents
+- BUG/MEDIUM: tcp-checks: disable quick-ack unless next rule is an expect
+- BUG/MINOR: config: fix typo in condition when propagating process binding
+- BUG/MEDIUM: config: do not propagate processes between stopped processes
+- BUG/MAJOR: stream-int: properly check the memory allocation return
+- BUG/MEDIUM: memory: fix freeing logic in pool_gc2()
+- BUG/MEDIUM: compression: correctly report zlib_mem
+
+* Mon Dec 01 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.9-0
+- BUILD: fix "make install" to support spaces in the install dirs
+- BUG/MEDIUM: checks: fix conflicts between agent checks and ssl healthchecks
+- BUG/MEDIUM: ssl: fix bad ssl context init can cause segfault in case of OOM.
+- BUG/MINOR: samples: fix unnecessary memcopy converting binary to string.
+- BUG/MEDIUM: connection: sanitize PPv2 header length before parsing address information
+- BUG/MEDIUM: pattern: don't load more than once a pattern list.
+- BUG/MEDIUM: ssl: force a full GC in case of memory shortage
+- BUG/MINOR: config: don't inherit the default balance algorithm in frontends
+- BUG/MAJOR: frontend: initialize capture pointers earlier
+- BUG/MINOR: stats: correctly set the request/response analysers
+- DOC: fix typo in the body parser documentation for msg.sov
+- BUG/MINOR: peers: the buffer size is global.tune.bufsize, not trash.size
+- MINOR: sample: add a few basic internal fetches (nbproc, proc, stopping)
+- BUG/MAJOR: sessions: unlink session from list on out of memory
+
+* Thu Nov 06 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-0
+- BUG/MAJOR: buffer: check the space left is enough or not when input data in a buffer is wrapped
+- BUG/BUILD: revert accidental change in the makefile from latest SSL fix
+
+* Thu Oct 23 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.6-0
+- BUG/MEDIUM: systemd: set KillMode to 'mixed'
+- MINOR: systemd: Check configuration before start
+- BUG/MEDIUM: config: avoid skipping disabled proxies
+- BUG/MINOR: config: do not accept more track-sc than configured
+- BUG/MEDIUM: backend: fix URI hash when a query string is present
+
+* Thu Oct 23 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.5-0
+- DOC: Address issue where documentation is excluded due to a gitignore rule.
+- MEDIUM: Improve signal handling in systemd wrapper.
+- BUG/MINOR: config: don't propagate process binding for dynamic use_backend
+- MINOR: Also accept SIGHUP/SIGTERM in systemd-wrapper
+- DOC: clearly state that the "show sess" output format is not fixed
+- MINOR: stats: fix minor typo fix in stats_dump_errors_to_buffer()
+- DOC: indicate in the doc that track-sc* can wait if data are missing
+- MEDIUM: http: enable header manipulation for 101 responses
+- BUG/MEDIUM: config: propagate frontend to backend process binding again.
+- MEDIUM: config: properly propagate process binding between proxies
+- MEDIUM: config: make the frontends automatically bind to the listeners' processes
+- MEDIUM: config: compute the exact bind-process before listener's maxaccept
+- MEDIUM: config: only warn if stats are attached to multi-process bind directives
+- MEDIUM: config: report it when tcp-request rules are misplaced
+- MINOR: config: detect the case where a tcp-request content rule has no inspect-delay
+- MEDIUM: systemd-wrapper: support multiple executable versions and names
+- BUG/MEDIUM: remove debugging code from systemd-wrapper
+- BUG/MEDIUM: http: adjust close mode when switching to backend
+- BUG/MINOR: config: don't propagate process binding on fatal errors.
+- BUG/MEDIUM: check: rule-less tcp-check must detect connect failures
+- BUG/MINOR: tcp-check: report the correct failed step in the status
+- DOC: indicate that weight zero is reported as DRAIN
+
+* Sun Jun 22 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- MEDIUM: ssl: ignored file names ending as '.issuer' or '.ocsp'.
+- MEDIUM: ssl: basic OCSP stapling support.
+- MINOR: ssl/cli: Fix unapropriate comment in code on 'set ssl ocsp-response'
+- MEDIUM: ssl: add 300s supported time skew on OCSP response update.
+- MINOR: checks: mysql-check: Add support for v4.1+ authentication
+- MEDIUM: ssl: Add the option to use standardized DH parameters >= 1024 bits
+- MEDIUM: ssl: fix detection of ephemeral diffie-hellman key exchange by using the cipher description.
+- MEDIUM: http: add actions "replace-header" and "replace-values" in http-req/resp
+- MEDIUM: Break out check establishment into connect_chk()
+- MEDIUM: Add port_to_str helper
+- BUG/MEDIUM: fix ignored values for half-closed timeouts (client-fin and server-fin) in defaults section.
+- BUG/MEDIUM: Fix unhandled connections problem with systemd daemon mode and SO_REUSEPORT.
+- MINOR: regex: fix a little configuration memory leak.
+- MINOR: regex: Create JIT compatible function that return match strings
+- MEDIUM: regex: replace all standard regex function by own functions
+- MEDIUM: regex: Remove null terminated strings.
+- MINOR: regex: Use native PCRE API.
+- MINOR: missing regex.h include
+- DOC: Add Exim as Proxy Protocol implementer.
+- BUILD: don't use type "uint" which is not portable
+- BUILD: stats: workaround stupid and bogus -Werror=format-security behaviour
+- BUG/MEDIUM: http: clear CF_READ_NOEXP when preparing a new transaction
+- CLEANUP: http: don't clear CF_READ_NOEXP twice
+- DOC: fix proxy protocol v2 decoder example
+- DOC: fix remaining occurrences of "pattern extraction"
+- MINOR: log: allow the HTTP status code to be logged even in TCP frontends
+- MINOR: logs: don't limit HTTP header captures to HTTP frontends
+- MINOR: sample: improve sample_fetch_string() to report partial contents
+- MINOR: capture: extend the captures to support non-header keys
+- MINOR: tcp: prepare support for the "capture" action
+- MEDIUM: tcp: add a new tcp-request capture directive
+- MEDIUM: session: allow shorter retry delay if timeout connect is small
+- MEDIUM: session: don't apply the retry delay when redispatching
+- MEDIUM: session: redispatch earlier when possible
+- MINOR: config: warn when tcp-check rules are used without option tcp-check
+- BUG/MINOR: connection: make proxy protocol v1 support the UNKNOWN protocol
+- DOC: proxy protocol example parser was still wrong
+- DOC: minor updates to the proxy protocol doc
+- CLEANUP: connection: merge proxy proto v2 header and address block
+- MEDIUM: connection: add support for proxy protocol v2 in accept-proxy
+- MINOR: tools: add new functions to quote-encode strings
+- DOC: clarify the CSV format
+- MEDIUM: stats: report the last check and last agent's output on the CSV status
+- MINOR: freq_ctr: introduce a new averaging method
+- MEDIUM: session: maintain per-backend and per-server time statistics
+- MEDIUM: stats: report per-backend and per-server time stats in HTML and CSV outputs
+- BUG/MINOR: http: fix typos in previous patch
+- DOC: remove the ultra-obsolete TODO file
+- DOC: update roadmap
+- DOC: minor updates to the README
+- DOC: mention the maxconn limitations with the select poller
+- DOC: commit a few old design thoughts files

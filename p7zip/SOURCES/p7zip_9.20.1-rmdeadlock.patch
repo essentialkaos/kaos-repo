@@ -1,0 +1,41 @@
+diff -Nrup p7zip_9.20.orig/CPP/7zip/Archive/Zip/ZipUpdate.cpp p7zip_9.20/CPP/7zip/Archive/Zip/ZipUpdate.cpp
+--- p7zip_9.20.orig/CPP/7zip/Archive/Zip/ZipUpdate.cpp   2010-11-07 18:48:43.000000000 +0200
++++ p7zip_9.20/CPP/7zip/Archive/Zip/ZipUpdate.cpp  2012-08-02 14:44:28.924654080 +0300
+@@ -264,7 +264,7 @@ public:
+   NWindows::NSynchronization::CCriticalSection CriticalSection;
+   MY_UNKNOWN_IMP
+   void Create(IProgress *progress, bool inSizeIsMain);
+-  void SetProgressOffset(UInt64 progressOffset);
++  void SetProgressOffset(UInt64 progressOffset, bool lock=true);
+   HRESULT SetRatioInfo(int index, const UInt64 *inSize, const UInt64 *outSize);
+   STDMETHOD(SetRatioInfo)(const UInt64 *inSize, const UInt64 *outSize);
+ };
+@@ -277,12 +277,16 @@ void CMtProgressMixer2::Create(IProgress
+   ProgressOffset = InSizes[0] = InSizes[1] = OutSizes[0] = OutSizes[1] = 0;
+ }
+ 
+-void CMtProgressMixer2::SetProgressOffset(UInt64 progressOffset)
++void CMtProgressMixer2::SetProgressOffset(UInt64 progressOffset, bool lock)
+ {
+-  CriticalSection.Enter();
++  if(lock) {
++     CriticalSection.Enter();
++  }
+   InSizes[1] = OutSizes[1] = 0;
+   ProgressOffset = progressOffset;
+-  CriticalSection.Leave();
++  if(lock) {
++      CriticalSection.Leave();
++  }
+ }
+ 
+ HRESULT CMtProgressMixer2::SetRatioInfo(int index, const UInt64 *inSize, const UInt64 *outSize)
+@@ -673,7 +677,7 @@ static HRESULT Update2(
+         {
+           complexity += ui.Size;
+           complexity += NFileHeader::kLocalBlockSize;
+-          mtProgressMixerSpec->Mixer2->SetProgressOffset(complexity);
++          mtProgressMixerSpec->Mixer2->SetProgressOffset(complexity, false);
+           RINOK(updateCallback->SetOperationResult(NArchive::NUpdate::NOperationResult::kOK));
+           refs.Refs[mtItemIndex - 1].Skip = true;
+           continue;

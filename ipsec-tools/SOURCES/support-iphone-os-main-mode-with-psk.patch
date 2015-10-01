@@ -1,0 +1,23 @@
+The iPhone OS has a strange set of VPN features.  Using L2TP over IPsec 
+it only supports main mode with pre-shared keys (no certificates). 
+Since L2TP provides the per-user authentication we want to use a single 
+pre-shared key for all VPN users, but this is hard to do with 
+ipsec-tools since racoon only supports pskey lookup by address when 
+identity protection is used and we do not know the address of the client 
+in advance.  The attached patch adds a wildcard match to the psk.txt 
+reading code, specifying an id of * will match any client.
+
+(John Keith Hohm <john@hohm.net>)
+
+--- ipsec-tools-0.7.3.orig/src/racoon/localconf.c	2010-08-12 12:52:27.000000000 +0200
++++ ipsec-tools-0.7.3/src/racoon/localconf.c	2010-08-12 12:55:01.000000000 +0200
+@@ -211,7 +211,8 @@
+ 		if (*p == '\0')
+ 			continue;	/* no 2nd parameter */
+ 		p--;
+-		if (strncmp(buf, str, len) == 0 && buf[len] == '\0') {
++		if (strncmp(buf, "*", 2) == 0 ||
++		(strncmp(buf, str, len) == 0 && buf[len] == '\0')) {
+ 			p++;
+ 			keylen = 0;
+ 			for (q = p; *q != '\0' && *q != '\n'; q++)

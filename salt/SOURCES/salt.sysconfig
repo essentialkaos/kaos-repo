@@ -1,0 +1,8 @@
+# Sysconfig file for salt-master, salt-minion and salt-syndic
+
+MASTER_ARGS=""
+MASTER_DEBUG=""
+MINION_ARGS=""
+MINION_DEBUG=""
+SYNDIC_ARGS=""
+SYNDIC_DEBUG=""

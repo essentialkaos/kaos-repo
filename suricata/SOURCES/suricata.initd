@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# suricata - Intrusion Detection Service
+#
+# chkconfig:   - 57 47
+# description:  Intrusion Detection Service
+# processname:  suricata
+# config:       /etc/suricata.yml
+#              
+
+### BEGIN INIT INFO
+# Provides: suricata
+# Required-Start: $local_fs $network $remote_fs
+# Required-Stop: $local_fs $network $remote_fs
+# Default-Stop: 0 1 2 6
+# Short-Description: start and stop suricata
+# Description: a simple, fast work-queue service
+### END INIT INFO
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="suricata"
+
+kv.readSysconfig
+
+binary=${BINARY:-/sbin/suricata}
+config=${CONFIG:-etc/suricata/suricata.yaml}
+options=${OPTIONS:--i eth0}
+
+kv[search_pattern]="$binary"
+
+###############################################################################
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -x $binary ]] && has_errors=true && kv.show "Binary $binary must be executable file." $RED
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+###############################################################################
+
+startServiceHandler() {
+  kv.daemonize $binary -c $config $options &> /dev/null
+
+  if kv.getStartStatus ; then
+    return $ACTION_OK
+  else
+    return $ACTION_ERROR
+  fi
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal $SIGNAL_TERM
+
+  if kv.getStopStatus "$pid" ; then
+    return $ACTION_OK
+  else
+    kv.killProcess $pid   
+    return $ACTION_FORCED
+  fi 
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@

@@ -1,0 +1,19 @@
+*~
+*.rpm
+<<<<<<< HEAD
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tgz
+*.tbz2
+*.xz
+=======
+*.tar.gz
+*.tgz
+*.tar.xz
+*.txz
+*.tar.bz2
+*.tbz2
+*.zip
+>>>>>>> master
+*.pdf
