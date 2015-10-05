@@ -47,8 +47,11 @@ Source0:         https://github.com/s3tools/%{name}/archive/v%{version}.tar.gz
 BuildArch:       noarch
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:        python
+Requires:        python python-dateutil
+
 BuildRequires:   python python-devel
+
+Provides:        %{name} = %{version}-%{release}
 
 ########################################################################################
 
