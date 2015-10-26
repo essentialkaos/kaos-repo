@@ -1,0 +1,7 @@
+# Sysconfig for sentinel service
+
+BINARY=""
+CONF_FILE=""
+USER=""
+DELAY_START=""
+DELAY_STOP=""

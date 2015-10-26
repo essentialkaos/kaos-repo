@@ -1,0 +1,22 @@
+diff -urN redis-3.0.5-orig/sentinel.conf redis-3.0.5/sentinel.conf
+--- redis-3.0.5-orig/sentinel.conf	2015-10-24 12:20:12.989329380 +0200
++++ redis-3.0.5/sentinel.conf	2015-10-24 23:59:38.000000000 +0200
+@@ -1,5 +1,18 @@
+ # Example sentinel.conf
+ 
++# By default Redis Sentinel does not run as a daemon. Use 'yes' if you need it.
++daemonize yes
++
++# When running daemonized, Redis Sentinelwrites a pid file in 
++# /var/run/redis.pid by default. You can specify a custom pid file 
++# location here.
++pidfile /var/run/redis/sentinel.pid
++
++# Specify the log file name. Also the empty string can be used to force
++# Redis Sentinel to log on the standard output. Note that if you use standard
++# output for logging but daemonize, logs will be sent to /dev/null
++logfile /var/log/redis/sentinel.log
++
+ # port <sentinel-port>
+ # The port that this sentinel instance will run on
+ port 26379
