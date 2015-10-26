@@ -30,7 +30,7 @@
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
-Version:            0.1.2
+Version:            0.1.3
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -87,5 +87,11 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Oct 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-0
+- Added pg_stat_statements improvements
+- Added query detailed report based on pg_stat_statements
+- Added memory system statistics
+- Added support for 9.1
+
 * Wed Sep 09 2015 Anton Novojilov <andy@essentialkaos.com> - 0.1.2-0
 - Initial build

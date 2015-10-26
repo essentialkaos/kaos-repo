@@ -37,7 +37,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.0.4
+Version:            3.0.5
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -47,16 +47,20 @@ Source0:            https://github.com/antirez/%{name}/archive/%{version}.tar.gz
 Source1:            %{name}.logrotate
 Source2:            %{name}.init
 Source3:            %{name}.sysconfig
+Source4:            sentinel.logrotate
+Source5:            sentinel.init
+Source6:            sentinel.sysconfig
 
-Patch0:             %{name}-config.patch
-Patch1:             %{name}-linenoise-file-access.patch
+Patch0:             %{name}-linenoise-file-access.patch
+Patch1:             %{name}-config.patch
+Patch2:             sentinel-config.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      make gcc jemalloc-devel
 
 Requires:           %{name}-cli >= %{version}
-Requires:           logrotate kaosv >= 2.0
+Requires:           logrotate kaosv >= 2.5
 
 Requires(pre):      shadow-utils
 Requires(post):     chkconfig
@@ -90,6 +94,7 @@ Client for working with Redis from console
 
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__make} %{?_smp_mflags}
@@ -104,7 +109,9 @@ install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/sentinel
 install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 644 %{SOURCE6} %{buildroot}%{_sysconfdir}/sysconfig/sentinel
 
 install -pm 640 %{name}.conf %{buildroot}%{_sysconfdir}/
 install -pm 640 sentinel.conf %{buildroot}%{_sysconfdir}/
@@ -115,6 +122,7 @@ install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
 
 install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
+install -pm 755 %{SOURCE5} %{buildroot}%{_initrddir}/sentinel
 
 chmod 755 %{buildroot}%{_bindir}/%{name}-*
 
@@ -156,12 +164,15 @@ fi
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%config(noreplace) %{_sysconfdir}/sysconfig/sentinel
 %config(noreplace) %{_sysconfdir}/*.conf
 %dir %attr(0755, %{name}, root) %{_localstatedir}/lib/%{name}
 %dir %attr(0755, %{name}, root) %{_localstatedir}/log/%{name}
 %dir %attr(0755, %{name}, root) %{_localstatedir}/run/%{name}
 %{_initrddir}/%{name}
+%{_initrddir}/sentinel
 %{_bindir}/%{name}-server
 %{_bindir}/%{name}-sentinel
 %{_bindir}/%{name}-benchmark
@@ -178,6 +189,23 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Oct 24 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
+- [FIX] MOVE now moves the TTL as well. A bug lasting forever... finally
+        fixed thanks to Andy Grunwald that reported it.
+        (reported by Andy Grunwald, fixed by Salvatore Sanfilippo)
+- [FIX] Fix a false positive in HSTRLEN test.
+- [FIX] Fix a bug in redis-cli --pipe mode that was not able to read back
+        replies from the server incrementally. Now a mass import will use
+        a lot less memory, and you can use --pipe to do incremental streaming.
+        (reported by Twitter user @fsaintjacques, fixed by Salvatore
+        Sanfilippo)
+- [FIX] Slave detection of master timeout. (fixed by Kevin McGehee, refactoring
+        and regression test by Salvatore Sanfilippo)
+- [NEW] Cluster: redis-trib fix can fix an additional case for opens lots.
+        (Salvatore Sanfilippo)
+- [NEW] Cluster: redis-trib import support for --copy and --replace options
+        (David Thomson)
+
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0
 - [FIX] A number of bugs related to replication PSYNC and the (yet experimental)
         diskless replication feature were fixed. The bugs could lead to
@@ -204,7 +232,6 @@ fi
         fixed by Salvatore Sanfilippo.
 - [FIX] Sentinel lack of arity checks for certain commands.
         (Rogerio Goncalves, Salvatore Sanfilippo)
-
 - [NEW] Replication internals rewritten in order to be more resistant to bugs.
         The replication handshake in the slave side was rewritten as a non
         blocking state machine. (Salvatore Sanfilippo, Oran Agra)

@@ -39,19 +39,19 @@ kv.addHandler "stop"  "stopServiceHandler"
 prepare() {
   local has_errors=""
 
-  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist."
-  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable."
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
 
-  [[ ! -f $cli ]] && has_errors=true && kv.error "Error! File <$cli> is not exist."
-  [[ ! -x $cli ]] && has_errors=true && kv.error "Error! File <$cli> is not executable."
+  [[ ! -f $cli ]] && has_errors=true && kv.error "Error! File <$cli> is not exist"
+  [[ ! -x $cli ]] && has_errors=true && kv.error "Error! File <$cli> is not executable"
 
-  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist."
-  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable."
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist"
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable"
 
-  [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty."
+  [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty"
   
   if ! kv.hasUser "${kv[user]}" ; then
-    has_errors=true && kv.error "User <${kv[user]}> not found in /etc/passwd file."
+    has_errors=true && kv.error "User <${kv[user]}> not found in /etc/passwd file"
   fi
 
   [[ $has_errors ]] && kv.exit $ACTION_ERROR
@@ -88,22 +88,6 @@ stopServiceHandler() {
 
     return $ACTION_ERROR
   fi
-}
-
-info() {
-  if ! kv.statusIs "$STATUS_WORKS" ; then
-    kv.error "You must start service before this command usage." $ACTION_ERROR
-  fi 
-
-  local host=`getConfValue "bind"`
-  local port=`getConfValue "port"`
-
-  local args=""
-
-  [[ $host ]] && args="$args -h $host"
-  [[ $port ]] && args="$args -p $port"
-
-  $cli $args INFO
 }
 
 getConfValue() {

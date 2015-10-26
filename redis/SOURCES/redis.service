@@ -10,4 +10,3 @@ Group=redis
 
 [Install]
 WantedBy=multi-user.target
-

@@ -54,7 +54,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.5.14
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -177,6 +177,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Oct 26 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.14-1
+- Improved default config
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.14-0
 - BUILD/MINOR: tools: rename popcount to my_popcountl
 - BUG/MAJOR: buffers: make the buffer_slow_realign() function respect output data

@@ -54,7 +54,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.4.26
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu/
 Group:             System Environment/Daemons
@@ -176,6 +176,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Oct 26 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.26-1
+- Improved default config
+
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.26-0
 - BUG/MINOR: stats: fix a typo on a closing tag for a server tracking another one
 - BUG/MEDIUM: auth: fix segfault with http-auth and a configuration with an unknown encryption algorithm
