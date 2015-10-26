@@ -39,31 +39,22 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
-%define __useradd         %{_sbindir}/useradd
-
 ################################################################################
 
 Summary:            Backport of the concurrent.futures package from Python 3.2
 Name:               python-%{pkgname}
 Version:            3.0.3
-Release:            1%{?dist}
+Release:            0%{?dist}
 License:            BSD
 Group:              Development/Libraries
 URL:                https://github.com/agronholm/pythonfutures
 
 Source0:            https://pypi.python.org/packages/source/f/%{pkgname}/%{pkgname}-%{version}.tar.gz
 
+BuildArch:          noarch
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      python-setuptools
-
-BuildArch:          noarch
 
 ################################################################################
 
@@ -98,5 +89,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
-- Initial build.
-
+- Initial build

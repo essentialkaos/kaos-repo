@@ -33,6 +33,8 @@ binary=/usr/bin/${kv[prog_name]}
 args=${SYNDIC_ARGS}
 debug=${SYNDIC_DEBUG}
 
+kv[file_limit]="8192:8192"
+
 kv[search_pattern]="$binary -d"
 kv[pid_file]=$(kv.readProperty "/etc/salt/master" "syndic_pidfile" ":")
 

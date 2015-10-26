@@ -38,31 +38,22 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
-%define __useradd         %{_sbindir}/useradd
-
 ################################################################################
 
 Summary:          A Python library to address multiple cloud provider APIs
 Name:             python-libcloud
 Version:          0.18.0
-Release:          1%{?dist}
+Release:          0%{?dist}
 License:          ASL 2.0
 Group:            Development/Languages
-URL:              http://libcloud.apache.org/
+URL:              http://libcloud.apache.org
 
 Source0:          http://pypi.python.org/packages/source/a/apache-libcloud/%{tarball_name}-%{version}.tar.bz2
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:        noarch
+BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    python-setuptools
-BuildRequires:    python-devel
+BuildRequires:    python-setuptools python-devel
 
 ################################################################################
 
@@ -81,6 +72,7 @@ products that work between any of the services that it supports.
 
 %install
 rm -rf %{buildroot}
+
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
@@ -96,6 +88,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-1
-- Initial build.
-
+* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
+- Initial build

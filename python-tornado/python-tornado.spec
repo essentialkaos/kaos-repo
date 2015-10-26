@@ -65,7 +65,7 @@
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
 Version:            4.2.1
-Release:            1%{?dist}
+Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
 URL:                http://www.tornadoweb.org
@@ -79,25 +79,18 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 %if 0%{?rhel5}
 
-BuildRequires:      python26-devel
-BuildRequires:      python26-distribute
+BuildRequires:      python26-devel python26-distribute
 BuildRequires:      python26-backports-ssl_match_hostname
-Requires:           python26-backports-ssl_match_hostname
-Requires:           python26-pycurl
+Requires:           python26-backports-ssl_match_hostname python26-pycurl
 
 %else
 
-BuildRequires:      python-devel
-BuildRequires:      python-setuptools
+BuildRequires:      python-devel python-setuptools python-unittest2
 BuildRequires:      python-backports-ssl_match_hostname
-BuildRequires:      python-unittest2
-Requires:           python-backports-ssl_match_hostname
-Requires:           python-pycurl
+Requires:           python-backports-ssl_match_hostname python-pycurl
 
 %if 0%{?with_python3}
-BuildRequires:      python2-devel
-BuildRequires:      python3-setuptools
-BuildRequires:      python3-devel
+BuildRequires:      python2-devel python3-setuptools python3-devel
 %endif
 
 %endif
@@ -204,26 +197,27 @@ find python3 -name '*.py' | xargs sed -i '1s|^#!.*python|#!%{__python3}|'
 %build
 %if 0%{?with_python3}
 pushd python3
-    %{__python3} setup.py build
+  %{__python3} setup.py build
 popd
 %endif # with_python3
 
 pushd python2
-    %{__python2} setup.py build
+  %{__python2} setup.py build
 popd
 
 %install
 rm -rf %{buildroot}
+
 %if 0%{?with_python3}
 pushd python3
-    PATH=$PATH:%{buildroot}%{python3_sitearch}/%{pkgname}
-    %{__python3} setup.py install --root=%{buildroot}
+  PATH=$PATH:%{buildroot}%{python3_sitearch}/%{pkgname}
+  %{__python3} setup.py install --root=%{buildroot}
 popd
-%endif # with_python3
+%endif
 
 pushd python2
-    PATH=$PATH:%{buildroot}%{python2_sitearch}/%{pkgname}
-    %{__python2} setup.py install --root=%{buildroot}
+  PATH=$PATH:%{buildroot}%{python2_sitearch}/%{pkgname}
+  %{__python2} setup.py install --root=%{buildroot}
 popd
 
 %clean
@@ -276,5 +270,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 4.2.1-1
-- Initial build.
-
+- Initial build

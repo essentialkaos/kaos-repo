@@ -142,11 +142,11 @@ Requires:         systemd-python
 ################################################################################
 
 %description
-Salt is a distributed remote execution system used to execute commands and
-query data. It was developed in order to bring the best solutions found in
-the world of remote execution together and make them better, faster and more
-malleable. Salt accomplishes this via its ability to handle larger loads of
-information, and not just dozens, but hundreds or even thousands of individual
+Salt is a distributed remote execution system used to execute commands and 
+query data. It was developed in order to bring the best solutions found in 
+the world of remote execution together and make them better, faster and more 
+malleable. Salt accomplishes this via its ability to handle larger loads of 
+information, and not just dozens, but hundreds or even thousands of individual 
 servers, handle them quickly and through a simple and manageable interface.
 
 ################################################################################
@@ -170,7 +170,7 @@ Group:            System Environment/Daemons
 Requires:         %{name} = %{version}-%{release}
 
 %description minion
-The Salt minion is the agent component of Salt. It listens for instructions
+The Salt minion is the agent component of Salt. It listens for instructions 
 from the master, runs jobs, and returns results back to the master.
 
 ################################################################################
@@ -181,7 +181,7 @@ Group:            System Environment/Daemons
 Requires:         %{name} = %{version}-%{release}
 
 %description syndic
-The Salt syndic is a master daemon which can receive instruction from a
+The Salt syndic is a master daemon which can receive instruction from a 
 higher-level master, allowing for tiered organization of your Salt
 infrastructure.
 
@@ -205,7 +205,7 @@ Requires:         %{name}-master = %{version}-%{release}
 Requires:         python-libcloud
 
 %description cloud
-The salt-cloud tool provisions new cloud VMs, installs salt-minion on them, and
+The salt-cloud tool provisions new cloud VMs, installs salt-minion on them, and 
 adds them to the master's collection of controllable minions.
 
 ################################################################################
@@ -216,7 +216,7 @@ Group:   System Environment/Daemons
 Requires: %{name} = %{version}-%{release}
 
 %description ssh
-The salt-ssh tool can run remote execution functions and states without the use
+The salt-ssh tool can run remote execution functions and states without the use 
 of an agent (salt-minion) service.
 
 ################################################################################
@@ -249,7 +249,7 @@ install -pm 640 conf/cloud %{buildroot}%{_sysconfdir}/salt/cloud
 install -pm 640 conf/roster %{buildroot}%{_sysconfdir}/salt/roster
 
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-install -dm %{buildroot}%{_initrddir}
+install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/salt-master
 install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/salt-syndic
 install -pm 755 %{SOURCE4} %{buildroot}%{_initrddir}/salt-minion

@@ -30,11 +30,12 @@ kv[prog_name]="salt-api"
 kv.readSysconfig "salt"
 
 binary=/usr/bin/${kv[prog_name]}
-args=${MINION_ARGS}
-debug=${MINION_DEBUG}
+args=${API_ARGS}
+debug=${API_DEBUG}
+
+kv[file_limit]="8192:8192"
 
 kv[search_pattern]="$binary -d"
-kv[pid_file]=$(kv.readProperty "/etc/salt/api" "pidfile" ":")
 
 ###############################################################################
 

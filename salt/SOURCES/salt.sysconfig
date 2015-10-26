@@ -1,4 +1,4 @@
-# Sysconfig file for salt-master, salt-minion and salt-syndic
+# Sysconfig file for salt-master, salt-minion, salt-api and salt-syndic
 
 MASTER_ARGS=""
 MASTER_DEBUG=""
@@ -6,3 +6,5 @@ MINION_ARGS=""
 MINION_DEBUG=""
 SYNDIC_ARGS=""
 SYNDIC_DEBUG=""
+API_ARGS=""
+API_DEBUG=""
