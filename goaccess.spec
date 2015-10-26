@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         0.9.4
+Version:         0.9.5
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -12,8 +12,11 @@ Source0:         http://tar.goaccess.io/goaccess-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:        GeoIP
 BuildRequires:   GeoIP-devel glib2-devel ncurses-devel
+
+Requires:        GeoIP
+
+Provides:        %{name} = %{version}-%{release}
 
 ########################################################################################
 
@@ -51,6 +54,27 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.5-0
+- Added major performance improvements to the default storage when parsing and
+    storing data.
+- Added the ability to parse virtual hosts and a new panel to display metrics
+    per virtual host.
+- Added the ability to parse HTTP/2 requests.
+- Added the ability to use GNU getline() to parse full line requests.
+- Added the ability to output debug info if a log file is specified, even
+    without `--enable-debug`.
+- Added OS X 'El Capitan'.
+- Added WebDav HTTP methods and HTTP status from RFC 2518 and  RFC 3253.
+- Fixed detection of some Googlebots.
+- Fixed issue where time served metrics were not shown when loading persisted
+    data.
+- Fixed linker error on OSX: ld: library not found for -lrt.
+- Fixed percentage on the HTML output when excluding IPs.
+- Removed GLib dependency and refactored storage functionality. By removing
+    this dependency, GoAccess is able to store data in a more efficient manner,
+    for instance, it avoids storing integer data as void* (generic typing), thus
+    greatly improving memory consumption for integers.
+
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
 - Fixed inability to parse color due to a missing POSIX extension. ERR:
     Invalid bg/fg color pairs
