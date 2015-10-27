@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         0.9.5
+Version:         0.9.6
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -54,6 +54,12 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.6-0
+- Fixed segfault when appending data to a log (follow) without virtualhosts.
+- Added command line option `--dcf` to view the default config file path.
+- Added 'Darwin' to the list of OSs.
+- Added the ability to ignore parsing status codes using `--ignore-status`.
+
 * Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.5-0
 - Added major performance improvements to the default storage when parsing and
     storing data.
