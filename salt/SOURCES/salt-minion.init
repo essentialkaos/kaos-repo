@@ -30,8 +30,10 @@ kv[prog_name]="salt-minion"
 kv.readSysconfig "salt"
 
 binary=/usr/bin/${kv[prog_name]}
+call_binary=/usr/bin/salt-call
 args=${MINION_ARGS}
 debug=${MINION_DEBUG}
+revoke_on_stop=${MINION_REVOKE_KEY_ON_STOP}
 
 kv[file_limit]="8192:8192"
 
@@ -65,12 +67,16 @@ stopServiceHandler() {
 
   kv.sendSignal $SIGNAL_TERM
 
+  if [[ -n "$revoke_on_stop" ]] ; then
+    kv.run "python $call_binary saltutil.revoke_auth &> /dev/null"
+  fi
+
   if kv.getStopStatus "$pid" ; then
     return $ACTION_OK
   else
-    kv.killProcess $pid   
+    kv.killProcess $pid
     return $ACTION_FORCED
-  fi 
+  fi
 }
 
 ###############################################################################
