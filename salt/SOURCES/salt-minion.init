@@ -29,7 +29,7 @@ kv[prog_name]="salt-minion"
 
 kv.readSysconfig "salt"
 
-minion_binary=/usr/bin/${kv[prog_name]}
+binary=/usr/bin/${kv[prog_name]}
 call_binary=/usr/bin/salt-call
 args=${MINION_ARGS}
 debug=${MINION_DEBUG}
@@ -37,7 +37,7 @@ revoke_on_stop=${MINION_REVOKE_KEY_ON_STOP}
 
 kv[file_limit]="8192:8192"
 
-kv[search_pattern]="$minion_binary -d"
+kv[search_pattern]="$binary -d"
 kv[pid_file]=$(kv.readProperty "/etc/salt/minion" "pidfile" ":")
 
 ###############################################################################
@@ -50,9 +50,9 @@ kv.addHandler "stop"    "stopServiceHandler"
 startServiceHandler() {
 
   if [[ -n "$debug" ]] ; then
-    kv.run "python $minion_binary -l debug -d $args &> /dev/null"
+    kv.run "python $binary -l debug -d $args &> /dev/null"
   else
-    kv.run "python $minion_binary -d $args &> /dev/null"
+    kv.run "python $binary -d $args &> /dev/null"
   fi
 
   if kv.getStartStatus ; then
