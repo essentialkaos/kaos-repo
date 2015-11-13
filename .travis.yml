@@ -6,4 +6,4 @@ before_install:
   - sudo apt-get install -y rpmlint
 
 script:
-  - bash specs-linter.sh
+  - bash .linter/specs-linter.sh .linter/rpmlint.conf

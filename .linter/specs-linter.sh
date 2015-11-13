@@ -50,6 +50,9 @@ CL_BG_GREY="\e[${GREY};7m"
 # Path to file used for caching linter output
 tmp_file=""
 
+# Path to config with rpmlint prefs
+rpmlint_conf=""
+
 ########################################################################################
 
 main() {
@@ -57,6 +60,10 @@ main() {
 
   local has_errors=""
   local errors_count=0
+
+  if [[ -f $1 && -s $1 ]] ; then
+    rpmlint_conf="$1"
+  fi
 
   for spec in $(find . -name '*.spec') ; do
     if runLinter "$spec" ; then
@@ -81,7 +88,11 @@ runLinter() {
   local spec="$1"
   local file=$(echo "$spec" | sed 's/\.\///g')
 
-  rpmlint $spec 2>/dev/null > $tmp_file
+  if [[ -n "$rpmlint_conf" ]] ; then
+    rpmlint -f $rpmlint_conf $spec 2>/dev/null > $tmp_file
+  else
+    rpmlint $spec 2>/dev/null > $tmp_file
+  fi
 
   local errors=$(tail -1 $tmp_file | grep -E -o '[0-9]{1,} errors' | sed 's/ errors//')
   local warnings=$(tail -1 $tmp_file | grep -E -o '[0-9]{1,} warnings' | sed 's/ warnings//')
@@ -117,4 +128,4 @@ runLinter() {
 
 ########################################################################################
 
-main
+main $@
