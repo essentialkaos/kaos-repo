@@ -1,0 +1,32 @@
+diff -Nur salt-2015.8.1-original/salt/config.py salt-2015.8.1/salt/config.py
+--- salt-2015.8.1-original/salt/config.py 2015-10-14 00:06:17.000000000 +0300
++++ salt-2015.8.1/salt/config.py  2015-11-12 14:31:45.513600028 +0300
+@@ -887,8 +887,6 @@
+     'recon_randomize': True,
+     'return_retry_timer': 4,
+     'return_retry_random': True,
+-    'syndic_log_file': os.path.join(salt.syspaths.LOGS_DIR, 'syndic'),
+-    'syndic_pidfile': os.path.join(salt.syspaths.PIDFILE_DIR, 'salt-syndic.pid'),
+     'random_reauth_delay': 10,
+     'winrepo_source_dir': 'salt://win/repo-ng/',
+     'winrepo_dir': os.path.join(salt.syspaths.BASE_FILE_ROOTS_DIR, 'win', 'repo'),
+@@ -1032,6 +1030,8 @@
+     'peer': {},
+     'preserve_minion_cache': False,
+     'syndic_master': '',
++    'syndic_log_file': os.path.join(salt.syspaths.LOGS_DIR, 'syndic'),
++    'syndic_pidfile': os.path.join(salt.syspaths.PIDFILE_DIR, 'salt-syndic.pid'),
+     'runner_dirs': [],
+     'outputter_dirs': [],
+     'client_acl': {},
+@@ -1585,8 +1585,8 @@
+     minion_opts = minion_config(
+         minion_config_path, minion_env_var, minion_defaults
+     )
+-    opts['_minion_conf_file'] = master_opts['conf_file']
+-    opts['_master_conf_file'] = minion_opts['conf_file']
++    opts['_master_conf_file'] = master_opts['conf_file']
++    opts['_minion_conf_file'] = minion_opts['conf_file']
+     opts.update(master_opts)
+     opts.update(minion_opts)
+     syndic_opts = {
