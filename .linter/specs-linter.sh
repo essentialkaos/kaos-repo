@@ -53,35 +53,38 @@ tmp_file=""
 # Path to config with rpmlint prefs
 rpmlint_conf=""
 
+# Number of files with errors or warnings
+file_count=0
+
+# Numbers of errors
+errors_count=0
+
+# Numbers of warnings
+warn_count=0
+
 ########################################################################################
 
 main() {
   tmp_file=$(mktemp)
-
-  local has_errors=""
-  local errors_count=0
 
   if [[ -f $1 && -s $1 ]] ; then
     rpmlint_conf="$1"
   fi
 
   for spec in $(find . -name '*.spec') ; do
-    if runLinter "$spec" ; then
-      has_errors=true
-      ((errors_count++))
-    fi
-
-    sleep 1
+    runLinter "$spec"
   done
 
   rm -f $tmp_file
 
-  if [[ $has_errors ]] ; then
-    echo -e "\n${CL_RED}Found errors in $errors_count files${CL_NORM}"
+  if [[ $errors_count -ne 0 ]] ; then
+    echo -e "\n${CL_RED}Found $errors_count errors and $warn_count warnings in $file_count files${CL_NORM}"
     exit 1
+  elif [[ $warn_count -ne 0 ]]; then
+    echo -e "\n${CL_BROWN}Found $errors_count errors and $warn_count warnings in $file_count files${CL_NORM}"
+  else
+    echo -e "\n${CL_GREEN}All spec files is well formated${CL_NORM}"
   fi
-  
-  echo -e "\n${CL_GREEN}All spec files is well formated${CL_NORM}"
 }
 
 runLinter() {
@@ -99,31 +102,36 @@ runLinter() {
 
   if [[ -z "$errors" || -z "$warnings" ]] ; then
     echo -e "[${CL_RED}   ERROR   ${CL_NORM}] $file"
-    echo ""
-    cat $tmp_file | sed 's/^/  /g'
-    echo ""
+    ((file_count++))
+    ((errors_count++))
+    showLintResult
   fi
 
   if [[ $errors -eq 0 && $warnings -eq 0 ]] ; then
     printf "[ ${CL_GREEN}  0${CL_NORM} / ${CL_GREEN}  0${CL_NORM} ] %s\n" "$file"
-    return 1
-  elif [[ $errors -eq 0 && $warnings -ne 0 ]] ; then
-    printf "[ ${CL_GREEN}%3s${CL_NORM} / ${CL_BROWN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
-    echo ""
-    cat $tmp_file | sed 's/^/  /g'
-    echo ""
-    return 1
-  elif [[ $errors -ne 0 && $warnings -eq 0 ]] ; then
-    printf "[ ${CL_RED}%3s${CL_NORM} / ${CL_GREEN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
-    echo ""
-    cat $tmp_file | sed 's/^/  /g'
-    echo ""
   else
-    printf "[ ${CL_RED}%3s${CL_NORM} / ${CL_BROWN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
-    echo ""
-    cat $tmp_file | sed 's/^/  /g'
-    echo ""
+    if [[ $errors -eq 0 && $warnings -ne 0 ]] ; then
+      printf "[ ${CL_GREEN}%3s${CL_NORM} / ${CL_BROWN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
+      warn_count=$(( $warn_count + $warnings ))
+    elif [[ $errors -ne 0 && $warnings -eq 0 ]] ; then
+      printf "[ ${CL_RED}%3s${CL_NORM} / ${CL_GREEN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
+      errors_count=$(( $errors_count + $errors ))
+    else
+      printf "[ ${CL_RED}%3s${CL_NORM} / ${CL_BROWN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
+      errors_count=$(( $errors_count + $errors ))
+      warn_count=$(( $warn_count + $warnings ))
+    fi
+
+    ((file_count++))
+
+    showLintResult
   fi
+}
+
+showLintResult() {
+  echo ""
+  cat $tmp_file | sed 's/^/  /g'
+  echo ""
 }
 
 ########################################################################################
