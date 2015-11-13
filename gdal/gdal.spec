@@ -373,7 +373,6 @@ rm -rf %{buildroot}
 %{python_sitearch}/GDAL-*.egg-info
 %dir %{python_sitearch}/osgeo
 %attr(755,root,root) %{python_sitearch}/osgeo/_gdal.so
-# %attr(755,root,root) %{python_sitearch}/osgeo/_gdal_array.so
 %attr(755,root,root) %{python_sitearch}/osgeo/_gdalconst.so
 %attr(755,root,root) %{python_sitearch}/osgeo/_ogr.so
 %attr(755,root,root) %{python_sitearch}/osgeo/_osr.so
@@ -382,6 +381,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Nov 14 2015 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-2
+- Spec improvements
+
 * Tue Sep 16 2014 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-1
 - Small fixes in spec file
 
