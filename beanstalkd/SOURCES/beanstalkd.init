@@ -36,6 +36,8 @@ binlog_dir=${BINLOG_DIR}
 binlog_fsync_period=${BINLOG_FSYNC_PERIOD}
 binlog_size=${BINLOG_SIZE}
 
+kv[file_limit]="10240:10240"
+
 kv[user]="$user"
 kv[search_pattern]="$binary"
 

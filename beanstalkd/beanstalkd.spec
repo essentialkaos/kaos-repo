@@ -133,6 +133,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Nov 18 2015 Anton Novojilov <andy@essentialkaos.com> - 1.10-6
+- Improved init script
+
 * Fri Nov 07 2014 Anton Novojilov <andy@essentialkaos.com> - 1.10-5
 - Fixed typo
 

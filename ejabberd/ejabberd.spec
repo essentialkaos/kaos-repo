@@ -52,7 +52,7 @@
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
 Version:           15.09
-Release:           0%{?dist}
+Release:           1%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
 URL:               https://www.ejabberd.im
@@ -161,6 +161,9 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Wed Nov 18 2015 Anton Novojilov <andy@essentialkaos.com> - 15.09-1
+- Fixed minor bug in init script
+
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 15.09-0
 - Updated to latest stable release
 
