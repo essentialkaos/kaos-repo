@@ -54,7 +54,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.0
+Version:           1.6.2
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -180,12 +180,36 @@ fi
 %{_initrddir}/%{name}
 %{_sbindir}/%{name}
 %{_bindir}/halog
-%{_sbindir}/%{name}-systemd-wrapper
 %{_mandir}/man1/%{name}.1.gz
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
 
 ###############################################################################
 
 %changelog
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.2-0
+- BUILD: ssl: fix build error introduced in commit 7969a3 with OpenSSL < 1.0.0
+- DOC: fix a typo for a "deviceatlas" keyword
+- FIX: small typo in an example using the "Referer" header
+- BUG/MEDIUM: config: count memory limits on 64 bits, not 32
+- BUG/MAJOR: dns: first DNS response packet not matching queried hostname may lead to a loop
+- BUG/MINOR: dns: unable to parse CNAMEs response
+- BUG/MINOR: examples/haproxy.init: missing brace in quiet_check()
+- DOC: deviceatlas: more example use cases.
+- BUG/BUILD: replace haproxy-systemd-wrapper with $(EXTRA) in install-bin.
+- BUG/MAJOR: http: don't requeue an idle connection that is already queued
+- DOC: typo on capture.res.hdr and capture.req.hdr
+- BUG/MINOR: dns: check for duplicate nameserver id in a resolvers section was missing
+- CLEANUP: use direction names in place of numeric values
+- BUG/MEDIUM: lua: sample fetches based on response doesn't work
+
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- DOC: specify that stats socket doc (section 9.2) is in management
+- BUILD: install only relevant and existing documentation
+- CLEANUP: don't ignore debian/ directory if present
+- BUG/MINOR: dns: parsing error of some DNS response
+- BUG/MEDIUM: namespaces: don't fail if no namespace is used
+- BUG/MAJOR: ssl: free the generated SSL_CTX if the LRU cache is disabled
+- MEDIUM: dns: Don't use the ANY query type
+
 * Thu Oct 15 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
 - Stable version 1.6

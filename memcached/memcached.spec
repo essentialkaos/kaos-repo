@@ -44,7 +44,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.4.24
+Version:                  1.4.25
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -175,8 +175,11 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.25-0
+- Updated to latest release
+
 * Tue May 12 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.24-0
-- Updated to latest release 
+- Updated to latest release
 
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.22-0
 - Updated to latest release
@@ -185,7 +188,7 @@ fi
 - Init script migrated to kaosv2
 
 * Wed Jun 04 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.20-1
-- Some minor fixes 
+- Some minor fixes
 
 * Wed Jun 04 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.20-0
 - Initial build

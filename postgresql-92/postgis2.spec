@@ -39,7 +39,7 @@
 
 ########################################################################################
 
-%define maj_ver           2.1
+%define maj_ver           2.2
 %define pg_maj_ver        92
 %define pg_low_fullver    9.2.0
 %define pg_dir            %{_prefix}/pgsql-9.2
@@ -48,11 +48,13 @@
 %{!?utils:%define utils 1}
 %{!?raster:%define raster 1}
 
+%define _smp_mflags       -j1
+
 ########################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.1.8
+Version:           2.2.0
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -65,14 +67,14 @@ Source2:           filter-requires-perl-Pg.sh
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
-BuildRequires:     geos-devel >= 3.4.2 chrpath make gcc
+BuildRequires:     geos-devel >= 3.5 chrpath make gcc pcre-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
 
 %if %raster
 BuildRequires:     gdal-devel >= 1.8.0
 %endif
 
-Requires:          postgresql%{pg_maj_ver} geos >= 3.4.2 proj hdf5 json-c
+Requires:          postgresql%{pg_maj_ver} geos >= 3.5 proj hdf5 json-c
 Requires:          %{realname}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
@@ -209,27 +211,27 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING CREDITS NEWS TODO README.%{realname} doc/html loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*legacy*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_comments.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_upgrade*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_restore.pl
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_postgis.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*legacy*.sql
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_upgrade*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/raster_comments.sql
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/sfcgal_comments.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/spatial*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/topology*.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_sfcgal.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_topology.sql
-%{pg_dir}/share/extension/%{realname}-*.sql
-%{pg_dir}/share/extension/%{realname}.control
-%{pg_dir}/share/extension/%{realname}_topology-*.sql
-%{pg_dir}/share/extension/%{realname}_topology.control
-%{pg_dir}/share/extension/%{realname}_tiger_geocoder*.sql
-%{pg_dir}/share/extension/%{realname}_tiger_geocoder.control
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_postgis.sql
+%{pg_dir}/share/contrib/%{realname}_topology-%{maj_ver}/topology.sql
+%{pg_dir}/share/contrib/%{realname}_topology-%{maj_ver}/topology_upgrade.sql
+%{pg_dir}/share/contrib/%{realname}_topology-%{maj_ver}/uninstall_topology.sql
+%{pg_dir}/share/extension/%{realname}*
+%{pg_dir}/share/extension/address_standardizer*
 %attr(755,root,root) %{pg_dir}/lib/%{realname}-*.so
-%{pg_dir}/lib/liblwgeom*.so
+%{pg_dir}/lib/liblwgeom*.so*
 %if %raster
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*rtpostgis*.sql
+%{pg_dir}/lib/address_standardizer-%{maj_ver}.so
+%{pg_dir}/lib/postgis_topology-%{maj_ver}.so
 %{pg_dir}/lib/rtpostgis-%{maj_ver}.so
 %endif
 
@@ -240,6 +242,7 @@ rm -rf %{buildroot}
 %files devel
 %defattr(644,root,root)
 %{_includedir}/liblwgeom.h
+%{_includedir}/liblwgeom_topo.h
 %{pg_dir}/lib/liblwgeom*.a
 %{pg_dir}/lib/liblwgeom*.la
 
@@ -253,10 +256,14 @@ rm -rf %{buildroot}
 %files docs
 %defattr(-,root,root)
 %doc %{realname}-%{version}.pdf
+%{_defaultdocdir}/pgsql/extension/README.address_standardizer
 
 ########################################################################################
 
 %changelog
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- Updated to latest stable release
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.1.8-0
 - Updated to latest stable release
 

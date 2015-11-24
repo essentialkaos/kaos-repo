@@ -1,10 +1,5 @@
 ###############################################################################
 
-# rpmbuilder:github       Tojaj:createrepo_c
-# rpmbuilder:revision     44798401a5ad9e8f802c72a12b29537599558b9e
-
-###############################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -49,13 +44,13 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.9.0
+Version:            0.9.1
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
 URL:                https://github.com/Tojaj/createrepo_c
 
-Source0:            %{name}-%{version}.tar.bz2
+Source0:            https://github.com/rpm-software-management/%{name}/archive/%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -175,6 +170,9 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 ###############################################################################
 
 %changelog
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
+- Updated to 0.9.1
+
 * Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.0-0
 - Updated to 0.9.0
 

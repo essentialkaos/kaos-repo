@@ -61,7 +61,7 @@
 Summary:           The Go Programming Language
 Name:              golang
 Version:           1.5.1
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Development/Languages
 URL:               http://golang.org
@@ -76,6 +76,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     golang >= 1.4.2
 
+Requires:          git
 Requires:          %{name}-bin
 Requires:          %{name}-src = %{version}-%{release}
 
@@ -708,6 +709,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-1
+- Added git to dependencies
+
 * Thu Oct 22 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - Updated to latest stable release
 
