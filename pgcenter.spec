@@ -91,7 +91,7 @@ rm -rf %{buildroot}
 - Added iostat
 - Added nicstat
 - pg_stat_statements fixes
-- Use one key shortcut for config editing
+- One key shortcut for config editing
 - Other fixes and improvements
 
 * Wed Oct 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-0
