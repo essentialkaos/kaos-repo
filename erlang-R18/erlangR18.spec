@@ -1186,12 +1186,12 @@ rm -rf %{buildroot}
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 18.2.1-0
 - Updated to latest stable release
 
-* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 18.1-0-0
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 18.1-0
 - Updated to latest stable release
 
-* Mon Jul 20 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0-1
+* Mon Jul 20 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0
 - Fixed bug with crypto module
 - Fixed wrong dependencies in stack package
 
-* Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0-0
+* Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0
 - Initial build
