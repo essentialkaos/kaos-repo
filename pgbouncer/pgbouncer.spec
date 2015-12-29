@@ -47,7 +47,7 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.6.1
+Version:           1.7
 Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
@@ -138,7 +138,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README NEWS AUTHORS
+%doc AUTHORS COPYRIGHT NEWS.rst NEWS.rst
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.ini
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
@@ -152,6 +152,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7-0
+- Updated to latest stable release
+
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - Updated to latest stable release
 

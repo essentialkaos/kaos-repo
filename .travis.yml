@@ -1,5 +1,7 @@
 language: bash
 
+cache: apt
+
 before_install:
   - echo "deb http://us.archive.ubuntu.com/ubuntu vivid main universe" | sudo tee -a /etc/apt/sources.list 
   - sudo apt-get update -qq

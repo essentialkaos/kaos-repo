@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         0.9.6
+Version:         0.9.7
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -54,6 +54,13 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.7-0
+- Added Squid native log format to the config file
+- Fixed int overflow when getting total bandwidth using the on-disk storage
+- Fixed issue where a timestamp was stored as date under the visitors panel
+- Fixed issue where config dialog fields were not cleared out on select
+- Fixed issue where "Virtual Hosts" menu item wasn't shown in the HTML sidebar
+
 * Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.6-0
 - Fixed segfault when appending data to a log (follow) without virtualhosts.
 - Added command line option `--dcf` to view the default config file path.

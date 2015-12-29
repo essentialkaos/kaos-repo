@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.6.1
+Version:          2.6.4
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -272,6 +272,12 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 2.6.4-0
+- Updated to latest release
+
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 2.6.3-0
+- Updated to latest release
+
 * Thu Oct 08 2015 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
 - Updated to latest release
 

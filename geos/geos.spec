@@ -35,15 +35,13 @@
 
 Summary:           GEOS is a C++ port of the Java Topology Suite
 Name:              geos
-Version:           3.4.2
+Version:           3.5.0
 Release:           0%{?dist}
 License:           LGPLv2
 Group:             Applications/Engineering
 URL:               http://trac.osgeo.org/geos
 
 Source0:           http://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
-
-Patch0:            %{name}-gcc43.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -90,8 +88,6 @@ Python module to build applications using GEOS and python
 %prep
 %setup -q
 
-%patch0 -p0 -b .gcc43
-
 %build
 
 # fix python path on 64bit
@@ -121,9 +117,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ########################################################################################
 
@@ -157,5 +155,8 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.0-0
+- Updated to 3.5.0
+
 * Sat Sep 06 2014 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
 - Initial build

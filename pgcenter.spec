@@ -30,13 +30,13 @@
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
-Version:            0.1.3
+Version:            0.2.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
 URL:                https://github.com/lesovsky/pgcenter
 
-Source0:            https://github.com/lesovsky/%{name}/archive/v%{version}.tar.gz
+Source0:            https://github.com/lesovsky/%{name}/archive/%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -87,6 +87,13 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Dec 19 2015 Anton Novojilov <andy@essentialkaos.com> - 0.2.0-0
+- Added iostat
+- Added nicstat
+- pg_stat_statements fixes
+- One key shortcut for config editing
+- Other fixes and improvements
+
 * Wed Oct 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-0
 - Added pg_stat_statements improvements
 - Added query detailed report based on pg_stat_statements

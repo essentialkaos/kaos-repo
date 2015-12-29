@@ -46,7 +46,7 @@
 
 Summary:              Very fast HTTP server written in C
 Name:                 h2o
-Version:              1.5.0
+Version:              1.6.1
 Release:              0%{?dist}
 License:              Copyright (c) 2014 DeNA Co., Ltd.
 Group:                System Environment/Daemons
@@ -172,182 +172,38 @@ fi
 ###############################################################################
 
 %changelog
-* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 
-- [http2] enable http2-reprioritize-blocking-assets by 
-  default #528 (Kazuho Oku)
-- [ssl] fix issues with neverbleed #520 (Kazuho Oku)
-- [mruby] provide env- ['rack.errors'], env- ['SERVER_SOFTWARE'] #517 #519
-  (Masayoshi Takahashi, Kazuho Oku)
-- [ssl] add support for neverbleed - the OpenSSL / LibreSSL privilege
-  separation engine #520 (Kazuho Oku)
-- [http2] fix crash when http2-reprioritize-blocking-assets,
-  file.custom-handler are used together #511 #514 (Kazuho Oku)
-- [serurity fix]- [file] fix directory traversal (CVE-2015-5638) (Kazuho Oku)
-- [mruby] fix build failure when oniguruma is already installed #501 #506
-  (Kazuho Oku)
-- [mruby] update sample mruby app to use rack-based API #498 (Masayoshi 
-  Takahashi)
-- [core] introduce is_compressible and priority attributes to MIME
-  map #436 #496 (Kazuho Oku)
-- [access-log] fix bug that emitted unnecessary NUL char in certain
-  conditions #462 #463 (Kazuho Oku)
-- [fastcgi] support for http2 server-push using link: rel=preload
-  header #446 (Kazuho Oku)
-- [file] send etag and vary headers on 304 response #439 (Kazuho Oku)
-- [file] sort directory listing #412 #474 (Kazuho Oku)
-- [gzip] introduce support for on-the-fly gzip #413 #457 (Justin Zhu)
-- [http2] introduce cookie-based implementation of cache-aware
-  server-push #421 #432 (Kazuho Oku)
-- [http2] improve HPACK compression ratio of server-push #450 (Kazuho Oku)
-- [http2] never push if client requested not to #464 (Kazuho Oku)
-- [http2] send content-length if possible #472 (Kazuho Oku)
-- [mruby] production-level support using Rack-based
-  interface #467 #475 #489 (Kazuho Oku)
-- [reproxy] support delegation using relative URL #468 (Kazuho Oku)
-- [reproxy] preserve method if status is 307 or 308 #491 (Kazuho Oku)
-- [ssl] improved error handling of openssl ocsp 
-  command #449 #454 (Tatsuhiro Tsujikawa)
-- [ssl] use libressl on ARM as well #485 (Kazuho Oku)
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Updated to 1.6.1
+
+* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.4-0
+- Updated to 1.5.4
+
+* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Updated to 1.5.0
 
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
-- [misc] fix install error of libh2o-evloop in case development files of 
-  OpenSSL cannot be found #443 (Kazuho Oku)
-- [fastcgi] change ownership of domain socket when `fastcgi.spawn` command 
-  is used #433 (Masaki TAGAWA)
-- [fastcgi] kill fastcgi processes spawned by `fastcgi.spawn` command when 
-  standalone server receives SIGINT #444 (Kazuho Oku)
-- [file] fix file descriptor leak on multi-range request #434 (Justin Zhu)
-- [ssl] update libressl to 2.2.2 #440 (Kazuho Oku)
-- [misc] fix build error in case development files of OpenSSL cannot 
-  be found #433 (Kazuho Oku)
+- Updated to 1.4.4
 
 * Tue Aug 11 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-1
 - Some fixes in spec and init script
 
 * Mon Aug 10 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- [fastcgi] do not concatenate the headers (ex. Set-Cookie) sent by a 
-  FastCGI app #427 (Kazuho Oku)
-- [ssl] for guarding session ticket secret use writer-preferred locks on 
-  Linux as well #423 (Kazuho Oku)
-- [misc] suppress compiler warnings #415 (Syohei YOSHIDA)
+- Updated to 1.4.2
 
 * Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
-- [core] do not refuse to start-up when failing to enable TCP Fast Open 
-  #368 (Kazuho Oku)
-- [fastcgi] fix server start-up issues when using fastcgi.spawn #367 
-  (Kazuho Oku)
-- [SSL] support OCSP stapling using openssl ocsp command built from 
-  LibreSSL in addition to OpenSSL #366 (Tatsuhiro Tsujikawa)
-- [core] enable TCP fast-open #356 (Tatsuhiko Kubo)
-- [core] improve virtual-host lookup logic #293 #296 (Kazuho Oku)
-- [core] fix content being mis-sent for HEAD requests #300 #302 (Kazuho Oku)
-- [doc] bundle documents #292 (Kazuho Oku)
-- [fastcgi] add FastCGI support #346 #359 #360 #364 (Kazuho Oku)
-- [file] support for If-Range requests #345 (Justin Zhu)
-- [file] send 503 (not 403) in case if too many files are open #304 (Kazuho Oku)
-- [http2] add http2-reprioritize-blocking-assets directive to optimize 
-  first-paint time on Chrome #349 (Kazuho Oku)
-- [http2] fix incompliant behavior when the number of stream exceeds the 
-  negotiated maximum #341 #352 (Kazuho Oku)
-- [proxy] fix potential use-after-free issue in case upstream name is resolved 
-  using getaddrinfo #307 (Kazuho Oku)
-- [proxy] increase default I/O timeout from 5 to 30 seconds fb5c016 (Kazuho Oku)
-- [redirect] support internal redirect #364 (Kazuho Oku)
-- [SSL] fix assertion failure during handshake #316 (Kazuho Oku)
-- [SSL] fix assertion failure when receiving a corrupt TLS record 
-  (http2 only) #297 (Kazuho Oku)
-- [SSL] fix build error on OpenSUSE using libressl #337 (Kazuho Oku)
-- [SSL] select ALPN protocol based on server-side preference #335 (Justin Zhu)
-- [libh2o] build shared libraries as well #324 (pyos)
-- [libh2o] build libh2o-evloop #327 (Laurentiu Nicola)
-- [misc] emit stacktrace in case of fatal error (Linux only) #331 (Kazuho Oku)
-- [misc] improve NetBSD compatibility #289 (Kazuho Oku)
-- [misc] fix file descriptor leaks #336 (Kazuho Oku)
+- Updated to 1.3.1
 
 * Wed Apr 15 2015 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- [core] bundle libyaml #248 (Kazuho Oku)
-- [core] implement master-worker process mode and daemon mode 
-  (bundles Server::Starter) #258 #270 (Kazuho Oku)
-- [file] more mime-types by default #250 #254 #280 (Tatsuhiko Kubo, 
-    George Liu, Kazuho Oku)
-- [file][http1] fix connection being closed if the length of content 
-  is zero #276 (Kazuho Oku)
-- [headers] fix heap overrun during configuration #251 (Kazuho Oku)
-- [http2] do not delay sending PUSH_PROMISE #221 (Kazuho Oku)
-- [http2] reduce memory footprint under high load #271 (Kazuho Oku)
-- [http2] fix incorrect error sent when number of streams exceed the 
-  limit #268 (Kazuho Oku)
-- [proxy] fix heap overrun when building request sent to upstream 
-  #266 #269 (Moto Ishizawa, Kazuho Oku)
-- [proxy] fix laggy response in case the length of content is zero 
-  #274 #276 (Kazuho Oku)
-- [SSL] fix potential stall while reading data from client #268 (Kazuho Oku)
-- [SSL] bundle LibreSSL #236 #272 (Kazuho Oku)
-- [SSL] obtain source-level compatibility with BoringSSL #228 (Kazuho Oku)
-- [SSL] add directive listen.ssl.cipher-preference for controlling 
-  the selection logic of cipher-suites #233 (Kazuho Oku)
-- [SSL] disable TLS compression #252 (bisho)
-- [libh2o] fix C++ compatibility (do not use empty struct) #225 (Kazuho Oku)
-- [libh2o] search external dependencies using pkg-config #227 (Kazuho Oku)
-- [misc] fix GCC version detection bug used for controlling compiler 
-  warnings #224 (Kazuho Oku)
-- [misc] check merory allocation failures in socket pool #265 (Tatsuhiko Kubo)
+- Updated to 1.2.0
 
 * Tue Mar 03 2015 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
-- [core] change backlog size from 65,536 to 65,535 #183 (Tatsuhiko Kubo)
-- [http2] fix assertion failure in HPACK encoder #186 (Kazuho Oku)
-- [http2] add extern to some global variables that were not marked as 
-  such #178 (Kazuho Oku)
-- [proxy] close persistent upstream connection if client abruptly closes 
-  the stream #188 (Kazuho Oku)
-- [proxy] fix internal state corruption in case upstream sends response 
-  headers divided into multiple packets #189 (Kazuho Oku)
-- [SSL] add host header to OCSP request #176 (Masaaki Hirose)
-- [libh2o] do not require header files under deps/ when using 
-  libh2o #173 (Kazuho Oku)
-- [libh2o] fix compile error in examples when compiled with 
-  H2O_USE_LIBUV=0 #177 (Kazuho Oku)
-- [libh2o] in example, add missing / after the reference 
-  path #180 (Matthieu Garrigues)
-- [misc] fix invalid HTML in sample page #175 (Deepak Prakash)
+- Updated to 1.0.1
 
 * Tue Mar 03 2015 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
-- [core] add redirect handler #150 (Kazuho Oku)
-- [core] add pid-file directive for specifying the pid file #164 (Kazuho Oku)
-- [core] connections accepted by host-specific listeners should not be handled 
-  by handlers of other hosts #163 (Kazuho Oku)
-- [core] (FreeBSD) fix a bug that prevented the standalone server from booting 
-  when run as root #160 (Kazuho Oku)
-- [core] switch to pipe-based interthread messaging #154 (Kazuho Oku)
-- [core] use kqueue on all BSDs #156 (Kazuho Oku)
-- [access-log] more logging directives #158 (Kazuho Oku)
-- [access-log] bugfix: header values were not logged when specified using 
-  uppercase letters #157 (Kazuho Oku)
-- [file] add application/json to defalt MIME-types #159 (Tatsuhiko Kubo)
-- [http2] add support for the finalized version of HTTP/2 #166 (Kazuho Oku)
-- [http2] fix issues reported by h2spec v0.0.6 #165 (Kazuho Oku)
-- [proxy] merge the cookie headers before sending to upstream #161 (Kazuho Oku)
-- [proxy] simplify the configuration directives (and make persistent upstream 
-  connections as default) #162 (Kazuho Oku)
-- [SSL] add configuration directive to preload DH params #148 (Jeff Marrison)
-- [libh2o] separate versioning scheme using H2O_LIBRARY_VERSION_* #167 (Kazuho Oku)
+- Updated to 1.0.0
 
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
-- added configuration directives: ssl/cipher-suite, ssl/ocsp-update-interval, 
-  ssl/ocsp-max-failures, expires, file.send-gzip
-- [http2] added support for draft-16 (draft-14 is also supported)
-- [http2] dependency-based prioritization
-- [http2] improved conformance to the specification
-- [SSL] OCSP stapling (automatically enabled by default)
-- [SSL] fix compile error with OpenSSL below version 1.0.1
-- [file] content negotiation (serving .gz files)
-- [expires] added support for Cache-Control: max-age
-- [libh2o] libh2o and the header files installed by make install
-- [libh2o] fix compile error when used from C++
-- automatically setuids to nobody when run as root and if user directive is not set
-- automatically raises RLIMIT_NOFILE
-- uses all CPU cores by default
-- now compiles on NetBSD and other BSD-based systems
+- Updated to 0.9.1
 
 * Mon Dec 29 2014 Anton Novojilov <andy@essentialkaos.com> - 0.9.0-0
 - Initial build

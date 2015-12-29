@@ -2,7 +2,7 @@
 
 Summary:         Run a command as a Unix daemon
 Name:            daemonize
-Version:         1.7.6
+Version:         1.7.7
 Release:         0%{?dist}
 Group:           Applications/System
 License:         BSD
@@ -69,6 +69,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7.7-0
+- CFLAGS and LDFLAGS not passed through from configure to Makefile
+
 * Tue May 12 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7.6-0
 - Fixed potential memory allocation issues
 
