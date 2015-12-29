@@ -46,13 +46,13 @@
 
 Summary:           The RabbitMQ server
 Name:              %{_basename}-server
-Version:           3.5.6
+Version:           3.6.0
 Release:           0%{?dist}
 License:           MPLv1.1
 Group:             Applications/Internet
 URL:               http://www.rabbitmq.com
 
-Source0:           http://www.rabbitmq.com/releases/%{name}/v%{version}/%{name}-%{version}.tar.gz
+Source0:           http://www.rabbitmq.com/releases/%{name}/v%{version}/%{name}-%{version}.tar.xz
 Source1:           %{name}.init
 Source2:           %{_basename}-script-wrapper
 Source3:           %{name}.logrotate
@@ -87,10 +87,10 @@ scalable implementation of an AMQP broker.
 %install
 %{__rm} -rf %{buildroot}
 
-%{__make} install TARGET_DIR=%{buildroot}%{_rabbit_erllibdir} \
-                  SBIN_DIR=%{buildroot}%{_rabbit_libdir}/bin \
-                  MAN_DIR=%{buildroot}%{_mandir} \
-                  DOC_INSTALL_DIR=%{buildroot}%{_sysconfdir}/%{_basename}
+%{__make} install-bin install-man DESTDIR=%{buildroot} \
+                                  PREFIX=%{_exec_prefix} \
+                                  RMQ_ROOTDIR=%{_rabbit_libdir} \
+                                  MANDIR=%{_mandir}
 
 %{__mkdir_p} %{buildroot}%{_localstatedir}/lib/%{_basename}/mnesia
 %{__mkdir_p} %{buildroot}%{_logdir}/%{_basename}
@@ -157,6 +157,9 @@ done
 ###############################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 3.6.0-0
+- Updated to latest release
+
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.6-0
 - Updated to latest release
 
