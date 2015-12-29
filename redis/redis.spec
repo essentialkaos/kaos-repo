@@ -37,7 +37,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.0.5
+Version:            3.0.6
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -189,6 +189,29 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.6-0
+- [FIX] lua_struct.c/getnum security issue fixed. (Luca Bruno discovered it,
+        patched by Sun He and Chris Lamb)
+- [FIX] Redis Cluster replica migration fixed. See issue 2924 for details.
+        (Salvatore Sanfilippo)
+- [FIX] Fix a race condition in processCommand() because of interactions
+        with freeMemoryIfNeeded(). Details in issue 2948 and especially
+        in the commit message d999f5a. (Race found analytically by
+        Oran Agra, patch by Salvatore Sanfilippo)
+
+- [NEW] Backported from the upcoming Redis 3.2:
+        MIGRATE now supports an extended multiple-keys pipelined mode, which
+        is an order of magnitude faster. Redis Cluster now uses this mode
+        in order to perform reshardings and rebalancings. (Salvatore Sanfilippo)
+- [NEW] Backported from the upcoming Redis 3.2:
+        Redis Cluster has now support for rebalancing via the redis-trib
+        rebalance command. Demo here:
+        https://asciinema.org/a/0tw2e5740kouda0yhkqrm5790
+        Official documentation will be available ASAP. (Salvatore Sanfilippo)
+- [NEW] Redis Cluster redis-trib.rb new "info" subcommand.
+- [NEW] Redis Cluster tests improved. (Salvatore Sanfilippo)
+- [NEW] Log offending memory access address on SIGSEGV/SIGBUS
+
 * Sat Oct 24 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
 - [FIX] MOVE now moves the TTL as well. A bug lasting forever... finally
         fixed thanks to Andy Grunwald that reported it.
