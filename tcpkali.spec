@@ -30,7 +30,7 @@
 
 Summary:            High performance TCP and WebSocket load generator and sink
 Name:               tcpkali
-Version:            0.6
+Version:            0.7
 Release:            0%{?dist}
 License:            BSD 2-Clause
 Group:              Development/Tools
@@ -75,10 +75,19 @@ autoreconf -iv
 %defattr(-,root,root,-)
 %doc LICENSE README.md TODO.md
 %{_bindir}/%{name}
+%{_mandir}/man1/%{name}.1*
 
 ###############################################################################
 
 %changelog
+* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.7-0
+- Added a manual page. man tcpkali after installation.
+- Exceed 64k connections limit by using all available IP aliases on network interfaces.
+- --latency-marker-skip <N> to ignore the first occurrences of a marker.
+- --listen-mode=active to send data for connections received through -l.
+- --source-ip <IP> option to restrict or change source IPs.
+- "Bandwidth per channel:" output changed to ⇅ to reflect bi-direction.
+
 * Thu May 14 2015 Anton Novojilov <andy@essentialkaos.com> - 0.6-0
 - Parse \{connection.uid} type expressions in --first-message, --message, 
   --latency-marker parameters, allowing constructing payloads unique per 
