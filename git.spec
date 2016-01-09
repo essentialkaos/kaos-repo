@@ -2,11 +2,11 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.6.4
+Version:          2.7.0
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
-URL:              http://kernel.org/pub/software/scm/git/
+URL:              https://git-scm.com
 
 Source:           http://kernel.org/pub/software/scm/git/%{name}-%{version}.tar.gz
 
@@ -272,6 +272,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.7.0-0
+- Updated to latest release
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 2.6.4-0
 - Updated to latest release
 
