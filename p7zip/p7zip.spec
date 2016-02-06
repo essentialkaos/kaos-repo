@@ -34,19 +34,13 @@
 
 Summary:           Very high compression ratio file archiver
 Name:              p7zip
-Version:           9.20.1
-Release:           3%{?dist}
+Version:           15.09
+Release:           0%{?dist}
 License:           LGPLv2 and (LGPLv2+ or CPL)
 Group:             Applications/Archiving
 URL:               http://p7zip.sourceforge.net
 
-Source:            %{name}_%{version}_src_all-norar.tar.bz2
-
-Patch0:            %{name}_%{version}-norar.patch
-Patch1:            %{name}_%{version}-install.patch
-Patch2:            %{name}_%{version}-nostrip.patch
-Patch3:            %{name}_%{version}-execstack.patch
-Patch4:            %{name}_%{version}-rmdeadlock.patch
+Source:            %{name}_%{version}_src_all.tar.bz2
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -64,7 +58,7 @@ Provides:          %{shortname} = %{version}-%{release}
 
 %description
 p7zip is a port of 7za.exe for Unix. 7-Zip is a file archiver with a very high
-compression ratio. The original version can be found at http://www.7-zip.org/.
+compression ratio. The original version can be found at http://www.7-zip.org.
 
 ###############################################################################
 
@@ -80,16 +74,12 @@ This package contains also a virtual file system for Midnight Commander.
 
 %prep
 
-%setup -q -n %{name}_%{version}
-
-%patch0 -p1 -b .norar
-%patch1 -p1 -b .install
-%patch2 -p1 -b .nostrip
-%patch3 -p1 -b .execstack
-%patch4 -p1 -b .execstack
+%setup -qn %{name}_%{version}
 
 %build
-mv DOCS docs
+mkdir docs
+
+mv DOC/* docs/
 mv ChangeLog README TODO docs/
 
 find docs    -type f -exec chmod -x {} \;
@@ -136,6 +126,7 @@ rm -rf %{buildroot}
 %dir %{_libexecdir}/%{name}/
 %{_libexecdir}/%{name}/%{shortname}
 %{_libexecdir}/%{name}/7zCon.sfx
+%{_libexecdir}/%{name}/Codecs/*
 %{_mandir}/man1/%{shortname}.1*
 %exclude %{_mandir}/man1/7zr.1*
 
@@ -150,6 +141,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Jan 13 2016 Anton Novojilov <andy@essentialkaos.com> - 15.09-0
+- Updated to latest stable release
+
 * Tue Apr 08 2014 Anton Novojilov <andy@essentialkaos.com> - 9.20.1-3
 - Added patch to prevent deadlock if files are deleted while archiving
 - Rewrited spec
