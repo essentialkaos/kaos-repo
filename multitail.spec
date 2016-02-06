@@ -98,7 +98,7 @@ rm -rf %{buildroot}
 ###########################################################################
 
 %files
-%defattr(-, root, root, 0755)
+%defattr(-, root, root, -)
 %doc readme.txt license.txt
 %doc %{_mandir}/man1/%{name}.1*
 %config(noreplace) %{_sysconfdir}/%{name}.conf
