@@ -31,7 +31,7 @@
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
 Version:            1.2.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                http://elixir-lang.org
@@ -42,6 +42,8 @@ Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      erlang >= 18 git 
+
+Requires:           erlang >= 18
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
@@ -72,7 +74,7 @@ install -dm 755 %{buildroot}%{_bindir}
 
 cp -ra bin lib %{buildroot}%{_datadir}/%{name}/%{version}/
 
-ln -sf %{_datadir}%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}/%{_bindir}/
+ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}/%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
@@ -91,6 +93,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Feb 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-1
+- Fixed broken links to binary files
+
 * Tue Jan 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
 - Updated to latest version
 
