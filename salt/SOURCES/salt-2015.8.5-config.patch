@@ -1,6 +1,6 @@
-diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
---- salt-2015.8.0-orig/conf/master	2015-09-07 19:58:26.000000000 +0300
-+++ salt-2015.8.0/conf/master	2015-09-21 08:44:32.050090511 +0300
+diff -urN salt-2015.8.5-orig/conf/master salt-2015.8.5/conf/master
+--- salt-2015.8.5-orig/conf/master	2016-02-03 02:21:51.000000000 +0300
++++ salt-2015.8.5/conf/master	2016-02-15 12:08:12.178778667 +0300
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -10,7 +10,7 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  
  # The address of the interface to bind to:
  #interface: 0.0.0.0
-@@ -57,7 +57,7 @@
+@@ -32,7 +32,7 @@
  #ret_port: 4506
  
  # Specify the location of the daemon process ID file:
@@ -19,7 +19,7 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  
  # The root directory prepended to these options: pki_dir, cachedir,
  # sock_dir, log_file, autosign_file, autoreject_file, extension_modules,
-@@ -65,12 +65,12 @@
+@@ -40,12 +40,12 @@
  #root_dir: /
  
  # Directory used to store public key data:
@@ -34,7 +34,7 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  
  # Directory for custom modules. This directory can contain subdirectories for
  # each of Salt's module types such as "runners", "output", "wheel", "modules",
-@@ -114,7 +114,7 @@
+@@ -89,7 +89,7 @@
  # strip_colors: False
  
  # Set the directory used to hold unix sockets:
@@ -43,7 +43,7 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  
  # The master can take a while to start up when lspci and/or dmidecode is used
  # to populate the grains for the master. Enable if you want to see GPU hardware
-@@ -612,7 +612,7 @@
+@@ -643,7 +643,7 @@
  #syndic_pidfile: /var/run/salt-syndic.pid
  
  # LOG file of the syndic daemon:
@@ -52,7 +52,7 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  
  
  #####      Peer Publish settings     #####
-@@ -687,7 +687,7 @@
+@@ -718,7 +718,7 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  
@@ -61,9 +61,9 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  #key_logfile: /var/log/salt/key
  
  # The level of messages to send to the console.
-diff -urN salt-2015.8.0-orig/conf/minion salt-2015.8.0/conf/minion
---- salt-2015.8.0-orig/conf/minion	2015-09-07 19:58:26.000000000 +0300
-+++ salt-2015.8.0/conf/minion	2015-09-21 08:45:26.658793879 +0300
+diff -urN salt-2015.8.5-orig/conf/minion salt-2015.8.5/conf/minion
+--- salt-2015.8.5-orig/conf/minion	2016-02-01 22:40:31.000000000 +0300
++++ salt-2015.8.5/conf/minion	2016-02-15 12:09:01.093436052 +0300
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
@@ -73,7 +73,7 @@ diff -urN salt-2015.8.0-orig/conf/minion salt-2015.8.0/conf/minion
  
  # Set the location of the salt master server. If the master server cannot be
  # resolved, then the minion will fail to start.
-@@ -55,14 +55,14 @@
+@@ -61,14 +61,14 @@
  #sudo_user: saltdev
  
  # Specify the location of the daemon process ID file.
@@ -90,7 +90,7 @@ diff -urN salt-2015.8.0-orig/conf/minion salt-2015.8.0/conf/minion
  
  # Explicitly declare the id for this minion to use, if left commented the id
  # will be the hostname as returned by the python call: socket.getfqdn()
-@@ -89,7 +89,7 @@
+@@ -95,7 +95,7 @@
  #
  # Where cache data goes.
  # This data may contain sensitive data and should be protected accordingly.
@@ -99,7 +99,7 @@ diff -urN salt-2015.8.0-orig/conf/minion salt-2015.8.0/conf/minion
  
  # Verify and set permissions on configuration directories at startup.
  #verify_env: True
-@@ -101,7 +101,7 @@
+@@ -107,7 +107,7 @@
  #cache_jobs: False
  
  # Set the directory used to hold unix sockets.
@@ -108,7 +108,7 @@ diff -urN salt-2015.8.0-orig/conf/minion salt-2015.8.0/conf/minion
  
  # Set the default outputter used by the salt-call command. The default is
  # "nested".
-@@ -506,7 +506,7 @@
+@@ -513,7 +513,7 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #
