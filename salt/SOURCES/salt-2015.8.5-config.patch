@@ -1,6 +1,6 @@
-diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
---- salt-2015.8.0-orig/conf/master	2015-09-07 19:58:26.000000000 +0300
-+++ salt-2015.8.0/conf/master	2015-09-21 08:44:32.050090511 +0300
+diff -urN salt-2015.8.5-orig/conf/master salt-2015.8.5/conf/master
+--- salt-2015.8.5-orig/conf/master	2015-09-07 19:58:26.000000000 +0300
++++ salt-2015.8.5/conf/master	2015-09-21 08:44:32.050090511 +0300
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -61,9 +61,9 @@ diff -urN salt-2015.8.0-orig/conf/master salt-2015.8.0/conf/master
  #key_logfile: /var/log/salt/key
  
  # The level of messages to send to the console.
-diff -urN salt-2015.8.0-orig/conf/minion salt-2015.8.0/conf/minion
---- salt-2015.8.0-orig/conf/minion	2015-09-07 19:58:26.000000000 +0300
-+++ salt-2015.8.0/conf/minion	2015-09-21 08:45:26.658793879 +0300
+diff -urN salt-2015.8.5-orig/conf/minion salt-2015.8.5/conf/minion
+--- salt-2015.8.5-orig/conf/minion	2015-09-07 19:58:26.000000000 +0300
++++ salt-2015.8.5/conf/minion	2015-09-21 08:45:26.658793879 +0300
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
