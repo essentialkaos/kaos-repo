@@ -1,0 +1,9 @@
+/var/log/zabbix/zabbix_COMPONENT.log {
+	weekly
+	rotate 12
+	compress
+	delaycompress
+	missingok
+	notifempty
+	create 0664 zabbix zabbix
+}

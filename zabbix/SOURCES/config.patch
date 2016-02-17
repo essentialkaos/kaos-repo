@@ -1,0 +1,54 @@
+diff -Nru zabbix-3.0.0alpha3.orig/frontends/php/include/classes/core/CConfigFile.php zabbix-3.0.0alpha3/frontends/php/include/classes/core/CConfigFile.php
+--- zabbix-3.0.0alpha3.orig/frontends/php/include/classes/core/CConfigFile.php	2015-10-16 00:57:05.000000000 +0900
++++ zabbix-3.0.0alpha3/frontends/php/include/classes/core/CConfigFile.php	2015-10-20 00:25:54.000000000 +0900
+@@ -24,7 +24,7 @@
+ 	const CONFIG_NOT_FOUND = 1;
+ 	const CONFIG_ERROR = 2;
+ 
+-	const CONFIG_FILE_PATH = '/conf/zabbix.conf.php';
++	const CONFIG_FILE_PATH = '/etc/zabbix/web/zabbix.conf.php';
+ 
+ 	private static $supported_db_types = [
+ 		ZBX_DB_DB2 => true,
+diff -Nru zabbix-3.0.0alpha3.orig/frontends/php/include/classes/core/ZBase.php zabbix-3.0.0alpha3/frontends/php/include/classes/core/ZBase.php
+--- zabbix-3.0.0alpha3.orig/frontends/php/include/classes/core/ZBase.php	2015-10-16 00:57:05.000000000 +0900
++++ zabbix-3.0.0alpha3/frontends/php/include/classes/core/ZBase.php	2015-10-20 00:25:54.000000000 +0900
+@@ -303,7 +303,7 @@
+ 	 * @throws Exception
+ 	 */
+ 	protected function setMaintenanceMode() {
+-		require_once $this->getRootDir().'/conf/maintenance.inc.php';
++		require_once '/etc/zabbix/web/maintenance.inc.php';
+ 
+ 		if (defined('ZBX_DENY_GUI_ACCESS')) {
+ 			$user_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+@@ -319,7 +319,7 @@
+ 	 * Load zabbix config file.
+ 	 */
+ 	protected function loadConfigFile() {
+-		$configFile = $this->getRootDir().CConfigFile::CONFIG_FILE_PATH;
++		$configFile = CConfigFile::CONFIG_FILE_PATH;
+ 		$config = new CConfigFile($configFile);
+ 		$this->config = $config->load();
+ 	}
+diff -Nru zabbix-3.0.0alpha3.orig/frontends/php/include/classes/setup/CSetupWizard.php zabbix-3.0.0alpha3/frontends/php/include/classes/setup/CSetupWizard.php
+--- zabbix-3.0.0alpha3.orig/frontends/php/include/classes/setup/CSetupWizard.php	2015-10-16 00:57:05.000000000 +0900
++++ zabbix-3.0.0alpha3/frontends/php/include/classes/setup/CSetupWizard.php	2015-10-20 00:25:54.000000000 +0900
+@@ -347,7 +347,7 @@
+ 	function stage5() {
+ 		$this->setConfig('ZBX_CONFIG_FILE_CORRECT', true);
+ 
+-		$config_file_name = Z::getInstance()->getRootDir().CConfigFile::CONFIG_FILE_PATH;
++		$config_file_name = CConfigFile::CONFIG_FILE_PATH;
+ 		$config = new CConfigFile($config_file_name);
+ 		$config->config = [
+ 			'DB' => [
+@@ -517,7 +517,7 @@
+ 				// make zabbix.conf.php downloadable
+ 				header('Content-Type: application/x-httpd-php');
+ 				header('Content-Disposition: attachment; filename="'.basename(CConfigFile::CONFIG_FILE_PATH).'"');
+-				$config = new CConfigFile(Z::getInstance()->getRootDir().CConfigFile::CONFIG_FILE_PATH);
++				$config = new CConfigFile(CConfigFile::CONFIG_FILE_PATH);
+ 				$config->config = [
+ 					'DB' => [
+ 						'TYPE' => $this->getConfig('DB_TYPE'),
