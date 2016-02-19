@@ -43,9 +43,9 @@
 
 ################################################################################
 
-%define service_user      zabbix
-%define service_group     zabbix
-%define service_home      %{_libdir}/zabbix
+%define service_user      %{name}
+%define service_group     %{name}
+%define service_home      %{_libdir}/%{name}
 
 ################################################################################
 
@@ -55,7 +55,7 @@ Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
-URL:                  http://www.zabbix.com/
+URL:                  http://www.zabbix.com
 
 Source0:              http://heanet.dl.sourceforge.net/project/%{name}/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
 Source1:              %{name}-web22.conf
@@ -75,7 +75,7 @@ Patch0:               config.patch
 Patch1:               fonts-config.patch
 Patch2:               fping3-sourceip-option.patch
 
-Buildroot:            %{_tmppath}/zabbix-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel 
 BuildRequires:        iksemel-devel unixODBC-devel libxml2-devel curl-devel >= 7.13.1 
