@@ -44,7 +44,7 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.9.1
+Version:            0.10.0
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
@@ -170,6 +170,9 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 ###############################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0-0
+- Updated to 0.10.0
+
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
 - Updated to 0.9.1
 

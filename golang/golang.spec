@@ -54,13 +54,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.5
+%global go_api 1.6
 
 ########################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.5.3
+Version:           1.6
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -534,10 +534,21 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %doc %{goroot}/doc/*
 
 %{goroot}/*
+
 %exclude %{goroot}/VERSION
 %exclude %{goroot}/bin/
-%exclude %{goroot}/pkg/
 %exclude %{goroot}/src/
+
+%exclude %{goroot}/pkg/bootstrap/
+%exclude %{goroot}/pkg/darwin_*/
+%exclude %{goroot}/pkg/freebsd_*/
+%exclude %{goroot}/pkg/linux_*/
+%exclude %{goroot}/pkg/netbsd_*/
+%exclude %{goroot}/pkg/openbsd_*/
+%exclude %{goroot}/pkg/plan9_*/
+%exclude %{goroot}/pkg/windows_*/
+%exclude %{goroot}/pkg/tool/
+%exclude %{goroot}/pkg/obj/
 
 %dir %{gopath}
 %dir %{gopath}/src
@@ -709,6 +720,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Fri Feb 19 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6-0
+- Updated to latest stable release
+
+* Thu Feb 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-1
+- Improved spec
+
 * Fri Jan 15 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
 - Updated to latest stable release
 

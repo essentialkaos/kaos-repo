@@ -33,7 +33,7 @@
 
 Summary:         Lightweight library for embedding a webserver in applications
 Name:            libmicrohttpd
-Version:         0.9.46
+Version:         0.9.48
 Release:         0%{?dist}
 License:         GNU LGPL
 Group:           Development/Libraries
@@ -64,26 +64,6 @@ Key features that distinguish libmicrohttpd from other projects are:
 * Support for incremental processing of POST data
 * Creates binary of only 25k (for now)
 * Three different threading models
-
-###############################################################################
-
-%package -n libmicrospdy
-
-Summary:         Lightweight library for embedding a spdy webserver in applications
-Group:           Development/Libraries
-
-%description -n libmicrospdy
-Lightweight library for embedding a spdy webserver in applications
-
-###############################################################################
-
-%package -n libmicrospdy-devel
-
-Summary:         Development files for libmicrospdy
-Group:           Development/Libraries
-
-%description -n libmicrospdy-devel
-Development files for libmicrospdy
 
 ###############################################################################
 
@@ -163,16 +143,6 @@ fi
 %doc COPYING
 %{_libdir}/%{name}.so.*
 
-%files -n libmicrospdy
-%defattr(-,root,root,-)
-%{_libdir}/libmicrospdy.so.*
-
-%files -n libmicrospdy-devel
-%defattr(-,root,root,-)
-%{_includedir}/microspdy.h
-%{_libdir}/libmicrospdy.so
-%{_libdir}/pkgconfig/libmicrospdy.pc
-
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/microhttpd.h
@@ -191,6 +161,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.48-0
+- Updated to latest release
+
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.46-0
 - Updated to latest release
 

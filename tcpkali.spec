@@ -30,7 +30,7 @@
 
 Summary:            High performance TCP and WebSocket load generator and sink
 Name:               tcpkali
-Version:            0.7
+Version:            0.8
 Release:            0%{?dist}
 License:            BSD 2-Clause
 Group:              Development/Tools
@@ -80,6 +80,16 @@ autoreconf -iv
 ###############################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.8-0
+- Added --latency-connect to measure connect latency.
+- Added --latency-first-byte to measure latency to first byte.
+- Added --latency-percentiles to control percentile reporting.
+- Mean/max latencies for messages are not reported, for UI
+  consistency. Use --latency-percentiles 50,100 to display.
+- Added --dump-{one,all}{,-in,-out} to dump all or one
+  connections' input/output.
+- Added --write-combine=off to emit high packet rates.
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.7-0
 - Added a manual page. man tcpkali after installation.
 - Exceed 64k connections limit by using all available IP aliases on network interfaces.

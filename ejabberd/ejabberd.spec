@@ -51,7 +51,7 @@
 
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
-Version:           15.11
+Version:           16.01
 Release:           0%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
@@ -66,7 +66,7 @@ Patch0:            %{name}-conf.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make automake autoconf gcc git erlang17 sqlite-devel
+BuildRequires:     make automake autoconf gcc git erlang >= 17 sqlite-devel
 BuildRequires:     openssl-devel libyaml-devel expat-devel pam-devel zlib-devel
 
 Requires:          erlang >= 17 kaosv >= 2.6 openssl libyaml
@@ -161,6 +161,9 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 16.01-0
+- Updated to 16.01
+
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 15.11-0
 - Updated to 15.11
 
