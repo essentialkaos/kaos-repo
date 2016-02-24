@@ -137,20 +137,6 @@ rm -rf %{buildroot}%{_docdir}/%{name}/examples
 rm -rf %{buildroot}
 
 
-%post
-if [[ -f %{_infodir}/%{name}.info.gz ]]; then
-    %{__install_info} %{_infodir}/%{name}.info.gz %{_infodir}/dir \
-        --entry="* bison: (bison).                        The GNU parser generator." || exit 0
-fi
-
-%preun
-if [[ $1 -eq 0 ]] ; then
-    if [ -f %{_infodir}/%{name}.info.gz ]; then
-        %{__install_info} --delete %{_infodir}/%{name}.info.gz %{_infodir}/dir \
-            --entry="* bison: (bison).                        The GNU parser generator." || exit 0
-    fi
-fi
-
 ###############################################################################
 
 %files -f %{name}.lang
