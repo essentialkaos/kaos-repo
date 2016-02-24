@@ -37,7 +37,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.0.6
+Version:            3.0.7
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -189,6 +189,36 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.7-0
+- [FIX] avg_ttl reporting in INFO improved. (Salvatore Sanfilippo)
+- [FIX] Redis Cluster address update (via gossip section) processing improved
+        to avoid initiating inwanted handshakes.
+- [FIX] Many fixes to MIGRATE multiple keys implementation. The command
+        could handle errors in a faulty way leading to crashes or other
+        unexpected behaviors. MIGRATE command refactoring.
+        (The analysis of the faulty conditions was conducted by
+         Kevin McGehee. The fix was developed by Salvatore Sanfilippo)
+- [FIX] A Redis Cluster node crash was fixed because of wrong handling of
+        node->slaveof pointers.
+        (Reported by JackyWoo, fixed by Salvatore Sanfilippo)
+- [FIX] Fix redis-trib rebalance when nodes need to be left empty because
+        the specified weight is zero.
+        (Reported by Shahar Mor, fixed by Salvatore Sanfilippo)
+- [FIX] MIGRATE: Never send -ASK redirections for MIGRATE when there are
+        open slots. Redis-trib and other cluster management utility must
+        always be free to move keys between nodes about open slots, in order
+        to reshard, fix the cluster configuration, and so forth.
+        (Salvatore Sanfilippo)
+- [FIX] Redis-trib is now able to fix more errors. A new CLUSTER subcommand
+        called BUMPEPOCH was introduced in order to support new modes
+        for the "fix" subcommand. (Salvatore Sanfilippo)
+- [NEW] Cluster/Sentinel tests now use OSX leak to perform leak detection
+        at the end of every unit. (Salvatore Sanfilippo)
+- [NEW] Detect and show server crashes during Cluster/Sentinel tests.
+        (Salvatore Sanfilippo)
+- [NEW] More reliable Cluster/Sentinel test becuase of timing errors and
+        -LOADING errors. (Salvatore Sanfilippo)
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.6-0
 - [FIX] lua_struct.c/getnum security issue fixed. (Luca Bruno discovered it,
         patched by Sun He and Chris Lamb)
