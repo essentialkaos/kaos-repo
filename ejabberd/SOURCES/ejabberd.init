@@ -58,8 +58,8 @@ prepare() {
   [[ ! -f $ctl_file ]] && has_errors=true && kv.error "Error! File <$ctl_file> is not exist."
   [[ ! -r $ctl_file ]] && has_errors=true && kv.error "Error! File <$ctl_file> is not readable."
 
-  [[ -d $log_dir ]] && has_errors=true && kv.error "Error! Directory <$log_dir> is not exist."
-  [[ -d $spool_dir ]] && has_errors=true && kv.error "Error! Directory <$spool_dir> is not exist."
+  [[ ! -d $log_dir ]] && has_errors=true && kv.error "Error! Directory <$log_dir> is not exist."
+  [[ ! -d $spool_dir ]] && has_errors=true && kv.error "Error! Directory <$spool_dir> is not exist."
 
   [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty."
   
