@@ -36,7 +36,7 @@
 
 Summary:         Software framework for cross-language services development
 Name:            thrift
-Version:         0.9.2
+Version:         0.9.3
 Release:         0%{?dist}
 License:         ASL 2.0 / BSD
 Group:           Development/Libraries
@@ -47,7 +47,7 @@ Source1:         https://gitorious.org/pkg-scribe/%{name}-deb-pkg/raw/master:deb
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   automake autoconf libtool gcc gcc-c++ openssl-devel
+BuildRequires:   automake autoconf libtool gcc gcc-c++ openssl-devel bison
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -72,20 +72,6 @@ Requires:        pkgconfig
 %description  devel
 The thrift-devel package contains libraries and header files for
 developing applications that use thrift.
-
-########################################################################################
-
-%package -n python-%{name}
-
-Summary:         Python support for thrift
-
-Requires:        %{name} = %{version}-%{release}
-Requires:        python
-
-BuildRequires:   python-devel
-
-%description -n python-%{name}
-The python-thrift package contains Python bindings for thrift.
 
 ########################################################################################
 
@@ -142,6 +128,20 @@ BuildRequires:   erlang
 
 %description -n erlang17-%{name}
 The erlang17-thrift package contains Erlang17 bindings for thrift.
+
+########################################################################################
+
+%package -n erlang18-%{name}
+
+Summary:         Erlang18 support for thrift
+
+Requires:        %{name} = %{version}-%{release}
+Requires:        erlang18
+
+BuildRequires:   erlang
+
+%description -n erlang18-%{name}
+The erlang18-thrift package contains Erlang18 bindings for thrift.
 
 ########################################################################################
 
@@ -214,14 +214,16 @@ gzip -9v %{buildroot}%{_mandir}/man1/%{name}.1
 %doc LICENSE NOTICE
 %{_libdir}/erlang/lib/%{name}-%{version}/
 
-%files -n python-%{name}
+%files -n erlang18-%{name}
 %defattr(-,root,root,-)
 %doc LICENSE NOTICE
-%{python_sitearch}/%{name}
-%{python_sitearch}/%{name}-%{version}-py2.6.egg-info
+%{_libdir}/erlang/lib/%{name}-%{version}/
 
 ########################################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-0
+- Updated to latest version
+
 * Wed Apr 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.2-0
 - Initial build for python and erlang
