@@ -7,10 +7,10 @@
 Summary:              A terminal multiplexer
 Name:                 tmux
 Version:              2.1
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
-URL:                  http://sourceforge.net/projects/tmux
+URL:                  https://github.com/tmux/tmux
 
 Source:               https://github.com/%{name}/%{name}/archive/%{version}.tar.gz
 

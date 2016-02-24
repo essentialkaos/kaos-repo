@@ -62,7 +62,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        9.2
-%define minorver        14
+%define minorver        15
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          92
@@ -1000,6 +1000,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.15-0
+- Updated to latest stable release
+
 * Fri Oct 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.2.14-0
 - Updated to latest stable release
 
