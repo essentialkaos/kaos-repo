@@ -18,7 +18,7 @@ Group:                Development/Libraries
 
 Source:               http://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:            noarch
 
@@ -26,13 +26,7 @@ BuildArch:            noarch
 BuildRequires:        python26-devel
 BuildRequires:        python26-setuptools
 
-Requires:             python26-PyYAML
-Requires:             python26-paramiko
-Requires:             python26-jinja2
-Requires:             python26-keyczar
-Requires:             python26-httplib2
-Requires:             python26-setuptools
-Requires:             python26-six
+Requires:             python26-PyYAML python26-paramiko python26-jinja2 python26-keyczar python26-httplib2 python26-setuptools python26-six
 %endif
 
 %if 0%{?rhel} == 6
@@ -43,40 +37,21 @@ Requires:             python-crypto2.6
 BuildRequires:        python2-devel
 BuildRequires:        python-setuptools
 
-Requires:             PyYAML
-Requires:             python-markupsafe
-Requires:             python-paramiko
-Requires:             python-jinja2
-Requires:             python-keyczar
-Requires:             python-httplib2
-Requires:             python-setuptools
-Requires:             python-six
+Requires:             PyYAML python-markupsafe python-paramiko python-jinja2 python-keyczar python-httplib2 python-setuptools python-six
 %endif
 
 %if 0%{?fedora} >= 18
 BuildRequires:        python-devel
 BuildRequires:        python-setuptools
 
-Requires:             PyYAML
-Requires:             python-paramiko
-Requires:             python-jinja2
-Requires:             python-keyczar
-Requires:             python-httplib2
-Requires:             python-setuptools
-Requires:             python-six
+Requires:             PyYAML python-paramiko python-jinja2 python-keyczar python-httplib2 python-setuptools python-six
 %endif
 
 %if 0%{?suse_version}
 BuildRequires:        python-devel
 BuildRequires:        python-setuptools
 
-Requires:             python-paramiko
-Requires:             python-jinja2
-Requires:             python-keyczar
-Requires:             python-yaml
-Requires:             python-httplib2
-Requires:             python-setuptools
-Requires:             python-six
+Requires:             python-paramiko python-jinja2 python-keyczar python-yaml python-httplib2 python-setuptools python-six
 %endif
 
 Requires:             sshpass
@@ -102,40 +77,40 @@ are transferred to managed machines automatically.
 
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{__python} setup.py install -O1 --prefix=%{_prefix} --root=%{buildroot}
 
 if expr x'%{python_sitelib}' : 'x.*dist-packages/\?' ; then
     DEST_DIR='%{buildroot}%{python_sitelib}'
     SOURCE_DIR=$(echo "$DEST_DIR" | sed 's/dist-packages/site-packages/g')
-    if test -d "$SOURCE_DIR" -a ! -d "$DEST_DIR" ; then
+    if [[ -d "$SOURCE_DIR" && ! -d "$DEST_DIR" ]] ; then
         mv $SOURCE_DIR $DEST_DIR
     fi
 fi
 
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/%{name}/
-%{__mkdir} -p %{buildroot}/%{_mandir}/man1/
-%{__mkdir} -p %{buildroot}/%{_datadir}/%{name}
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/%{name}/
+%{__mkdir_p} %{buildroot}%{_mandir}/man1/
+%{__mkdir_p} %{buildroot}%{_datadir}/%{name}
 
-%{__cp} examples/hosts %{buildroot}%{_sysconfdir}/%{name}/
-%{__cp} examples/ansible.cfg %{buildroot}%{_sysconfdir}/%{name}/
-%{__cp} -v docs/man/man1/*.1 %{buildroot}/%{_mandir}/man1/
+cp examples/hosts %{buildroot}%{_sysconfdir}/%{name}/
+cp examples/ansible.cfg %{buildroot}%{_sysconfdir}/%{name}/
+cp -v docs/man/man1/*.1 %{buildroot}%{_mandir}/man1/
 
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 
 %files
-%defattr(-,root,root)
-%{python_sitelib}/%{name}*
-%{_bindir}/%{name}*
-%dir %{_datadir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}
+%defattr(-,root,root,-)
 %doc README.md PKG-INFO COPYING
 %doc %{_mandir}/man1/%{name}*
+%config(noreplace) %{_sysconfdir}/%{name}
+%dir %{_datadir}/%{name}
+%{python_sitelib}/%{name}*
+%{_bindir}/%{name}*
 
 ################################################################################
 
