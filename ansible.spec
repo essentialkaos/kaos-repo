@@ -26,7 +26,9 @@ BuildArch:            noarch
 BuildRequires:        python26-devel
 BuildRequires:        python26-setuptools
 
-Requires:             python26-PyYAML python26-paramiko python26-jinja2 python26-keyczar python26-httplib2 python26-setuptools python26-six
+Requires:             python26-PyYAML python26-paramiko python26-jinja2
+Requires:             python26-keyczar python26-httplib2 python26-setuptools
+Requires:             python26-six
 %endif
 
 %if 0%{?rhel} == 6
@@ -37,21 +39,24 @@ Requires:             python-crypto2.6
 BuildRequires:        python2-devel
 BuildRequires:        python-setuptools
 
-Requires:             PyYAML python-markupsafe python-paramiko python-jinja2 python-keyczar python-httplib2 python-setuptools python-six
+Requires:             PyYAML python-markupsafe python-paramiko python-jinja2
+Requires:             python-keyczar python-httplib2 python-setuptools python-six
 %endif
 
 %if 0%{?fedora} >= 18
 BuildRequires:        python-devel
 BuildRequires:        python-setuptools
 
-Requires:             PyYAML python-paramiko python-jinja2 python-keyczar python-httplib2 python-setuptools python-six
+Requires:             PyYAML python-paramiko python-jinja2 python-keyczar
+Requires:             python-httplib2 python-setuptools python-six
 %endif
 
 %if 0%{?suse_version}
 BuildRequires:        python-devel
 BuildRequires:        python-setuptools
 
-Requires:             python-paramiko python-jinja2 python-keyczar python-yaml python-httplib2 python-setuptools python-six
+Requires:             python-paramiko python-jinja2 python-keyczar python-yaml
+Requires:             python-httplib2 python-setuptools python-six
 %endif
 
 Requires:             sshpass

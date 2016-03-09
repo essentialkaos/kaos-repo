@@ -12,7 +12,7 @@ Source:         https://pypi.python.org/packages/source/a/%{name}/%{name}-%{vers
 
 BuildRequires:  python-devel python-setuptools
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
@@ -51,4 +51,3 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 %changelog
 * Tue Mar 08 2016 Gleb Goncharov <yum@gongled.ru> - 2.3.9-0
 - Initial build
-

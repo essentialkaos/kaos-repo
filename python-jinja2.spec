@@ -25,9 +25,9 @@ Provides:       %{name} = %{verion}-%{release}
 ########################################################################################
 
 %description
-Jinja is a sandboxed template engine written in pure Python. It
-provides a Django-like non-XML syntax and compiles templates into
-executable python code. It's basically a combination of Django
+Jinja is a sandboxed template engine written in pure Python. It 
+provides a Django-like non-XML syntax and compiles templates into 
+executable python code. It's basically a combination of Django 
 templates and python code.
 
 ########################################################################################
