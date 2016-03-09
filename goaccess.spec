@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         0.9.7
+Version:         0.9.8
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -54,6 +54,18 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Wed Mar 09 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.8-0
+- Added a more complete list of static extensions to the config file.
+- Added Android 6.0 Marshmallow to the list of OSs.
+- Added the ability to scroll through panels on TAB with option to disable it
+  --no-tab-scroll.
+- Added the first and last log dates to the overall statistics panel.
+- Ensure GoAccess links correctly against libtinfo.
+- Ensure static content is case-insensitive verified.
+- Fixed bandwidth overflow issue (numbers > 2GB on non-x86_64 arch).
+- Fixed broken HTML layout when html-method/protocol is missing in config file.
+- Refactored parsing and display of available modules/panels.
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.7-0
 - Added Squid native log format to the config file
 - Fixed int overflow when getting total bandwidth using the on-disk storage
