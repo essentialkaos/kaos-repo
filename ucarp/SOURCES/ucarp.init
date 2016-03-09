@@ -1,85 +1,155 @@
 #!/bin/bash
-
-# ucarp        Startup script for ucarp service
-
-# chkconfig: - 85 15
-# processname: ucarp
-# config: /etc/sysconfig/ucarp
-# pidfile: /var/run/ucarp.pid
-# description: Common Address Redundancy Protocol (CARP)
+# $Id$
+#
+# chkconfig: - 91 09
+# description: Starts and stops the common address redundancy protocol daemon
 
 ### BEGIN INIT INFO
-# Provides: ucarp
-# Required-Start: $local_fs $remote_fs $network
-# Required-Stop: $local_fs $remote_fs $network
-# Default-Start: 2 3 4 5
+# Provides: lsb-ucarp
+# Required-Start: $local_fs $network $remote_fs
+# Required-Stop: $local_fs $network $remote_fs
+# Default-Start:
 # Default-Stop: 0 1 6
 # Short-Description: start and stop ucarp
+# Description: Common Address Redundancy Protocol (CARP) for Unix
 ### END INIT INFO
 
-###############################################################################
+# Source function library.
+. /etc/init.d/functions
 
-source /etc/init.d/kaosv
+# Source networking configuration.
+. /etc/sysconfig/network
 
-###############################################################################
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
 
-kv[prog_name]="ucarp"
-kv[search_pattern]="ucarp"
-
-kv.readSysconfig
-
-binary=${BINARY:-/usr/sbin/ucarp}
-conf_dir=${CONFDIR:-/etc/ucarp}
-
-###############################################################################
-
-kv.addCommandVars "stop" "force"
-
-kv.addHandler "start" "startServiceHandler"
-kv.addHandler "stop"  "stopServiceHandler"
-
-###############################################################################
-
-prepare() {
-  local has_errors=""
-
-  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
-  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
-
-  [[ ! -f $conf_dir ]] && has_errors=true && kv.error "Error! Directory <$conf_dir> is not exist"
-  [[ ! -r $conf_dir ]] && has_errors=true && kv.error "Error! Directory <$conf_dir> is not readable"
-
-  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+get_files() {
+    FILES=`find ${CONFDIR} -maxdepth 1 -type f -name 'vip-*.conf' \
+        -printf "%f\n" | egrep '^vip-[[:digit:]]+\.conf$' | LC_COLLATE="C" sort`
 }
 
-startServiceHandler() {
-  kv.run "$binary $conf_file"
+prog=$"common address redundancy protocol daemon"
+LOGGER="/usr/bin/logger -p daemon.notice -t ucarp"
+CONFDIR=/etc/ucarp
+UPSCRIPT=/usr/libexec/ucarp/vip-up
+DOWNSCRIPT=/usr/libexec/ucarp/vip-down
 
-  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+start() {
+    RETVAL=-1
+    VIP_RETVAL=0
 
-  kv.getStartStatus
+    echo -n $"Starting ${prog}: "
 
-  return $?
-}
+    get_files
 
-stopServiceHandler() {
-  local pid=`kv.getPid`
+    if [ -z "${FILES}" ]; then
+        ${LOGGER} "no virtual addresses are configured in ${CONFDIR}"
+        failure
+        RETVAL=1
+    else
+        for FILE in ${FILES}; do
+            # Check that the file name gives us an ID between 1 and 255
+            ID=`echo ${FILE}| sed 's/^vip-\(.*\).conf/\1/'`
+            if [ ${ID} -lt 1 -o ${ID} -gt 255 ]; then
+                ${LOGGER} "ID out of range (1-255) for ${FILE}, skipped VIP ID ${ID}"
+                continue
+            fi
 
-  kv.sendSignal "$SIGNAL_TERM"
+            unset PASSWORD BIND_INTERFACE SOURCE_ADDRESS VIP_ADDRESS OPTIONS
+            # Source ucarp settings
+            . ${CONFDIR}/vip-common.conf
+            . ${CONFDIR}/${FILE}
+            TMP_RETVAL=0
 
-  if kv.getStopStatus ; then
-    return $ACTION_OK
-  else
-    if [[ -n "$1" ]] ; then
-      kv.killProcess $pid 
+            if [ -z "${PASSWORD}" ]; then
+                ${LOGGER} "no PASSWORD found for ${FILE}, skipped VIP ID ${ID}"
+                TMP_RETVAL=1
+            fi
+            if [ -z "${BIND_INTERFACE}" ]; then
+                ${LOGGER} "no BIND_INTERFACE found for ${FILE}, skipped VIP ID ${ID}"
+                TMP_RETVAL=1
+            fi
+            if [ -z "${SOURCE_ADDRESS}" ]; then
+                ${LOGGER} "no SOURCE_ADDRESS found for ${FILE}, skipped VIP ID ${ID}"
+                TMP_RETVAL=1
+            fi
+            if [ -z "${VIP_ADDRESS}" ]; then
+                ${LOGGER} "no VIP_ADDRESS found for ${FILE}, skipped VIP ID ${ID}"
+                TMP_RETVAL=1
+            fi
+
+            # If one of more of the above failed, skip the daemon launch
+            if [ ${TMP_RETVAL} -ne 0 ]; then
+                VIP_RETVAL=1
+                continue
+            fi
+
+            [ ${RETVAL} -eq -1 ] && RETVAL=0
+            daemon /usr/sbin/ucarp --daemonize --interface=${BIND_INTERFACE} --pass=${PASSWORD} --srcip=${SOURCE_ADDRESS} --vhid=${ID} --addr=${VIP_ADDRESS} --advskew=${SKEW} ${OPTIONS} --upscript=$UPSCRIPT --downscript=$DOWNSCRIPT >/dev/null
+            LAUNCH_RETVAL=$?
+            [ ${LAUNCH_RETVAL} -ne 0 ] && RETVAL=1
+        done
+
+        # failure/success or warning if launch worked with some vip errors
+        if [ ${RETVAL} -eq 0 -a ${VIP_RETVAL} -eq 0 ]; then
+            ${LOGGER} "all ucarp configurations were applied successfully"
+            success
+            touch /var/lock/subsys/ucarp
+        elif [ ${RETVAL} -eq 0 -a ${VIP_RETVAL} -eq 1 ]; then
+            ${LOGGER} "error in one or more of the ucarp configurations"
+            warning
+        else
+           ${LOGGER} "error running one or more of the ucarp daemon instances"
+            failure
+        fi
     fi
-
-    return $ACTION_ERROR
-  fi
+    echo
 }
 
-###############################################################################
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc /usr/sbin/ucarp >/dev/null
+    RETVAL=$?
 
-prepare
+    # With "--shutdown" in the default OPTIONS, the down script is called
+    # when ucarp is stopped, so IP addresses are released, no "leftovers".
 
-kv.go $@
+    # failure/success (no warning, too complicated to handle properly)
+    if [ ${RETVAL} -eq 1 ]; then
+        ${LOGGER} "it seems like no ucarp daemon were running"
+        failure
+    else
+        ${LOGGER} "all ucarp daemons stopped and IP addresses unassigned"
+        success
+        rm -f /var/lock/subsys/ucarp
+    fi
+    echo
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    condrestart)
+        if [ -f /var/lock/subsys/ucarp ]; then
+            stop
+            start
+        fi
+        ;;
+    status)
+        status /usr/sbin/ucarp
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart|condrestart|status}"
+        exit 1
+esac
+
+exit $RETVAL
