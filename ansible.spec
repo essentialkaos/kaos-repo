@@ -31,16 +31,13 @@ Requires:             python26-keyczar python26-httplib2 python26-setuptools
 Requires:             python26-six
 %endif
 
-%if 0%{?rhel} == 6
-Requires:             python-crypto2.6
-%endif
-
 %if 0%{?rhel} && 0%{?rhel} > 5
 BuildRequires:        python2-devel
 BuildRequires:        python-setuptools
 
 Requires:             PyYAML python-markupsafe python-paramiko python-jinja2
-Requires:             python-keyczar python-httplib2 python-setuptools python-six
+Requires:             python-keyczar python-httplib2 python-setuptools
+Requires:             python-crypto python-six
 %endif
 
 %if 0%{?fedora} >= 18
