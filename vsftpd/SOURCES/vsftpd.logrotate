@@ -1,0 +1,10 @@
+/var/log/vsftpd/vsftpd.log {
+    nocompress
+    missingok
+}
+
+/var/log/vsftpd/xferlog.log {
+    nocompress
+    missingok
+}
+
