@@ -32,7 +32,6 @@ binary=${BINARY:-/usr/sbin/vsftpd}
 conf_file=${CONF_FILE:-/etc/vsftpd/vsftpd.conf}
 
 kv[search_pattern]="${kv[prog_name]} $conf_file"
-kv[pid_file]="/var/run/vsftpd.pid"
 
 ###############################################################################
 

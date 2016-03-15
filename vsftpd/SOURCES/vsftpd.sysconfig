@@ -1,5 +1,3 @@
-# BINARY=""
-
-# CONF_FILE=""
-
+BINARY=""
+CONF_FILE=""
 OPTIONS=""

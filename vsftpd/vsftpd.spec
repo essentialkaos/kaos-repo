@@ -61,9 +61,9 @@ Source4:              %{name}.sysconfig
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:             openssl >= 1.0.1e, kaosv >= 2.7.0, logrotate
+Requires:             openssl logrotate kaosv >= 2.7.0
 
-BuildRequires:        openssl-devel >= 1.0.1e, libcap-devel, grep
+BuildRequires:        openssl-devel libcap-devel grep
 
 ###############################################################################
 
