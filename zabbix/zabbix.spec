@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.0.0
+Version:              3.0.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -874,6 +874,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Mar 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.1-0 
+- Updated to latest version 
+
 * Wed Feb 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.0-0 
 - Initial build
 
