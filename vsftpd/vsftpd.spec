@@ -38,8 +38,8 @@
 
 ###############################################################################
 
-%define service_user         vsftpd
-%define service_group        vsftpd
+%define service_user         vsftp
+%define service_group        vsftp
 %define service_name         %{name}
 %define service_home         %{_localstatedir}/ftp
 
@@ -51,7 +51,7 @@ Version:              3.0.3
 Release:              0%{?dist}
 License:              GPL
 Group:                System Environment/Daemons
-URL:                  http://vsftpd.beasts.org/
+URL:                  http://vsftpd.beasts.org
 
 Source0:              https://security.appspot.com/downloads/%{name}-%{version}.tar.gz
 Source1:              %{name}.init
@@ -65,10 +65,12 @@ Requires:             openssl logrotate kaosv >= 2.7.0
 
 BuildRequires:        openssl-devel libcap-devel grep
 
+Provides:             %{name} = %{version}-%{release}
+
 ###############################################################################
 
 %description
-vsftpd is a Very Secure FTP daemon. It was written completely from
+vsftpd is a Very Secure FTP daemon. It was written completely from 
 scratch.
 
 ###############################################################################
@@ -120,13 +122,13 @@ exit 0
 
 %post
 if [[ $1 -eq 0 ]] ; then
-    %{__chkconfig} --add %{service_name}
+  %{__chkconfig} --add %{service_name}
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-    %{__service} %{service_name} stop
-    %{__chkconfig} --del %{service_name} 
+  %{__service} %{service_name} stop
+  %{__chkconfig} --del %{service_name}
 fi
 
 %clean

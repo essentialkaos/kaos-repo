@@ -50,7 +50,6 @@ startServiceHandler() {
   kv.daemonize "$binary" "$conf_file $OPTIONS"
 
   if kv.getStartStatus ; then
-    kv.log "service started."
     return $ACTION_OK
   fi
 
@@ -59,10 +58,9 @@ startServiceHandler() {
 
 stopServiceHandler() {
 
-  kv.sendSignal "SIGTERM"
+  kv.sendSignal "$SIGNAL_TERM"
 
   if kv.getStopStatus ; then
-    kv.log "service stopped."
     return $ACTION_OK
   fi
 
