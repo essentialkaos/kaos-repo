@@ -18,7 +18,7 @@
 
 Summary:            Tool for installing and managing Python packages
 Name:               pip
-Version:            1.5.1
+Version:            1.8.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Libraries
@@ -69,6 +69,9 @@ It’s a replacement for easy_install.
 ## Changelog ###################################################################
 
 %changelog
+* Sun Mar 20 2016 Gleb Goncharov <yum@gongled.ru> - 1.8.1-0
+- Updated to latest stable release
+
 * Wed Jan 22 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - Updated to latest stable release
 
