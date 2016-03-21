@@ -144,7 +144,9 @@ fi
 %{_bindir}/pdbtool
 %{_bindir}/update-patterndb
 %{_libdir}/*
+%ifarch x86_64
 %{_libdir32}/%{name}/*
+%endif
 %{_includedir}/%{name}/*
 %{_datadir}/*
 
