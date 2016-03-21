@@ -62,7 +62,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           kaosv
 
-BuildRequires:      bison flex gcc-c++ glib2-devel pkgconfig
+BuildRequires:      bison flex gcc-c++ glib2-devel pkgconfig pcre-devel
 BuildRequires:      openssl-devel libnet-devel eventlog-devel libhiredis-devel
 
 Provides:           %{name} = %{version}-%{release}
