@@ -12,15 +12,15 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="syslog-ng"
-kv[pid_file]="/var/run/${kv[prog_name]}.pid"
 
 kv.readSysconfig
 
-binary=${BINARY:-/usr/sbin/syslog-ng}
-conf_file=${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}
-options=${OPTIONS:-""}
+binary="${BINARY:-/usr/sbin/syslog-ng}"
+conf_file="${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}"
+options="$OPTIONS"
 
 kv[search_pattern]="$binary"
+kv[log]="/var/log/syslog-ng.log"
 
 ###############################################################################
 
@@ -51,7 +51,7 @@ preStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "-f $conf_file -p ${kv[pid_file]} $options"
+  kv.daemonize "$binary" "-r -f $conf_file -p ${kv[pid_file]} $options"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
@@ -97,6 +97,14 @@ reloadServiceConfig() {
   return $ACTION_OK
 }
 
+restart() {
+  if check ; then
+    kv.restart
+  fi
+
+  return $?
+}
+
 check() {
   kv.showProcessMessage "Checking ${kv[prog_name]} config"
 
@@ -134,7 +142,7 @@ reload() {
 
   kv.showStatusMessage "$status"
 
-  [[ $status -eq $ACTION_OK ]] && kv.log "service config reloaded by ${kv[real_user]}."
+  [[ $status -eq $ACTION_OK ]] && kv.log "Service config reloaded by ${kv[real_user]}."
 
   return $status
 }
