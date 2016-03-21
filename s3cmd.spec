@@ -1,5 +1,13 @@
 ########################################################################################
 
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+
+%if 0%{?rhel} == 5
+%define __python /usr/bin/python26
+%endif
+
+########################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -29,7 +37,8 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define _python_lib_dir   %{_libdir32}/python2.6/site-packages
+########################################################################################
+
 %define shortname         s3
 
 ########################################################################################
@@ -37,7 +46,7 @@
 Summary:         Command line tool for managing Amazon S3 and CloudFront services
 Name:            s3cmd
 Version:         1.6.1
-Release:         0%{?dist}
+Release:         1%{?dist}
 Group:           Applications/System
 License:         GPL
 URL:             http://s3tools.org/s3cmd
@@ -87,11 +96,14 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.md NEWS LICENSE
 %{_bindir}/*
-%{_python_lib_dir}/*
+%{python_sitelib}/*
 
 ########################################################################################
 
 %changelog
+* Thu Mar 10 2016 Gleb Goncharov <yum@gongled.ru> - 1.6.1-1
+- Fixed incompatibility with CentOS/RHEL 7.x
+
 * Thu Feb 04 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - Updated to latest release
 
