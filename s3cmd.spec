@@ -46,7 +46,7 @@
 Summary:         Command line tool for managing Amazon S3 and CloudFront services
 Name:            s3cmd
 Version:         1.6.1
-Release:         0%{?dist}
+Release:         1%{?dist}
 Group:           Applications/System
 License:         GPL
 URL:             http://s3tools.org/s3cmd

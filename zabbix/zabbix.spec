@@ -327,7 +327,7 @@ Zabbix web frontend for PostgreSQL
 ################################################################################
 
 %prep
-%setup0 -q -n zabbix-%{version}
+%setup -q -n zabbix-%{version}
 
 %patch0 -p1
 %patch1 -p1
@@ -808,6 +808,10 @@ fi
 %endif
 
 ################################################################################
+
+%files
+%defattr(-,root,root,-)
+# no files for you
 
 %files agent
 %defattr(-,root,root,-)
