@@ -34,7 +34,8 @@ kv.addCommand "reload"       "Reload ${kv[prog_name]}" "reload"
 kv.addCommandAlias "check"   "configtest"
 
 kv.addHandler "start"   "startServiceHandler"
-kv.addHandler "start"   "preStartServiceHandler" "pre"
+kv.addHandler "start"   "preStartServiceHandler"  "pre"
+kv.addHandler "start"   "postStartServiceHandler" "post"
 kv.addHandler "stop"    "stopServiceHandler"
 
 kv.disableOutputRedirect "start" "pre"
@@ -47,6 +48,13 @@ preStartServiceHandler() {
     testServiceConfig
     kv.show "-------------------------------------------------------------------------------" $GREY
     return $ACTION_ERROR
+  fi
+}
+
+postStartServiceHandler() {
+  if kv.statusIs "$STATUS_STOPPED" ; then
+    kv.checkSELinux
+    return $?
   fi
 }
 
