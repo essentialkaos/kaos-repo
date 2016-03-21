@@ -60,10 +60,11 @@ Source2:            %{name}.init
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           kaosv eventlog libhiredis libnet GeoIP pcre openssl
+Requires:           kaosv eventlog libhiredis libnet GeoIP pcre openssl json-c
 
 BuildRequires:      bison flex gcc-c++ glib2-devel pkgconfig pcre-devel
-BuildRequires:      openssl-devel libnet-devel eventlog-devel libhiredis-devel
+BuildRequires:      openssl-devel libnet-devel eventlog-devel
+BuildRequires:      libhiredis-devel json-c-devel
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -84,6 +85,7 @@ single, central log server.
 %{configure} --sysconfdir=%{_sysconfdir}/%{name} \
              --disable-python \
              --enable-spoof-source \
+             --enable-json \
              --enable-redis
 
 %{__make} %{?_smp_mflags}
@@ -95,7 +97,7 @@ rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
-install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_initrddir}
 
 install -pm 644 %{SOURCE1} \
