@@ -60,7 +60,7 @@ Source2:            %{name}.init
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           kaosv eventlog libhiredis libnet GeoIP pcre
+Requires:           kaosv eventlog libhiredis libnet GeoIP pcre openssl
 
 BuildRequires:      bison flex gcc-c++ glib2-devel pkgconfig pcre-devel
 BuildRequires:      openssl-devel libnet-devel eventlog-devel libhiredis-devel
