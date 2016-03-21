@@ -1,0 +1,145 @@
+#!/bin/bash
+
+# syslog-ng      init file for starting up the syslog-ng daemon
+#
+# chkconfig:   - 20 80
+# description: Starts and stops the syslog-ng daemon
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="syslog-ng"
+kv[pid_file]="/var/run/${kv[prog_name]}.pid"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/sbin/syslog-ng}
+conf_file=${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}
+options=${OPTIONS:-""}
+
+kv[search_pattern]="$binary"
+
+###############################################################################
+
+kv.addCommand "start"        "Start ${kv[prog_name]}"
+kv.addCommand "stop"         "Stop ${kv[prog_name]}"
+kv.addCommand "restart"      "Restart (stop+start) ${kv[prog_name]}" "restart"
+kv.addCommand "status"       "Show current status of ${kv[prog_name]}"
+kv.addCommand "check"        "Validate config" "check"
+kv.addCommand "reload"       "Reload ${kv[prog_name]}" "reload"
+
+kv.addCommandAlias "check"   "configtest"
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "start"   "preStartServiceHandler" "pre"
+kv.addHandler "stop"    "stopServiceHandler"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+preStartServiceHandler() {
+  if ! testServiceConfig true ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+}
+
+startServiceHandler() {
+  kv.daemonize "$binary" "-f $conf_file -p ${kv[pid_file]} $options"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_TERM"
+  kv.removePid
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess $pid
+    fi
+    return $ACTION_ERROR
+  fi
+}
+
+testServiceConfig() {
+  local quiet="$1"
+
+  if [[ $quiet ]] ; then
+    $binary -s -f $conf_file &> /dev/null
+  else
+    $binary -s -f $conf_file
+  fi
+
+  local status=$?
+
+  [[ -f ${kv[pid_file]} && ! -s ${kv[pid_file]} ]] && kv.removePid
+
+  [[ $status -eq $ACTION_OK ]] && return $ACTION_OK || return $ACTION_ERROR
+}
+
+reloadServiceConfig() {
+  kv.sendSignal "$SIGNAL_HUP"
+  return $ACTION_OK
+}
+
+check() {
+  kv.showProcessMessage "Checking ${kv[prog_name]} config"
+
+  testServiceConfig true
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  if [[ $status -ne 0 ]] ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+
+  return $ACTION_OK
+}
+
+reload() {
+  if ! kv.statusIs "$STATUS_WORKS" ; then
+    kv.show "You must start service before this command usage." $BROWN
+    return $ACTION_ERROR
+  fi
+
+  check
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.showProcessMessage "Reloading config for ${kv[prog_name]}"
+
+  reloadServiceConfig
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  [[ $status -eq $ACTION_OK ]] && kv.log "service config reloaded by ${kv[real_user]}."
+
+  return $status
+}
+
+###############################################################################
+
+kv.go $@
+
