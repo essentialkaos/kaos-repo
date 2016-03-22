@@ -7,7 +7,7 @@
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
 Version:         0.6.4
-Release:         0%{?dist}
+Release:         1%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
 URL:             http://www.consul.io
@@ -31,8 +31,8 @@ distributed, highly available, and extremely scalable.
 %prep
 %setup -qn %{name}-%{version}
 
-mkdir -p .src/github.com/hashicorp/consul
-mv * .src/github.com/hashicorp/consul/
+mkdir -p .src/github.com/hashicorp/%{name}
+mv * .src/github.com/hashicorp/%{name}/
 mv .src src
 
 %build
@@ -42,7 +42,7 @@ export XC_ARCH=$(go env GOARCH)
 export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
 
-pushd src/github.com/hashicorp/consul
+pushd src/github.com/hashicorp/%{name}
   # This is hack for installing dependencies. Build failed on getting
   # git revision. 
   %{__make} %{?_smp_mflags} || :
@@ -67,5 +67,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Mar 22 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.4-0
+- Updated to latest stable release
+
 * Thu Mar 10 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.3-0
 - Initial build
