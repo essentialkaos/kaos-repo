@@ -1,0 +1,73 @@
+#!/bin/bash
+
+# vsftpd        Startup script for vsftpd
+
+# chkconfig: - 85 15
+# processname: vsftpd
+# config: /etc/vsftpd/vsftpd.conf
+# config: /etc/sysconfig/vsftpd
+# pidfile: /var/run/vsftpd.pid
+# description: vsftpd is very secure FTP daemon
+
+### BEGIN INIT INFO
+# Provides: vsftpd
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop vsftpd
+### END INIT INFO
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="vsftpd"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/sbin/vsftpd}
+conf_file=${CONF_FILE:-/etc/vsftpd/vsftpd.conf}
+
+kv[search_pattern]="${kv[prog_name]} $conf_file"
+
+###############################################################################
+
+kv.addCommand "start"         "Start ${kv[prog_name]} FTP daemon"
+kv.addCommand "stop"          "Stop ${kv[prog_name]} FTP daemon"
+kv.addCommand "restart"       "Restart (stop+start) ${kv[prog_name]} FTP daemon"
+kv.addCommand "status"        "Show current status of ${kv[prog_name]}"
+
+kv.addHandler "start"   "startServiceHandler"
+kv.addHandler "stop"    "stopServiceHandler"
+
+###############################################################################
+
+startServiceHandler() {
+
+  kv.daemonize "$binary" "$conf_file $OPTIONS"
+
+  if kv.getStartStatus ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
+}
+
+stopServiceHandler() {
+
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
+}
+
+###############################################################################
+
+kv.go $@
+

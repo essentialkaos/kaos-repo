@@ -35,7 +35,7 @@
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
-%define __updalernatives  %{_sbindir}/update-alternatives
+%define __updalternatives %{_sbindir}/update-alternatives
 
 ################################################################################
 
@@ -50,8 +50,8 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.0.0
-Release:              0%{?dist}
+Version:              3.0.1
+Release:              1%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
@@ -77,9 +77,9 @@ Patch2:               fping3-sourceip-option.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel 
-BuildRequires:        iksemel-devel unixODBC-devel libxml2-devel curl-devel >= 7.13.1 
-BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
+BuildRequires:        mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel
+BuildRequires:        iksemel-devel unixODBC-devel libxml2-devel curl-devel >= 7.13.1
+BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0 sqlite-devel
 %if 0%{?rhel} >= 7
 BuildRequires:        systemd
 %endif
@@ -245,6 +245,33 @@ Zabbix proxy with PostgreSQL database support.
 
 ################################################################################
 
+%package proxy-sqlite3
+Summary:              Zabbix proxy for SQLite3 database
+Group:                Applications/Internet
+
+Requires:             fping
+%if 0%{?rhel} >= 7
+Requires(post):       systemd
+Requires(preun):      systemd
+Requires(postun):     systemd
+%else
+Requires(post):       %{__chkconfig}
+Requires(preun):      %{__chkconfig}
+Requires(preun):      %{__service}
+Requires(postun):     %{__service}
+%endif
+
+Provides:             zabbix-proxy = %{version}-%{release}
+Provides:             zabbix-proxy-implementation = %{version}-%{release}
+
+Obsoletes:            zabbix = %{version}
+Obsoletes:            zabbix-proxy = %{version}-%{release}
+
+%description proxy-sqlite3
+Zabbix proxy with SQLite3 database support.
+
+################################################################################
+
 %package web
 Summary:              Zabbix web frontend common package
 Group:                Applications/Internet
@@ -300,7 +327,7 @@ Zabbix web frontend for PostgreSQL
 ################################################################################
 
 %prep
-%setup0 -q -n zabbix-%{version}
+%setup -q -n zabbix-%{version}
 
 %patch0 -p1
 %patch1 -p1
@@ -321,6 +348,7 @@ find frontends/php/locale -name '*.sh' -delete
 # traceroute command path for global script
 %{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
 %{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/postgresql/data.sql
+%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/sqlite3/data.sql
 
 
 %build
@@ -356,6 +384,11 @@ make %{?_smp_mflags}
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
 
+%configure $build_flags --with-sqlite3
+make %{?_smp_mflags}
+
+rm -f src/zabbix_server/zabbix_server
+mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_sqlite3
 
 %install
 rm -rf %{buildroot}
@@ -391,6 +424,7 @@ install -dm 755 %{buildroot}%{_docdir}/zabbix-server-mysql-%{version}
 install -dm 755 %{buildroot}%{_docdir}/zabbix-server-pgsql-%{version}
 install -dm 755 %{buildroot}%{_docdir}/zabbix-proxy-mysql-%{version}
 install -dm 755 %{buildroot}%{_docdir}/zabbix-proxy-pgsql-%{version}
+install -dm 755 %{buildroot}%{_docdir}/zabbix-proxy-sqlite3-%{version}
 
 install -dm 755 %{buildroot}%{_mandir}/man1
 install -dm 755 %{buildroot}%{_mandir}/man8
@@ -511,6 +545,10 @@ docdir=%{buildroot}%{_docdir}/zabbix-proxy-pgsql-%{version}
 cp database/postgresql/schema.sql $docdir/schema.sql
 %{__gzip} $docdir/schema.sql
 
+docdir=%{buildroot}%{_docdir}/zabbix-proxy-sqlite3-%{version}
+cp database/sqlite3/schema.sql $docdir/schema.sql
+%{__gzip} $docdir/schema.sql
+
 
 %clean
 rm -rf %{buildroot}
@@ -565,6 +603,14 @@ exit 0
 exit 0
 
 
+%pre proxy-sqlite3
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
+        -c "Zabbix Monitoring System" %{service_user}
+exit 0
+
+
 %post server-mysql
 %if 0%{?rhel} >= 7
 %systemd_post zabbix-server.service
@@ -606,6 +652,17 @@ exit 0
 %endif
 %{__updalternatives} --install %{_sbindir}/zabbix_proxy \
         zabbix-proxy %{_sbindir}/zabbix_proxy_pgsql 10
+exit 0
+
+
+%post proxy-sqlite3
+%if 0%{?rhel} >= 7
+%systemd_post zabbix-proxy.service
+%else
+%{__chkconfig} --add zabbix-proxy
+%endif
+%{__updalternatives} --install %{_sbindir}/zabbix_proxy \
+        zabbix-proxy %{_sbindir}/zabbix_proxy_sqlite3 10
 exit 0
 
 
@@ -677,6 +734,20 @@ fi
 exit 0
 
 
+%preun proxy-sqlite3
+if [[ $1 -eq 0 ]] ; then
+%if 0%{?rhel} >= 7
+%systemd_preun zabbix-proxy.service
+%else
+%{__service} zabbix-proxy stop >/dev/null 2>&1
+%{__chkconfig} --del zabbix-proxy
+%endif
+%{__updalternatives} --remove zabbix-proxy \
+        %{_sbindir}/zabbix_proxy_sqlite3
+fi
+exit 0
+
+
 %postun agent
 %if 0%{?rhel} >= 7
 %systemd_postun_with_restart zabbix-agent.service
@@ -726,7 +797,21 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
+
+%postun proxy-sqlite3
+%if 0%{?rhel} >= 7
+%systemd_postun_with_restart zabbix-proxy.service
+%else
+if [[ $1 -ge 1 ]] ; then
+%{__service} zabbix-proxy try-restart >/dev/null 2>&1 || exit 0
+fi
+%endif
+
 ################################################################################
+
+%files
+%defattr(-,root,root,-)
+# no files for you
 
 %files agent
 %defattr(-,root,root,-)
@@ -851,6 +936,27 @@ fi
 %{_sbindir}/zabbix_proxy_pgsql
 
 
+%files proxy-sqlite3
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%dir %{_sysconfdir}/zabbix/externalscripts
+
+%config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
+
+%attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
+%attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
+%attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
+
+%{_mandir}/man8/zabbix_proxy.8*
+%if 0%{?rhel} >= 7
+%{_unitdir}/zabbix-proxy.service
+%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%else
+%{_sysconfdir}/init.d/zabbix-proxy
+%endif
+%{_sbindir}/zabbix_proxy_sqlite3
+
+
 %files web
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
@@ -874,6 +980,13 @@ fi
 ################################################################################
 
 %changelog
-* Wed Feb 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.0-0 
+* Fri Mar 18 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.1-1
+- 'update-alternatives' for zabbix-proxy doesn't work properly. Fixed.
+- added zabbix-proxy-sqlite3
+
+* Thu Mar 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.1-0
+- Updated to latest version
+
+* Wed Feb 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.0-0
 - Initial build
 
