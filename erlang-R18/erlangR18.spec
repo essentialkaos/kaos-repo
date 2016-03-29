@@ -39,7 +39,7 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           18
-%define ver_min           2.1
+%define ver_min           3
 %define realname          erlang
 
 ###############################################################################
@@ -1183,6 +1183,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Mar 22 2016 Anton Novojilov <andy@essentialkaos.com> - 18.3-0
+- Updated to latest stable release
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 18.2.1-0
 - Updated to latest stable release
 
