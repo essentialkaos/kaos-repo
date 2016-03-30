@@ -44,8 +44,8 @@ Name:                 gradle
 Version:              2.12
 Release:              0%{?dist}
 License:              ASL 2.0 
-Group:                Development/Tools 
-URL:                  http://gradle.org/
+Group:                Development/Tools
+URL:                  http://gradle.org
 
 Source0:              https://services.gradle.org/distributions/%{name}-%{version}-src.zip
 
@@ -53,7 +53,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        jdk8
 
-Provides:             %{name} = %{version}-%{release} 
+Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -87,7 +87,7 @@ ln -sf %{_opt}/%{name}/%{version} %{buildroot}%{_opt}/%{name}/current
 ###############################################################################
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
@@ -99,5 +99,4 @@ ln -sf %{_opt}/%{name}/%{version} %{buildroot}%{_opt}/%{name}/current
 
 %changelog
 * Tue Mar 29 2016 Gleb Goncharov <yum@gongled.me> - 2.12-0
-- Initial build 
-
+- Initial build
