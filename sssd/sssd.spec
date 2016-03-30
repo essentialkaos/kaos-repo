@@ -14,26 +14,26 @@
 %define _empty_manifest_terminate_build 0
 
 %if (0%{?fedora} || 0%{?rhel} >= 7)
-    %define use_systemd 1
+  %define use_systemd 1
 %endif
 
 %if (0%{?fedora} || 0%{?rhel} >= 7)
-    %define install_pcscd_polkit_rule 1
+  %define install_pcscd_polkit_rule 1
 %else
-    %define enable_polkit_rules_option --disable-polkit-rules-path
+  %define enable_polkit_rules_option --disable-polkit-rules-path
 %endif
 
 %if (0%{?use_systemd} == 1)
-    %define with_initscript --with-initscript=systemd --with-systemdunitdir=%{_unitdir}
-    %define with_syslog --with-syslog=journald
+  %define with_initscript --with-initscript=systemd --with-systemdunitdir=%{_unitdir}
+  %define with_syslog --with-syslog=journald
 %else
-    %define with_initscript --with-initscript=sysv
+  %define with_initscript --with-initscript=sysv
 %endif
 
 %define enable_experimental 1
 
 %if (0%{?enable_experimental} == 1)
-    %define experimental --enable-all-experimental-features
+  %define experimental --enable-all-experimental-features
 %endif
 
 %define ldb_modulesdir %(pkg-config --variable=modulesdir ldb)
@@ -43,20 +43,23 @@
 %endif
 
 %if (0%{?fedora} || 0%{?rhel} >= 7)
-    %define with_cifs_utils_plugin 1
+  %define with_cifs_utils_plugin 1
 %else
-    %define with_cifs_utils_plugin_option --disable-cifs-idmap-plugin
+  %define with_cifs_utils_plugin_option --disable-cifs-idmap-plugin
 %endif
 
 %if (0%{?fedora} || (0%{?rhel} == 7 &&  0%{?rhel7_minor} >= 1) || (0%{?rhel} == 6 &&  0%{?rhel6_minor} >= 7))
-    %define with_krb5_localauth_plugin 1
+  %define with_krb5_localauth_plugin 1
 %endif
 
 %if (0%{?fedora})
-    %define with_python3 1
+  %define with_python3 1
 %else
-    %define with_python3_option --without-python3-bindings
+  %define with_python3_option --without-python3-bindings
 %endif
+
+%define alt_add /usr/sbin/alternatives --install
+%define alt_rm  /usr/sbin/alternatives --remove
 
 ###############################################################################
 
@@ -667,7 +670,7 @@ Development libraries for the SSSD libwbclient implementation.
 ###############################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 autoreconf -ivf
@@ -724,15 +727,13 @@ find %{buildroot} -name "*.la" -exec rm -f {} \;
 
 rm -Rf ${RPM_BUILD_ROOT}/%{_docdir}/%{name}
 
-for file in `ls %{buildroot}/%{python2_sitelib}/*.egg-info 2> /dev/null`
-do
-    echo %{python2_sitelib}/`basename $file` >> python2_sssdconfig.lang
+for file in `ls %{buildroot}/%{python2_sitelib}/*.egg-info 2> /dev/null` ; do
+  echo %{python2_sitelib}/`basename $file` >> python2_sssdconfig.lang
 done
 
 %if (0%{?with_python3} == 1)
-for file in `ls %{buildroot}/%{python3_sitelib}/*.egg-info 2> /dev/null`
-do
-    echo %{python3_sitelib}/`basename $file` >> python3_sssdconfig.lang
+for file in `ls %{buildroot}/%{python3_sitelib}/*.egg-info 2> /dev/null` ; do
+  echo %{python3_sitelib}/`basename $file` >> python3_sssdconfig.lang
 done
 %endif
 
@@ -740,50 +741,141 @@ touch %{name}.lang
 touch %{name}_tools.lang
 touch %{name}_client.lang
 
-for provider in ldap krb5 ipa ad proxy
-do
-    touch %{name}_$provider.lang
+for provider in ldap krb5 ipa ad proxy ; do
+  touch %{name}_$provider.lang
 done
 
-for man in `find %{buildroot}/%{_mandir}/??/man?/ -type f | sed -e "s#%{buildroot}/%{_mandir}/##"`
-do
-    lang=`echo $man | cut -c 1-2`
-    case `basename $man` in
-        sss_cache*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}.lang
-            ;;
-        sss_*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_tools.lang
-            ;;
-        sssd_krb5_*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_client.lang
-            ;;
-        pam_sss*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_client.lang
-            ;;
-        sssd-ldap*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_ldap.lang
-            ;;
-        sssd-krb5*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_krb5.lang
-            ;;
-        sssd-ipa*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_ipa.lang
-            ;;
-        sssd-ad*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_ad.lang
-            ;;
-        sssd-proxy*)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_proxy.lang
-            ;;
-        *)
-            echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}.lang
-            ;;
-    esac
+for man in `find %{buildroot}/%{_mandir}/??/man?/ -type f | sed -e "s#%{buildroot}/%{_mandir}/##"` ; do
+  lang=`echo $man | cut -c 1-2`
+  case `basename $man` in
+    sss_cache*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}.lang
+      ;;
+    sss_*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_tools.lang
+      ;;
+    sssd_krb5_*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_client.lang
+      ;;
+    pam_sss*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_client.lang
+      ;;
+    sssd-ldap*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_ldap.lang
+      ;;
+    sssd-krb5*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_krb5.lang
+      ;;
+    sssd-ipa*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_ipa.lang
+      ;;
+    sssd-ad*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_ad.lang
+      ;;
+    sssd-proxy*)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}_proxy.lang
+      ;;
+    *)
+      echo \%lang\(${lang}\) \%{_mandir}/${man}\* >> %{name}.lang
+      ;;
+  esac
 done
 
 %clean
 rm -rf %{buildroot}
+
+###############################################################################
+
+%pre common
+getent group %{service_group} >/dev/null || groupadd -r %{service_group}
+getent passwd %{service_user} >/dev/null || useradd -r -g %{service_group} -s /sbin/nologin -d %{service_home} %{service_user}
+exit 0
+
+%if (0%{?use_systemd} == 1)
+
+%post common
+%service_add_post %{service_name}.service
+
+%preun common
+%service_del_preun %{service_name}.service
+
+%postun
+%service_del_postun %{service_name}.service
+
+%else
+
+%post common
+if [[ $1 -eq 1 ]] ; then
+  %{__chkconfig} --add %{service_name}
+fi
+
+%preun common
+if [[ $1 -eq 0 ]] ; then
+  %{__service} %{service_name} stop 2>&1 > /dev/null
+  %{__chkconfig} --del %{service_name}
+fi
+
+%endif
+
+%if (0%{?with_cifs_utils_plugin} == 1)
+
+%post client
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+  
+  %{alt_add} %{_sysconfdir}/cifs-utils/idmap-plugin \
+             cifs-idmap-plugin \
+             %{_libdir}/cifs-utils/cifs_idmap_sss.so 20
+fi
+
+%preun client
+if [[ $1 -eq 0 ]] ; then
+  %{alt_rm} cifs-idmap-plugin %{_libdir}/cifs-utils/cifs_idmap_sss.so
+fi
+
+%else
+
+%post client
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%endif
+
+%postun client
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%post -n libipa_hbac
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%postun -n libipa_hbac
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%post -n libsss_idmap
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%postun -n libsss_idmap
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%post -n libsss_nss_idmap
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
+
+%postun -n libsss_nss_idmap
+if [[ $1 -eq 1 ]] ; then
+  %{__ldconfig}
+fi
 
 ###############################################################################
 
@@ -1076,98 +1168,6 @@ rm -rf %{buildroot}
 %{_includedir}/wbclient_sssd.h
 %{_libdir}/%{name}/modules/libwbclient.so
 %{_libdir}/pkgconfig/wbclient_sssd.pc
-
-###############################################################################
-
-%pre common
-getent group %{service_group} >/dev/null || groupadd -r %{service_group}
-getent passwd %{service_user} >/dev/null || useradd -r -g %{service_group} -s /sbin/nologin -d %{service_home} %{service_user}
-exit 0
-
-%if (0%{?use_systemd} == 1)
-
-%post common
-%service_add_post %{service_name}.service
-
-%preun common
-%service_del_preun %{service_name}.service
-
-%postun
-%service_del_postun %{service_name}.service
-
-%else
-
-%post common
-if [[ $1 -eq 1 ]] ; then
-    %{__chkconfig} --add %{service_name}
-fi
-
-%preun common
-if [[ $1 = 0 ]] ; then
-    %{__service} %{service_name} stop 2>&1 > /dev/null
-    %{__chkconfig} --del %{service_name}
-fi
-
-%endif
-
-%if (0%{?with_cifs_utils_plugin} == 1)
-
-%post client
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-    /usr/sbin/alternatives --install %{_sysconfdir}/cifs-utils/idmap-plugin \
-        cifs-idmap-plugin %{_libdir}/cifs-utils/cifs_idmap_sss.so 20
-fi
-
-%preun client
-if [[ $1 -eq 0 ]] ; then
-    /usr/sbin/alternatives --remove cifs-idmap-plugin \
-        %{_libdir}/cifs-utils/cifs_idmap_sss.so
-fi
-
-%else
-
-%post client
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%endif
-
-%postun client
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%post -n libipa_hbac
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%postun -n libipa_hbac
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%post -n libsss_idmap
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%postun -n libsss_idmap
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%post -n libsss_nss_idmap
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
-
-%postun -n libsss_nss_idmap
-if [[ $1 -eq 1 ]] ; then
-    %{__ldconfig}
-fi
 
 ###############################################################################
 
