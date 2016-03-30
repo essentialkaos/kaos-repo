@@ -35,8 +35,8 @@
 
 Summary:           Timezone Updater Tool
 Name:              tzupdater
-Version:           2.0.0
-Release:           2015a%{?dist}
+Version:           2.0.3
+Release:           2015b%{?dist}
 License:           http://www.oracle.com/technetwork/java/javasebusiness/downloads/tzupdater-lic-354297.txt
 Group:             Applications/Databases
 URL:               http://www.oracle.com
@@ -52,7 +52,6 @@ Provides:          %{name} = %{version}-%{release}
 ########################################################################################
 
 %description
-
 The TZUpdater tool is provided to allow you to update installed Java Development Kit 
 (JDK) and Java Runtime Environment (JRE) software with more recent timezone data, 
 to accommodate daylight saving time (DST) changes in different countries.
@@ -85,6 +84,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Mon Mar 21 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.3-2015b
+- Updated to latest release
+
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-2015a
 - Updated to latest release
 

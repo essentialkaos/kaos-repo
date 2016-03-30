@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.7.4
+Version:          2.8.0
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -210,7 +210,7 @@ rm -rf %{buildroot}
 %files -f bin-man-doc-files
 %defattr(-,root,root)
 %{_datadir}/git-core/
-%doc README COPYING Documentation/*.txt
+%doc COPYING Documentation/*.txt
 %doc Documentation/howto
 %doc Documentation/technical
 %{_sysconfdir}/bash_completion.d
@@ -272,6 +272,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Mar 29 2016 Gleb Goncharov <yum@gongled.me> - 2.8.0-0
+- Updated to latest release
+
 * Fri Mar 18 2016 Gleb Goncharov <yum@gongled.me> - 2.7.4-0
 - Updated to latest release
 
