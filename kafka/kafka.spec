@@ -74,7 +74,7 @@ BuildArch:           noarch
 
 Requires:            jre8 kaosv
 
-BuildRequires:       jdk8
+BuildRequires:       jdk8 gradle
 
 Requires(post):      %{__chkconfig} initscripts
 Requires(pre):       %{__chkconfig} initscripts
