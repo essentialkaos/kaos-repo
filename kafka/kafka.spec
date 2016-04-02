@@ -63,7 +63,7 @@ License:             APL v2
 Group:               Applications/Databases
 URL:                 http://incubator.apache.org/kafka/
 
-Source0:             https://github.com/apache/kafka/archive/%{version}.tar.gz
+Source0:             https://github.com/apache/%{name}/archive/%{version}.tar.gz
 Source1:             %{name}.init
 Source2:             %{name}.conf
 Source3:             %{name}.logrotate
@@ -139,6 +139,7 @@ popd
 %pre
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
 getent passwd %{user_name} >/dev/null || %{__useradd} -s /sbin/nologin -M -r -g %{group_name} -d %{home_dir} %{user_name}
+exit 0
 
 
 %post

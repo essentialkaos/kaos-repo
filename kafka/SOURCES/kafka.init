@@ -33,6 +33,7 @@ conf_file=${CONF_FILE:-/etc/kafka/kafka.conf}
 kv[user]="$kafka_user"
 kv[prog_name]="kafka"
 kv[search_pattern]="$conf_file"
+kv[auto_actions_log]=true
 
 ###############################################################################
 
@@ -48,24 +49,12 @@ kv.addCommand "start"        "Start ${kv[prog_name]}"
 kv.addCommand "stop"         "Stop ${kv[prog_name]}"
 kv.addCommand "restart"      "Restart (stop+start) ${kv[prog_name]}"
 kv.addCommand "status"       "Show current status of ${kv[prog_name]}"
-kv.addCommand "halt"         "Stop ${kv[prog_name]} immediately" "halt"
+
+kv.addCommandVars "stop" "force"
 
 kv.addHandler "start"   "startServiceHandler"
 kv.addHandler "stop"    "stopServiceHandler"
 kv.addHandler "restart" "restartServiceHandler"
-
-###############################################################################
-
-halt() {
-  kv.sendSignal SIGKILL
-
-  if kv.getStopStatus ; then
-    kv.log "service stopped by ${kv[real_user]}."
-    return $ACTION_OK
-  fi
-
-  return $ACTION_ERROR
-}
 
 ###############################################################################
 
@@ -76,7 +65,6 @@ startServiceHandler() {
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
   if kv.getStartStatus ; then
-    kv.log "service started by ${kv[real_user]}."
     return $ACTION_OK
   fi
 
@@ -87,7 +75,6 @@ stopServiceHandler() {
   kv.sendSignal SIGTERM
 
   if kv.getStopStatus ; then
-    kv.log "service stopped by ${kv[real_user]}."
     return $ACTION_OK
   fi
 
