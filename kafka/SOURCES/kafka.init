@@ -72,7 +72,13 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  kv.sendSignal SIGTERM
+  local pid=`kv.getPid`
+
+  if [[ -n "$1" ]] ; then
+    kv.killProcess $pid
+  else
+    kv.sendSignal SIGTERM
+  fi
 
   if kv.getStopStatus ; then
     return $ACTION_OK
@@ -83,5 +89,5 @@ stopServiceHandler() {
 
 ###############################################################################
 
-kv.go $@
+kv.go "$@"
 
