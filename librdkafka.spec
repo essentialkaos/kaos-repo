@@ -50,7 +50,7 @@ License:             2-clause BSD
 Group:               Development/Libraries
 URL:                 https://github.com/edenhill/librdkafka
 
-Source0:             https://github.com/edenhill/librdkafka/archive/0.9.0.99.tar.gz
+Source0:             https://github.com/edenhill/%{name}/archive/%{version}.tar.gz
 
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
