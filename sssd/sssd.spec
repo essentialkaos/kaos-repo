@@ -137,6 +137,7 @@ Requires:           %{name}-ipa = %{version}-%{release}
 Requires:           %{name}-krb5 = %{version}-%{release}
 Requires:           %{name}-ldap = %{version}-%{release}
 Requires:           %{name}-proxy = %{version}-%{release}
+Requires:           kaosv >= 2.8
 
 %if (0%{?with_python3} == 1)
 Requires:           python3-sssdconfig = %{version}-%{release}
@@ -192,6 +193,8 @@ services for projects like FreeIPA.
 
 The sssd subpackage is a meta-package that contains the deamon as well as all
 the existing back ends.
+
+###############################################################################
 
 %package common
 Summary:            Common files for the SSSD
@@ -1174,4 +1177,3 @@ fi
 %changelog
 * Tue Mar 22 2016 Gleb Goncharov <yum@gongled.ru> - 1.13.3-1
 - Initial build 
-
