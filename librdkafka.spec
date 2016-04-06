@@ -53,7 +53,7 @@ Source0:             https://github.com/edenhill/%{name}/archive/%{version}.tar.
 
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:       gcc make zlib
+BuildRequires:       gcc gcc-c++ make zlib-devel
 
 ###############################################################################
 
