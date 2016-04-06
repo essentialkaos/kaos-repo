@@ -1,6 +1,7 @@
---- salt-2015.8.5-orig/salt/config.py	2016-02-03 02:21:51.000000000 +0300
-+++ salt-2015.8.5/salt/config.py	2016-02-15 12:12:45.600455395 +0300
-@@ -909,8 +909,6 @@
+diff -urN salt-2015.8.8-orig/salt/config.py salt-2015.8.8/salt/config.py
+--- salt-2015.8.8-orig/salt/config.py 2016-03-23 01:55:42.000000000 +0300
++++ salt-2015.8.8/salt/config.py  2016-04-06 10:49:40.581725971 +0300
+@@ -923,8 +923,6 @@
      'recon_randomize': True,
      'return_retry_timer': 5,
      'return_retry_timer_max': 10,
@@ -9,7 +10,7 @@
      'random_reauth_delay': 10,
      'winrepo_source_dir': 'salt://win/repo-ng/',
      'winrepo_dir': os.path.join(salt.syspaths.BASE_FILE_ROOTS_DIR, 'win', 'repo'),
-@@ -1064,6 +1062,8 @@
+@@ -1081,6 +1079,8 @@
      'peer': {},
      'preserve_minion_cache': False,
      'syndic_master': '',
@@ -18,7 +19,7 @@
      'runner_dirs': [],
      'outputter_dirs': [],
      'client_acl': {},
-@@ -1639,8 +1639,8 @@
+@@ -1677,8 +1677,8 @@
      minion_opts = minion_config(
          minion_config_path, minion_env_var, minion_defaults
      )

@@ -1,6 +1,6 @@
-diff -urN salt-2015.8.5-orig/conf/master salt-2015.8.5/conf/master
---- salt-2015.8.5-orig/conf/master	2016-02-03 02:21:51.000000000 +0300
-+++ salt-2015.8.5/conf/master	2016-02-15 12:08:12.178778667 +0300
+diff -urN salt-2015.8.8-orig/conf/master salt-2015.8.8/conf/master
+--- salt-2015.8.8-orig/conf/master	2016-03-23 01:55:42.000000000 +0300
++++ salt-2015.8.8/conf/master	2016-04-06 10:01:21.725727878 +0300
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -28,7 +28,7 @@ diff -urN salt-2015.8.5-orig/conf/master salt-2015.8.5/conf/master
  
  # Directory to store job and cache data:
  # This directory may contain sensitive data and should be protected accordingly.
- # 
+ #
 -#cachedir: /var/cache/salt/master
 +cachedir: /var/cache/salt/master
  
@@ -43,16 +43,16 @@ diff -urN salt-2015.8.5-orig/conf/master salt-2015.8.5/conf/master
  
  # The master can take a while to start up when lspci and/or dmidecode is used
  # to populate the grains for the master. Enable if you want to see GPU hardware
-@@ -643,7 +643,7 @@
+@@ -683,7 +683,7 @@
  #syndic_pidfile: /var/run/salt-syndic.pid
  
  # LOG file of the syndic daemon:
 -#syndic_log_file: syndic.log
-+syndic_log_file: /var/log/salt/syndic.log
++syndic_log_file: syndic.log
  
  
  #####      Peer Publish settings     #####
-@@ -718,7 +718,7 @@
+@@ -758,7 +758,7 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  
@@ -61,9 +61,9 @@ diff -urN salt-2015.8.5-orig/conf/master salt-2015.8.5/conf/master
  #key_logfile: /var/log/salt/key
  
  # The level of messages to send to the console.
-diff -urN salt-2015.8.5-orig/conf/minion salt-2015.8.5/conf/minion
---- salt-2015.8.5-orig/conf/minion	2016-02-01 22:40:31.000000000 +0300
-+++ salt-2015.8.5/conf/minion	2016-02-15 12:09:01.093436052 +0300
+diff -urN salt-2015.8.8-orig/conf/minion salt-2015.8.8/conf/minion
+--- salt-2015.8.8-orig/conf/minion	2016-03-23 01:55:42.000000000 +0300
++++ salt-2015.8.8/conf/minion	2016-04-06 10:02:58.720727814 +0300
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
@@ -108,7 +108,7 @@ diff -urN salt-2015.8.5-orig/conf/minion salt-2015.8.5/conf/minion
  
  # Set the default outputter used by the salt-call command. The default is
  # "nested".
-@@ -513,7 +513,7 @@
+@@ -519,7 +519,7 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #
