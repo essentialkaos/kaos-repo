@@ -14,6 +14,7 @@
 %define _rundir           %{_localstatedir}/run
 %define _lockdir          %{_localstatedir}/lock
 %define _cachedir         %{_localstatedir}/cache
+%define _spooldir         %{_localstatedir}/spool
 %define _loc_prefix       %{_prefix}/local
 %define _loc_exec_prefix  %{_loc_prefix}
 %define _loc_bindir       %{_loc_exec_prefix}/bin
@@ -28,72 +29,71 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+
 ###############################################################################
 
-Summary:           A Curl-like tool for humans
-Name:              httpie
-Version:           0.9.3
-Release:           0%{?dist}
-License:           BSD
-Group:             Applications/Internet
-URL:               https://github.com/jakubroztocil/httpie
+Summary:              Generic non-JVM producer and consumer for Apache Kafka 
+Name:                 kafkacat
+Version:              1.2.0
+Release:              0%{?dist}
+License:              2-clause BSD
+Group:                Development/Libraries
+URL:                  https://github.com/edenhill/librdkafka
 
-Source0:           https://github.com/jakubroztocil/%{name}/archive/%{version}.tar.gz
+Source0:              https://github.com/edenhill/%{name}/archive/%{version}.tar.gz
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildArch:         noarch
+BuildRequires:        gcc make librdkafka-devel
 
-Requires:          python python-pygments python-argparse
-Requires:          python-requests python-setuptools
+Requires:             librdkafka
 
-BuildRequires:     python python-pygments python-requests python-setuptools
-BuildRequires:     python-argparse sed
+Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
 %description
-HTTPie is a CLI HTTP utility built out of frustration with existing tools. The
-goal is to make CLI interaction with HTTP-based services as human-friendly as
-possible.
+kafkacat is fast and lightweight client for Apache Kafka. 
 
-HTTPie does so by providing an http command that allows for issuing arbitrary
-HTTP requests using a simple and natural syntax and displaying colorized
-responses.
+In producer mode kafkacat reads messages from stdin, delimited with a 
+configurable delimeter, and produces them to the provided Kafka cluster, 
+topic and partition.
+
+In consumer mode kafkacat reads messages from a topic and partition and prints
+them to stdout using the configured message delimiter. 
+
+kafkacat also features a Metadata list mode to display the current state of 
+the Kafka cluster and its topics and partitions.
 
 ###############################################################################
 
 %prep
 %setup -qn %{name}-%{version}
-sed -i '/#!\/usr\/bin\/env/d' %{name}/__main__.py
-sed -i 's/Pygments>=1.5/Pygments>=1.1/' setup.py
-sed -i 's/requests>=2.0.0/requests>=1.1.0/' setup.py
 
 %build
-%{__python} setup.py build
+%configure
+%{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
-
-%{__python} setup.py install --root %{buildroot}
+rm -rf %{buildroot}
+%{make_install}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
 %files
-%defattr(-,root,root)
-%doc LICENSE README.rst
-%{python_sitelib}/%{name}/
-%{python_sitelib}/%{name}-%{version}*
-%{_bindir}/http
+%defattr(-, root, root, 0755)
+%doc LICENSE README.md
+%{_bindir}/%{name}
 
 ###############################################################################
 
 %changelog
-* Thu Mar 31 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.3-0
-- Updated to latest release
-
-* Tue Jul 29 2014 Anton Novojilov <andy@essentialkaos.com> - 0.8.0-0
-- Initial build
+* Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 1.2.0-0
+- Initial build 

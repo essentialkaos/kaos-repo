@@ -12,7 +12,8 @@ Source:           http://kernel.org/pub/software/scm/git/%{name}-%{version}.tar.
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    zlib-devel >= 1.2 openssl-devel libcurl-devel expat-devel gettext xmlto asciidoc > 6.0.3 lynx
+BuildRequires:    gcc make gettext xmlto asciidoc > 6.0.3 lynx 
+BuildRequires:    libcurl-devel expat-devel openssl-devel zlib-devel >= 1.2
 
 Requires:         perl-Git = %{version}-%{release}
 Requires:         zlib >= 1.2 rsync less openssh-clients expat expat-devel

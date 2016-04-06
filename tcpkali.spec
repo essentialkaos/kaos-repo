@@ -40,7 +40,8 @@ Source0:            https://github.com/machinezone/%{name}/archive/v%{version}.t
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make m4 gcc libtool
+BuildRequires:      make gcc gcc-c++ m4 autoconf automake libtool
+BuildRequires:      bison flex ncurses-devel
 
 Provides:           %{name} = %{version}-%{release} 
 
