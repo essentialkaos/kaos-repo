@@ -48,9 +48,11 @@ Source0:              https://github.com/edenhill/%{name}/archive/%{version}.tar
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+BuildRequires:        gcc make librdkafka-devel
+
 Requires:             librdkafka
 
-BuildRequires:        gcc make librdkafka-devel
+Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
