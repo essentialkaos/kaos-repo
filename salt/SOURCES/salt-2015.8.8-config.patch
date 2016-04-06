@@ -48,7 +48,7 @@ diff -urN salt-2015.8.8-orig/conf/master salt-2015.8.8/conf/master
  
  # LOG file of the syndic daemon:
 -#syndic_log_file: syndic.log
-+syndic_log_file: syndic.log
++syndic_log_file: /var/log/salt/syndic.log
  
  
  #####      Peer Publish settings     #####

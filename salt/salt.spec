@@ -79,7 +79,6 @@ Source11:         %{name}-common.logrotate
 Source12:         salt.bash
 
 Patch0:           %{name}-%{version}-config.patch
-Patch1:           syndic-%{version}-config.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
@@ -226,7 +225,6 @@ of an agent (salt-minion) service.
 %setup -q -n %{name}-%{version}
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 
