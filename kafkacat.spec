@@ -70,18 +70,18 @@ the Kafka cluster and its topics and partitions.
 ###############################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 %configure
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %{make_install}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
@@ -95,4 +95,3 @@ the Kafka cluster and its topics and partitions.
 %changelog
 * Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 1.2.0-0
 - Initial build 
-

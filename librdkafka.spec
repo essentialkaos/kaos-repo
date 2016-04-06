@@ -38,7 +38,6 @@
 
 %define realname       rdkafka
 %define minor_ver      1
-%define rel            0
 
 ###############################################################################
 
@@ -85,11 +84,11 @@ libraries to develop applications using a Kafka databases.
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %{make_install}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
@@ -116,4 +115,3 @@ libraries to develop applications using a Kafka databases.
 %changelog
 * Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.0.99-0 
 - Initial build 
-
