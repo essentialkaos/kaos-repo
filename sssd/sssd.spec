@@ -103,7 +103,7 @@
 ###############################################################################
 
 %define service_user      root
-%define service_group     root 
+%define service_group     root
 %define service_name      %{name}
 %define service_home      /
 
@@ -716,6 +716,7 @@ sed -i -e 's:/usr/bin/python:/usr/bin/python3:' src/tools/sss_obfuscate
 /usr/lib/rpm/find-lang.sh %{buildroot} %{name}
 
 install -dm 755 %{buildroot}%{_initrddir}
+install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/rwtab.d
 install -dm 750 %{buildroot}%{_logdir}/%{name}
@@ -723,7 +724,7 @@ install -dm 750 %{buildroot}%{_logdir}/%{name}
 install -pm 644 src/examples/rwtab %{buildroot}%{_sysconfdir}/rwtab.d/sssd
 install -pm 644 src/examples/logrotate %{buildroot}%{_sysconfdir}/logrotate.d/sssd
 
-install -pm 600 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{name}/
+install -pm 600 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
 
 %if (0%{?use_systemd} == 0)
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
@@ -791,11 +792,6 @@ done
 rm -rf %{buildroot}
 
 ###############################################################################
-
-%pre common
-getent group %{service_group} >/dev/null || groupadd -r %{service_group}
-getent passwd %{service_user} >/dev/null || useradd -r -g %{service_group} -s /sbin/nologin -d %{service_home} %{service_user}
-exit 0
 
 %if (0%{?use_systemd} == 1)
 
@@ -948,12 +944,11 @@ fi
 %attr(700,%{service_user},%{service_group}) %dir %{pipepath}/private
 %attr(750,%{service_user},%{service_group}) %dir %{_logdir}/%{name}
 %attr(711,%{service_user},%{service_group}) %dir %{_sysconfdir}/%{name}
-%ghost %attr(0600,%{service_user},%{service_group}) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %if (0%{?use_systemd} == 1)
 %attr(755,root,root) %dir %{_sysconfdir}/systemd/system/%{name}.service.d
 %config(noreplace) %{_sysconfdir}/systemd/system/%{name}.service.d/journal.conf
 %endif
-%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
+%attr(0600,%{service_user},%{service_group}) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/sssd
 %config(noreplace) %{_sysconfdir}/rwtab.d/sssd
 %dir %{_datadir}/sssd
