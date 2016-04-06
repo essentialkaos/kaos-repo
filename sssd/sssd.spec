@@ -127,6 +127,7 @@ URL:                http://fedorahosted.org/sssd
 
 Source0:            https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
 Source1:            %{name}.init
+Source2:            %{name}.conf
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -722,20 +723,22 @@ install -dm 750 %{buildroot}%{_logdir}/%{name}
 install -pm 644 src/examples/rwtab %{buildroot}%{_sysconfdir}/rwtab.d/sssd
 install -pm 644 src/examples/logrotate %{buildroot}%{_sysconfdir}/logrotate.d/sssd
 
+install -pm 600 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{name}/
+
 %if (0%{?use_systemd} == 0)
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 %endif
 
 find %{buildroot} -name "*.la" -exec rm -f {} \;
 
-rm -Rf ${RPM_BUILD_ROOT}/%{_docdir}/%{name}
+rm -Rf %{buildroot}%{_docdir}/%{name}
 
-for file in `ls %{buildroot}/%{python2_sitelib}/*.egg-info 2> /dev/null` ; do
+for file in `ls %{buildroot}%{python2_sitelib}/*.egg-info 2> /dev/null` ; do
   echo %{python2_sitelib}/`basename $file` >> python2_sssdconfig.lang
 done
 
 %if (0%{?with_python3} == 1)
-for file in `ls %{buildroot}/%{python3_sitelib}/*.egg-info 2> /dev/null` ; do
+for file in `ls %{buildroot}%{python3_sitelib}/*.egg-info 2> /dev/null` ; do
   echo %{python3_sitelib}/`basename $file` >> python3_sssdconfig.lang
 done
 %endif
@@ -748,7 +751,7 @@ for provider in ldap krb5 ipa ad proxy ; do
   touch %{name}_$provider.lang
 done
 
-for man in `find %{buildroot}/%{_mandir}/??/man?/ -type f | sed -e "s#%{buildroot}/%{_mandir}/##"` ; do
+for man in `find %{buildroot}%{_mandir}/??/man?/ -type f | sed -e "s#%{buildroot}%{_mandir}/##"` ; do
   lang=`echo $man | cut -c 1-2`
   case `basename $man` in
     sss_cache*)
@@ -950,6 +953,7 @@ fi
 %attr(755,root,root) %dir %{_sysconfdir}/systemd/system/%{name}.service.d
 %config(noreplace) %{_sysconfdir}/systemd/system/%{name}.service.d/journal.conf
 %endif
+%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/sssd
 %config(noreplace) %{_sysconfdir}/rwtab.d/sssd
 %dir %{_datadir}/sssd
