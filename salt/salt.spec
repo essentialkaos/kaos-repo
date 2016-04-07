@@ -58,7 +58,7 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2015.8.5
+Version:          2015.8.8
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -79,7 +79,6 @@ Source11:         %{name}-common.logrotate
 Source12:         salt.bash
 
 Patch0:           %{name}-%{version}-config.patch
-Patch1:           syndic-%{version}-config.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
@@ -226,7 +225,6 @@ of an agent (salt-minion) service.
 %setup -q -n %{name}-%{version}
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 
@@ -447,6 +445,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 06 2016 Gleb Goncharov <yum@gongled.ru> - 2015.8.8-0
+- Updated to 2015.8.8
+
 * Mon Feb 15 2016 Gleb Goncharov <yum@gongled.ru> - 2015.8.5-0
 - Updated to 2015.8.5
 
