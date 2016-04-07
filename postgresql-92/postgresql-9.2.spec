@@ -62,7 +62,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        9.2
-%define minorver        15
+%define minorver        16
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          92
@@ -107,7 +107,8 @@ Patch4:            %{realname}-prefer-ncurses.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     perl glibc-devel bison flex readline-devel zlib-devel >= 1.0.4
+BuildRequires:     make gcc perl glibc-devel bison flex
+BuildRequires:     readline-devel zlib-devel >= 1.0.4
 
 %if %plperl
 BuildRequires:     perl-ExtUtils-Embed perl-ExtUtils-MakeMaker
@@ -200,7 +201,7 @@ Group:             Applications/Databases
 
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version} %{name}-libs >= %{version}
-Requires:          kaosv >= 2.4
+Requires:          kaosv >= 2.8
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -1000,6 +1001,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Apr 07 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.16-0
+- Updated to latest stable release
+
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.15-0
 - Updated to latest stable release
 
