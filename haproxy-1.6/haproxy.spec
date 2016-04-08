@@ -48,13 +48,13 @@
 %define hp_homedir        %{_localstatedir}/lib/%{name}
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
-%define lua_ver           5.3.0
+%define lua_ver           5.3.2
 
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.3
+Version:           1.6.4
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -76,9 +76,9 @@ Requires(preun):   %{__chkconfig}
 Requires(preun):   %{__service}
 Requires(postun):  %{__service}
 
-BuildRequires:     make gcc pcre-devel openssl-devel
+BuildRequires:     make gcc pcre-devel openssl-devel readline-devel
 
-Requires:          pcre openssl setup >= 2.8.14-14
+Requires:          pcre openssl readline setup >= 2.8.14-14
 
 ###############################################################################
 
@@ -186,6 +186,81 @@ fi
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.4-0
+- BUG/MINOR: http: fix several off-by-one errors in the url_param parser
+- BUG/MINOR: http: Be sure to process all the data received from a server
+- BUG/MINOR: chunk: make chunk_dup() always check and set dst->size
+- MINOR: chunks: ensure that chunk_strcpy() adds a trailing zero
+- MINOR: chunks: add chunk_strcat() and chunk_newstr()
+- MINOR: chunk: make chunk_initstr() take a const string
+- MINOR: lru: new function to delete <nb> least recently used keys
+- DOC: add Ben Shillito as the maintainer of 51d
+- BUG/MINOR: 51d: Ensures a unique domain for each configuration
+- BUG/MINOR: 51d: Aligns Pattern cache implementation with HAProxy best practices.
+- BUG/MINOR: 51d: Releases workset back to pool.
+- BUG/MINOR: 51d: Aligned const pointers to changes in 51Degrees.
+- CLEANUP: 51d: Aligned if statements with HAProxy best practices and removed casts from malloc.
+- DOC: fix a few spelling mistakes (cherry picked from commit cc123c66c2075add8524a6a9925382927daa6ab0)
+- DOC: fix "workaround" spelling
+- BUG/MINOR: examples: Fixing haproxy.spec to remove references to .cfg files
+- MINOR: fix the return type for dns_response_get_query_id() function
+- MINOR: server state: missing LF (\n) on error message printed when parsing server state file
+- BUG/MEDIUM: dns: no DNS resolution happens if no ports provided to the nameserver
+- BUG/MAJOR: servers state: server port is erased when dns resolution is enabled on a server
+- BUG/MEDIUM: servers state: server port is used uninitialized
+- BUG/MEDIUM: config: Adding validation to stick-table expire value.
+- BUG/MEDIUM: sample: http_date() doesn't provide the right day of the week
+- BUG/MEDIUM: channel: fix miscalculation of available buffer space.
+- MEDIUM: pools: add a new flag to avoid rounding pool size up
+- BUG/MEDIUM: buffers: do not round up buffer size during allocation
+- BUG/MINOR: stream: don't force retries if the server is DOWN
+- BUG/MINOR: counters: make the sc-inc-gpc0 and sc-set-gpt0 touch the table
+- MINOR: unix: don't mention free ports on EAGAIN
+- BUG/CLEANUP: CLI: report the proper field states in "show sess"
+- MINOR: stats: send content-length with the redirect to allow keep-alive
+- BUG: stream_interface: Reuse connection even if the output channel is empty
+- DOC: remove old tunnel mode assumptions
+- BUG/MAJOR: http-reuse: fix risk of orphaned connections
+- BUG/MEDIUM: http-reuse: do not share private connections across backends
+- BUG/MINOR: ssl: Be sure to use unique serial for regenerated certificates
+- BUG/MINOR: stats: fix missing comma in stats on agent drain
+- BUG/MINOR: lua: unsafe initialization
+- DOC: lua: fix somme errors
+- DOC: add server name at rate-limit sessions example
+- BUG/MEDIUM: ssl: fix off-by-one in ALPN list allocation
+- BUG/MEDIUM: ssl: fix off-by-one in NPN list allocation
+- DOC: LUA: fix some typos and syntax errors
+- MINOR: cfgparse: warn for incorrect 'timeout retry' keyword spelling in resolvers
+- MINOR: mailers: increase default timeout to 10 seconds
+- MINOR: mailers: use <CRLF> for all line endings
+- BUG/MAJOR: lua: applets can't sleep.
+- BUG/MINOR: server: some prototypes are renamed
+- BUG/MINOR: lua: Useless copy
+- BUG/MEDIUM: stats: stats bind-process doesn't propagate the process mask correctly
+- BUG/MINOR: server: fix the format of the warning on address change
+- BUG/MEDIUM: chunks: always reject negative-length chunks
+- BUG/MINOR: systemd: ensure we don't miss signals
+- BUG/MINOR: systemd: report the correct signal in debug message output
+- BUG/MINOR: systemd: propagate the correct signal to haproxy
+- MINOR: systemd: ensure a reload doesn't mask a stop
+- BUG/MEDIUM: cfgparse: wrong argument offset after parsing server "sni" keyword
+- CLEANUP: stats: Avoid computation with uninitialized bits.
+- CLEANUP: pattern: Ignore unknown samples in pat_match_ip().
+- CLEANUP: map: Avoid memory leak in out-of-memory condition.
+- BUG/MINOR: tcpcheck: fix incorrect list usage resulting in failure to load certain configs
+- BUG/MAJOR: samples: check smp->strm before using it
+- MINOR: sample: add a new helper to initialize the owner of a sample
+- MINOR: sample: always set a new sample's owner before evaluating it
+- BUG/MAJOR: vars: always retrieve the stream and session from the sample
+- CLEANUP: payload: remove useless and confusing nullity checks for channel buffer
+- BUG/MINOR: ssl: fix usage of the various sample fetch functions
+- MINOR: cfgparse: warn when uid parameter is not a number
+- MINOR: cfgparse: warn when gid parameter is not a number
+- BUG/MINOR: standard: Avoid free of non-allocated pointer
+- BUG/MINOR: pattern: Avoid memory leak on out-of-memory condition
+- CLEANUP: http: fix a build warning introduced by a recent fix
+- BUG/MINOR: log: GMT offset not updated when entering/leaving DST
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.3-0
 - BUG/MINOR: http rule: http capture 'id' rule points to a non existing i
 - BUG/MINOR: server: check return value of fgets() in apply_server_state(
