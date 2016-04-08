@@ -54,7 +54,7 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.2.0
+Version:           2.2.2
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -214,6 +214,7 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*legacy*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_comments.sql
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_proc_set_search_path.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_restore.pl
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_upgrade*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/raster_comments.sql
@@ -221,9 +222,7 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/spatial*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/topology*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_postgis.sql
-%{pg_dir}/share/contrib/%{realname}_topology-%{maj_ver}/topology.sql
-%{pg_dir}/share/contrib/%{realname}_topology-%{maj_ver}/topology_upgrade.sql
-%{pg_dir}/share/contrib/%{realname}_topology-%{maj_ver}/uninstall_topology.sql
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_topology.sql
 %{pg_dir}/share/extension/%{realname}*
 %{pg_dir}/share/extension/address_standardizer*
 %attr(755,root,root) %{pg_dir}/lib/%{realname}-*.so
@@ -261,6 +260,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-0
+- Updated to latest stable release
+
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
 - Updated to latest stable release
 
