@@ -4,10 +4,6 @@
 
 ################################################################################
 
-%global pkgname futures
-
-################################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -41,15 +37,19 @@
 
 ################################################################################
 
-Summary:            Backport of the concurrent.futures package from Python 3.2
-Name:               python-%{pkgname}
-Version:            3.0.5
-Release:            0%{?dist}
-License:            BSD
-Group:              Development/Libraries
-URL:                https://github.com/agronholm/pythonfutures
+%global pkgname           backports_abc
 
-Source0:            https://pypi.python.org/packages/source/f/%{pkgname}/%{pkgname}-%{version}.tar.gz
+################################################################################
+
+Summary:            Backport of recent additions to the 'collections.abc' module
+Name:               python-%{pkgname}
+Version:            0.4
+Release:            0%{?dist}
+License:            Python
+Group:              Development/Libraries
+URL:                https://pypi.python.org/pypi/backports_abc
+
+Source0:            https://pypi.python.org/packages/source/b/%{pkgname}/%{pkgname}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -60,8 +60,7 @@ BuildRequires:      python-setuptools
 ################################################################################
 
 %description
-The concurrent.futures module provides a high-level interface for
-asynchronously executing callables.
+A backport of recent additions to the 'collections.abc' module.
 
 ################################################################################
 
@@ -83,15 +82,11 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES LICENSE
-%{python_sitelib}/concurrent
+%{python_sitelib}/%{pkgname}.*
 %{python_sitelib}/%{pkgname}-*.egg-info*
 
 ################################################################################
 
 %changelog
-* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
-- Updated to latest version
-
-* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
+* Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.4-0
 - Initial build

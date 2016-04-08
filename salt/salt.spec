@@ -94,7 +94,8 @@ Requires:         pciutils which yum-utils
 BuildRequires:    python26-devel python26-tornado >= 4.2.1 python26-six
 Requires:         python26-crypto >= 2.6.1 python26-jinja2 python26-msgpack > 0.3
 Requires:         python26-PyYAML python26-requests >= 1.0.0 python26-tornado >= 4.2.1
-Requires:         python26-zmq python26-six
+Requires:         python26-zmq python26-six python26-backports_abc
+Requires:         python26-singledispatch
 
 %else
 
@@ -111,9 +112,11 @@ Requires:         kaosv
 %endif
 
 BuildRequires:    python-devel python-tornado >= 4.2.1 python-futures >= 2.0
+
 Requires:         python-crypto >= 2.6.1 python-jinja2 python-msgpack > 0.3
 Requires:         PyYAML python-requests >= 1.0.0 python-zmq python-markupsafe
 Requires:         python-tornado >= 4.2.1 python-futures >= 2.0 python-six
+Requires:         python-backports_abc python-singledispatch
 
 %endif
 
