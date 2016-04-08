@@ -46,7 +46,7 @@
 
 Summary:           The RabbitMQ server
 Name:              %{_basename}-server
-Version:           3.6.0
+Version:           3.6.1
 Release:           0%{?dist}
 License:           MPLv1.1
 Group:             Applications/Internet
@@ -61,8 +61,9 @@ Source4:           %{name}.ocf
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:         noarch
-Requires:          erlang logrotate
-BuildRequires:     erlang python-simplejson xmlto libxslt python zip nc
+
+Requires:          erlang >= 16 logrotate
+BuildRequires:     erlang >= 16 python-simplejson xmlto libxslt python zip nc
 
 Requires(pre):     shadow-utils initscripts
 Requires(post):    chkconfig
@@ -157,6 +158,9 @@ done
 ###############################################################################
 
 %changelog
+* Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 3.6.1-0
+- Updated to latest release
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 3.6.0-0
 - Updated to latest release
 

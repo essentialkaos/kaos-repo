@@ -42,7 +42,7 @@
 
 Summary:          A Python library to address multiple cloud provider APIs
 Name:             python-libcloud
-Version:          0.18.0
+Version:          0.20.1
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            Development/Languages
@@ -88,5 +88,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
+- Updated to latest version
+
 * Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
 - Initial build
