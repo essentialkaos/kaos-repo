@@ -44,7 +44,7 @@
 
 Name:              keepalived
 Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           1.2.19
+Version:           1.2.20
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://www.keepalived.org
@@ -65,8 +65,11 @@ BuildRequires:     net-snmp-devel
 %endif
 
 BuildRequires:     gcc make openssl-devel libnl-devel kernel-devel popt-devel
+BuildRequires:     libnfnetlink-devel
 
-Requires:          kaosv
+Requires:          kaosv >= 2.8
+
+Provides:          %{name} = %{version}-%{release}
  
 ###############################################################################
 
@@ -143,15 +146,17 @@ fi
 %{_mandir}/man5/%{name}.conf.5*
 %{_mandir}/man8/%{name}.8*
 
-%if %{with snmp}
+%if %{with_snmp}
   %{_datadir}/snmp/mibs/KEEPALIVED-MIB.txt
   %{_datadir}/snmp/mibs/KEEPALIVED-MIB
-  %{_datadir}/snmp/mibs/VRRP-MIB
 %endif
 
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.20-0
+- Updated to latest release
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.2.19-0
 - Updated to latest release
 
