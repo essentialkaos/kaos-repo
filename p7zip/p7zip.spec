@@ -34,7 +34,7 @@
 
 Summary:           Very high compression ratio file archiver
 Name:              p7zip
-Version:           15.09
+Version:           15.14.1
 Release:           0%{?dist}
 License:           LGPLv2 and (LGPLv2+ or CPL)
 Group:             Applications/Archiving
@@ -141,6 +141,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 15.14.1-0
+- Updated to latest stable release
+
 * Wed Jan 13 2016 Anton Novojilov <andy@essentialkaos.com> - 15.09-0
 - Updated to latest stable release
 
