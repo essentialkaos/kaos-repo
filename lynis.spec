@@ -30,7 +30,7 @@
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            2.1.1
+Version:            2.2.0
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
@@ -95,5 +95,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- Updated to latest stable release
+
 * Wed Oct 07 2015 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
 - Initial build
