@@ -47,7 +47,7 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.7
+Version:           1.7.2
 Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
@@ -64,7 +64,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     libevent2-devel make gcc
 
-Requires:          libevent2 initscripts kaosv >= 2.5 %{__useradd}
+Requires:          libevent2 initscripts kaosv >= 2.8 %{__useradd}
 Requires(post):    chkconfig
 Requires(preun):   chkconfig initscripts
 Requires(postun):  initscripts
@@ -152,6 +152,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
+- Updated to latest stable release
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7-0
 - Updated to latest stable release
 
