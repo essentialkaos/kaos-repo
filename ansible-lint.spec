@@ -10,11 +10,13 @@ URL:            https://github.com/willthames/ansible-lint
 
 Source:         https://pypi.python.org/packages/source/a/%{name}/%{name}-%{version}.tar.gz
 
-BuildRequires:  python-devel python-setuptools
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
+
+BuildRequires:  python-devel python-setuptools
+
+Requires:       ansible
 
 Provides:       %{name} = %{verion}-%{release}
 
