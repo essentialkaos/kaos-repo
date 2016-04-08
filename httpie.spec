@@ -33,7 +33,7 @@
 Summary:           A Curl-like tool for humans
 Name:              httpie
 Version:           0.9.3
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Applications/Internet
 URL:               https://github.com/jakubroztocil/httpie
@@ -45,10 +45,12 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildArch:         noarch
 
 Requires:          python python-pygments python-argparse
-Requires:          python-requests python-setuptools
+Requires:          python-requests >= 2.3 python-setuptools
 
-BuildRequires:     python python-pygments python-requests python-setuptools
-BuildRequires:     python-argparse sed
+BuildRequires:     python python-pygments python-requests >= 2.3
+BuildRequires:     python-argparse sed python-setuptools
+
+Provides:          %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -92,6 +94,9 @@ sed -i 's/requests>=2.0.0/requests>=1.1.0/' setup.py
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-1
+- Fixed deps list
+
 * Thu Mar 31 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.3-0
 - Updated to latest release
 
