@@ -31,11 +31,13 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
+%define _smp_mflags       -j1
+
 ########################################################################################
 
 Summary:          HTTP benchmarking tool
 Name:             wrk
-Version:          4.0.1
+Version:          4.0.2
 Release:          0%{?dist}
 License:          Apache 2.0
 Group:            Development/Tools
@@ -44,8 +46,7 @@ URL:              https://github.com/wg/wrk
 Source:           https://github.com/wg/%{name}/archive/%{version}.tar.gz
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    make gcc openssl-devel
-Requires:         openssl
+BuildRequires:    make gcc
 
 Provides:         %{name} = %{version}-%{release}
 
@@ -92,6 +93,9 @@ cp scripts/* %{buildroot}%{_loc_datarootdir}/%{name}/scripts/
 ###########################################################################
 
 %changelog
+* Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
+- Updated to latest release
+
 * Wed Apr 15 2015 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
 - Updated to latest release
 

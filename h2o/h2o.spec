@@ -46,7 +46,7 @@
 
 Summary:              Very fast HTTP server written in C
 Name:                 h2o
-Version:              1.7.0
+Version:              1.7.1
 Release:              0%{?dist}
 License:              Copyright (c) 2014 DeNA Co., Ltd.
 Group:                System Environment/Daemons
@@ -172,6 +172,9 @@ fi
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
+- Updated to latest version
+
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Updated to latest version
 

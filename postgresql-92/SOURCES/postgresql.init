@@ -6,7 +6,6 @@
 # chkconfig: - 64 36
 # description: PostgreSQL database server.
 # processname: postmaster
-# pidfile="/var/run/postgres.pid"
 
 ###############################################################################
 
@@ -66,9 +65,9 @@ kv.addHandler "start"   "startServiceHandler"
 kv.addHandler "start"   "preStartServiceHandler" "pre"
 kv.addHandler "stop"    "stopServiceHandler"
 
-kv.addCommandVars "stop"    "force"
-kv.addCommandVars "initdb"  "locale"
-kv.addCommandVars "upgrade" "current-version" "prev-version"
+kv.addCommandArgs "stop"    "force"
+kv.addCommandArgs "initdb"  "locale"
+kv.addCommandArgs "upgrade" "current-version" "prev-version"
 
 kv.disableOutputRedirect "start" "pre"
 

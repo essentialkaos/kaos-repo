@@ -1,9 +1,6 @@
 ################################################################################
 
-%global __python26 /usr/bin/python2.6
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-
-%global tarball_name apache-libcloud
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 
 ################################################################################
 
@@ -40,32 +37,35 @@
 
 ################################################################################
 
-Summary:          A Python library to address multiple cloud provider APIs
-Name:             python-libcloud
-Version:          0.20.1
-Release:          0%{?dist}
-License:          ASL 2.0
-Group:            Development/Languages
-URL:              http://libcloud.apache.org
+%global pkgname           backports_abc
 
-Source0:          http://pypi.python.org/packages/source/a/apache-libcloud/%{tarball_name}-%{version}.tar.bz2
+################################################################################
 
-BuildArch:        noarch
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Summary:            Backport of recent additions to the 'collections.abc' module
+Name:               python-%{pkgname}
+Version:            0.4
+Release:            0%{?dist}
+License:            Python
+Group:              Development/Libraries
+URL:                https://pypi.python.org/pypi/backports_abc
 
-BuildRequires:    python-setuptools python-devel
+Source0:            https://pypi.python.org/packages/source/b/%{pkgname}/%{pkgname}-%{version}.tar.gz
+
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildArch:          noarch
+
+BuildRequires:      python-setuptools
 
 ################################################################################
 
 %description
-libcloud is a client library for interacting with many of the popular cloud
-server providers.  It was created to make it easy for developers to build
-products that work between any of the services that it supports.
+A backport of recent additions to the 'collections.abc' module.
 
 ################################################################################
 
 %prep
-%setup -qn %{tarball_name}-%{version}
+%setup -q -n %{pkgname}-%{version}
 
 %build
 %{__python} setup.py build
@@ -82,14 +82,11 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE README.rst
-%{python_sitelib}/*
+%{python_sitelib}/%{pkgname}.*
+%{python_sitelib}/%{pkgname}-*.egg-info*
 
 ################################################################################
 
 %changelog
-* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
-- Updated to latest version
-
-* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
+* Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.4-0
 - Initial build

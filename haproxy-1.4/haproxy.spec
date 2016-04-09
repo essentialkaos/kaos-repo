@@ -53,8 +53,8 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.4.26
-Release:           1%{?dist}
+Version:           1.4.27
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu/
 Group:             System Environment/Daemons
@@ -176,6 +176,37 @@ fi
 ###############################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.27-0
+- DOC: Fix L4TOUT typo in documentation
+- BUG/MEDIUM: http: remove content-length from chunked messages
+- DOC: http: update the comments about the rules for determining transfer-length
+- BUG/MEDIUM: http: do not restrict parsing of transfer-encoding to HTTP/1.1
+- BUG/MEDIUM: http: incorrect transfer-coding in the request is a bad request
+- BUG/MEDIUM: http: remove content-length form responses with bad transfer-encoding
+- MEDIUM: http: restrict the HTTP version token to 1 digit as per RFC7230
+- BUG/MINOR: cfgparse: fix typo in 'option httplog' error message
+- DOC: usesrc root privileges requirements
+- DOC: typo in 'redirect', 302 code meaning
+- BUG/MINOR: http: remove stupid HTTP_METH_NONE entry
+- BUG/MAJOR: http: don't call http_send_name_header() after an error
+- CLEANUP: config: make the errorloc/errorfile messages less confusing
+- BUG/MINOR: config: check that tune.bufsize is always positive
+- BUG/MINOR: http: Add OPTIONS in supported http methods (found by find_http_meth)
+- DOC: Address issue where documentation is excluded due to a gitignore rule.
+- CLEANUP: .gitignore: ignore more test files
+- CLEANUP: .gitignore: finally ignore everything but what is known.
+- CLEANUP: don't ignore debian/ directory if present
+- FIX: small typo in an example using the "Referer" header
+- BUG/MEDIUM: config: count memory limits on 64 bits, not 32
+- BUG/MINOR: acl: don't use record layer in req_ssl_ver
+- BUG/MEDIUM: http: switch the request channel to no-delay once done.
+- BUILD: freebsd: double declaration
+- BUG/MINOR: chunk: make chunk_dup() always check and set dst->size
+- BUG/MEDIUM: config: Adding validation to stick-table expire value.
+- DOC: add server name at rate-limit sessions example
+- MINOR: cfgparse: warn when uid parameter is not a number
+- MINOR: cfgparse: warn when gid parameter is not a number
+
 * Mon Oct 26 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.26-1
 - Improved default config
 

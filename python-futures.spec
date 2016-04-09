@@ -43,7 +43,7 @@
 
 Summary:            Backport of the concurrent.futures package from Python 3.2
 Name:               python-%{pkgname}
-Version:            3.0.3
+Version:            3.0.5
 Release:            0%{?dist}
 License:            BSD
 Group:              Development/Libraries
@@ -51,8 +51,9 @@ URL:                https://github.com/agronholm/pythonfutures
 
 Source0:            https://pypi.python.org/packages/source/f/%{pkgname}/%{pkgname}-%{version}.tar.gz
 
-BuildArch:          noarch
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildArch:          noarch
 
 BuildRequires:      python-setuptools
 
@@ -72,6 +73,7 @@ asynchronously executing callables.
 
 %install
 rm -rf %{buildroot}
+
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
@@ -83,10 +85,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc CHANGES LICENSE
 %{python_sitelib}/concurrent
-%{python_sitelib}/futures-*.egg-info*
+%{python_sitelib}/%{pkgname}-*.egg-info*
 
 ################################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
+- Updated to latest version
+
 * Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
 - Initial build

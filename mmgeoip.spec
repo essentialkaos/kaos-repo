@@ -19,7 +19,7 @@
 Summary:           MaxMinds data for GeoIP
 Name:              MMGeoIP
 Version:           1.2
-Release:           4%{?dist}
+Release:           5%{?dist}
 License:           Copyright © 2010 Achillefs Charmpilas
 Group:             Applications/Databases
 URL:               http://www.maxmind.com/
@@ -65,13 +65,16 @@ gzip -dc %{SOURCE2} > GeoIPV6.dat
 gzip -dc %{SOURCE3} > GeoLiteCityV6.dat
 
 mv GeoIPCountryWhois.csv GeoIP.dat
+mv GeoLiteCity_*/GeoLiteCity-Blocks.csv GeoLiteCity-Blocks.dat
+mv GeoLiteCity_*/GeoLiteCity-Location.csv GeoLiteCity-Location.dat
 
 install -dm 755 %{buildroot}%{_loc_datarootdir}/GeoIP
 
-install -pm 755 GeoLiteCity.dat %{buildroot}%{_loc_datarootdir}/GeoIP
-install -pm 755 GeoIP.dat %{buildroot}%{_loc_datarootdir}/GeoIP
-install -pm 755 GeoLiteCityV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP
-install -pm 755 GeoIPV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP
+install -pm 755 GeoLiteCity-Blocks.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 755 GeoLiteCity-Location.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 755 GeoIP.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 755 GeoLiteCityV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 755 GeoIPV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
 
 %clean
 rm -rf %{buildroot}
@@ -80,7 +83,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
-%{_loc_datarootdir}/GeoIP/GeoLiteCity.dat
+%{_loc_datarootdir}/GeoIP/GeoLiteCity-Blocks.dat
+%{_loc_datarootdir}/GeoIP/GeoLiteCity-Location.dat
 %{_loc_datarootdir}/GeoIP/GeoIP.dat
 
 %files IPV6
@@ -91,6 +95,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-5
+- Data updated
+
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-4
 - Data updated
 

@@ -10,7 +10,7 @@ Version:        2.8
 Release:        0%{?dist}
 License:        BSD 
 Group:          Development/Libraries 
-URL:            http://jinja.pocoo.org/
+URL:            http://jinja.pocoo.org
 
 Source:         https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
 

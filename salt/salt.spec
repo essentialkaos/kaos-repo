@@ -58,7 +58,7 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2015.8.5
+Version:          2015.8.8
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -79,7 +79,6 @@ Source11:         %{name}-common.logrotate
 Source12:         salt.bash
 
 Patch0:           %{name}-%{version}-config.patch
-Patch1:           syndic-%{version}-config.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
@@ -95,7 +94,8 @@ Requires:         pciutils which yum-utils
 BuildRequires:    python26-devel python26-tornado >= 4.2.1 python26-six
 Requires:         python26-crypto >= 2.6.1 python26-jinja2 python26-msgpack > 0.3
 Requires:         python26-PyYAML python26-requests >= 1.0.0 python26-tornado >= 4.2.1
-Requires:         python26-zmq python26-six
+Requires:         python26-zmq python26-six python26-backports_abc
+Requires:         python26-singledispatch
 
 %else
 
@@ -112,9 +112,11 @@ Requires:         kaosv
 %endif
 
 BuildRequires:    python-devel python-tornado >= 4.2.1 python-futures >= 2.0
+
 Requires:         python-crypto >= 2.6.1 python-jinja2 python-msgpack > 0.3
 Requires:         PyYAML python-requests >= 1.0.0 python-zmq python-markupsafe
 Requires:         python-tornado >= 4.2.1 python-futures >= 2.0 python-six
+Requires:         python-backports_abc python-singledispatch
 
 %endif
 
@@ -226,7 +228,6 @@ of an agent (salt-minion) service.
 %setup -q -n %{name}-%{version}
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 
@@ -447,6 +448,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 06 2016 Gleb Goncharov <yum@gongled.ru> - 2015.8.8-0
+- Updated to 2015.8.8
+
 * Mon Feb 15 2016 Gleb Goncharov <yum@gongled.ru> - 2015.8.5-0
 - Updated to 2015.8.5
 
