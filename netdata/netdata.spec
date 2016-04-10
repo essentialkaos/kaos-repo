@@ -157,7 +157,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING ChangeLog LICENSE.md README.md
+%doc ChangeLog LICENSE.md README.md
 %config(noreplace) %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/cache/%{name}/
