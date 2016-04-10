@@ -50,7 +50,7 @@ Source0:           http://liba52.sourceforge.net/files/%{pkg_name}-%{version}.ta
 
 Patch0:            %{pkg_name}-%{version}-fPIC.patch
 
-BuildRoot:         %{_tmppath}/%{name}-root
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     autoconf
 
