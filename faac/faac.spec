@@ -44,9 +44,9 @@ URL:               http://www.audiocoding.com/
 
 Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 
-Patch0:            faac-1.28-glibc_fixes-1.patch
+Patch0:            %{name}-%{version}-glibc_fixes-1.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     autoconf automake libtool gcc-c++
 
