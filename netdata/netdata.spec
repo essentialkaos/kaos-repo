@@ -118,7 +118,7 @@ install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 system/%{name}.service %{buildroot}/%{_unitdir}
 %else
 install -dm 755 %{buildroot}%{_initrddir}
-install -pm 644 %{SOURCE3} %{buildroot}%{_initrddir}/%{name}
+install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{name}
 %endif
 
 %clean
