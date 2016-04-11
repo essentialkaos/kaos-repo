@@ -53,7 +53,7 @@ Version:          1.0.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
-URL:              http://firehol.org
+URL:              http://netdata.firehol.org
 
 Source0:          http://firehol.org/download/%{name}/releases/v%{version}/%{name}-%{version}.tar.gz
 Source1:          %{name}.conf
@@ -62,7 +62,7 @@ Source3:          %{name}.init
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    libmnl-devel zlib-devel
+BuildRequires:    make gcc libmnl-devel zlib-devel
 
 %if 0%{?rhel} >= 7
 BuildRequires:    libnetfilter_acct-devel systemd
