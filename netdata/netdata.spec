@@ -44,8 +44,6 @@
 
 %define service_user      netdata
 %define service_group     netdata
-%define service_home      /
-%define service_name      %{name}
 
 ################################################################################
 
@@ -143,13 +141,13 @@ exit 0
 %else
 %post
 if [[ $1 -eq 1 ]] ; then
-  %{__chkconfig} --add %{service_name}
+  %{__chkconfig} --add %{name}
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{service_name} stop > /dev/null 2>&1
-  %{__chkconfig} --del %{service_name}
+  %{__service} %{name} stop > /dev/null 2>&1
+  %{__chkconfig} --del %{name}
 fi
 %endif
 
