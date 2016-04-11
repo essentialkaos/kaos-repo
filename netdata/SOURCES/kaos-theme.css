@@ -1,0 +1,487 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,700);
+
+html,
+body {
+  color: #878b90;
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-style: normal;
+  font-variant: normal;
+}
+
+a {
+  color: #C0C5CC;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+h2, .h2 {
+  font-size: 26px;
+  text-transform: uppercase;
+}
+
+.navbar {
+  border: 1px solid #222;
+}
+
+.chart-message {
+  color: #666C73;
+  padding-bottom: 8px;
+}
+
+hr {
+  border-top: 1px dashed #3C3F45;
+}
+
+code {
+  color: #CCCDCD;
+  background-color: #353B41;
+}
+
+.netdata-group-container {
+  padding-bottom: 24px;
+}
+
+.netdata-container-with-legend, .netdata-chart-with-legend-right {
+  margin-bottom: 16px;
+}
+
+.dashboard-sidebar .nav > .active > a,
+.dashboard-sidebar .nav > .active:hover > a,
+.dashboard-sidebar .nav > .active:focus > a {
+  color: #765d9c;
+  border-left: 2px solid #765d9c;
+}
+
+.netdata-chart-alignment {
+  margin-left: 55px;
+}
+
+.netdata-container {
+  -webkit-flex-wrap: wrap;
+  display: -webkit-flex;
+  display: inline-block;
+  flex-wrap: wrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.netdata-aspect {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.netdata-container-with-legend {
+  -webkit-flex-wrap: wrap;
+  display: -webkit-flex;
+  display: inline-block;
+  flex-wrap: wrap;
+  min-height: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.netdata-legend-resize-handler {
+  background-color: #272b30;
+  bottom: 0;
+  color: #373b40;
+  cursor: ns-resize;
+  display: block;
+  font-size: 12px;
+  height: 15px;
+  line-height: 15px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  vertical-align: middle;
+  width: 30px;
+  z-index: 20;
+}
+
+.netdata-message {
+  background: inherit;
+  display: inline-block;
+  font-size: x-small;
+  font-weight: bold;
+  height: 100%;
+  overflow: hidden;
+  text-align: left;
+  vertical-align: top;
+  width: 100%;
+  z-index: 0;
+}
+
+.netdata-message.hidden {
+  display: none;
+}
+
+.netdata-message.icon {
+  color: #35393e;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.netdata-chart-legend {
+  background-color: #272b30;
+  display: block;
+  font-size: 10px;
+  height: calc(100% - 15px);
+  line-height: 14px;
+  margin-top: 5px;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  text-overflow: ellipsis;
+  top: 0;
+  width: 132px;
+}
+
+.netdata-legend-title-date {
+  font-size: 10px;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+.netdata-legend-title-time {
+  font-size: 11px;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.netdata-legend-title-units {
+  position: absolute;
+  right: 5px;
+  float: right;
+  font-size: 10px;
+  vertical-align: top;
+  font-weight: normal;
+  margin-top: 0;
+}
+
+.netdata-legend-series {
+  position: absolute;
+  width: 132px;
+  height: calc(100% - 50px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 14px;
+  display: block;
+  font-size: 10px;
+  margin-top: 0;
+}
+
+.netdata-legend-series > .netdata-legend-series-content {
+  position      : absolute;
+  overflow      : scroll;
+  overflow-x    : hidden;
+  top           : 0;
+  right         : 0;
+  bottom        : 0;
+  left          : 0;
+  text-overflow: ellipsis;
+}
+
+.netdata-legend-series > .netdata-legend-series-content:focus {
+  outline: thin dotted;
+}
+
+.netdata-legend-series > .netdata-legend-series-content::-webkit-scrollbar {
+  display: block;
+}
+
+.has-scrollbar > .netdata-legend-series-content::-webkit-scrollbar {
+  display: block;
+}
+
+.netdata-legend-series > .netdata-legend-series-pane {
+  background : #373b40;
+  position   : absolute;
+  width      : 4px;
+  right      : 0;
+  top        : 0;
+  bottom     : 0;
+  -moz-border-radius    : 4px;
+  -webkit-border-radius : 4px;
+  border-radius         : 4px;
+}
+
+.netdata-legend-series > .netdata-legend-series-pane > .netdata-legend-series-slider {
+  background            : #222;
+  position              : relative;
+  margin                : 0 1px;
+  -moz-border-radius    : 2px;
+  -webkit-border-radius : 2px;
+  border-radius         : 2px;
+}
+
+.netdata-legend-name-table-line {
+  display: inline-block;
+  width: 13px;
+  height: 4px;
+  border-width: 0;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #272b30;
+}
+.netdata-legend-name-table-area {
+  display: inline-block;
+  width: 13px;
+  height: 5px;
+  border-width: 1px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: inherit;
+}
+.netdata-legend-name-table-stacked {
+  display: inline-block;
+  width: 13px;
+  height: 5px;
+  border-width: 1px;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: inherit;
+}
+
+.netdata-legend-name-tr {
+}
+
+.netdata-legend-name-td {
+}
+
+.netdata-legend-name {
+  text-align: left;
+  font-size: 10px;
+  font-weight: bold;
+  vertical-align: bottom;
+  margin-top: 0;
+  z-index: 9;
+  padding: 0;
+  width: 80px !important;
+  max-width: 80px !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.netdata-legend-value {
+  position: absolute;
+  right: 5px;
+  float: right;
+  text-align: right;
+  font-size: 10px;
+  font-weight: bold;
+  vertical-align: bottom;
+  background-color: #272b30;
+  margin-top: 0;
+  z-index: 10;
+  padding: 0;
+  padding-left: 15px;
+  cursor: pointer;
+}
+
+.netdata-legend-name.not-selected {
+  font-weight: normal;
+  opacity: 0.3;
+}
+
+.netdata-chart {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.netdata-chart-with-legend-right {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  overflow: hidden;
+  margin-right: 140px;
+  width: calc(100% - 140px);
+  height: 100%;
+  z-index: 5;
+  flex-grow: 1;
+}
+
+.netdata-peity-chart {
+
+}
+
+.netdata-sparkline-chart {
+
+}
+
+.netdata-dygraph-chart {
+
+}
+
+.netdata-morris-chart {
+
+}
+
+.netdata-google-chart {
+
+}
+
+.dygraph-ylabel {
+}
+
+.dygraph-axis-label {
+  color: #5F6266;
+}
+
+.dygraph-title {
+  color: #6B7076;
+  font-size: 11px;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  text-align: left;
+  text-indent: 56px;
+  text-overflow: ellipsis;
+  top: 0;
+  white-space: nowrap;
+  font-weight: normal;
+}
+
+.jqstooltip {
+  width: auto !important;
+  height: auto !important;
+}
+
+.easyPieChart {
+  position: relative;
+  text-align: center;
+}
+
+.easyPieChart canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.easyPieChartLabel {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #BBB;
+  font-weight: normal;
+  text-shadow: #272b30 0px 0px 1px;
+
+}
+
+.easyPieChartTitle {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  width: 64%;
+  margin-left: 18%;
+  text-align: center;
+  color: #676b70;
+  font-weight: normal;
+}
+
+.easyPieChartUnits {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  width: 60%;
+  margin-left: 20%;
+  text-align: center;
+  color: #676b70;
+  font-weight: normal;
+}
+
+.gaugeChart {
+  position: relative;
+  text-align: center;
+}
+
+.gaugeChart canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+.gaugeChartLabel {
+  color: #BBB;
+  display: inline-block;
+  float: left;
+  font-weight: bold;
+  left: 0;
+  position: absolute;
+  text-align: center;
+  text-shadow: #272b30 0px 0px 1px;
+  width: 100%;
+  z-index: 1;
+}
+
+.gaugeChartTitle {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #676b70;
+  font-weight: bold;
+}
+
+.gaugeChartUnits {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: left;
+  margin-left: 5%;
+  color: #676b70;
+  font-weight: normal;
+}
+
+.gaugeChartMin {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  bottom: 10%;
+  width: 92%;
+  margin-left: 8%;
+  text-align: left;
+  color: #676b70;
+  font-weight: normal;
+}
+
+.gaugeChartMax {
+  display: inline-block;
+  position: absolute;
+  float: left;
+  left: 0;
+  bottom: 10%;
+  width: 95%;
+  margin-right: 5%;
+  text-align: right;
+  color: #676b70;
+  font-weight: normal;
+}
