@@ -47,7 +47,7 @@
 
 ################################################################################
 
-Summary:          Linux real time system monitoring, over the web
+Summary:          Real-time performance monitoring tool
 Name:             netdata
 Version:          1.0.0
 Release:          0%{?dist}
@@ -62,22 +62,19 @@ Source3:          %{name}.init
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    libmnl-devel
-BuildRequires:    zlib-devel
+BuildRequires:    libmnl-devel zlib-devel
+
 %if 0%{?rhel} >= 7
-BuildRequires:    libnetfilter_acct-devel
-BuildRequires:    systemd
+BuildRequires:    libnetfilter_acct-devel systemd
 %endif
 
-Requires:         libmnl
-Requires:         zlib
+Requires:         libmnl zlib      
 
 %if 0%{?rhel} >= 7
 Requires(post):   systemd
 Requires(preun):  systemd
 Requires(postun): systemd
 %endif
-
 
 ################################################################################
 
