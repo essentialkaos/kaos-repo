@@ -89,21 +89,21 @@ Real-time performance monitoring, in the greatest possible detail!
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 %configure \
         --docdir="%{_docdir}/%{name}-%{version}" \
         --with-zlib \
         --with-math \
-        --with-user=%{service_user} \
+        --with-user=%{service_user}
 
 make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 
-make install DESTDIR="%{buildroot}"
+%{make_install}
 
 find %{buildroot} -name .keep -exec rm -f {} \;
 
@@ -128,7 +128,7 @@ rm -rf %{buildroot}
 
 %pre
 getent group %{service_group} >/dev/null || groupadd -r %{service_group}
-getent passwd %{service_user} >/dev/null || useradd -r -g %{service_group} -s /sbin/nologin -d %{service_home} %{service_user}
+getent passwd %{service_user} >/dev/null || useradd -r -M -g %{service_group} -s /sbin/nologin %{service_user}
 exit 0
 
 %if 0%{?rhel} >= 7
@@ -176,5 +176,4 @@ fi
 
 %changelog
 * Sun Apr 10 2016 Gleb Goncharov <yum@gongled.me> - 1.0.0-0
-- Initial build 
-
+- Initial build

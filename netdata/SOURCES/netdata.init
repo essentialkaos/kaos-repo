@@ -4,8 +4,8 @@
 
 # chkconfig: - 85 15
 # processname: netdata
-# config: /etc/netdata/netdata.conf
-# config: /etc/sysconfig/netdata
+# config:  /etc/netdata/netdata.conf
+# config:  /etc/sysconfig/netdata
 # pidfile: /var/run/netdata.pid
 # description: netdata is very secure monitoring daemon
 
@@ -49,24 +49,20 @@ startServiceHandler() {
 
   kv.daemonize "$binary" "-c $conf_file -nd $OPTIONS"
 
-  if kv.getStartStatus ; then
-    return $ACTION_OK
-  fi
+  kv.getStartStatus
 
-  return $ACTION_ERROR
+  return $?
 }
 
 stopServiceHandler() {
 
   kv.sendSignal "SIGTERM"
 
-  if kv.getStopStatus ; then
-    return $ACTION_OK
-  fi
+  kv.getStopStatus
 
-  return $ACTION_ERROR
+  return $?
 }
 
 ###############################################################################
 
-kv.go "$@"
+kv.go $@
