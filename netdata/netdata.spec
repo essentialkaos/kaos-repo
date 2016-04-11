@@ -68,7 +68,7 @@ BuildRequires:    make gcc libmnl-devel zlib-devel
 BuildRequires:    libnetfilter_acct-devel systemd
 %endif
 
-Requires:         libmnl zlib      
+Requires:         libmnl zlib kaosv >= 2.8
 
 %if 0%{?rhel} >= 7
 Requires(post):   systemd
