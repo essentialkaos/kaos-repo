@@ -63,15 +63,25 @@ completely written from scratch.
 
 ###############################################################################
 
-%package devel
-Summary:           Header files and static libraries for faad2.
+%package -n libfaad2
+Summary:           Libraries for faad2.
 Group:             Development/Libraries
 
 Requires:          %{name} = %{version}
 
-%description devel
-These are the header files and static libraries from faac that are needed
-to build programs that use it.
+%description -n libfaad2
+Libraries from faad2 that are needed to build programs that use it.
+
+###############################################################################
+
+%package -n libfaad2-devel
+Summary:           Header files for faad2.
+Group:             Development/Libraries
+
+Requires:          %{name} = %{version}
+
+%description -n libfaad2-devel
+Header files from faad2 that are needed to build programs that use it.
 
 ###############################################################################
 
@@ -107,12 +117,14 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
-%defattr(-,root,root,-)
 %{_bindir}/%{pkg_name}
 %{_mandir}/manm/%{pkg_name}.man*
+
+%files -n lib%{name}
+%defattr(-,root,root,-)
 %{_libdir}/*.so.*
 
-%files devel
+%files -n lib%{name}-devel
 %defattr(-,root,root,-)
 %{_includedir}/*.h
 %{_libdir}/*.a
