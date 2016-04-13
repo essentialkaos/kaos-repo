@@ -52,7 +52,7 @@ Patch0:            %{name}-%{version}-mp4ff.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     autoconf automake libtool gcc-c++ 
+BuildRequires:     autoconf automake libtool gcc gcc-c++
 BuildRequires:     libsndfile-devel >= 1.0.0 id3lib-devel zlib-devel
 
 Obsoletes:         faad2-libs <= %{version}
@@ -111,9 +111,17 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post -n lib%{name}
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun -n lib%{name}
+/sbin/ldconfig
+
+%post -n lib%{name}-devel
+/sbin/ldconfig
+
+%postun -n lib%{name}-devel
+/sbin/ldconfig
 
 ###############################################################################
 
