@@ -53,7 +53,10 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           zlib
 
-BuildRequires:      gcc-c++ autoconf automake libtool libtool-ltdl-devel
+BuildRequires:      make gcc gcc-c++ autoconf freetype-devel
+BuildRequires:      automake libtool libtool-ltdl-devel
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -83,7 +86,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description filters
-Basic set of plugin filters that come with Imlib2
+Basic set of plugin filters that come with Imlib2.
 
 ###############################################################################
 
@@ -94,7 +97,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_lbm
-LBM image loader/saver for Imlib2
+LBM image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -108,7 +111,7 @@ Requires:           libjpeg-turbo
 BuildRequires:      libjpeg-turbo-devel
 
 %description loader_jpeg
-JPEG image loader/saver for Imlib2
+JPEG image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -122,7 +125,7 @@ Requires:           libpng zlib
 BuildRequires:      libpng-devel zlib-devel
 
 %description loader_png
-PNG image loader/saver for Imlib2
+PNG image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -133,7 +136,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_argb
-ARGB image loader/saver for Imlib2
+ARGB image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -144,7 +147,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_bmp
-BMP image loader/saver for Imlib2
+BMP image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -155,7 +158,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_ff
-Farbfeld image loader/saver for Imlib2
+Farbfeld image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -164,12 +167,12 @@ Summary:            Imlib2 GIF loader
 Group:              System Environment/Libraries
 
 Requires:           %{name} = %{version}
-Requires:           libungif
+Requires:           giflib
 
-BuildRequires:      libungif-devel
+BuildRequires:      giflib-devel
 
 %description loader_gif
-GIF image loader for Imlib2
+GIF image loader for Imlib2.
 
 ###############################################################################
 
@@ -180,7 +183,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_pnm
-PNM image loader/saver for Imlib2
+PNM image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -191,7 +194,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_tga
-TGA image loader/saver for Imlib2
+TGA image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -205,7 +208,7 @@ Requires:           libtiff
 BuildRequires:      libtiff-devel
 
 %description loader_tiff
-TIFF image loader/saver for Imlib2
+TIFF image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -216,7 +219,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_xpm
-XPM image loader/saver for Imlib2
+XPM image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -229,7 +232,7 @@ Requires:           %{name} = %{version}
 BuildRequires:      bzip2-devel
 
 %description loader_bz2
-Bzip2 compressed image loader/saver for Imlib2
+Bzip2 compressed image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -240,7 +243,7 @@ Group:              System Environment/Libraries
 Requires:           %{name} = %{version}
 
 %description loader_gz
-gz compressed image loader/saver for Imlib2
+gz compressed image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -254,7 +257,7 @@ Requires:           libid3tag
 BuildRequires:      libid3tag-devel
 
 %description loader_id3
-id3 tag image loader/saver for Imlib2
+id3 tag image loader/saver for Imlib2.
 
 ###############################################################################
 
@@ -263,6 +266,7 @@ id3 tag image loader/saver for Imlib2
 
 %build
 autoreconf -fi
+
 %{configure} --prefix=%{_prefix} \
 %ifarch x86_64
     --disable-mmx \
@@ -272,24 +276,23 @@ autoreconf -fi
 %endif
     --without-x \
     --disable-static
-make %{?_smp_mflags}
+
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot} install
+
+%{make_install}
+
 rm -f %{buildroot}%{_libdir}/%{name}/filters/*.a
 rm -f %{buildroot}%{_libdir}/%{name}/loaders/*.a
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -363,4 +366,3 @@ rm -rf %{buildroot}
 %changelog
 * Tue Apr 12 2016 Gleb Goncharov <yum@gongled.ru> - 1.4.8-0
 - Initial build 
-
