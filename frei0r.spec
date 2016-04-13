@@ -31,12 +31,6 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-
 ###############################################################################
 
 %define pkg_name          frei0r-plugins
@@ -49,13 +43,16 @@ Version:            1.5
 Release:            0%{?dist}
 License:            GPLv2+
 Group:              System Environment/Libraries
-URL:                http://frei0r.dyne.org/
+URL:                http://frei0r.dyne.org
 
 Source0:            https://github.com/ddennedy/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+BuildRequires:      make gcc automake libtool
 BuildRequires:      autoconf opencv-devel >= 1.0.0 gavl-devel >= 0.2.3
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -77,24 +74,22 @@ can be controlled by parameters.
 %{__autoheader}
 %{__automake} --force-missing --add-missing
 %{__autoconf}
-%configure \
-    --disable-static
+
+%configure --disable-static
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-%{__ldconfig}
-
-%postun
-%{__ldconfig}
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
