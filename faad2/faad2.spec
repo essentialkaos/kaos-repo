@@ -44,7 +44,7 @@ Version:           2.7
 Release:           0%{?dist}
 License:           GPLv2
 Group:             Applications/Multimedia
-URL:               http://www.audiocoding.com/
+URL:               http://www.audiocoding.com
 
 Source0:           http://download.sourceforge.net/faac/%{name}-%{version}.tar.bz2
 
@@ -57,6 +57,10 @@ BuildRequires:     libsndfile-devel >= 1.0.0 id3lib-devel zlib-devel
 
 Obsoletes:         faad2-libs <= %{version}
 
+Provides:          %{name} = %{version}-%{release}
+
+###############################################################################
+
 %description
 FAAD 2 is a LC, MAIN and LTP profile, MPEG2 and MPEG-4 AAC decoder,
 completely written from scratch.
@@ -64,7 +68,7 @@ completely written from scratch.
 ###############################################################################
 
 %package -n libfaad2
-Summary:           Libraries for faad2.
+Summary:           Libraries for faad2
 Group:             Development/Libraries
 
 Requires:          %{name} = %{version}
@@ -75,7 +79,7 @@ Libraries from faad2 that are needed to build programs that use it.
 ###############################################################################
 
 %package -n libfaad2-devel
-Summary:           Header files for faad2.
+Summary:           Header files for faad2
 Group:             Development/Libraries
 
 Requires:          %{name} = %{version}
@@ -91,26 +95,25 @@ Header files from faad2 that are needed to build programs that use it.
 
 %build
 autoreconf -i
+
 %configure \
   --without-xmms \
   --with-mpeg4ip \
   --with-mp4v2
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -136,4 +139,3 @@ rm -rf %{buildroot}
 %changelog
 * Mon Sep 05 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 2.7-0
 - Initial build. 
-
