@@ -42,11 +42,11 @@
 
 ###############################################################################
 
-Summary:         Let's Encrypt client and ACME library
+Summary:         Let's Encrypt client
 Name:            lego
 Version:         0.3.0
 Release:         0%{?dist}
-Group:           Development/Libraries
+Group:           Development/Tools
 License:         MIT
 URL:             https://github.com/xenolf/%{name}
 
@@ -61,7 +61,7 @@ Provides:        %{name} = %{version}-%{release}
 ###############################################################################
 
 %description
-Let's Encrypt client and ACME library written in Go.
+Let's Encrypt client written in Go.
 
 ###############################################################################
 
