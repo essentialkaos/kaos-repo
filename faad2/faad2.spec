@@ -117,12 +117,6 @@ rm -rf %{buildroot}
 %postun -n lib%{name}
 /sbin/ldconfig
 
-%post -n lib%{name}-devel
-/sbin/ldconfig
-
-%postun -n lib%{name}-devel
-/sbin/ldconfig
-
 ###############################################################################
 
 %files

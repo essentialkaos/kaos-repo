@@ -40,7 +40,7 @@ Version:           1.28
 Release:           0%{?dist}
 License:           LGPL
 Group:             Applications/Multimedia
-URL:               http://www.audiocoding.com/
+URL:               http://www.audiocoding.com
 
 Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 
@@ -48,7 +48,9 @@ Patch0:            %{name}-%{version}-glibc_fixes-1.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     autoconf automake libtool gcc-c++
+BuildRequires:     autoconf automake make libtool gcc gcc-c++
+
+Provides:          %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -83,25 +85,24 @@ sed -e '/obj-type/d' \
 
 %build
 ./bootstrap
+
 %configure \
     --disable-static \
     --with-mp4v2
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -123,4 +124,3 @@ rm -rf %{buildroot}
 %changelog
 * Sun Mar 01 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.28-0
 - Initial build 
-
