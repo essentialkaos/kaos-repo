@@ -48,38 +48,35 @@ Version:         0.3.0
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
-URL:             https://github.com/xenolf/%{name}
+URL:             https://github.com/xenolf/lego
 
-Source0:         %{name}.tar.bz2
+Source0:         %{name}-%{version}.tar.bz2
 
 BuildRequires:   golang >= 1.4
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Provides:        %{name} = %{version}-%{release}
 
 ###############################################################################
 
 %description
-Let's Encrypt client written in Go.
+Let's Encrypt client written in Go
 
 ###############################################################################
 
 %prep
-%setup -qn %{name}
+%setup -q
 
 %build
 export GOPATH=$(pwd)
 
-mkdir -p .src
-mv * .src
-mv .src src
+# Move all sources to src directory
+mkdir -p .src ; mv * .src ; mv .src src
 
 pushd src/github.com/xenolf/%{name}
-go build
+  go build
 popd
-
-mv src/github.com/xenolf/%{name}/%{name} %{name}
 
 %install
 rm -rf %{buildroot}
@@ -87,7 +84,7 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 
-install -pm 755 %{name} %{buildroot}%{_bindir}/
+install -pm 755 src/github.com/xenolf/%{name}/%{name} %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
