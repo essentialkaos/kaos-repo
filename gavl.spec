@@ -31,18 +31,12 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-
 ###############################################################################
 
 Summary:            GMerlin Audio Video Library
 Name:               gavl
 Version:            1.4.0
-Release:            0
+Release:            0%{?dist}
 License:            GPLv2+
 Group:              System Environment/Libraries
 URL:                http://gmerlin.sourceforge.net/gavl_frame.html
@@ -51,7 +45,10 @@ Source0:            http://downloads.sourceforge.net/gmerlin/%{name}-%{version}.
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      automake autoconf >= 2.50 libpng-devel libtool
+BuildRequires:      automake make gcc libtool doxygen
+BuildRequires:      autoconf >= 2.50 libpng-devel
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -80,27 +77,25 @@ This is the package containing the header files for gavl library.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-%configure \
-    --disable-static
+
+%configure --disable-static
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot}
 
-%{__rm} -Rf %{buildroot}%{_libdir}/*.la
-%{__rm} -Rf %{buildroot}%{_docdir}/%{name}
+%{make_install}
+
+rm -Rf %{buildroot}%{_libdir}/*.la
+rm -Rf %{buildroot}%{_docdir}/%{name}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-%{__ldconfig}
-
-%postun
-%{__ldconfig}
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
