@@ -71,12 +71,9 @@ Let's Encrypt client written in Go.
 %build
 export GOPATH=$(pwd)
 
-mkdir -p src
-
-mv github.com src
-mv golang.org src
-mv google.golang.org src
-mv gopkg.in src
+mkdir -p .src
+mv * .src
+mv .src src
 
 pushd src/github.com/xenolf/%{name}
 go build
