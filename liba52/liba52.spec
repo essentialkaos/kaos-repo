@@ -38,13 +38,13 @@
 
 ###############################################################################
 
-Summary:           A free library for decoding ATSC A/52 (aka AC-3) streams.
+Summary:           A free library for decoding ATSC A/52 (aka AC-3) streams
 Name:              liba52
 Version:           0.7.4
 Release:           0%{?dist}
 License:           GPL
 Group:             Applications/Multimedia
-URL:               http://liba52.sourceforge.net/
+URL:               http://liba52.sourceforge.net
 
 Source0:           http://liba52.sourceforge.net/files/%{pkg_name}-%{version}.tar.gz
 
@@ -52,7 +52,11 @@ Patch0:            %{pkg_name}-%{version}-fPIC.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     autoconf
+BuildRequires:     autoconf make gcc
+
+Provides:          %{name} = %{version}-%{release}
+
+###############################################################################
 
 %description
 liba52 is a free library for decoding ATSC A/52 streams. It is released
@@ -84,6 +88,7 @@ to build programs that use it.
 
 %build
 autoconf
+
 %configure \
     --enable-shared \
     --disable-static
@@ -92,12 +97,11 @@ autoconf
 
 %install
 rm -rf %{buildroot}
+
 %{make_install}
 
 %clean
 rm -rf %{buildroot}
-
-###############################################################################
 
 %post -p /sbin/ldconfig
 
@@ -123,4 +127,3 @@ rm -rf %{buildroot}
 %changelog
 * Sat Jun 14 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.7.4-0
 - Updated to latest version 
-
