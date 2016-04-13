@@ -52,7 +52,7 @@ URL:             https://github.com/xenolf/%{name}
 
 Source0:         %{name}.tar.bz2
 
-ExclusiveArch:   x86_64
+BuildRequires:   golang >= 1.4
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root
 
@@ -71,7 +71,7 @@ Let's Encrypt client and ACME library written in Go.
 %build
 export GOPATH=$(pwd)
 
-mkdir -p {src,bin}
+mkdir -p src
 
 mv github.com src
 mv golang.org src
@@ -82,7 +82,7 @@ pushd src/github.com/xenolf/%{name}
 go build
 popd
 
-mv src/github.com/xenolf/%{name}/%{name} bin/%{name}
+mv src/github.com/xenolf/%{name}/%{name} %{name}
 
 %install
 rm -rf %{buildroot}
@@ -90,7 +90,7 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 
-install -pm 755 bin/%{name} %{buildroot}%{_bindir}/
+install -pm 755 %{name} %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
