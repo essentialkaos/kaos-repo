@@ -104,10 +104,8 @@ MP3 files.
   --enable-nasm \
 %endif
   --enable-decoder \
-  --enable-decode-layer1 \
   --enable-mp3x \
-  --enable-mp3rtp \
-  --enable-brhist
+  --enable-mp3rtp
 
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
