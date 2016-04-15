@@ -50,7 +50,7 @@ Version:            3.99.5
 Release:            0%{?dist}
 License:            LGPLv2+
 Group:              Applications/Multimedia
-URL:                http://lame.sourceforge.net/
+URL:                http://lame.sourceforge.net
 
 Source0:            http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 
@@ -66,6 +66,8 @@ Obsoletes:          mp3encoder < %{version}-%{release}
 
 BuildRequires:      gcc-c++ make nasm
 BuildRequires:      ncurses-devel libsndfile-devel
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -110,22 +112,19 @@ MP3 files.
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
