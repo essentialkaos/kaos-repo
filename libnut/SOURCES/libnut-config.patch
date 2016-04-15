@@ -1,0 +1,18 @@
+diff -urN libnut-orig/config.mak libnut/config.mak
+--- libnut-orig/config.mak	2016-04-15 10:57:56.006213992 +0300
++++ libnut/config.mak	2016-04-15 11:00:02.086213909 +0300
+@@ -1,12 +1,7 @@
+-PREFIX = /usr/local
+ prefix = $(DESTDIR)$(PREFIX)
+-
+-#CFLAGS += -DDEBUG
+-
+-CFLAGS += -Os -fomit-frame-pointer -g -Wall
+-
++CFLAGS += -Os -fomit-frame-pointer -g -Wall -fPIC
+ CFLAGS += -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64
+-
++#CFLAGS += -DDEBUG
+ CC = cc
+ RANLIB  = ranlib
+ AR = ar
