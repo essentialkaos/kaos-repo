@@ -116,18 +116,18 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %files
-%defattr(644,root,root,755)
+%defattr(-,root,root,-)
 %doc COPYING README
-%attr(755,root,root) %{_bindir}/nutmerge
-%attr(755,root,root) %{_bindir}/nutindex
-%attr(755,root,root) %{_bindir}/nutparse
-%attr(755,root,root) %{_libdir}/libnut.so.0
+%{_bindir}/nutmerge
+%{_bindir}/nutindex
+%{_bindir}/nutparse
+%{_libdir}/%{name}.so.0
 
 %files devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libnut.so
-%attr(755,root,root) %{_libdir}/libnut.a
-%{_includedir}/libnut.h
+%defattr(-,root,root,-)
+%{_libdir}/%{name}.so
+%{_libdir}/%{name}.a
+%{_includedir}/%{name}.h
 
 ###############################################################################
 
