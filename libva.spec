@@ -47,7 +47,7 @@ Source0:            https://www.freedesktop.org/software/vaapi/releases/%{name}/
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make libtool libudev-devel
+BuildRequires:      gcc gcc-c++ make libtool libudev-devel
 BuildRequires:      libdrm-devel >= 2.4.23 libpciaccess-devel mesa-libGL-devel
 BuildRequires:      libXext-devel libXfixes-devel
 
@@ -58,6 +58,8 @@ Provides:           libva-freeworld = %{version}-%{release}
 
 Obsoletes:          libva-utils < %{version}-%{release}
 Obsoletes:          libva-freeworld < %{version}-%{release}
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -85,24 +87,23 @@ Libva headers and libraries which provides the VA API video acceleration API.
 %build
 libtoolize -f
 autoreconf -fi
-%configure --disable-static \
-           --enable-glx
-make %{?_smp_mflags}
+%configure --disable-static --enable-glx
+
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
 ###############################################################################
 
-%post
-/sbin/ldconfig
+%post -p /sbin/ldconfig
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
