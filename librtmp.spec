@@ -48,7 +48,9 @@ Source0:            http://rtmpdump.mplayerhq.hu/download/%{pkg_name}-%{version}
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make zlib openssl-devel >= 0.9.8
+BuildRequires:      gcc gcc-c++ make zlib openssl-devel >= 0.9.8
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -96,28 +98,24 @@ rtmps://.
 %setup -qn %{pkg_name}-%{version}
 
 %build
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install \
+
+%{make_install} \
   bindir=%{_bindir} \
   sbindir=%{_sbindir} \
   mandir=%{_mandir} \
   incdir=%{_includedir}/librtmp \
-  libdir=%{_libdir} \
-  DESTDIR=%{buildroot}
+  libdir=%{_libdir} 
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -147,5 +145,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 2.3-0
-- Initial build.
-
+- Initial build
