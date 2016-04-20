@@ -5,43 +5,6 @@
 
 ###############################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __ldconfig        %{_sbin}/ldconfig
-%define __chkconfig       %{_sbin}/chkconfig
-
-###############################################################################
-
 Summary:            Library for creating and demuxing NUT files
 Name:               libnut
 Version:            0.0.0
@@ -55,9 +18,11 @@ Source0:            %{name}-%{version}.tar.gz
 Patch0:             %{name}-makefile.patch
 Patch1:             %{name}-config.patch
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make
+BuildRequires:      gcc make
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -94,24 +59,20 @@ errors and dynamic index generation during playback.
 %patch1 -p1
 
 %build
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot} \
-    PREFIX=%{_prefix} \
-    LIBDIR=%{_libdir}
+%{make_install} PREFIX=%{_prefix} LIBDIR=%{_libdir}
 
 %clean
 rm -rf %{buildroot}
 
 ###############################################################################
 
-%post
-/sbin/ldconfig
+%post -p /sbin/ldconfig
 
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -133,5 +94,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 0.0.0-0
-- Initial build.
-
+- Initial build
