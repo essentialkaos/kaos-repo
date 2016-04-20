@@ -43,18 +43,20 @@
 
 Summary:            Portable libraries for the high quality Dirac video codec
 Name:               lib%{pkg_name}
-Version:            1.0.10
+Version:            1.0.11
 Release:            0%{?dist}
 Group:              System Environment/Libraries
 License:            LGPL
-URL:                http://www.diracvideo.org/
+URL:                http://www.diracvideo.org
 
 Source0:            http://www.diracvideo.org/download/%{pkg_name}/%{pkg_name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make libtool 
+BuildRequires:      gcc gcc-c++ make libtool 
 BuildRequires:      orc-devel >= 0.4.10 glew-devel >= 1.5.1
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -76,7 +78,7 @@ Group:              Development/Libraries
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
-Development files for schroedinger
+Development files for schroedinger.
 
 ###############################################################################
 
@@ -84,28 +86,24 @@ Development files for schroedinger
 %setup -qn %{pkg_name}-%{version}
 
 %build
-%configure \
-    --disable-static
+%configure --disable-static
 
 sed -i.rpath 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i.rpath 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -127,8 +125,11 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Apr 20 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-0
+- Updated to latest stable release
+
 * Sun Oct 24 2010 Fabian Deutsch <fabiand@fedoraproject.org> - 1.0.10-0
-- Updated to latest version. 
+- Updated to latest version
 
 * Tue Apr 22 2010 Fabian Deutsch <fabiand@fedoraproject.org> - 1.0.9-2
 - Added dependency on gtk-doc
