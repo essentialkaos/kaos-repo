@@ -53,11 +53,13 @@ License:            GPL
 Group:              System Environment/Libraries
 URL:                http://www.videolan.org/developers/x264.html
 
-Source0:            ftp://ftp.videolan.org/pub/videolan/%{name}/snapshots/%{name}-snapshot-%{pkg_snapshot_version}-stable.tar.bz2
+Source0:            http://ftp.videolan.org/pub/videolan/%{name}/snapshots/%{name}-snapshot-%{pkg_snapshot_version}-stable.tar.bz2
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make nasm yasm gettext
+BuildRequires:      gcc gcc-c++ make nasm yasm gettext
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -81,26 +83,25 @@ Header files and shared libraries for x264.
 %setup -qn %{name}-snapshot-%{pkg_snapshot_version}-stable
 
 %build
-%configure \
-  --enable-pic \
-  --enable-debug \
-  --enable-shared
-make %{?_smp_mflags}
+%ifarch %ix86
+  %define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 \-fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables
+%endif
+
+%configure --enable-pic --enable-debug --enable-shared
+
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -121,65 +122,65 @@ rm -rf %{buildroot}
 
 %changelog
 * Mon Apr 18 2016 Gleb Goncharov <yum@gongled.ru> - 0.148_20160416-0
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Mon Apr 07 2014 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.142-20_20140406.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Fri Nov 15 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.138-19_20130917.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Wed Sep 18 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.136-19_20130917.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Fri May 10 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.130-18_20130509.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Sat Nov 12 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.118-17_20111111.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Sat Jun 11 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.115-16_20110610.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Wed Mar  9 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.114-15_20110308.2245
-- Update to latest stable snapshot.
+- Update to latest stable snapshot
 
 * Sat Oct  2 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.106-13_20101001.2245
-- Update to latest git.
+- Update to latest git
 
 * Tue Jun 22 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.98-12_20100621.2245
-- Update to latest git.
+- Update to latest git
 
 * Thu Apr  1 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.92-12_20100401.2245
-- Update to latest git.
+- Update to latest git
 
 * Fri Nov 20 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.79-11_20091119.2245
-- Update to latest git.
+- Update to latest git
 
 * Mon Jul 20 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.68-10_20090719.2245
-- Update to latest git.
+- Update to latest git
 
 * Sun Nov 16 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.65-8_20081108.2245
-- x264-libs from a 3rd party repo generates conflicts.
+- x264-libs from a 3rd party repo generates conflicts
 
 * Sun Nov  9 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.65-6_20081108.2245
-- Update to latest git.
+- Update to latest git
 
 * Fri Jun 27 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20080626_2245-5
-- Update to latest git.
+- Update to latest git
 
 * Tue Feb 26 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20080225_2245-5
-- Update to latest svn.
+- Update to latest svn
 
 * Sun Apr 15 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070414_2245-4
-- Update to latest svn.
+- Update to latest svn
 
 * Wed Feb  7 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070206_2245-3
-- Update to latest svn.
+- Update to latest svn
 
 * Wed Jan  3 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070102_2245-2
-- Update to latest svn.
+- Update to latest svn
 
 * Wed Sep 13 2006 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20060912_2245-1
-- Initial build.
+- Initial build
 
