@@ -45,7 +45,9 @@ Source0:            http://downloads.sourceforge.net/%{name}/%{name}-%{version}.
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make
+BuildRequires:      gcc gcc-c++ make
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -72,24 +74,21 @@ This is the package containing the header files for opencore-amr libraries.
 %setup -q
 
 %build
-%configure \
-    --disable-static
-make %{?_smp_mflags}
+%configure --disable-static
+
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
