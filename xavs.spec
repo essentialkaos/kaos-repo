@@ -50,13 +50,15 @@ Version:            0.1.51
 Release:            0%{?dist}
 License:            GPL
 Group:              System Environment/Libraries
-URL:                http://xavs.sourceforge.net/
+URL:                http://xavs.sourceforge.net
 
 Source0:            %{name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc-c++ make
+BuildRequires:      gcc gcc-c++ make
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -83,6 +85,7 @@ to build programs that use it.
 
 %build
 export CFLAGS="%{optflags} -fPIC"
+
 %configure \
   --bindir=%{_bindir} \
   --libdir=%{_libdir} \
@@ -90,20 +93,19 @@ export CFLAGS="%{optflags} -fPIC"
   --enable-pic \
   --enable-shared
 
+%{__make} %{?_smp_mflags}
+
 %install
 rm -rf %{buildroot}
-make install DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+%post -p /sbin/ldconfig
 
-%post
-/sbin/ldconfig
-
-%postun
-/sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 ###############################################################################
 
@@ -124,5 +126,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Sun Apr 24 2016 Gleb Goncharov <yum@gongled.ru> - 0.1.51-0
-- Initial build.
-
+- Initial build
