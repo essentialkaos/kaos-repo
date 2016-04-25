@@ -48,7 +48,7 @@
 
 Summary:            Next generation logging application
 Name:               syslog-ng
-Version:            3.7.2
+Version:            3.7.3
 Release:            0%{?dist}
 License:            GPL
 Group:              System Environment/Daemons
@@ -153,5 +153,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Mar 21 2016 Gleb Goncharov <yum@gongled.me> - 3.7.3-0
+- Updated to latest version.
+- Fixed 'restart' handler in SysV script. 
+
 * Mon Mar 21 2016 Gleb Goncharov <yum@gongled.me> - 3.7.2-0
 - Initial build
