@@ -26,7 +26,7 @@ kv[log]="/var/log/syslog-ng.log"
 
 kv.addCommand "start"        "Start ${kv[prog_name]}"
 kv.addCommand "stop"         "Stop ${kv[prog_name]}"
-kv.addCommand "restart"      "Restart (stop+start) ${kv[prog_name]}" "restart"
+kv.addCommand "restart"      "Restart (stop+start) ${kv[prog_name]}"
 kv.addCommand "status"       "Show current status of ${kv[prog_name]}"
 kv.addCommand "check"        "Validate config" "check"
 kv.addCommand "reload"       "Reload ${kv[prog_name]}" "reload"
