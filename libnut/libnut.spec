@@ -44,7 +44,7 @@ on the type of data they can contain.
 Summary:            Development files for NUT library
 Group:              Development/Libraries
 
-Requires:           %{name}-%{version}
+Requires:           %{name} = %{version}-%{release}
 
 %description devel
 libnut is a free library for creating and demuxing NUT files. It

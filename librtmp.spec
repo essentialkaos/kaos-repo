@@ -73,7 +73,7 @@ Summary:            Development files for librtmp
 Group:              Development/Libraries
 License:            LGPL
 
-Requires:           %{name} = %{release}-%{version}
+Requires:           %{name} = %{version}-%{release}
 
 %description devel
 This is the package containing the header files for librtmp library.
