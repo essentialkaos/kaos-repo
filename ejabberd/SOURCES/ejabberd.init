@@ -24,16 +24,18 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="ejabberd"
-kv[search_pattern]="-ejabberd"
 
 kv.readSysconfig
 
 user=${USER:-ejabberd}
 binary=${BINARY:-/usr/sbin/ejabberdctl}
 conf_file=${CONF_FILE:-/etc/ejabberd/ejabberd.yml}
-ctl_file=${CONF_FILE:-/etc/ejabberd/ejabberdctl.cfg}
+ctl_file=${CTL_FILE:-/etc/ejabberd/ejabberdctl.cfg}
 log_dir=${LOG_DIR:-/var/log/ejabberd}
 spool_dir=${SPOOL_DIR:-/var/lib/ejabberd/spool}
+cookie_home=${COOKIE_HOME:-/var/lib/ejabberd}
+
+kv[search_pattern]="$binary"
 
 kv[file_limit]=10240
 kv[user]="$user"
@@ -60,9 +62,10 @@ prepare() {
 
   [[ ! -d $log_dir ]] && has_errors=true && kv.error "Error! Directory <$log_dir> is not exist."
   [[ ! -d $spool_dir ]] && has_errors=true && kv.error "Error! Directory <$spool_dir> is not exist."
+  [[ ! -d $cookie_home ]] && has_errors=true && kv.error "Error! Directory <$cookie_home> is not exist."
 
   [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty."
-  
+
   if ! kv.hasUser "${kv[user]}" ; then
     has_errors=true && kv.error "User <${kv[user]}> not found in /etc/passwd file."
   fi
@@ -71,11 +74,12 @@ prepare() {
 }
 
 startServiceHandler() {
-  kv.run "$binary start --config $conf_file --ctl-config $ctl_file --logs $log_dir --spool $spool_dir"
+
+  kv.run "HOME=$cookie_home $binary start --config $conf_file --ctl-config $ctl_file --logs $log_dir --spool $spool_dir"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
-  sleep 5
+  sleep 2
 
   kv.getStartStatus
 
@@ -91,7 +95,7 @@ stopServiceHandler() {
     return $ACTION_OK
   else
     if [[ -n "$1" ]] ; then
-      kv.killProcess $pid 
+      kv.killProcess $pid
     fi
 
     return $ACTION_ERROR
