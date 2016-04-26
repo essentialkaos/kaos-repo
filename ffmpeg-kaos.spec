@@ -35,7 +35,7 @@
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
 Version:           3.0.1
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               http://ffmpeg.org
@@ -44,24 +44,23 @@ Source:            http://ffmpeg.org/releases/%{source_name}-%{version}.tar.bz2
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     atrpms-repo
-
 BuildRequires:     make gcc SDL-devel freetype-devel zlib-devel bzip2-devel
-BuildRequires:     imlib2-devel a52dec-devel libdc1394-devel libraw1394-devel
-BuildRequires:     libstdc++-devel faac-devel faad2-devel gsm-devel
+BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
+BuildRequires:     libstdc++-devel faac-devel libfaad2-devel gsm-devel
 BuildRequires:     lame-devel libtheora-devel libvorbis-devel
-BuildRequires:     xvidcore-devel x264-devel libfdk-aac openjpeg-devel
-BuildRequires:     dirac-devel schroedinger-devel speex-devel opencore-amr-devel
-BuildRequires:     libvdpau-devel yasm libva-devel frei0r-plugins-devel
-BuildRequires:     opencv-devel rtmpdump-devel >= 2.2.f openssl-devel
-BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut
+BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
+BuildRequires:     dirac-devel schroedinger-devel speex-devel
+BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
+BuildRequires:     opencv-devel librtmp-devel openssl-devel
+BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
-Requires:          atrpms-repo
-Requires:          SDL gsm libdc1394 libfaac0 libfdk-aac libmp3lame0 libopencore-amrnb0
-Requires:          libopencore-amrwb0 librtmp0 libva1 libvpx libx264_136 libxavs1
-Requires:          libxvidcore4 opencv orc schroedinger unicap
+Requires:          SDL libxavs1 gsm libdc1394 libfaac0 libfdk-aac libmp3lame0
+Requires:          libopencore-amrwb0 librtmp0 orc libvpx libx264_136 unicap
+Requires:          libxvidcore4opencv libva1 schroedinger libopencore-amrnb0
 
 Conflicts:         %{source_name}
+
+Provides:          %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -81,8 +80,11 @@ quality polyphase filter.
 test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > version.h
 
 %build
-%{_configure} --prefix=%{_prefix} --libdir=%{_libdir} \
-              --shlibdir=%{_libdir} --mandir=%{_mandir} \
+%{_configure} \
+  --prefix=%{_prefix} 
+  --libdir=%{_libdir} \
+  --shlibdir=%{_libdir} 
+  --mandir=%{_mandir} \
   --enable-shared \
   --enable-runtime-cpudetect \
   --enable-gpl \

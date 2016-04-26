@@ -154,8 +154,8 @@ fi
 
 %changelog
 * Mon Apr 25 2016 Gleb Goncharov <yum@gongled.me> - 3.7.3-0
-- Updated to latest version.
-- Fixed 'restart' handler in SysV init-script. 
+- Updated to latest version
+- Fixed 'restart' handler in SysV init-script
 
 * Mon Mar 21 2016 Gleb Goncharov <yum@gongled.me> - 3.7.2-0
 - Initial build
