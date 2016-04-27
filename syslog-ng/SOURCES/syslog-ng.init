@@ -12,15 +12,18 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="syslog-ng"
+kv[log]="/var/log/syslog-ng.log"
 
 kv.readSysconfig
 
 binary="${BINARY:-/usr/sbin/syslog-ng}"
 conf_file="${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}"
 options="$OPTIONS"
+persist_file="${PERSIST_FILE:-/var/lib/syslog-ng/syslog-ng.persist}"
 
 kv[search_pattern]="$binary"
-kv[log]="/var/log/syslog-ng.log"
+kv[user]="${USER:-root}"
+kv[pid_file]="${PID_FILE:-/var/run/syslog-ng/syslog-ng.pid}"
 
 ###############################################################################
 
@@ -59,7 +62,7 @@ postStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "-r -f $conf_file -p ${kv[pid_file]} $options"
+  kv.daemonize "$binary" "-r -f $conf_file -p ${kv[pid_file]} --user ${kv[user]} --persist-file $persist_file $options"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
