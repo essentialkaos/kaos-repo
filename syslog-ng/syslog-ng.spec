@@ -46,8 +46,8 @@
 
 ###############################################################################
 
-%define service_user      service
-%define service_group     service
+%define service_user      syslog-ng
+%define service_group     syslog-ng
 
 ###############################################################################
 
@@ -177,3 +177,4 @@ fi
 
 * Mon Mar 21 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.2-0
 - Initial build
+
