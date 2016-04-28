@@ -18,7 +18,8 @@ kv.readSysconfig
 binary="${BINARY:-/usr/sbin/syslog-ng}"
 conf_file="${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}"
 options="$OPTIONS"
-persist_file="${PERSIST_FILE:-/var/lib/syslog-ng/syslog-ng.persist}"
+persist_dir="${PERSIST_DIR:-/var/lib/syslog-ng}"
+persist_file="$persist_dir/syslog-ng.persist"
 
 kv[user]="${USER:-root}"
 kv[search_pattern]="$binary"
@@ -50,16 +51,16 @@ prepare() {
   local has_errors=""
 
   [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> does not exist"
-  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> does not executable"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
 
   [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> does not exist"
   [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> does not readable"
 
-  [[ ! -f $persist_file ]] && has_errors=true && kv.error "Error! File <$persist_file> does not exist"
-  [[ ! -r $persist_file ]] && has_errors=true && kv.error "Error! File <$persist_file> does not readable"
+  [[ ! -d $persist_dir ]] && has_errors=true && kv.error "Error! Directory <$persist_dir> does not exist"
+  [[ ! -w $persist_dir ]] && has_errors=true && kv.error "Error! Directory <$persist_dir> is not writable"
 
-  [[ ! -d ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <$persist_file> does not exist"
-  [[ ! -w ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <$persist_file> does not writable"
+  [[ ! -d ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <${kv[pid_dir]}> does not exist"
+  [[ ! -w ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <${kv[pid_dir]}> is not writable"
 
   [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty"
 
