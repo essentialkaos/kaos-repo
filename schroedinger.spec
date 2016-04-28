@@ -37,19 +37,15 @@
 
 ###############################################################################
 
-%define pkg_name          schroedinger
-
-###############################################################################
-
 Summary:            Portable libraries for the high quality Dirac video codec
-Name:               lib%{pkg_name}
+Name:               schroedinger
 Version:            1.0.11
 Release:            0%{?dist}
 Group:              System Environment/Libraries
 License:            LGPL
 URL:                http://www.diracvideo.org
 
-Source0:            http://www.diracvideo.org/download/%{pkg_name}/%{pkg_name}-%{version}.tar.gz
+Source0:            http://www.diracvideo.org/download/%{name}/%{name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -83,7 +79,7 @@ Development files for schroedinger.
 ###############################################################################
 
 %prep
-%setup -qn %{pkg_name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 %configure --disable-static
@@ -110,17 +106,17 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc COPYING* NEWS TODO
-%{_libdir}/%{name}-*.so.*
+%{_libdir}/lib%{name}-*.so.*
 
 ###############################################################################
 
 %files devel
 %defattr(-,root,root,-)
-%doc %{_datadir}/gtk-doc/html/%{pkg_name}
-%{_includedir}/%{pkg_name}-*
+%doc %{_datadir}/gtk-doc/html/%{name}
+%{_includedir}/%{name}-*
 %{_libdir}/*.so
 %{_libdir}/*.la
-%{_pkgconfigdir}/%{pkg_name}-*.pc
+%{_pkgconfigdir}/%{name}-*.pc
 
 ###############################################################################
 

@@ -12,7 +12,7 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="syslog-ng"
-kv[pid_file]="/var/run/syslog-ng/syslog-ng.pid"
+kv[pid_dir]="/var/run/syslog-ng"
 
 kv.readSysconfig
 
