@@ -46,6 +46,11 @@
 
 ###############################################################################
 
+%define service_user      service
+%define service_group     service
+
+###############################################################################
+
 Summary:            Next generation logging application
 Name:               syslog-ng
 Version:            3.7.3
@@ -115,6 +120,11 @@ install -pm 644 contrib/rhel-packaging/%{name}.logrotate \
 rm -rf %{buildroot}
 
 ###############################################################################
+
+%pre
+getent group %{service_group} >/dev/null || groupadd -r %{service_group}
+getent passwd %{service_user} >/dev/null || useradd -r -g %{service_group} -s /sbin/nologin -d / %{service_user}
+exit 0
 
 %post
 if [[ $1 -eq 1 ]] ; then
