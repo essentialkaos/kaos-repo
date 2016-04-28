@@ -1,3 +1,7 @@
+USER="syslog-ng"
 BINARY=""
 CONF_FILE=""
+LOG_FILE=""
+PID_FILE=""
+PERSIST_FILE=""
 OPTIONS=""
