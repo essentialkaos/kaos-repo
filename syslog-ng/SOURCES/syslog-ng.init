@@ -12,7 +12,6 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="syslog-ng"
-kv[pid_file]="/var/run/syslog-ng/syslog-ng.pid"
 
 kv.readSysconfig
 
@@ -23,7 +22,9 @@ persist_file="${PERSIST_FILE:-/var/lib/syslog-ng/syslog-ng.persist}"
 
 kv[user]="${USER:-root}"
 kv[search_pattern]="$binary"
+
 kv[log]="${LOG_FILE:-/var/log/syslog-ng.log}"
+kv[pid_dir]="${PID_DIR:-/var/run/syslog-ng}"
 
 ###############################################################################
 
@@ -56,6 +57,9 @@ prepare() {
 
   [[ ! -f $persist_file ]] && has_errors=true && kv.error "Error! File <$persist_file> does not exist"
   [[ ! -r $persist_file ]] && has_errors=true && kv.error "Error! File <$persist_file> does not readable"
+
+  [[ ! -d ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <$persist_file> does not exist"
+  [[ ! -w ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <$persist_file> does not writable"
 
   [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty"
 
