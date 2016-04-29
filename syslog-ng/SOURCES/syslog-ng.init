@@ -20,8 +20,8 @@ conf_file="${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}"
 options="$OPTIONS"
 persist_dir="${PERSIST_DIR:-/var/lib/syslog-ng}"
 persist_file="$persist_dir/syslog-ng.persist"
-user="${USER:-syslog-ng}"
 
+kv[user]="${USER:-root}"
 kv[search_pattern]="$binary"
 
 kv[log]="${LOG_FILE:-/var/log/syslog-ng.log}"
@@ -62,10 +62,10 @@ prepare() {
   [[ ! -d ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <${kv[pid_dir]}> does not exist"
   [[ ! -w ${kv[pid_dir]} ]] && has_errors=true && kv.error "Error! Directory <${kv[pid_dir]}> is not writable"
 
-  [[ -z $user ]] && has_errors=true && kv.error "User value can't be empty"
+  [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty"
 
-  if ! kv.hasUser "$user" ; then
-    has_errors=true && kv.error "User <$user> not found in /etc/passwd file"
+  if ! kv.hasUser "${kv[user]}" ; then
+    has_errors=true && kv.error "User <${kv[user]}> not found in /etc/passwd file"
   fi
 
   [[ $has_errors ]] && kv.exit $ACTION_ERROR
@@ -88,7 +88,7 @@ postStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "-r -f $conf_file -p ${kv[pid_file]} --user $user --persist-file $persist_file $options"
+  kv.daemonize "$binary" "-r -f $conf_file -p ${kv[pid_file]} --user ${kv[user]} --persist-file $persist_file $options"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
