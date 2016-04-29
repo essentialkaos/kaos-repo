@@ -112,6 +112,7 @@ ejabberd, Erlang, XMPP and messaging in general.
            --enable-odbc \
            --enable-mysql \
            --enable-lager \
+           --enable-elixir \
            --enable-pgsql \
            --enable-sqlite \
            --enable-pam \
@@ -164,7 +165,7 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 
 %changelog
 * Fri Apr 29 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.03-2
-- Added lager support in ejabberd
+- Added lager and elixir support
 
 * Tue Apr 26 2016 Anton Novojilov <andy@essentialkaos.com> - 16.03-1
 - SysV script fixes
