@@ -46,7 +46,7 @@
 Name:              luajit
 Summary:           Just-In-Time Compiler for Lua
 Version:           2.0.4
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           MIT
 Group:             Development/Tools
 URL:               http://luajit.org
@@ -91,6 +91,8 @@ Headers and static lib for LuaJIT.
 %setup -q -n LuaJIT-%{version}
 
 %build
+export CFLAGS="$CFLAGS -fPIC"
+
 %{__make} %{?_smp_mflags}
 
 %install
@@ -134,6 +136,9 @@ ln -sf %{_libdir}/libluajit-%{api_version}.so.%{major_version}.%{minor_version} 
 ###############################################################################
 
 %changelog
+* Wed Apr 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.4-1
+- Improved build process
+
 * Fri May 22 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.4-0
 - Fix stack check in narrowing optimization
 - Fix Lua/C API typecheck error for special indexes

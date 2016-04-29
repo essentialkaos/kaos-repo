@@ -46,10 +46,15 @@
 
 ###############################################################################
 
+%define service_user      syslog-ng
+%define service_group     syslog-ng
+
+###############################################################################
+
 Summary:            Next generation logging application
 Name:               syslog-ng
-Version:            3.7.2
-Release:            0%{?dist}
+Version:            3.7.3
+Release:            1%{?dist}
 License:            GPL
 Group:              System Environment/Daemons
 URL:                http://www.balabit.com
@@ -62,7 +67,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           kaosv eventlog libhiredis libnet GeoIP pcre openssl json-c
 
-BuildRequires:      bison flex gcc-c++ glib2-devel pkgconfig pcre-devel
+BuildRequires:      make gcc bison flex glib2-devel pkgconfig pcre-devel
 BuildRequires:      openssl-devel libnet-devel eventlog-devel
 BuildRequires:      libhiredis-devel json-c-devel
 
@@ -98,6 +103,8 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
+install -dm 755 %{buildroot}%{_rundir}/%{name}
+install -dm 755 %{buildroot}%{_sharedstatedir}/%{name}
 install -dm 755 %{buildroot}%{_initrddir}
 
 install -pm 644 %{SOURCE1} \
@@ -113,6 +120,11 @@ install -pm 644 contrib/rhel-packaging/%{name}.logrotate \
 rm -rf %{buildroot}
 
 ###############################################################################
+
+%pre
+getent group %{service_group} >/dev/null || groupadd -r %{service_group}
+getent passwd %{service_user} >/dev/null || useradd -r -g %{service_group} -s /sbin/nologin -d / %{service_user}
+exit 0
 
 %post
 if [[ $1 -eq 1 ]] ; then
@@ -134,6 +146,8 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc NEWS.md AUTHORS COPYING VERSION
+%attr(755,%{service_user},%{service_group}) %dir %{_rundir}/%{name}
+%attr(755,%{service_user},%{service_group}) %dir %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
@@ -153,5 +167,14 @@ fi
 ###############################################################################
 
 %changelog
-* Mon Mar 21 2016 Gleb Goncharov <yum@gongled.me> - 3.7.2-0
+* Wed Apr 27 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.3-1
+- Added directory to store persist-file.
+- Added support of running syslog-ng as non-root user.
+
+* Mon Apr 25 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.3-0
+- Updated to latest version
+- Fixed 'restart' handler in SysV init-script
+
+* Mon Mar 21 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.2-0
 - Initial build
+
