@@ -52,7 +52,7 @@
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
 Version:           16.03
-Release:           1%{?dist}
+Release:           2%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
 URL:               https://www.ejabberd.im
@@ -77,24 +77,24 @@ Provides:          %{name} = %{version}-%{release}
 ###############################################################################
 
 %description
-ejabberd is an open source Jabber/XMPP server designed from the ground up to
+ejabberd is an open source Jabber/XMPP server designed from the ground up to 
 be the building bricks of highly critical messaging systems.
 
-Written in Erlang programming language, ejabberd is cross-platform,
-fault-tolerant, clusterable, very modular and highly versatile. It can be
+Written in Erlang programming language, ejabberd is cross-platform, 
+fault-tolerant, clusterable, very modular and highly versatile. It can be 
 extended in other programming languages, such as Elixir.
 
-Designed to be massively scalable, it is widely used to power web scale
-deployments across many software industries: Mobile messaging, Social
+Designed to be massively scalable, it is widely used to power web scale 
+deployments across many software industries: Mobile messaging, Social 
 Networks, Gaming, Internet of Things,
 
-ejabberd is taking great care of XMPP compliance, implementing most of the
+ejabberd is taking great care of XMPP compliance, implementing most of the 
 XMPP extensions published by the XMPP Standard Foundation.
 
-To innovate even further, the core development team is constantly working
+To innovate even further, the core development team is constantly working 
 with other open source communities to create bridges and elegant features.
 
-This ejabberd community site is a hub for all people that are interested in
+This ejabberd community site is a hub for all people that are interested in 
 ejabberd, Erlang, XMPP and messaging in general.
 
 ###############################################################################
