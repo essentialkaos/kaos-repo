@@ -6,7 +6,7 @@
 
 Summary:         Tool for building, changing, and combining infrastructure 
 Name:            terraform
-Version:         0.6.14
+Version:         0.6.15
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -40,6 +40,7 @@ Requires:        %{name}-provider-chef
 Requires:        %{name}-provider-clc
 Requires:        %{name}-provider-cloudflare
 Requires:        %{name}-provider-cloudstack
+Requires:        %{name}-provider-cobbler
 Requires:        %{name}-provider-consul
 Requires:        %{name}-provider-datadog
 Requires:        %{name}-provider-digitalocean
@@ -47,6 +48,7 @@ Requires:        %{name}-provider-dme
 Requires:        %{name}-provider-dnsimple
 Requires:        %{name}-provider-docker
 Requires:        %{name}-provider-dyn
+Requires:        %{name}-provider-fastly
 Requires:        %{name}-provider-github
 Requires:        %{name}-provider-google
 Requires:        %{name}-provider-heroku
@@ -165,6 +167,17 @@ CloudStack provider for Terraform.
 
 ###############################################################################
 
+%package provider-cobbler
+
+Summary:         Cobbler provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-cobbler
+Cobbler provider for Terraform.
+
+###############################################################################
+
 %package provider-consul
 
 Summary:         Consul provider for Terraform
@@ -242,14 +255,25 @@ Dyn provider for Terraform.
 
 ###############################################################################
 
+%package provider-fastly
+
+Summary:         Fastly provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-fastly
+Fastly provider for Terraform.
+
+###############################################################################
+
 %package provider-github
 
-Summary:         github provider for Terraform
+Summary:         GitHub provider for Terraform
 
 Requires:        %{name} = %{version}-%{release}
 
 %description provider-github
-github provider for Terraform.
+GitHub provider for Terraform.
 
 ###############################################################################
 
@@ -582,6 +606,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-cloudstack
 
+%files provider-cobbler
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-cobbler
+
 %files provider-consul
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-consul
@@ -609,6 +637,10 @@ rm -rf %{buildroot}
 %files provider-dyn
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-dyn
+
+%files provider-fastly
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-fastly
 
 %files provider-github
 %defattr(-,root,root,-)
@@ -709,5 +741,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu May 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.15-0
+- Updated to latest stable release
+
 * Thu Mar 10 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.14-0
 - Initial build

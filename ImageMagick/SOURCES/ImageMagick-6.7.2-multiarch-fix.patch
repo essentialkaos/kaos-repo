@@ -1,0 +1,327 @@
+diff -up ImageMagick-6.7.2-7/config/config.h.in.multiarch-fix ImageMagick-6.7.2-7/config/config.h.in
+--- ImageMagick-6.7.2-7/config/config.h.in.multiarch-fix	2011-09-17 18:45:53.000000000 +0200
++++ ImageMagick-6.7.2-7/config/config.h.in	2015-02-26 22:56:20.325621412 +0100
+@@ -876,6 +876,13 @@
+ #undef SELECT_TYPE_ARG5
+ 
+ /* Directory where architecture-independent configuration files live. */
++#undef SHAREARCH_PATH
++
++/* Subdirectory of lib where architecture-independent configuration files
++   live. */
++#undef SHAREARCH_RELATIVE_PATH
++
++/* Directory where architecture-independent configuration files live. */
+ #undef SHARE_PATH
+ 
+ /* Subdirectory of lib where architecture-independent configuration files
+diff -up ImageMagick-6.7.2-7/config/Makefile.am.multiarch-fix ImageMagick-6.7.2-7/config/Makefile.am
+--- ImageMagick-6.7.2-7/config/Makefile.am.multiarch-fix	2011-04-01 14:35:43.000000000 +0200
++++ ImageMagick-6.7.2-7/config/Makefile.am	2015-02-26 22:56:20.325621412 +0100
+@@ -18,12 +18,17 @@
+ # (share/ImageMagick-version)
+ configsharedir = $(SHARE_PATH)
+ configshare_DATA = \
+-	config/configure.xml \
+ 	config/english.xml \
+ 	config/francais.xml \
+ 	config/locale.xml
+ 
+ # Where architecture-dependent configuration files get installed
++# (share/arch/ImageMagick-version)
++configsharearchdir = $(SHAREARCH_PATH)
++configsharearch_DATA = \
++  config/configure.xml 
++
++# Where architecture-dependent configuration files get installed
+ # (share/ImageMagick-version)
+ configlibdir =  $(CONFIGURE_PATH)
+ configlib_DATA = \
+diff -up ImageMagick-6.7.2-7/configure.ac.multiarch-fix ImageMagick-6.7.2-7/configure.ac
+--- ImageMagick-6.7.2-7/configure.ac.multiarch-fix	2011-09-13 16:19:14.000000000 +0200
++++ ImageMagick-6.7.2-7/configure.ac	2015-02-26 22:56:20.326621408 +0100
+@@ -378,6 +378,18 @@ Please re-run configure with these optio
+   ;;
+ esac
+ 
++#
++# ARCH specific configuration directory
++#
++AC_ARG_WITH([sharearch-dir],
++    [AC_HELP_STRING([--sharearch-dir=DIR],
++                    [ARCH specific config directory])],
++                    [sharearch_dir=$withval],
++                    [sharearch_dir="${LIB_DIR}"])
++
++eval "eval SHAREARCH_DIR=$sharearch_dir"
++AC_SUBST(SHAREARCH_DIR)
++
+ # Enable support for threads
+ AC_ARG_WITH([threads],
+     [AC_HELP_STRING([--without-threads], [disable threads support])],
+@@ -2874,7 +2886,7 @@ esac
+ AC_DEFINE_UNQUOTED(CONFIGURE_PATH,"$DEFINE_CONFIGURE_PATH",Directory where architecture-dependent configuration files live.)
+ AC_SUBST(CONFIGURE_PATH)
+ 
+-# Subdirectory to place ImageMagick configuration files
++# Subdirectory to place architecture-independent configuration files
+ SHARE_RELATIVE_PATH="${LIBRARY_RELATIVE_PATH}"
+ AC_DEFINE_UNQUOTED(SHARE_RELATIVE_PATH,"$SHARE_RELATIVE_PATH",Subdirectory of lib where architecture-independent configuration files live.)
+ SHARE_PATH="${DATA_DIR}/${SHARE_RELATIVE_PATH}"
+@@ -2887,6 +2899,19 @@ esac
+ AC_DEFINE_UNQUOTED(SHARE_PATH,"$DEFINE_SHARE_PATH",Directory where architecture-independent configuration files live.)
+ AC_SUBST(SHARE_PATH)
+ 
++# Subdirectory to place architecture-independent configuration files
++SHAREARCH_RELATIVE_PATH="${LIBRARY_RELATIVE_PATH}/config"
++AC_DEFINE_UNQUOTED(SHAREARCH_RELATIVE_PATH,"$SHAREARCH_RELATIVE_PATH",Subdirectory of lib where architecture-independent configuration files live.)
++SHAREARCH_PATH="${SHAREARCH_DIR}/${SHAREARCH_RELATIVE_PATH}"
++DEFINE_SHAREARCH_PATH="${SHAREARCH_DIR}/${SHAREARCH_RELATIVE_PATH}/"
++case "${build_os}" in
++  mingw* )
++    DEFINE_SHAREARCH_PATH=`$WinPathScript "$DEFINE_SHAREARCH_PATH" 1`
++    ;;
++esac
++AC_DEFINE_UNQUOTED(SHAREARCH_PATH,"$DEFINE_SHAREARCH_PATH",Directory where architecture-independent configuration files live.)
++AC_SUBST(SHAREARCH_PATH)
++
+ #
+ # program_transform_name is formed for use in a Makefile, so create a
+ # modified version for use in a shell script.
+diff -up ImageMagick-6.7.2-7/configure.multiarch-fix ImageMagick-6.7.2-7/configure
+--- ImageMagick-6.7.2-7/configure.multiarch-fix	2011-09-17 19:00:12.000000000 +0200
++++ ImageMagick-6.7.2-7/configure	2015-02-26 22:56:20.386621151 +0100
+@@ -721,6 +721,7 @@ BrowseDelegate
+ BZIPDelegate
+ BlenderDecodeDelegate
+ AutotraceDecodeDelegate
++SHAREARCH_PATH
+ SHARE_PATH
+ CONFIGURE_PATH
+ DOCUMENTATION_PATH
+@@ -911,6 +912,7 @@ PTHREAD_CFLAGS
+ PTHREAD_LIBS
+ PTHREAD_CC
+ ax_pthread_config
++SHAREARCH_DIR
+ WinPathScript
+ USING_CL_FALSE
+ USING_CL_TRUE
+@@ -1077,6 +1079,7 @@ with_gnu_ld
+ with_dmalloc
+ enable_bounds_checking
+ enable_osx_universal_binary
++with_sharearch_dir
+ with_threads
+ enable_openmp
+ enable_opencl
+@@ -1842,6 +1845,7 @@ Optional Packages:
+   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
+   --with-dmalloc          use dmalloc, as in
+ 			  http://www.dmalloc.com/dmalloc.tar.gz
++  --sharearch-dir=DIR     ARCH specific config directory
+   --without-threads       disable threads support
+   --with-pic              try to use only PIC/non-PIC objects [default=use
+                           both]
+@@ -1849,7 +1853,7 @@ Optional Packages:
+                         (or the compiler's sysroot if not specified).
+   --with-included-ltdl    use the GNU ltdl sources included here
+   --with-ltdl-include=DIR use the ltdl headers installed in DIR
+-  --with-ltdl-lib=DIR     use the libltdl.la installed in DIR
++  --with-ltdl-lib=DIR     use the libltdl.so installed in DIR
+   --with-modules          enable building dynamically loadable modules
+   --with-method-prefix=PREFIX
+                           prefix MagickCore API methods
+@@ -8216,6 +8220,19 @@ Please re-run configure with these optio
+   ;;
+ esac
+ 
++#
++# ARCH specific configuration directory
++#
++
++# Check whether --with-sharearch-dir was given.
++if test "${with_sharearch_dir+set}" = set; then :
++  withval=$with_sharearch_dir; sharearch_dir=$withval
++else
++  sharearch_dir="${LIB_DIR}"
++fi
++
++
++eval "eval SHAREARCH_DIR=$sharearch_dir"
+ # Enable support for threads
+ 
+ # Check whether --with-threads was given.
+@@ -20722,7 +20739,7 @@ fi
+ 
+ 
+ if test -n "$with_ltdl_lib"; then
+-  if test -f "$with_ltdl_lib/libltdl.la"; then :
++  if test -f "$with_ltdl_lib/libltdl.so"; then :
+   else
+     as_fn_error $? "invalid ltdl library directory: \`$with_ltdl_lib'" "$LINENO" 5
+   fi
+@@ -31525,6 +31542,27 @@ cat >>confdefs.h <<_ACEOF
+ _ACEOF
+ 
+ 
++
++# Subdirectory to place architecture-independent configuration files
++SHAREARCH_RELATIVE_PATH="${LIBRARY_RELATIVE_PATH}/config"
++
++cat >>confdefs.h <<_ACEOF
++#define SHAREARCH_RELATIVE_PATH "$SHAREARCH_RELATIVE_PATH"
++_ACEOF
++
++SHAREARCH_PATH="${SHAREARCH_DIR}/${SHAREARCH_RELATIVE_PATH}"
++DEFINE_SHAREARCH_PATH="${SHAREARCH_DIR}/${SHAREARCH_RELATIVE_PATH}/"
++case "${build_os}" in
++  mingw* )
++    DEFINE_SHAREARCH_PATH=`$WinPathScript "$DEFINE_SHAREARCH_PATH" 1`
++    ;;
++esac
++
++cat >>confdefs.h <<_ACEOF
++#define SHAREARCH_PATH "$DEFINE_SHAREARCH_PATH"
++_ACEOF
++
++
+ 
+ #
+ # program_transform_name is formed for use in a Makefile, so create a
+diff -up ImageMagick-6.7.2-7/magick/configure.c.multiarch-fix ImageMagick-6.7.2-7/magick/configure.c
+--- ImageMagick-6.7.2-7/magick/configure.c.multiarch-fix	2011-05-19 20:07:50.000000000 +0200
++++ ImageMagick-6.7.2-7/magick/configure.c	2015-02-26 22:56:20.330621391 +0100
+@@ -667,6 +667,10 @@ MagickExport LinkedListInfo *GetConfigur
+   (void) AppendValueToLinkedList(paths,ConstantString(
+     MAGICKCORE_SHARE_PATH));
+ #endif
++#if defined(MAGICKCORE_SHAREARCH_PATH)
++  (void) AppendValueToLinkedList(paths,ConstantString(
++    MAGICKCORE_SHAREARCH_PATH));
++#endif
+ #if defined(MAGICKCORE_CONFIGURE_PATH)
+   (void) AppendValueToLinkedList(paths,ConstantString(
+     MAGICKCORE_CONFIGURE_PATH));
+diff -up ImageMagick-6.7.2-7/Makefile.in.multiarch-fix ImageMagick-6.7.2-7/Makefile.in
+--- ImageMagick-6.7.2-7/Makefile.in.multiarch-fix	2015-02-26 22:57:27.969331327 +0100
++++ ImageMagick-6.7.2-7/Makefile.in	2015-02-27 00:04:42.278030498 +0100
+@@ -343,6 +343,7 @@ am__installdirs = "$(DESTDIR)$(codersdir
+ 	"$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
+ 	"$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" \
+ 	"$(DESTDIR)$(configlibdir)" "$(DESTDIR)$(configsharedir)" \
++	"$(DESTDIR)$(configsharearchdir)" "$(DESTDIR)$(docdir)" \
+ 	"$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" \
+ 	"$(DESTDIR)$(includedir)" "$(DESTDIR)$(ltdlincludedir)" \
+ 	"$(DESTDIR)$(magickincdir)" "$(DESTDIR)$(magickppincdir)" \
+@@ -2159,8 +2160,8 @@ DIST_SOURCES = $(Magick___lib_libMagick_
+ man1dir = $(mandir)/man1
+ NROFF = nroff
+ MANS = $(man_MANS)
+-DATA = $(configlib_DATA) $(configshare_DATA) $(doc_DATA) \
+-	$(pkgconfig_DATA)
++DATA = $(configlib_DATA) $(configshare_DATA) $(configsharearch_DATA) \
++	$(doc_DATA) $(pkgconfig_DATA)
+ am__include_HEADERS_DIST = ltdl/ltdl.h
+ am__ltdlinclude_HEADERS_DIST = ltdl/libltdl/lt_system.h \
+ 	ltdl/libltdl/lt_error.h ltdl/libltdl/lt_dlloader.h
+@@ -2506,6 +2507,8 @@ SBIN_DIR = @SBIN_DIR@
+ SCANDecodeDelegate = @SCANDecodeDelegate@
+ SED = @SED@
+ SET_MAKE = @SET_MAKE@
++SHAREARCH_DIR = @SHAREARCH_DIR@
++SHAREARCH_PATH = @SHAREARCH_PATH@
+ SHAREDSTATE_DIR = @SHAREDSTATE_DIR@
+ SHARE_PATH = @SHARE_PATH@
+ SHELL = @SHELL@
+@@ -2748,13 +2751,19 @@ M4_EXTRA_DIST = \
+ # (share/ImageMagick-version)
+ configsharedir = $(SHARE_PATH)
+ configshare_DATA = \
+-	config/configure.xml \
+ 	config/english.xml \
+ 	config/francais.xml \
+ 	config/locale.xml
+ 
+ 
+ # Where architecture-dependent configuration files get installed
++# (share/arch/ImageMagick-version)
++configsharearchdir = $(SHAREARCH_PATH)
++configsharearch_DATA = \
++  config/configure.xml 
++
++
++# Where architecture-dependent configuration files get installed
+ # (share/ImageMagick-version)
+ configlibdir = $(CONFIGURE_PATH)
+ configlib_DATA = \
+@@ -10598,6 +10607,24 @@ uninstall-configshareDATA:
+ 	test -n "$$files" || exit 0; \
+ 	echo " ( cd '$(DESTDIR)$(configsharedir)' && rm -f" $$files ")"; \
+ 	cd "$(DESTDIR)$(configsharedir)" && rm -f $$files
++install-configsharearchDATA: $(configsharearch_DATA)
++	@$(NORMAL_INSTALL)
++	test -z "$(configsharearchdir)" || $(MKDIR_P) "$(DESTDIR)$(configsharearchdir)"
++	@list='$(configsharearch_DATA)'; test -n "$(configsharearchdir)" || list=; \
++	for p in $$list; do \
++	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
++	  echo "$$d$$p"; \
++	done | $(am__base_list) | \
++	while read files; do \
++	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(configsharearchdir)'"; \
++	  $(INSTALL_DATA) $$files "$(DESTDIR)$(configsharearchdir)" || exit $$?; \
++	done
++
++uninstall-configsharearchDATA:
++	@$(NORMAL_UNINSTALL)
++	@list='$(configsharearch_DATA)'; test -n "$(configsharearchdir)" || list=; \
++	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
++	dir='$(DESTDIR)$(configsharearchdir)'; $(am__uninstall_files_from_dir)
+ install-docDATA: $(doc_DATA)
+ 	@$(NORMAL_INSTALL)
+ 	test -z "$(docdir)" || $(MKDIR_P) "$(DESTDIR)$(docdir)"
+@@ -11142,7 +11169,7 @@ all-am: Makefile $(LTLIBRARIES) $(PROGRA
+ install-binPROGRAMS: install-libLTLIBRARIES
+ 
+ installdirs:
+-	for dir in "$(DESTDIR)$(codersdir)" "$(DESTDIR)$(filtersdir)" "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(configlibdir)" "$(DESTDIR)$(configsharedir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)" "$(DESTDIR)$(ltdlincludedir)" "$(DESTDIR)$(magickincdir)" "$(DESTDIR)$(magickppincdir)" "$(DESTDIR)$(magickpptopincdir)" "$(DESTDIR)$(wandincdir)"; do \
++	for dir in "$(DESTDIR)$(codersdir)" "$(DESTDIR)$(filtersdir)" "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(configlibdir)" "$(DESTDIR)$(configsharedir)" "$(DESTDIR)$(configsharearchdir)" "$(DESTDIR)$(docdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(includedir)" "$(DESTDIR)$(ltdlincludedir)" "$(DESTDIR)$(magickincdir)" "$(DESTDIR)$(magickppincdir)" "$(DESTDIR)$(magickpptopincdir)" "$(DESTDIR)$(wandincdir)"; do \
+ 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
+ 	done
+ install: $(BUILT_SOURCES)
+@@ -11226,7 +11253,7 @@ info: info-am
+ info-am:
+ 
+ install-data-am: install-codersLTLIBRARIES install-configlibDATA \
+-	install-configshareDATA install-data-local install-docDATA \
++	install-configshareDATA install-configsharearchDATA install-data-local install-docDATA \
+ 	install-filtersLTLIBRARIES install-includeHEADERS \
+ 	install-ltdlincludeHEADERS install-magickincHEADERS \
+ 	install-magickppincHEADERS install-magickpptopincHEADERS \
+@@ -11282,7 +11309,7 @@ ps-am:
+ 
+ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
+ 	uninstall-codersLTLIBRARIES uninstall-configlibDATA \
+-	uninstall-configshareDATA uninstall-docDATA \
++	uninstall-configshareDATA uninstall-configsharearchDATA uninstall-docDATA \
+ 	uninstall-filtersLTLIBRARIES uninstall-includeHEADERS \
+ 	uninstall-libLTLIBRARIES uninstall-local \
+ 	uninstall-ltdlincludeHEADERS uninstall-magickincHEADERS \
+@@ -11306,7 +11333,7 @@ uninstall-man: uninstall-man1
+ 	distcleancheck distdir distuninstallcheck dvi dvi-am html \
+ 	html-am info info-am install install-am install-binPROGRAMS \
+ 	install-binSCRIPTS install-codersLTLIBRARIES \
+-	install-configlibDATA install-configshareDATA install-data \
++	install-configlibDATA install-configshareDATA install-configsharearchDATA install-data \
+ 	install-data-am install-data-local install-docDATA install-dvi \
+ 	install-dvi-am install-exec install-exec-am install-exec-local \
+ 	install-filtersLTLIBRARIES install-html install-html-am \
+@@ -11322,7 +11349,7 @@ uninstall-man: uninstall-man1
+ 	pdf pdf-am ps ps-am recheck recheck-html tags uninstall \
+ 	uninstall-am uninstall-binPROGRAMS uninstall-binSCRIPTS \
+ 	uninstall-codersLTLIBRARIES uninstall-configlibDATA \
+-	uninstall-configshareDATA uninstall-docDATA \
++	uninstall-configshareDATA uninstall-configsharearchDATA uninstall-docDATA \
+ 	uninstall-filtersLTLIBRARIES uninstall-includeHEADERS \
+ 	uninstall-libLTLIBRARIES uninstall-local \
+ 	uninstall-ltdlincludeHEADERS uninstall-magickincHEADERS \
