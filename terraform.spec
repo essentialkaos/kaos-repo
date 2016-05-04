@@ -16,7 +16,7 @@ Source0:         https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.6
+BuildRequires:   zip golang >= 1.6
 
 Provides:        %{name} = %{version}-%{release}
 
