@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            4.0.0
+Version:            4.4.3
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -43,7 +43,7 @@ Source0:            %{url}/dist/v%{version}/node-v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc gcc-c++ python >= 2.6 openssl-devel zlib-devel libstdc++-devel
+BuildRequires:      make clang gcc gcc-c++ python >= 2.6 zlib-devel libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release} 
 Provides:           %{shortname} = %{version}-%{release} 
@@ -81,8 +81,8 @@ export CC=clang
 export CXX=clang++
 
 %{_configure} --prefix=%{_prefix} \
-              --shared-openssl --shared-openssl-includes=%{_includedir} \
-              --shared-zlib --shared-zlib-includes=%{_includedir}
+              --shared-zlib \
+              --shared-zlib-includes=%{_includedir}
 
 %{__make} %{?_smp_mflags}
 
@@ -98,9 +98,10 @@ export CXX=clang++
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog LICENSE README.md
+%doc AUTHORS LICENSE README.md
 %{_bindir}/%{shortname}
 %{_bindir}/npm
+%{_docdir}/%{shortname}/gdbinit
 %{_mandir}/man1/%{shortname}.1.gz
 %{_libdir32}/%{shortname}_modules
 %{_datadir}/systemtap/tapset/%{shortname}.stp
@@ -112,6 +113,11 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Thu May 05 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 4.4.3-0
+- Updated to TLS version.
+- Removed --shared-openssl option because of "node js" is incompatible
+with OpenSSL 1.0.1x which provided in CentOS 7.
+
 * Wed Sep  9 2015 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
 - child_process: ChildProcess.prototype.send() and process.send() operate 
 asynchronously across all platforms so an optional callback parameter has 
