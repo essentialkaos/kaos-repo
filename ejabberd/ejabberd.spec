@@ -52,7 +52,7 @@
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
 Version:           16.03
-Release:           1%{?dist}
+Release:           2%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
 URL:               https://www.ejabberd.im
@@ -66,7 +66,7 @@ Patch0:            %{name}-conf.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make automake autoconf gcc gcc-c++ git erlang >= 17 
+BuildRequires:     make automake autoconf gcc gcc-c++ git erlang >= 17
 BuildRequires:     zlib-devel expat-devel pam-devel sqlite-devel
 BuildRequires:     openssl-devel libyaml-devel
 
@@ -76,7 +76,7 @@ Provides:          %{name} = %{version}-%{release}
 
 ###############################################################################
 
-%description 
+%description
 ejabberd is an open source Jabber/XMPP server designed from the ground up to 
 be the building bricks of highly critical messaging systems.
 
@@ -86,7 +86,7 @@ extended in other programming languages, such as Elixir.
 
 Designed to be massively scalable, it is widely used to power web scale 
 deployments across many software industries: Mobile messaging, Social 
-Networks, Gaming, Internet of Things, 
+Networks, Gaming, Internet of Things,
 
 ejabberd is taking great care of XMPP compliance, implementing most of the 
 XMPP extensions published by the XMPP Standard Foundation.
@@ -111,6 +111,7 @@ ejabberd, Erlang, XMPP and messaging in general.
            --enable-full_xml \
            --enable-odbc \
            --enable-mysql \
+           --enable-lager \
            --enable-pgsql \
            --enable-sqlite \
            --enable-pam \
@@ -162,6 +163,9 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Fri Apr 29 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.03-2
+- Added lager support
+
 * Tue Apr 26 2016 Anton Novojilov <andy@essentialkaos.com> - 16.03-1
 - SysV script fixes
 
@@ -185,3 +189,4 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 
 * Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 15.06-0
 - Initial build
+
