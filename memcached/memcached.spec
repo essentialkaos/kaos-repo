@@ -56,7 +56,7 @@ Source2:                  %{name}.sysconf
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:            libevent-devel
+BuildRequires:            gcc automake libevent-devel
 
 Requires:                 initscripts libevent kaosv >= 1.5.0
 
