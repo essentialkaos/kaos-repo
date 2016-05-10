@@ -14,7 +14,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        cmake gcc-c++ boost-devel expat-devel geos-devel
 BuildRequires:        zlib-devel bzip2-devel postgresql-devel proj-devel
-BuildRequires:        proj-epsg lua-devel python-psycopg2 protobuf-devel
+BuildRequires:        proj-epsg lua-devel python-psycopg2 protobuf-c-devel
 
 ###############################################################################
 
