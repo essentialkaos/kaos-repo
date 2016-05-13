@@ -23,7 +23,6 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      gcc make
 
 Provides:           %{name} = %{version}-%{release}
-Provides:           %{name}.so.0 = %{version}-%{release}
 
 ###############################################################################
 
