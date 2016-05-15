@@ -11,7 +11,7 @@ Version:            0.0.0
 Release:            1%{?dist}
 License:            MIT
 Group:              Development/Libraries
-URL:                https://github.com/TimothyGu/libnut
+URL:                http://mplayerhq.hu
 
 Source0:            %{name}-%{version}.tar.gz
 
@@ -83,10 +83,10 @@ rm -rf %{buildroot}
 %{_bindir}/nutindex
 %{_bindir}/nutparse
 %{_libdir}/%{name}.so.0
+%{_libdir}/%{name}.so
 
 %files devel
 %defattr(-,root,root,-)
-%{_libdir}/%{name}.so
 %{_libdir}/%{name}.a
 %{_includedir}/%{name}.h
 
