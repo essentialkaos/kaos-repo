@@ -1,14 +1,14 @@
 ###############################################################################
 
-# rpmbuilder:github   TimothyGu/libnut
-# rpmbuilder:revision f3476bb3ccf5acc1b0be76fc881f1e804c475391
+# rpmbuilder:svn      svn://svn.mplayerhq.hu/nut/src/trunk
+# rpmbuilder:revision r690
 
 ###############################################################################
 
 Summary:            Library for creating and demuxing NUT files
 Name:               libnut
 Version:            0.0.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            MIT
 Group:              Development/Libraries
 URL:                https://github.com/TimothyGu/libnut
@@ -93,5 +93,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 0.0.0-0
+* Fri May 13 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-1
+- Updated to latest version (r690)
+
+* Fri Apr 15 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-0
 - Initial build
+
