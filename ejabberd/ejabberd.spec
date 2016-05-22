@@ -51,8 +51,8 @@
 
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
-Version:           16.03
-Release:           2%{?dist}
+Version:           16.04
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
 URL:               https://www.ejabberd.im
@@ -163,6 +163,9 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Sun May 22 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.04-0
+- Updated to 16.04 
+
 * Fri Apr 29 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.03-2
 - Added lager support
 
