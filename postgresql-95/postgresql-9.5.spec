@@ -63,7 +63,7 @@
 
 %define majorver        9.5
 %define minorver        3
-%define rel             0
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          95
 %define realname        postgresql
@@ -1025,6 +1025,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.3-1
+- Fixed reading locale bug on CentOS7+
+
 * Mon May 16 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.3-0
 - Updated to latest stable release
 
