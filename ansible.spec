@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.0.1.0
+Version:              2.0.2.0
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -117,6 +117,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon May 23 2016 Gleb Goncharov <yum@gongled.me> - 2.0.2.0-0
+- Updated to latest version
+
 * Tue Mar 01 2016 Gleb Goncharov <yum@gongled.me> - 2.0.1.0-0
 - Updated to latest version
 
