@@ -67,6 +67,8 @@ Source2:           filter-requires-perl-Pg.sh
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+
 BuildRequires:     geos-devel >= 3.5 chrpath make gcc pcre-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
 
