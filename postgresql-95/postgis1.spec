@@ -54,7 +54,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.5
 Name:              %{realname}%{pg_maj_ver}
 Version:           1.5.8
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -214,7 +214,11 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
-* Sat Jun 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-1
+* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-2
+- Added patch for build with PostgreSQL 9.5
+- Fixed number of make threads
+
+* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-1
 - Added patch for fixing GETSTRUCT error
 
 * Thu Jun 25 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-0

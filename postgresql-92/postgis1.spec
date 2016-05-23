@@ -47,12 +47,14 @@
 
 %{!?utils:%define utils 1}
 
+%define _smp_mflags       -j1
+
 ########################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}%{pg_maj_ver}
 Version:           1.5.8
-Release:           0%{?dist}
+Release:           2%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -206,5 +208,8 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-2
+- Fixed number of make threads
+
 * Thu Jun 25 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-0
 - Initial build
