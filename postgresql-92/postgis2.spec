@@ -55,7 +55,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}2_%{pg_maj_ver}
 Version:           2.2.2
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -262,6 +262,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-1
+- Fixed build dependencies
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-0
 - Updated to latest stable release
 
