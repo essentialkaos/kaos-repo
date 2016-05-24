@@ -34,7 +34,7 @@
 
 Summary:            Friendly interactive shell (FISh)
 Name:               fish
-Version:            2.2.0
+Version:            2.3.0
 Release:            0%{?dist}
 License:            GPL2
 Group:              System Environment/Shells
@@ -99,6 +99,9 @@ fi
 ########################################################################################
 
 %changelog
+* Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.3.0-0
+- Updated to latest stable release
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
 - Updated to latest stable release
 
