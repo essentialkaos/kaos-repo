@@ -37,7 +37,7 @@
 Summary:         Simple Ruby version management utility
 Name:            rbenv
 Version:         1.0.0
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
@@ -74,9 +74,12 @@ install -dm 0755 %{buildroot}%{_bindir}
 
 cp -r bin libexec completions LICENSE %{buildroot}%{_loc_prefix}/%{name}/
 
-install -pm 644 %{SOURCE1} %{buildroot}%{profile}
+install -pm 755 %{SOURCE1} %{buildroot}%{profile}
 
 ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
+
+%post
+%{profile}
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -92,6 +95,9 @@ ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 ###############################################################################
 
 %changelog
+* Tue May 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-1
+- Improved spec
+
 * Thu May 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
 - Updated to latest stable release
 

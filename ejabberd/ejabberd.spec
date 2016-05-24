@@ -164,7 +164,7 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 
 %changelog
 * Sun May 22 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.04-0
-- Updated to 16.04 
+- Updated to 16.04
 
 * Fri Apr 29 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.03-2
 - Added lager support
