@@ -128,7 +128,7 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 %install
 %{__rm} -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot}
+%{make_install}
 
 %post -n %{name}-libs
 %{__ldconfig}

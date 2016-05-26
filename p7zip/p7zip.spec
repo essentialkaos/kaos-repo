@@ -44,6 +44,8 @@ Source:            %{name}_%{version}_src_all.tar.bz2
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+BuildRequires:     make gcc gcc-c++
+
 %ifarch %{ix86}
 BuildRequires:     nasm
 %endif
