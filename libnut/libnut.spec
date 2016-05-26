@@ -27,12 +27,12 @@ Provides:           %{name} = %{version}-%{release}
 ###############################################################################
 
 %description
-NUT is a patent-free, multimedia container format originally conceived
-by a few MPlayer and FFmpeg developers that were dissatisfied with the
-limitations of all currently available multimedia container formats
+NUT is a patent-free, multimedia container format originally conceived 
+by a few MPlayer and FFmpeg developers that were dissatisfied with the 
+limitations of all currently available multimedia container formats 
 such as AVI, Ogg or Matroska. 
 
-It aims to be simple, flexible, extensible, compact and error resistant
+It aims to be simple, flexible, extensible, compact and error resistant 
 (error resilient), thus addressing most if not all of the shortcomings 
 present in alternative formats, like excessive CPU and size overhead, 
 file size limits, inability to allow fine grained seeking or restrictions 
@@ -47,14 +47,15 @@ Group:              Development/Libraries
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
-libnut is a free library for creating and demuxing NUT files. It
-supports frame accurate seeking for active streams, recovery from
+libnut is a free library for creating and demuxing NUT files. It 
+supports frame accurate seeking for active streams, recovery from 
 errors and dynamic index generation during playback.
 
 ###############################################################################
 
 %prep
 %setup -q
+
 %patch0 -p1
 %patch1 -p1
 
@@ -98,4 +99,3 @@ rm -rf %{buildroot}
 
 * Fri Apr 15 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-0
 - Initial build
-
