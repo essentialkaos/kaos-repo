@@ -2,7 +2,7 @@
 
 Summary:        Ansible linter
 Name:           ansible-lint
-Version:        2.5.0
+Version:        2.6.2
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries 
@@ -51,8 +51,11 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.6.2-0
+- Updated to latest stable release
+
 * Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
 - Updated to latest stable release
 
-* Tue Mar 08 2016 Gleb Goncharov <yum@gongled.ru> - 2.3.9-0
+* Tue Mar 08 2016 Gleb Goncharov <inbox@gongled.ru> - 2.3.9-0
 - Initial build
