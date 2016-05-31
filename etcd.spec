@@ -6,7 +6,7 @@
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         2.3.3
+Version:         2.3.5
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
@@ -48,7 +48,6 @@ cp -r src/github.com/coreos/%{name}/LICENSE \
       src/github.com/coreos/%{name}/NOTICE \
       src/github.com/coreos/%{name}/MAINTAINERS \
       src/github.com/coreos/%{name}/Documentation .
-   
 
 %build
 export GOPATH=$(pwd)
@@ -83,5 +82,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu May 26 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.5-0
+- Updated to latest stable release
+
 * Tue Mar 22 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
 - Updated to latest stable release
