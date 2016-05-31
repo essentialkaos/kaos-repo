@@ -42,7 +42,7 @@
 Summary:          An X application for displaying and manipulating images
 Name:             ImageMagick
 Version:          %{pkg_version}.%{pkg_patchlevel}
-Release:          10%{?dist}
+Release:          11%{?dist}
 License:          ImageMagick
 Group:            Applications/Multimedia
 URL:              http://www.imagemagick.org
@@ -56,6 +56,7 @@ Patch1:           %{name}-6.4.0-multilib.patch
 Patch2:           %{name}-%{pkg_version}-multiarch-fix.patch
 Patch3:           %{name}-%{pkg_version}-cve-2012-0247-0248.patch
 Patch4:           %{name}-%{pkg_version}-cve-2012-0259-0260.patch
+Patch5:           %{name}-%{pkg_version}-cve-2016-5118.patch
 
 BuildRequires:    make gcc gcc-c++
 BuildRequires:    bzip2-devel freetype-devel libjpeg-devel libpng-devel
@@ -173,6 +174,7 @@ however.
 %patch2 -p1 -b .multiarch-fix
 %patch3 -p1 -b .cve-2012-0247-0248
 %patch4 -p1 -b .cve-2012-0259-0260
+%patch5 -p1 -b .cve-2016-5118
 
 sed -i 's/libltdl.la/libltdl.so/g' configure
 iconv -f ISO-8859-1 -t UTF-8 README.txt > README.txt.tmp
@@ -347,5 +349,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Jun 01 2016 Anton Novojilov <andy@essentialkaos.com> - 6.7.2.7-11
+- Added fix for CVE-2016-5118 vulnerability
+
 * Wed May 04 2016 Anton Novojilov <andy@essentialkaos.com> - 6.7.2.7-10
 - Refactored spec for kaos repo
