@@ -6,7 +6,7 @@
 
 Summary:         Tool for building, changing, and combining infrastructure 
 Name:            terraform
-Version:         0.6.15
+Version:         0.6.16
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -53,6 +53,7 @@ Requires:        %{name}-provider-github
 Requires:        %{name}-provider-google
 Requires:        %{name}-provider-heroku
 Requires:        %{name}-provider-influxdb
+Requires:        %{name}-provider-librato
 Requires:        %{name}-provider-mailgun
 Requires:        %{name}-provider-mysql
 Requires:        %{name}-provider-null
@@ -61,6 +62,7 @@ Requires:        %{name}-provider-packet
 Requires:        %{name}-provider-postgresql
 Requires:        %{name}-provider-powerdns
 Requires:        %{name}-provider-rundeck
+Requires:        %{name}-provider-softlayer
 Requires:        %{name}-provider-statuscake
 Requires:        %{name}-provider-template
 Requires:        %{name}-provider-terraform
@@ -310,6 +312,17 @@ InfluxDB provider for Terraform.
 
 ###############################################################################
 
+%package provider-librato
+
+Summary:         Librato provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-librato
+Librato provider for Terraform.
+
+###############################################################################
+
 %package provider-mailgun
 
 Summary:         Mailgun provider for Terraform
@@ -395,6 +408,17 @@ Requires:        %{name} = %{version}-%{release}
 
 %description provider-rundeck
 Rundeck provider for Terraform.
+
+###############################################################################
+
+%package provider-softlayer
+
+Summary:         SoftLayer provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-softlayer
+SoftLayer provider for Terraform.
 
 ###############################################################################
 
@@ -658,6 +682,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-influxdb
 
+%files provider-librato
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-librato
+
 %files provider-mailgun
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-mailgun
@@ -689,6 +717,10 @@ rm -rf %{buildroot}
 %files provider-rundeck
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-rundeck
+
+%files provider-softlayer
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-softlayer
 
 %files provider-statuscake
 %defattr(-,root,root,-)
@@ -741,6 +773,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Jun 07 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.16-0
+- Updated to latest stable release
+
 * Thu May 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.15-0
 - Updated to latest stable release
 
