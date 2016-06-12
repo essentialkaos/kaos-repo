@@ -6,7 +6,7 @@
 
 Summary:         Tool for building, changing, and combining infrastructure 
 Name:            terraform
-Version:         0.6.14
+Version:         0.6.16
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -16,7 +16,7 @@ Source0:         https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.6
+BuildRequires:   zip golang >= 1.6
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -40,6 +40,7 @@ Requires:        %{name}-provider-chef
 Requires:        %{name}-provider-clc
 Requires:        %{name}-provider-cloudflare
 Requires:        %{name}-provider-cloudstack
+Requires:        %{name}-provider-cobbler
 Requires:        %{name}-provider-consul
 Requires:        %{name}-provider-datadog
 Requires:        %{name}-provider-digitalocean
@@ -47,10 +48,12 @@ Requires:        %{name}-provider-dme
 Requires:        %{name}-provider-dnsimple
 Requires:        %{name}-provider-docker
 Requires:        %{name}-provider-dyn
+Requires:        %{name}-provider-fastly
 Requires:        %{name}-provider-github
 Requires:        %{name}-provider-google
 Requires:        %{name}-provider-heroku
 Requires:        %{name}-provider-influxdb
+Requires:        %{name}-provider-librato
 Requires:        %{name}-provider-mailgun
 Requires:        %{name}-provider-mysql
 Requires:        %{name}-provider-null
@@ -59,6 +62,7 @@ Requires:        %{name}-provider-packet
 Requires:        %{name}-provider-postgresql
 Requires:        %{name}-provider-powerdns
 Requires:        %{name}-provider-rundeck
+Requires:        %{name}-provider-softlayer
 Requires:        %{name}-provider-statuscake
 Requires:        %{name}-provider-template
 Requires:        %{name}-provider-terraform
@@ -165,6 +169,17 @@ CloudStack provider for Terraform.
 
 ###############################################################################
 
+%package provider-cobbler
+
+Summary:         Cobbler provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-cobbler
+Cobbler provider for Terraform.
+
+###############################################################################
+
 %package provider-consul
 
 Summary:         Consul provider for Terraform
@@ -242,14 +257,25 @@ Dyn provider for Terraform.
 
 ###############################################################################
 
+%package provider-fastly
+
+Summary:         Fastly provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-fastly
+Fastly provider for Terraform.
+
+###############################################################################
+
 %package provider-github
 
-Summary:         github provider for Terraform
+Summary:         GitHub provider for Terraform
 
 Requires:        %{name} = %{version}-%{release}
 
 %description provider-github
-github provider for Terraform.
+GitHub provider for Terraform.
 
 ###############################################################################
 
@@ -283,6 +309,17 @@ Requires:        %{name} = %{version}-%{release}
 
 %description provider-influxdb
 InfluxDB provider for Terraform.
+
+###############################################################################
+
+%package provider-librato
+
+Summary:         Librato provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-librato
+Librato provider for Terraform.
 
 ###############################################################################
 
@@ -371,6 +408,17 @@ Requires:        %{name} = %{version}-%{release}
 
 %description provider-rundeck
 Rundeck provider for Terraform.
+
+###############################################################################
+
+%package provider-softlayer
+
+Summary:         SoftLayer provider for Terraform
+
+Requires:        %{name} = %{version}-%{release}
+
+%description provider-softlayer
+SoftLayer provider for Terraform.
 
 ###############################################################################
 
@@ -582,6 +630,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-cloudstack
 
+%files provider-cobbler
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-cobbler
+
 %files provider-consul
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-consul
@@ -610,6 +662,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-dyn
 
+%files provider-fastly
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-fastly
+
 %files provider-github
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-github
@@ -625,6 +681,10 @@ rm -rf %{buildroot}
 %files provider-influxdb
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-influxdb
+
+%files provider-librato
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-librato
 
 %files provider-mailgun
 %defattr(-,root,root,-)
@@ -657,6 +717,10 @@ rm -rf %{buildroot}
 %files provider-rundeck
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-provider-rundeck
+
+%files provider-softlayer
+%defattr(-,root,root,-)
+%{_bindir}/%{name}-provider-softlayer
 
 %files provider-statuscake
 %defattr(-,root,root,-)
@@ -709,5 +773,11 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Jun 07 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.16-0
+- Updated to latest stable release
+
+* Thu May 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.15-0
+- Updated to latest stable release
+
 * Thu Mar 10 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.14-0
 - Initial build

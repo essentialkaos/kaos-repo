@@ -454,7 +454,7 @@ rm -rf %{buildroot}
 * Mon Feb 15 2016 Gleb Goncharov <yum@gongled.ru> - 2015.8.5-0
 - Updated to 2015.8.5
 
-* Mon Oct 22 2015 Gleb Goncharov <yum@gongled.ru> - 2015.8.1-0
+* Thu Oct 22 2015 Gleb Goncharov <yum@gongled.ru> - 2015.8.1-0
 - Updated to 2015.8.1
 
 * Mon Sep 21 2015 Gleb Goncharov <yum@gongled.ru> - 2015.8.0-0

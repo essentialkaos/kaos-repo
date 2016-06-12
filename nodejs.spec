@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            4.0.0
+Version:            4.4.4
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -43,7 +43,10 @@ Source0:            %{url}/dist/v%{version}/node-v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc gcc-c++ python >= 2.6 openssl-devel zlib-devel libstdc++-devel
+Requires:           zlib
+
+BuildRequires:      make gcc clang python >= 2.6 openssl-devel zlib-devel
+BuildRequires:      gcc-c++ libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release} 
 Provides:           %{shortname} = %{version}-%{release} 
@@ -81,8 +84,8 @@ export CC=clang
 export CXX=clang++
 
 %{_configure} --prefix=%{_prefix} \
-              --shared-openssl --shared-openssl-includes=%{_includedir} \
-              --shared-zlib --shared-zlib-includes=%{_includedir}
+              --shared-zlib \
+              --shared-zlib-includes=%{_includedir}
 
 %{__make} %{?_smp_mflags}
 
@@ -98,9 +101,10 @@ export CXX=clang++
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS ChangeLog LICENSE README.md
+%doc AUTHORS LICENSE README.md
 %{_bindir}/%{shortname}
 %{_bindir}/npm
+%{_docdir}/%{shortname}/gdbinit
 %{_mandir}/man1/%{shortname}.1.gz
 %{_libdir32}/%{shortname}_modules
 %{_datadir}/systemtap/tapset/%{shortname}.stp
@@ -112,6 +116,22 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Wed May 18 2016 Anton Novojilov <andy@essentialkaos.com> - 4.4.4-0
+- buffer: safeguard against accidental kNoZeroFill
+- streams: support unlimited synchronous cork/uncork cycles
+- deps: update openssl asm and asm_obsolete files
+- deps: add -no_rand_screen to openssl s_client
+- openssl: fix keypress requirement in apps on win32
+- deps: fix asm build error of openssl in x86_win32
+- deps: fix openssl assembly error on ia32 win32
+- deps: copy all openssl header files to include dir
+- deps: upgrade openssl sources to 1.0.2h
+
+* Thu May 05 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 4.4.3-0
+- Updated to TLS version.
+- Removed --shared-openssl option because of "node js" is incompatible
+with OpenSSL 1.0.1x which provided in CentOS 7.
+
 * Wed Sep  9 2015 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
 - child_process: ChildProcess.prototype.send() and process.send() operate 
 asynchronously across all platforms so an optional callback parameter has 

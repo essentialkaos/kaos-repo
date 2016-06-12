@@ -62,8 +62,8 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        9.2
-%define minorver        16
-%define rel             0
+%define minorver        17
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          92
 %define realname        postgresql
@@ -1001,6 +1001,12 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.17-1
+- Fixed reading locale bug on CentOS7+
+
+* Mon May 16 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.17-0
+- Updated to latest stable release
+
 * Thu Apr 07 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.16-0
 - Updated to latest stable release
 

@@ -1,9 +1,5 @@
 ###############################################################################
 
-# rpmbuilder:github       sstephenson:rbenv
-
-###############################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -40,18 +36,20 @@
 
 Summary:         Simple Ruby version management utility
 Name:            rbenv
-Version:         0.4.1
-Release:         0%{?dist}
+Version:         1.0.0
+Release:         1%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
 
-Source0:         %{name}-%{version}.tar.bz2
+Source0:         https://github.com/rbenv/%{name}/archive/v%{version}.tar.gz
 Source1:         %{name}.profile
-Source2:         %{name}.proxy
+
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:       noarch
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Provides:        %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -63,21 +61,25 @@ tradition of single-purpose tools that do one thing well.
 ###############################################################################
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}
 
 %build
 
-%install -q -c -T
+%install
 %{__rm} -rf %{buildroot}
 
-install -dm 0755 %{buildroot}%{install_dir}
+install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}
 install -dm 0755 %{buildroot}%{profile_dir}
 install -dm 0755 %{buildroot}%{_bindir}
 
-cp -r bin libexec completions LICENSE %{buildroot}%{install_dir}/
+cp -r bin libexec completions LICENSE %{buildroot}%{_loc_prefix}/%{name}/
 
-install -pm 644 %{SOURCE1} %{buildroot}%{profile}
-install -pm 755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}
+install -pm 755 %{SOURCE1} %{buildroot}%{profile}
+
+ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
+
+%post
+%{profile}
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -93,6 +95,12 @@ install -pm 755 %{SOURCE2} %{buildroot}%{_bindir}/%{name}
 ###############################################################################
 
 %changelog
+* Tue May 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-1
+- Improved spec
+
+* Thu May 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
+- Updated to latest stable release
+
 * Wed Sep 17 2014 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
 - Small fixes in spec
 
