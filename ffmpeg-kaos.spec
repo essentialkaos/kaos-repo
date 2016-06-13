@@ -81,9 +81,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 
 %build
 %{_configure} \
-  --prefix=%{_prefix} 
+  --prefix=%{_prefix} \
   --libdir=%{_libdir} \
-  --shlibdir=%{_libdir} 
+  --shlibdir=%{_libdir} \
   --mandir=%{_mandir} \
   --enable-shared \
   --enable-runtime-cpudetect \
