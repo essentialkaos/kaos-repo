@@ -54,9 +54,9 @@ BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
 BuildRequires:     opencv-devel librtmp-devel openssl-devel
 BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
-Requires:          SDL libxavs1 gsm libdc1394 libfaac0 libfdk-aac libmp3lame0
-Requires:          libopencore-amrwb0 librtmp0 orc libvpx libx264_136 unicap
-Requires:          libxvidcore4opencv libva1 schroedinger libopencore-amrnb0
+Requires:          SDL xavs gsm libdc1394 faac libfdk-aac lame
+Requires:          opencore-amr librtmp orc libvpx x264 unicap
+Requires:          libxvidcore libva schroedinger
 
 Conflicts:         %{source_name}
 
