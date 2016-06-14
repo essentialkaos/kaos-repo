@@ -34,8 +34,8 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.0.1
-Release:           1%{?dist}
+Version:           3.0.2
+Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               http://ffmpeg.org
@@ -54,9 +54,9 @@ BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
 BuildRequires:     opencv-devel librtmp-devel openssl-devel
 BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
-Requires:          SDL libxavs1 gsm libdc1394 libfaac0 libfdk-aac libmp3lame0
-Requires:          libopencore-amrwb0 librtmp0 orc libvpx libx264_136 unicap
-Requires:          libxvidcore4opencv libva1 schroedinger libopencore-amrnb0
+Requires:          SDL xavs gsm libdc1394 faac libfdk-aac lame
+Requires:          opencore-amr librtmp orc libvpx x264 unicap
+Requires:          libxvidcore libva schroedinger
 
 Conflicts:         %{source_name}
 
@@ -81,9 +81,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 
 %build
 %{_configure} \
-  --prefix=%{_prefix} 
+  --prefix=%{_prefix} \
   --libdir=%{_libdir} \
-  --shlibdir=%{_libdir} 
+  --shlibdir=%{_libdir} \
   --mandir=%{_mandir} \
   --enable-shared \
   --enable-runtime-cpudetect \
@@ -154,6 +154,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Tue Jun 14 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.2-0
+- Updated to version 3.0.2
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.1-0
 - Updated to version 3.0.1
 
