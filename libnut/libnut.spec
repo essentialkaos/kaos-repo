@@ -1,17 +1,17 @@
 ###############################################################################
 
-# rpmbuilder:github   TimothyGu/libnut
-# rpmbuilder:revision f3476bb3ccf5acc1b0be76fc881f1e804c475391
+# rpmbuilder:svn      svn://svn.mplayerhq.hu/nut/src/trunk
+# rpmbuilder:revision r690
 
 ###############################################################################
 
 Summary:            Library for creating and demuxing NUT files
 Name:               libnut
 Version:            0.0.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            MIT
 Group:              Development/Libraries
-URL:                https://github.com/TimothyGu/libnut
+URL:                http://mplayerhq.hu
 
 Source0:            %{name}-%{version}.tar.gz
 
@@ -27,12 +27,12 @@ Provides:           %{name} = %{version}-%{release}
 ###############################################################################
 
 %description
-NUT is a patent-free, multimedia container format originally conceived
-by a few MPlayer and FFmpeg developers that were dissatisfied with the
-limitations of all currently available multimedia container formats
+NUT is a patent-free, multimedia container format originally conceived 
+by a few MPlayer and FFmpeg developers that were dissatisfied with the 
+limitations of all currently available multimedia container formats 
 such as AVI, Ogg or Matroska. 
 
-It aims to be simple, flexible, extensible, compact and error resistant
+It aims to be simple, flexible, extensible, compact and error resistant 
 (error resilient), thus addressing most if not all of the shortcomings 
 present in alternative formats, like excessive CPU and size overhead, 
 file size limits, inability to allow fine grained seeking or restrictions 
@@ -47,14 +47,15 @@ Group:              Development/Libraries
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
-libnut is a free library for creating and demuxing NUT files. It
-supports frame accurate seeking for active streams, recovery from
+libnut is a free library for creating and demuxing NUT files. It 
+supports frame accurate seeking for active streams, recovery from 
 errors and dynamic index generation during playback.
 
 ###############################################################################
 
 %prep
 %setup -q
+
 %patch0 -p1
 %patch1 -p1
 
@@ -83,15 +84,18 @@ rm -rf %{buildroot}
 %{_bindir}/nutindex
 %{_bindir}/nutparse
 %{_libdir}/%{name}.so.0
+%{_libdir}/%{name}.so
 
 %files devel
 %defattr(-,root,root,-)
-%{_libdir}/%{name}.so
 %{_libdir}/%{name}.a
 %{_includedir}/%{name}.h
 
 ###############################################################################
 
 %changelog
-* Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 0.0.0-0
+* Fri May 13 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-1
+- Updated to latest version (r690)
+
+* Fri Apr 15 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-0
 - Initial build

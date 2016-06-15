@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.8.1
+Version:          2.8.4
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -273,6 +273,12 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Jun 12 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 2.8.4-0
+- Updated to latest release
+
+* Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.8.3-0
+- Updated to latest release
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
 - Updated to latest release
 
