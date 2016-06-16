@@ -1,0 +1,49 @@
+[kaos-testing]
+name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+baseurl=https://yum.kaos.io/$releasever/testing/$basearch
+mirrorlist=file:///usr/local/share/kaos-repo/$releasever/testing/$basearch.mirrors
+failovermethod=priority
+priority=1
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
+
+[kaos-testing-i386]
+name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+baseurl=https://yum.kaos.io/$releasever/testing/i386
+mirrorlist=file:///usr/local/share/kaos-repo/$releasever/testing/i386.mirrors
+failovermethod=priority
+priority=1
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
+
+[kaos-testing-i686]
+name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+baseurl=https://yum.kaos.io/$releasever/testing/i686
+mirrorlist=file:///usr/local/share/kaos-repo/$releasever/testing/i686.mirrors
+failovermethod=priority
+priority=1
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
+
+[kaos-testing-x64]
+name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+baseurl=https://yum.kaos.io/$releasever/testing/x86_64
+mirrorlist=file:///usr/local/share/kaos-repo/$releasever/testing/x86_64.mirrors
+failovermethod=priority
+priority=1
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
+
+[kaos-testing-src]
+name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+baseurl=https://yum.kaos.io/$releasever/testing/SRPMS
+mirrorlist=file:///usr/local/share/kaos-repo/$releasever/testing/SRPMS.mirrors
+failovermethod=priority
+priority=1
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
