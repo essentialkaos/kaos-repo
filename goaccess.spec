@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.0
+Version:         1.0.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -54,6 +54,20 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
+- Added Android version number along with the codename when using --real-os,
+  e.g., 'Lollipop 5.1'
+- Added some missing headers and function checks to configure.ac
+- Fixed build issues on systems running GLIBC older than 2.9, such as RHEL <= 5
+- Fixed a regression where it wouldn't allow abbreviated date and time formats
+  such as %F or %T
+- Fixed issue where it wouldn't send the whole buffer to a socket causing the
+  real-time-html WebSocket server to progressively consume a lot more memory
+- Fixed memory leak when using getline and follow mode enabled
+- Fixed some buffer initialization issues on read_line() and
+  perform_tail_follow()
+- Fixed uint types in sha1 files
+
 * Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0-0
 - Added a complete real-time functionality to the HTML output
 - Added an option to set the max number of items to show per panel
