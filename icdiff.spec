@@ -2,7 +2,7 @@
 
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.7.3
+Version:           1.8.0
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
@@ -53,5 +53,14 @@ Improved colored diff.
 ###############################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
+- Updated unicode test file (input-3)
+- Allow testing installed version
+- Allow importing as a module
+- Minor deduplication tweak to git-icdiff
+- Add pip instructions to readme
+- Allow using --tabsize
+- Allow non-recursive directory diffing
+
 * Fri Sep 25 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
 - Initial release
