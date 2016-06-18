@@ -49,8 +49,8 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.0.0
-Release:          1%{?dist}
+Version:          1.2.0
+Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
 URL:              http://netdata.firehol.org
@@ -59,11 +59,10 @@ Source0:          http://firehol.org/download/%{name}/releases/v%{version}/%{nam
 Source1:          %{name}.conf
 Source2:          %{name}.sysconfig
 Source3:          %{name}.init
-Source4:          kaos-theme.css
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    make gcc libmnl-devel zlib-devel
+BuildRequires:    make gcc libmnl-devel zlib-devel libuuid-devel
 
 %if 0%{?rhel} >= 7
 BuildRequires:    libnetfilter_acct-devel systemd
@@ -108,8 +107,6 @@ install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
-
-install -pm 644 %{SOURCE4} %{buildroot}%{_datadir}/%{name}/web/dashboard.slate.css
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
@@ -173,8 +170,10 @@ fi
 ################################################################################
 
 %changelog
-* Mon Apr 11 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
-- Added kaos theme CSS
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- netdata is now 30% faster
+- netdata now has a registry (my-netdata dashboard menu)
+- netdata now monitors Linux Containers (docker, lxc, etc)
 
 * Sun Apr 10 2016 Gleb Goncharov <yum@gongled.me> - 1.0.0-0
 - Initial build
