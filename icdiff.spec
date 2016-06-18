@@ -31,6 +31,7 @@ Improved colored diff.
 %setup -qn %{name}-release-%{version}
 
 %build
+ln -s icdiff icdiff.py
 %{__python} setup.py build
 
 %install

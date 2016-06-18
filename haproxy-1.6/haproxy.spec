@@ -227,7 +227,7 @@ fi
 - BUG/MEDIUM: channel: fix miscalculation of available buffer space (3rd try)
 - BUG/MEDIUM: log: fix risk of segfault when logging HTTP fields in TCP mode
 - BUG/MEDIUM: lua: protects the upper boundary of the argument list for converters/fetches.
-- BUG/MINOR: log: fix a typo that would cause %HP to log <BADREQ>
+- BUG/MINOR: log: fix a typo that would cause %%HP to log <BADREQ>
 - MINOR: channel: add new function channel_congested()
 - BUG/MEDIUM: http: fix risk of CPU spikes with pipelined requests from dead client
 - BUG/MAJOR: channel: fix miscalculation of available buffer space (4th try)
