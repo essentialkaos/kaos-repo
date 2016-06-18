@@ -38,11 +38,11 @@
 
 Summary:              Generic non-JVM producer and consumer for Apache Kafka 
 Name:                 kafkacat
-Version:              1.2.0
+Version:              1.3.0
 Release:              0%{?dist}
 License:              2-clause BSD
 Group:                Development/Libraries
-URL:                  https://github.com/edenhill/librdkafka
+URL:                  https://github.com/edenhill/kafkacat
 
 Source0:              https://github.com/edenhill/%{name}/archive/%{version}.tar.gz
 
@@ -95,5 +95,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- Fixed project url
+- Updated to latest version
+
 * Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 1.2.0-0
 - Initial build 
