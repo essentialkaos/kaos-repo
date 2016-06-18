@@ -2,7 +2,7 @@
 
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.8.0
+Version:           1.8.1
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
@@ -54,6 +54,9 @@ ln -s icdiff icdiff.py
 ###############################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated remaining copy of unicode test file (b/1)
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
 - Updated unicode test file (input-3)
 - Allow testing installed version
