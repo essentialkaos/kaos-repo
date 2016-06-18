@@ -50,6 +50,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
+%{_docdir}/%{name}/*
 
 ########################################################################################
 
@@ -60,7 +61,7 @@ rm -rf %{buildroot}
 - Added some missing headers and function checks to configure.ac
 - Fixed build issues on systems running GLIBC older than 2.9, such as RHEL <= 5
 - Fixed a regression where it wouldn't allow abbreviated date and time formats
-  such as %F or %T
+  such as %%F or %%T
 - Fixed issue where it wouldn't send the whole buffer to a socket causing the
   real-time-html WebSocket server to progressively consume a lot more memory
 - Fixed memory leak when using getline and follow mode enabled
