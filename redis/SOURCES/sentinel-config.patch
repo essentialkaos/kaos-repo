@@ -1,6 +1,6 @@
-diff -urN redis-3.0.5-orig/sentinel.conf redis-3.0.5/sentinel.conf
---- redis-3.0.5-orig/sentinel.conf	2015-10-24 12:20:12.989329380 +0200
-+++ redis-3.0.5/sentinel.conf	2015-10-24 23:59:38.000000000 +0200
+diff -urN redis-3.2.1-orig/sentinel.conf redis-3.2.1/sentinel.conf
+--- redis-3.2.1-orig/sentinel.conf	2016-06-18 17:49:12.923649425 -0400
++++ redis-3.2.1/sentinel.conf	2016-06-18 17:55:58.000000000 -0400
 @@ -1,5 +1,18 @@
  # Example sentinel.conf
  
@@ -20,3 +20,9 @@ diff -urN redis-3.0.5-orig/sentinel.conf redis-3.0.5/sentinel.conf
  # port <sentinel-port>
  # The port that this sentinel instance will run on
  port 26379
+@@ -177,5 +190,3 @@
+ # Example:
+ #
+ # sentinel client-reconfig-script mymaster /var/redis/reconfig.sh
+-
+-
