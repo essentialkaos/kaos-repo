@@ -74,6 +74,9 @@ the Kafka cluster and its topics and partitions.
 %prep
 %setup -qn %{name}-%{version}
 
+# Fix version number output
+sed -i "s/KAFKACAT_VERSION,/\"%{version}\",/" kafkacat.c
+
 %build
 %configure
 %{__make} %{?_smp_mflags}
@@ -97,6 +100,7 @@ rm -rf %{buildroot}
 %changelog
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
 - Fixed project url
+- Added fix for version number output
 - Updated to latest version
 
 * Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 1.2.0-0
