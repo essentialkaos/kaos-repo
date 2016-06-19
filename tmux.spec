@@ -6,8 +6,8 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              2.1
-Release:              1%{?dist}
+Version:              2.2
+Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
 URL:                  https://github.com/tmux/tmux
@@ -55,13 +55,53 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES FAQ TODO examples/
+%doc CHANGES FAQ TODO
 %{_bindir}/tmux
 %{_mandir}/man1/tmux.1.*
 
 ###############################################################################
 
 %changelog
+* Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2-0
+- The format strings which referenced time have been removed.  Instead:
+  #{t:window_activity} can be used.
+- Support for TMPDIR has been removed.  Use TMUX_TMPDIR instead.
+- UTF8 detection how happens automatically if the client supports it,
+  hence the:
+  mouse-utf8
+  utf8
+  options has been removed.
+- The: mouse_utf8_flag format string has been removed.
+- The -I option to show-messages has been removed.  See: #{t:start_time}
+  format option instead.
+- Panes are unzoomed with selectp -LRUD
+- New formats added:
+  #{scroll_position}
+  #{socket_path}
+  #{=10:...} -- limit to N characters (from the start)
+  #{=-10:...} -- limit to N characters (from the end)
+  #{t:...} -- used to format time-based formats
+  #{b:...} -- used to ascertain basename from string
+  #{d:...} -- used to ascertain dirname from string
+  #{s:...} -- used to perform substitutions on a string
+- Job output is run via the format system, so formats work again
+- If display-time is set to 0, then the indicators wait for a key to be
+  pressed.
+- list-keys and list-commands can be run without starting the tmux server.
+- kill-session learns -C to clear all alerts in all windows of the session.
+- Support for hooks (internal for now), but hooks for the following have been
+  implemented:
+  alert-bell
+  alert-silence
+  alert-activity
+  client-attached
+  client-detached
+  client-resized
+  pane-died
+  pane-exited
+- RGB (24bit) colour support.  The 'Tc' flag must be set in the external TERM
+  entry (using terminal-overrides or a custom terminfo entry).
+
 * Sun Nov 22 2015 Anton Novojilov <andy@essentialkaos.com> - 2.1-0
 - Updated to 2.1
 

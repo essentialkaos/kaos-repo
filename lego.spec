@@ -44,7 +44,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         0.3.0
+Version:         0.3.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -99,6 +99,14 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.3.1-0
+- lib: A new DNS provider for Vultr.
+- lib: DNS Provider for DigitalOcean could not handle subdomains properly.
+- lib: handleHTTPError should only try to JSON decode error messages with the
+  right content type.
+- lib: The propagation checker for the DNS challenge would not retry on
+  send errors.
+
 * Wed Mar 23 2016 Gleb Goncharov <yum@gongled.me> - 0.3.0-0
 - Updated to latest release.
 

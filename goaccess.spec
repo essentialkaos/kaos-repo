@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         0.9.8
+Version:         1.0.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -50,10 +50,66 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
+%{_docdir}/%{name}/*
 
 ########################################################################################
 
 %changelog
+* Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
+- Added Android version number along with the codename when using --real-os,
+  e.g., 'Lollipop 5.1'
+- Added some missing headers and function checks to configure.ac
+- Fixed build issues on systems running GLIBC older than 2.9, such as RHEL <= 5
+- Fixed a regression where it wouldn't allow abbreviated date and time formats
+  such as %%F or %%T
+- Fixed issue where it wouldn't send the whole buffer to a socket causing the
+  real-time-html WebSocket server to progressively consume a lot more memory
+- Fixed memory leak when using getline and follow mode enabled
+- Fixed some buffer initialization issues on read_line() and
+  perform_tail_follow()
+- Fixed uint types in sha1 files
+
+* Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0-0
+- Added a complete real-time functionality to the HTML output
+- Added an option to set the max number of items to show per panel
+- Added command line option --enable-panel=<PANEL> to display the given module
+- Added command line option --origin to match the origin WebSocket header
+- Added command-line shortcuts for standard log formats, --log-format=COMBINED
+- Added D3 Visualziations to the HTML dashboard
+- Added metadata metrics to the each of the panels (JSON output)
+- Added option to specify time distribution specificity
+- Added --output=<file.[html|csv|json]> as a shortcut to --output-format
+- Added the ability to download a JSON file from the HTML report
+- Added the ability to output multiple formats on a single log parse
+- Added the ability to output pretty json using --json-pretty-print
+- Added the ability to set the date specificity in hours
+- Added the ability to sort all HTML tables on all panels
+- Added the ability to specify a custom CSS and JS file to the HTML report
+- Added user-agents to the JSON output per each host
+- Added 'Vivaldi' to the list of browsers
+- Bootstrapify the HTML dashboard
+- Changed configure.ac to use LDFLAGS instead of CFLAGS where applicable
+- Changed default terminal color scheme to 256 Monokai if terminal supports 256
+  colors
+- Changed GoAccess license to The MIT License (MIT)
+- Changed the visitors panel to display its dates continuously instead of top
+- Change the visitors panel to display its dates continuously
+- Default to 256 Monokai color scheme if terminal supports 256 colors
+- Default to display HTTP method/protocol (if applicable)
+- Display the children's Max. T.S. as the parent's top Max. T.S
+- Ensure the parent's Avg. T.S. displays parent's Cum. T.S. over parent's Hits
+- Fixed color issue when switching from the color scheme window
+- Fixed cross platform build issue when ncurses is built with and without
+  termlib=tinfo
+- Fixed issue header curses window wouldn't clear out on small window sizes
+- Fixed issue where tail mode wouldn't parse full lines using getline()
+- Fixed minor background color issue when using ncurses 6
+- Fixed possible division by zero when getting an entry percentage
+- Fixed singly link list node removal
+- Fixed still reachable memory leak on GeoIP cleanup (geoip legacy >= 1.4.7)
+- Fixed Valgrind's still reachable memory leaks
+- Removed -Wredundant-decls
+
 * Wed Mar 09 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.8-0
 - Added a more complete list of static extensions to the config file.
 - Added Android 6.0 Marshmallow to the list of OSs.

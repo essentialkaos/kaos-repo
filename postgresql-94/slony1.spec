@@ -56,7 +56,7 @@
 
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
-Version:           2.2.4
+Version:           2.2.5
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -71,6 +71,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
+BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 BuildRequires:     byacc flex openssl-devel
 
 Requires:          initscripts postgresql%{pg_maj_ver}-server perl-DBD-Pg
@@ -174,5 +175,11 @@ fi
 ########################################################################################
 
 %changelog
+* Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.5-0
+- Bug 359 dditional parameter to GetConfigOptionByName() in PG 9.6
+- Misc other fixes to compile against PG 9.6
+- PG 9.5 makefile fix for win32
+- Remove 'unsupported' warning for PG 9.5
+
 * Wed Mar 25 2015 Anton Novojilov <andy@essentialkaos.com> - 2.2.4-0
 - Initial build

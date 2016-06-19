@@ -11,13 +11,13 @@
 
 Summary:           Distributed source control management tool
 Name:              mercurial
-Version:           3.7.3
+Version:           3.8.3
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Development/Tools
-URL:               https://mercurial.selenic.com/
+URL:               https://www.mercurial-scm.org
 
-Source0:           http://mercurial.selenic.com/release/%{name}-%{version}.tar.gz
+Source0:           https://www.mercurial-scm.org/release/%{name}-%{version}.tar.gz
 Source1:           %{name}-site-start.el
 Source2:           hgk.rc
 Source3:           certs.rc
@@ -166,6 +166,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-0
+- Updated to latest stable release
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 3.7.3-0
 - Updated to latest stable release
 

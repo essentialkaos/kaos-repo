@@ -58,13 +58,13 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2015.8.8
+Version:          2016.3.1
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              http://saltstack.org
 
-Source0:          http://pypi.python.org/packages/source/s/%{name}/%{name}-%{version}.tar.gz
+Source0:          https://github.com/saltstack/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source1:          %{name}.sysconfig
 Source2:          %{name}-master.init
 Source3:          %{name}-syndic.init
@@ -214,13 +214,25 @@ adds them to the master's collection of controllable minions.
 ################################################################################
 
 %package ssh
-Summary: Agentless SSH-based version of Salt, a parallel remote execution system
-Group:   System Environment/Daemons
-Requires: %{name} = %{version}-%{release}
+Summary:          Agentless SSH-based version of Salt, a parallel remote execution system
+Group:            System Environment/Daemons
+Requires:         %{name} = %{version}-%{release}
 
 %description ssh
 The salt-ssh tool can run remote execution functions and states without the use 
 of an agent (salt-minion) service.
+
+################################################################################
+
+%package package-manager
+Summary:          Salt Package Manager
+Group:            System Environment/Daemons
+Requires:         %{name} = %{version}-%{release}
+
+%description package-manager
+The Salt Package Manager, or SPM, enables Salt formulas to be packaged to 
+simplify distribution to Salt masters. The design of SPM was influenced by 
+other existing packaging systems including RPM, Yum, and Pacman.
 
 ################################################################################
 
@@ -370,7 +382,7 @@ rm -rf %{buildroot}
 %{_sysconfdir}/logrotate.d/salt
 %{_sysconfdir}/bash_completion.d/salt.bash
 %{_var}/cache/salt
-%{_bindir}/spm
+
 
 %files master
 %defattr(-,root,root)
@@ -379,6 +391,7 @@ rm -rf %{buildroot}
 %doc %{_mandir}/man1/salt-key.1.*
 %doc %{_mandir}/man1/salt-master.1.*
 %doc %{_mandir}/man1/salt-run.1.*
+%doc %{_mandir}/man1/salt-unity.1.*
 %doc %{_mandir}/man1/salt-unity.1.*
 %{_bindir}/salt
 %{_bindir}/salt-cp
@@ -445,9 +458,17 @@ rm -rf %{buildroot}
 %{_bindir}/salt-ssh
 %config(noreplace) %{_sysconfdir}/salt/roster
 
+%files package-manager
+%defattr(-,root,root)
+/usr/share/man/man1/spm.1.*
+%{_bindir}/spm
+
 ################################################################################
 
 %changelog
+* Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.3.1-0
+- Updated to 2016.3.1
+
 * Wed Apr 06 2016 Gleb Goncharov <yum@gongled.ru> - 2015.8.8-0
 - Updated to 2015.8.8
 

@@ -1,4 +1,0 @@
-export GVM_ROOT=/opt/gvm
-export TMPDIR=/var/tmp
-
-. $GVM_ROOT/scripts/gvm-default
