@@ -76,7 +76,7 @@ Patch1:               fonts-config.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        mysql-devel postgresql-devel net-snmp-devel 
+BuildRequires:        make gcc mysql-devel postgresql-devel net-snmp-devel
 BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
