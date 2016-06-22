@@ -38,8 +38,8 @@
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           17
-%define ver_min           5
+%define ver_maj           19
+%define ver_min           0
 %define realname          erlang
 
 ###############################################################################
@@ -47,7 +47,7 @@
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_min}
-Release:           1%{?dist}
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -60,7 +60,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     ncurses-devel openssl-devel openssl unixODBC-devel tcl-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel gcc-c++
-BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make gcc
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make gcc
 
 Requires:          tk tcl
 
@@ -93,10 +93,8 @@ Requires:          %{name}-snmp = %{version}
 Requires:          %{name}-ssh = %{version}
 Requires:          %{name}-ssl = %{version}
 Requires:          %{name}-syntax_tools = %{version}
-Requires:          %{name}-test_server = %{version}
 Requires:          %{name}-tools = %{version}
 Requires:          %{name}-typer = %{version}
-Requires:          %{name}-webtool = %{version}
 Requires:          %{name}-xmerl = %{version}
 
 Provides:          %{name} = %{version}-%{release}
@@ -163,10 +161,8 @@ Requires: %{name}-snmp = %{version}
 Requires: %{name}-ssh = %{version}
 Requires: %{name}-ssl = %{version}
 Requires: %{name}-syntax_tools = %{version}
-Requires: %{name}-test_server = %{version}
 Requires: %{name}-tools = %{version}
 Requires: %{name}-typer = %{version}
-Requires: %{name}-webtool = %{version}
 Requires: %{name}-wx = %{version}
 Requires: %{name}-xmerl = %{version}
 
@@ -631,22 +627,6 @@ usage etc.
 
 ###############################################################################
 
-%package -n %{name}-ose
-Summary:  A high-performance, POSIX compatible, multicore real-time operating system
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-ose
-A high-performance, POSIX compatible, multicore real-time operating system 
-maximizing your hardware utilization.
-
-It is compact and robust, and powers embedded systems in wide-range of 
-vertical markets from telecom to automotive to industrial automation and 
-beyond. 
-
-###############################################################################
-
 %package -n %{name}-otp_mibs
 Summary:  Snmp management information base for Erlang
 License:  MPL
@@ -769,17 +749,6 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 
 ###############################################################################
 
-%package -n %{name}-test_server
-Summary:  The OTP test sewrver for Erlang
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-test_server
-The OTP test sewrver for Erlang.
-
-###############################################################################
-
 %package -n %{name}-tools
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
@@ -800,18 +769,6 @@ Requires: %{name}-base = %{version}-%{release}
 
 %description -n %{name}-typer
 A type annotator of Erlang code.
-
-###############################################################################
-
-%package -n %{name}-webtool
-Summary:  Tool that simplifying the use of web based Erlang tools
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-webtool
-Erlang Module to configure,and start the webserver httpd and the various
-web based tools to Erlang/OTP.
 
 ###############################################################################
 
@@ -938,7 +895,7 @@ rm -rf %{buildroot}
 
 %files -n %{name}-stack
 %defattr(-,root,root,-)
-%doc EPLICENCE
+%doc LICENSE.txt
 
 %files -n %{name}-base
 %defattr(-,root,root,-)
@@ -1111,10 +1068,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/os_mon-*
 
-%files -n %{name}-ose
-%defattr(-,root,root,-)
-%{elibdir}/ose-*
-
 %files -n %{name}-otp_mibs
 %defattr(-,root,root,-)
 %{elibdir}/otp_mibs-*
@@ -1155,10 +1108,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/syntax_tools-*
 
-%files -n %{name}-test_server
-%defattr(-,root,root,-)
-%{elibdir}/test_server-*
-
 %files -n %{name}-tools
 %defattr(-,root,root,-)
 %{elibdir}/tools-*
@@ -1167,10 +1116,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/typer-*
 %{_libdir}/%{realname}/bin/typer
-
-%files -n %{name}-webtool
-%defattr(-,root,root,-)
-%{elibdir}/webtool-*
 
 %files -n %{name}-wx
 %defattr(-,root,root,-)
@@ -1183,18 +1128,5 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 17-5-1
-- Fixed bug with crypto module
-- Fixed wrong dependencies in stack package
-
-* Wed Apr 01 2015 Anton Novojilov <andy@essentialkaos.com> - 17-5-0
-- Updated to 17.5
-
-* Thu Dec 11 2014 Anton Novojilov <andy@essentialkaos.com> - 17-4-0
-- Updated to 17.4
-
-* Mon Oct 13 2014 Anton Novojilov <andy@essentialkaos.com> - 17-3-0
-- Updated to 17.3
-
-* Wed Sep 03 2014 Anton Novojilov <andy@essentialkaos.com> - 17-1-0
+* Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 19-0
 - Initial build
