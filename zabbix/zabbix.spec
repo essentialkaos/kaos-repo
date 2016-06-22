@@ -51,7 +51,7 @@
 
 Name:                 zabbix
 Version:              3.0.3
-Release:              0%{?dist}
+Release:              1%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
@@ -978,6 +978,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
+- removed unnecessary patch for fping3 support.
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - added script name and command into a script execution form
 - enabled Chinese (China) translation to be displayed by default
