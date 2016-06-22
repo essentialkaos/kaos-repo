@@ -73,7 +73,6 @@ Source23:             %{name}-tmpfiles.conf
 
 Patch0:               config.patch
 Patch1:               fonts-config.patch
-Patch2:               fping3-sourceip-option.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -333,9 +332,6 @@ Zabbix web frontend for PostgreSQL
 
 %patch0 -p1
 %patch1 -p1
-%if 0%{?rhel} >= 7
-%patch2 -p1
-%endif
 
 # remove .htaccess files
 rm -f frontends/php/app/.htaccess
