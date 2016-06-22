@@ -6,7 +6,7 @@
 
 Summary:        Ansible linter
 Name:           ansible-lint
-Version:        2.7.1
+Version:        3.0.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries 
@@ -18,7 +18,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
-BuildRequires:  python-devel python-setuptools
+BuildRequires:  python-devel python-setuptools libffi-devel
 
 Requires:       ansible
 
@@ -55,6 +55,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.0-0
+- Updated to latest stable release
+
 * Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
 - Updated to latest stable release
 
