@@ -62,8 +62,8 @@ Patch0:            R14B03-remove-no-udefined-from-wx.patch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     ncurses-devel openssl-devel openssl unixODBC-devel tcl-devel
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel 
-BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make
+BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel gcc-c++
+BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make gcc
 
 Requires:          tk tcl
 
