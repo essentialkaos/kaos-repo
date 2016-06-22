@@ -979,7 +979,7 @@ fi
 
 %changelog
 * Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
-- removed unnecessary patch for fping3 support.
+- removed unnecessary patch for fping3 support
 
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - added script name and command into a script execution form
