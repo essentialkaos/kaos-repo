@@ -76,10 +76,12 @@ Patch1:               fonts-config.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc mysql-devel postgresql-devel net-snmp-devel
+BuildRequires:        make gcc mysql-devel postgresql95-devel net-snmp-devel
 BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
+
+Requires:             zabbix-server-mysql
 
 %if 0%{?rhel} >= 7
 BuildRequires:        systemd
@@ -112,8 +114,6 @@ Requires(postun):     %{__service}
 %endif
 
 BuildRequires:        libxml2-devel
-
-Obsoletes:            zabbix = %{version}-%{release}
 
 %description agent
 Zabbix agent to be installed on monitored systems.
@@ -154,11 +154,7 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-server = %{version}-%{release}
-Provides:             zabbix-server-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}-%{release}
-Obsoletes:            zabbix-server = %{version}-%{release}
+Conflicts:            zabbix-server-pgsql
 
 %description server-mysql
 Zabbix server with MySQL or MariaDB database support.
@@ -181,11 +177,7 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-server = %{version}-%{release}
-Provides:             zabbix-server-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}-%{release}
-Obsoletes:            zabbix-server = %{version}-%{release}
+Conflicts:            zabbix-server-mysql
 
 %description server-pgsql
 Zabbix server with PostgresSQL database support.
@@ -208,11 +200,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-proxy = %{version}-%{release}
-Provides:             zabbix-proxy-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}-%{release}
-Obsoletes:            zabbix-proxy = %{version}-%{release}
+Conflicts:            zabbix-proxy-pgsql
+Conflicts:            zabbix-proxy-sqlite3
 
 %description proxy-mysql
 Zabbix proxy with MySQL or MariaDB database support.
@@ -235,11 +224,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-proxy = %{version}-%{release}
-Provides:             zabbix-proxy-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}
-Obsoletes:            zabbix-proxy = %{version}-%{release}
+Conflicts:            zabbix-proxy-mysql
+Conflicts:            zabbix-proxy-sqlite3
 
 %description proxy-pgsql
 Zabbix proxy with PostgreSQL database support.
@@ -262,11 +248,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-proxy = %{version}-%{release}
-Provides:             zabbix-proxy-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}
-Obsoletes:            zabbix-proxy = %{version}-%{release}
+Conflicts:            zabbix-proxy-pgsql
+Conflicts:            zabbix-proxy-mysql
 
 %description proxy-sqlite3
 Zabbix proxy with SQLite3 database support.
@@ -305,7 +288,8 @@ BuildArch:            noarch
 
 Requires:             php-mysql
 Requires:             zabbix-web = %{version}-%{release}
-Provides:             zabbix-web-database = %{version}-%{release}
+
+Conflicts:            zabbix-web-pgsql
 
 %description web-mysql
 Zabbix web frontend for MySQL
@@ -320,7 +304,8 @@ BuildArch:            noarch
 
 Requires:             php-pgsql
 Requires:             zabbix-web = %{version}-%{release}
-Provides:             zabbix-web-database = %{version}-%{release}
+
+Conflicts:            zabbix-web-mysql
 
 %description web-pgsql
 Zabbix web frontend for PostgreSQL
@@ -350,6 +335,9 @@ find frontends/php/locale -name '*.sh' -delete
 
 
 %build
+
+export PATH="/usr/pgsql-9.5/bin:$PATH"
+
 build_flags="
         --enable-dependency-tracking
         --sysconfdir=%{_sysconfdir}/%{name}
@@ -980,6 +968,7 @@ fi
 %changelog
 * Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
 - removed unnecessary patch for fping3 support
+- improved spec
 
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - added script name and command into a script execution form
