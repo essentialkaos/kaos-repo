@@ -57,7 +57,7 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             0.9.0.1
+Version:             0.10.0.0
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
@@ -101,13 +101,12 @@ is designed to support the following:
 %prep
 %setup -q
 
-
 %build
 export PATH=$PATH:/opt/gradle/current/bin
 gradle releaseTarGz
 
 pushd core/build/distributions
-    tar xvfz %{name}_%{major_version}-%{version}.tgz
+  tar xvfz %{name}_%{major_version}-%{version}.tgz
 popd
 
 %install
@@ -127,26 +126,23 @@ install -pm 644 %{SOURCE3} %{buildroot}%{_logrotatedir}/%{name}
 install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfigdir}/%{name}
 
 pushd core/build/distributions/%{name}_%{major_version}-%{version}
-    mv bin %{buildroot}%{_opt}/%{name}
-    mv libs %{buildroot}%{_opt}/%{name}
-    mv config %{buildroot}%{_opt}/%{name}
+  mv bin %{buildroot}%{_opt}/%{name}
+  mv libs %{buildroot}%{_opt}/%{name}
+  mv config %{buildroot}%{_opt}/%{name}
 popd
 
 %clean
 %{__rm} -rf %{buildroot}
-
 
 %pre
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
 getent passwd %{user_name} >/dev/null || %{__useradd} -s /sbin/nologin -M -r -g %{group_name} -d %{home_dir} %{user_name}
 exit 0
 
-
 %post
 if [[ $1 -eq 1 ]] ; then
   %{__chkconfig} --add %{service_name}
 fi
-
 
 %preun
 if [[ $1 -eq 0 ]] ; then
@@ -173,6 +169,9 @@ fi
 ########################################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0.0-0
+- Updated to latest release
+
 * Fri Apr 01 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 0.9.0.1-0
 - Updated to latest release
 

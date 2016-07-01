@@ -30,13 +30,13 @@
 
 Summary:            Tool for installing and managing Python packages
 Name:               pip
-Version:            8.1.1
+Version:            8.1.2
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
-URL:                https://pip.pypa.io
+URL:                https://github.com/pypa/pip
 
-Source0:            http://pypi.python.org/packages/source/p/pip/%{name}-%{version}.tar.gz
+Source0:            https://github.com/pypa/%{name}/archive/%{version}.tar.gz
 
 BuildArch:          noarch
 
@@ -56,7 +56,8 @@ Python Package Index. It’s a replacement for easy_install.
 ########################################################################################
 
 %prep
-%setup -q
+%setup -qn %{name}-%{version}
+
 %{__sed} -i '1d' %{name}/__init__.py
 
 %build
@@ -75,15 +76,27 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
-%doc PKG-INFO docs
+%doc docs AUTHORS.txt CHANGES.txt LICENSE.txt MANIFEST.in README.rst
 %attr(755, root, root) %{_bindir}/%{name}*
 %{python_sitelib}/%{name}*
 
 ########################################################################################
 
 %changelog
+* Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 8.1.2-0
+- Fix a regression on systems with uninitialized locale.
+- Use environment markers to filter packages before determining if a
+  required wheel is supported.
+- Make glibc parsing for `manylinux1` support more robust for the variety of
+  glibc versions found in the wild.
+- Update environment marker support to fully support PEP 508 and legacy
+  environment markers.
+- Always use debug logging to the ``--log`` file.
+- Don't attempt to wrap search results for extremely narrow terminal windows.
+
 * Sun Mar 20 2016 Gleb Goncharov <yum@gongled.ru> - 8.1.1-0
-- Updated to latest stable release
+- Fix regression with non-ascii requirement files on Python 2 and add support
+  for encoding headers in requirement files.
 
 * Wed Jan 22 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - Updated to latest stable release

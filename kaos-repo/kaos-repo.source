@@ -1,0 +1,4 @@
+SOURCE/mirrors
+SOURCE/kaos-release.repo
+SOURCE/kaos-testing.repo
+SOURCE/RPM-GPG-KEY-ESSENTIALKAOS

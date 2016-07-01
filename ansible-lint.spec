@@ -1,20 +1,24 @@
 ########################################################################################
 
+%define subpath b5/4f/dd446c962ff09da8df88c7698761a603ab9038fcc97ec15e1eebebf0b427
+
+########################################################################################
+
 Summary:        Ansible linter
 Name:           ansible-lint
-Version:        2.6.2
+Version:        3.0.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries 
 URL:            https://github.com/willthames/ansible-lint
 
-Source:         https://pypi.python.org/packages/source/a/%{name}/%{name}-%{version}.tar.gz
+Source:         https://pypi.python.org/packages/%{subpath}/%{name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
-BuildRequires:  python-devel python-setuptools
+BuildRequires:  python-devel python-setuptools libffi-devel
 
 Requires:       ansible
 
@@ -51,6 +55,12 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.0-0
+- Updated to latest stable release
+
+* Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
+- Updated to latest stable release
+
 * Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.6.2-0
 - Updated to latest stable release
 

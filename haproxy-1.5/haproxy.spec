@@ -53,7 +53,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.5.16
+Version:           1.5.18
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -176,6 +176,38 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-0
+- DOC: Clarify IPv4 address / mask notation rules
+- CLEANUP: fix inconsistency between fd->iocb, proto->accept and accept()
+- BUG/MEDIUM: fix maxaccept computation on per-process listeners
+- BUG/MINOR: listener: stop unbound listeners on startup
+- BUG/MINOR: fix maxaccept computation according to the frontend process range
+- MEDIUM: unblock signals on startup.
+- BUG/MEDIUM: channel: don't allow to overwrite the reserve until connected
+- BUG/MEDIUM: channel: incorrect polling condition may delay event delivery
+- BUG/MEDIUM: channel: fix miscalculation of available buffer space (3rd try)
+- MINOR: channel: add new function channel_congested()
+- BUG/MEDIUM: http: fix risk of CPU spikes with pipelined requests from dead client
+- BUG/MAJOR: channel: fix miscalculation of available buffer space (4th try)
+- BUG/MEDIUM: stream: ensure the SI_FL_DONT_WAKE flag is properly cleared
+- BUG/MEDIUM: channel: fix inconsistent handling of 4GB-1 transfers
+- MINOR: stats: fix typo in help messages
+
+* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.17-0
+- BUG/MINOR: log: Don't use strftime() which can clobber timezone if chrooted
+- BUG/MINOR: conf: "listener id" expects integer, but its not checked
+- BUG/MAJOR: Fix crash in http_get_fhdr with exactly MAX_HDR_HISTORY headers
+- DOC: "addr" parameter applies to both health and agent checks
+- DOC: timeout client: pointers to timeout http-request
+- DOC: typo on stick-store response
+- DOC: typo: ACL subdir match
+- DOC: typo: maxconn paragraph is wrong due to a wrong buffer size
+- DOC: typo: req.uri is now replaced by capture.req.uri
+- DOC: fix "needed" typo
+- BUG/MINOR : allow to log cookie for tarpit and denied request
+- BUG/MAJOR: channel: fix miscalculation of available buffer space (2nd try)
+- DOC: fix discrepancy in the example for http-request redirect
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.16-0
 - BUG/BUILD: replace haproxy-systemd-wrapper with $(EXTRA) in install-bin.
 - BUG/MINOR: acl: don't use record layer in req_ssl_ver

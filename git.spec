@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.8.4
+Version:          2.9.0
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -273,22 +273,25 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Sun Jun 12 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 2.8.4-0
+* Wed Jun 15 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 2.9.0-0
 - Updated to latest release
 
-* Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.8.3-0
+* Sun Jun 12 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 2.8.4-0
+- Updated to latest release
+
+* Mon May 23 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 2.8.3-0
 - Updated to latest release
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
 - Updated to latest release
 
-* Tue Mar 29 2016 Gleb Goncharov <yum@gongled.me> - 2.8.0-0
+* Tue Mar 29 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 2.8.0-0
 - Updated to latest release
 
-* Fri Mar 18 2016 Gleb Goncharov <yum@gongled.me> - 2.7.4-0
+* Fri Mar 18 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 2.7.4-0
 - Updated to latest release
 
-* Tue Feb 23 2016 Gleb Goncharov <yum@gongled.me> - 2.7.2-0
+* Tue Feb 23 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 2.7.2-0
 - Updated to latest release
 
 * Sat Jan 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.7.0-0

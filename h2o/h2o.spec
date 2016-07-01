@@ -46,7 +46,7 @@
 
 Summary:              Very fast HTTP server written in C
 Name:                 h2o
-Version:              1.7.1
+Version:              2.0.0
 Release:              0%{?dist}
 License:              Copyright (c) 2014 DeNA Co., Ltd.
 Group:                System Environment/Daemons
@@ -156,22 +156,20 @@ fi
 %files
 %defattr(-,root,root)
 %doc Changes LICENSE README.md
-
 %dir %{_logdir}/%{name}
-
 %{_bindir}/%{name}
-
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-
 %{_initrddir}/%{service_name}
-
 %{_loc_datarootdir}/%{name}/*
 
 ###############################################################################
 
 %changelog
+* Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- Updated to latest version
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
 - Updated to latest version
 

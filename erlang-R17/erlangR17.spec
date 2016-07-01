@@ -59,8 +59,8 @@ Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_m
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     ncurses-devel openssl-devel openssl unixODBC-devel tcl-devel
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel 
-BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make
+BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel gcc-c++
+BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make gcc
 
 Requires:          tk tcl
 

@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.0.1
+Version:              3.0.3
 Release:              1%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -73,13 +73,16 @@ Source23:             %{name}-tmpfiles.conf
 
 Patch0:               config.patch
 Patch1:               fonts-config.patch
-Patch2:               fping3-sourceip-option.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        mysql-devel postgresql-devel net-snmp-devel openldap-devel gnutls-devel
-BuildRequires:        iksemel-devel unixODBC-devel libxml2-devel curl-devel >= 7.13.1
-BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0 sqlite-devel
+BuildRequires:        make gcc mysql-devel postgresql95-devel net-snmp-devel
+BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
+BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
+BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
+
+Requires:             zabbix-server-mysql
+
 %if 0%{?rhel} >= 7
 BuildRequires:        systemd
 %endif
@@ -111,8 +114,6 @@ Requires(postun):     %{__service}
 %endif
 
 BuildRequires:        libxml2-devel
-
-Obsoletes:            zabbix = %{version}-%{release}
 
 %description agent
 Zabbix agent to be installed on monitored systems.
@@ -153,11 +154,7 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-server = %{version}-%{release}
-Provides:             zabbix-server-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}-%{release}
-Obsoletes:            zabbix-server = %{version}-%{release}
+Conflicts:            zabbix-server-pgsql
 
 %description server-mysql
 Zabbix server with MySQL or MariaDB database support.
@@ -180,11 +177,7 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-server = %{version}-%{release}
-Provides:             zabbix-server-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}-%{release}
-Obsoletes:            zabbix-server = %{version}-%{release}
+Conflicts:            zabbix-server-mysql
 
 %description server-pgsql
 Zabbix server with PostgresSQL database support.
@@ -207,11 +200,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-proxy = %{version}-%{release}
-Provides:             zabbix-proxy-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}-%{release}
-Obsoletes:            zabbix-proxy = %{version}-%{release}
+Conflicts:            zabbix-proxy-pgsql
+Conflicts:            zabbix-proxy-sqlite3
 
 %description proxy-mysql
 Zabbix proxy with MySQL or MariaDB database support.
@@ -234,11 +224,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-proxy = %{version}-%{release}
-Provides:             zabbix-proxy-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}
-Obsoletes:            zabbix-proxy = %{version}-%{release}
+Conflicts:            zabbix-proxy-mysql
+Conflicts:            zabbix-proxy-sqlite3
 
 %description proxy-pgsql
 Zabbix proxy with PostgreSQL database support.
@@ -261,11 +248,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-Provides:             zabbix-proxy = %{version}-%{release}
-Provides:             zabbix-proxy-implementation = %{version}-%{release}
-
-Obsoletes:            zabbix = %{version}
-Obsoletes:            zabbix-proxy = %{version}-%{release}
+Conflicts:            zabbix-proxy-pgsql
+Conflicts:            zabbix-proxy-mysql
 
 %description proxy-sqlite3
 Zabbix proxy with SQLite3 database support.
@@ -304,7 +288,8 @@ BuildArch:            noarch
 
 Requires:             php-mysql
 Requires:             zabbix-web = %{version}-%{release}
-Provides:             zabbix-web-database = %{version}-%{release}
+
+Conflicts:            zabbix-web-pgsql
 
 %description web-mysql
 Zabbix web frontend for MySQL
@@ -319,7 +304,8 @@ BuildArch:            noarch
 
 Requires:             php-pgsql
 Requires:             zabbix-web = %{version}-%{release}
-Provides:             zabbix-web-database = %{version}-%{release}
+
+Conflicts:            zabbix-web-mysql
 
 %description web-pgsql
 Zabbix web frontend for PostgreSQL
@@ -331,9 +317,6 @@ Zabbix web frontend for PostgreSQL
 
 %patch0 -p1
 %patch1 -p1
-%if 0%{?rhel} >= 7
-%patch2 -p1
-%endif
 
 # remove .htaccess files
 rm -f frontends/php/app/.htaccess
@@ -352,6 +335,9 @@ find frontends/php/locale -name '*.sh' -delete
 
 
 %build
+
+export PATH="/usr/pgsql-9.5/bin:$PATH"
+
 build_flags="
         --enable-dependency-tracking
         --sysconfdir=%{_sysconfdir}/%{name}
@@ -980,6 +966,66 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
+- removed unnecessary patch for fping3 support
+- improved spec
+
+* Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
+- added script name and command into a script execution form
+- enabled Chinese (China) translation to be displayed by default
+- updated Chinese (China), English (United States), French, Italian, Japanese,
+  Korean, Polish, Portuguese (Brazil), Russian, Slovak, Spanish, Ukrainian
+  translations; thanks to Zabbix translators
+- fixed Windows compilation error and time zone related issues
+- fixed array formatting in exported JSON
+- fixed deletion of the items which used in graph Y axis min/max parameters
+- fixed possible buffer overruns in discovery macro substitution and other
+  macro context issues
+- fixed unexpected reset of group and host filter
+- removed redundant closing PHP tags in configuration example file and when
+  generating PHP files
+- enforced bash usage in mysql.size user parameter configuration script to
+  avoid issues with different default shells; thanks to Timo Lindfors
+  for reporting it
+- fixed color picker wrapping
+- fixed crash when resolving {TRIGGER.NAME} of the trigger with expression
+  containing unknown user macro
+- fixed validation of JSON import source data in configuration.import method
+- fixed timeout being too low when sending configuration data to active proxy
+- fixed crash during configuration update when context is added to a macro
+  without context
+- fixed potential incorrect data from icmppingsec item with low latency hosts
+- fixed proxy sorting in "Monitored by proxy" dropdown in host edit form
+- fixed inventory mode not being inherited for host prototypes when linking
+  template to a template/host
+- fixed loss of trailing whitespace in unquoted function parameters when
+  creating calculated items with low level discovery
+- improved performance of alert.get method
+- updated success and error messages for triggers, items and graphs
+  'Copy' operations
+- fixed API configuration.import method for importing template and/or host
+  with trigger prototype dependency
+- added finishing touches to encryption support
+- fixed encoding reset when Zabbix process auto-reconnects MySQL database
+- fixed disabling of script confirmation in Administration -> Script -> Edit
+  form
+- fixed display of form fields for different types of script in
+  Administration -> Script -> Edit form
+- fixed monitoring discovery and monitoring map data refresh
+- fixed agent compilation on Solaris without zone support (e.g. Solaris 9),
+  added awareness of running on a newer Solaris with zones
+- changed incorrect labels in item filters and host filters
+- added hint for action operation steps on how to proceed infinitely
+- prohibited 'band' operator for counting float values
+- fixed count() evaluation for numeric values with operator and empty pattern
+- fixed possible crash when constants are extracted from invalid trigger
+  expression containing '{' without matching '}'
+- fixed adding trigger prototype dependencies when cloning a host or template
+- fixed pagination throwing an error after performing enable or disable via
+  link on an object
+- changed sum(), str(), regexp(), iregexp() trigger functions to return 0 if
+  there are no data in the requested range
+
 * Fri Mar 18 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.1-1
 - 'update-alternatives' for zabbix-proxy doesn't work properly. Fixed.
 - added zabbix-proxy-sqlite3
