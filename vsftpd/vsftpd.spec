@@ -48,7 +48,7 @@
 Summary:              Very Secure FTP Daemon
 Name:                 vsftpd
 Version:              3.0.3
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              GPL
 Group:                System Environment/Daemons
 URL:                  http://vsftpd.beasts.org
@@ -58,6 +58,7 @@ Source1:              %{name}.init
 Source2:              %{name}.conf
 Source3:              %{name}.logrotate
 Source4:              %{name}.sysconfig
+Source5:              %{name}.pam
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -86,6 +87,7 @@ rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_sbindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
+install -dm 755 %{buildroot}%{_sysconfdir}/pam.d
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_initrddir}
@@ -111,6 +113,8 @@ install -pm 644 %{SOURCE3} \
                 %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -pm 644 %{SOURCE4} \
                 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 644 %{SOURCE5} \
+                %{buildroot}%{_sysconfdir}/pam.d/%{name}
 
 ###############################################################################
 
@@ -146,6 +150,7 @@ rm -rf %{buildroot}
 %attr(600,root,root) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.*
 %config %{_sysconfdir}/sysconfig/%{name}
 %config %{_sysconfdir}/logrotate.d/%{name}
+%config %{_sysconfdir}/pam.d/%{name}
 %{_initrddir}/%{service_name}
 %{_sbindir}/%{name}
 %{_mandir}/man5/*
@@ -154,6 +159,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Jul 01 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 3.0.3-1
+- Added PAM configuration 
+
 * Sun Mar 13 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.3-0
 - Initial build
 
