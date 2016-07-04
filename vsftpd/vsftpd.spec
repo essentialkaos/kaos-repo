@@ -59,12 +59,13 @@ Source2:              %{name}.conf
 Source3:              %{name}.logrotate
 Source4:              %{name}.sysconfig
 Source5:              %{name}.pam
+Source6:              %{name}.user_list
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:             openssl logrotate kaosv >= 2.7.0
 
-BuildRequires:        openssl-devel libcap-devel grep
+BuildRequires:        gcc-c++ openssl-devel libcap-devel grep
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -115,6 +116,8 @@ install -pm 644 %{SOURCE4} \
                 %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -pm 644 %{SOURCE5} \
                 %{buildroot}%{_sysconfdir}/pam.d/%{name}
+install -pm 644 %{SOURCE6} \
+                %{buildroot}%{_sysconfdir}/%{name}/%{name}.user_list
 
 ###############################################################################
 
@@ -160,7 +163,9 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Jul 01 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 3.0.3-1
-- Added PAM configuration 
+- Added vsftpd.user_list
+- Added PAM configuration
+- Disabled tcp_wrapper by default
 
 * Sun Mar 13 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.3-0
 - Initial build
