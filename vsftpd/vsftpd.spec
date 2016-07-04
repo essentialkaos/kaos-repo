@@ -63,9 +63,9 @@ Source6:              %{name}.user_list
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:             openssl logrotate kaosv >= 2.7.0
+Requires:             openssl logrotate kaosv >= 2.7
 
-BuildRequires:        gcc-c++ openssl-devel libcap-devel grep
+BuildRequires:        make gcc gcc-c++ openssl-devel libcap-devel grep
 
 Provides:             %{name} = %{version}-%{release}
 
