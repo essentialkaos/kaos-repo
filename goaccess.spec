@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.0.1
+Version:         1.0.2
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -55,6 +55,21 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Jul 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
+- Added minor changes to the HTML report stylesheet.
+- Added the ability to specify the WebSocket port within --ws-url.
+- Added the proper byte swap functions used by Sun Solaris.
+- Added the proper default --http-method/protocol values on the config file.
+- Changed bar transition to scale delay dynamically to the length of the
+    dataset.
+- Fixed build issue on platforms lacking of open_memstream() by refactoring
+    the JSON module to use its own memory buffer.
+- Fixed issue where the server wouldn't send cached buffer to slow clients.
+- Fixed OS X build check of ncursesw.
+- Implemented a throttle mechanism for slow clients to avoid caching too much
+    data on the server-side.
+- Removed flickering on D3 line and bar chart redraw.
+
 * Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
 - Added Android version number along with the codename when using --real-os,
   e.g., 'Lollipop 5.1'
