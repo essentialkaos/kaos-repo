@@ -12,7 +12,7 @@ Source0:         http://tar.goaccess.io/goaccess-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   GeoIP-devel glib2-devel ncurses-devel
+BuildRequires:   make gcc GeoIP-devel glib2-devel ncurses-devel
 
 Requires:        GeoIP
 
