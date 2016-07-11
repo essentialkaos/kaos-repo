@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            4.4.4
+Version:            4.4.7
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,6 +116,22 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.7-0
+- debugger: All properties of an array (aside from length) can now be printed in the repl
+- npm: Upgrade npm to 2.15.8
+- stream: Fix for a bug that became more prevalent with the stream changes that landed in v4.4.5.
+- V8: Fix for a bug in crankshaft that was causing crashes on arm64
+- V8: Add missing classes to postmortem info such as JSMap and JSSet
+
+* Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.6-0
+- V8: security update for CVE-2016-1669
+
+* Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.5-0
+- buffer: Buffer.indexOf now returns correct values for all UTF-16 input
+- contextify: Context objects are now properly garbage collected, this solves a problem some individuals were experiencing with extreme memory growth
+- deps: update npm to 2.15.5
+- http: Invalid status codes can no longer be sent. Limited to 3 digit numbers between 100 - 999
+
 * Wed May 18 2016 Anton Novojilov <andy@essentialkaos.com> - 4.4.4-0
 - buffer: safeguard against accidental kNoZeroFill
 - streams: support unlimited synchronous cork/uncork cycles
