@@ -81,7 +81,7 @@ BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
 
-Requires:             zabbix-server-mysql
+Requires:             zabbix-server = %{version}
 
 %if 0%{?rhel} >= 7
 BuildRequires:        systemd
@@ -200,6 +200,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
+Provides:             zabbix-server = %{version}-%{release}
+
 Conflicts:            zabbix-proxy-pgsql
 Conflicts:            zabbix-proxy-sqlite3
 
@@ -224,6 +226,8 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
+Provides:             zabbix-server = %{version}-%{release}
+
 Conflicts:            zabbix-proxy-mysql
 Conflicts:            zabbix-proxy-sqlite3
 
@@ -247,6 +251,8 @@ Requires(preun):      %{__chkconfig}
 Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
+
+Provides:             zabbix-server = %{version}-%{release}
 
 Conflicts:            zabbix-proxy-pgsql
 Conflicts:            zabbix-proxy-mysql
