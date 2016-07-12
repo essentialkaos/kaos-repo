@@ -66,11 +66,11 @@ Patch0:            %{name}-conf.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make automake autoconf gcc gcc-c++ git erlang >= 17
+BuildRequires:     make automake autoconf gcc gcc-c++ git erlang18
 BuildRequires:     zlib-devel expat-devel pam-devel sqlite-devel
 BuildRequires:     openssl-devel libyaml-devel
 
-Requires:          erlang >= 17 kaosv >= 2.6 openssl libyaml
+Requires:          erlang18 kaosv >= 2.6 openssl libyaml
 
 Provides:          %{name} = %{version}-%{release}
 
