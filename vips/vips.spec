@@ -37,8 +37,8 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-%define major_version     7
-%define minor_version     42
+%define major_version     8
+%define minor_version     3
 %define patch_level       1
 
 
@@ -58,6 +58,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make pkgconfig gettext libtool python-devel swig gtk-doc
 BuildRequires:     gcc gcc-c++ libjpeg-turbo-devel libtiff-devel zlib-devel
+BuildRequires:     glib2-devel libxml2-devel
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -160,6 +161,9 @@ rm -rf %{buildroot}%{_datadir}/locale
 ###############################################################################
 
 %changelog
+* Sat Jul 23 2016 Anton Novojilov <andy@essentialkaos.com> - 8.3.1-0
+- Updated to latest release
+
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 7.42.1-0
 - Updated to latest release
 
