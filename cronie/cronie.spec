@@ -47,7 +47,7 @@
 
 Summary:           Cron daemon for executing programs at set times
 Name:              cronie
-Version:           1.5.0
+Version:           1.5.1
 Release:           0%{?dist}
 License:           MIT and BSD and ISC and GPLv2
 Group:             System Environment/Base
@@ -262,8 +262,23 @@ exit 0
 ###############################################################################
 
 %changelog
+* Tue Jul 26 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
+- crontab: Use temporary file name that is ignored by crond.
+- crond: Inherit PATH from the crond environment if -P option is used.
+- crond: Remove hardcoded "system_u" SELinux user, use the SELinux user of
+  the running crond.
+- anacron: Small cleanups and fixes.
+- crond: Fix longstanding race condition on repeated crontab modification.
+
 * Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
-- Updated to latest stable release
+- crond: Job environment variables are set also when executing sendmail.
+- crond: Adding duplicate orphans on reload is now prevented.
+- crond: The regular crond shutdown is now logged.
+- crontab: PAM is not called in crontab command if the caller's uid is 0.
+- crond: PAM is not called from crond for system cron jobs
+  (/etc/crontab, /etc/cron.d) which are run for uid 0.
+- crond: The existence of an user is checked at time when job is run
+  and not when the crontab is parsed on database reload.
 
 * Thu Oct 23 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.12-0
 - Updated to latest stable release
