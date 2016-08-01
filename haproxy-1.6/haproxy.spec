@@ -54,7 +54,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.5
+Version:           1.6.7
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -173,10 +173,10 @@ fi
 %doc CHANGELOG LICENSE README doc/*
 %doc examples/*.cfg
 %dir %{hp_datadir}
-%dir %{hp_datadir}/*
 %dir %{hp_confdir}
 %config(noreplace) %{hp_confdir}/%{name}.cfg
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%{hp_datadir}/*
 %{_initrddir}/%{name}
 %{_sbindir}/%{name}
 %{_bindir}/halog
@@ -186,6 +186,48 @@ fi
 ###############################################################################
 
 %changelog
+* Fri Jul 15 2016 Gleb Goncharov <inbox@gongled.ru> - 1.6.7-0
+- MINOR: new function my_realloc2 = realloc + free upon failure
+- CLEANUP: fixed some usages of realloc leading to memory leak
+- Revert "BUG/MINOR: ssl: fix potential memory leak in ssl_sock_load_dh_params()"
+- BUG/MEDIUM: dns: fix alignment issues in the DNS response parser
+- BUG/MINOR: Fix endiness issue in DNS header creation code
+
+* Fri Jul 15 2016 Gleb Goncharov <inbox@gongled.ru> - 1.6.6-0
+- BUG/MAJOR: fix listening IP address storage for frontends
+- BUG/MINOR: fix listening IP address storage for frontends (cont)
+- DOC: Fix typo so fetch is properly parsed by Cyril's converter
+- BUG/MAJOR: http: fix breakage of "reqdeny" causing random crashes
+- BUG/MEDIUM: stick-tables: fix breakage in table converters
+- BUG/MEDIUM: dns: unbreak DNS resolver after header fix
+- BUILD: fix build on Solaris 11
+- CLEANUP: connection: fix double negation on memcmp()
+- BUG/MEDIUM: stats: show servers state may show an servers from another backend
+- BUG/MEDIUM: fix risk of segfault with "show tls-keys"
+- BUG/MEDIUM: sticktables: segfault in some configuration error cases
+- BUG/MEDIUM: lua: converters doesn't work
+- BUG/MINOR: http: add-header: header name copied twice
+- BUG/MEDIUM: http: add-header: buffer overwritten
+- BUG/MINOR: ssl: fix potential memory leak in ssl_sock_load_dh_params()
+- BUG/MINOR: http: url32+src should use the big endian version of url32
+- BUG/MINOR: http: url32+src should check cli_conn before using it
+- DOC: http: add documentation for url32 and url32+src
+- BUG/MINOR: fix http-response set-log-level parsing error
+- MINOR: systemd: Use variable for config and pidfile paths
+- MINOR: systemd: Perform sanity check on config before reload (cherry picked from commit 68535bddf305fdd22f1449a039939b57245212e7)
+- BUG/MINOR: init: always ensure that global.rlimit_nofile matches actual limits
+- BUG/MINOR: init: ensure that FD limit is raised to the max allowed
+- BUG/MEDIUM: external-checks: close all FDs right after the fork()
+- BUG/MAJOR: external-checks: use asynchronous signal delivery
+- BUG/MINOR: external-checks: do not unblock undesired signals
+- BUILD/MEDIUM: rebuild everything when an include file is changed
+- BUILD/MEDIUM: force a full rebuild if some build options change
+- BUG/MINOR: srv-state: fix incorrect output of state file
+- BUG/MINOR: ssl: close ssl key file on error
+- BUG/MINOR: http: fix misleading error message for response captures
+- BUG/BUILD: don't automatically run "make" on "make install"
+- DOC: add missing doc for http-request deny [deny_status <status>]
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.5-0
 - BUG/MINOR: log: Don't use strftime() which can clobber timezone if chrooted
 - BUILD: namespaces: fix a potential build warning in namespaces.c
