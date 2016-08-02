@@ -37,7 +37,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.1
+Version:            3.2.3
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -51,9 +51,8 @@ Source4:            sentinel.logrotate
 Source5:            sentinel.init
 Source6:            sentinel.sysconfig
 
-Patch0:             %{name}-linenoise-file-access.patch
-Patch1:             %{name}-config.patch
-Patch2:             sentinel-config.patch
+Patch0:             %{name}-config.patch
+Patch1:             sentinel-config.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -94,7 +93,6 @@ Client for working with Redis from console
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__make} %{?_smp_mflags}
@@ -189,6 +187,40 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Aug 02 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
+- Fix a bug to delay bgsave while AOF rewrite in progress for replication
+- Update linenoise to fix insecure redis-cli history file creation
+
+* Tue Aug 02 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
+- Ability of slave to announce arbitrary ip/port to master
+- redis-benchmark: new option to show server errors on stdout
+- Multiple GEORADIUS bugs fixed
+- Replication: when possible start RDB saving ASAP
+- Sentinel: new test unit 07 that tests master down conditions
+- Sentinel: check Slave INFO state more often when disconnected
+- Avoid simultaneous RDB and AOF child process
+- Replication: start BGSAVE for replication always in replicationCron()
+- Regression test for issue #3333
+- getLongLongFromObject: use string2ll() instead of strict_strtoll()
+- redis-cli: check SELECT reply type just in state updated
+- Fix for redis_cli printing default DB when select command fails
+- Sentinel: fix cross-master Sentinel address update
+- CONFIG GET is now no longer case sensitive
+- Fix test for new RDB checksum failure message
+- Make tcp-keepalive default to 300 in internal conf
+- In Redis RDB check: more details in error reportings
+- In Redis RDB check: log decompression errors
+- In Redis RDB check: log object type on error
+- Added a trivial program to randomly corrupt RDB files in /utils
+- In Redis RDB check: minor output message changes
+- In Redis RDB check: better error reporting
+- In Redis RDB check: initial POC
+- A string with 21 chars is not representable as a 64-bit integer
+- Test: new randomized stress tester for #3343 alike bugs
+- Stress tester WIP
+- Regression test for issue #3343 exact min crash sequence
+- Fix quicklistReplaceAtIndex() by updating the quicklist ziplist size
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-0
 - A critical bug in Sentinel was hopefully fixed. During the big 3.2
   refactoring of Redis Sentinel, in order to implement connection sharing
