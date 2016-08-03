@@ -276,7 +276,6 @@ Requires:             php-mbstring
 Requires:             php-xml
 Requires:             php-ldap
 Requires:             dejavu-sans-fonts
-Requires:             zabbix-web-database = %{version}-%{release}
 
 Requires(post):       %{_sbindir}/update-alternatives
 Requires(preun):      %{_sbindir}/update-alternatives
