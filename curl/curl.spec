@@ -38,7 +38,7 @@
 %{?_with_nss:     %define is_nss_enabled 1}
 %{?_without_nss:  %define is_nss_enabled 0}
 
-%if 0%{?fedora} > 15 || 0%{?rhel} > 6
+%if 0%{?fedora} > 15 || 0%{?rhel} > 5
 %define is_nss_supported 1 
 %else
 %define is_nss_supported 0
