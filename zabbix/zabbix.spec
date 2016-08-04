@@ -51,7 +51,7 @@
 
 Name:                 zabbix
 Version:              3.0.3
-Release:              1%{?dist}
+Release:              2%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
@@ -276,7 +276,6 @@ Requires:             php-mbstring
 Requires:             php-xml
 Requires:             php-ldap
 Requires:             dejavu-sans-fonts
-Requires:             zabbix-web-database = %{version}-%{release}
 
 Requires(post):       %{_sbindir}/update-alternatives
 Requires(preun):      %{_sbindir}/update-alternatives
@@ -972,6 +971,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Aug 04 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-2
+- Fixed dependency bug
+
 * Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.3-1
 - removed unnecessary patch for fping3 support
 - improved spec
