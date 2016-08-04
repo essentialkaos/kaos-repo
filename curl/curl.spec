@@ -92,18 +92,23 @@ BuildRequires:        pkgconfig zlib-devel openldap-devel libidn-devel krb5-deve
 BuildRequires:        libmetalink-devel libssh2-devel >= 1.2 groff
 BuildRequires:        %{ssl_provider}-devel %{ssl_version_req}
 BuildRequires:        openssh-clients openssh-server stunnel perl python
-BuildRequires:        perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(File::Basename)
-BuildRequires:        perl(File::Copy) perl(File::Spec) perl(IPC::Open2) perl(MIME::Base64)
-BuildRequires:        perl(strict) perl(Time::Local) perl(Time::HiRes) perl(warnings) perl(vars)
+BuildRequires:        perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(vars)
+BuildRequires:        perl(File::Basename) perl(File::Copy) perl(File::Spec)
+BuildRequires:        perl(IPC::Open2) perl(MIME::Base64) perl(warnings)
+BuildRequires:        perl(strict) perl(Time::Local) perl(Time::HiRes)
+
 %if ! %{use_threads_posix}
 BuildRequires:        c-ares-devel >= 1.6.0
 %endif
+
 %if 0%{?fedora} > 22 || 0%{?rhel} > 5
 BuildRequires:        libnghttp2-devel nghttp2
 %endif
+
 %if 0%{?fedora} > 18 || 0%{?rhel} > 6
 BuildRequires:        libpsl-devel
 %endif
+
 %if %{have_multilib_rpm_config}
 BuildRequires:        multilib-rpm-config
 %endif
@@ -141,9 +146,11 @@ BuildRequires:        nss-pem
 %endif
 
 Requires:             libssh2%{?_isa} >= %{libssh2_version}
+
 %if 0%{?fedora} > 24 || 0%{?rhel} > 7
 Requires:             nss-pem
 %endif
+
 %if ! %{use_threads_posix}
 Requires:             c-ares%{?_isa} >= %{cares_version}
 %endif
@@ -183,9 +190,11 @@ documentation of the library, too.
 
 %patch101 -p1
 %patch102 -p1
+
 %if 0%{?use_threads_posix} && 0%{?fedora} < 14 && 0%{?rhel} < 7
 %patch108
 %endif
+
 %patch302
 
 %build
@@ -194,6 +203,7 @@ export CPPFLAGS="$(pkg-config --cflags openssl)"
 %endif
 
 [ -x /usr/kerberos/bin/krb5-config ] && KRB5_PREFIX="=/usr/kerberos"
+
 %configure \
 %if 0%{?use_nss}
         --without-ssl \
@@ -237,14 +247,15 @@ install -dm 0755 %{buildroot}%{_datadir}/aclocal
 install -pm 0644 docs/libcurl/libcurl.m4 %{buildroot}%{_datadir}/aclocal
 
 %if %{have_multilib_rpm_config}
-%multilib_fix_c_header --file %{_includedir}/curl/curlbuild.h
+  %multilib_fix_c_header --file %{_includedir}/%{name}/curlbuild.h
 %else
-%if %{__isa_bits} == 64
-mv %{buildroot}%{_includedir}/curl/curlbuild{,-64}.h
-%else
-mv %{buildroot}%{_includedir}/curl/curlbuild{,-32}.h
-%endif
-install -pm 644 %{SOURCE100} %{buildroot}%{_includedir}/%{name}
+  %if %{__isa_bits} == 64
+    mv %{buildroot}%{_includedir}/%{name}/curlbuild{,-64}.h
+  %else
+    mv %{buildroot}%{_includedir}/%{name}/curlbuild{,-32}.h
+  %endif
+  
+  install -pm 644 %{SOURCE100} %{buildroot}%{_includedir}/%{name}
 %endif
 
 %clean
@@ -289,4 +300,3 @@ rm -rf %{buildroot}
 %changelog
 * Thu Aug 04 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 7.50.1-0
 - Initial build
-
