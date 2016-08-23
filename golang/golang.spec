@@ -54,19 +54,19 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.6
+%global go_api 1.7
 
 ########################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.6.3
+Version:           1.7.0
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
 URL:               http://golang.org
 
-Source0:           https://storage.googleapis.com/%{name}/go%{version}.src.tar.gz
+Source0:           https://storage.googleapis.com/%{name}/go%{go_api}.src.tar.gz
 
 Source10:          %{name}-gdbinit
 Source11:          %{name}-prelink.conf
@@ -720,6 +720,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Tue Aug 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
+- Updated to latest stable release
+
 * Fri Jul 22 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.3-0
 - Updated to latest stable release
 
