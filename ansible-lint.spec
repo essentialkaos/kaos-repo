@@ -1,18 +1,14 @@
 ########################################################################################
 
-%define subpath b5/4f/dd446c962ff09da8df88c7698761a603ab9038fcc97ec15e1eebebf0b427
-
-########################################################################################
-
 Summary:        Ansible linter
 Name:           ansible-lint
-Version:        3.0.0
+Version:        3.2.5
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries 
 URL:            https://github.com/willthames/ansible-lint
 
-Source:         https://pypi.python.org/packages/%{subpath}/%{name}-%{version}.tar.gz
+Source:         https://github.com/willthames/ansible-lint/archive/v%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -55,6 +51,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-0
+- Updated to latest stable release
+
 * Thu Jun 23 2016 Gleb Goncharov <inbox@gongled.ru> - 3.0.0-0
 - Updated to latest stable release
 
