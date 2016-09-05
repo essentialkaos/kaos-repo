@@ -62,7 +62,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        9.3
-%define minorver        13
+%define minorver        14
 %define rel             2
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
@@ -1017,6 +1017,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.14-0
+- Updated to latest stable release
+
 * Mon Jun 27 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.13-2
 - Added installing pg_config link using update-alternatives
 - Fixed bug with installing links using update-alternatives
