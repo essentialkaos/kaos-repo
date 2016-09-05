@@ -30,7 +30,7 @@
 
 Summary:         Jansson JSON Library
 Name:            jansson
-Version:         2.7
+Version:         2.8
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -40,8 +40,11 @@ Source0:         http://www.digip.org/jansson/releases/%{name}-%{version}.tar.bz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:        pkgconfig
 BuildRequires:   gcc make
+
+Requires:        pkgconfig
+
+Provides:        %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -102,6 +105,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
+- Updated to latest stable release
+
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 2.7-0
 - Updated to latest stable release
 
