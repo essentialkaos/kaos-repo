@@ -33,7 +33,7 @@
 
 Summary:         Lightweight library for embedding a webserver in applications
 Name:            libmicrohttpd
-Version:         0.9.49
+Version:         0.9.51
 Release:         0%{?dist}
 License:         GNU LGPL
 Group:           Development/Libraries
@@ -161,6 +161,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.51-0
+- Updated to latest release
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.49-0
 - Updated to latest release
 
