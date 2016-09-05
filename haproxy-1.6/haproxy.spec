@@ -48,13 +48,13 @@
 %define hp_homedir        %{_localstatedir}/lib/%{name}
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
-%define lua_ver           5.3.2
+%define lua_ver           5.3.3
 
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.7
+Version:           1.6.9
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -186,6 +186,33 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.9-0
+- DOC: Updated 51Degrees readme.
+- BUG/MAJOR: stream: properly mark the server address as unset on connect retry
+- BUG/MINOR: payload: fix SSLv2 version parser
+- MINOR: cli: allow the semi-colon to be escaped on the CLI
+
+* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.8-0
+- BUG/MEDIUM: lua: the function txn_done() from sample fetches can crash
+- BUG/MEDIUM: lua: the function txn_done() from action wrapper can crash
+- BUG/MINOR: peers: Fix peers data decoding issue
+- DOC: lua: remove old functions
+- BUG/MEDIUM: lua: somme HTTP manipulation functions are called without valid requests
+- BUG/MEDIUM: stream-int: completely detach connection on connect error
+- DOC: minor typo fixes to improve HTML parsing by haproxy-dconv
+- BUILD: make proto_tcp.c compatible with musl library
+- BUG/MAJOR: compression: initialize avail_in/next_in even during flush
+- BUG/MEDIUM: samples: make smp_dup() always duplicate the sample
+- MINOR: sample: implement smp_is_safe() and smp_make_safe()
+- MINOR: sample: provide smp_is_rw() and smp_make_rw()
+- BUG/MAJOR: server: the "sni" directive could randomly cause trouble
+- BUG/MEDIUM: stick-tables: do not fail on string keys with no allocated size
+- BUG/MEDIUM: stick-table: properly convert binary samples to keys
+- MINOR: sample: use smp_make_rw() in upper/lower converters
+- BUG/MINOR: peers: some updates are pushed twice after a resync.
+- BUG/MINOR: peers: empty chunks after a resync.
+- BUG/MAJOR: stick-counters: possible crash when using sc_trackers with wrong table
+
 * Fri Jul 15 2016 Gleb Goncharov <inbox@gongled.ru> - 1.6.7-0
 - MINOR: new function my_realloc2 = realloc + free upon failure
 - CLEANUP: fixed some usages of realloc leading to memory leak
