@@ -49,7 +49,7 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.2.0
+Version:          1.3.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
@@ -62,13 +62,14 @@ Source3:          %{name}.init
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    make gcc libmnl-devel zlib-devel libuuid-devel
+BuildRequires:    libmnl-devel zlib-devel libuuid-devel
+BuildRequires:    make gcc autoconf automake
 
 %if 0%{?rhel} >= 7
 BuildRequires:    libnetfilter_acct-devel systemd
 %endif
 
-Requires:         libmnl zlib kaosv >= 2.8
+Requires:         kaosv >= 2.8 libmnl zlib curl jq pkgconfig
 
 %if 0%{?rhel} >= 7
 Requires(post):   systemd
@@ -170,6 +171,12 @@ fi
 ################################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- netdata has health monitoring / alarms!
+- netdata generates badges that can be embeded anywhere!
+- netdata plugins are now written in python!
+- new plugins: redis, memcached, nginx_log, ipfs, apache_cache
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
 - netdata is now 30% faster
 - netdata now has a registry (my-netdata dashboard menu)
