@@ -38,7 +38,7 @@
 
 # Found X264_BUILD in (x264.h)
 %define pkg_build            148
-%define pkg_snapshot_date    20160417
+%define pkg_snapshot_date    20160905
 %define pkg_snapshot_prefix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_prefix}
@@ -121,6 +121,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.148_20160905-0
+- Update to latest stable snapshot
+
 * Mon Apr 18 2016 Gleb Goncharov <yum@gongled.ru> - 0.148_20160416-0
 - Update to latest stable snapshot
 

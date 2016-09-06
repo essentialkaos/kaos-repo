@@ -42,13 +42,13 @@
 
 Summary:          A Python library to address multiple cloud provider APIs
 Name:             python-libcloud
-Version:          0.20.1
+Version:          1.1.0
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            Development/Languages
 URL:              http://libcloud.apache.org
 
-Source0:          http://pypi.python.org/packages/source/a/apache-libcloud/%{tarball_name}-%{version}.tar.bz2
+Source0:          http://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name}-%{version}.tar.bz2
 
 BuildArch:        noarch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -88,6 +88,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- Updated to latest version
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
 - Updated to latest version
 

@@ -30,7 +30,7 @@
 
 Summary:            High performance TCP and WebSocket load generator and sink
 Name:               tcpkali
-Version:            0.8
+Version:            0.9
 Release:            0%{?dist}
 License:            BSD 2-Clause
 Group:              Development/Tools
@@ -81,6 +81,14 @@ autoreconf -iv
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9-0
+- Added -r@<Latency> form to measure message rate at a given latency.
+- Websocket frame types in expressions: \{ws.ping}, \{ws.pong}, etc.
+- Websocket frames accept files: \{ws.binary <image.png>}.
+- Websocket frames can be non-final: \{ws.binary ...}.
+- Regular expressions as data generators: \{re <regex>}.
+- Display last received bytes with --verbose 2.
+
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.8-0
 - Added --latency-connect to measure connect latency.
 - Added --latency-first-byte to measure latency to first byte.

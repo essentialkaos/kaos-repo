@@ -64,16 +64,13 @@
 
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
-Version:            4.3
+Version:            4.4.1
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
 URL:                http://www.tornadoweb.org
 
-Source0:            https://pypi.python.org/packages/source/t/tornado/tornado-%{version}.tar.gz
-
-Patch0:             python-tornado-cert.patch
-Patch1:             python-tornado-netutil-cert.patch
+Source0:            https://github.com/tornadoweb/tornado/archive/v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -183,9 +180,6 @@ server and and tools. This package contains some example applications.
 %setup -qc
 mv %{pkgname}-%{version} python2
 pushd python2
-%patch0 -p1 -b .cert
-%patch1 -p1 -b .cert
-
 %{__sed} -i.orig -e '/^#!\//, 1d' *py tornado/*.py tornado/*/*.py
 popd
 
@@ -229,7 +223,7 @@ rm -rf %{buildroot}
 
 %files -n python26-tornado
 %defattr(-,root,root,-)
-%doc python2/README.rst python2/PKG-INFO
+%doc python2/README.rst
 
 %{python2_sitearch}/%{pkgname}/
 %{python2_sitearch}/%{pkgname}-%{version}-*.egg-info
@@ -242,7 +236,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc python2/README.rst python2/PKG-INFO
+%doc python2/README.rst
 
 %{python2_sitearch}/%{pkgname}/
 %{python2_sitearch}/%{pkgname}-%{version}-*.egg-info
@@ -256,7 +250,7 @@ rm -rf %{buildroot}
 %if 0%{?with_python3}
 %files -n python3-tornado
 %defattr(-,root,root,-)
-%doc python3/README.rst python3/PKG-INFO
+%doc python3/README.rst
 
 %{python3_sitearch}/%{pkgname}/
 %{python3_sitearch}/%{pkgname}-%{version}-*.egg-info
@@ -269,6 +263,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 4.4.1-0
+- Updated to latest version
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 4.3-0
 - Updated to latest version
 
