@@ -16,7 +16,7 @@ Source:         https://github.com/elastic/%{package_name}/archive/v%{version}.t
 
 BuildRequires:  python-devel python-setuptools
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
