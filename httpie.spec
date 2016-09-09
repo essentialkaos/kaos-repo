@@ -47,8 +47,7 @@ BuildArch:         noarch
 Requires:          python python-pygments python-argparse
 Requires:          python-requests >= 2.3 python-setuptools
 
-BuildRequires:     python python-pygments python-requests >= 2.3
-BuildRequires:     python-argparse sed python-setuptools
+BuildRequires:     python python-setuptools sed
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -68,7 +67,7 @@ responses.
 %prep
 %setup -qn %{name}-%{version}
 sed -i '/#!\/usr\/bin\/env/d' %{name}/__main__.py
-sed -i 's/Pygments>=1.5/Pygments>=1.1/' setup.py
+sed -i 's/requests>=2.11.0/requests>=2.6.0/' setup.py
 
 %build
 %{__python} setup.py build
