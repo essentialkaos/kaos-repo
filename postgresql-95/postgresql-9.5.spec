@@ -63,7 +63,7 @@
 
 %define majorver        9.5
 %define minorver        4
-%define rel             2
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          95
 %define realname        postgresql
