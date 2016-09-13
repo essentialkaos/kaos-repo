@@ -65,7 +65,8 @@ Source2:            %{name}.init
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           kaosv eventlog libhiredis libnet GeoIP pcre openssl json-c
+Requires:           kaosv >= 2.9 pcre openssl json-c
+Requires:           eventlog libhiredis libnet GeoIP
 
 BuildRequires:      make gcc bison flex glib2-devel pkgconfig pcre-devel
 BuildRequires:      openssl-devel libnet-devel eventlog-devel
@@ -183,6 +184,7 @@ fi
 %changelog
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.1-0
 - Updated to latest version
+- Improved init script
 
 * Wed Apr 27 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.3-1
 - Added directory to store persist-file.
