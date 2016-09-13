@@ -53,7 +53,7 @@
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
-Version:         2.9.8.0
+Version:         2.9.8.3
 Release:         0%{?dist}
 License:         GPL
 Group:           Applications/Internet
@@ -65,7 +65,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:        libdnet libpcap pcre daq
 
-BuildRequires:   autoconf automake make gcc libtool
+BuildRequires:   autoconf automake make gcc libtool zlib-devel flex bison
 BuildRequires:   pcre-devel libpcap-devel libdnet-devel daq-devel
 
 Provides:        %{name} = %{version}-%{release}
@@ -86,6 +86,10 @@ and much more.
 %setup -q
 
 %build
+
+%ifarch %ix86
+  %define optflags -O2 -g -march=i686
+%endif
 
 export AM_CFLAGS="%{optflags}"
 
@@ -212,6 +216,9 @@ fi
 ########################################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 2.9.8.3-0
+- Updated to latest version
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 2.9.8.0-0
 - Updated to latest version
 

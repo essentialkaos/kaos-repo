@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.50.1
+Version:              7.50.2
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -88,7 +88,8 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 Provides:             webclient = %{version}-%{release}
 
-BuildRequires:        pkgconfig zlib-devel openldap-devel libidn-devel krb5-devel
+BuildRequires:        make gcc libidn-devel krb5-devel
+BuildRequires:        pkgconfig zlib-devel openldap-devel
 BuildRequires:        libmetalink-devel libssh2-devel >= 1.2 groff
 BuildRequires:        %{ssl_provider}-devel %{ssl_version_req}
 BuildRequires:        openssh-clients openssh-server stunnel perl python
@@ -272,7 +273,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc CHANGES README*
-%doc docs/BUGS docs/FAQ docs/FEATURES docs/SECURITY docs/TODO
+%doc docs/BUGS docs/FAQ docs/FEATURES docs/SECURITY.md docs/TODO docs/HTTP2.md
+%doc docs/SSL-PROBLEMS.md docs/THANKS docs/KNOWN_BUGS docs/FEATURES
 %doc docs/MANUAL docs/RESOURCES docs/TheArtOfHttpScripting
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
@@ -284,8 +286,8 @@ rm -rf %{buildroot}
 
 %files -n libcurl-devel
 %defattr(-,root,root,-)
-%doc docs/examples/*.c docs/examples/Makefile.example docs/INTERNALS
-%doc docs/CHECKSRC.md docs/CONTRIBUTE docs/libcurl/ABI docs/CODE_STYLE.md
+%doc docs/examples/*.c docs/examples/Makefile.example docs/INTERNALS.md
+%doc docs/CHECKSRC.md docs/CONTRIBUTE.md docs/libcurl/ABI docs/CODE_STYLE.md
 %{_bindir}/curl-config
 %{_includedir}/curl/
 %{_libdir}/*.so
@@ -298,5 +300,55 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.2-0
+- mbedtls: Added support for NTLM
+- SSH: fixed SFTP/SCP transfer problems
+- multi: make Curl_expire() work with 0 ms timeouts
+- mk-ca-bundle.pl: -m keeps ca cert meta data in output
+- TFTP: Fix upload problem with piped input
+- CURLOPT_TCP_NODELAY: now enabled by default
+- mbedtls: set verbose TLS debug when MBEDTLS_DEBUG is defined
+- http2: always wait for readable socket
+- cmake: Enable win32 large file support by default
+- cmake: Enable win32 threaded resolver by default
+- winbuild: Avoid setting redundant CFLAGS to compile commands
+- curl.h: make CURL_NO_OLDIES define CURL_STRICTER
+- docs: make more markdown files use .md extension
+- docs: CONTRIBUTE and LICENSE-MIXING were converted to markdown
+- winbuild: Allow changing C compiler via environment variable CC
+- rtsp: accept any RTSP session id
+- HTTP: retry failed HEAD requests on reused connections too
+- configure: add zlib search with pkg-config
+- openssl: accept subjectAltName iPAddress if no dNSName match
+- MANUAL: Remove invalid link to LDAP documentation
+- socks: improved connection procedure
+- proxy: reject attempts to use unsupported proxy schemes
+- proxy: bring back use of "Proxy-Connection:"
+- curl: allow "pkcs11:" prefix for client certificates
+- spnego_sspi: fix memory leak in case *outlen is zero
+- SOCKS: improve verbose output of SOCKS5 connection sequence
+- SOCKS: display the hostname returned by the SOCKS5 proxy server
+- http/sasl: Query authentication mechanism supported by SSPI before using
+- sasl: Don't use GSSAPI authentication when domain name not specified
+- win: Basic support for Universal Windows Platform apps
+- nss: fix incorrect use of a previously loaded certificate from file
+- nss: work around race condition in PK11_FindSlotByName()
+- ftp: fix wrong poll on the secondary socket
+- openssl: build warning-free with 1.1.0 (again)
+- HTTP: stop parsing headers when switching to unknown protocols
+- test219: Add http as a required feature
+- TLS: random file/egd doesn't have to match for conn reuse
+- schannel: Disable ALPN for Wine since it is causing problems
+- http2: make sure stream errors don't needlessly close the connection
+- http2: return CURLE_HTTP2_STREAM for unexpected stream close
+- darwinssl: --cainfo is intended for backward compatibility only
+- speed caps: not based on average speeds anymore
+- configure: make the cpp -P detection not clobber CPPFLAGS
+- http2: use named define instead of magic constant in read callback
+- http2: skip the content-length parsing, detect unknown size
+- http2: return EOF when done uploading without known size
+- darwinssl: test for errSecSuccess in PKCS12 import rather than noErr
+- openssl: fix CURLINFO_SSL_VERIFYRESULT
+
 * Thu Aug 04 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 7.50.1-0
 - Initial build

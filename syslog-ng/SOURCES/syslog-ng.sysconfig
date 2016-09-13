@@ -1,4 +1,4 @@
-USER="syslog-ng"
+USER=""
 BINARY=""
 CONF_FILE=""
 LOG_FILE=""

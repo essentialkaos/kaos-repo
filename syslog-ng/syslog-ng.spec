@@ -53,11 +53,11 @@
 
 Summary:            Next generation logging application
 Name:               syslog-ng
-Version:            3.7.3
-Release:            1%{?dist}
+Version:            3.8.1
+Release:            0%{?dist}
 License:            GPL
 Group:              System Environment/Daemons
-URL:                http://www.balabit.com
+URL:                https://github.com/balabit/syslog-ng
 
 Source0:            https://github.com/balabit/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
 Source1:            %{name}.sysconfig
@@ -65,7 +65,8 @@ Source2:            %{name}.init
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           kaosv eventlog libhiredis libnet GeoIP pcre openssl json-c
+Requires:           kaosv >= 2.9 pcre openssl json-c
+Requires:           eventlog libhiredis libnet GeoIP
 
 BuildRequires:      make gcc bison flex glib2-devel pkgconfig pcre-devel
 BuildRequires:      openssl-devel libnet-devel eventlog-devel
@@ -87,11 +88,22 @@ single, central log server.
 %setup -q -n %{name}-%{version}
 
 %build
-%{configure} --sysconfdir=%{_sysconfdir}/%{name} \
-             --disable-python \
-             --enable-spoof-source \
-             --enable-json \
-             --enable-redis
+./configure --bindir=%{_bindir} \
+            --sbindir=%{_sbindir} \
+            --sysconfdir=%{_sysconfdir} \
+            --datadir=%{_datadir} \
+            --includedir=%{_includedir} \
+            --libdir=%{_libdir} \
+            --libexecdir=%{_libexecdir} \
+            --localstatedir=%{_localstatedir} \
+            --sharedstatedir=%{_sharedstatedir} \
+            --mandir=%{_mandir} \
+            --infodir=%{_infodir} \
+            --sysconfdir=%{_sysconfdir}/%{name} \
+            --disable-python \
+            --enable-spoof-source \
+            --enable-json \
+            --enable-redis
 
 %{__make} %{?_smp_mflags}
 
@@ -155,11 +167,14 @@ fi
 %{_sbindir}/%{name}
 %{_sbindir}/%{name}-ctl
 %{_bindir}/loggen
+%{_bindir}/dqtool
 %{_bindir}/pdbtool
 %{_bindir}/update-patterndb
 %{_libdir}/*
 %ifarch x86_64
-%{_libdir32}/%{name}/*
+%{_loc_libdir32}/%{name}/*
+%else
+%{_loc_libdir}/%{name}/*
 %endif
 %{_includedir}/%{name}/*
 %{_datadir}/*
@@ -167,6 +182,10 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.1-0
+- Updated to latest version
+- Improved init script
+
 * Wed Apr 27 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.3-1
 - Added directory to store persist-file.
 - Added support of running syslog-ng as non-root user.

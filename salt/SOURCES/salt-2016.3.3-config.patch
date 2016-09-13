@@ -1,6 +1,6 @@
-diff -urN salt-2016.3.1-orig/conf/master salt-2016.3.1/conf/master
---- salt-2016.3.1-orig/conf/master	2016-06-18 19:31:41.786974200 -0400
-+++ salt-2016.3.1/conf/master	2016-06-18 19:34:55.000000000 -0400
+diff -urN salt-2016.3.3-orig/conf/master salt-2016.3.3/conf/master
+--- salt-2016.3.3-orig/conf/master	2016-09-05 18:52:31.818774970 -0400
++++ salt-2016.3.3/conf/master	2016-09-05 18:54:21.000000000 -0400
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -34,7 +34,7 @@ diff -urN salt-2016.3.1-orig/conf/master salt-2016.3.1/conf/master
  
  # Directory for custom modules. This directory can contain subdirectories for
  # each of Salt's module types such as "runners", "output", "wheel", "modules",
-@@ -102,7 +102,7 @@
+@@ -107,7 +107,7 @@
  #cli_summary: False
  
  # Set the directory used to hold unix sockets:
@@ -43,7 +43,7 @@ diff -urN salt-2016.3.1-orig/conf/master salt-2016.3.1/conf/master
  
  # The master can take a while to start up when lspci and/or dmidecode is used
  # to populate the grains for the master. Enable if you want to see GPU hardware
-@@ -783,10 +783,10 @@
+@@ -801,10 +801,10 @@
  #syndic_master_port: 4506
  
  # PID file of the syndic daemon:
@@ -56,18 +56,9 @@ diff -urN salt-2016.3.1-orig/conf/master salt-2016.3.1/conf/master
  
  # The behaviour of the multi-syndic when connection to a master of masters failed.
  # Can specify ``random`` (default) or ``ordered``. If set to ``random``, masters
-@@ -867,7 +867,7 @@
- #log_file: file:///dev/log
- #log_file: udp://loghost:10514
- 
--#log_file: /var/log/salt/master
-+log_file: /var/log/salt/master.log
- #key_logfile: /var/log/salt/key
- 
- # The level of messages to send to the console.
-diff -urN salt-2016.3.1-orig/conf/minion salt-2016.3.1/conf/minion
---- salt-2016.3.1-orig/conf/minion	2016-06-18 19:31:41.785974200 -0400
-+++ salt-2016.3.1/conf/minion	2016-06-18 19:36:34.000000000 -0400
+diff -urN salt-2016.3.3-orig/conf/minion salt-2016.3.3/conf/minion
+--- salt-2016.3.3-orig/conf/minion	2016-09-05 18:52:31.816774970 -0400
++++ salt-2016.3.3/conf/minion	2016-09-05 18:55:57.000000000 -0400
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
@@ -102,9 +93,9 @@ diff -urN salt-2016.3.1-orig/conf/minion salt-2016.3.1/conf/minion
 -#cachedir: /var/cache/salt/minion
 +cachedir: /var/cache/salt/minion
  
- # Verify and set permissions on configuration directories at startup.
- #verify_env: True
-@@ -137,7 +137,7 @@
+ # Append minion_id to these directories.  Helps with
+ # multiple proxies and minions running on the same machine.
+@@ -144,7 +144,7 @@
  #cache_jobs: False
  
  # Set the directory used to hold unix sockets.
@@ -113,7 +104,7 @@ diff -urN salt-2016.3.1-orig/conf/minion salt-2016.3.1/conf/minion
  
  # Set the default outputter used by the salt-call command. The default is
  # "nested".
-@@ -614,7 +614,7 @@
+@@ -621,7 +621,7 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #

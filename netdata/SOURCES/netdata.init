@@ -46,8 +46,7 @@ kv.addHandler "stop"    "stopServiceHandler"
 ###############################################################################
 
 startServiceHandler() {
-
-  kv.daemonize "$binary" "-c $conf_file -nd $OPTIONS"
+  kv.daemonize "$binary" "-c $conf_file -P ${kv[pid_file]} $OPTIONS"
 
   kv.getStartStatus
 
@@ -55,7 +54,6 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-
   kv.sendSignal "SIGTERM"
 
   kv.getStopStatus
