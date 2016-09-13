@@ -15,11 +15,11 @@ URL:            https://github.com/elastic/elasticsearch-py
 
 Source:         https://github.com/elastic/%{source_name}/archive/%{version}.tar.gz
 
-BuildRequires:  python-devel python-setuptools
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
+
+BuildRequires:  python-devel python-setuptools
 
 Provides:       %{name} = %{verion}-%{release}
 
