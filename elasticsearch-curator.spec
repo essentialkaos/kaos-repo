@@ -14,13 +14,14 @@ URL:            https://github.com/elastic/curator
 
 Source:         https://github.com/elastic/%{package_name}/archive/v%{version}.tar.gz
 
-BuildRequires:  python-devel python-setuptools
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:       python-elasticsearch >= 2.0
-
 BuildArch:      noarch
+
+BuildRequires:  python-devel python-setuptools
+
+Requires:       python-elasticsearch >= 2.0 PyYAML >= 3.10 python-setuptools
+Requires:       python-click >= 3.3 python-unittest2 python-urllib3
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -43,7 +44,8 @@ python setup.py build
 
 %install
 rm -rf %{buildroot}
-python setup.py install --prefix=%{_prefix} --root=%{buildroot}
+
+%{__python} setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
 ########################################################################################
 
