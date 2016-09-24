@@ -38,7 +38,7 @@
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
-Version:           1.3.6
+Version:           1.3.8
 Release:           0%{?dist}
 License:           GPL+
 Group:             System Environment/Daemons
@@ -130,7 +130,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc BUGS CHANGES CREDITS LICENSE README.* TODO doc/rfc2661.txt 
+%doc BUGS CHANGES CREDITS LICENSE README.* 
 %doc doc/README.patents examples/chapsecrets.sample
 %config(noreplace) %{_sysconfdir}/%{name}/*
 %config(noreplace) %{_sysconfdir}/ppp/*
@@ -146,5 +146,92 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.8-0
+- Another one fix for control buf handling in udp_xmit
+- Fixing minor bug in Linux that was introduced by 90368
+- Fix control buffer handling in udp_xmit
+- Avoid using IP_PKTINFO with non-Linux systems
+- Remove duplicated UDP checksum disabling
+- Handle LDLIBS carefully
+- Avoid false-positive warning message from not smart compilers
+- Correctly activate XPG4v2 support
+- Simplify signal header inclusion
+- Adding info on the mailing lists
+- Fixing minor spelling typo in code.
+- Fixing minor spelling mistakes in xl2tpd.conf.5 and l2tpd.conf.sample
+- Removing -fno-builtin from CFLAGS
+
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.7-0
+- Adding defensive code to deal with error when pppd exits
+- Minor compilation fixes
+- Refresh debian/ from Debian. Thanks!
+- Update URL
+- Update copyright year
+- Add local ip range option.
+- Drop RFC 2661 copy.
+- debian/control drop legacy Replaces
+- Typo fix
+- Fix #98 by checking if a valid PID is being killed
+- Avoid problems with bad avp lengths and remaining hidlen from previous
+  iteration
+- Fix minor grammar issues in xl2tpd.conf(5)
+- Fix possible NULL reference when removing lac
+- Describe autodial option in xl2tpd.conf manpage
+- Update URL in BUGS file
+- Add size optimization
+- Remove useless returns from magic_lac_tunnel
+- Remove duplicate xmit for ZLBs
+- Fix segfault on lac remove
+- Fix paths in man pages
+- Stop sending ZLB in response to out of order ZLB from check_control
+- Add exponential backoff retransmits
+- Fix build errors caused by inline function with gcc 5
+- Fix memory leaks and accessing free'd memory
+- Fix double-free on dial_no_tmp;
+- Change handle_special to return a value indicating if it frees the buffer
+- Remove unnecessary NULL check on lac.
+- xl2tpd-control: show all available commands in --help.
+- Ignore SIGPIPE signal.
+- Unlink result file to prevent leftover a regular file.
+- Introduce new option -l for using syslog as the logging facility.
+- start_pppd: place opts after "plugin pppol2tp.so".
+- Fix typo in reporting available lns count.
+- xl2tpd-control: enhance output of print_error().
+- xl2tpd-control: cleaup result file atexit().
+- xl2tpd-control: open control file with O_NONBLOCK.
+- xl2tpd-control: define _GNU_SOURCE to use fmemopen() and friends.
+- xl2tpd-control: check end-of-file when reading pipe to avoid dead loop.
+- Correct CDN message result range
+- place the PPP frame buffer to the call structure
+- Place the pty read buffer to the call structure
+- Pass pointer to call structure to read_packet()
+- Remove convert arg of read_packet() function
+- Remove dead code
+- Fix the list of ignored files
+- Add checks before closing sockets
+- Add a bit more info about existing tunnels and calls
+- Fix endless loop
+- Add fix for socket leak to fork children
+- Random fixes
+- Solve some memory leaks that show up after several days of running with
+  flapping tunnels and calls.
+- Fix for avoiding xltpd occasionally going into an endless loop.
+- Fixed issue with strtok modifying contents when pushing details for ppd plugins
+- Added the ability to add a pppd plugin and params to an lns
+- Modified lns_remove to close each call rather than just calling destroy_tunnel()
+- Added control method to remove an lns
+- Refactored the do_control() method to use a handler approach for processing
+- Fixed potential null pointer when creating a new lns
+- Added status control command for lns, this returns tunnel and call information
+  via the control socket
+- Added control support for adding lns and status command in xl2tp-control
+- Added control pipe method CONTROL_PIPE_REQ_LNS_ADD_MODIFY to modify LNS
+  configuration
+- Introduced shared control request types
+- Fixed typo in xl2tpd.conf.5
+- Some malloc/free sanity patches.
+- Better NETBSD support.
+- Prevent a DEBUG message from being sent to syslog when not debugging.
+
 * Fri Apr 11 2014 Anton Novojilov <andy@essentialkaos.com> - 1.3.6-0
 - Initial build

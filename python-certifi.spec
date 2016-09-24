@@ -1,9 +1,6 @@
 ################################################################################
 
-%global __python26 /usr/bin/python2.6
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-
-%global tarball_name apache-libcloud
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 
 ################################################################################
 
@@ -40,32 +37,45 @@
 
 ################################################################################
 
-Summary:          A Python library to address multiple cloud provider APIs
-Name:             python-libcloud
-Version:          1.1.0
-Release:          0%{?dist}
-License:          ASL 2.0
-Group:            Development/Languages
-URL:              http://libcloud.apache.org
+%global pkgname certifi
+%define subpath 1c/d1/0133a5084f0d17db0270c6061e824a11b0e417d743f5ff4c594f4090ed89
 
-Source0:          http://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name}-%{version}.tar.bz2
+################################################################################
 
-BuildArch:        noarch
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Summary:            Python package for providing Mozilla's CA Bundle
+Name:               python-%{pkgname}
+Version:            2016.8.31
+Release:            0%{?dist}
+License:            MPLv2.0
+Group:              Development/Libraries
+URL:                http://certifi.io/en/latest/
 
-BuildRequires:    python-setuptools python-devel
+Source0:            https://pypi.python.org/packages/%{subpath}/%{pkgname}-%{version}.tar.gz
+
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildArch:          noarch
+
+BuildRequires:      python-setuptools
+
+Requires:           ca-certificates
+
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-libcloud is a client library for interacting with many of the popular cloud
-server providers.  It was created to make it easy for developers to build
-products that work between any of the services that it supports.
+Certifi is a carefully curated collection of Root Certificates for 
+validating the trustworthiness of SSL certificates while verifying 
+the identity of TLS hosts. It has been extracted from the Requests project.
 
 ################################################################################
 
 %prep
-%setup -qn %{tarball_name}-%{version}
+%setup -qn %{pkgname}-%{version}
+
+rm -rf %{pkgname}.egg-info
+rm -rf certifi/*.pem
 
 %build
 %{__python} setup.py build
@@ -88,11 +98,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
-- Updated to latest version
-
-* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
-- Updated to latest version
-
-* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
-- Initial build
+* Sun Sep 11 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.8.31-0
+- Initial build for kaos repo

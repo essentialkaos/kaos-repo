@@ -20,7 +20,7 @@ conf_file="${CONF_FILE:-/etc/syslog-ng/syslog-ng.conf}"
 options="$OPTIONS"
 persist_dir="${PERSIST_DIR:-/var/lib/syslog-ng}"
 persist_file="$persist_dir/syslog-ng.persist"
-user="${USER:-syslog-ng}"
+user="${USER:-root}"
 
 kv[search_pattern]="$binary"
 
@@ -50,6 +50,8 @@ kv.disableOutputRedirect "start" "pre"
 prepare() {
   local has_errors=""
 
+  kv.require "2.9"
+
   [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> does not exist"
   [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
 
@@ -78,6 +80,11 @@ preStartServiceHandler() {
     kv.show "-------------------------------------------------------------------------------" $GREY
     return $ACTION_ERROR
   fi
+
+  if kv.isServiceWorks "rsyslog" ; then
+    kv.error "Service rsyslog must be stopped first"
+    kv.exit $ACTION_ERROR
+  fi
 }
 
 postStartServiceHandler() {
@@ -91,6 +98,8 @@ startServiceHandler() {
   kv.daemonize "$binary" "-r -f $conf_file -p ${kv[pid_file]} --user $user --persist-file $persist_file $options"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  sleep 3
 
   kv.getStartStatus
 

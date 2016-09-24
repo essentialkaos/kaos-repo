@@ -1,0 +1,43 @@
+diff -urN ejabberd-16.08-orig/src/ejabberd_c2s.erl ejabberd-16.08-patch/src/ejabberd_c2s.erl
+--- ejabberd-16.08-orig/src/ejabberd_c2s.erl	2016-08-04 10:49:23.000000000 +0300
++++ ejabberd-16.08-patch/src/ejabberd_c2s.erl	2016-09-02 09:45:44.400763689 +0300
+@@ -1761,7 +1761,8 @@
+ 		pres_f = {pres_f, (?SETS):size(F)},
+ 		pres_a = {pres_a, (?SETS):size(A)}}.
+ 
+-terminate(_Reason, StateName, StateData) ->
++terminate(Reason, StateName, StateData) ->
++              ?DEBUG("Process terminated by reason: ~p; StateName: ~p; StateData: ~p", [Reason, StateName, StateData]),
+     case StateData#state.mgmt_state of
+       resumed ->
+ 	  ?INFO_MSG("Closing former stream of resumed session for ~s",
+@@ -1805,6 +1806,7 @@
+ 			     Packet = #xmlel{name = <<"presence">>,
+ 					     attrs = [{<<"type">>, <<"unavailable">>}],
+ 					     children = []},
++                                               ?DEBUG("C2S Close session and unset presence, StateData: ~p", [StateData]),
+ 			     ejabberd_sm:close_session_unset_presence(StateData#state.sid,
+ 								      StateData#state.user,
+ 								      StateData#state.server,
+diff -urN ejabberd-16.08-orig/src/ejabberd_sm.erl ejabberd-16.08-patch/src/ejabberd_sm.erl
+--- ejabberd-16.08-orig/src/ejabberd_sm.erl	2016-08-04 10:49:23.000000000 +0300
++++ ejabberd-16.08-patch/src/ejabberd_sm.erl	2016-09-02 09:46:20.117773137 +0300
+@@ -146,6 +146,7 @@
+ 	       {ok, #session{info = I}} -> I;
+ 	       {error, notfound} -> []
+ 	   end,
++             ?DEBUG("SM Close session Info: ~p", [Info]),
+     JID = jid:make(User, Server, Resource),
+     ejabberd_hooks:run(sm_remove_connection_hook,
+ 		       JID#jid.lserver, [SID, JID, Info]).
+@@ -432,8 +433,8 @@
+ 
+ -spec is_online(#session{}) -> boolean().
+ 
+-is_online(#session{info = Info}) ->
+-    not proplists:get_bool(offline, Info).
++is_online(#session{info = Info, sid = Sid}) ->
++    not proplists:get_bool(offline, Info) and is_process_alive(element(2, Sid)).
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 

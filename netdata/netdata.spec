@@ -49,26 +49,26 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.2.0
+Version:          1.3.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
 URL:              http://netdata.firehol.org
 
 Source0:          http://firehol.org/download/%{name}/releases/v%{version}/%{name}-%{version}.tar.gz
-Source1:          %{name}.conf
-Source2:          %{name}.sysconfig
-Source3:          %{name}.init
+Source1:          %{name}.sysconfig
+Source2:          %{name}.init
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    make gcc libmnl-devel zlib-devel libuuid-devel
+BuildRequires:    libmnl-devel zlib-devel libuuid-devel
+BuildRequires:    make gcc autoconf automake xz
 
 %if 0%{?rhel} >= 7
 BuildRequires:    libnetfilter_acct-devel systemd
 %endif
 
-Requires:         libmnl zlib kaosv >= 2.8
+Requires:         kaosv >= 2.8 libmnl zlib curl jq pkgconfig
 
 %if 0%{?rhel} >= 7
 Requires(post):   systemd
@@ -104,16 +104,17 @@ find %{buildroot} -name .keep -exec rm -f {} \;
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
+install -dm 755 %{buildroot}%{_sharedstatedir}/%{name}
 
-install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
-install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 644 system/netdata.conf %{buildroot}%{_sysconfdir}/%{name}/
+install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 system/%{name}.service %{buildroot}/%{_unitdir}
 %else
 install -dm 755 %{buildroot}%{_initrddir}
-install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{name}
+install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 %endif
 
 %clean
@@ -157,7 +158,8 @@ fi
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(-, %{service_user}, %{service_group}) %dir %{_localstatedir}/cache/%{name}/
 %attr(-, %{service_user}, %{service_group}) %dir %{_localstatedir}/log/%{name}/
-%attr(-, %{service_user}, %{service_group}) %{_datadir}/%{name}/
+%attr(-, %{service_user}, %{service_group}) %{_sharedstatedir}/%{name}/
+%attr(-, root, %{service_group}) %{_datadir}/%{name}/
 %{_libexecdir}/%{name}/
 %{_sbindir}/%{name}
 
@@ -170,6 +172,12 @@ fi
 ################################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- netdata has health monitoring / alarms!
+- netdata generates badges that can be embeded anywhere!
+- netdata plugins are now written in python!
+- new plugins: redis, memcached, nginx_log, ipfs, apache_cache
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
 - netdata is now 30% faster
 - netdata now has a registry (my-netdata dashboard menu)

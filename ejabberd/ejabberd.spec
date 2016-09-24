@@ -51,8 +51,8 @@
 
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
-Version:           16.06
-Release:           0%{?dist}
+Version:           16.08
+Release:           2%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
 URL:               https://www.ejabberd.im
@@ -63,14 +63,15 @@ Source2:           %{name}.sysconfig
 Source3:           %{name}.logrotate
 
 Patch0:            %{name}-conf.patch
+Patch1:            %{name}-check-pid-existance.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make automake autoconf gcc gcc-c++ git erlang18
+BuildRequires:     make automake autoconf gcc gcc-c++ git erlang19
 BuildRequires:     zlib-devel expat-devel pam-devel sqlite-devel
 BuildRequires:     openssl-devel libyaml-devel
 
-Requires:          erlang18 kaosv >= 2.6 openssl libyaml
+Requires:          erlang19 kaosv >= 2.6 openssl libyaml
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -103,6 +104,7 @@ ejabberd, Erlang, XMPP and messaging in general.
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
+%patch1 -p1
 
 %build
 ./autogen.sh
@@ -150,12 +152,14 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%config(noreplace) %attr(-, %{user_name}, %{group_name}) %{_sysconfdir}/%{name}/ejabberdctl.cfg
+%config(noreplace) %attr(-, %{user_name}, %{group_name}) %{_sysconfdir}/%{name}/ejabberd.yml
 %dir %attr(-, %{user_name}, %{group_name}) %{_sharedstatedir}/%{name}
 %dir %attr(-, %{user_name}, %{group_name}) %{_sharedstatedir}/%{name}/spool
 %dir %attr(-, %{user_name}, %{group_name}) %{_logdir}/%{name}
 %dir %attr(-, %{user_name}, %{group_name}) %{_rundir}/%{name}
 %attr(755, -, -) %{_sbindir}/%{name}ctl
-%attr(644, -, -) %{_sysconfdir}/%{name}/*
+%attr(644, -, -) %{_sysconfdir}/%{name}/inetrc
 %{_initddir}/%{name}
 %{_libdir}/*
 %{_docdir}/%{name}/COPYING
@@ -163,6 +167,16 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Fri Sep 09 2016 Anton Novojilov <andy@essentialkaos.com> - 16.08-2
+- Fixed bug with wrong config file owner
+
+* Mon Aug 29 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.08-1
+- Added patch for debugging c2s connections
+- Added patch for checking pid existance
+
+* Wed Aug 17 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 16.08-0
+- Updated to latest stable release
+
 * Tue Jul 12 2016 Anton Novojilov <andy@essentialkaos.com> - 16.06-0
 - Updated to latest stable release
 

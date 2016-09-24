@@ -62,8 +62,8 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        9.2
-%define minorver        17
-%define rel             2
+%define minorver        18
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          92
 %define realname        postgresql
@@ -1013,6 +1013,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.18-0
+- Updated to latest stable release
+
 * Mon Jun 27 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.17-2
 - Added installing pg_config link using update-alternatives
 - Added installing pg_basebackup link using update-alternatives

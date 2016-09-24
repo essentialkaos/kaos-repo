@@ -50,8 +50,8 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.0.3
-Release:              2%{?dist}
+Version:              3.0.4
+Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
@@ -971,6 +971,59 @@ fi
 ################################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0
+- fixed SQL injection vulnerability in "Latest data" page; thanks to 1N3 at
+  Early Warning Services, LLC
+- updated Chinese (China), Czech, French, German, Italian, Japanese, Polish,
+  Portuguese (Brazil), Russian, Slovak translations; thanks to Zabbix
+  translators
+- fixed remote command execution via SSH with no Zabbix agent interface
+- added ability to monitor SNMP devices returning OIDs in decreasing or
+  mixed order
+- fixed severity filter in map.view action
+- fixed selecting of group in popup page filter
+- fixed web monitoring automatic refresh
+- fixed overlapping of row and table borders
+- fixed support of sending several Request object at the same time to JSON-RPC
+- fixed option URL value in step of web scenario popup; thanks to Fernando
+  Schmitt for patch
+- fixed strings being untranslatable in Reports -> Triggers top 100
+- fixed calendar time for cases when local time zone differs from servers
+  time zone
+- fixed starting value of time selector for events, graphs and screens
+- fixed default values for "Show", "Area type" and "Automatic icon selection"
+  options in Map element popup
+- fixed handling of socket connection error messages on Windows; thanks to
+  Yuri Volkov for patch
+- fixed server/proxy crashes when performing Simple checks with invalid key
+  parameters hidden in user macro
+- fixed drawing graphs with items that have scheduling intervals
+- fixed agent compilation on AIX 5.2, AIX 5.3
+- fixed copying triggers to groups with multiple hosts or templates
+- fixed selection of application in application popup
+- fixed applications getting unlinked from undiscovered items
+- fixed server/proxy compilation error on Solaris 10
+- fixed length limit for host prototype name
+- fixed whitespace between elements in host, host mass update, host prototype
+  and proxy forms
+- moved image type selection to top in administration->general->images
+- added "No data found." message in administration->general->images
+- fixed textarea visibility in monitoring->maps properties
+- forced quoting of item key parameter if macro resolution resulted in unquoted
+  parameter with leading spaces
+- reverted table header capitalization. fixed calendar header
+- allowed "noSuchName" to be returned for SNMPv2 and SNMPv3
+- fixed saving of "Show text as HTML" checkbox in Monitoring->Screens
+- decreased padding and margins in tables and across the whole UI
+- added compression of generated CSS files to reduce size from 99K to around 56K
+- fixed agent, get and sender being erroneously linked against UnixODBC
+- removed disabled status for "Export to CSV" button
+- fixed vertical scrollbar overlapping in messages
+- fixed users online status in users.php users table
+- fixed access_deny() message layout for not logged in page visitors
+- fixed access to popup_media for Zabbix Admin user in profile->media
+- fixed whitespace between elements in the IT services form
+
 * Thu Aug 04 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-2
 - Fixed dependency bug
 

@@ -39,7 +39,7 @@
 
 %define major_version     8
 %define minor_version     3
-%define patch_level       1
+%define patch_level       3
 
 
 ###############################################################################
@@ -161,6 +161,9 @@ rm -rf %{buildroot}%{_datadir}/locale
 ###############################################################################
 
 %changelog
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 8.3.3-0
+- Updated to latest release
+
 * Sat Jul 23 2016 Anton Novojilov <andy@essentialkaos.com> - 8.3.1-0
 - Updated to latest release
 
