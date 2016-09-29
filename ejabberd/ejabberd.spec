@@ -51,8 +51,8 @@
 
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
-Version:           16.08
-Release:           2%{?dist}
+Version:           16.09
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
 URL:               https://www.ejabberd.im
@@ -167,6 +167,9 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Sun Sep 25 2016 Anton Novojilov <andy@essentialkaos.com> - 16.09-0
+- Updated to latest stable release
+
 * Fri Sep 09 2016 Anton Novojilov <andy@essentialkaos.com> - 16.08-2
 - Fixed bug with wrong config file owner
 

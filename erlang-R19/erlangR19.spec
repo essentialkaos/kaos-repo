@@ -39,7 +39,7 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           19
-%define ver_min           0
+%define ver_min           1
 %define realname          erlang
 
 ###############################################################################
@@ -874,7 +874,7 @@ popd
 # (tpg) remove not needed files
 rm -rf %{buildroot}%{_datadir}/COPYRIGHT
 rm -rf %{buildroot}%{_datadir}/PR.template
-rm -rf %{buildroot}%{_datadir}/README
+rm -rf %{buildroot}%{_datadir}/README.md
 
 # (tpg) remove this manpages as they conflicts with openssl
 rm -rf %{buildroot}%{_mandir}/man3/ssl.3.*
@@ -1128,5 +1128,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Sep 23 2016 Anton Novojilov <andy@essentialkaos.com> - 19.1-0
+- Updated to latest stable release
+
 * Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 19-0
 - Initial build
