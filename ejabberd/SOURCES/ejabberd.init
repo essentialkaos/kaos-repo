@@ -35,7 +35,7 @@ log_dir=${LOG_DIR:-/var/log/ejabberd}
 spool_dir=${SPOOL_DIR:-/var/lib/ejabberd/spool}
 cookie_home=${COOKIE_HOME:-/var/lib/ejabberd}
 
-kv[search_pattern]="$binary"
+kv[search_pattern]="home ${cookie_home}"
 
 kv[file_limit]=10240
 kv[user]="$user"
