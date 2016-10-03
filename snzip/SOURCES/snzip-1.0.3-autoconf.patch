@@ -1,0 +1,10 @@
+diff -urN snzip-1.0.3-orig/configure.ac snzip-1.0.3-patch/configure.ac
+--- snzip-1.0.3-orig/configure.ac	2016-03-12 15:38:45.000000000 +0300
++++ snzip-1.0.3-patch/configure.ac	2016-10-03 09:13:04.012775596 +0300
+@@ -1,6 +1,3 @@
+-# The autoconf version must be at least 2.64 to correctly detect
+-# endianess of Mac OS X universal binary.
+-AC_PREREQ(2.64)
+ AC_INIT([snzip], [1.0.3])
+
+ AM_INIT_AUTOMAKE
