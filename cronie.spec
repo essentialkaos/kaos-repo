@@ -29,7 +29,6 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
 %define __touch           %{_bin}/touch
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
@@ -48,7 +47,7 @@
 Summary:           Cron daemon for executing programs at set times
 Name:              cronie
 Version:           1.5.1
-Release:           0%{?dist}
+Release:           2%{?dist}
 License:           MIT and BSD and ISC and GPLv2
 Group:             System Environment/Base
 URL:               https://fedorahosted.org/cronie
@@ -149,46 +148,47 @@ extra features.
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} DESTMAN=%{buildroot}%{_mandir}
 
-%{__install} -dm 700 %{buildroot}%{_localstatedir}/spool/cron
-%{__install} -dm 755 %{buildroot}%{_sysconfdir}/sysconfig/
-%{__install} -dm 755 %{buildroot}%{_sysconfdir}/cron.d/
+install -dm 700 %{buildroot}%{_localstatedir}/spool/cron
+install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig/
+install -dm 755 %{buildroot}%{_sysconfdir}/cron.d/
 
 %if ! %{with pam}
-  %{__rm} -f %{buildroot}%{_sysconfdir}/pam.d/%{service_name}
+  rm -f %{buildroot}%{_sysconfdir}/pam.d/%{service_name}
 %endif
 
-%{__install} -pm 644 %{service_name}.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
+install -pm 644 %{service_name}.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
 
 %{__touch} %{buildroot}%{_sysconfdir}/cron.deny
 
-%{__install} -pm 644 contrib/anacrontab %{buildroot}%{_sysconfdir}/anacrontab
-%{__install} -cm 755 contrib/0hourly %{buildroot}%{_sysconfdir}/cron.d/0hourly
+install -pm 644 contrib/anacrontab %{buildroot}%{_sysconfdir}/anacrontab
+install -pm 755 contrib/0hourly %{buildroot}%{_sysconfdir}/cron.d/0hourly
 
-%{__mkdir_p} -m 755 %{buildroot}%{_sysconfdir}/cron.hourly
+install -dm 755 %{buildroot}%{_sysconfdir}/cron.hourly
 
-%{__install} -cm 755 contrib/0anacron %{buildroot}%{_sysconfdir}/cron.hourly/0anacron
+install -pm 755 contrib/0anacron %{buildroot}%{_sysconfdir}/cron.hourly/0anacron
 
-%{__mkdir_p} %{buildroot}%{_spooldir}/anacron
+install -dm 755 %{buildroot}%{_spooldir}/anacron
 
 %{__touch} %{buildroot}%{_spooldir}/anacron/cron.daily
 %{__touch} %{buildroot}%{_spooldir}/anacron/cron.weekly
 %{__touch} %{buildroot}%{_spooldir}/anacron/cron.monthly
 
 # noanacron package
-%{__install} -pm 644 contrib/dailyjobs $RPM_BUILD_ROOT/%{_sysconfdir}/cron.d/dailyjobs
+install -pm 644 contrib/dailyjobs %{buildroot}%{_sysconfdir}/cron.d/dailyjobs
 
 # install sysvinit initscript into sub-package
-%{__mkdir_p} -m 755 %{buildroot}%{_initrddir}
-%{__install} -pm 755 %{name}.init %{buildroot}%{_initrddir}/%{service_name}
+install -dm 755 %{buildroot}%{_initrddir}
+install -pm 755 %{name}.init %{buildroot}%{_initrddir}/%{service_name}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %post
+# always try to add service to chkconfig
 %{__chkconfig} --add %{service_name}
 
 %post anacron
@@ -196,19 +196,18 @@ extra features.
 [[ -e %{_spooldir}/anacron/cron.weekly ]] || %{__touch} %{_spooldir}/anacron/cron.weekly
 [[ -e %{_spooldir}/anacron/cron.monthly ]] || %{__touch} %{_spooldir}/anacron/cron.monthly
 
-
 %postun
 if [[ $1 -ge 1 ]]; then
   %{__service} %{service_name} condrestart >/dev/null 2>&1 || :
 fi
 
-if [[ $1 -eq 1 ]] ; then
+if [[ $1 -eq 0 ]] ; then
   %{__service} %{service_name} stop >/dev/null 2>&1 || :
   %{__chkconfig} --del %{service_name}
 fi
 
 %triggerun -- %{name} < 1.4.1
-%{__cp} -a %{_sysconfdir}/crontab %{_sysconfdir}/crontab.rpmsave
+cp -a %{_sysconfdir}/crontab %{_sysconfdir}/crontab.rpmsave
 %{__sed} -e '/^01 \* \* \* \* root run-parts \/etc\/cron\.hourly/d'\
   -e '/^02 4 \* \* \* root run-parts \/etc\/cron\.daily/d'\
   -e '/^22 4 \* \* 0 root run-parts \/etc\/cron\.weekly/d'\
@@ -227,7 +226,7 @@ exit 0
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING INSTALL README ChangeLog
-%attr(755,root,root) %{_sbindir}/%{service_name}
+%attr(0755,root,root) %{_sbindir}/%{service_name}
 %attr(4755,root,root) %{_bindir}/crontab
 %{_mandir}/man8/%{service_name}.*
 %{_mandir}/man8/cron.*
@@ -262,6 +261,11 @@ exit 0
 ###############################################################################
 
 %changelog
+* Mon Oct 03 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-2
+- Fixed bug from original Fedora package with removing crond from chkconfig
+  after package update
+- Improved spec
+
 * Tue Jul 26 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - crontab: Use temporary file name that is ignored by crond.
 - crond: Inherit PATH from the crond environment if -P option is used.
