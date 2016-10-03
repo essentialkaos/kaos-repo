@@ -37,13 +37,13 @@
 
 Summary:              A fast data comprssion utility using google snappy
 Name:                 snzip
-Version:              1.0.3
+Version:              1.0.4
 Release:              0%{?dist}
 License:              2-clause BSD-style license 
 Group:                Applications/System
 URL:                  https://github.com/kubo/snzip
 
-Source0:              https://github.com/kubo/%{name}/archive/%{version}.tar.gz
+Source0:              https://dl.bintray.com/kubo/generic/%{name}-%{version}.tar.gz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
