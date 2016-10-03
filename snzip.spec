@@ -45,11 +45,15 @@ URL:                  https://github.com/kubo/snzip
 
 Source0:              https://github.com/kubo/%{name}/archive/%{version}.tar.gz
 
-Patch0:               %{name}-%{version}-autoconf.patch
-
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc make snappy-devel autoconf268
+BuildRequires:        gcc gcc-c++ make snappy-devel automake
+
+%if 0%{?fedora} > 11 || 0%{?rhel} > 6
+BuildRequires:        autoconf >= 2.64
+%else
+BuildRequires:        autoconf268
+%endif
 
 Requires:             snappy
 
@@ -69,7 +73,13 @@ The default format is framing-format.
 %setup -q
 
 %build
+
+%if 0%{?fedora} > 11 || 0%{?rhel} > 6
 ./autogen.sh
+%else
+/usr/bin/autoreconf268 -if
+%endif
+
 %configure
 %{__make} %{?_smp_mflags}
 
