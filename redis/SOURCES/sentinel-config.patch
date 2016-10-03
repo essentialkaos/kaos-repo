@@ -1,22 +1,66 @@
 diff -urN redis-3.2.4-orig/sentinel.conf redis-3.2.4/sentinel.conf
 --- redis-3.2.4-orig/sentinel.conf	2016-10-03 09:50:52.057409233 -0400
-+++ redis-3.2.4/sentinel.conf	2016-10-03 10:04:58.000000000 -0400
++++ redis-3.2.4/sentinel.conf	2016-10-03 18:51:13.000000000 -0400
 @@ -1,5 +1,3 @@
 -# Example sentinel.conf
 -
  # *** IMPORTANT ***
  #
  # By default Sentinel will not be reachable from interfaces different than
-@@ -14,7 +12,7 @@
+@@ -14,12 +12,25 @@
  #
  # bind 127.0.0.1 192.168.1.1
  #
 -# protected-mode no
 +protected-mode no
++
++# By default Redis Sentinel does not run as a daemon. Use 'yes' if you need it.
++daemonize yes
  
  # port <sentinel-port>
  # The port that this sentinel instance will run on
-@@ -193,4 +191,3 @@
+ port 26379
+ 
++# When running daemonized, Redis Sentinelwrites a pid file in
++# /var/run/redis.pid by default. You can specify a custom pid file
++# location here.
++pidfile /var/run/redis/sentinel.pid
++
++# Specify the log file name. Also the empty string can be used to force
++# Redis Sentinel to log on the standard output. Note that if you use standard
++# output for logging but daemonize, logs will be sent to /dev/null
++logfile /var/log/redis/sentinel.log
++
+ # sentinel announce-ip <ip>
+ # sentinel announce-port <port>
+ #
+@@ -152,7 +163,7 @@
+ # NOTIFICATION SCRIPT
+ #
+ # sentinel notification-script <master-name> <script-path>
+-# 
++#
+ # Call the specified notification script for any sentinel event that is
+ # generated in the WARNING level (for instance -sdown, -odown, and so forth).
+ # This script should notify the system administrator via email, SMS, or any
+@@ -176,14 +187,14 @@
+ # When the master changed because of a failover a script can be called in
+ # order to perform application-specific tasks to notify the clients that the
+ # configuration has changed and the master is at a different address.
+-# 
++#
+ # The following arguments are passed to the script:
+ #
+ # <master-name> <role> <state> <from-ip> <from-port> <to-ip> <to-port>
+ #
+ # <state> is currently always "failover"
+ # <role> is either "leader" or "observer"
+-# 
++#
+ # The arguments from-ip, from-port, to-ip, to-port are used to communicate
+ # the old address of the master and the new address of the elected slave
+ # (now a master).
+@@ -193,4 +204,3 @@
  # Example:
  #
  # sentinel client-reconfig-script mymaster /var/redis/reconfig.sh
