@@ -53,6 +53,8 @@ BuildRequires:        gcc make snappy-devel autoconf268
 
 Requires:             snappy
 
+Provides:             %{name} = %{version}-%{release}
+
 ###############################################################################
 
 %description
@@ -65,8 +67,6 @@ The default format is framing-format.
 
 %prep
 %setup -q
-
-%patch0 -p1
 
 %build
 ./autogen.sh
