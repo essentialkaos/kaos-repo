@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.0.4
+Version:              3.2.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -971,6 +971,34 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 04 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.2.1-0
+- improved concurrent VMware item polling speed, reduced size of cached VMware data
+- updated Chinese (China), French, Italian, Portuguese (Brazil) translations; 
+  thanks to Zabbix translators
+- increased width of input fields
+- fixed link "Help" to a proper version of Zabbix manual
+- fixed parameter parsing in calculated items when it contains double quote 
+  escaping
+- fixed trigger update after executing event correlation 'close new' operation
+- fixed possible delay when proxy sends cached history to server
+- fixed long SNMP OID not being accepted
+- fixed error when upgrading graph_theme table in proxy database 
+  from 1.8 to 2.0
+- fixed forms behaviour when enter key is pressed
+- fixed escaped double quote parsing in quoted parameters in array in item 
+  key parameters
+- fixed compilation failure for OpenBSD 5.8, 5.9, 6.0
+- fixed validation of new host group when creating/updating template
+- changed translation string "Acknowledges" => "Acknowledgements"
+- implemented dynamic default sortorder for icon mappings, now default 
+  sortorder increases by one with each entry of mapping
+- fixed timeline in Problem view which shows "Yesterday" instead of "Today"
+- fixed checkbox functionality and display of undefined indexes in trigger 
+  expression and recovery expression constructor
+- added converting of SNMP lld rules in XML import
+- removed mistaken support of {ITEM.VALUE} and {ITEM.LASTVALUE} macros in 
+  trigger URLs
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0
 - fixed SQL injection vulnerability in "Latest data" page; thanks to 1N3 at
   Early Warning Services, LLC
