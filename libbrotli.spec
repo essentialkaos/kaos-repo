@@ -38,7 +38,7 @@ Version:             0.5.2
 Release:             0%{?dist}
 License:             BSD
 Group:               System Environment/Libraries
-URL:                 https://github.com/redis/hiredis
+URL:                 https://github.com/bagder/libbrotli
 
 Source0:             https://github.com/bagder/%{name}/archive/master.tar.gz
 Source1:             https://github.com/google/%{realname}/releases/download/v0.5.2/Brotli-0.5.2.tar.gz
