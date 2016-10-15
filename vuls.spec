@@ -53,6 +53,8 @@ URL:             https://github.com/future-architect/vuls
 Source0:         %{name}-%{version}.tar.bz2
 Source1:         go-cve-dictionary.tar.bz2
 
+Patch1:          https://github.com/future-architect/vuls/pull/206.patch
+
 BuildRequires:   golang >= 1.6
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -72,6 +74,10 @@ Vulnerability scanner for Linux/FreeBSD, agentless, written in golang
 %setup -q
 
 %{__tar} xjfv %{SOURCE1}
+
+pushd github.com/future-architect/vuls
+%patch1 -p1
+popd
 
 %build
 mkdir -p .src
