@@ -41,7 +41,7 @@
 
 Summary:              A powerful build system for the JVM
 Name:                 gradle
-Version:              3.0
+Version:              3.1
 Release:              0%{?dist}
 License:              ASL 2.0 
 Group:                Development/Tools
@@ -98,6 +98,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
+- Updated to latest stable release
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0-0
 - Updated to latest stable release
 
