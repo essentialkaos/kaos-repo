@@ -6,7 +6,7 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              2.2
+Version:              2.3
 Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
@@ -16,7 +16,9 @@ Source:               https://github.com/%{name}/%{name}/archive/%{version}.tar.
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        ncurses-devel libevent2-devel
+BuildRequires:        make automake gcc ncurses-devel libevent2-devel
+
+Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -62,6 +64,18 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3-0
+- New option 'pane-border-status' to add text in the pane borders.
+- Support for hooks on commands: 'after' and 'before' hooks.
+- 'source-file' understands '-q' to suppress errors for nonexistent files.
+- Lots of UTF8 improvements, especially on MacOS.
+- 'window-status-separator' understands #[] expansions.
+- 'split-window' understands '-f' for performing a full-width split.
+- Allow report count to be specified when using 'bind-key -R'.
+- 'set -a' for appending to user options (@foo) is now supported.
+- 'display-panes' can now accept a command to run, rather than always
+  selecting the pane.
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2-0
 - The format strings which referenced time have been removed.  Instead:
   #{t:window_activity} can be used.
