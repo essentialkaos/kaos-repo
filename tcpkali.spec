@@ -30,7 +30,7 @@
 
 Summary:            High performance TCP and WebSocket load generator and sink
 Name:               tcpkali
-Version:            0.9
+Version:            1.0
 Release:            0%{?dist}
 License:            BSD 2-Clause
 Group:              Development/Tools
@@ -81,6 +81,12 @@ autoreconf -iv
 ###############################################################################
 
 %changelog
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0-0
+- Export --latency-connect and --latency-first-bytes to statsd.
+- --latency-percentiles now affect --statsd reporting as well.
+- Added -H, --header to add HTTP headers to WebSocket handshake.
+- Added --message-stop to quickly die if a given message is seen.
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9-0
 - Added -r@<Latency> form to measure message rate at a given latency.
 - Websocket frame types in expressions: \{ws.ping}, \{ws.pong}, etc.
