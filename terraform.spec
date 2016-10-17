@@ -6,7 +6,7 @@
 
 Summary:         Tool for building, changing, and combining infrastructure 
 Name:            terraform
-Version:         0.7.3
+Version:         0.7.6
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -16,7 +16,7 @@ Source0:         https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   zip golang >= 1.6
+BuildRequires:   zip golang >= 1.7
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -72,6 +72,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.6-0
+- Updated to latest stable release
+
 * Fri Sep 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.3-0
 - Updated to latest stable release
 
