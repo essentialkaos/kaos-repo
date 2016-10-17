@@ -119,7 +119,7 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.13.4
+Version:            1.14.1
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -1174,6 +1174,46 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
+- The IPA provider now supports logins with enterprise principals (also known
+  as additional UPN suffixes). This functionality also enabled Active Directory
+  users from trusted AD domains who use an additional UPN suffix to log in.
+  Please note that this feature requires a recent IPA server.
+- When a user name is overriden in an IPA domain, resolving a group these users
+  are a member of now returns the overriden user names
+- Users can be looked up by and log in with their e-mail address as
+  an identifier. In order to do so, an attribute that represents the user's
+  e-mail address is fetched by default. This attribute can by customized by
+  setting the ldap_user_email configuration option.
+- A new ad_enabled_domains option was added. This option lets the administrator
+  select domains that SSSD should attempt to reach in the AD forest SSSD is
+  joined to. This option is useful for deployments where not all domains are
+  reachable on the network level, yet the administrator needs to access some
+  trusted domains and therefore disabling the subdomains provider completely
+  is not desirable.
+- The sssctl tool has two new commands active-server and servers that allow
+  the administrator to observe the server that SSSD is bound to and the
+  servers that SSSD autodiscovered
+- SSSD used to fail to start when an attribute name is present in both the
+  default SSSD attribute map and the custom ldap_user_extra_attrs map
+- GPO policy procesing no longer fails if the gPCMachineExtensionNames attribute
+  only contains whitespaces
+- Several commits fix regressions related to switching all user and group names
+  to fully qualified format, such as running initgroups for a user who is only
+  a member of a primary group
+- Several patches fix regressions caused by splitting the database into two ldb
+  files, such as when user attributes change without increasing the
+  modifyTimestamp attribute value
+- systemd unit files are now shipped for the sssd-secrets responder, allowing
+  the responder to be socket-activated. To do so, administrators should enable
+  the sssd-secrets.socket and sssd-secrets.service systemd units.
+- The sssd binary has a new switch --disable-netlink that lets sssd skip
+  messages from the kernel's netlink interface.
+- A crash when entries with special characters such as '(' were requested was
+  fixed
+- The ldap_rfc_2307_fallback_to_local_users option was broken in the previous
+  version. This release fixes the functionality.
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 1.13.4-0
 - The IPA sudo provider was reimplemented. The new version reads the data 
   from IPA's LDAP tree (as opposed to the compat tree populated by the 
