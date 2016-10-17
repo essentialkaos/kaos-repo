@@ -35,14 +35,15 @@
 
 Summary:           Timezone Updater Tool
 Name:              tzupdater
-Version:           2.0.3
-Release:           2015b%{?dist}
+Version:           2.1.0
+Release:           0%{?dist}
 License:           http://www.oracle.com/technetwork/java/javasebusiness/downloads/tzupdater-lic-354297.txt
 Group:             Applications/Databases
 URL:               http://www.oracle.com
 
 Source0:           %{name}.jar
 Source1:           %{name}
+Source2:           README
 
 BuildArch:         noarch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -71,6 +72,8 @@ install -dm 755 %{buildroot}%{_loc_datarootdir}/%{name}
 install -pm 644 %{SOURCE0} %{buildroot}%{_loc_datarootdir}/%{name}/
 install -pm 755 %{SOURCE1} %{buildroot}%{_sbindir}/
 
+cp %{SOURCE2} .
+
 %clean
 rm -rf %{buildroot}
 
@@ -78,12 +81,16 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
+%doc README
 %{_loc_datarootdir}/%{name}/%{name}.jar
 %{_sbindir}/%{name}
 
 ########################################################################################
 
 %changelog
+* Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
+- Updated to latest release
+
 * Mon Mar 21 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.3-2015b
 - Updated to latest release
 
