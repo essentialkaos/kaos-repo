@@ -154,7 +154,7 @@ BuildRequires:      docbook-style-xsl krb5-devel c-ares-devel python-devel check
 BuildRequires:      doxygen libselinux-devel libsemanage-devel bind-utils 
 BuildRequires:      keyutils-libs-devel gettext-devel pkgconfig findutils glib2-devel
 BuildRequires:      selinux-policy-targeted samba4-devel libsmbclient-devel
-BuildRequires:      libnl3-devel
+BuildRequires:      libnl3-devel http-parser-devel jansson-devel
 
 %if 0%{?fedora}
 BuildRequires:      libcmocka-devel >= 1.0.0
@@ -673,10 +673,25 @@ Development libraries for the SSSD libwbclient implementation.
 
 ###############################################################################
 
+%package winbind-idmap
+Summary:            SSSD's idmap_sss Backend for Winbind
+Group:              Applications/System
+License:            GPLv3+ and LGPLv3+
+
+%description winbind-idmap
+The idmap_sss module provides a way for Winbind to call SSSD to map UIDs/GIDs
+and SIDs.
+
+###############################################################################
+
 %prep
 %setup -qn %{name}-%{version}
 
 %build
+%ifarch i386
+export CFLAGS="$CFLAGS -march=i686"
+%endif
+
 autoreconf -ivf
 
 %{configure} \
@@ -897,12 +912,13 @@ fi
 %endif
 
 %dir %{_libexecdir}/%{name}
-%{_libexecdir}/%{name}/%{name}_be
-%{_libexecdir}/%{name}/%{name}_nss
-%{_libexecdir}/%{name}/%{name}_pam
-%{_libexecdir}/%{name}/%{name}_autofs
-%{_libexecdir}/%{name}/%{name}_ssh
-%{_libexecdir}/%{name}/%{name}_sudo
+%{_libexecdir}/%{name}/sssd_be
+%{_libexecdir}/%{name}/sssd_nss
+%{_libexecdir}/%{name}/sssd_pam
+%{_libexecdir}/%{name}/sssd_autofs
+%{_libexecdir}/%{name}/sssd_secrets
+%{_libexecdir}/%{name}/sssd_ssh
+%{_libexecdir}/%{name}/sssd_sudo
 %{_libexecdir}/%{name}/p11_child
 
 %if (0%{?install_pcscd_polkit_rule} == 1)
@@ -952,6 +968,9 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/sssd
 %config(noreplace) %{_sysconfdir}/rwtab.d/sssd
 %dir %{_datadir}/sssd
+%{_sysconfdir}/pam.d/sssd-shadowutils
+%{_libdir}/%{name}/conf/sssd.conf
+%{_datadir}/sssd/cfg_rules.ini
 %{_datadir}/sssd/sssd.api.conf
 %{_datadir}/sssd/sssd.api.d
 %{_mandir}/man1/sss_ssh_authorizedkeys.1*
@@ -1060,6 +1079,7 @@ fi
 %{_sbindir}/sss_override
 %{_sbindir}/sss_debuglevel
 %{_sbindir}/sss_seed
+%{_sbindir}/sssctl
 %{_mandir}/man8/sss_groupadd.8*
 %{_mandir}/man8/sss_groupdel.8*
 %{_mandir}/man8/sss_groupmod.8*
@@ -1071,6 +1091,7 @@ fi
 %{_mandir}/man8/sss_override.8*
 %{_mandir}/man8/sss_debuglevel.8*
 %{_mandir}/man8/sss_seed.8*
+%{_mandir}/man8/sssctl.8*
 
 %files -n python-sssdconfig -f python2_sssdconfig.lang
 %defattr(-,root,root,-)
@@ -1170,6 +1191,12 @@ fi
 %{_includedir}/wbclient_sssd.h
 %{_libdir}/%{name}/modules/libwbclient.so
 %{_libdir}/pkgconfig/wbclient_sssd.pc
+
+%files winbind-idmap
+%defattr(-,root,root,-)
+%dir %{_libdir}/samba/idmap
+%{_libdir}/samba/idmap/sss.so
+%{_mandir}/man8/idmap_sss.8*
 
 ###############################################################################
 
