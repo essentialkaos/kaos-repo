@@ -14,6 +14,8 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        devtoolset-2-gcc-c++ make
 
+Provides:             %{name} = %{version}-%{release}
+
 ###############################################################################
 
 %description
@@ -52,14 +54,13 @@ export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
 make %{name}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-install -dm 0755 %{buildroot}%{_bindir}/%{name}
-
-mv bin/%{name} %{buildroot}%{_bindir}/%{name}
+install -dm 755 %{buildroot}%{_bindir}
+install -pm 755 bin/%{name} %{buildroot}%{_bindir}/
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
@@ -72,5 +73,4 @@ mv bin/%{name} %{buildroot}%{_bindir}/%{name}
 
 %changelog
 * Mon Oct 17 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.1.3-0
-- Initial build.
-
+- Initial build
