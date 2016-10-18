@@ -102,14 +102,14 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-mkdir -p %{buildroot}%{_libdir}/pkgconfig
+install -dm 755 %{buildroot}%{_pkgconfigdir}
 
 sed -e "s#@prefix@#%{_prefix}#g" \
     -e "s#@exec_prefix@#%{_exec_prefix}#g" \
     -e "s#@libdir@#%{_libdir}#g" \
     -e "s#@includedir@#%{_includedir}#g" \
     -e "s#@version@#%{version}#g" \
-    %SOURCE1 > %{buildroot}%{_libdir}/pkgconfig/libuv.pc
+    %SOURCE1 > %{buildroot}%{_pkgconfigdir}/libuv.pc
 
 %clean
 rm -rf %{buildroot}
