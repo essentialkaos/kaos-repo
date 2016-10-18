@@ -119,7 +119,7 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.13.4
+Version:            1.14.1
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -154,7 +154,7 @@ BuildRequires:      docbook-style-xsl krb5-devel c-ares-devel python-devel check
 BuildRequires:      doxygen libselinux-devel libsemanage-devel bind-utils 
 BuildRequires:      keyutils-libs-devel gettext-devel pkgconfig findutils glib2-devel
 BuildRequires:      selinux-policy-targeted samba4-devel libsmbclient-devel
-BuildRequires:      libnl3-devel
+BuildRequires:      libnl3-devel http-parser-devel jansson-devel
 
 %if 0%{?fedora}
 BuildRequires:      libcmocka-devel >= 1.0.0
@@ -673,10 +673,25 @@ Development libraries for the SSSD libwbclient implementation.
 
 ###############################################################################
 
+%package winbind-idmap
+Summary:            SSSD's idmap_sss Backend for Winbind
+Group:              Applications/System
+License:            GPLv3+ and LGPLv3+
+
+%description winbind-idmap
+The idmap_sss module provides a way for Winbind to call SSSD to map UIDs/GIDs
+and SIDs.
+
+###############################################################################
+
 %prep
 %setup -qn %{name}-%{version}
 
 %build
+%ifarch i386
+export CFLAGS="$CFLAGS -march=i686"
+%endif
+
 autoreconf -ivf
 
 %{configure} \
@@ -897,12 +912,13 @@ fi
 %endif
 
 %dir %{_libexecdir}/%{name}
-%{_libexecdir}/%{name}/%{name}_be
-%{_libexecdir}/%{name}/%{name}_nss
-%{_libexecdir}/%{name}/%{name}_pam
-%{_libexecdir}/%{name}/%{name}_autofs
-%{_libexecdir}/%{name}/%{name}_ssh
-%{_libexecdir}/%{name}/%{name}_sudo
+%{_libexecdir}/%{name}/sssd_be
+%{_libexecdir}/%{name}/sssd_nss
+%{_libexecdir}/%{name}/sssd_pam
+%{_libexecdir}/%{name}/sssd_autofs
+%{_libexecdir}/%{name}/sssd_secrets
+%{_libexecdir}/%{name}/sssd_ssh
+%{_libexecdir}/%{name}/sssd_sudo
 %{_libexecdir}/%{name}/p11_child
 
 %if (0%{?install_pcscd_polkit_rule} == 1)
@@ -952,6 +968,9 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/sssd
 %config(noreplace) %{_sysconfdir}/rwtab.d/sssd
 %dir %{_datadir}/sssd
+%{_sysconfdir}/pam.d/sssd-shadowutils
+%{_libdir}/%{name}/conf/sssd.conf
+%{_datadir}/sssd/cfg_rules.ini
 %{_datadir}/sssd/sssd.api.conf
 %{_datadir}/sssd/sssd.api.d
 %{_mandir}/man1/sss_ssh_authorizedkeys.1*
@@ -1060,6 +1079,7 @@ fi
 %{_sbindir}/sss_override
 %{_sbindir}/sss_debuglevel
 %{_sbindir}/sss_seed
+%{_sbindir}/sssctl
 %{_mandir}/man8/sss_groupadd.8*
 %{_mandir}/man8/sss_groupdel.8*
 %{_mandir}/man8/sss_groupmod.8*
@@ -1071,6 +1091,7 @@ fi
 %{_mandir}/man8/sss_override.8*
 %{_mandir}/man8/sss_debuglevel.8*
 %{_mandir}/man8/sss_seed.8*
+%{_mandir}/man8/sssctl.8*
 
 %files -n python-sssdconfig -f python2_sssdconfig.lang
 %defattr(-,root,root,-)
@@ -1171,9 +1192,55 @@ fi
 %{_libdir}/%{name}/modules/libwbclient.so
 %{_libdir}/pkgconfig/wbclient_sssd.pc
 
+%files winbind-idmap
+%defattr(-,root,root,-)
+%dir %{_libdir}/samba/idmap
+%{_libdir}/samba/idmap/sss.so
+%{_mandir}/man8/idmap_sss.8*
+
 ###############################################################################
 
 %changelog
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
+- The IPA provider now supports logins with enterprise principals (also known
+  as additional UPN suffixes). This functionality also enabled Active Directory
+  users from trusted AD domains who use an additional UPN suffix to log in.
+  Please note that this feature requires a recent IPA server.
+- When a user name is overriden in an IPA domain, resolving a group these users
+  are a member of now returns the overriden user names
+- Users can be looked up by and log in with their e-mail address as
+  an identifier. In order to do so, an attribute that represents the user's
+  e-mail address is fetched by default. This attribute can by customized by
+  setting the ldap_user_email configuration option.
+- A new ad_enabled_domains option was added. This option lets the administrator
+  select domains that SSSD should attempt to reach in the AD forest SSSD is
+  joined to. This option is useful for deployments where not all domains are
+  reachable on the network level, yet the administrator needs to access some
+  trusted domains and therefore disabling the subdomains provider completely
+  is not desirable.
+- The sssctl tool has two new commands active-server and servers that allow
+  the administrator to observe the server that SSSD is bound to and the
+  servers that SSSD autodiscovered
+- SSSD used to fail to start when an attribute name is present in both the
+  default SSSD attribute map and the custom ldap_user_extra_attrs map
+- GPO policy procesing no longer fails if the gPCMachineExtensionNames attribute
+  only contains whitespaces
+- Several commits fix regressions related to switching all user and group names
+  to fully qualified format, such as running initgroups for a user who is only
+  a member of a primary group
+- Several patches fix regressions caused by splitting the database into two ldb
+  files, such as when user attributes change without increasing the
+  modifyTimestamp attribute value
+- systemd unit files are now shipped for the sssd-secrets responder, allowing
+  the responder to be socket-activated. To do so, administrators should enable
+  the sssd-secrets.socket and sssd-secrets.service systemd units.
+- The sssd binary has a new switch --disable-netlink that lets sssd skip
+  messages from the kernel's netlink interface.
+- A crash when entries with special characters such as '(' were requested was
+  fixed
+- The ldap_rfc_2307_fallback_to_local_users option was broken in the previous
+  version. This release fixes the functionality.
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 1.13.4-0
 - The IPA sudo provider was reimplemented. The new version reads the data 
   from IPA's LDAP tree (as opposed to the compat tree populated by the 

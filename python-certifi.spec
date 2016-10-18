@@ -38,19 +38,18 @@
 ################################################################################
 
 %global pkgname certifi
-%define subpath 1c/d1/0133a5084f0d17db0270c6061e824a11b0e417d743f5ff4c594f4090ed89
 
 ################################################################################
 
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               python-%{pkgname}
-Version:            2016.8.31
+Version:            2016.09.26
 Release:            0%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
 URL:                http://certifi.io/en/latest/
 
-Source0:            https://pypi.python.org/packages/%{subpath}/%{pkgname}-%{version}.tar.gz
+Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -72,7 +71,7 @@ the identity of TLS hosts. It has been extracted from the Requests project.
 ################################################################################
 
 %prep
-%setup -qn %{pkgname}-%{version}
+%setup -qn %{name}-%{version}
 
 rm -rf %{pkgname}.egg-info
 rm -rf certifi/*.pem
@@ -98,5 +97,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-0
+- Updated to latest release
+
 * Sun Sep 11 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.8.31-0
 - Initial build for kaos repo

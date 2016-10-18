@@ -73,13 +73,14 @@ libraries to develop applications using a Redis database.
 %{__make} %{?_smp_mflags} OPTIMIZATION="%{optflags}" 
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
+
 %{__make} install PREFIX=%{buildroot}%{_prefix} INSTALL_LIBRARY_PATH=%{buildroot}%{_libdir} LIBRARY_PATH=%{buildroot}%{_libdir}
 
 ln -s %{_libdir}/%{name}.so.0.%{minor_ver} %{buildroot}%{_libdir}/%{name}.so.0
 
 %clean 
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %post
 /sbin/ldconfig

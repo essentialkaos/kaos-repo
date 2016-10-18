@@ -49,7 +49,7 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.3.0
+Version:          1.4.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
@@ -172,10 +172,15 @@ fi
 ################################################################################
 
 %changelog
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- the fastest netdata ever (with a better look too)
+- improved IoT and containers support
+- alarms improved in almost every way
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- netdata has health monitoring / alarms!
-- netdata generates badges that can be embeded anywhere!
-- netdata plugins are now written in python!
+- netdata has health monitoring / alarms
+- netdata generates badges that can be embeded anywhere
+- netdata plugins are now written in python
 - new plugins: redis, memcached, nginx_log, ipfs, apache_cache
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
