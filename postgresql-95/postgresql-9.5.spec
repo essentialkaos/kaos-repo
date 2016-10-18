@@ -63,7 +63,7 @@
 
 %define majorver        9.5
 %define minorver        4
-%define rel             0
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          95
 %define realname        postgresql
@@ -72,7 +72,7 @@
 %define service_name    %{realname}-%{majorver}
 %define install_dir     %{_usr}/%{shortname}-%{majorver}
 
-%define prev_version    9.5
+%define prev_version    9.4
 
 %define username        postgres
 %define groupname       postgres
@@ -1034,6 +1034,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.4-1
+- Fixed bug with previous version definition in init script
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.4-0
 - Updated to latest stable release
 

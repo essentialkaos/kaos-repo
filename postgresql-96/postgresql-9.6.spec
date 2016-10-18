@@ -90,7 +90,7 @@
 %define service_name    %{realname}-%{majorver}
 %define install_dir     %{_usr}/%{shortname}-%{majorver}
 
-%define prev_version    9.6
+%define prev_version    9.5
 
 %define username        postgres
 %define groupname       postgres
@@ -492,21 +492,21 @@ sed "s|C=\`pwd\`;|C=%{install_dir}/lib/tutorial;|" < src/tutorial/Makefile > src
 case `uname -i` in
   i386 | x86_64 | ppc | ppc64 | s390 | s390x)
     %{__mv} %{buildroot}%{install_dir}/include/pg_config.h %{buildroot}%{install_dir}/include/pg_config_`uname -i`.h
-    %{__install} -m 644 %{SOURCE3} %{buildroot}%{install_dir}/include/
+    install -m 644 %{SOURCE3} %{buildroot}%{install_dir}/include/
     %{__mv} %{buildroot}%{install_dir}/include/server/pg_config.h %{buildroot}%{install_dir}/include/server/pg_config_`uname -i`.h
-    %{__install} -m 644 %{SOURCE3} %{buildroot}%{install_dir}/include/server/
+    install -m 644 %{SOURCE3} %{buildroot}%{install_dir}/include/server/
     %{__mv} %{buildroot}%{install_dir}/include/ecpg_config.h %{buildroot}%{install_dir}/include/ecpg_config_`uname -i`.h
-    %{__install} -m 644 %{SOURCE5} %{buildroot}%{install_dir}/include/
+    install -m 644 %{SOURCE5} %{buildroot}%{install_dir}/include/
     ;;
   *)
   ;;
 esac
 
-%{__install} -d %{buildroot}%{_initddir}
-%{__install} -d %{buildroot}%{_sysconfdir}/sysconfig
+install -d %{buildroot}%{_initddir}
+install -d %{buildroot}%{_sysconfdir}/sysconfig
 
-%{__install} -m 755 %{SOURCE1} %{buildroot}%{_initddir}/%{service_name}
-%{__install} -m 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
+install -pm 755 %{SOURCE1} %{buildroot}%{_initddir}/%{service_name}
+install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
 
 %{__sed} -i 's/{{VERSION}}/%{version}/g' %{buildroot}%{_initddir}/%{service_name}
 %{__sed} -i 's/{{MAJOR_VERSION}}/%{majorver}/g' %{buildroot}%{_initddir}/%{service_name}
@@ -518,23 +518,26 @@ esac
 %{__ln_s} -f %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{pkgver}
 
 %if %pam
-%{__install} -d %{buildroot}%{_sysconfdir}/pam.d
-%{__install} -m 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{pkgver}
+install -d %{buildroot}%{_sysconfdir}/pam.d
+install -m 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{pkgver}
 %endif
 
+# Create the directory for sockets
+install -dm 755 %{buildroot}%{_rundir}/%{realname}
+
 # PGDATA needs removal of group and world permissions due to pg_pwd hole.
-%{__install} -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/data
+install -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/data
 
 # backups of data go here...
-%{__install} -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/backups
+install -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/backups
 
 # Create the multiple postmaster startup directory
-%{__install} -dm 700 %{buildroot}%{_sysconfdir}/sysconfig/%{shortname}/%{majorver}
+install -dm 700 %{buildroot}%{_sysconfdir}/sysconfig/%{shortname}/%{majorver}
 
 # Install linker conf file under postgresql installation directory.
 # We will install the latest version via alternatives.
-%{__install} -dm 755 %{buildroot}%{install_dir}/share/
-%{__install} -m 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
+install -dm 755 %{buildroot}%{install_dir}/share/
+install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
 
 %if %test
   # Tests. There are many files included here that are unnecessary,
@@ -542,8 +545,8 @@ esac
   # Makefiles, however.
   %{__mkdir_p} %{buildroot}%{install_dir}/lib/test
   %{__cp} -a src/test/regress %{buildroot}%{install_dir}/lib/test
-  %{__install} -m 0755 contrib/spi/refint.so %{buildroot}%{install_dir}/lib/test/regress
-  %{__install} -m 0755 contrib/spi/autoinc.so %{buildroot}%{install_dir}/lib/test/regress
+  install -m 0755 contrib/spi/refint.so %{buildroot}%{install_dir}/lib/test/regress
+  install -m 0755 contrib/spi/autoinc.so %{buildroot}%{install_dir}/lib/test/regress
   pushd  %{buildroot}%{install_dir}/lib/test/regress
     strip *.so
     %{__rm} -f GNUmakefile Makefile *.o
@@ -973,6 +976,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %config(noreplace) %{_initddir}/%{service_name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
+%attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{pkgver}
 %if %pam
 %config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{pkgver}
