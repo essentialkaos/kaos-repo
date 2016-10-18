@@ -12,6 +12,7 @@ BLUE=34
 MAG=35
 CYAN=36
 GREY=37
+DARK=90
 
 CL_NORM="\e[${NORM}m"
 CL_BOLD="\e[${BOLD}m"
@@ -23,6 +24,7 @@ CL_BLUE="\e[${BLUE}m"
 CL_MAG="\e[${MAG}m"
 CL_CYAN="\e[${CYAN}m"
 CL_GREY="\e[${GREY}m"
+CL_DARK="\e[${DARK}m"
 CL_BL_RED="\e[${RED};1m"
 CL_BL_GREEN="\e[${GREEN};1m"
 CL_BL_BROWN="\e[${BROWN};1m"
@@ -71,7 +73,7 @@ main() {
     rpmlint_conf="$1"
   fi
 
-  for spec in $(find . -name '*.spec') ; do
+  for spec in $(find . -name '*.spec' | sort) ; do
     runLinter "$spec"
   done
 
@@ -101,23 +103,23 @@ runLinter() {
   local warnings=$(tail -1 $tmp_file | grep -E -o '[0-9]{1,} warnings' | sed 's/ warnings//')
 
   if [[ -z "$errors" || -z "$warnings" ]] ; then
-    echo -e "[${CL_RED}   ERROR   ${CL_NORM}] $file"
+    echo -e "${CL_DARK}[${CL_NORM}${CL_RED}  ERROR  ${CL_NORM}${CL_DARK}]${CL_NORM} $file"
     ((file_count++))
     ((errors_count++))
     showLintResult
   fi
 
   if [[ $errors -eq 0 && $warnings -eq 0 ]] ; then
-    printf "[ ${CL_GREEN}  0${CL_NORM} / ${CL_GREEN}  0${CL_NORM} ] %s\n" "$file"
+    printf "${CL_DARK}[${CL_NORM} ${CL_GREEN} 0${CL_NORM} / ${CL_GREEN} 0${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$file"
   else
     if [[ $errors -eq 0 && $warnings -ne 0 ]] ; then
-      printf "[ ${CL_GREEN}%3s${CL_NORM} / ${CL_BROWN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
+      printf "${CL_DARK}[${CL_NORM} ${CL_GREEN}%2s${CL_NORM} / ${CL_BROWN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
       warn_count=$(( $warn_count + $warnings ))
     elif [[ $errors -ne 0 && $warnings -eq 0 ]] ; then
-      printf "[ ${CL_RED}%3s${CL_NORM} / ${CL_GREEN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
+      printf "${CL_DARK}[${CL_NORM} ${CL_RED}%2s${CL_NORM} / ${CL_GREEN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
       errors_count=$(( $errors_count + $errors ))
     else
-      printf "[ ${CL_RED}%3s${CL_NORM} / ${CL_BROWN}%3s${CL_NORM} ] %s\n" "$errors" "$warnings" "$file"
+      printf "${CL_DARK}[${CL_NORM} ${CL_RED}%2s${CL_NORM} / ${CL_BROWN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
       errors_count=$(( $errors_count + $errors ))
       warn_count=$(( $warn_count + $warnings ))
     fi
@@ -129,9 +131,9 @@ runLinter() {
 }
 
 showLintResult() {
-  echo ""
+  echo -e "${CL_GREY}"
   cat $tmp_file | sed 's/^/  /g'
-  echo ""
+  echo -e "${CL_NORM}"
 }
 
 ########################################################################################

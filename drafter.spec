@@ -51,7 +51,8 @@ YAML and JSON. YAML is the default for the CLI.
 export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
 
 ./configure
-make %{name}
+
+%{__make} %{?_smp_mflags} %{name}
 
 %install
 rm -rf %{buildroot}
