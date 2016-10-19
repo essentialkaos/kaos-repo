@@ -20,8 +20,8 @@ Source1:              https://github.com/datastax/%{cpp_driver_name}/archive/%{c
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make devtoolset-2-gcc-c++
-BuildRequires:        libuv-devel >= 1.9.1 erlang18-devel
+BuildRequires:        make cmake devtoolset-2-gcc-c++ libuv-devel >= 1.9.1
+BuildRequires:        erlang18-erl_interface erlang18-devel openssl-devel
 BuildRequires:        cassandra-cpp-driver-devel = %{cpp_driver_version}
 
 Requires(post):       /sbin/ldconfig
@@ -41,10 +41,17 @@ performance.
 mkdir -p _build/deps
 %{__tar} xvfz %{SOURCE1} -C _build/deps
 
-# Disable build dependencies
-sed -i '/build_deps.sh/d' Makefile
+%build
+export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
 
-%{__make} %{?_smp_mflags}
+mv _build/deps/%{cpp_driver_name}-%{cpp_driver_version} _build/deps/%{cpp_driver_name}
+
+# Generate cassconfig.hpp
+pushd _build/deps/%{cpp_driver_name}
+cmake .
+popd
+
+%{__make} -C c_src %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
