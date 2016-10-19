@@ -8,7 +8,7 @@
 ###############################################################################
 
 Summary:              An Erlang Cassandra driver
-Name:                 liberlcass 
+Name:                 lib%{short_name}
 Version:              2.6
 Release:              0%{?dist}
 License:              APLv2.0
@@ -21,8 +21,8 @@ Source1:              https://github.com/datastax/%{cpp_driver_name}/archive/%{c
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        automake cmake >= 2.6.4 devtoolset-2-gcc-c++ libtool
-BuildRequires:        libuv-devel >= 1.9.1 openssl-devel erlang18 
-BuildRequires:        cassandra-cpp-driver-devel
+BuildRequires:        libuv-devel >= 1.9.1 openssl-devel erlang18-devel
+BuildRequires:        cassandra-cpp-driver-devel = %{cpp_driver_version}
 
 Requires(post):       /sbin/ldconfig
 Requires(postun):     /sbin/ldconfig
@@ -30,7 +30,8 @@ Requires(postun):     /sbin/ldconfig
 ###############################################################################
 
 %description
-An Erlang Cassandra driver, based on DataStax C++ driver focused on performance.
+An Erlang Cassandra driver, based on DataStax C++ driver focused on 
+performance.
 
 ###############################################################################
 
@@ -40,14 +41,8 @@ An Erlang Cassandra driver, based on DataStax C++ driver focused on performance.
 mkdir -p _build/deps
 %{__tar} xvfz %{SOURCE1} -C _build/deps
 
-%build
-export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
-
-mv _build/deps/%{cpp_driver_name}-%{cpp_driver_version} _build/deps/%{cpp_driver_name} 
-
-pushd _build/deps/%{cpp_driver_name}
-cmake .
-popd
+# Disable dependencies build
+sed -i '/build_deps.sh/d' Makefile
 
 %{__make} %{?_smp_mflags}
 
@@ -81,6 +76,5 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Wed Oct 19 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.6-0 
-- Initial build. 
-
+* Wed Oct 19 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.6-0
+- Initial build
