@@ -21,7 +21,8 @@ Source1:              https://github.com/datastax/%{cpp_driver_name}/archive/%{c
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        automake cmake >= 2.6.4 devtoolset-2-gcc-c++ libtool
-BuildRequires:        libuv-devel >= 1.9.1 openssl-devel
+BuildRequires:        libuv-devel >= 1.9.1 openssl-devel erlang18 
+BuildRequires:        cassandra-cpp-driver-devel
 
 Requires(post):       /sbin/ldconfig
 Requires(postun):     /sbin/ldconfig
