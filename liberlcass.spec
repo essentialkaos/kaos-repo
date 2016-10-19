@@ -41,7 +41,7 @@ performance.
 mkdir -p _build/deps
 %{__tar} xvfz %{SOURCE1} -C _build/deps
 
-# Disable dependencies build
+# Disable build dependencies
 sed -i '/build_deps.sh/d' Makefile
 
 %{__make} %{?_smp_mflags}
