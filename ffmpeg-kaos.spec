@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.1.4
+Version:           3.2
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -99,7 +99,6 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-frei0r \
   --enable-libopencv \
   --enable-libdc1394 \
-  --enable-libfaac \
   --enable-libgsm \
   --enable-libmp3lame \
   --enable-libnut \
@@ -154,6 +153,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Sun Oct 30 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-0
+- Updated to version 3.2.0
+
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.1.4-0
 - Updated to version 3.1.4
 
