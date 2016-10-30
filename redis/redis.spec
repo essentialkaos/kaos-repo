@@ -37,7 +37,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.4
+Version:            3.2.5
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -59,7 +59,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      make gcc jemalloc-devel
 
 Requires:           %{name}-cli >= %{version}
-Requires:           logrotate kaosv >= 2.5
+Requires:           logrotate kaosv >= 2.8
 
 Requires(pre):      shadow-utils
 Requires(post):     chkconfig
@@ -187,6 +187,10 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Oct 27 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-0
+- This release only fixes a compilation issue due to the missing -ldl
+  at linking time
+
 * Mon Oct 03 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - Security: CONFIG SET client-output-buffer-limit overflow fixed
 - TCP binding bug fixed when only certain addresses were available for
