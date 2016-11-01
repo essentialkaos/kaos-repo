@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.50.2
+Version:              7.50.3
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -87,6 +87,8 @@ Patch302:             0302-%{name}-7.47.1-pkgconfig.patch
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Provides:             webclient = %{version}-%{release}
+
+Requires:             c-ares libmetalink libnghttp2
 
 BuildRequires:        make gcc libidn-devel krb5-devel
 BuildRequires:        pkgconfig zlib-devel openldap-devel
@@ -300,6 +302,19 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.3-0
+- CVE-2016-7167: escape and unescape integer overflows
+- mk-ca-bundle.pl: use SHA256 instead of SHA1
+- checksrc: detect strtok() use
+- errors: new alias CURLE_WEIRD_SERVER_REPLY
+- http2: support > 64bit sized uploads
+- openssl: fix bad memory free (regression)
+- CMake: hide private library symbols
+- http: refuse to pass on response body when NO_NODY is set
+- cmake: fix curl-config --static-libs
+- mbedtls: switch off NTLM in build if md4 isn't available
+- curl: --create-dirs on windows groks both forward and backward slashes 
+
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.2-0
 - mbedtls: Added support for NTLM
 - SSH: fixed SFTP/SCP transfer problems
