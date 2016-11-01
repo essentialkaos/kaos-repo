@@ -62,8 +62,8 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        9.4
-%define minorver        9
-%define rel             1
+%define minorver        10
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          94
 %define realname        postgresql
@@ -1026,6 +1026,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 9.4.10-0
+- Updated to latest stable release
+
 * Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 9.4.9-1
 - Fixed bug with previous version definition in init script
 
