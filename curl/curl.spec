@@ -88,7 +88,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 Provides:             webclient = %{version}-%{release}
 
-Requires:             c-ares libmetalink libnghttp2
+Requires:             c-ares libmetalink >= 0.1.3 libnghttp2 >= 1.16.0
 
 BuildRequires:        make gcc libidn-devel krb5-devel
 BuildRequires:        pkgconfig zlib-devel openldap-devel
@@ -149,6 +149,7 @@ BuildRequires:        nss-pem
 %endif
 
 Requires:             libssh2%{?_isa} >= %{libssh2_version}
+Requires:             libmetalink >= 0.1.3 libnghttp2 >= 1.16.0
 
 %if 0%{?fedora} > 24 || 0%{?rhel} > 7
 Requires:             nss-pem
@@ -189,7 +190,7 @@ documentation of the library, too.
 ###############################################################################
 
 %prep
-%setup -q -n curl-%{version}
+%setup -qn curl-%{version}
 
 %patch101 -p1
 %patch102 -p1
