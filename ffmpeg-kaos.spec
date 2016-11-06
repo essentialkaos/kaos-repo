@@ -46,7 +46,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc SDL-devel freetype-devel zlib-devel bzip2-devel
 BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
-BuildRequires:     libstdc++-devel faac-devel libfaad2-devel gsm-devel
+BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel
 BuildRequires:     lame-devel libtheora-devel libvorbis-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel schroedinger-devel speex-devel
@@ -54,7 +54,7 @@ BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
 BuildRequires:     opencv-devel librtmp-devel openssl-devel
 BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
-Requires:          SDL xavs gsm libdc1394 faac libfdk-aac lame
+Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
 Requires:          opencore-amr librtmp orc libvpx x264 unicap
 Requires:          libxvidcore libva schroedinger
 
@@ -153,8 +153,8 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
-* Sun Oct 30 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-0
-- Updated to version 3.2.0
+* Sun Nov 06 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.2-0
+- Updated to version 3.2
 
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.1.4-0
 - Updated to version 3.1.4
