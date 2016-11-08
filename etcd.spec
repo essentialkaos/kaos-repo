@@ -6,7 +6,7 @@
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.0.12
+Version:         3.0.14
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
@@ -16,7 +16,7 @@ Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.6
+BuildRequires:   golang >= 1.7
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -82,6 +82,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.14-0
+- Updated to latest stable release
+
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.12-0
 - Updated to latest stable release
 

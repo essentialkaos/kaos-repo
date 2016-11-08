@@ -6,8 +6,8 @@
 
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
-Version:         0.6.4
-Release:         1%{?dist}
+Version:         0.7.0
+Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
 URL:             http://www.consul.io
@@ -67,6 +67,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.0-0
+- Updated to latest stable release
+
 * Tue Mar 22 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.4-0
 - Updated to latest stable release
 
