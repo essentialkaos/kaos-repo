@@ -54,7 +54,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.5.18
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -176,6 +176,9 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Nov 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-1
+- Improved SSL preferences in configuration file
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-0
 - DOC: Clarify IPv4 address / mask notation rules
 - CLEANUP: fix inconsistency between fd->iocb, proto->accept and accept()

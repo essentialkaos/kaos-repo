@@ -55,7 +55,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.6.9
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -186,6 +186,9 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Nov 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.9-1
+- Improved SSL preferences in configuration file
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.9-0
 - DOC: Updated 51Degrees readme.
 - BUG/MAJOR: stream: properly mark the server address as unset on connect retry
