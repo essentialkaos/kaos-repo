@@ -1,10 +1,16 @@
-#### Installation
+### Installation
 
+#### CentOS/RHEL 6.x
 ```
-yum install -y http://release.yum.kaos.io/i386/kaos-repo-6.8-0.el6.noarch.rpm
+[sudo] yum install -y https://yum.kaos.io/6/release/i386/kaos-repo-7.0-0.el6.noarch.rpm
 ```
 
-#### RPMLint Status
+#### CentOS/RHEL 7.x
+```
+[sudo] yum install -y https://yum.kaos.io/7/release/x86_64/kaos-repo-7.0-0.el7.noarch.rpm
+```
+
+### RPMLint Status
 
 | Repository | Status |
 |------------|--------|
