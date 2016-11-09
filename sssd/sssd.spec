@@ -119,7 +119,7 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.14.1
+Version:            1.14.2
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -976,6 +976,7 @@ fi
 %{_mandir}/man1/sss_ssh_authorizedkeys.1*
 %{_mandir}/man1/sss_ssh_knownhostsproxy.1*
 %{_mandir}/man5/sssd.conf.5*
+%{_mandir}/man5/sssd-secrets.5*
 %{_mandir}/man5/sssd-simple.5*
 %{_mandir}/man5/sssd-sudo.5*
 %{_mandir}/man5/sss_rpcidmapd.5*
@@ -1201,6 +1202,57 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.14.2-0
+- Several more regressions caused by cache refactoring to use qualified names
+  internally were fixed, including a regression that prevented the krb5_map_user
+  option from working correctly.
+- A regression when logging in with a smart card using the GDM login manager
+  was fixed
+- SSSD now removes the internal timestamp on startup cache when the persistent
+  cache is removed. This enables admins to follow their existing workflow of
+  just removing the persistent cache and start from a fresh slate
+- Several fixes to the sssd-secrets responder are present in this release
+- A bug in the autofs responder that prevented automounter maps from being
+  returned when sssd_be was offline was fixed
+- A similar bug in the NSS responder that prevented netgroups from being
+  returned when sssd_be was offline was fixed
+- Disabling the netlink integration can now be done with a new option
+  disable_netlink. Previously, the netlink integration could be disabled
+  with a sssd command line switch, which is being deprecated in this release.
+- The internal watchdog no longer kills sssd processes in case time shifts
+  during sssd runtime
+- The fail over code is able to cope with concurrent SRV resolution requests
+  better in this release
+- The proxy provider gained a new option proxy_max_children that allows
+  the administrator to control the maximum number of child helper processes
+  that authenticate users with auth_provider=proxy
+- The InfoPipe D-Bus responder exports the UUIDs of user and group objects
+  through a uniqueID property
+- The private pipe directory permissions were changed from 0700 to 0750.
+  The restrictive permissions we causing SELinux dac_override denials
+- The Python packages for python2 were renamed from python-package to
+  python2-package with backwards-compatible Provides and Obsoletes
+- The sssd-common subpackage contains a new manual page sssd-secrets(5)
+- The sssd-tools subpackage explicitly Requires /sbin/service on platforms
+  that don't support systemd in order to be able to restart sssd from
+  the sssctl tool
+- The kill_service option that was no longer useful after we moved from
+  in-process pings to watchdog was removed
+- The --disable-netlink sssd(8) command-line option was removed in favor
+  of [sssd] section option disable_netlink
+- The proxy_max_children option was added. Please see the highlights
+  section for more details.
+- The sssd-secrets responder gained a man page in this release.
+- Two new options containers_nest_level and max_secrets options
+  were added to the sssd-secrets responder. The former allows the
+  administrator to configure the maximum nesting level of secrets
+  containers, the latter allows the administrator to configure the
+  maximum number of secrets that can be stored. Please note that both
+  option apply to the local secrets provider only.
+- The sssd-ldap man page didn't specify different default for user and
+  group name LDAP attribute default for the AD provider. This documentation
+  bug was fixed.
+
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
 - The IPA provider now supports logins with enterprise principals (also known
   as additional UPN suffixes). This functionality also enabled Active Directory

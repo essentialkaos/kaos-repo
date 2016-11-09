@@ -6,7 +6,7 @@
 
 Summary:         Tool for building, changing, and combining infrastructure 
 Name:            terraform
-Version:         0.7.7
+Version:         0.7.9
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -72,6 +72,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.9-0
+- Updated to latest stable release
+
 * Thu Oct 27 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.7-0
 - Updated to latest stable release
 

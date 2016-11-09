@@ -44,7 +44,7 @@
 
 Summary:         VULnerability Scanner
 Name:            vuls
-Version:         0.1.6
+Version:         0.1.7
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv3
@@ -52,8 +52,6 @@ URL:             https://github.com/future-architect/vuls
 
 Source0:         %{name}-%{version}.tar.bz2
 Source1:         go-cve-dictionary.tar.bz2
-
-Patch1:          https://github.com/future-architect/vuls/pull/206.patch
 
 BuildRequires:   golang >= 1.6
 
@@ -74,10 +72,6 @@ Vulnerability scanner for Linux/FreeBSD, agentless, written in golang
 %setup -q
 
 %{__tar} xjfv %{SOURCE1}
-
-pushd github.com/future-architect/vuls
-%patch1 -p1
-popd
 
 %build
 mkdir -p .src
@@ -115,5 +109,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.1.7-0
+- Updated to latest stable release
+
 * Thu Oct 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.1.6-0
 - Initial build for kaos repository
