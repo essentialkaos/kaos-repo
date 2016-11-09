@@ -30,7 +30,7 @@
 
 Summary:            Tool for installing and managing Python packages
 Name:               pip
-Version:            8.1.2
+Version:            9.0.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -83,6 +83,16 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 9.0.1-0
+- Correct the deprecation message when not specifying a --format so that it
+  uses the correct setting name (format) rather than the incorrect one
+  (list_format).
+- Fix "pip check" to check all available distributions and not just the
+  local ones.
+- Fix a crash on non ASCII characters from lsb_release.
+- Fix an SyntaxError in an an used module of a vendored dependency.
+- Fix UNC paths on Windows.
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 8.1.2-0
 - Fix a regression on systems with uninitialized locale.
 - Use environment markers to filter packages before determining if a
