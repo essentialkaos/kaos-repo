@@ -30,7 +30,7 @@
 
 Summary:            Tool for checking common errors in RPM packages
 Name:               rpmlint
-Version:            1.8
+Version:            1.9
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
@@ -107,5 +107,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.9-0
+- Updated to latest release
+
 * Sat Nov 14 2015 Anton Novojilov <andy@essentialkaos.com> - 1.8-0
 - Initial build
