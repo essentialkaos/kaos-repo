@@ -57,11 +57,11 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             0.10.0.1
+Version:             0.10.1.0
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
-URL:                 http://incubator.apache.org/kafka/
+URL:                 https://kafka.apache.org
 
 Source0:             https://github.com/apache/%{name}/archive/%{version}.tar.gz
 Source1:             %{name}.init
@@ -169,6 +169,9 @@ fi
 ########################################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.1.0-0
+- Updated to latest release
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0.1-0
 - Updated to latest release
 
