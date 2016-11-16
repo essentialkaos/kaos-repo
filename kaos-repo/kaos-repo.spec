@@ -51,8 +51,8 @@ repository.
 
 %prep
 %setup -q
-%build
 
+%build
 %install
 rm -rf %{buildroot}
 
