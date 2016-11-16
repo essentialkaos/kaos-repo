@@ -25,12 +25,12 @@
 
 Summary:         ESSENTIAL KAOS Public Repo
 Name:            kaos-repo
-Version:         7.1
+Version:         7.2
 Release:         0%{?dist}
 License:         EKOL
 Vendor:          ESSENTIALKAOS
 Group:           Development/Tools
-URL:             http://essentialkaos.com
+URL:             https://github.com/essentialkaos/kaos-repo
 
 Source0:         %{name}-%{version}.tar.bz2
 
@@ -58,15 +58,12 @@ rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/yum.repos.d
 install -dm 755 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
-install -dm 755 %{buildroot}%{_loc_datarootdir}/kaos-repo
 
 install -pm 644 *.repo \
                 %{buildroot}%{_sysconfdir}/yum.repos.d/
 
 install -pm 644 RPM-GPG-KEY-ESSENTIALKAOS \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
-
-cp -r mirrors/*  %{buildroot}%{_loc_datarootdir}/kaos-repo/
 
 %post
 if [[ -f %{fmconfig} ]] ; then
@@ -98,11 +95,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/yum.repos.d/*
 %{_sysconfdir}/pki/rpm-gpg/*
-%{_loc_datarootdir}/kaos-repo/*
 
 ##########################################################################
 
 %changelog
+* Thu Nov 17 2016 Anton Novojilov <andy@essentialkaos.com> - 7.2-0
+- Removed mirrors
+
 * Thu Jun 16 2016 Anton Novojilov <andy@essentialkaos.com> - 7.1-0
 - Added abrt configuration
 

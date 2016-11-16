@@ -1,7 +1,6 @@
 [kaos-release]
 name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
 baseurl=https://yum.kaos.io/$releasever/release/$basearch
-mirrorlist=file:///usr/local/share/kaos-repo/$releasever/release/$basearch.mirrors
 failovermethod=priority
 priority=1
 enabled=1
@@ -11,7 +10,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 [kaos-release-i386]
 name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
 baseurl=https://yum.kaos.io/$releasever/release/i386
-mirrorlist=file:///usr/local/share/kaos-repo/$releasever/release/i386.mirrors
 failovermethod=priority
 priority=1
 enabled=0
@@ -21,7 +19,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 [kaos-release-i686]
 name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
 baseurl=https://yum.kaos.io/$releasever/release/i686
-mirrorlist=file:///usr/local/share/kaos-repo/$releasever/release/i686.mirrors
 failovermethod=priority
 priority=1
 enabled=0
@@ -31,7 +28,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 [kaos-release-x64]
 name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
 baseurl=https://yum.kaos.io/$releasever/release/x86_64
-mirrorlist=file:///usr/local/share/kaos-repo/$releasever/release/x86_64.mirrors
 failovermethod=priority
 priority=1
 enabled=0
@@ -41,7 +37,6 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 [kaos-release-src]
 name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
 baseurl=https://yum.kaos.io/$releasever/release/SRPMS
-mirrorlist=file:///usr/local/share/kaos-repo/$releasever/release/SRPMS.mirrors
 failovermethod=priority
 priority=1
 enabled=0
