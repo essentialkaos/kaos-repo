@@ -19,7 +19,7 @@ binary=${BINARY:-/usr/bin/redis-server}
 cli=${CLI:-/usr/bin/redis-cli}
 conf_file=${CONF_FILE:-/etc/redis.conf}
 
-kv[pid_file]=/var/run/redis/redis.pid
+kv[pid_file]="/var/run/redis/redis.pid"
 
 kv[user]="${USER:-redis}"
 kv[delay_start]=${DELAY_START:-15}
