@@ -1,0 +1,13 @@
+[Unit]
+Description=PostgreSQL {{MAJOR_VERSION}} database server
+After=syslog.target network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/postgresql{{PKG_VERSION}}.pid
+ExecStart=/etc/init.d/postgresql-{{MAJOR_VERSION}} start
+ExecStop=/etc/init.d/postgresql-{{MAJOR_VERSION}} stop
+ExecReload=/etc/init.d/postgresql-{{MAJOR_VERSION}} reload
+
+[Install]
+WantedBy=multi-user.target
