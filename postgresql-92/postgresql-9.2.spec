@@ -1069,11 +1069,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.19-1
-- Added systemd support
-
-* Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.19-0
+* Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.19-0
 - Updated to latest stable release
+- Added systemd support
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.18-0
 - Updated to latest stable release
