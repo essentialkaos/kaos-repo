@@ -52,7 +52,7 @@ Patch9:             %{name}-%{version}-fix-utf16-stringlists.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make autoconf automake libtool zlib-devel doxygen
+BuildRequires:      make gcc-c++ autoconf automake libtool zlib-devel doxygen
 
 Provides:           %{name} = %{version}-%{release}
 
