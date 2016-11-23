@@ -42,8 +42,7 @@ Version:           1.6.0
 Release:           0%{?dist}
 Group:             Development/Tools
 License:           GPLv2
-
-URL:               http://tsung.erlang-projects.org/
+URL:               http://tsung.erlang-projects.org
 
 Source:            http://tsung.erlang-projects.org/dist/%{name}-%{version}.tar.gz
 
@@ -51,8 +50,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     erlang make
 
-Requires:          erlang
-Requires:          perl(Template)
+Requires:          erlang perl(Template)
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -74,23 +72,23 @@ It also has support for SSL.
 %prep
 %setup -q
 iconv -f ISO-8859-1 -t UTF-8 CONTRIBUTORS > CONTRIBUTORS.new && \
-%{__touch} -r CONTRIBUTORS CONTRIBUTORS.new && \
-%{__mv} CONTRIBUTORS.new CONTRIBUTORS
-%{__sed} -i 's/\r$//' examples/*
+touch -r CONTRIBUTORS CONTRIBUTORS.new && \
+mv CONTRIBUTORS.new CONTRIBUTORS
+sed -i 's/\r$//' examples/*
 
 %build
 %configure
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
-%{__rm} -rf %{buildroot}%{_defaultdocdir}
+rm -rf %{buildroot}%{_defaultdocdir}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
