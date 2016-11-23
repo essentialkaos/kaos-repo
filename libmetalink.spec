@@ -12,7 +12,7 @@ Source0:         https://launchpad.net/libmetalink/trunk/%{name}-%{version}/+dow
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc expat-devel CUnit-devel
+BuildRequires:   make gcc expat-devel
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -54,9 +54,6 @@ find %{buildroot} -name *.la -delete
 
 %postun
 /sbin/ldconfig
-
-%check
-%{__make} check
 
 %clean
 rm -rf %{buildroot}
