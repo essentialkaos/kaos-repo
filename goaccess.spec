@@ -96,7 +96,7 @@ rm -rf %{buildroot}
 - Added the request query string to the W3C format
 - Added TLS/SSL support to the HTML real-time report
 - Changed browser classification for Google Cloud Clients
-- Changed 'Darwin' OS to be in ther own category
+- Changed 'Darwin' OS to be in their own category
 - Changed default W3C log format to use the URL path instead of full request
 - Changed HTML default number of items on each table to 7
 - Changed request parser to allow empty query strings
