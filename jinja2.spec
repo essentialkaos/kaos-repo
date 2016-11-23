@@ -1,6 +1,6 @@
 ########################################################################################
 
-%define package_name      jinja2
+%define package_name      jinja
 
 ########################################################################################
 
@@ -9,10 +9,10 @@ Name:           python-jinja
 Version:        2.8
 Release:        0%{?dist}
 License:        BSD 
-Group:          Development/Libraries 
-URL:            http://jinja.pocoo.org/
+Group:          Development/Libraries
+URL:            http://jinja.pocoo.org
 
-Source:         https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
+Source:         https://github.com/mitsuhiko/%{package_name}2/archive/%{version}.tar.gz
 
 BuildRequires:  python-devel python-setuptools
 

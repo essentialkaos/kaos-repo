@@ -30,7 +30,7 @@
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
-Version:            0.2.0
+Version:            0.3.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -87,6 +87,28 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
+- use qsort_r() instead of hand-made sorting - sort is now available for all
+  columns;
+- add filtration feature - it's possible to filter out unnecessary
+  tables/indexes/queries/etc;
+- add pg_stat_progress_vacuum (since 9.6);
+- add compatibility with pg-9.6 (pg_stat_activity) - added wait_event and
+  wait_event_type fields;
+- added autovacuum info: print number of user vacuum and autovac max worker
+  limit;
+- exclude (auto)vacuum tasks accounting in xact_maxtime field;
+- pg_stat_replication rewritten and now works on standbys too;
+- change long queries min age from 500ms to 0ms - now all queries are shown
+  in activity stats;
+- allow to use connection settings from libpq env vars;
+- pg_stat_statements: add local IO information context;
+- pg_stat_statements: use menu and switching; c, v, V hotkeys are removed
+  and X is used instead;
+- remove unnecessary WHERE from pg_stat_statements queries;
+- show details and hint if query has failed;
+- and many many fixes and internal refactoring.
+
 * Sat Dec 19 2015 Anton Novojilov <andy@essentialkaos.com> - 0.2.0-0
 - Added iostat
 - Added nicstat
