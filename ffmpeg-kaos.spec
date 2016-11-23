@@ -51,7 +51,7 @@ BuildRequires:     lame-devel libtheora-devel libvorbis-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel schroedinger-devel speex-devel
 BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
-BuildRequires:     opencv-devel librtmp-devel openssl-devel
+BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
 BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
@@ -153,6 +153,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-1
+- Fixed build dependencies
+
 * Sun Oct 30 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-0
 - Updated to version 3.2.0
 

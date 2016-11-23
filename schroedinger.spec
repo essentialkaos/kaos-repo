@@ -71,6 +71,7 @@ for the Dirac video codec.
 Summary:            Development files for schroedinger
 Group:              Development/Libraries
 
+Requires:           orc-devel >= 0.4.10
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
@@ -121,5 +122,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-1
+- Fixed dependencies for devel package
+
 * Wed Apr 20 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-0
 - Updated to latest stable release
