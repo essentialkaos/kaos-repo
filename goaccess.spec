@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.1
+Version:         1.1.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -37,7 +37,7 @@ for system administrators that require a visual server report on the fly.
 
 %install
 rm -rf %{buildroot}
-%{__make} DESTDIR=%{buildroot} install
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
@@ -55,6 +55,16 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- Added data metric's "unique" count on each panel to the JSON/HTML outputs.
+- Changed D3 bar charts to use .rangeBands and avoid extra outer padding.
+- Fixed mouseover offset position issue on D3 bar charts.
+- Fixed possible heap overflow when an invalid status code was parsed and
+  processed. This also ensures that only valid HTTP status codes are parsed
+  >=100 or <= 599.
+- Fixed sluggish D3 chart re-rendering by changing how x-axis labels are
+  displayed in the HTML report.
+
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1-0
 - Added a new layout to the HTML report and additional settings and changes
 - Added 'Amazon S3' Log Format to the list of predefined options
