@@ -35,7 +35,7 @@
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
 Version:           3.2
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               http://ffmpeg.org
@@ -55,7 +55,7 @@ BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
 BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
-Requires:          opencore-amr librtmp orc libvpx x264 unicap
+Requires:          opencore-amr librtmp orc libvpx x264
 Requires:          libxvidcore libva schroedinger
 
 Conflicts:         %{source_name}
