@@ -1,0 +1,11 @@
+[Unit]
+Description=HAProxy Load Balancer
+After=syslog.target network.target
+
+[Service]
+PIDFile=/var/run/haproxy.pid
+ExecStart=/etc/init.d/haproxy start
+ExecStop=/etc/init.d/haproxy stop
+
+[Install]
+WantedBy=multi-user.target

@@ -33,6 +33,7 @@
 %define __touch           %{_bin}/touch
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
+%define __sysctl          %{_bindir}/systemctl
 
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
@@ -48,14 +49,19 @@
 %define hp_homedir        %{_localstatedir}/lib/%{name}
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
+
 %define lua_ver           5.3.3
+%define pcre_ver          8.39
+%define libre_ver         2.5.0
+%define ncurses_ver       6.0
+%define readline_ver      6.3
 
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.9
-Release:           1%{?dist}
+Version:           1.6.10
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -64,21 +70,35 @@ Source0:           http://www.haproxy.org/download/1.6/src/%{name}-%{version}.ta
 Source1:           %{name}.init
 Source2:           %{name}.cfg
 Source3:           %{name}.logrotate
+Source4:           %{name}.sysconfig
+Source5:           %{name}.service
 
 Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
+Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
+Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
+Source14:          ftp://ftp.cwru.edu/pub/bash/readline-%{readline_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires(pre):     %{__groupadd}
-Requires(pre):     %{__useradd}
-Requires(post):    %{__chkconfig}
-Requires(preun):   %{__chkconfig}
-Requires(preun):   %{__service}
-Requires(postun):  %{__service}
+BuildRequires:     make gcc gcc-c++ zlib-devel
 
-BuildRequires:     make gcc pcre-devel openssl-devel readline-devel
+Requires:          setup >= 2.8.14-14 kaosv >= 2.10
 
-Requires:          pcre openssl readline setup >= 2.8.14-14
+%if 0%{?rhel} >= 7
+Requires(pre):     shadow-utils
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%else
+Requires(pre):     shadow-utils
+Requires(post):    chkconfig
+Requires(preun):   chkconfig
+Requires(preun):   initscripts
+Requires(postun):  initscripts
+%endif
+
+Provides:          %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -97,24 +117,80 @@ possibility not to expose fragile web servers to the net.
 %prep
 %setup -q
 
-%build
 %{__tar} xzvf %{SOURCE10}
+%{__tar} xzvf %{SOURCE11}
+%{__tar} xzvf %{SOURCE12}
+%{__tar} xzvf %{SOURCE13}
+%{__tar} xzvf %{SOURCE14}
+
+%build
+
+### DEPS BUILD START ###
+
+export BUILDDIR=$(pwd)
+
+# Static NCurses build
+pushd ncurses-%{ncurses_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+# Static readline build
+pushd readline-%{readline_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-static=true
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+# Static Lua build
+pushd lua-%{lua_ver}
+  mkdir build
+  %{__make} %{?_smp_mflags} MYCFLAGS="-I$BUILDDIR/readline-%{readline_ver}/build/include" \
+                            MYLDFLAGS="-L$BUILDDIR/readline-%{readline_ver}/build/lib -L$BUILDDIR/ncurses-%{ncurses_ver}/build/lib -lreadline -lncurses" \
+                            linux
+  %{__make} %{?_smp_mflags} INSTALL_TOP=$(pwd)/build install
+popd
+
+# Static LibreSSL build
+pushd libressl-%{libre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+# Static PCRE build
+pushd pcre-%{pcre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no --enable-utf8 --enable-jit
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+### DEPS BUILD END ###
 
 %ifarch %ix86 x86_64
 use_regparm="USE_REGPARM=1"
 %endif
 
-pushd lua-%{lua_ver}
-%{__make} %{?_smp_mflags} linux
-%{__make} %{?_smp_mflags} INSTALL_TOP=../../lua53 install
-popd
-
-%{__make} %{?_smp_mflags} CPU="generic" TARGET="linux26" ${use_regparm} \
-  USE_OPENSSL=1 \
-  USE_PCRE=1 \
-  USE_LUA=1 \
-  LUA_LIB=./lua53/lib/ \
-  LUA_INC=./lua53/include
+%{__make} %{?_smp_mflags} CPU="generic" \
+                          TARGET="linux26" \
+                          USE_OPENSSL=1 \
+                          SSL_INC=libressl-%{libre_ver}/build/include \
+                          SSL_LIB=libressl-%{libre_ver}/build/lib \
+                          USE_PCRE_JIT=1 \
+                          USE_STATIC_PCRE=1 \
+                          PCRE_INC=pcre-%{pcre_ver}/build/include \
+                          PCRE_LIB=pcre-%{pcre_ver}/build/lib \
+                          USE_LUA=1 \
+                          LUA_INC=lua-%{lua_ver}/build/include \
+                          LUA_LIB=lua-%{lua_ver}/build/lib \
+                          USE_ZLIB=1 \
+                          ADDLIB="-ldl -lrt" \
+                          ${use_regparm}
 
 pushd contrib/halog
   %{__make} halog
@@ -129,10 +205,16 @@ rm -rf %{buildroot}
 install -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 install -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{name}.cfg
 install -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pDm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 install -dm 0755 %{buildroot}%{hp_homedir}
 install -dm 0755 %{buildroot}%{hp_datadir}
 install -dm 0755 %{buildroot}%{_bindir}
+
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
+%endif
 
 install -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
 install -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
@@ -153,18 +235,31 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %post
-%{__chkconfig} --add %{name}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
 
 %preun
 if [[ $1 -eq 0 ]]; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+%else
   %{__service} %{name} stop >/dev/null 2>&1
-  %{__chkconfig} --del %{name}
+  %{__chkconfig} --del %{name} &>/dev/null || :
+%endif
 fi
 
 %postun
-if [[ $1 -ge 1 ]]; then
-  %{__service} %{name} condrestart >/dev/null 2>&1 || :
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
 fi
+%endif
 
 ###############################################################################
 
@@ -176,8 +271,12 @@ fi
 %dir %{hp_confdir}
 %config(noreplace) %{hp_confdir}/%{name}.cfg
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{hp_datadir}/*
 %{_initrddir}/%{name}
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%endif
 %{_sbindir}/%{name}
 %{_bindir}/halog
 %{_mandir}/man1/%{name}.1.gz
@@ -186,6 +285,11 @@ fi
 ###############################################################################
 
 %changelog
+* Fri Nov 25 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.10-0
+- Init script rewritten with kaosv usage
+- Added systemd support
+- Added LibreSSL and PCRE usage
+
 * Tue Nov 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.9-1
 - Improved SSL preferences in configuration file
 

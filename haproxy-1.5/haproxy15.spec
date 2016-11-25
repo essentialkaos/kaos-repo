@@ -33,6 +33,7 @@
 %define __touch           %{_bin}/touch
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
+%define __sysctl          %{_bindir}/systemctl
 
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
@@ -49,33 +50,49 @@
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
 
+%define pcre_ver          8.39
+%define libre_ver         2.5.0
+
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.5.18
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           GPLv2+
-URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
+URL:               http://haproxy.1wt.eu
 
 Source0:           http://www.haproxy.org/download/1.5/src/%{name}-%{version}.tar.gz
 Source1:           %{name}.init
 Source2:           %{name}.cfg
 Source3:           %{name}.logrotate
+Source4:           %{name}.sysconfig
+Source5:           %{name}.service
+
+Source10:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
+Source11:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires(pre):     %{__groupadd}
-Requires(pre):     %{__useradd}
-Requires(post):    %{__chkconfig}
-Requires(preun):   %{__chkconfig}
-Requires(preun):   %{__service}
-Requires(postun):  %{__service}
+BuildRequires:     make gcc gcc-c++ zlib-devel
 
-BuildRequires:     make gcc pcre-devel
+Requires:          setup >= 2.8.14-14 kaosv >= 2.10
 
-Requires:          pcre setup >= 2.8.14-14
+%if 0%{?rhel} >= 7
+Requires(pre):     shadow-utils
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%else
+Requires(pre):     shadow-utils
+Requires(post):    chkconfig
+Requires(preun):   chkconfig
+Requires(preun):   initscripts
+Requires(postun):  initscripts
+%endif
+
+Provides:          %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -94,12 +111,47 @@ possibility not to expose fragile web servers to the net.
 %prep
 %setup -q
 
+%{__tar} xzvf %{SOURCE10}
+%{__tar} xzvf %{SOURCE11}
+
 %build
+
+### DEPS BUILD START ###
+
+# Static LibreSSL build
+pushd libressl-%{libre_ver}
+  mkdir build
+  ./configure  --prefix=$(pwd)/build --enable-shared=no
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+# Static PCRE build
+pushd pcre-%{pcre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no --enable-utf8 --enable-jit
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+### DEPS BUILD END ###
+
 %ifarch %ix86 x86_64
 use_regparm="USE_REGPARM=1"
 %endif
 
-%{__make} %{?_smp_mflags} CPU="generic" TARGET="linux26" USE_PCRE=1 ${use_regparm}
+%{__make} %{?_smp_mflags} CPU="generic" \
+                          TARGET="linux26" \
+                          USE_OPENSSL=1 \
+                          SSL_INC=libressl-%{libre_ver}/build/include \
+                          SSL_LIB=libressl-%{libre_ver}/build/lib \
+                          USE_PCRE_JIT=1 \
+                          USE_STATIC_PCRE=1 \
+                          PCRE_INC=pcre-%{pcre_ver}/build/include \
+                          PCRE_LIB=pcre-%{pcre_ver}/build/lib \
+                          USE_ZLIB=1 \
+                          ADDLIB="-ldl -lrt" \
+                          ${use_regparm}
 
 pushd contrib/halog
   %{__make} halog
@@ -111,25 +163,33 @@ rm -rf %{buildroot}
 %{__make} install-bin DESTDIR=%{buildroot} PREFIX=%{_prefix}
 %{__make} install-man DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
-%{__install} -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-%{__install} -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{name}.cfg
-%{__install} -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 
-%{__install} -dm 0755 %{buildroot}%{hp_homedir}
-%{__install} -dm 0755 %{buildroot}%{hp_datadir}
-%{__install} -dm 0755 %{buildroot}%{_bindir}
+install -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
+install -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{name}.cfg
+install -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pDm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
-%{__install} -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
-%{__install} -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
+install -dm 0755 %{buildroot}%{hp_homedir}
+install -dm 0755 %{buildroot}%{hp_datadir}
+install -dm 0755 %{buildroot}%{_bindir}
+
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
+%endif
+
+install -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
+install -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
 
 for file in $(find . -type f -name '*.txt') ; do
   iconv -f ISO-8859-1 -t UTF-8 -o $file.new $file && \
-  %{__touch} -r $file $file.new && \
-  %{__mv} $file.new $file
+  touch -r $file $file.new && \
+  mv $file.new $file
 done
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %pre
 if [[ $1 -eq 1 ]] ; then
@@ -138,18 +198,31 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %post
-%{__chkconfig} --add %{name}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
 
 %preun
 if [[ $1 -eq 0 ]]; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+%else
   %{__service} %{name} stop >/dev/null 2>&1
   %{__chkconfig} --del %{name}
+%endif
 fi
 
 %postun
-if [[ $1 -ge 1 ]]; then
-  %{__service} %{name} condrestart >/dev/null 2>&1 || :
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
 fi
+%endif
 
 ###############################################################################
 
@@ -163,11 +236,15 @@ fi
 %doc examples/haproxy.cfg
 %doc examples/tarpit.cfg
 %dir %{hp_datadir}
-%dir %{hp_datadir}/*
 %dir %{hp_confdir}
 %config(noreplace) %{hp_confdir}/%{name}.cfg
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{_initrddir}/%{name}
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%endif
+%{hp_datadir}/*
 %{_sbindir}/%{name}
 %{_bindir}/halog
 %{_mandir}/man1/%{name}.1.gz
@@ -176,6 +253,11 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-2
+- Init script rewritten with kaosv usage
+- Added systemd support
+- Added LibreSSL and PCRE usage
+
 * Tue Nov 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-1
 - Improved SSL preferences in configuration file
 

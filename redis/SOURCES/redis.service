@@ -3,7 +3,6 @@ Description=Redis
 After=syslog.target network.target
 
 [Service]
-Type=simple
 PIDFile=/var/run/redis/redis.pid
 ExecStart=/etc/init.d/redis start
 ExecStop=/etc/init.d/redis stop

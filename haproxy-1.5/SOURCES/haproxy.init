@@ -1,123 +1,162 @@
-#!/bin/sh
-#
+#!/bin/bash
+
 # chkconfig: - 85 15
 # description: HA-Proxy is a TCP/HTTP reverse proxy which is particularly suited \
 #              for high availability environments.
 # processname: haproxy
-# config: /etc/haproxy/haproxy.cfg
-# pidfile: /var/run/haproxy.pid
+# config:      /etc/haproxy/haproxy.cfg
+# pidfile:     /var/run/haproxy.pid
 
-# Script Author: Simon Matter <simon.matter@invoca.ch>
-# Version: 2004060600
+###############################################################################
 
-# Source function library.
-if [ -f /etc/init.d/functions ]; then
-  . /etc/init.d/functions
-elif [ -f /etc/rc.d/init.d/functions ] ; then
-  . /etc/rc.d/init.d/functions
-else
-  exit 0
-fi
+source /etc/init.d/kaosv
 
-# Source networking configuration.
-. /etc/sysconfig/network
+###############################################################################
 
-# Check that networking is up.
-[ ${NETWORKING} = "no" ] && exit 0
+kv[prog_name]="haproxy"
 
-# This is our service name
-BASENAME=`basename $0`
-if [ -L $0 ]; then
-  BASENAME=`find $0 -name $BASENAME -printf %l`
-  BASENAME=`basename $BASENAME`
-fi
+kv.readSysconfig
 
-[ -f /etc/$BASENAME/$BASENAME.cfg ] || exit 1
+binary=${BINARY:-/usr/sbin/haproxy}
+conf_file=${CONF_FILE:-/etc/haproxy/haproxy.cfg}
 
-RETVAL=0
+kv[pid_file]="/var/run/haproxy.pid"
 
-start() {
-  /usr/sbin/$BASENAME -c -q -f /etc/$BASENAME/$BASENAME.cfg
-  if [ $? -ne 0 ]; then
-    echo "Errors found in configuration file, check it with '$BASENAME check'."
-    return 1
-  fi
+kv[delay_start]=${DELAY_START:-15}
+kv[delay_stop]=${DELAY_STOP:-120}
 
-  echo -n "Starting $BASENAME: "
-  daemon /usr/sbin/$BASENAME -D -f /etc/$BASENAME/$BASENAME.cfg -p /var/run/$BASENAME.pid
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/$BASENAME
-  return $RETVAL
+kv[search_pattern]="$binary -D -f $conf_file -p ${kv[pid_file]}"
+
+###############################################################################
+
+kv.addCommand "start"    "Start ${kv[prog_name]}"
+kv.addCommand "stop"     "Stop ${kv[prog_name]}"
+kv.addCommand "restart"  "Restart (stop+start) ${kv[prog_name]}"    "restart"
+kv.addCommand "status"   "Show current status of ${kv[prog_name]}"
+kv.addCommand "reload"   "Reload configuration files"               "reload"
+kv.addCommand "check"    "Validate config"                          "check"
+
+kv.addCommandVars "stop" "force"
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "start" "preStartServiceHandler" "pre"
+kv.addHandler "stop"  "stopServiceHandler"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist"
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable"
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
 }
 
-stop() {
-  echo -n "Shutting down $BASENAME: "
-  killproc $BASENAME -USR1
-  RETVAL=$?
-  echo
-  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/$BASENAME
-  [ $RETVAL -eq 0 ] && rm -f /var/run/$BASENAME.pid
-  return $RETVAL
-}
-
-restart() {
-  /usr/sbin/$BASENAME -c -q -f /etc/$BASENAME/$BASENAME.cfg
-  if [ $? -ne 0 ]; then
-    echo "Errors found in configuration file, check it with '$BASENAME check'."
-    return 1
-  fi
-  stop
-  start
-}
+###############################################################################
 
 reload() {
-  /usr/sbin/$BASENAME -c -q -f /etc/$BASENAME/$BASENAME.cfg
-  if [ $? -ne 0 ]; then
-    echo "Errors found in configuration file, check it with '$BASENAME check'."
-    return 1
+  if ! check ; then
+    return $ACTION_ERROR
   fi
-  /usr/sbin/$BASENAME -D -f /etc/$BASENAME/$BASENAME.cfg -p /var/run/$BASENAME.pid -sf $(cat /var/run/$BASENAME.pid)
+
+  kv.showProcessMessage "Reloading config"
+
+  $binary -D -f "$conf_file" -p "${kv[pid_file]}" -sf $(cat "${kv[pid_file]}") &> /dev/null
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  return $status
 }
 
 check() {
-  /usr/sbin/$BASENAME -c -q -V -f /etc/$BASENAME/$BASENAME.cfg
+  kv.showProcessMessage "Checking ${kv[prog_name]} config"
+
+  testServiceConfig true
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  if [[ $status -ne 0 ]] ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+
+  return $ACTION_OK
 }
 
-rhstatus() {
-  status $BASENAME
+restart() {
+  if check ; then
+    kv.restart
+  fi
+
+  return $?
 }
 
-condrestart() {
-  [ -e /var/lock/subsys/$BASENAME ] && restart || :
+###############################################################################
+
+preStartServiceHandler() {
+  if ! testServiceConfig true ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
 }
 
-# See how we were called.
-case "$1" in
-  start)
-    start
-    ;;
-  stop)
-    stop
-    ;;
-  restart)
-    restart
-    ;;
-  reload)
-    reload
-    ;;
-  condrestart)
-    condrestart
-    ;;
-  status)
-    rhstatus
-    ;;
-  check)
-    check
-    ;;
-  *)
-    echo $"Usage: $BASENAME {start|stop|restart|reload|condrestart|status|check}"
-    exit 1
-esac
- 
-exit $?
+startServiceHandler() {
+
+  $binary -D -f "$conf_file" -p "${kv[pid_file]}"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_USR1"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess "$pid"
+    fi
+
+    return $ACTION_ERROR
+  fi
+}
+
+###############################################################################
+
+testServiceConfig() {
+  local quiet="$1"
+
+  if [[ $quiet ]] ; then
+    $binary -c -q -f "$conf_file" &> /dev/null
+  else
+    $binary -c -V -f "$conf_file"
+  fi
+
+  local status=$?
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@

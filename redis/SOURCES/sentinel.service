@@ -3,7 +3,6 @@ Description=Redis Sentinel
 After=syslog.target network.target
 
 [Service]
-Type=simple
 PIDFile=/var/run/redis/sentinel.pid
 ExecStart=/etc/init.d/sentinel start
 ExecStop=/etc/init.d/sentinel stop
