@@ -6,7 +6,7 @@
 
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
-Version:         0.7.0
+Version:         0.7.1
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2

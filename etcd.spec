@@ -6,7 +6,7 @@
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.0.14
+Version:         3.0.15
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
