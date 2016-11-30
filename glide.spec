@@ -18,6 +18,8 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   golang >= 1.7
 
+Requires:        golang
+
 Provides:        %{name} = %{version}-%{release}
 
 ###############################################################################
