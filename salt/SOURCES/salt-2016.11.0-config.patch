@@ -1,6 +1,6 @@
-diff -urN salt-2016.3.3-orig/conf/master salt-2016.3.3/conf/master
---- salt-2016.3.3-orig/conf/master	2016-09-05 18:52:31.818774970 -0400
-+++ salt-2016.3.3/conf/master	2016-09-05 18:54:21.000000000 -0400
+diff -urN salt-2016.11.0-orig/conf/master salt-2016.11.0/conf/master
+--- salt-2016.11.0-orig/conf/master	2016-12-01 05:52:11.132924045 -0500
++++ salt-2016.11.0/conf/master	2016-12-01 05:58:04.000000000 -0500
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -19,13 +19,16 @@ diff -urN salt-2016.3.3-orig/conf/master salt-2016.3.3/conf/master
  
  # The root directory prepended to these options: pki_dir, cachedir,
  # sock_dir, log_file, autosign_file, autoreject_file, extension_modules,
-@@ -43,12 +43,12 @@
+@@ -43,7 +43,7 @@
  #conf_file: /etc/salt/master
  
  # Directory used to store public key data:
 -#pki_dir: /etc/salt/pki/master
 +pki_dir: /etc/salt/pki/master
  
+ # Key cache. Increases master speed for large numbers of accepted
+ # keys. Available options: 'sched'. (Updates on a fixed schedule.)
+@@ -55,7 +55,7 @@
  # Directory to store job and cache data:
  # This directory may contain sensitive data and should be protected accordingly.
  #
@@ -34,7 +37,7 @@ diff -urN salt-2016.3.3-orig/conf/master salt-2016.3.3/conf/master
  
  # Directory for custom modules. This directory can contain subdirectories for
  # each of Salt's module types such as "runners", "output", "wheel", "modules",
-@@ -107,7 +107,7 @@
+@@ -114,7 +114,7 @@
  #cli_summary: False
  
  # Set the directory used to hold unix sockets:
@@ -43,7 +46,16 @@ diff -urN salt-2016.3.3-orig/conf/master salt-2016.3.3/conf/master
  
  # The master can take a while to start up when lspci and/or dmidecode is used
  # to populate the grains for the master. Enable if you want to see GPU hardware
-@@ -801,10 +801,10 @@
+@@ -531,7 +531,7 @@
+ #
+ # Prior to changing this value, the master should be stopped and all Salt
+ # caches should be cleared.
+-#hash_type: sha256
++hash_type: sha256
+ 
+ # The buffer size in the file server can be adjusted here:
+ #file_buffer_size: 1048576
+@@ -829,10 +829,10 @@
  #syndic_master_port: 4506
  
  # PID file of the syndic daemon:
@@ -56,9 +68,9 @@ diff -urN salt-2016.3.3-orig/conf/master salt-2016.3.3/conf/master
  
  # The behaviour of the multi-syndic when connection to a master of masters failed.
  # Can specify ``random`` (default) or ``ordered``. If set to ``random``, masters
-diff -urN salt-2016.3.3-orig/conf/minion salt-2016.3.3/conf/minion
---- salt-2016.3.3-orig/conf/minion	2016-09-05 18:52:31.816774970 -0400
-+++ salt-2016.3.3/conf/minion	2016-09-05 18:55:57.000000000 -0400
+diff -urN salt-2016.11.0-orig/conf/minion salt-2016.11.0/conf/minion
+--- salt-2016.11.0-orig/conf/minion	2016-12-01 05:52:11.130924045 -0500
++++ salt-2016.11.0/conf/minion	2016-12-01 06:03:30.000000000 -0500
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
@@ -68,7 +80,7 @@ diff -urN salt-2016.3.3-orig/conf/minion salt-2016.3.3/conf/minion
  
  # Set the location of the salt master server. If the master server cannot be
  # resolved, then the minion will fail to start.
-@@ -81,7 +81,7 @@
+@@ -83,7 +83,7 @@
  #sudo_user: root
  
  # Specify the location of the daemon process ID file.
@@ -77,16 +89,7 @@ diff -urN salt-2016.3.3-orig/conf/minion salt-2016.3.3/conf/minion
  
  # The root directory prepended to these options: pki_dir, cachedir, log_file,
  # sock_dir, pidfile.
-@@ -91,7 +91,7 @@
- #conf_file: /etc/salt/minion
- 
- # The directory to store the pki information in
--#pki_dir: /etc/salt/pki/minion
-+pki_dir: /etc/salt/pki/minion
- 
- # Explicitly declare the id for this minion to use, if left commented the id
- # will be the hostname as returned by the python call: socket.getfqdn()
-@@ -125,7 +125,7 @@
+@@ -127,7 +127,7 @@
  #
  # Where cache data goes.
  # This data may contain sensitive data and should be protected accordingly.
@@ -95,7 +98,7 @@ diff -urN salt-2016.3.3-orig/conf/minion salt-2016.3.3/conf/minion
  
  # Append minion_id to these directories.  Helps with
  # multiple proxies and minions running on the same machine.
-@@ -144,7 +144,7 @@
+@@ -146,7 +146,7 @@
  #cache_jobs: False
  
  # Set the directory used to hold unix sockets.
@@ -104,7 +107,16 @@ diff -urN salt-2016.3.3-orig/conf/minion salt-2016.3.3/conf/minion
  
  # Set the default outputter used by the salt-call command. The default is
  # "nested".
-@@ -621,7 +621,7 @@
+@@ -580,7 +580,7 @@
+ #
+ # Warning: Prior to changing this value, the minion should be stopped and all
+ # Salt caches should be cleared.
+-#hash_type: sha256
++hash_type: sha256
+ 
+ # The Salt pillar is searched for locally if file_client is set to local. If
+ # this is the case, and pillar data is defined, then the pillar_roots need to
+@@ -652,7 +652,7 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #
