@@ -138,7 +138,7 @@ Requires:           %{name}-ipa = %{version}-%{release}
 Requires:           %{name}-krb5 = %{version}-%{release}
 Requires:           %{name}-ldap = %{version}-%{release}
 Requires:           %{name}-proxy = %{version}-%{release}
-Requires:           kaosv >= 2.8
+Requires:           kaosv >= 2.12
 
 %if (0%{?with_python3} == 1)
 Requires:           python3-sssdconfig = %{version}-%{release}
@@ -907,6 +907,8 @@ fi
 %{_sbindir}/%{name}
 %if (0%{?use_systemd} == 1)
 %{_unitdir}/%{name}.service
+%{_unitdir}/%{name}-secrets.service
+%{_unitdir}/%{name}-secrets.socket
 %else
 %{_initrddir}/%{name}
 %endif
