@@ -567,7 +567,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 
 %{_sysconfdir}/gdbinit.d
 %{_sysconfdir}/prelink.conf.d
+
+%if 0%{?rhel} > 6 || 0%{?fedora} > 0
 %{_rpmconfigdir}/macros.d/macros.golang
+%else
+%{_sysconfdir}/rpm/macros.golang
+%endif
 
 %files -f go-src.list src
 %defattr(-,root,root,-)
