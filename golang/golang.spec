@@ -486,15 +486,12 @@ cp -a %{SOURCE10} %{buildroot}%{_sysconfdir}/gdbinit.d/%{name}.gdb
 mkdir -p %{buildroot}%{_sysconfdir}/prelink.conf.d
 cp -a %{SOURCE11} %{buildroot}%{_sysconfdir}/prelink.conf.d/%{name}.conf
 
-mkdir -p %{buildroot}%{_rpmconfigdir}/macros.d
-cp -a %{SOURCE12} %{buildroot}%{_rpmconfigdir}/macros.d/macros.%{name}
-
 %if 0%{?rhel} > 6 || 0%{?fedora} > 0
 mkdir -p %{buildroot}%{_rpmconfigdir}/macros.d
-cp -av %{SOURCE12} %{buildroot}%{_rpmconfigdir}/macros.d/macros.golang
+cp -av %{SOURCE12} %{buildroot}%{_rpmconfigdir}/macros.d/macros.%{name}
 %else
 mkdir -p %{buildroot}%{_sysconfdir}/rpm
-cp -av %{SOURCE12} %{buildroot}%{_sysconfdir}/rpm/macros.golang
+cp -av %{SOURCE12} %{buildroot}%{_sysconfdir}/rpm/macros.%{name}
 %endif
 
 ########################################################################################
