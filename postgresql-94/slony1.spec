@@ -70,7 +70,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
-BuildRequires:     byacc flex chrpath
+BuildRequires:     make gcc byacc flex chrpath
 
 Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.10
 
@@ -175,7 +175,7 @@ fi
 %preun
 if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
-  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} --no-reload disable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
   %{__sysctl} stop %{realname}-%{pg_maj_ver}.service &>/dev/null || :
 %else
   %{__service} %{realname}-%{pg_maj_ver} stop &>/dev/null || :

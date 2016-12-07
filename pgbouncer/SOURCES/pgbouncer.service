@@ -1,0 +1,12 @@
+[Unit]
+Description=Redis
+After=syslog.target network.target
+
+[Service]
+PIDFile=/var/run/pgbouncer/pgbouncer.pid
+ExecStart=/etc/init.d/pgbouncer start
+ExecStop=/etc/init.d/pgbouncer stop
+ExecReload=/etc/init.d/pgbouncer reload
+
+[Install]
+WantedBy=multi-user.target
