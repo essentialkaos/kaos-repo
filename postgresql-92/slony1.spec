@@ -141,11 +141,12 @@ install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{realname}-%{pg_maj_ver}
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
-install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
+install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
+sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
 %endif
 
-%{__sed} -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
-%{__sed} -i 's/{{PG_HIGH_VERSION}}/%{pg_high_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
+sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
+sed -i 's/{{PG_HIGH_VERSION}}/%{pg_high_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 
 cd tools
 %{__make} %{?_smp_mflags} DESTDIR=%{buildroot} install

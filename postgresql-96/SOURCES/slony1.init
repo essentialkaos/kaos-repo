@@ -34,7 +34,7 @@ clustername="${SLONCLUSTERNAME:-sloncluster}"
 [[ -z $conninfo ]] && conninfo="host=/tmp port=5432 user=slony"
 
 kv[user]="$user"
-kv[pid_file]="$pid_dir/slon.pid"
+kv[pid_file]="$pid_dir/slon_${PG_MAJOR_VERSION}.pid"
 kv[log]="$log_dir/slonystartup.log"
 
 ###############################################################################

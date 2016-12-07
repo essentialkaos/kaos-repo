@@ -4,8 +4,8 @@ After=syslog.target network.target
 
 [Service]
 PIDFile=/var/run/slon.pid
-ExecStart=/etc/init.d/slony1 start
-ExecStop=/etc/init.d/slony1 stop
+ExecStart=/etc/init.d/slony1-{{PG_MAJOR_VERSION}} start
+ExecStop=/etc/init.d/slony1-{{PG_MAJOR_VERSION}} stop
 
 [Install]
 WantedBy=multi-user.target
