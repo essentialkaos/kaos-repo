@@ -4,6 +4,10 @@
 
 ###############################################################################
 
+%global with_tests   %{?_with_tests:1}%{!?_with_tests:0}
+
+###############################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -105,7 +109,12 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
+%ifarch %ix86
+sed -i '/integration\/logging/d' tests/test_helper.tcl
+%{__make} %{?_smp_mflags} 32bit MALLOC=jemalloc
+%else
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
+%endif
 
 %install
 rm -rf %{buildroot}
@@ -148,7 +157,10 @@ ln -sf %{_bindir}/%{name}-server %{buildroot}%{_bindir}/%{name}-sentinel
 ln -sf %{_bindir}/%{name}-server %{buildroot}%{_sbindir}/%{name}-server
 
 %check
-%{__make} test
+%if 0%{?with_tests}
+%{__make} %{?_smp_mflags} test
+%{__make} %{?_smp_mflags} test-sentinel
+%endif
 
 %pre
 getent group %{name} &> /dev/null || groupadd -r %{name} &> /dev/null
