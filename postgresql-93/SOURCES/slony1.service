@@ -1,0 +1,11 @@
+[Unit]
+Description=Slony-I
+After=syslog.target network.target
+
+[Service]
+PIDFile=/var/run/slon.pid
+ExecStart=/etc/init.d/slony1 start
+ExecStop=/etc/init.d/slony1 stop
+
+[Install]
+WantedBy=multi-user.target

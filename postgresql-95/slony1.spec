@@ -1,9 +1,5 @@
 ########################################################################################
 
-# rpmbuilder:qa-rpaths 0x0001,0x0002
-
-########################################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -40,6 +36,7 @@
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
+%define __sysctl          %{_bindir}/systemctl
 
 ########################################################################################
 
@@ -57,7 +54,7 @@
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
 Version:           2.2.5
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Applications/Databases
 URL:               http://main.slony.info
@@ -66,15 +63,20 @@ Source0:           http://main.slony.info/downloads/%{maj_ver}/source/%{realname
 Source2:           filter-requires-perl-Pg.sh
 Source3:           %{realname}.init
 Source4:           %{realname}.sysconfig
+Source5:           %{realname}.service
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
-BuildRequires:     byacc flex openssl-devel
+BuildRequires:     byacc flex chrpath
 
-Requires:          initscripts postgresql%{pg_maj_ver}-server perl-DBD-Pg
+Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.10
+
+%if 0%{?rhel} >= 7
+Requires:          systemd
+%endif
 
 ########################################################################################
 
@@ -137,6 +139,11 @@ chmod 644 COPYRIGHT UPGRADING SAMPLE RELEASE
 install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{realname}-%{pg_maj_ver}
 
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
+%endif
+
 %{__sed} -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 %{__sed} -i 's/{{PG_HIGH_VERSION}}/%{pg_high_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 
@@ -147,17 +154,40 @@ rm -f %{buildroot}%{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf-sampl
 rm -f %{buildroot}%{_datadir}/pgsql/*.sql
 rm -f %{buildroot}%{_libdir}/%{realname}_funcs.so
 
+chrpath --delete %{buildroot}%{pg_dir}/bin/slonik
+chrpath --delete %{buildroot}%{pg_dir}/bin/slon
+chrpath --delete %{buildroot}%{pg_dir}/bin/slony_logshipper
+chrpath --delete %{buildroot}%{pg_dir}/lib/slony1_funcs.%{version}.so
+
 %clean
 rm -rf %{buildroot}
 
 %post
-%{__chkconfig} --add %{realname}-%{pg_maj_ver}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{realname}-%{pg_maj_ver} &>/dev/null || :
+%endif
+fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{realname}-%{pg_maj_ver} stop >/dev/null 2>&1
-  %{__chkconfig} --del %{realname}-%{pg_maj_ver}
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{realname}-%{pg_maj_ver}.service &>/dev/null || :
+%else
+  %{__service} %{realname}-%{pg_maj_ver} stop &>/dev/null || :
+  %{__chkconfig} --del %{realname}-%{pg_maj_ver} &>/dev/null || :
+%endif
 fi
+
+%postun
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
+%endif
 
 ########################################################################################
 
@@ -171,10 +201,16 @@ fi
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon.conf
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf
 %attr(755,root,root) %{_initrddir}/%{realname}-%{pg_maj_ver}
+%if 0%{?rhel} >= 7
+%attr(755,root,root) %{_unitdir}/%{realname}-%{pg_maj_ver}.service
+%endif
 
 ########################################################################################
 
 %changelog
+* Wed Dec 07 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.5-1
+- Added systemd support
+
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.5-0
 - Bug 359 dditional parameter to GetConfigOptionByName() in PG 9.6
 - Misc other fixes to compile against PG 9.6
