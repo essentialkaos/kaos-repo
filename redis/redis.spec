@@ -38,8 +38,8 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.5
-Release:            1%{?dist}
+Version:            3.2.6
+Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
 URL:                http://redis.io
@@ -59,16 +59,16 @@ Patch1:             sentinel-config.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc
+BuildRequires:      make gcc tcl
 
 Requires:           %{name}-cli >= %{version}
 Requires:           logrotate kaosv >= 2.10
 
 %if 0%{?rhel} >= 7
-Requires(pre):            shadow-utils
-Requires(post):           systemd
-Requires(preun):          systemd
-Requires(postun):         systemd
+Requires(pre):      shadow-utils
+Requires(post):     systemd
+Requires(preun):    systemd
+Requires(postun):   systemd
 %else
 Requires(pre):      shadow-utils
 Requires(post):     chkconfig
@@ -108,7 +108,7 @@ Client for working with Redis from console
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{__make} install PREFIX=%{buildroot}%{_prefix}
 
@@ -146,6 +146,9 @@ install -dm 755 %{buildroot}%{_sbindir}
 
 ln -sf %{_bindir}/%{name}-server %{buildroot}%{_bindir}/%{name}-sentinel
 ln -sf %{_bindir}/%{name}-server %{buildroot}%{_sbindir}/%{name}-server
+
+%check
+%{__make} test
 
 %pre
 getent group %{name} &> /dev/null || groupadd -r %{name} &> /dev/null
@@ -188,7 +191,7 @@ fi
 %endif
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
@@ -229,6 +232,15 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Dec 07 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
+- A bug with BITFIELD that may cause the bitmap corruption when setting offsets
+  larger than the current string size.
+- A GEORADIUS bug that may happen when using very large radius lengths, in
+  the range of 10000km or alike, due to wrong bounding box calculation.
+- A bug with Redis Cluster which crashes when reading a nodes configuration
+  file with zero bytes at the end, which sometimes happens with certain ext4
+  configurations after a system crash.
+
 * Fri Nov 18 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-1
 - Using bundled jemalloc
 
