@@ -69,6 +69,8 @@ warn_count=0
 main() {
   tmp_file=$(mktemp)
 
+  rpmlint -V
+
   if [[ -f $1 && -s $1 ]] ; then
     rpmlint_conf="$1"
   fi

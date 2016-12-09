@@ -6,15 +6,17 @@ Version:              1.4.4
 Release:              0%{?dist}
 License:              GPL
 Group:                Applications/Multimedia
-URL:                  http://www.iki.fi/tjko/projects.html
+URL:                  https://github.com/tjko/jpegoptim
 
-Source:               http://www.kokkonen.net/tjko/src/%{name}-%{version}.tar.gz
+Source:               https://github.com/tjko/%{name}/archive/RELEASE.%{version}.tar.gz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc >= 3.0 make libjpeg-turbo-devel
+BuildRequires:        make gcc libjpeg-turbo-devel
 
 Requires:             libjpeg-turbo
+
+Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -27,7 +29,7 @@ by re-encoding the image using user specified image quality factor.
 ###############################################################################
 
 %prep
-%setup -q
+%setup -qn %{name}-RELEASE.%{version}
 
 %build
 %{configure}
@@ -35,7 +37,8 @@ by re-encoding the image using user specified image quality factor.
 
 %install
 rm -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot}
+
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
@@ -52,5 +55,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Dec 09 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 1.4.4-0
-- Initial build.
-
+- Initial build
