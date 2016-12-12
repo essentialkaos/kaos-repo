@@ -54,7 +54,7 @@ BuildArch:          noarch
 BuildRequires:      python-setuptools
 
 Requires:           python-psutil python-requests python-configparser
-Requires:           python-paramiko python-pandas python-numpy python-future
+Requires:           python-paramiko python-pandas numpy python-future
 
 ################################################################################
 
