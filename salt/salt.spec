@@ -53,12 +53,13 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
+%define __sysctl          %{_bindir}/systemctl
 
 ################################################################################
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2016.3.3
+Version:          2016.11.0
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -106,7 +107,7 @@ BuildRequires:    python-mock git python-libcloud python-six
 
 %if ((0%{?rhel} == 6) && 0%{?include_tests})
 BuildRequires:    python-argparse
-Requires:         kaosv
+Requires:         kaosv >= 2.12.0
 %endif
 
 %endif
@@ -237,7 +238,7 @@ other existing packaging systems including RPM, Yum, and Pacman.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %patch0 -p1
 
@@ -294,30 +295,38 @@ install -pm 644 %{SOURCE12} %{buildroot}%{_sysconfdir}/bash_completion.d/salt.ba
 
 %preun master
 if [[ $1 -eq 0 ]] ; then
-  /sbin/service salt-master stop >/dev/null 2>&1
-  /sbin/chkconfig --del salt-master
+  %{__service} salt-master stop >/dev/null 2>&1
+  %{__chkconfig} --del salt-master
 fi
 
 %preun syndic
 if [[ $1 -eq 0 ]] ; then
-  /sbin/service salt-syndic stop >/dev/null 2>&1
-  /sbin/chkconfig --del salt-syndic
+  %{__service} salt-syndic stop >/dev/null 2>&1
+  %{__chkconfig} --del salt-syndic
 fi
 
 %preun minion
 if [[ $1 -eq 0 ]] ; then
-  /sbin/service salt-minion stop >/dev/null 2>&1
-  /sbin/chkconfig --del salt-minion
+  %{__service} salt-minion stop >/dev/null 2>&1
+  %{__chkconfig} --del salt-minion
 fi
 
 %post master
 if [[ $1 -eq 1 ]] ; then
-  /sbin/chkconfig --add salt-master
+  %{__chkconfig} --add salt-master
+fi
+
+if [[ $1 -eq 2 ]] ; then
+  %{__service} salt-master restart
 fi
 
 %post minion
 if [[ $1 -eq 1 ]] ; then
-  /sbin/chkconfig --add salt-minion
+  %{__chkconfig} --add salt-minion
+fi
+
+if [[ $1 -eq 2 ]] ; then
+  %{__service} salt-minion restart
 fi
 
 %else
@@ -327,8 +336,8 @@ fi
   %systemd_preun salt-master.service
 %else
 if [[ $1 -eq 0 ]] ; then
-  /bin/systemctl --no-reload disable salt-master.service > /dev/null 2>&1 || :
-  /bin/systemctl stop salt-master.service > /dev/null 2>&1 || :
+  %{__sysctl} --no-reload disable salt-master.service > /dev/null 2>&1 || :
+  %{__sysctl} stop salt-master.service > /dev/null 2>&1 || :
 fi
 %endif
 
@@ -337,8 +346,8 @@ fi
   %systemd_preun salt-syndic.service
 %else
 if [[ $1 -eq 0 ]] ; then
-  /bin/systemctl --no-reload disable salt-syndic.service > /dev/null 2>&1 || :
-  /bin/systemctl stop salt-syndic.service > /dev/null 2>&1 || :
+  %{__sysctl} --no-reload disable salt-syndic.service > /dev/null 2>&1 || :
+  %{__sysctl} stop salt-syndic.service > /dev/null 2>&1 || :
 fi
 %endif
 
@@ -347,8 +356,8 @@ fi
   %systemd_preun salt-minion.service
 %else
 if [[ $1 -eq 0 ]] ; then
-  /bin/systemctl --no-reload disable salt-minion.service > /dev/null 2>&1 || :
-  /bin/systemctl stop salt-minion.service > /dev/null 2>&1 || :
+  %{__sysctl} --no-reload disable salt-minion.service > /dev/null 2>&1 || :
+  %{__sysctl} stop salt-minion.service > /dev/null 2>&1 || :
 fi
 %endif
 
@@ -356,14 +365,14 @@ fi
 %if 0%{?systemd_post:1}
   %systemd_post salt-master.service
 %else
-  /bin/systemctl daemon-reload &>/dev/null || :
+  %{__sysctl} daemon-reload &>/dev/null || :
 %endif
 
 %post minion
 %if 0%{?systemd_post:1}
   %systemd_post salt-minion.service
 %else
-  /bin/systemctl daemon-reload &>/dev/null || :
+  %{__sysctl} daemon-reload &>/dev/null || :
 %endif
 
 %endif
@@ -387,11 +396,11 @@ rm -rf %{buildroot}
 %files master
 %defattr(-,root,root)
 %doc %{_mandir}/man7/salt.7.*
+%doc %{_mandir}/man1/salt.1.*
 %doc %{_mandir}/man1/salt-cp.1.*
 %doc %{_mandir}/man1/salt-key.1.*
 %doc %{_mandir}/man1/salt-master.1.*
 %doc %{_mandir}/man1/salt-run.1.*
-%doc %{_mandir}/man1/salt-unity.1.*
 %doc %{_mandir}/man1/salt-unity.1.*
 %{_bindir}/salt
 %{_bindir}/salt-cp
@@ -466,6 +475,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 01 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.11.0-0
+- Updated to 2016.11.0
+
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.3.4-0
+- Updated to 2016.3.4
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.3.3-0
 - Updated to 2016.3.3
 

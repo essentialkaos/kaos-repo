@@ -38,7 +38,7 @@
 Summary:              A fast data comprssion utility using google snappy
 Name:                 snzip
 Version:              1.0.4
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              2-clause BSD-style license 
 Group:                Applications/System
 URL:                  https://github.com/kubo/snzip
@@ -47,7 +47,7 @@ Source0:              https://dl.bintray.com/kubo/generic/%{name}-%{version}.tar
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc gcc-c++ make snappy-devel automake
+BuildRequires:        make gcc gcc-c++ snappy-devel automake
 
 %if 0%{?fedora} > 11 || 0%{?rhel} > 6
 BuildRequires:        autoconf >= 2.64
@@ -73,22 +73,21 @@ The default format is framing-format.
 %setup -q
 
 %build
-
 %if 0%{?fedora} > 11 || 0%{?rhel} > 6
-./autogen.sh
+autoreconf -if
 %else
-/usr/bin/autoreconf268 -if
+autoreconf268 -if
 %endif
 
 %configure
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
-%{make_install} DESTDIR=%{buildroot} INSTALLDIRS=vendor
+rm -rf %{buildroot}
+%{make_install} INSTALLDIRS=vendor
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
@@ -105,5 +104,8 @@ The default format is framing-format.
 ###############################################################################
 
 %changelog
+* Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.4-1
+- Updated to latest release
+
 * Mon Oct 03 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.3-0
-- Initial build.
+- Initial build

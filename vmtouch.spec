@@ -30,13 +30,13 @@
 
 Summary:            Portable file system cache diagnostics and control
 Name:               vmtouch
-Version:            1.0.2
+Version:            1.1.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
 URL:                https://github.com/hoytech/vmtouch
 
-Source0:            https://github.com/hoytech/%{name}/archive/%{name}-%{version}.tar.gz
+Source0:            https://github.com/hoytech/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -55,7 +55,7 @@ do whatever you want with it.
 ###############################################################################
 
 %prep
-%setup -qn %{name}-%{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 %{__make} %{?_smp_mflags}
@@ -82,5 +82,25 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- Better error checking for extremely large values to command
+  line parameters (Thanks Matthew Fernandez)
+- Fix some boundary conditions in the range support added
+  in 1.0.1 (Thanks Justas Lavišius)
+- On Linux, support touching/evicting/displaying block devices
+  directly. This displays the underlying buffer cache, not the
+  filesystem cache (Thanks to maq123 for the suggestion)
+- On Linux, open files with O_NOATIME so that we don't cause
+  unnecessary disk activity recording access times
+  (Thanks Mat R.)
+- Replaces a stat() call with an fstat() call which is slightly
+  more efficient.
+- Skipped symlinks are no longer included in total file count
+- Closes file descriptors after locking memory since there is
+  no need to keep them open. This makes it less likely you will
+  hit the RLIMIT_NOFILE when using -l or -L.
+- TUNING.md file (Thanks to Artem Sheremet for the idea and
+  to Vladimir Kotal for Solaris tuning info)
+
 * Sat Feb 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
 - Initial build

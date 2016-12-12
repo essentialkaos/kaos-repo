@@ -4,6 +4,10 @@
 
 ###############################################################################
 
+%global with_tests   %{?_with_tests:1}%{!?_with_tests:0}
+
+###############################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,12 +36,13 @@
 
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
+%define __sysctl          %{_bindir}/systemctl
 
 ###############################################################################
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.4
+Version:            3.2.6
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -50,22 +55,31 @@ Source3:            %{name}.sysconfig
 Source4:            sentinel.logrotate
 Source5:            sentinel.init
 Source6:            sentinel.sysconfig
+Source7:            %{name}.service
+Source8:            sentinel.service
 
 Patch0:             %{name}-config.patch
 Patch1:             sentinel-config.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc jemalloc-devel
+BuildRequires:      make gcc tcl
 
 Requires:           %{name}-cli >= %{version}
-Requires:           logrotate kaosv >= 2.5
+Requires:           logrotate kaosv >= 2.10
 
+%if 0%{?rhel} >= 7
+Requires(pre):      shadow-utils
+Requires(post):     systemd
+Requires(preun):    systemd
+Requires(postun):   systemd
+%else
 Requires(pre):      shadow-utils
 Requires(post):     chkconfig
 Requires(preun):    chkconfig
 Requires(preun):    initscripts
 Requires(postun):   initscripts
+%endif
 
 ###############################################################################
 
@@ -95,10 +109,15 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
-%{__make} %{?_smp_mflags}
+%ifarch %ix86
+sed -i '/integration\/logging/d' tests/test_helper.tcl
+%{__make} %{?_smp_mflags} 32bit MALLOC=jemalloc
+%else
+%{__make} %{?_smp_mflags} MALLOC=jemalloc
+%endif
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{__make} install PREFIX=%{buildroot}%{_prefix}
 
@@ -122,6 +141,12 @@ install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 install -pm 755 %{SOURCE5} %{buildroot}%{_initrddir}/sentinel
 
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE7} %{buildroot}%{_unitdir}/
+install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
+%endif
+
 chmod 755 %{buildroot}%{_bindir}/%{name}-*
 
 rm -f %{buildroot}%{_bindir}/%{name}-sentinel
@@ -131,6 +156,12 @@ install -dm 755 %{buildroot}%{_sbindir}
 ln -sf %{_bindir}/%{name}-server %{buildroot}%{_bindir}/%{name}-sentinel
 ln -sf %{_bindir}/%{name}-server %{buildroot}%{_sbindir}/%{name}-server
 
+%check
+%if 0%{?with_tests}
+%{__make} %{?_smp_mflags} test
+%{__make} %{?_smp_mflags} test-sentinel
+%endif
+
 %pre
 getent group %{name} &> /dev/null || groupadd -r %{name} &> /dev/null
 getent passwd %{name} &> /dev/null || \
@@ -138,46 +169,72 @@ useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
         -c 'Redis Server' %{name} &> /dev/null
 
 %post
-%{__chkconfig} --add %{name}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
 
 chown %{name}:%{name} %{_sysconfdir}/%{name}.conf
 chown %{name}:%{name} %{_sysconfdir}/sentinel.conf
 
 %preun
 if [[ $1 -eq 0 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} --no-reload disable sentinel.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+  %{__sysctl} stop sentinel.service &>/dev/null || :
+%else
   %{__service} %{name} stop &> /dev/null || :
+  %{__service} sentinel stop &> /dev/null || :
+  %{__chkconfig} --del %{name} &> /dev/null || :
+  %{__chkconfig} --del sentinel &> /dev/null || :
+%endif
 fi
 
 %postun
-if [[ $1 -eq 0 ]] ; then
-  %{__chkconfig} --del %{name} &> /dev/null || :
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
 fi
+%endif
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
+
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/sentinel
 %config(noreplace) %{_sysconfdir}/*.conf
+
 %dir %attr(0755, %{name}, root) %{_localstatedir}/lib/%{name}
 %dir %attr(0755, %{name}, root) %{_localstatedir}/log/%{name}
 %dir %attr(0755, %{name}, root) %{_localstatedir}/run/%{name}
+
 %{_initrddir}/%{name}
 %{_initrddir}/sentinel
+
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%{_unitdir}/sentinel.service
+%endif
+
 %{_bindir}/%{name}-server
 %{_bindir}/%{name}-sentinel
 %{_bindir}/%{name}-benchmark
 %{_bindir}/%{name}-check-aof
 %{_bindir}/%{name}-check-rdb
 %{_sbindir}/%{name}-server
-
 
 %files cli
 %defattr(-,root,root,-)
@@ -187,6 +244,22 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Dec 07 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
+- A bug with BITFIELD that may cause the bitmap corruption when setting offsets
+  larger than the current string size.
+- A GEORADIUS bug that may happen when using very large radius lengths, in
+  the range of 10000km or alike, due to wrong bounding box calculation.
+- A bug with Redis Cluster which crashes when reading a nodes configuration
+  file with zero bytes at the end, which sometimes happens with certain ext4
+  configurations after a system crash.
+
+* Fri Nov 18 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-1
+- Using bundled jemalloc
+
+* Thu Oct 27 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-0
+- This release only fixes a compilation issue due to the missing -ldl
+  at linking time
+
 * Mon Oct 03 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - Security: CONFIG SET client-output-buffer-limit overflow fixed
 - TCP binding bug fixed when only certain addresses were available for

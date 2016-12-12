@@ -34,8 +34,8 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.1.4
-Release:           0%{?dist}
+Version:           3.2
+Release:           1%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               http://ffmpeg.org
@@ -46,16 +46,16 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc SDL-devel freetype-devel zlib-devel bzip2-devel
 BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
-BuildRequires:     libstdc++-devel faac-devel libfaad2-devel gsm-devel
+BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel
 BuildRequires:     lame-devel libtheora-devel libvorbis-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel schroedinger-devel speex-devel
 BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
-BuildRequires:     opencv-devel librtmp-devel openssl-devel
+BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
 BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
-Requires:          SDL xavs gsm libdc1394 faac libfdk-aac lame
-Requires:          opencore-amr librtmp orc libvpx x264 unicap
+Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
+Requires:          opencore-amr librtmp orc libvpx x264
 Requires:          libxvidcore libva schroedinger
 
 Conflicts:         %{source_name}
@@ -99,7 +99,6 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-frei0r \
   --enable-libopencv \
   --enable-libdc1394 \
-  --enable-libfaac \
   --enable-libgsm \
   --enable-libmp3lame \
   --enable-libnut \
@@ -154,6 +153,12 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-1
+- Fixed build dependencies
+
+* Sun Oct 30 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-0
+- Updated to version 3.2.0
+
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.1.4-0
 - Updated to version 3.1.4
 

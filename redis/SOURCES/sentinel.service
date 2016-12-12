@@ -1,12 +1,11 @@
 [Unit]
-Description=A persistent key-value database
+Description=Redis Sentinel
 After=syslog.target network.target
 
 [Service]
 PIDFile=/var/run/redis/sentinel.pid
-ExecStart=/usr/sbin/redis-sentinel /etc/sentinel.conf
-User=redis
-Group=redis
+ExecStart=/etc/init.d/sentinel start
+ExecStop=/etc/init.d/sentinel stop
 
 [Install]
 WantedBy=multi-user.target

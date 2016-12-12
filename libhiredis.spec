@@ -136,7 +136,7 @@ rm -rf %{buildroot}
 - Try again on EINTR errors
 - Add libuv adapter
 - Add IPv6 support
-- Remove possiblity of multiple close on same fd
+- Remove possibility of multiple close on same fd
 - Add ability to bind source address on connect
 - Add redisConnectFd() and redisFreeKeepFd()
 - Fix getaddrinfo() memory leak

@@ -40,7 +40,7 @@
 Summary:            Portable libraries for the high quality Dirac video codec
 Name:               schroedinger
 Version:            1.0.11
-Release:            0%{?dist}
+Release:            1%{?dist}
 Group:              System Environment/Libraries
 License:            LGPL
 URL:                http://www.diracvideo.org
@@ -71,6 +71,7 @@ for the Dirac video codec.
 Summary:            Development files for schroedinger
 Group:              Development/Libraries
 
+Requires:           orc-devel >= 0.4.10
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
@@ -121,75 +122,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-1
+- Fixed dependencies for devel package
+
 * Wed Apr 20 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-0
 - Updated to latest stable release
-
-* Sun Oct 24 2010 Fabian Deutsch <fabiand@fedoraproject.org> - 1.0.10-0
-- Updated to latest version
-
-* Tue Apr 22 2010 Fabian Deutsch <fabiand@fedoraproject.org> - 1.0.9-2
-- Added dependency on gtk-doc
-
-* Fri Mar 05 2010 Fabian Deutsch <fabiand@fedoraproject.org> - 1.0.9-1
-- Update to 1.0.9
-- Dropped dependency on liboil
-- Added dependency on orc
-
-* Mon Feb  1 2010 Nicolas CHauvet <kwizart@fedoraproject.org> - 1.0.8-4
-- Remove gstreamer-plugins-schroedinger 
-  Obsoleted by gst-plugins-bad-free introduction in Fedora.
-
-* Sun Oct 25 2009 kwizart < kwizart at gmail.com > - 1.0.8-3
-- Re-introduce gstreamer sub-package until seen in -good
-
-* Tue Oct 20 2009 kwizart < kwizart at gmail.com > - 1.0.8-2
-- Update to 1.0.8
-- gstreamer-plugins-schroedinger is now in bad.
-
-* Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.7-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
-
-* Fri Apr 24 2009 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.7-1
-- Update to 1.0.7
-
-* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.0.5-5
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
-
-* Wed Oct 29 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.5-4
-- Fix some typos [BZ#469133]
-
-* Fri Sep 12 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.5-3
-- Bump release and rebuild against latest gstreamer-* packages to pick
-- up special gstreamer codec provides.
-
-* Thu Sep  4 2008 Tom "spot" Callaway <tcallawa@redhat.com> - 1.0.5-2
-- fix license tag
-
-* Wed Aug 27 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.5-1
-- Update to 1.0.5
-
-* Fri Jul  2 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.3-2
-- Devel subpackage needs to require liboil-devel.
-
-* Fri Jun 27 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.3-1
-- Update to 1.0.3.
-- Update URLs.
-
-* Fri Feb 22 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 1.0.0-1
-- Update to 1.0.0
-
-* Mon Feb 11 2008 Jeffrey C. Ollie <jeff@ocjtech.us> - 0.9.0-2
-- Rebuild for GCC 4.3
-
-* Mon Nov 12 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 0.9.0-1
-- Update to 0.9.0
-
-* Wed Aug 29 2007 Fedora Release Engineering <rel-eng at fedoraproject dot org> - 0.6.1-3
-- Rebuild for selinux ppc32 issue.
-
-* Wed Jun 20 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 0.6.1-2
-- Fix license field
-- Add pkgconfig as a requirement for the devel subpackage
-
-* Sun Jun 10 2007 Jeffrey C. Ollie <jeff@ocjtech.us> - 0.6.1-1
-- First version for Fedora

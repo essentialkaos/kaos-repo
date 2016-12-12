@@ -1,7 +1,0 @@
-# Sysconfig file for mongod service
-
-BINARY=""
-CONFIG=""
-USER=""
-LIMIT=""
-OPTS=""

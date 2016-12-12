@@ -40,7 +40,7 @@ License:           LGPLv2 and (LGPLv2+ or CPL)
 Group:             Applications/Archiving
 URL:               http://p7zip.sourceforge.net
 
-Source:            %{name}_%{version}_src_all.tar.bz2
+Source:            http://downloads.sourceforge.net/project/p7zip/%{name}/%{version}/%{name}_%{version}_src_all.tar.bz2
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

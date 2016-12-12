@@ -39,7 +39,7 @@
 
 ########################################################################################
 
-%define maj_ver           2.2
+%define maj_ver           2.3
 %define pg_maj_ver        94
 %define pg_low_fullver    9.4.0
 %define pg_dir            %{_prefix}/pgsql-9.4
@@ -54,8 +54,8 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.4
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.2.2
-Release:           1%{?dist}
+Version:           2.3.0
+Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -216,6 +216,7 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*legacy*.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_comments.sql
+%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_for_extension.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_proc_set_search_path.sql
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_restore.pl
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_upgrade*.sql
@@ -262,6 +263,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- Updated to latest stable release
+
 * Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-1
 - Fixed build dependencies
 

@@ -39,7 +39,6 @@
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
-
 %define __systemctl       %{_bindir}/systemctl
 
 ###############################################################################
@@ -80,7 +79,7 @@
 %endif
 
 %define majorver        9.6
-%define minorver        0
+%define minorver        1
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          96
@@ -104,9 +103,9 @@ Version:           %{fullver}
 Release:           %{rel}%{?dist}
 License:           PostgreSQL
 Group:             Applications/Databases
-URL:               http://www.postgresql.org
+URL:               https://www.postgresql.org
 
-Source0:           https://ftp.postgresql.org/pub/source/v%{version}/%{realname}-%{version}.tar.bz2
+Source0:           https://download.postgresql.org/pub/source/v%{version}/%{realname}-%{version}.tar.bz2
 Source1:           %{realname}.init
 Source2:           Makefile.regress
 Source3:           pg_config.h
@@ -117,6 +116,7 @@ Source7:           http://www.postgresql.org/files/documentation/pdf/%{majorver}
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
+Source11:          %{realname}.service
 
 Patch1:            rpm-%{shortname}.patch
 Patch2:            %{realname}-logging.patch
@@ -175,6 +175,10 @@ BuildRequires:     openldap-devel
 Requires:          %{__ldconfig} initscripts
 Requires:          %{name}-libs = %{version}
 
+%if %{systemd_enabled}
+Requires:          systemd
+%endif
+
 Requires(post):    %{__updalt}
 Requires(postun):  %{__updalt}
 
@@ -193,8 +197,8 @@ client programs are programs that directly manipulate the internal
 structure of PostgreSQL databases on a PostgreSQL server. These client
 programs can be located on the same machine with the PostgreSQL
 server, or may be on a remote machine which accesses a PostgreSQL
-server over a network connection. This package contains the command-line 
-utilities for managing PostgreSQL databases on a PostgreSQL server. 
+server over a network connection. This package contains the command-line
+utilities for managing PostgreSQL databases on a PostgreSQL server.
 
 If you want to manipulate a PostgreSQL database on a local or remote PostgreSQL
 server, you need this package. You also need to install this package
@@ -209,7 +213,7 @@ Group:             Applications/Databases
 Provides:          %{realname}-libs = %{version}-%{release}
 
 %description libs
-The postgresql%{pkgver}-libs package provides the essential shared libraries for any 
+The postgresql%{pkgver}-libs package provides the essential shared libraries for any
 PostgreSQL client program or interface. You will need to install this package
 to use any other PostgreSQL package or any clients that need to connect to a
 PostgreSQL server.
@@ -222,7 +226,7 @@ Group:             Applications/Databases
 
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version} %{name}-libs >= %{version}
-Requires:          kaosv >= 2.8
+Requires:          kaosv >= 2.10
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -249,7 +253,7 @@ Provides:          %{realname}-docs = %{version}-%{release}
 The postgresql%{pkgver}-docs package includes the SGML source for the documentation
 as well as the documentation in PDF format and some extra documentation.
 Install this package if you want to help with the PostgreSQL documentation
-project, or if you want to generate printed documentation. This package also 
+project, or if you want to generate printed documentation. This package also
 includes HTML version of the documentation.
 
 ###############################################################################
@@ -280,7 +284,7 @@ The postgresql%{pkgver}-devel package contains the header files and libraries
 needed to compile C or C++ applications which will directly interact
 with a PostgreSQL database management server and the ecpg Embedded C
 Postgres preprocessor. You need to install this package if you want to
-develop applications which will interact with a PostgreSQL server. 
+develop applications which will interact with a PostgreSQL server.
 
 ###############################################################################
 
@@ -376,7 +380,7 @@ system, including regression tests and benchmarks.
 %endif
 
 # Copy pdf with documentation to build directory
-%{__cp} -p %{SOURCE7} .
+cp -p %{SOURCE7} .
 
 %build
 
@@ -456,13 +460,13 @@ export LIBNAME=%{_lib}
 # Have to hack makefile to put correct path into tutorial scripts
 sed "s|C=\`pwd\`;|C=%{install_dir}/lib/tutorial;|" < src/tutorial/Makefile > src/tutorial/GNUmakefile
 %{__make} %{?_smp_mflags} -C src/tutorial NO_PGXS=1 all
-%{__rm} -f src/tutorial/GNUmakefile
+rm -f src/tutorial/GNUmakefile
 
 %if %runselftest
   pushd src/test/regress
     %{__make} all
-    %{__cp} ../../../contrib/spi/refint.so .
-    %{__cp} ../../../contrib/spi/autoinc.so .
+    cp ../../../contrib/spi/refint.so .
+    cp ../../../contrib/spi/autoinc.so .
     %{__make} MAX_CONNECTIONS=5 check
     %{__make} clean
   popd
@@ -481,26 +485,28 @@ sed "s|C=\`pwd\`;|C=%{install_dir}/lib/tutorial;|" < src/tutorial/Makefile > src
 %endif
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
-%{__mkdir_p} %{buildroot}%{install_dir}/share/extensions/
+mkdir -p %{buildroot}%{install_dir}/share/extensions/
 %{make_install} -C contrib
 
 # multilib header hack; note pg_config.h is installed in two places!
 # we only apply this to known Red Hat multilib arches, per bug #177564
 case `uname -i` in
   i386 | x86_64 | ppc | ppc64 | s390 | s390x)
-    %{__mv} %{buildroot}%{install_dir}/include/pg_config.h %{buildroot}%{install_dir}/include/pg_config_`uname -i`.h
-    install -m 644 %{SOURCE3} %{buildroot}%{install_dir}/include/
-    %{__mv} %{buildroot}%{install_dir}/include/server/pg_config.h %{buildroot}%{install_dir}/include/server/pg_config_`uname -i`.h
-    install -m 644 %{SOURCE3} %{buildroot}%{install_dir}/include/server/
-    %{__mv} %{buildroot}%{install_dir}/include/ecpg_config.h %{buildroot}%{install_dir}/include/ecpg_config_`uname -i`.h
-    install -m 644 %{SOURCE5} %{buildroot}%{install_dir}/include/
+    mv %{buildroot}%{install_dir}/include/pg_config.h %{buildroot}%{install_dir}/include/pg_config_`uname -i`.h
+    install -pm 644 %{SOURCE3} %{buildroot}%{install_dir}/include/
+    mv %{buildroot}%{install_dir}/include/server/pg_config.h %{buildroot}%{install_dir}/include/server/pg_config_`uname -i`.h
+    install -pm 644 %{SOURCE3} %{buildroot}%{install_dir}/include/server/
+    mv %{buildroot}%{install_dir}/include/ecpg_config.h %{buildroot}%{install_dir}/include/ecpg_config_`uname -i`.h
+    install -pm 644 %{SOURCE5} %{buildroot}%{install_dir}/include/
     ;;
   *)
   ;;
 esac
+
+# Installing and updating sysv init script
 
 install -d %{buildroot}%{_initddir}
 install -d %{buildroot}%{_sysconfdir}/sysconfig
@@ -508,18 +514,33 @@ install -d %{buildroot}%{_sysconfdir}/sysconfig
 install -pm 755 %{SOURCE1} %{buildroot}%{_initddir}/%{service_name}
 install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
 
-%{__sed} -i 's/{{VERSION}}/%{version}/g' %{buildroot}%{_initddir}/%{service_name}
-%{__sed} -i 's/{{MAJOR_VERSION}}/%{majorver}/g' %{buildroot}%{_initddir}/%{service_name}
-%{__sed} -i 's/{{PKG_VERSION}}/%{pkgver}/g' %{buildroot}%{_initddir}/%{service_name}
-%{__sed} -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_initddir}/%{service_name}
-%{__sed} -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_initddir}/%{service_name}
-%{__sed} -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{VERSION}}/%{version}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{MAJOR_VERSION}}/%{majorver}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{PKG_VERSION}}/%{pkgver}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_initddir}/%{service_name}
 
-%{__ln_s} -f %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{pkgver}
+%if %{systemd_enabled}
+
+# Installing and updating systemd config
+install -d %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE11} %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+
+sed -i 's/{{VERSION}}/%{version}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+sed -i 's/{{MAJOR_VERSION}}/%{majorver}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+sed -i 's/{{PKG_VERSION}}/%{pkgver}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+
+%endif
+
+ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{pkgver}
 
 %if %pam
 install -d %{buildroot}%{_sysconfdir}/pam.d
-install -m 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{pkgver}
+install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{pkgver}
 %endif
 
 # Create the directory for sockets
@@ -543,36 +564,36 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
   # Tests. There are many files included here that are unnecessary,
   # but include them anyway for completeness.  We replace the original
   # Makefiles, however.
-  %{__mkdir_p} %{buildroot}%{install_dir}/lib/test
-  %{__cp} -a src/test/regress %{buildroot}%{install_dir}/lib/test
-  install -m 0755 contrib/spi/refint.so %{buildroot}%{install_dir}/lib/test/regress
-  install -m 0755 contrib/spi/autoinc.so %{buildroot}%{install_dir}/lib/test/regress
+  mkdir -p %{buildroot}%{install_dir}/lib/test
+  cp -a src/test/regress %{buildroot}%{install_dir}/lib/test
+  install -pm 0755 contrib/spi/refint.so %{buildroot}%{install_dir}/lib/test/regress
+  install -pm 0755 contrib/spi/autoinc.so %{buildroot}%{install_dir}/lib/test/regress
   pushd  %{buildroot}%{install_dir}/lib/test/regress
     strip *.so
-    %{__rm} -f GNUmakefile Makefile *.o
-    %{__chmod} 0755 pg_regress regress.so
+    rm -f GNUmakefile Makefile *.o
+    chmod 0755 pg_regress regress.so
   popd
-  %{__cp} %{SOURCE4} %{buildroot}%{install_dir}/lib/test/regress/Makefile
-  %{__chmod} 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
+  cp %{SOURCE4} %{buildroot}%{install_dir}/lib/test/regress/Makefile
+  chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
 
 # Fix some more documentation
 # gzip doc/internals.ps
-%{__cp} %{SOURCE4} README.rpm-dist
-%{__mkdir_p} %{buildroot}%{install_dir}/share/doc/html
-%{__mv} doc/src/sgml/html doc
-%{__mkdir_p} %{buildroot}%{install_dir}/share/man/
-%{__mv} doc/src/sgml/man1 doc/src/sgml/man3 doc/src/sgml/man7 %{buildroot}%{install_dir}/share/man/
-%{__rm} -rf %{buildroot}%{_docdir}/%{shortname}
+cp %{SOURCE4} README.rpm-dist
+mkdir -p %{buildroot}%{install_dir}/share/doc/html
+mv doc/src/sgml/html doc
+mkdir -p %{buildroot}%{install_dir}/share/man/
+mv doc/src/sgml/man1 doc/src/sgml/man3 doc/src/sgml/man7 %{buildroot}%{install_dir}/share/man/
+rm -rf %{buildroot}%{_docdir}/%{shortname}
 
 # initialize file lists
-%{__cp} /dev/null main.lst
-%{__cp} /dev/null libs.lst
-%{__cp} /dev/null server.lst
-%{__cp} /dev/null devel.lst
-%{__cp} /dev/null plperl.lst
-%{__cp} /dev/null pltcl.lst
-%{__cp} /dev/null plpython.lst
+cp /dev/null main.lst
+cp /dev/null libs.lst
+cp /dev/null server.lst
+cp /dev/null devel.lst
+cp /dev/null plperl.lst
+cp /dev/null pltcl.lst
+cp /dev/null plpython.lst
 
 %if %nls
   %find_lang ecpg-%{majorver}
@@ -590,34 +611,34 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
 
   %if %plperl
     %find_lang plperl-%{majorver}
-    %{__cat} plperl-%{majorver}.lang > pg_plperl.lst
+    cat plperl-%{majorver}.lang > pg_plperl.lst
   %endif
 
   %find_lang plpgsql-%{majorver}
 
   %if %plpython
     %find_lang plpython-%{majorver}
-    %{__cat} plpython-%{majorver}.lang > pg_plpython.lst
+    cat plpython-%{majorver}.lang > pg_plpython.lst
   %endif
 
   %if %pltcl
     %find_lang pltcl-%{majorver}
-    %{__cat} pltcl-%{majorver}.lang > pg_pltcl.lst
+    cat pltcl-%{majorver}.lang > pg_pltcl.lst
   %endif
 
   %find_lang postgres-%{majorver}
   %find_lang psql-%{majorver}
 %endif
 
-%{__cat} libpq5-%{majorver}.lang > pg_libpq5.lst
+cat libpq5-%{majorver}.lang > pg_libpq5.lst
 
-%{__cat} pg_config-%{majorver}.lang ecpg-%{majorver}.lang ecpglib6-%{majorver}.lang > pg_devel.lst
+cat pg_config-%{majorver}.lang ecpg-%{majorver}.lang ecpglib6-%{majorver}.lang > pg_devel.lst
 
-%{__cat} initdb-%{majorver}.lang pg_ctl-%{majorver}.lang psql-%{majorver}.lang \
+cat initdb-%{majorver}.lang pg_ctl-%{majorver}.lang psql-%{majorver}.lang \
          pg_dump-%{majorver}.lang pg_basebackup-%{majorver}.lang pg_rewind-%{majorver}.lang \
          pgscripts-%{majorver}.lang > pg_main.lst
 
-%{__cat} postgres-%{majorver}.lang pg_resetxlog-%{majorver}.lang pg_controldata-%{majorver}.lang plpgsql-%{majorver}.lang > pg_server.lst
+cat postgres-%{majorver}.lang pg_resetxlog-%{majorver}.lang pg_controldata-%{majorver}.lang plpgsql-%{majorver}.lang > pg_server.lst
 
 ###############################################################################
 
@@ -628,22 +649,27 @@ if [[ $1 -eq 1 ]] ; then
               %{__useradd} -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
 fi
 
-%{__touch} %{_logdir}/%{shortname}
-%{__chown} %{username}:%{groupname} %{_logdir}/%{shortname}
-%{__chmod} 0700 %{_logdir}/%{shortname}
+touch %{_logdir}/%{shortname}
+chown %{username}:%{groupname} %{_logdir}/%{shortname}
+chmod 0700 %{_logdir}/%{shortname}
 
 %post server
 if [[ $1 -eq 1 ]] ; then
-  %{__chkconfig} --add %{service_name}
+%if %{systemd_enabled}
+  %{__systemctl} daemon-reload %{service_name}.service &>/dev/null || :
+  %{__systemctl} preset %{service_name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{service_name} &>/dev/null || :
+%endif
   %{__ldconfig}
 fi
 
 # Migrate from official shitty packages
 if [[ -f %{_rundir}/postmaster-%{majorver}.pid ]] ; then
-  %{__cat} %{_rundir}/postmaster-%{majorver}.pid > %{_rundir}/%{name}.pid
+  cat %{_rundir}/postmaster-%{majorver}.pid > %{_rundir}/%{name}.pid
   touch %{_lockdir}/%{name}
-  %{__rm} -f %{_rundir}/postmaster-%{majorver}.pid
-  %{__rm} -f %{_lockdir}/%{realname}-%{majorver}
+  rm -f %{_rundir}/postmaster-%{majorver}.pid
+  rm -f %{_lockdir}/%{realname}-%{majorver}
 fi
 
 # postgres' .bash_profile.
@@ -653,21 +679,24 @@ echo "[[ -f /etc/profile ]] && source /etc/profile
 PGDATA=/var/lib/pgsql/%{majorver}/data
 export PGDATA" > %{_sharedstatedir}/%{shortname}/.bash_profile
 
-%{__chown} %{username}: %{_sharedstatedir}/%{shortname}/.bash_profile
+chown %{username}: %{_sharedstatedir}/%{shortname}/.bash_profile
 
 %preun server
 if [[ $1 -eq 0 ]] ; then
 %if %{systemd_enabled}
-  %{__systemctl} --no-reload disable %{service_name}.service &> /dev/null
-  %{__systemctl} stop %{service_name}.service &> /dev/null
+  %{__systemctl} --no-reload disable %{service_name}.service &>/dev/null || :
+  %{__systemctl} stop %{service_name}.service &>/dev/null || :
 %else
-  %{__service} %{service_name} stop &> /dev/null
-  %{__chkconfig} --del %{service_name}
+  %{__service} %{service_name} stop &>/dev/null || :
+  %{__chkconfig} --del %{service_name} &>/dev/null || :
 %endif
 fi
 
 %postun server
 %{__ldconfig}
+%if %{systemd_enabled}
+%{__systemctl} daemon-reload &>/dev/null || :
+%endif
 
 %if %plperl
 %post   plperl
@@ -695,7 +724,7 @@ fi
 
 %if %test
 %post test
-%{__chown} -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
+chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
 %endif
 
 # Create alternatives entries for common binaries and man files
@@ -738,7 +767,7 @@ fi
 # Drop alternatives entries for common binaries and man files
 %postun
 if [[ $1 -eq 0 ]] ; then
-  # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
+  # Only remove these links if the package is completely removed from the system (vs. just being upgraded)
   %{__updalt} --remove %{shortname}-psql          %{install_dir}/bin/psql
   %{__updalt} --remove %{shortname}-clusterdb     %{install_dir}/bin/clusterdb
   %{__updalt} --remove %{shortname}-createdb      %{install_dir}/bin/createdb
@@ -754,7 +783,7 @@ if [[ $1 -eq 0 ]] ; then
   %{__updalt} --remove %{shortname}-pg_restore    %{install_dir}/bin/pg_restore
   %{__updalt} --remove %{shortname}-reindexdb     %{install_dir}/bin/reindexdb
   %{__updalt} --remove %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb
-  
+
   %{__updalt} --remove %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1
   %{__updalt} --remove %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1
   %{__updalt} --remove %{shortname}-createlangman    %{install_dir}/share/man/man1/createlang.1
@@ -976,6 +1005,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %config(noreplace) %{_initddir}/%{service_name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
+%if %{systemd_enabled}
+%config(noreplace) %{_unitdir}/postgresql-%{majorver}.service
+%endif
 %attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{pkgver}
 %if %pam
@@ -1090,5 +1122,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.6.1-0
+- Updated to latest stable release
+- Added systemd support
+
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 9.6.0-0
 - Initial build

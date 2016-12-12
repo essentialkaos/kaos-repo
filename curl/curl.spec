@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.50.2
+Version:              7.51.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -87,6 +87,8 @@ Patch302:             0302-%{name}-7.47.1-pkgconfig.patch
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Provides:             webclient = %{version}-%{release}
+
+Requires:             c-ares libmetalink >= 0.1.3 libnghttp2 >= 1.16.0
 
 BuildRequires:        make gcc libidn-devel krb5-devel
 BuildRequires:        pkgconfig zlib-devel openldap-devel
@@ -147,6 +149,7 @@ BuildRequires:        nss-pem
 %endif
 
 Requires:             libssh2%{?_isa} >= %{libssh2_version}
+Requires:             libmetalink >= 0.1.3 libnghttp2 >= 1.16.0
 
 %if 0%{?fedora} > 24 || 0%{?rhel} > 7
 Requires:             nss-pem
@@ -187,7 +190,7 @@ documentation of the library, too.
 ###############################################################################
 
 %prep
-%setup -q -n curl-%{version}
+%setup -qn curl-%{version}
 
 %patch101 -p1
 %patch102 -p1
@@ -300,6 +303,83 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Nov 05 2016 Anton Novojilov <andy@essentialkaos.com> - 7.51.0-0
+- nss: additional cipher suites are now accepted by CURLOPT_SSL_CIPHER_LIST
+- New option: CURLOPT_KEEP_SENDING_ON_ERROR
+- CVE-2016-8615: cookie injection for other servers
+- CVE-2016-8616: case insensitive password comparison
+- CVE-2016-8617: OOB write via unchecked multiplication
+- CVE-2016-8618: double-free in curl_maprintf
+- CVE-2016-8619: double-free in krb5 code
+- CVE-2016-8620: glob parser write/read out of bounds
+- CVE-2016-8621: curl_getdate read out of bounds
+- CVE-2016-8622: URL unescape heap overflow via integer truncation
+- CVE-2016-8623: Use-after-free via shared cookies
+- CVE-2016-8624: invalid URL parsing with '#'
+- CVE-2016-8625: IDNA 2003 makes curl use wrong host
+- openssl: fix per-thread memory leak using 1.0.1 or 1.0.2
+- http: accept "Transfer-Encoding: chunked" for HTTP/2 as well
+- LICENSE-MIXING.md: update with mbedTLS dual licensing
+- examples/imap-append: Set size of data to be uploaded
+- test2048: fix url
+- darwinssl: disable RC4 cipher-suite support
+- CURLOPT_PINNEDPUBLICKEY.3: fix the AVAILABILITY formatting
+- openssl: don’t call CRYTPO_cleanup_all_ex_data
+- libressl: fix version output
+- easy: Reset all statistical session info in curl_easy_reset
+- curl_global_cleanup.3: don't unload the lib with sub threads running
+- dist: add CurlSymbolHiding.cmake to the tarball
+- docs: Remove that --proto is just used for initial retrieval
+- configure: Fixed builds with libssh2 in a custom location
+- curl.1: --trace supports % for sending to stderr!
+- cookies: same domain handling changed to match browser behavior
+- formpost: trying to attach a directory no longer crashes
+- CURLOPT_DEBUGFUNCTION.3: fixed unused argument warning
+- formpost: avoid silent snprintf() truncation
+- ftp: fix Curl_ftpsendf
+- mprintf: return error on too many arguments
+- smb: properly check incoming packet boundaries
+- GIT-INFO: remove the Mac 10.1-specific details
+- resolve: add error message when resolving using SIGALRM
+- cmake: add nghttp2 support
+- dist: remove PDF and HTML converted docs from the releases
+- configure: disable poll() in macOS builds
+- vtls: only re-use session-ids using the same scheme
+- pipelining: skip to-be-closed connections when pipelining
+- win: fix Universal Windows Platform build
+- curl: do not set CURLOPT_SSLENGINE to DEFAULT automatically
+- maketgz: make it support "only" generating version info
+- Curl_socket_check: add extra check to avoid integer overflow
+- gopher: properly return error for poll failures
+- curl: set INTERLEAVEDATA too
+- polarssl: clear thread array at init
+- polarssl: fix unaligned SSL session-id lock
+- polarssl: reduce #ifdef madness with a macro
+- curl_multi_add_handle: set timeouts in closure handles
+- configure: set min version flags for builds on mac
+- INSTALL: converted to markdown => INSTALL.md
+- curl_multi_remove_handle: fix a double-free
+- multi: fix inifinte loop in curl_multi_cleanup()
+- nss: fix tight loop in non-blocking TLS handhsake over proxy
+- mk-ca-bundle: Change URL retrieval to HTTPS-only by default
+- mbedtls: stop using deprecated include file
+- docs: fix req->data in multi-uv example
+- configure: Fix test syntax for monotonic clock_gettime
+- CURLMOPT_MAX_PIPELINE_LENGTH.3: Clarify it's not for HTTP/2
+
+* Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.3-0
+- CVE-2016-7167: escape and unescape integer overflows
+- mk-ca-bundle.pl: use SHA256 instead of SHA1
+- checksrc: detect strtok() use
+- errors: new alias CURLE_WEIRD_SERVER_REPLY
+- http2: support > 64bit sized uploads
+- openssl: fix bad memory free (regression)
+- CMake: hide private library symbols
+- http: refuse to pass on response body when NO_NODY is set
+- cmake: fix curl-config --static-libs
+- mbedtls: switch off NTLM in build if md4 isn't available
+- curl: --create-dirs on windows groks both forward and backward slashes 
+
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.2-0
 - mbedtls: Added support for NTLM
 - SSH: fixed SFTP/SCP transfer problems

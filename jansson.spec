@@ -30,7 +30,7 @@
 
 Summary:         Jansson JSON Library
 Name:            jansson
-Version:         2.8
+Version:         2.9
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -105,6 +105,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.9-0
+- Updated to latest stable release
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
 - Updated to latest stable release
 

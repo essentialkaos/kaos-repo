@@ -103,4 +103,4 @@ mv doc/pygmentize.1 $RPM_BUILD_ROOT%{_mandir}/man1/pygmentize.1
 
 %changelog
 * Fri Sep 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.3-0
-- Intial build for kaos repo
+- Initial build for kaos repo

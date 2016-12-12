@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.0.2
+Version:         1.1.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -37,7 +37,7 @@ for system administrators that require a visual server report on the fly.
 
 %install
 rm -rf %{buildroot}
-%{__make} DESTDIR=%{buildroot} install
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
@@ -55,6 +55,71 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- Added data metric's "unique" count on each panel to the JSON/HTML outputs.
+- Changed D3 bar charts to use .rangeBands and avoid extra outer padding.
+- Fixed mouseover offset position issue on D3 bar charts.
+- Fixed possible heap overflow when an invalid status code was parsed and
+  processed. This also ensures that only valid HTTP status codes are parsed
+  >=100 or <= 599.
+- Fixed sluggish D3 chart re-rendering by changing how x-axis labels are
+  displayed in the HTML report.
+
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1-0
+- Added a new layout to the HTML report and additional settings and changes
+- Added 'Amazon S3' Log Format to the list of predefined options
+- Added 'Android 7.1 Nougat' to the list of OSs
+- Added 'Android Marshmallow 6.0.1' to the list of OSs
+- Added 'Android Nougat 7.0' to the list of OSs
+- Added command line option --crawlers-only to display crawlers/bots only
+- Added 'Feed Wrangler' to the list of feeds
+- Added --fifo-in and --fifo-out command line options to set websocket FIF
+  reader/writer
+- Added 'Go-http-client' to the list of browsers
+- Added 'MicroMessenger' (WeChat) to the list of browsers
+- Added --no-html-last-updated command line option
+- Added --num-tests command line option
+- Added "Remote User" panel to capture HTTP authentication requests. Use %
+  within the log-format variable to enable this panel
+- Added SemrushBot to set of crawlers
+- Added tebibyte unit to the byte to string function converter
+- Added the ability to parse reverse proxy logs that have multiple IPs. Thi
+  adds the ability to parse the "X-Forwarded-For" field in a reverse prox
+  setup
+- Added the ability to set default preferences for the HTML report usin
+  --html-prefs
+- Added the ability to show which token didn't match log/date/time pattern
+  This also ensures that in the absence of data, its output is not treated a
+  error but instead it produces an empty report
+- Added the ability to specify a WebSocket protocol (ws|wss) throug
+  --ws-url
+- Added the request query string to the W3C format
+- Added TLS/SSL support to the HTML real-time report
+- Changed browser classification for Google Cloud Clients
+- Changed 'Darwin' OS to be in their own category
+- Changed default W3C log format to use the URL path instead of full request
+- Changed HTML default number of items on each table to 7
+- Changed request parser to allow empty query strings
+- Changed to use darkBlue theme as default HTML output theme
+- Ensure every version of iOS is broken down under the OS panel
+- Ensure latest JSON data is fast-forwarded when connection is opened
+  GoAccess now sends the latest JSON data to the client as soon as th
+  WebSocket connection is opened
+- Ensure localStorage is supported and enabled in the HTML repor
+- Ensure unknown coutries/continents are listed
+- Fixed D3 chart width overflow issue on Edge
+- Fixed integer to string key conversion for unique visitors. This fixes th
+  issue where resulting keys would collide with existing keys and thus no
+  keeping the right visitors count on certain panels
+- Fixed memory leak when unable to URL decode %q specifier
+- Fixed memory leak when unable to URL decode %U specifier
+- Fixed month name abbreviation on app.js
+- Fixed percentage integer overflow with large numbers on 32bits platforms
+- Fixed percent calculation due to integer division rounding to zero
+- Fixed possible code injection when outputting an HTML report
+- Fixed segfault when using options -H or -M without an argument
+- Removed timestamp from the HTML report title tag
+
 * Tue Jul 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
 - Added minor changes to the HTML report stylesheet.
 - Added the ability to specify the WebSocket port within --ws-url.

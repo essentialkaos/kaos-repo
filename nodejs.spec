@@ -32,14 +32,14 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            4.4.7
+Version:            6.9.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                http://nodejs.org
 Vendor:             Joyent Inc.
 
-Source0:            %{url}/dist/v%{version}/node-v%{version}.tar.gz
+Source0:            http://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -116,6 +116,14 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 6.9.1-0
+- doc: fix changelog index for v6.9.0
+- streams: fix regression in unpipe()
+- test: add regression test for unpipe()
+- tools: check tag is on github before release
+- tools: make detached SHASUM .sig file for releases
+- tools: explicitly set digest algo for SHASUM to 256
+
 * Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.7-0
 - debugger: All properties of an array (aside from length) can now be printed in the repl
 - npm: Upgrade npm to 2.15.8

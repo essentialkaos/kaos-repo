@@ -34,7 +34,7 @@
 
 Summary:            Friendly interactive shell (FISh)
 Name:               fish
-Version:            2.3.1
+Version:            2.4.0
 Release:            0%{?dist}
 License:            GPL2
 Group:              System Environment/Shells
@@ -62,15 +62,16 @@ is simple but incompatible with other shell languages.
 
 %build
 %configure
+
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %post
 if [[ ! `grep "%{_bindir}/%{name}" %{_sysconfdir}/shells` ]] ; then
@@ -99,8 +100,11 @@ fi
 ########################################################################################
 
 %changelog
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- Updated to latest stable release
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
-- 
+- Updated to latest stable release
 
 * Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.3.0-0
 - Updated to latest stable release

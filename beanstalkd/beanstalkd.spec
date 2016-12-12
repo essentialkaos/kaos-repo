@@ -33,6 +33,7 @@
 %define __service         %{_sbin}/service
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
+%define __sysctl          %{_bindir}/systemctl
 
 %define __user            %{name}
 %define __group           %{__user}
@@ -53,12 +54,13 @@ URL:                http://xph.us/software/beanstalkd/
 Source0:            https://github.com/kr/%{name}/archive/v%{version}.tar.gz
 Source1:            %{name}.init
 Source2:            %{name}.sysconfig
+Source3:            %{name}.service
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      gcc make libevent-devel
 
-Requires:           kaosv >= 2.0
+Requires:           kaosv >= 2.10
 
 Requires(pre):      shadow-utils
 Requires(post):     chkconfig
@@ -74,7 +76,7 @@ high-volume web applications by running most time-consuming tasks
 asynchronously.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 %{__make} %{?_smp_mflags}
@@ -94,6 +96,11 @@ install -dm 755 %{buildroot}%{_defaultdocdir}/%{name}-%{version}
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/
+%endif
+
 install -pm 644 doc/%{name}.1 %{buildroot}%{_mandir}/man1/
 install -pm 644 doc/protocol.txt %{buildroot}%{_defaultdocdir}/%{name}-%{version}/
 
@@ -107,7 +114,13 @@ getent passwd %{__user} >/dev/null || %{__useradd} -r -g %{__group} -d %{__home}
 exit 0
 
 %post
-%{__chkconfig} --add %{name}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
 
 if [[ -d %{__home} ]] ; then
   install -d %{__binlogdir} -m 0755 -o %{__user} -g %{__group} %{__binlogdir}
@@ -115,9 +128,21 @@ fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+%else
   %{__service} %{name} stop &> /dev/null
-  %{__chkconfig} --del %{name}
+  %{__chkconfig} --del %{name} &> /dev/null || :
+%endif
 fi
+
+%postun
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
+%endif
 
 ###############################################################################
 
@@ -127,6 +152,9 @@ fi
 %doc README LICENSE doc/protocol.txt
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %{_initrddir}/%{name}
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%endif
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 

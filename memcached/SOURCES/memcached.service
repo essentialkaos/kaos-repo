@@ -1,0 +1,12 @@
+[Unit]
+Description=Memcached 
+Before=httpd.service
+After=network.target
+
+[Service]
+PIDFile=/var/run/memcached/memcached.pid
+ExecStart=/etc/init.d/memcached start
+ExecStop=/etc/init.d/memcached stop
+
+[Install]
+WantedBy=multi-user.target

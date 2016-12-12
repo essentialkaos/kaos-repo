@@ -60,7 +60,7 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.7.1
+Version:           1.7.4
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -392,7 +392,7 @@ for _,d in pairs({"api", "doc", "include", "lib", "src"}) do
 end
 
 %prep
-%setup -q -n go
+%setup -qn go
 
 %build
 
@@ -486,8 +486,13 @@ cp -a %{SOURCE10} %{buildroot}%{_sysconfdir}/gdbinit.d/%{name}.gdb
 mkdir -p %{buildroot}%{_sysconfdir}/prelink.conf.d
 cp -a %{SOURCE11} %{buildroot}%{_sysconfdir}/prelink.conf.d/%{name}.conf
 
+%if 0%{?rhel} > 6 || 0%{?fedora} > 0
 mkdir -p %{buildroot}%{_rpmconfigdir}/macros.d
-cp -a %{SOURCE12} %{buildroot}%{_rpmconfigdir}/macros.d/macros.%{name}
+cp -av %{SOURCE12} %{buildroot}%{_rpmconfigdir}/macros.d/macros.%{name}
+%else
+mkdir -p %{buildroot}%{_sysconfdir}/rpm
+cp -av %{SOURCE12} %{buildroot}%{_sysconfdir}/rpm/macros.%{name}
+%endif
 
 ########################################################################################
 
@@ -559,7 +564,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 
 %{_sysconfdir}/gdbinit.d
 %{_sysconfdir}/prelink.conf.d
+
+%if 0%{?rhel} > 6 || 0%{?fedora} > 0
 %{_rpmconfigdir}/macros.d/macros.golang
+%else
+%{_sysconfdir}/rpm/macros.golang
+%endif
 
 %files -f go-src.list src
 %defattr(-,root,root,-)
@@ -720,6 +730,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Mon Dec 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
+- Updated to latest stable release
+
+* Thu Oct 20 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
+- Updated to latest stable release
+
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
 - Updated to latest stable release
 

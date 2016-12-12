@@ -34,6 +34,7 @@
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
+%define __sysctl          %{_bindir}/systemctl
 
 ###############################################################################
 
@@ -44,7 +45,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.4.32
+Version:                  1.4.33
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -53,17 +54,25 @@ URL:                      http://memcached.org
 Source0:                  https://github.com/%{name}/%{name}/archive/%{version}.tar.gz
 Source1:                  %{name}.init
 Source2:                  %{name}.sysconf
+Source3:                  %{name}.service
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:            gcc automake libevent-devel
 
-Requires:                 initscripts libevent kaosv >= 1.5.0
+Requires:                 initscripts libevent kaosv >= 2.10
 
+%if 0%{?rhel} >= 7
+Requires(pre):            shadow-utils
+Requires(post):           systemd
+Requires(preun):          systemd
+Requires(postun):         systemd
+%else
 Requires(pre):            shadow-utils
 Requires(post):           %{__chkconfig}
 Requires(preun):          %{__chkconfig} %{__service}
 Requires(postun):         %{__service}
+%endif
 
 ###############################################################################
 
@@ -125,6 +134,11 @@ install -dm 755 %{buildroot}%{_logdir}/%{name}
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/
+%endif
+
 install -pm 755 %{name}-debug %{buildroot}%{_bindir}/%{name}-debug
 install -pm 755 scripts/%{name}-tool %{buildroot}%{_bindir}/%{name}-tool
 
@@ -140,13 +154,31 @@ touch %{buildroot}%{_logdir}/%{name}/%{name}.log
 %{__getent} passwd %{username} >/dev/null || %{__useradd} -r -g %{groupname} -d %{_rundir}/%{name} -s /sbin/nologin %{username}
 
 %post
-%{__chkconfig} --add %{name}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{name} stop > /dev/null 2>&1
-  %{__chkconfig} --del %{name}
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+%else
+  %{__service} %{name} stop &>/dev/null || :
+  %{__chkconfig} --del %{name} &>/dev/null || :
+%endif
 fi
+
+%postun
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
+%endif
 
 ###############################################################################
 
@@ -160,6 +192,10 @@ fi
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 %{_initrddir}/%{name}
+
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%endif
 
 %dir %attr(755,%{username},%{groupname}) %{_logdir}/%{name}
 %attr(644,%{username},%{groupname}) %{_logdir}/%{name}/%{name}.log
@@ -175,6 +211,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Nov 02 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.33-0
+- Updated to latest release
+
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.32-0
 - Updated to latest release
 

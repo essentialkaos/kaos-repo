@@ -1,0 +1,19 @@
+*** doc/Doxyfile.in.orig	Wed Apr  2 14:16:27 2003
+--- doc/Doxyfile.in	Wed Apr  2 14:16:56 2003
+***************
+*** 263,269 ****
+  
+  INPUT                  = ../src \
+                           ../include/id3/field.h \
+!                          ../include/id3/frame.h \
+                           ../include/id3/globals.h \
+                           ../include/id3/misc_support.h \
+                           ../include/id3/reader.h \
+--- 263,269 ----
+  
+  INPUT                  = ../src \
+                           ../include/id3/field.h \
+!                          ../include/id3/id3lib_frame.h \
+                           ../include/id3/globals.h \
+                           ../include/id3/misc_support.h \
+                           ../include/id3/reader.h \

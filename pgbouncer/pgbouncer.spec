@@ -33,12 +33,12 @@
 
 %define __ldconfig        %{_sbin}/ldconfig
 %define __service         %{_sbin}/service
-%define __touch           %{_bin}/touch
 %define __chkconfig       %{_sbin}/chkconfig
 %define __updalt          %{_sbindir}/update-alternatives
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
+%define __sysctl          %{_bindir}/systemctl
 
 %define username          %{name}
 %define groupname         %{name}
@@ -48,7 +48,7 @@
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
 Version:           1.7.2
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -57,14 +57,16 @@ Source0:           https://pgbouncer.github.io/downloads/files/%{version}/%{name
 Source1:           %{name}.init
 Source2:           %{name}.sysconfig
 Source3:           %{name}.logrotate
+Source4:           %{name}.service
 
 Patch0:            %{name}-ini.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     libevent2-devel make gcc
+BuildRequires:     make gcc libevent2-devel openssl-devel
 
-Requires:          libevent2 initscripts kaosv >= 2.8 %{__useradd}
+Requires:          libevent2 openssl kaosv >= 2.10
+
 Requires(post):    chkconfig
 Requires(preun):   chkconfig initscripts
 Requires(postun):  initscripts
@@ -95,7 +97,7 @@ sed -i.fedora \
 %install
 rm -rf %{buildroot}
 
-make install DESTDIR=%{buildroot}
+%{__make} install DESTDIR=%{buildroot}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
@@ -109,15 +111,30 @@ install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -pm 755 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/%{name}.service
+%endif
+
 rm -f %{buildroot}%{_docdir}/%{name}/pgbouncer.ini
 rm -f %{buildroot}%{_docdir}/%{name}/NEWS
 rm -f %{buildroot}%{_docdir}/%{name}/README
 rm -f %{buildroot}%{_docdir}/%{name}/userlist.txt
 
+%clean
+rm -rf %{buildroot}
+
 ###############################################################################
 
 %post
-%{__chkconfig} --add %{name}
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
+
 chown -R %{username}:%{groupname} /etc/%{name}
 
 %pre
@@ -127,12 +144,21 @@ chown -R %{username}:%{groupname} /etc/%{name}
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{name} stop >/dev/null 2>&1
-  %{__chkconfig} --del %{name}
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+%else
+  %{__service} %{name} stop &>/dev/null || :
+  %{__chkconfig} --del %{name} &>/dev/null || :
+%endif
 fi
 
-%clean
-rm -rf %{buildroot}
+%postun
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
+%endif
 
 ###############################################################################
 
@@ -144,6 +170,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/*
 %{_initrddir}/%{name}
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%endif
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man5/%{name}.*
 %{_sysconfdir}/%{name}/mkauth.py*
@@ -152,6 +181,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Dec 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-1
+- Added systemd support
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
 - Updated to latest stable release
 

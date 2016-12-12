@@ -1,12 +1,11 @@
 [Unit]
-Description=A persistent key-value database
+Description=Redis
 After=syslog.target network.target
 
 [Service]
 PIDFile=/var/run/redis/redis.pid
-ExecStart=/usr/sbin/redis-server /etc/redis.conf
-User=redis
-Group=redis
+ExecStart=/etc/init.d/redis start
+ExecStop=/etc/init.d/redis stop
 
 [Install]
 WantedBy=multi-user.target
