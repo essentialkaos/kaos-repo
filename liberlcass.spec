@@ -20,9 +20,15 @@ Source1:              https://github.com/datastax/%{cpp_driver_name}/archive/%{c
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make cmake devtoolset-2-gcc-c++ libuv-devel >= 1.9.1
+BuildRequires:        make cmake libuv-devel >= 1.9.1
 BuildRequires:        erlang18-erl_interface erlang18-devel openssl-devel
 BuildRequires:        cassandra-cpp-driver-devel = %{cpp_driver_version}
+
+%if 0%{?rhel} >= 7
+BuildRequires:        gcc-c++
+%else
+BuildRequires:        devtoolset-2-gcc-c++
+%endif
 
 Requires(post):       /sbin/ldconfig
 Requires(postun):     /sbin/ldconfig
