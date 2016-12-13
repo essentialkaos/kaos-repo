@@ -31,7 +31,7 @@
 ###############################################################################
 
 %define upstream_name Pygments
-%define pypy_subpath  b8/67/ab177979be1c81bc99c8d0592ef22d547e70bb4c6815c383286ed5dec504
+%define pypi_subpath  b8/67/ab177979be1c81bc99c8d0592ef22d547e70bb4c6815c383286ed5dec504
 
 ###############################################################################
 
@@ -43,7 +43,7 @@ License:           BSD
 Group:             Development/Libraries
 URL:               http://pygments.org
 
-Source0:           https://pypi.python.org/packages/%{pypy_subpath}/%{upstream_name}-%{version}.tar.gz
+Source0:           https://pypi.python.org/packages/%{pypi_subpath}/%{upstream_name}-%{version}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
