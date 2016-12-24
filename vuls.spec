@@ -1,6 +1,7 @@
 ###############################################################################
 
-# rpmbuilder:relative-pack true
+# rpmbuilder:gopack    github.com/future-architect/vuls
+# rpmbuilder:tag       v0.1.7
 
 ###############################################################################
 
