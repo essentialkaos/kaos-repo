@@ -44,10 +44,10 @@
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               python-%{pkgname}
 Version:            2016.09.26
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
-URL:                http://certifi.io/en/latest/
+URL:                https://github.com/certifi
 
 Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
 
@@ -74,7 +74,6 @@ the identity of TLS hosts. It has been extracted from the Requests project.
 %setup -qn %{name}-%{version}
 
 rm -rf %{pkgname}.egg-info
-rm -rf certifi/*.pem
 
 %build
 %{__python} setup.py build
@@ -97,6 +96,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-1
+- Added certificates bundle to package
+
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-0
 - Updated to latest release
 
