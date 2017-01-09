@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.2.1
+Version:              3.2.3
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -971,6 +971,26 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
+- updated Czech, English (United States), French, Italian, Japanese, Korean,
+  Portuguese (Brazil), Russian, Ukrainian translations; thanks to Zabbix
+  translators
+- fixed "Response time" graph on "Details of web scenario" page
+- fixed paging error in Configuration->Triggers and Monitoring->Web
+- fixed crash in IPMI poller, added deleting of inactive IPMI hosts in
+  'unreachable poller', improved code correctness and debug logging
+- fixed applications and application prototypes being reset in templated
+  item prototypes when modifying its parent
+- added vm.vmemory.size to active item helper, updated descriptions and
+  sorted; thanks richlv for patch
+- fixed "system.stat" returning not supported after Zabbix agent restart on AIX
+- fixed threaded metric to handle interruption by a signal
+- fixed default operation step duration to be included in minimal step
+  calculation instead of overriding
+- fixed possible crash when polling vmware.hv.health.status
+- fixed zabbix_get to match zabbix_server protocol
+- changed vmware.vm.cpu.ready item units and description
+
 * Tue Oct 04 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.2.1-0
 - improved concurrent VMware item polling speed, reduced size of cached VMware data
 - updated Chinese (China), French, Italian, Portuguese (Brazil) translations; 
