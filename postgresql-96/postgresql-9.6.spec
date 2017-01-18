@@ -80,7 +80,7 @@
 
 %define majorver        9.6
 %define minorver        1
-%define rel             0
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          96
 %define realname        postgresql
@@ -1122,6 +1122,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Jan 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.1-1
+- Improved init script
+
 * Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.6.1-0
 - Updated to latest stable release
 - Added systemd support
