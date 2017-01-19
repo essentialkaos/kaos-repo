@@ -12,7 +12,7 @@ Source:               https://github.com/libevent/libevent/archive/release-%{ver
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc automake libtool doxygen openssl-devel
+BuildRequires:        gcc make automake libtool doxygen openssl-devel
 
 ###############################################################################
 

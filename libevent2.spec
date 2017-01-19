@@ -7,7 +7,7 @@
 Summary:              Abstract asynchronous event notification library
 Name:                 %{realname}2
 Version:              2.0.22
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
 URL:                  http://libevent.org/
@@ -16,7 +16,12 @@ Source:               https://github.com/libevent/libevent/archive/release-%{ver
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc automake openssl-devel zlib-devel
+BuildRequires:        gcc make automake libtool openssl-devel zlib-devel
+
+# For CentOS7/RHEL7 libevent2 = libevent
+%if 0%{?rhel} >= 7
+Provides:             %{realname} = %{version}-%{release}
+%endif
 
 ###############################################################################
 
@@ -85,8 +90,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-0
-- Avoid integer overflow bugs in evbuffer_add() and related functions.  See CVE-2014-6272 advisory for more information.
+* Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-1
+- Avoid integer overflow bugs in evbuffer_add() and related functions.
+  See CVE-2014-6272 advisory for more information.
 - fix 73 and fix http_connection_fail_test to catch it (crash fix)
 - Avoid racy bufferevent activation
 - Fix compilation with WIN32_HAVE_CONDITION_VARIABLES enabled
