@@ -89,6 +89,7 @@ fi
 ###############################################################################
 
 %files -f %{name}.lang
+%defattr(-, root, root, -)
 %doc AUTHORS COPYING ChangeLog INSTALL NEWS README THANKS TODO
 %doc doc/sample.nanorc
 %config(noreplace) %{_sysconfdir}/nanorc
