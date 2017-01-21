@@ -2,17 +2,23 @@
 
 %define realname      libevent
 
+%if 0%{?rhel} >= 7
+%define pkgname       libevent
+%else
+%define pkgname       libevent2
+%endif
+
 ###############################################################################
 
 Summary:              Abstract asynchronous event notification library
-Name:                 %{realname}2
+Name:                 %{pkgname}
 Version:              2.0.22
-Release:              1%{?dist}
+Release:              2%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
 URL:                  http://libevent.org/
 
-Source:               https://github.com/libevent/libevent/archive/release-%{version}-stable.tar.gz
+Source:               https://github.com/%{realname}/%{realname}/archive/release-%{version}-stable.tar.gz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -20,7 +26,7 @@ BuildRequires:        gcc make automake libtool openssl-devel zlib-devel
 
 # For CentOS7/RHEL7 libevent2 = libevent
 %if 0%{?rhel} >= 7
-Provides:             %{realname} = %{version}-%{release}
+Provides:             %{realname}2 = %{version}-%{release}
 %endif
 
 ###############################################################################
@@ -89,7 +95,7 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-1
+* Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-2
 - Avoid integer overflow bugs in evbuffer_add() and related functions.
   See CVE-2014-6272 advisory for more information.
 - fix 73 and fix http_connection_fail_test to catch it (crash fix)

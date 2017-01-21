@@ -6,7 +6,7 @@
 
 Summary:        A simple wrapper around optparse for powerful command line utilities.
 Name:           python-click
-Version:        6.6
+Version:        6.7
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
@@ -54,5 +54,8 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 6.7-0
+- Updated to latest stable release
+
 * Wed Nov 23 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.6-0
 - Initial build

@@ -28,26 +28,23 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define lzma_sdk_ver      465
-
 ###############################################################################
 
 Summary:           Ultimate Packer for eXecutables
 Name:              upx
-Version:           3.91
+Version:           3.92
 Release:           0%{?dist}
 License:           GPLv2+ and Public Domain
 Group:             Applications/Archiving
-URL:               http://upx.sourceforge.net
+URL:               https://upx.github.io
 
-Source:            http://upx.sourceforge.net/download/%{name}-%{version}-src.tar.bz2
-
-Patch0:            %{name}-3.07-use-lzma-sdk-lib.patch
+Source:            https://github.com/upx/upx/releases/download/v%{version}/%{name}-%{version}-src.tar.xz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:          ucl lzma-sdk zlib
-BuildRequires:     make ucl-devel >= 1.01 zlib-devel lzma-sdk-devel
+BuildRequires:     make ucl-devel zlib-devel
+
+Requires:          ucl zlib
 
 ###############################################################################
 
@@ -64,11 +61,11 @@ executables suffer no memory overhead or other drawbacks.
 
 sed -i -e 's/ -O2/ /' -e 's/ -Werror//' src/Makefile
 
-%patch0 -p1 -b .use-lib
+# Disable check_whitespace script
+echo -n > src/stub/scripts/check_whitespace.sh
 
 %build
-export CXXFLAGS="$RPM_OPT_FLAGS"
-UPX_LZMA_VERSION=0x%{lzma_sdk_ver} UPX_LZMADIR=%{_includedir}/lzma%{lzma_sdk_ver} %{__make} %{?_smp_mflags} -C src
+%{__make} %{?_smp_mflags} -C src
 %{__make} -C doc
 
 %install
@@ -83,7 +80,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc BUGS COPYING LICENSE NEWS PROJECTS README README.1ST THANKS TODO doc/*.txt
+%doc BUGS COPYING LICENSE NEWS PROJECTS README README.1ST THANKS doc/*.txt
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 

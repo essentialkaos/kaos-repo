@@ -35,7 +35,7 @@
 
 Summary:           Timezone Updater Tool
 Name:              tzupdater
-Version:           2.1.0
+Version:           2.1.1
 Release:           0%{?dist}
 License:           http://www.oracle.com/technetwork/java/javasebusiness/downloads/tzupdater-lic-354297.txt
 Group:             Applications/Databases
@@ -88,6 +88,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
+- Updated to latest release
+
 * Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
 - Updated to latest release
 

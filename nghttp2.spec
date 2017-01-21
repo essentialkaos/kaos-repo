@@ -2,7 +2,7 @@
 
 Summary:         Meta-package that only requires libnghttp2
 Name:            nghttp2
-Version:         1.16.0
+Version:         1.18.1
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
@@ -111,5 +111,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.18.1-0
+- Updated to latest stable release
+
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
 - Initial build for kaos repository

@@ -30,7 +30,7 @@
 
 Summary:            High performance TCP and WebSocket load generator and sink
 Name:               tcpkali
-Version:            1.0
+Version:            1.1.1
 Release:            0%{?dist}
 License:            BSD 2-Clause
 Group:              Development/Tools
@@ -81,6 +81,15 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- Support rsv1, rsv2, rsv3 reserved flags in in \{ws.* <reserved-flag>}.
+- Fix statsd output for connections.opened.
+- Support for \{raw Expression}, which removes ws framing.
+- -vvv option does not dump the traffic. Use -d or --dump-* options.
+- Added units (ms) to latency percentiles output.
+- Add ability to specify host in -l [host:]port.
+- \{message.marker} inserts a detectable timestamp to count messages/s.
+
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0-0
 - Export --latency-connect and --latency-first-bytes to statsd.
 - --latency-percentiles now affect --statsd reporting as well.

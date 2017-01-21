@@ -43,17 +43,19 @@
 
 Summary:             Apache Kafka C/C++ client library
 Name:                librdkafka
-Version:             0.9.1
+Version:             0.9.2
 Release:             0%{?dist}
 License:             2-clause BSD
 Group:               Development/Libraries
 URL:                 https://github.com/edenhill/librdkafka
 
-Source0:             https://github.com/edenhill/%{name}/archive/%{version}.tar.gz
+Source0:             https://github.com/edenhill/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:       gcc gcc-c++ make zlib-devel
+BuildRequires:       make gcc gcc-c++ zlib-devel
+
+Requires:            zlib
 
 ###############################################################################
 
@@ -82,7 +84,13 @@ libraries to develop applications using a Kafka databases.
 %build
 
 %ifarch i386
-  %define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables
+  %define optflags -O2 -g -pipe \
+                   -Wall -Wp,-D_FORTIFY_SOURCE=2 \
+                   -fexceptions \
+                   -fstack-protector \
+                   --param=ssp-buffer-size=4 \
+                   -m32 -march=i686 -mtune=atom \
+                   -fasynchronous-unwind-tables
 %endif
 
 %configure
@@ -91,13 +99,17 @@ libraries to develop applications using a Kafka databases.
 
 %install
 rm -rf %{buildroot}
+
 %{make_install}
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
 
 ###############################################################################
 
@@ -122,6 +134,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.2-0
+- Updated to latest release
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
 - Updated to latest release
 
