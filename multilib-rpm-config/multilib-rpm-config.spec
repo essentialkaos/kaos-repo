@@ -62,11 +62,17 @@ sed -e "$lib_sed_pattern" \
     %{SOURCE5} > multilib-info
 
 %install
+rm -rf %{buildroot}
+
 mkdir -p %{buildroot}%{rrcdir}
 mkdir -p %{buildroot}%{macrosdir}
+
 install -m 644 -p macros.multilib %{buildroot}/%{macrosdir}
 install -m 755 -p multilib-fix %{buildroot}/%{ml_fix}
 install -m 755 -p multilib-info %{buildroot}/%{ml_info}
+
+%clean
+rm -rf %{buildroot}
 
 %check
 mkdir tests ; cd tests
