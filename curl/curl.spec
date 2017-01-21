@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.51.0
+Version:              7.52.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -303,6 +303,68 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.52.1-0
+- CVE-2016-9594: unititialized random
+- lib557: fix checksrc warnings
+- lib: fix MSVC compiler warnings
+- lib557.c: use a shorter MAXIMIZE representation
+- tests: run checksrc on debug builds
+
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.52.0-0
+- nss: map CURL_SSLVERSION_DEFAULT to NSS default
+- vtls: support TLS 1.3 via CURL_SSLVERSION_TLSv1_3
+- curl: introduce the --tlsv1.3 option to force TLS 1.3
+- curl: Add --retry-connrefused
+- proxy: Support HTTPS proxy and SOCKS+HTTP(s)
+- add CURLINFO_SCHEME, CURLINFO_PROTOCOL, and {scheme}
+- curl: add --fail-early
+- CVE-2016-9586: printf floating point buffer overflow
+- CVE-2016-9952: Win CE schannel cert wildcard matches too much
+- CVE-2016-9953: Win CE schannel cert name out of buffer read
+- msvc: removed a straggling reference to strequal.c
+- winbuild: remove strcase.obj from curl build
+- examples: bugfixed multi-uv.c
+- configure: verify that compiler groks -Werror=partial-availability
+- mbedtls: fix build with mbedtls versions < 2.4.0
+- dist: add unit test CMakeLists.txt to the tarball
+- curl -w: added more decimal digits to timing counters
+- easy: Initialize info variables on easy init and duphandle
+- cmake: disable poll for macOS
+- http2: Don't send header fields prohibited by HTTP/2 spec
+- ssh: check md5 fingerprints case insensitively (regression)
+- openssl: initial TLS 1.3 adaptions
+- curl_formadd.3: *_FILECONTENT and *_FILE need the file to be kept
+- printf: fix ".*f" handling
+- examples/fileupload.c: fclose the file as well
+- SPNEGO: Fix memory leak when authentication fails
+- realloc: use Curl_saferealloc to avoid common mistakes
+- openssl: make sure to fail in the unlikely event that PRNG seeding fails
+- URL-parser: for file://[host]/ URLs, the [host] must be localhost
+- timeval: prefer time_t to hold seconds instead of long
+- Curl_rand: fixed and moved to rand.c
+- glob: fix [a-c] globbing regression
+- darwinssl: fix SSL client certificate not found on MacOS Sierra
+- curl.1: Clarify --dump-header only writes received headers
+- http2: Fix address sanitizer memcpy warning
+- http2: Use huge HTTP/2 windows
+- connects: Don't mix unix domain sockets with regular ones
+- url: Fix conn reuse for local ports and interfaces
+- x509: Limit ASN.1 structure sizes to 256K
+- checksrc: add more checks
+- winbuild: add config option ENABLE_NGHTTP2
+- http2: check nghttp2_session_set_local_window_size exists
+- http2: Fix crashes when parent stream gets aborted
+- CURLOPT_CONNECT_TO: Skip non-matching "connect-to" entries
+- URL parser: reject non-numerical port numbers
+- CONNECT: reject TE or CL in 2xx responses
+- CONNECT: read responses one byte at a time
+- curl: support zero-length argument strings in config files
+- openssl: don't use OpenSSL's ERR_PACK
+- curl.1: generated with the new man page system
+- curl_easy_recv: Improve documentation and example program
+- Curl_getconnectinfo: avoid checking if the connection is closed
+- CIPHERS.md: attempt to document TLS cipher names
+
 * Sat Nov 05 2016 Anton Novojilov <andy@essentialkaos.com> - 7.51.0-0
 - nss: additional cipher suites are now accepted by CURLOPT_SSL_CIPHER_LIST
 - New option: CURLOPT_KEEP_SENDING_ON_ERROR

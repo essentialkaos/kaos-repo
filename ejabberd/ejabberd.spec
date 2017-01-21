@@ -51,7 +51,7 @@
 
 Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:              ejabberd
-Version:           16.09
+Version:           17.01
 Release:           0%{?dist}
 Group:             Development/Tools
 License:           GNU GPL v2
@@ -63,7 +63,6 @@ Source2:           %{name}.sysconfig
 Source3:           %{name}.logrotate
 
 Patch0:            %{name}-conf.patch
-Patch1:            %{name}-check-pid-existance.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -104,7 +103,6 @@ ejabberd, Erlang, XMPP and messaging in general.
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 ./autogen.sh
@@ -167,6 +165,9 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 17.01-0
+- Updated to latest stable release
+
 * Sun Sep 25 2016 Anton Novojilov <andy@essentialkaos.com> - 16.09-0
 - Updated to latest stable release
 

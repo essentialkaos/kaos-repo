@@ -34,8 +34,8 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.2
-Release:           1%{?dist}
+Version:           3.2.2
+Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               http://ffmpeg.org
@@ -121,9 +121,6 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --extra-cflags="%{optflags} -fPIC" \
 %endif
   --disable-stripping \
-  --disable-demuxer=v4l \
-  --disable-demuxer=v4l2 \
-  --disable-indev=v4l \
   --disable-indev=v4l2
 
 %{__make} %{?_smp_mflags}
@@ -153,6 +150,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
+- Updated to version 3.2.2
+
 * Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2-1
 - Fixed build dependencies
 

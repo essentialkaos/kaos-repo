@@ -51,16 +51,16 @@
 %define hp_datadir        %{_datadir}/%{name}
 
 %define lua_ver           5.3.3
-%define pcre_ver          8.39
+%define pcre_ver          8.40
 %define libre_ver         2.5.0
 %define ncurses_ver       6.0
-%define readline_ver      6.3
+%define readline_ver      7.0
 
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.10
+Version:           1.6.11
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -285,6 +285,32 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
+- BUILD: contrib: fix ip6range build on Centos 7
+- BUG/MINOR: cli: fix pointer size when reporting data/transport layer name
+- BUG/MINOR: cli: dequeue from the proxy when changing a maxconn
+- BUG/MINOR: cli: wake up the CLI's task after a timeout update
+- BUG/MINOR: freq-ctr: make swrate_add() support larger values
+- BUG/MEDIUM: proxy: return "none" and "unknown" for unknown LB algos
+- BUG/MAJOR: stream: fix session abort on resource shortage
+- BUG/MINOR: http: don't send an extra CRLF after a Set-Cookie in a redirect
+- BUG/MEDIUM: variables: some variable name can hide another ones
+- BUG/MINOR: cli: be sure to always warn the cli applet when input buffer is full
+- MINOR: applet: Count number of (active) applets
+- MINOR: task: Rename run_queue and run_queue_cur counters
+- BUG/MEDIUM: stream: Save unprocessed events for a stream
+- BUG/MAJOR: Fix how the list of entities waiting for a buffer is handled
+- BUG/MEDIUM: lua: In some case, the return of sample-fetches is ignored (2)
+- BUG/MINOR: stream-int: automatically release SI_FL_WAIT_DATA on SHUTW_NOW
+- DOC: lua: section declared twice
+- DOC: fix small typo in fe_id (backend instead of frontend)
+- BUG/MINOR: lua: memory leak executing tasks
+- BUG/MEDIUM: ssl: properly reset the reused_sess during a forced handshake
+- BUG/MEDIUM: ssl: avoid double free when releasing bind_confs
+- BUG/MINOR: backend: nbsrv() should return 0 if backend is disabled
+- BUG/MEDIUM: ssl: for a handshake when server-side SNI changes
+- BUG/MINOR: systemd: potential zombie processes
+
 * Fri Nov 25 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.10-0
 - Init script rewritten with kaosv usage
 - Added systemd support

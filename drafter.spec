@@ -2,7 +2,7 @@
 
 Summary:              Complex builder of API Blueprint
 Name:                 drafter
-Version:              3.1.3
+Version:              3.2.3
 Release:              0%{?dist}
 License:              MIT
 Group:                Development/Libraries
@@ -12,7 +12,13 @@ Source:               https://github.com/apiaryio/%{name}/releases/download/v%{v
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        devtoolset-2-gcc-c++ make
+BuildRequires:        make
+
+%if 0%{?rhel} >= 7
+BuildRequires:        gcc-c++
+%else
+BuildRequires:        devtoolset-2-gcc-c++
+%endif
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -47,8 +53,10 @@ YAML and JSON. YAML is the default for the CLI.
 
 %build
 
+%if 0%{?rhel} <= 6
 # Use gcc and gcc-c++ from devtoolset for build
 export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
+%endif
 
 ./configure
 
@@ -73,5 +81,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
+- Updated to latest stable release
+
 * Mon Oct 17 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.1.3-0
 - Initial build

@@ -50,15 +50,15 @@
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
 
-%define pcre_ver          8.39
+%define pcre_ver          8.40
 %define libre_ver         2.5.0
 
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.5.18
-Release:           2%{?dist}
+Version:           1.5.19
+Release:           0%{?dist}
 License:           GPLv2+
 Group:             System Environment/Daemons
 URL:               http://haproxy.1wt.eu
@@ -253,6 +253,55 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-0
+- BUG/MAJOR: fix listening IP address storage for frontends
+- CLEANUP: connection: fix double negation on memcmp()
+- BUG/MEDIUM: sticktables: segfault in some configuration error cases
+- BUG/MINOR: http: add-header: header name copied twice
+- BUG/MINOR: ssl: fix potential memory leak in ssl_sock_load_dh_params()
+- BUG/MINOR: http: url32+src should use the big endian version of url32
+- BUG/MINOR: http: url32+src should check cli_conn before using it
+- DOC: http: add documentation for url32 and url32+src
+- MINOR: systemd: Use variable for config and pidfile paths
+- MINOR: systemd: Perform sanity check on config before reload
+- BUG/MINOR: init: always ensure that global.rlimit_nofile matches actual limits
+- BUG/MINOR: init: ensure that FD limit is raised to the max allowed
+- Revert "BUG/MINOR: ssl: fix potential memory leak in ssl_sock_load_dh_params()"
+- BUG/MEDIUM: stream-int: completely detach connection on connect error
+- DOC: minor typo fixes to improve HTML parsing by haproxy-dconv
+- BUG/MAJOR: compression: initialize avail_in/next_in even during flush
+- BUG/MAJOR: stick-counters: possible crash when using sc_trackers with wrong table
+- BUG/MAJOR: stream: properly mark the server address as unset on connect retry
+- BUG/MINOR: payload: fix SSLv2 version parser
+- MINOR: cli: allow the semi-colon to be escaped on the CLI
+- BUG/MINOR: displayed PCRE version is running release
+- MINOR: show Built with PCRE version
+- MINOR: show Running on zlib version
+- BUG/MINOR: ssl: Check malloc return code
+- BUG/MINOR: ssl: prevent multiple entries for the same certificate
+- BUG/MINOR: systemd: make the wrapper return a non-null status code on error
+- BUILD/CLEANUP: systemd: avoid a warning due to mixed code and declaration
+- BUG/MINOR: systemd: always restore signals before execve()
+- BUG/MINOR: systemd: check return value of calloc()
+- MINOR: systemd: report it when execve() fails
+- BUG/MEDIUM: systemd: let the wrapper know that haproxy has completed or failed
+- BUILD: poll: remove unused hap_fd_isset() which causes a warning with clang
+- DOC: Fix typo in description of `-st` parameter in man page
+- BUG/MEDIUM: peers: fix use after free in peer_session_create()
+- BUG/MEDIUM: systemd-wrapper: return correct exit codes
+- BUG/MINOR: stick-table: handle out-of-memory condition gracefully
+- BUG/MEDIUM: connection: check the control layer before stopping polling
+- BUG/MEDIUM: stick-table: fix regression caused by recent fix for out-of-memory
+- BUG/MINOR: cli: properly decrement ref count on tables during failed dumps
+- BUG/MINOR: cli: fix pointer size when reporting data/transport layer name
+- BUG/MINOR: cli: dequeue from the proxy when changing a maxconn
+- BUG/MEDIUM: proxy: return "none" and "unknown" for unknown LB algos
+- BUG/MINOR: http: don't send an extra CRLF after a Set-Cookie in a redirect
+- DOC: fix small typo in fe_id (backend instead of frontend)
+- BUG/MEDIUM: ssl: properly reset the reused_sess during a forced handshake
+- BUG/MINOR: backend: nbsrv() should return 0 if backend is disabled
+- BUG/MINOR: systemd: potential zombie processes
+
 * Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-2
 - Init script rewritten with kaosv usage
 - Added systemd support
