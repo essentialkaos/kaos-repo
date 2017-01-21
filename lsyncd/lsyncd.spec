@@ -152,6 +152,7 @@ fi
 ###############################################################################
 
 %files
+%defattr(-, root, root, -)
 %doc COPYING ChangeLog examples
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
