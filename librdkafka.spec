@@ -84,13 +84,7 @@ libraries to develop applications using a Kafka databases.
 %build
 
 %ifarch i386
-  %define optflags -O2 -g -pipe \
-                   -Wall -Wp,-D_FORTIFY_SOURCE=2 \
-                   -fexceptions \
-                   -fstack-protector \
-                   --param=ssp-buffer-size=4 \
-                   -m32 -march=i686 -mtune=atom \
-                   -fasynchronous-unwind-tables
+%define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i386 -mtune=atom -fasynchronous-unwind-tables
 %endif
 
 %configure
