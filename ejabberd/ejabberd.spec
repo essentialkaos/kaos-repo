@@ -129,7 +129,7 @@ ejabberd, Erlang, XMPP and messaging in general.
 %install
 rm -rf %{buildroot}
 
-%{make_install} INSTALL_PREFIX=%{buildroot}
+%{make_install}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d/
 install -dm 755 %{buildroot}%{_sharedstatedir}/%{name}/spool
@@ -137,9 +137,11 @@ install -dm 755 %{buildroot}%{_logdir}/%{name}
 install -dm 755 %{buildroot}%{_rundir}/%{name}
 
 %if 0%{?rhel} >= 7
+sed -i "s#%{buildroot}##g" %{name}.service
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
 %else
+sed -i "s#%{buildroot}##g" %{name}.init
 install -dm 755 %{buildroot}%{_initddir}
 install -pm 755 %{name}.init %{buildroot}%{_initddir}/%{name}
 %endif
