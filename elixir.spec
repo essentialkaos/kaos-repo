@@ -30,7 +30,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.3.4
+Version:            1.4.0
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -93,6 +93,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Updated to latest version
+
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
 - Updated to latest version
 

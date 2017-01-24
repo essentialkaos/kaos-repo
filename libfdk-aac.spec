@@ -32,8 +32,8 @@
 
 Summary:           Fraunhofer FDK AAC codec library
 Name:              libfdk-aac
-Version:           0.1.4
-Release:           1%{?dist}
+Version:           0.1.5
+Release:           0%{?dist}
 License:           Copyright Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
 Group:             System Environment/Libraries
 URL:               https://github.com/mstorsjo/fdk-aac
@@ -42,9 +42,9 @@ Source:            https://github.com/mstorsjo/fdk-aac/archive/v%{version}.tar.g
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     glibc-devel libtool autoconf gcc gcc-c++
+BuildRequires:     make glibc-devel libtool autoconf gcc gcc-c++
 
-Requires:          make glibc
+Requires:          glibc
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -73,8 +73,11 @@ autoreconf -fiv
   %{__mv} %{buildroot}%{_libdir32} %{buildroot}%{_libdir}
 %endif
 
-%post   -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -90,6 +93,14 @@ autoreconf -fiv
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.5-0
+- Updated upstream sources
+- Fixed building with GCC 3.3 and 3.4
+- Fixed building with GCC 6
+- AArch64 optimizations
+- Makefiles for building with MSVC
+- Support building the code in C++11 mode
+
 * Thu Jul 02 2015 Anton Novojilov <andy@essentialkaos.com> - 0.1.4-1
 - Updated upstream sources, with minor changes to the decoder API
   breaking the ABI. (Calling code using AUDIO_CHANNEL_TYPE may need to

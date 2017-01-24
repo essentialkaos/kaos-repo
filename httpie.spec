@@ -32,7 +32,7 @@
 
 Summary:           A Curl-like tool for humans
 Name:              httpie
-Version:           0.9.6
+Version:           0.9.8
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Internet
@@ -44,8 +44,8 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildArch:         noarch
 
-Requires:          python python-pygments python-argparse
-Requires:          python-requests >= 2.3 python-setuptools
+Requires:          python python-argparse python-setuptools
+Requires:          python-requests >= 2.3 python-pygments >= 2.1.3
 
 BuildRequires:     python python-setuptools sed
 
@@ -92,6 +92,14 @@ sed -i 's/requests>=2.11.0/requests>=2.6.0/' setup.py
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.8-0
+- Extended auth plugin API.
+- Added exit status code 7 for plugin errors.
+- Added support for curses-less Python installations.
+- Fixed REQUEST_ITEM arg incorrectly being reported as required.
+- Improved CTRL-C interrupt handling.
+- Added the standard exit status code 130 for keyboard interrupts.
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.6-0
 - Added Python 3 as a dependency for Homebrew installations to ensure some of
   the newer HTTP features work out of the box for macOS

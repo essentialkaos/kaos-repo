@@ -1,19 +1,14 @@
 ########################################################################################
 
-# rpmbuilder:github       google:google-authenticator
-# rpmbuilder:revision     f0d1574734b5855d4a604d58be25fc1159563b66
-
-########################################################################################
-
 Summary:         One-time passcode support using open standards
 Name:            google-authenticator
-Version:         1.01
+Version:         1.02
 Release:         0%{?dist}
 License:         ASL 2.0
 Group:           Development/Tools
 URL:             https://github.com/google/google-authenticator
 
-Source0:         %{name}-%{version}.tar.bz2
+Source0:         https://github.com/google/%{name}/archive/%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -73,12 +68,15 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc libpam/FILEFORMAT libpam/README libpam/totp.html
+%doc libpam/FILEFORMAT libpam/README.md libpam/totp.html
 /%{_lib}/security/*.so
 %{_bindir}/%{name}
 
 ########################################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.02-0
+- Updated to latest stable release
+
 * Wed May 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.01-0
 - Initial build

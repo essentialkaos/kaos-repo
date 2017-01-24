@@ -63,7 +63,7 @@ BuildRequires:     libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-deve
 BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel postgresql92-devel
 BuildRequires:     libspatialite-devel python-setuptools ruby-devel sqlite-devel swig
 BuildRequires:     unixODBC-devel libcurl-devel zlib-devel >= 1.1.4 xerces-c-devel
-BuildRequires:     proj-devel m4 chrpath
+BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker
 
 Requires:          xerces-c
 

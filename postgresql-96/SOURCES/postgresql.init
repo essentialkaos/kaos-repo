@@ -40,6 +40,7 @@ pg_postmaster=${PG_POSTMASTER:-${pg_engine}/postmaster}
 pg_data=${PG_DATA:-/var/lib/${short_name}/${MAJOR_VERSION}/data}
 pg_log=${PG_LOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgstartup.log}
 pg_uplog=${PG_UPLOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgupgrade.log}
+pg_socket_dir=${PG_SOCKET_DIR:-/var/run/postgresql}
 timeout=${TIMEOUT:-300}
 
 pg_ctl=$pg_engine/pg_ctl
@@ -85,8 +86,9 @@ prepare() {
 ###############################################################################
 
 preStartServiceHandler() {
-  createLog || return $ACTION_ERROR
-  checkData || return $ACTION_ERROR
+  createLog     || return $ACTION_ERROR
+  checkData     || return $ACTION_ERROR
+  makeSocketDir || return $ACTION_ERROR
 }
 
 startServiceHandler() {
@@ -283,9 +285,16 @@ checkData() {
 createLog() {
   if [[ ! -e "$pg_log" && ! -h "$pg_log" ]] ; then
     touch "$pg_log" || return 1
-    chown $USER_NAME:$GROUP_NAME "$pg_log"
+    chown "$USER_NAME:$GROUP_NAME" "$pg_log"
     chmod go-rwx "$pg_log"
     kv.restoreSEContext "$pg_log"
+  fi
+}
+
+makeSocketDir() {
+  if [[ ! -e "$pg_socket_dir" ]] ; then
+    mkdir "$pg_socket_dir" || return $ACTION_ERROR
+    chown "$USER_NAME:$GROUP_NAME" "$pg_socket_dir" || return $ACTION_ERROR
   fi
 }
 

@@ -88,7 +88,7 @@ Install this package if you need to rebuild applications that use yasm.
 %install
 rm -rf %{buildroot}
 
-make install DESTDIR=%{buildroot}
+%{make_install}
 
 %clean
 rm -rf %{buildroot}

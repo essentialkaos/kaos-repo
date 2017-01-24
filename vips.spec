@@ -38,8 +38,8 @@
 %define __ldconfig        %{_sbin}/ldconfig
 
 %define major_version     8
-%define minor_version     3
-%define patch_level       3
+%define minor_version     4
+%define patch_level       2
 
 
 ###############################################################################
@@ -58,7 +58,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make pkgconfig gettext libtool python-devel swig gtk-doc
 BuildRequires:     gcc gcc-c++ libjpeg-turbo-devel libtiff-devel zlib-devel
-BuildRequires:     glib2-devel libxml2-devel
+BuildRequires:     glib2-devel libxml2-devel libexif-devel
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -119,7 +119,7 @@ sed -i "s/\\(IM_VERSION_STRING=\\)\$IM_VERSION-\`date\`/\\1\"\$IM_VERSION-$FAKE_
 unset FAKE_BUILD_DATE
 
 %build
-%configure --disable-static --disable-gtk-doc
+%configure --disable-static --disable-gtk-doc --without-python
 %{__make} %{?_smp_mflags} LIBTOOL=libtool
 
 %install
@@ -161,6 +161,9 @@ rm -rf %{buildroot}%{_datadir}/locale
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 8.4.2-0
+- Updated to latest release
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 8.3.3-0
 - Updated to latest release
 

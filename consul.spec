@@ -6,7 +6,7 @@
 
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
-Version:         0.7.1
+Version:         0.7.2
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -16,7 +16,7 @@ Source0:         https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.6
+BuildRequires:   golang >= 1.7
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -67,6 +67,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.2-0
+- Updated to latest stable release
+
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.0-0
 - Updated to latest stable release
 

@@ -38,18 +38,19 @@
 ################################################################################
 
 %global pkgname           backports_abc
+%define pypi_path         68/3c/1317a9113c377d1e33711ca8de1e80afbaf4a3c950dd0edfaf61f9bfe6d8
 
 ################################################################################
 
 Summary:            Backport of recent additions to the 'collections.abc' module
 Name:               python-%{pkgname}
-Version:            0.4
+Version:            0.5
 Release:            0%{?dist}
 License:            Python
 Group:              Development/Libraries
 URL:                https://pypi.python.org/pypi/backports_abc
 
-Source0:            https://pypi.python.org/packages/source/b/%{pkgname}/%{pkgname}-%{version}.tar.gz
+Source0:            https://pypi.python.org/packages/%{pypi_path}/backports_abc-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -88,5 +89,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.5-0
+- Updated to latest stable release
+
 * Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.4-0
 - Initial build

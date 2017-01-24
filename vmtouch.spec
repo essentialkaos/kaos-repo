@@ -30,7 +30,7 @@
 
 Summary:            Portable file system cache diagnostics and control
 Name:               vmtouch
-Version:            1.1.0
+Version:            1.2.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -82,6 +82,14 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- -i feature which lets you ignore entire files and directories
+  (Thanks Etienne Bruines)
+- -I feature which lets you only process filenames matching
+  certain patterns.
+- Both -i and -I support wildcards
+- Specify C99 standard during compile (Thanks ecebuzz)
+
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
 - Better error checking for extremely large values to command
   line parameters (Thanks Matthew Fernandez)
