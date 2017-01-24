@@ -51,7 +51,7 @@
 
 Name:                 zabbix
 Version:              3.2.3
-Release:              0%{?dist}
+Release:              1%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
