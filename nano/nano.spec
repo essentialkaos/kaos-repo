@@ -23,8 +23,6 @@ BuildRequires:   gcc make automake gettext-devel groff ncurses-devel sed
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
 
-Conflicts:       filesystem < 3
-
 Provides:        %{name} = %{version}-%{release}
 
 ###############################################################################
