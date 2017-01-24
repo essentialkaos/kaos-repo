@@ -1,12 +1,12 @@
 ###############################################################################
 
-%define  debug_package %{nil}
+%define debug_package %{nil}
 
 ###############################################################################
 
 Summary:         Tool for building, changing, and combining infrastructure 
 Name:            terraform
-Version:         0.7.13
+Version:         0.8.4
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -72,6 +72,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Jan 24 2017 Anton Novojilov <andy@essentialkaos.com> - 0.8.4-0
+- Updated to latest stable release
+
 * Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.13-0
 - Updated to latest stable release
 

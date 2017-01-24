@@ -41,6 +41,7 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
+%define __systemctl       %{_bindir}/systemctl
 
 ###############################################################################
 
@@ -49,30 +50,34 @@
 
 ###############################################################################
 
-Summary:           Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
-Name:              ejabberd
-Version:           17.01
-Release:           0%{?dist}
-Group:             Development/Tools
-License:           GNU GPL v2
-URL:               https://www.ejabberd.im
+Summary:            Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
+Name:               ejabberd
+Version:            17.01
+Release:            0%{?dist}
+Group:              Development/Tools
+License:            GPLv2
+URL:                https://www.ejabberd.im
 
-Source0:           https://github.com/processone/%{name}/archive/%{version}.tar.gz
-Source1:           %{name}.init
-Source2:           %{name}.sysconfig
-Source3:           %{name}.logrotate
+Source0:            https://github.com/processone/%{name}/archive/%{version}.tar.gz
+Source1:            %{name}.logrotate
 
-Patch0:            %{name}-conf.patch
+Patch0:             %{name}-conf.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make automake autoconf gcc gcc-c++ git erlang19
-BuildRequires:     zlib-devel expat-devel pam-devel sqlite-devel
-BuildRequires:     openssl-devel libyaml-devel
+BuildRequires:      make automake autoconf gcc gcc-c++ git erlang19
+BuildRequires:      zlib-devel expat-devel pam-devel sqlite-devel
+BuildRequires:      openssl-devel libyaml-devel
 
-Requires:          erlang19 kaosv >= 2.6 openssl libyaml
+Requires:           erlang19 openssl libyaml
 
-Provides:          %{name} = %{version}-%{release}
+%if 0%{?rhel} >= 7
+Requires(post):     systemd
+Requires(preun):    systemd
+Requires(postun):   systemd
+%endif
+
+Provides:           %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -126,16 +131,20 @@ rm -rf %{buildroot}
 
 %{make_install} INSTALL_PREFIX=%{buildroot}
 
-install -dm 755 %{buildroot}%{_initddir}
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d/
-install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig/
 install -dm 755 %{buildroot}%{_sharedstatedir}/%{name}/spool
 install -dm 755 %{buildroot}%{_logdir}/%{name}
 install -dm 755 %{buildroot}%{_rundir}/%{name}
 
-install -pm 755 %{SOURCE1} %{buildroot}%{_initddir}/%{name}
-install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
-install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+%if 0%{?rhel} >= 7
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 %{name}.service %{buildroot}%{_unitdir}/%{name}.service
+%else
+install -dm 755 %{buildroot}%{_initddir}
+install -pm 755 %{name}.init %{buildroot}%{_initddir}/%{name}
+%endif
+
+install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %clean
 rm -rf %{buildroot}
@@ -144,12 +153,40 @@ rm -rf %{buildroot}
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
 getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{name} -s /sbin/nologin -M -r -g %{group_name} %{user_name}
 
+%post
+if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__systemctl} daemon-reload %{name}.service &>/dev/null || :
+  %{__systemctl} preset %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
+fi
+
+%preun
+if [[ $1 -eq 0 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__systemctl} stop %{name}.service &>/dev/null || :
+%else
+  %{__service} stop %{name} &>/dev/null || :
+%endif
+fi
+
+%postun
+if [[ $1 -ge 1 ]] ; then
+%if 0%{?rhel} >= 7
+  %{__systemctl} try-restart %{name}.service &>/dev/null || :
+%else
+  %{__service} restart %{name} &>/dev/null || :
+%endif
+fi
+
 ###############################################################################
 
 %files
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %attr(-, %{user_name}, %{group_name}) %{_sysconfdir}/%{name}/ejabberdctl.cfg
 %config(noreplace) %attr(-, %{user_name}, %{group_name}) %{_sysconfdir}/%{name}/ejabberd.yml
 %dir %attr(-, %{user_name}, %{group_name}) %{_sharedstatedir}/%{name}
@@ -158,7 +195,11 @@ getent passwd %{user_name} >/dev/null || %{__useradd} -d %{_sharedstatedir}/%{na
 %dir %attr(-, %{user_name}, %{group_name}) %{_rundir}/%{name}
 %attr(755, -, -) %{_sbindir}/%{name}ctl
 %attr(644, -, -) %{_sysconfdir}/%{name}/inetrc
+%if 0%{?rhel} >= 7
+%{_unitdir}/%{name}.service
+%else
 %{_initddir}/%{name}
+%endif
 %{_libdir}/*
 %{_docdir}/%{name}/COPYING
 

@@ -44,8 +44,8 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildArch:         noarch
 
-Requires:          python python-pygments python-argparse
-Requires:          python-requests >= 2.3 python-setuptools
+Requires:          python python-argparse python-setuptools
+Requires:          python-requests >= 2.3 python-pygments >= 2.1.3
 
 BuildRequires:     python python-setuptools sed
 

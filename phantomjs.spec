@@ -20,6 +20,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      bison flex fontconfig-devel freetype-devel gcc gcc-c++ gperf
 BuildRequires:      libicu-devel libjpeg-devel libpng-devel make openssl-devel
 BuildRequires:      perl(Getopt::Long) python ruby sqlite-devel urw-fonts
+BuildRequires:      python-argparse
 
 Provides:           %{name} = %{version}-%{release}
 
