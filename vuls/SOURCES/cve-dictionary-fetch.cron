@@ -1,0 +1,1 @@
+5 * * * * cved /usr/bin/cve-dictionary-fetch /opt/vuls/data current &> /dev/null || :
