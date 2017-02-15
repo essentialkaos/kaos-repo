@@ -136,7 +136,7 @@ if [[ $1 -eq 1 ]] ; then
 fi
 %else
 if [[ $1 -eq 1 ]] ; then
-  %{chkconfig} --add rsyncd &>/dev/null || :
+  %{__chkconfig} --add rsyncd &>/dev/null || :
 fi
 %endif
 
@@ -148,8 +148,8 @@ if [[ $1 -eq 0 ]] ; then
 fi
 %else
 if [[ $1 -eq 0 ]] ; then
-  %{chkconfig} --del rsyncd &>/dev/null || :
-  %{service} rsyncd stop &>/dev/null || :
+  %{__chkconfig} --del rsyncd &>/dev/null || :
+  %{__service} rsyncd stop &>/dev/null || :
 fi
 %endif
 
@@ -162,7 +162,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %else
 if [[ $1 -ge 1 ]] ; then
-  %{service} rsyncd restart &>/dev/null || :
+  %{__service} rsyncd restart &>/dev/null || :
 fi
 %endif
 
