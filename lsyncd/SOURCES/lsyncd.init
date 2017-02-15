@@ -24,6 +24,8 @@ binary=${BINARY:-/usr/local/bin/lsyncd}
 conf_file=${CONF_FILE:-/etc/lsyncd.conf}
 
 kv[nice]=19
+kv[delay_start]=3
+kv[delay_stop]=3
 
 kv[search_pattern]="$binary -pidfile"
 
@@ -68,7 +70,7 @@ reload() {
 
 startServiceHandler() {
 
-  $binary -pidfile "${kv[pid_file]}" "$conf_file" &>/dev/null
+  $binary -pidfile "${kv[pid_file]}" "$conf_file"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
