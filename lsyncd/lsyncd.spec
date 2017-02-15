@@ -46,7 +46,7 @@
 Summary:              File change monitoring and synchronization daemon
 Name:                 lsyncd
 Version:              2.2.1
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              GPLv2+
 Group:                Applications/Internet
 URL:                  https://github.com/axkibe/lsyncd
@@ -62,12 +62,12 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        make cmake gcc gcc-c++ lua-devel >= 5.1.3 asciidoc
 
-Requires:             lua rsync
+Requires:             lua rsync >= 3.1.0
 
 %if 0%{?rhel} >= 7
-Requires(post):       systemd
-Requires(preun):      systemd
-Requires(postun):     systemd
+Requires:             systemd
+%else
+Requires:             kaosv
 %endif
 
 Provides:             %{name} = %{version}-%{release}
@@ -168,5 +168,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Feb 15 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-1
+- Fixed rsync version in dependencies
+- Init script migrated to kaosv 
+
 * Tue Jan 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
 - Initial build for kaos-repo
