@@ -12,7 +12,7 @@
 
 Summary:              Abstract asynchronous event notification library
 Name:                 %{pkgname}
-Version:              2.0.22
+Version:              2.1.8
 Release:              2%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
@@ -81,7 +81,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc LICENSE README
+%doc LICENSE README.md ChangeLog-2.0
 %{_libdir}/%{realname}*.so.*
 
 %files devel
@@ -95,6 +95,12 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.8-0
+- Libevent 2.1.8-stable, it contains openssl fixes for resetting fd and using
+  bufferevent_openssl_filter_new(). vagrant fixes, some build fixes, increased
+  timeout for some tests (to reduce number of failures due to timing issues),
+  date in RFC1123 format and running tests in parallel
+
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-2
 - Avoid integer overflow bugs in evbuffer_add() and related functions.
   See CVE-2014-6272 advisory for more information.
