@@ -54,13 +54,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.7
+%global go_api 1.8
 
 ########################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.7.4
+Version:           1.8
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -661,7 +661,6 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %endif
 %{goroot}/pkg/tool/linux_386/cgo
 %{goroot}/pkg/tool/linux_386/fix
-%{goroot}/pkg/tool/linux_386/yacc
 
 %files pkg-linux-amd64 -f pkg-linux-amd64.list
 %defattr(-,root,root,-)
@@ -672,7 +671,6 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %endif
 %{goroot}/pkg/tool/linux_amd64/cgo
 %{goroot}/pkg/tool/linux_amd64/fix
-%{goroot}/pkg/tool/linux_amd64/yacc
 
 %files pkg-linux-arm -f pkg-linux-arm.list
 %defattr(-,root,root,-)
@@ -683,7 +681,6 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %endif
 %{goroot}/pkg/tool/linux_arm/cgo
 %{goroot}/pkg/tool/linux_arm/fix
-%{goroot}/pkg/tool/linux_arm/yacc
 
 %files pkg-darwin-386 -f pkg-darwin-386.list
 %defattr(-,root,root,-)
@@ -730,6 +727,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-0
+- Updated to latest stable release
+
 * Mon Dec 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
 - Updated to latest stable release
 
