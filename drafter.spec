@@ -2,7 +2,7 @@
 
 Summary:              Complex builder of API Blueprint
 Name:                 drafter
-Version:              3.2.3
+Version:              3.2.4
 Release:              0%{?dist}
 License:              MIT
 Group:                Development/Libraries
@@ -81,6 +81,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
+- Updated to latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
 - Updated to latest stable release
 
