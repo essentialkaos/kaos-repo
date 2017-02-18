@@ -4,23 +4,23 @@
 
 ###############################################################################
 
-%define custname      libCello
+%define libname       libCello
 
 ###############################################################################
 
 Summary:              High level programming library for C
 Name:                 libcello
-Version:              2.0.3
+Version:              2.1.0
 Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
 URL:                  http://libcello.org/home
 
-Source:               http://libcello.org/static/%{custname}-%{version}.tar.gz
+Source:               http://libcello.org/static/%{libname}-%{version}.tar.gz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc >= 3.0 make
+BuildRequires:        make gcc
 
 Provides:             %{name} = %{version}-%{release}
 Provides:             cello = %{version}-%{release}
@@ -44,44 +44,49 @@ Header files and static libraries for libcello.
 ###############################################################################
 
 %prep
-%setup -q -n %{custname}-%{version}
+%setup -qn %{libname}-%{version}
 
 %build
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_libdir}
 install -dm 755 %{buildroot}%{_includedir}
 
-install -pm 644 %{custname}.a %{buildroot}%{_libdir}/
-install -pm 755 %{custname}.so %{buildroot}%{_libdir}/
+install -pm 644 %{libname}.a %{buildroot}%{_libdir}/
+install -pm 755 %{libname}.so %{buildroot}%{_libdir}/
 
 cp -r include/* %{buildroot}%{_includedir}
 
-%post -p %{__ldconfig}
+%post
+%{__ldconfig}
 
-%postun -p %{__ldconfig}
+%postun
+%{__ldconfig}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
 %files
 %defattr(-, root, root, 0755)
 %doc LICENSE.md README.md
-%{_libdir}/%{custname}.so
+%{_libdir}/%{libname}.so
 
 %files devel
 %defattr(-, root, root, 0755)
-%{_libdir}/%{custname}.a
+%{_libdir}/%{libname}.a
 %{_includedir}
 
 ###############################################################################
 
 %changelog
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
+- Updated to latest version
+
 * Sun Nov 17 2013 Anton Novojilov <andy@essentialkaos.com> - 1.1.5-0
 - Improved spec file
 - Updated to latest version
