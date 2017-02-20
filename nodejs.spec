@@ -37,7 +37,6 @@ Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                http://nodejs.org
-Vendor:             Joyent Inc.
 
 Source0:            http://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
 
@@ -117,52 +116,30 @@ export CXX=clang++
 
 %changelog
 * Mon Feb 20 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.9.5-0
-- Updated to latest stable release
+- deps: upgrade openssl sources to 1.0.2k
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 6.9.4-0
-- Updated to latest stable release
+- N/A
+
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 6.9.3-0
+- build: shared library support is now working for AIX builds
+- npm: upgrade npm to 3.10.10
+- V8: Destructuring of arrow function arguments via computed property no longer throws
+- inspector: /json/version returns object, not an object wrapped in an array
+- module: using --debug-brk and --eval together now works as expected
+- process: improve performance of nextTick up to 20%
+- repl: the division operator will no longer be accidentally parsed as regex
+- repl: improved support for generator functions
+- timers: Re canceling a cancelled timers will no longer throw
+
+* Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 6.9.2-0
+- buffer: coerce slice parameters consistently
+- npm: upgrade npm to 3.10.9
+- V8: Various fixes to destructuring edge cases
+- gtest: the test reporter now outputs tap comments as yamlish
+- inspector: inspector now prompts user to use 127.0.0.1 rather than localhost
+- tls: fix memory leak when writing data to TLSWrap instance during handshake
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 6.9.1-0
-- Updated to latest stable release
-
-* Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.7-0
-- Updated to latest stable release
-
-* Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.6-0
-- Updated to latest stable release
-
-* Mon Jul 11 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 4.4.5-0
-- Updated to latest stable release
-
-* Wed May 18 2016 Anton Novojilov <andy@essentialkaos.com> - 4.4.4-0
-- Updated to latest stable release
-
-* Thu May 05 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 4.4.3-0
-- Updated to latest stable release
-
-* Wed Sep  9 2015 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
-- Updated to latest stable release
-
-* Fri Jul 10 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.7-0
-- Updated to latest stable release
-
-* Mon Jul 06 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.6-0
-- Updated to latest stable release
-
-* Mon Jul 06 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.5-0
-- Updated to latest stable release
-
-* Mon May 25 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.4-0
-- Updated to latest stable release
-
-* Fri May 15 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.3-0
-- Updated to latest stable release
-
-* Wed Apr 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.2-0
-- Updated to latest stable release
-
-* Tue Mar 24 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.1-0
-- Updated to latest stable release
-
-* Sat Feb 07 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-0
-- Updated to latest stable release
+- streams: Fix a regression introduced in v6.8.0 in readable stream that
+  caused unpipe to remove the wrong stream
