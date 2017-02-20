@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.9.4
+Version:            6.9.5
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,6 +116,9 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Mon Feb 20 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.9.5-0
+- Updated to latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 6.9.4-0
 - Updated to latest stable release
 
