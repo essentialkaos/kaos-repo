@@ -2,12 +2,6 @@
 
 %define  debug_package %{nil}
 
-###############################################################################
-
-%global  cfssl_binaries cfssl mkbundle cfssljson cfssl-certinfo cfssl-newkey cfssl-scan
-
-###############################################################################
-
 Name:               cfssl
 Summary:            CloudFlare PKI Toolkit
 Version:            1.2.0
@@ -39,26 +33,27 @@ export GO15VENDOREXPERIMENT=1
 
 cp -R src/github.com/cloudflare/cfssl/doc src/github.com/cloudflare/cfssl/LICENSE .
 
-for _b in %{cfssl_binaries};
-do
-  go build -x -o ${_b} src/github.com/cloudflare/cfssl/cmd/${_b}/${_b}.go
-done
+go build -x -o cfssl src/github.com/cloudflare/cfssl/cmd/cfssl/cfssl.go
+go build -x -o cfssljson src/github.com/cloudflare/cfssl/cmd/cfssljson/cfssljson.go
+go build -x -o cfssl-certinfo src/github.com/cloudflare/cfssl/cmd/cfssl-certinfo/cfssl-certinfo.go
+go build -x -o cfssl-mkbundle src/github.com/cloudflare/cfssl/cmd/mkbundle/mkbundle.go
 
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
 
-rm -f cfssl_binaries.list
+install -spm 755 cfssl %{buildroot}%{_bindir}
+install -spm 755 cfssljson %{buildroot}%{_bindir}
+install -spm 755 cfssl-certinfo %{buildroot}%{_bindir}
+install -spm 755 cfssl-mkbundle %{buildroot}%{_bindir}
 
-for _b in %{cfssl_binaries};
-do
-  install -spm 755 ${_b} %{buildroot}%{_bindir}
-  echo "%{_bindir}/${_b}" >> cfssl_binaries.list
-done
-
-%files -f cfssl_binaries.list
+%files
 %defattr(-,root,root,-)
+%{_bindir}/cfssl
+%{_bindir}/cfssljson
+%{_bindir}/cfssl-certinfo
+%{_bindir}/cfssl-mkbundle
 %doc doc LICENSE
 
 %clean
