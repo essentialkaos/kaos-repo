@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.9.5
+Version:            6.10.0
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -115,6 +115,14 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.0-0
+- crypto: allow adding extra certs to well-known CA's
+- deps: Upgrade INTL ICU to version 58
+- process: add process.memoryUsage.external
+- src: add wrapper for process.emitWarning()
+- fs: cache non-symlinks in realpathSync
+- repl: allow autocompletion for scoped packages
+
 * Mon Feb 20 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.9.5-0
 - deps: upgrade openssl sources to 1.0.2k
 
