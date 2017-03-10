@@ -61,7 +61,7 @@
 Summary:           The Go Programming Language
 Name:              golang
 Version:           1.8
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Development/Languages
 URL:               http://golang.org
@@ -507,6 +507,9 @@ rm -rf %{buildroot}
 
 touch -r %{goroot}/pkg/linux_386/runtime.a %{goroot}/pkg/linux_386/runtime/cgo.a
 
+# Rebuild outdated runtime
+%{_bindir}/go install std
+
 %endif
 
 ########################################################################################
@@ -517,6 +520,9 @@ touch -r %{goroot}/pkg/linux_386/runtime.a %{goroot}/pkg/linux_386/runtime/cgo.a
 
 touch -r %{goroot}/pkg/linux_amd64/runtime.a %{goroot}/pkg/linux_amd64/runtime/cgo.a
 
+# Rebuild outdated runtime
+%{_bindir}/go install std
+
 %endif
 
 ########################################################################################
@@ -526,6 +532,9 @@ touch -r %{goroot}/pkg/linux_amd64/runtime.a %{goroot}/pkg/linux_amd64/runtime/c
 %post pkg-bin-linux-arm
 
 touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
+
+# Rebuild outdated runtime
+%{_bindir}/go install std
 
 %endif
 
@@ -727,6 +736,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Fri Mar 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-1
+- Improved spec
+
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-0
 - Updated to latest stable release
 
