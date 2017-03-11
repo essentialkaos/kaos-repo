@@ -34,7 +34,7 @@
 
 Summary:           Very high compression ratio file archiver
 Name:              p7zip
-Version:           16.04
+Version:           16.02
 Release:           0%{?dist}
 License:           LGPLv2 and (LGPLv2+ or CPL)
 Group:             Applications/Archiving
@@ -143,12 +143,6 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 16.04-0
-- Some bugs were fixed in RAR code
-
-* Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 16.03-0
-- Some bugs were fixed in 7z, NSIS, SquashFS, RAR5 and another code
-
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 16.02-0
 - 7-Zip now can extract multivolume ZIP archives (z01, z02, ... , zip)
 - Some bugs were fixed
