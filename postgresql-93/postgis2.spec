@@ -54,7 +54,7 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.3
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.3.0
+Version:           2.3.2
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -263,6 +263,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
+- Updated to latest stable release
+
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
 - Updated to latest stable release
 
