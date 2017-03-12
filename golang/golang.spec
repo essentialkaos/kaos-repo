@@ -507,9 +507,6 @@ rm -rf %{buildroot}
 
 touch -r %{goroot}/pkg/linux_386/runtime.a %{goroot}/pkg/linux_386/runtime/cgo.a
 
-# Rebuild outdated runtime
-%{_bindir}/go install std
-
 %endif
 
 ########################################################################################
@@ -520,9 +517,6 @@ touch -r %{goroot}/pkg/linux_386/runtime.a %{goroot}/pkg/linux_386/runtime/cgo.a
 
 touch -r %{goroot}/pkg/linux_amd64/runtime.a %{goroot}/pkg/linux_amd64/runtime/cgo.a
 
-# Rebuild outdated runtime
-%{_bindir}/go install std
-
 %endif
 
 ########################################################################################
@@ -532,6 +526,36 @@ touch -r %{goroot}/pkg/linux_amd64/runtime.a %{goroot}/pkg/linux_amd64/runtime/c
 %post pkg-bin-linux-arm
 
 touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
+
+%endif
+
+########################################################################################
+
+%ifarch %{ix86}
+
+%posttrans pkg-bin-linux-386
+
+# Rebuild outdated runtime
+%{_bindir}/go install std
+
+%endif
+
+########################################################################################
+
+%ifarch x86_64
+
+%posttrans pkg-bin-linux-amd64
+
+# Rebuild outdated runtime
+%{_bindir}/go install std
+
+%endif
+
+########################################################################################
+
+%ifarch %{arm}
+
+%posttrans pkg-bin-linux-arm
 
 # Rebuild outdated runtime
 %{_bindir}/go install std
