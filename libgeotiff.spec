@@ -86,6 +86,7 @@ install -pm 644 %{name}.pc %{buildroot}%{_libdir}/pkgconfig/
 
 #clean up junks
 rm -rf %{buildroot}%{_libdir}/*.a
+rm -rf %{buildroot}%{_libdir}/*.la
 echo "" >> %{buildroot}%{_datadir}/epsg_csv/codes.csv
 
 chrpath --delete %{buildroot}%{_bindir}/applygeo
@@ -128,7 +129,6 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %{_includedir}/%{name}/*.h
 %attr(0644,root,root) %{_includedir}/%{name}/*.inc
 %{_libdir}/%{name}.so
-%{_libdir}/%{name}.la
 %{_libdir}/pkgconfig/%{name}.pc
 
 ###############################################################################
