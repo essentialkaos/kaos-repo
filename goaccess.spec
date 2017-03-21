@@ -2,7 +2,7 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.1.1
+Version:         1.2
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
@@ -55,6 +55,56 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-0
+- Added a Dockerfile.
+- Added Amazon S3 bucket name as a VirtualHost (server block).
+- Added a replacement for GNU getline() to dynamically expand line buffer
+  while maintaining real-time output.
+- Added --daemonize command line option to run GoAccess as daemon.
+- Added several improvements to the HTML report on small-screen devices.
+- Added option to the HTML report to auto-hide tables on small-screen
+  devices.
+- Added --process-and-exit command line option to parse log and exit.
+- Added several feed readers to the list of browsers.
+- Added "-" single dash per convention to read from the standard input.
+- Added support for MaxMind GeoIP2.
+- Added the ability to read and follow from a pipe such as
+  "tail -f access.log | goaccess -"
+- Added the ability to specify multiple logs as input sources, e.g.:
+  "goaccess access.log access.log.1" while maintaining real-time output.
+- Added time unit (seconds) to the processed time label in the HTML/terminal
+  output.
+- Added visitors' percent column to the terminal dashboard.
+- Changed D3 charts to dim Y-axis on mouseover.
+- Changed D3 charts to reflect HTML column sort.
+- Changed D3 charts to render only if within the viewport. This improves the
+  overall real-time HTML performance.
+- Changed HTML report tables to render only if within the viewport.
+- Changed percentage calculation to be based on the total within each panel.
+- Ensure start/end dates are updated real-time in the HTML output.
+- Ensure "window.location.hostname" is used as the default WS server host.
+  In most cases, this should avoid the need for specifying "--ws-url=host".
+  Simply using "--real-time-html" should suffice.
+- Fixed issue on HTML report to avoid outputting scientific notation for all
+  byte sizes.
+- Fixed integer overflow when calculating bar graph length on terminal
+  output.
+- Fixed issue where global config file would override command line arguments.
+- Fixed issue where it wouldn't allow loading from disk without specifying a
+  file when executed from the cron.
+- Fixed issue where parser couldn't read some X-Forwarded-For (XFF) formats.
+  Note that this breaks compatibility with the original implementation of
+  parsing XFF, but at the same time it gives much more flexibility on different
+  formats.
+- Fixed issue where specifying fifo-in/out wouldn't allow HTML real-time
+  output.
+- Fixed issue where the wrong number of parsed lines upon erroring out was
+  displayed.
+- Fixed issue where the WebSocket server would prevent establishing a
+  connection with a client due to invalid UTF-8 sequences.
+- Fixed percent issue when calculating visitors field.
+- Updated the list of crawlers.
+
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
 - Added data metric's "unique" count on each panel to the JSON/HTML outputs.
 - Changed D3 bar charts to use .rangeBands and avoid extra outer padding.

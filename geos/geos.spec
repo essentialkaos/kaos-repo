@@ -31,11 +31,13 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
+%{!?_without_check: %define _with_check 1}
+
 ########################################################################################
 
 Summary:           GEOS is a C++ port of the Java Topology Suite
 Name:              geos
-Version:           3.5.0
+Version:           3.6.1
 Release:           0%{?dist}
 License:           LGPLv2
 Group:             Applications/Engineering
@@ -112,7 +114,9 @@ rm -rf %{buildroot}
 %{make_install}
 
 %check
-%{__make} %{?_smp_mflags} check || exit 0
+%if %{?_with_check:1}%{?_without_check:0}
+%{__make} %{?_smp_mflags} check
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -155,8 +159,11 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.6.1-0
+- Updated to latest release
+
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.0-0
-- Updated to 3.5.0
+- Updated to latest release
 
 * Sat Sep 06 2014 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
 - Initial build
