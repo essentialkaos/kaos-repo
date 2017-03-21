@@ -45,8 +45,8 @@
 
 Summary:              File change monitoring and synchronization daemon
 Name:                 lsyncd
-Version:              2.2.1
-Release:              1%{?dist}
+Version:              2.2.2
+Release:              0%{?dist}
 License:              GPLv2+
 Group:                Applications/Internet
 URL:                  https://github.com/axkibe/lsyncd
@@ -168,6 +168,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-0
+- Updated to latest stable release
+
 * Wed Feb 15 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-1
 - Fixed rsync version in dependencies
 - Init script migrated to kaosv 

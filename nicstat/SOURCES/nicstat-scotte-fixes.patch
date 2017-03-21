@@ -1,0 +1,82 @@
+diff -urN nicstat-src-1.95-orig/nicstat.c nicstat-src-1.95/nicstat.c
+--- nicstat-src-1.95-orig/nicstat.c	2017-03-21 18:08:48.621966788 -0400
++++ nicstat-src-1.95/nicstat.c	2017-03-21 18:10:39.000000000 -0400
+@@ -281,7 +281,6 @@
+ static int g_tcp;			/* show TCP stats */
+ static int g_opt_x;
+ static int g_opt_p;
+-static int g_opt_k;
+ static int g_verbose;
+ static int g_forever;			/* run forever */
+ static char **g_tracked;		/* tracked interfaces */
+@@ -300,6 +299,7 @@
+ static int g_sock;			/* Socket for interface ioctl's */
+ 
+ #ifdef OS_SOLARIS
++static int g_opt_k;
+ static kstat_ctl_t *g_kc;		/* kstat chain pointer */
+ static int g_new_kstat_chain = B_TRUE;	/* kstat chain updated */
+ #ifdef USE_DLADM
+@@ -1566,7 +1566,7 @@
+ 			n = fscanf(snmp, "Udp: %lld %lld %lld %lld "
+ 			    "%lld %lld\n",
+ 			    &ll[0], &ll[1], &ll[2], &ll[3],
+-			    &ll[4], &ll[5], &ll[6]);
++			    &ll[4], &ll[5]);
+ 			if (n == 6) {
+ 				g_udp_new->inDatagrams = ll[0];
+ 				g_udp_new->outDatagrams = ll[3];
+@@ -1588,6 +1588,9 @@
+ 	struct ethtool_cmd edata;
+ 	int status;
+ 
++	if (find_interface_speed(nicp))
++		return;
++
+ 	if (nicp->flags & NIC_NO_GSET) {
+ 		if (nicp->speed > 0)
+ 			/* Already got something */
+@@ -1609,7 +1612,7 @@
+ 		get_speed_duplex(nicp);
+ 		return;
+ 	}
+-	nicp->speed = edata.speed * 1000000;
++	nicp->speed = (long long) edata.speed * 1000000;
+ 	nicp->duplex = edata.duplex;
+ }
+ #endif /* OS_LINUX */
+@@ -2121,7 +2124,7 @@
+ 			 */
+ 			rutil = min(rbps * 800 / nicp->speed, 100);
+ 			wutil = min(wbps * 800 / nicp->speed, 100);
+-			if (nicp->duplex == 2) {
++			if (nicp->duplex == DUPLEX_FULL) {
+ 				/* Full duplex */
+ 				util = max(rutil, wutil);
+ 			} else {
+@@ -2341,7 +2344,6 @@
+ 	struct if_speed_list	*list_elem;
+ 	char			*speed_list_save_ptr;
+ 	char			*if_record;
+-	char			*if_record_save_ptr;
+ 	char			name[32];
+ 	uint64_t		speed;
+ 	char			duplex_s[32];
+@@ -2424,17 +2426,10 @@
+ duplex_to_string(duplex_t duplex)
+ {
+ 	switch (duplex) {
+-#ifdef OS_LINUX
+ 	case DUPLEX_HALF:
+ 		return ("half");
+ 	case DUPLEX_FULL:
+ 		return ("full");
+-#else
+-	case 1:
+-		return ("half");
+-	case 2:
+-		return ("full");
+-#endif
+ 	default:
+ 		return ("unkn");
+ 	}

@@ -3,12 +3,15 @@
 Summary:           Network traffic statics utility
 Name:              nicstat
 Version:           1.95
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           Artistic 2.0
 Group:             Applications/System
 URL:               http://sourceforge.net/projects/nicstat
 
 Source:            http://downloads.sourceforge.net/%{name}/%{name}-src-%{version}.tar.gz
+
+# https://github.com/scotte/nicstat
+Patch0:            %{name}-scotte-fixes.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -25,6 +28,8 @@ average packet sizes and more.
 
 %prep
 %setup -qn %{name}-src-%{version}
+
+%patch0 -p1 -b .scotte-fixes
 
 %build
 %ifarch %ix86
@@ -56,5 +61,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.95-1
+- Added patch with bugfixes
+
 * Sun Mar 22 2015 Anton Novojilov <andy@essentialkaos.com> - 1.95-0
 - Initial build

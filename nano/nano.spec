@@ -1,7 +1,7 @@
 ###############################################################################
 
 %define main_version 2.7
-%define patch        4
+%define patch        5
 
 ###############################################################################
 
@@ -103,5 +103,8 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7.5-0
+- Updated to latest stable release
+
 * Fri Jan 20 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7.4-0
 - Initial build for kaos repository
