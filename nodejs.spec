@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.10.0
+Version:            6.10.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -115,6 +115,17 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.1-0
+- performance: The performance of several APIs has been improved
+- IPC: Batched writes have been enabled for process IPC on platforms that
+  support Unix Domain Sockets
+- http: Control characters are now always rejected when using http.request()
+- http: Debug messages have been added for cases when headers contain
+  invalid values
+- node: Heap statistics now support values larger than 4GB
+- timers: Timer callbacks now always maintain order when interacting with
+  domain error handling
+
 * Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.0-0
 - crypto: allow adding extra certs to well-known CA's
 - deps: Upgrade INTL ICU to version 58

@@ -1,6 +1,6 @@
-diff -urN salt-2016.11.0-orig/conf/master salt-2016.11.0/conf/master
---- salt-2016.11.0-orig/conf/master	2016-12-01 05:52:11.132924045 -0500
-+++ salt-2016.11.0/conf/master	2016-12-01 05:58:04.000000000 -0500
+diff -urN salt-2016.11.3-orig/conf/master salt-2016.11.3/conf/master
+--- salt-2016.11.3-orig/conf/master	2017-03-21 19:22:32.803301370 -0400
++++ salt-2016.11.3/conf/master	2017-03-21 19:25:24.000000000 -0400
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -46,7 +46,7 @@ diff -urN salt-2016.11.0-orig/conf/master salt-2016.11.0/conf/master
  
  # The master can take a while to start up when lspci and/or dmidecode is used
  # to populate the grains for the master. Enable if you want to see GPU hardware
-@@ -531,7 +531,7 @@
+@@ -561,7 +561,7 @@
  #
  # Prior to changing this value, the master should be stopped and all Salt
  # caches should be cleared.
@@ -55,22 +55,22 @@ diff -urN salt-2016.11.0-orig/conf/master salt-2016.11.0/conf/master
  
  # The buffer size in the file server can be adjusted here:
  #file_buffer_size: 1048576
-@@ -829,10 +829,10 @@
+@@ -864,10 +864,10 @@
  #syndic_master_port: 4506
  
  # PID file of the syndic daemon:
 -#syndic_pidfile: /var/run/salt-syndic.pid
 +syndic_pidfile: /var/run/salt-syndic.pid
  
- # LOG file of the syndic daemon:
--#syndic_log_file: syndic.log
+ # The log file of the salt-syndic daemon:
+-#syndic_log_file: /var/log/salt/syndic
 +syndic_log_file: /var/log/salt/syndic.log
  
  # The behaviour of the multi-syndic when connection to a master of masters failed.
  # Can specify ``random`` (default) or ``ordered``. If set to ``random``, masters
-diff -urN salt-2016.11.0-orig/conf/minion salt-2016.11.0/conf/minion
---- salt-2016.11.0-orig/conf/minion	2016-12-01 05:52:11.130924045 -0500
-+++ salt-2016.11.0/conf/minion	2016-12-01 06:03:30.000000000 -0500
+diff -urN salt-2016.11.3-orig/conf/minion salt-2016.11.3/conf/minion
+--- salt-2016.11.3-orig/conf/minion	2017-03-21 19:22:32.800301370 -0400
++++ salt-2016.11.3/conf/minion	2017-03-21 19:27:28.000000000 -0400
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
@@ -89,6 +89,15 @@ diff -urN salt-2016.11.0-orig/conf/minion salt-2016.11.0/conf/minion
  
  # The root directory prepended to these options: pki_dir, cachedir, log_file,
  # sock_dir, pidfile.
+@@ -93,7 +93,7 @@
+ #conf_file: /etc/salt/minion
+ 
+ # The directory to store the pki information in
+-#pki_dir: /etc/salt/pki/minion
++pki_dir: /etc/salt/pki/minion
+ 
+ # Explicitly declare the id for this minion to use, if left commented the id
+ # will be the hostname as returned by the python call: socket.getfqdn()
 @@ -127,7 +127,7 @@
  #
  # Where cache data goes.
@@ -116,12 +125,11 @@ diff -urN salt-2016.11.0-orig/conf/minion salt-2016.11.0/conf/minion
  
  # The Salt pillar is searched for locally if file_client is set to local. If
  # this is the case, and pillar data is defined, then the pillar_roots need to
-@@ -652,7 +652,7 @@
- #log_file: file:///dev/log
- #log_file: udp://loghost:10514
+@@ -663,6 +663,7 @@
  #
--#log_file: /var/log/salt/minion
-+log_file: /var/log/salt/minion.log
+ #log_file: /var/log/salt/minion
  #key_logfile: /var/log/salt/key
++log_file: /var/log/salt/minion.log
  
  # The level of messages to send to the console.
+ # One of 'garbage', 'trace', 'debug', info', 'warning', 'error', 'critical'.

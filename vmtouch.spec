@@ -30,7 +30,7 @@
 
 Summary:            Portable file system cache diagnostics and control
 Name:               vmtouch
-Version:            1.2.0
+Version:            1.3.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -82,6 +82,18 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- New switch: "-b <file>". This enables "batch mode" where the
+  list of files to crawl is read from the specified file
+- New switch: "-0". When this is enabled, the files in
+  "batch mode" are separated by NUL bytes instead of newlines
+- New switch: "-F". Prevents vmtouch from traversing separate
+  filesystems
+- Lots of updates to the debian packaging
+- Use standard path for manpages
+- On linux, if an open fails due to EPERM then try again
+  without O_NOATIME
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
 - -i feature which lets you ignore entire files and directories
   (Thanks Etienne Bruines)
