@@ -54,8 +54,8 @@ HDF development headers and libraries.
 chmod a-x *hdf/*/*.c hdf/*/*.h
 
 %build
-autoreconf -vif
 rm config/*linux-gnu
+
 export CFLAGS="$RPM_OPT_FLAGS -fPIC"
 export FFLAGS="$RPM_OPT_FLAGS -fPIC -ffixed-line-length-none"
 

@@ -15,6 +15,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        make gcc gcc-c++ automake libtool openssh-clients
 BuildRequires:        krb5-devel openssl-devel zlib-devel gcc-gfortran time
+BuildRequires:        chrpath
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -57,8 +58,6 @@ HDF5 static libraries.
 %prep
 %setup -q
 
-autoreconf -f -i
-
 %build
 
 %global _configure ../configure
@@ -75,9 +74,8 @@ export CC=gcc
 export CXX=g++
 export F9X=gfortran
 export CFLAGS="${RPM_OPT_FLAGS/O2/O0}"
+
 mkdir build
-
-
 pushd build
   ln -s ../configure .
   %configure %{configure_opts} --enable-cxx
@@ -114,6 +112,23 @@ for x in h5c++ h5cc h5fc ; do
   install -m 0755 %SOURCE1 %{buildroot}%{_bindir}/${x}
 done
 %endif
+
+chrpath --delete %{buildroot}%{_bindir}/gif2h5
+chrpath --delete %{buildroot}%{_bindir}/h52gif
+chrpath --delete %{buildroot}%{_bindir}/h5copy
+chrpath --delete %{buildroot}%{_bindir}/h5debug
+chrpath --delete %{buildroot}%{_bindir}/h5diff
+chrpath --delete %{buildroot}%{_bindir}/h5dump
+chrpath --delete %{buildroot}%{_bindir}/h5import
+chrpath --delete %{buildroot}%{_bindir}/h5jam
+chrpath --delete %{buildroot}%{_bindir}/h5ls
+chrpath --delete %{buildroot}%{_bindir}/h5mkgrp
+chrpath --delete %{buildroot}%{_bindir}/h5perf_serial
+chrpath --delete %{buildroot}%{_bindir}/h5repack
+chrpath --delete %{buildroot}%{_bindir}/h5repart
+chrpath --delete %{buildroot}%{_bindir}/h5stat
+chrpath --delete %{buildroot}%{_bindir}/h5unjam
+chrpath --delete %{buildroot}%{_libdir}/*.so.*
 
 %clean
 rm -rf %{buildroot}
