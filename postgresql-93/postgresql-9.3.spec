@@ -73,7 +73,7 @@
 %endif
 
 %define majorver        9.3
-%define minorver        15
+%define minorver        16
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
@@ -1072,6 +1072,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.16-0
+- Updated to latest stable release
+
 * Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.15-0
 - Updated to latest stable release
 - Added systemd support
