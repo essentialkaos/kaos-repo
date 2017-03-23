@@ -47,7 +47,7 @@ Source0:           http://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     doxygen libtool python-devel gcc-c++ make
+BuildRequires:     doxygen libtool python-devel gcc-c++ make swig
 
 ########################################################################################
 
@@ -101,7 +101,9 @@ for makefile in `find . -type f -name 'Makefile.in'` ; do
   sed -i 's|@LIBTOOL@|%{_bindir}/libtool|g' $makefile
 done
 
-%configure --disable-static --disable-dependency-tracking --enable-python
+%configure --disable-static \
+           --disable-dependency-tracking \
+           --enable-python
 
 touch swig/python/geos_wrap.cxx
 

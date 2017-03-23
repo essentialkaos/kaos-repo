@@ -14,11 +14,8 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        make
 
-BuildRequires:        freexl-devel geos-devel proj-devel sqlite-devel zlib-devel
-
-%if (0%{?fedora} || 0%{?rhel} > 6)
-BuildRequires:        libxml2-devel
-%endif
+BuildRequires:        freexl-devel geos-devel proj-devel sqlite-devel
+BuildRequires:        zlib-devel libxml2-devel
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -47,18 +44,13 @@ developing applications that use %{name}.
 %prep
 %setup -q
 
-%ifarch i386 i686 ppc
-  sed -i '/hexgrid22/ d' test/Makefile.in test/Makefile.am
-  rm test/sql_stmt_geosadvanced_tests/hexgrid22.testcase
-%endif
-
 %build
 %configure \
     --disable-static \
     --enable-lwgeom=no \
     --enable-libxml2=yes \
-    --enable-geocallbacks \
-    --disable-geosadvanced
+    --disable-geosadvanced \
+    --enable-geocallbacks
 
 %{__make} %{?_smp_mflags}
 

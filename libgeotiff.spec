@@ -12,7 +12,7 @@ Source:               http://download.osgeo.org/geotiff/%{name}/%{name}-%{versio
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc doxygen chrpath
+BuildRequires:        make gcc gcc-c++ doxygen chrpath
 BuildRequires:        libtiff-devel libjpeg-devel proj-devel zlib-devel
 
 Provides:             %{name} = %{version}-%{release}
