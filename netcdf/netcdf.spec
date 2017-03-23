@@ -71,6 +71,7 @@ This package contains the netCDF C static libs.
 %build
 #Do out of tree builds
 %global _configure ../configure
+
 #Common configure options
 %global configure_opts \\\
            --enable-shared \\\
@@ -82,7 +83,7 @@ This package contains the netCDF C static libs.
            --enable-hdf4 \\\
            --disable-dap-remote-tests \\\
 %{nil}
-export LDFLAGS="%{__global_ldflags} -L%{_libdir}/hdf"
+export LDFLAGS="-Wl,-z,relro -L%{_libdir}/hdf"
 
 # Serial build
 mkdir build

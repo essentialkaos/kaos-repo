@@ -1,5 +1,9 @@
 ###############################################################################
 
+%{!?_without_check: %define _with_check 1}
+
+###############################################################################
+
 Summary:            A general purpose library and file format for storing scientific data
 Name:               hdf
 Version:            4.2.12
@@ -95,7 +99,9 @@ install -dm 755 %{buildroot}%{_defaultdocdir}/%{name}
 mv %{buildroot}%{_prefix}/examples %{buildroot}%{_defaultdocdir}/%{name}/
 
 %check
-make check
+%if %{?_with_check:1}%{?_without_check:0}
+%{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}
