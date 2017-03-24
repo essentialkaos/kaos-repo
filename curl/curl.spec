@@ -60,7 +60,7 @@
 %define use_threads_posix  0
 %endif
 
-%if 0%{?fedora} > 21 || 0%{?rhel}
+%if 0%{?fedora} > 21 || 0%{?rhel} > 6
 %define have_multilib_rpm_config 1
 %else
 %define have_multilib_rpm_config 0
