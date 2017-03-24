@@ -60,7 +60,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     ncurses-devel openssl-devel openssl unixODBC-devel tcl-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel gcc-c++
-BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make gcc
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make gcc libxslt
 
 Requires:          tk tcl
 
