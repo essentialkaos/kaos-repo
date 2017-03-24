@@ -41,8 +41,8 @@ export CGO_ENABLED=0
 export GO15VENDOREXPERIMENT=1
 
 cp -R src/github.com/cloudflare/cfssl/doc \
-      src/github.com/cloudflare/cfssl/README.md
-      src/github.com/cloudflare/cfssl/CHANGELOG
+      src/github.com/cloudflare/cfssl/README.md \
+      src/github.com/cloudflare/cfssl/CHANGELOG \
       src/github.com/cloudflare/cfssl/LICENSE .
 
 go build -x -o cfssl \
@@ -83,5 +83,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Mar 06 2017 Andrey Kulikov <avk@brewkeeper.net> - 1.2.0-0
+* Fri Mar 24 2017 Andrey Kulikov <avk@brewkeeper.net> - 1.2.0-0
 - Initial build
