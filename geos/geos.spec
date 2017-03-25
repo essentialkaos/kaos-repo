@@ -47,7 +47,7 @@ Source0:           http://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     doxygen libtool python-devel gcc-c++ make swig
+BuildRequires:     doxygen libtool python-devel gcc-c++ make swig m4
 
 ########################################################################################
 
