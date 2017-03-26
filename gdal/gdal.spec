@@ -59,10 +59,11 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2 expat-devel
 BuildRequires:     geos-devel >= 3 giflib-devel hdf-devel >= 4.0 libgeotiff-devel
 BuildRequires:     libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel >= 3.6.0
-BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel postgresql92-devel
+BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel
 BuildRequires:     libspatialite-devel python-setuptools ruby-devel sqlite-devel swig
 BuildRequires:     unixODBC-devel libcurl-devel zlib-devel >= 1.1.4 xerces-c-devel
 BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker python-devel
+BuildRequires:     freexl-devel postgresql92-devel
 
 Requires:          xerces-c
 
@@ -89,7 +90,7 @@ Requires:          hdf-devel >= 4.0 expat-devel geos-devel >= 3 libgeotiff-devel
 Requires:          libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel
 Requires:          netcdf-devel libspatialite-devel mysql-devel libcurl-devel
 Requires:          postgresql92-devel sqlite-devel >= 3 unixODBC-devel xerces-c-devel
-Requires:          giflib-devel 
+Requires:          giflib-devel freexl-devel
 
 %description devel
 Development Libraries for the GDAL file format library
@@ -129,44 +130,50 @@ rm -rf man
 %build
 export PYTHON_INCLUDES=-I%{_pyinclude}
 
+%if 0%{?fedora} > 18 || 0%{?rhel} > 6
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
+%endif
+
+export CFLAGS="$RPM_OPT_FLAGS -fpic"
 
 %configure \
         --prefix=%{_prefix} \
         --includedir=%{_includedir}/%{name} \
-        --datadir=%{_datadir}/%{name}       \
-        --with-rename-internal-libtiff-symbols=yes    \
+        --datadir=%{_datadir}/%{name} \
+        --with-rename-internal-libtiff-symbols=yes \
         --with-rename-internal-libgeotiff-symbols=yes \
-        --with-threads            \
-        --disable-static          \
-        --with-geotiff            \
-        --with-libtiff            \
-        --with-libz               \
-        --with-cfitsio=no         \
-        --with-netcdf             \
-        --with-hdf4               \
-        --with-geos               \
-        --with-expat              \
-        --with-png                \
-        --with-gif                \
-        --with-jpeg               \
-        --with-odbc               \
-        --with-mysql              \
-        --with-spatialite         \
-        --with-python             \
-        --with-curl               \
-        --with-pg                 \
-        --with-ogdi               \
-        --with-perl               \
-        --with-xerces=yes         \
-        --with-xerces-lib="-lxerces-c"         \
+        --with-threads \
+        --disable-static \
+        --with-geotiff \
+        --with-libtiff \
+        --with-libz \
+        --with-cfitsio=no \
+        --with-netcdf \
+        --with-hdf4 \
+        --with-hdf5 \
+        --with-freexl \
+        --with-geos \
+        --with-expat \
+        --with-png \
+        --with-gif \
+        --with-jpeg \
+        --with-odbc \
+        --with-mysql \
+        --with-spatialite \
+        --with-python \
+        --with-curl \
+        --with-pg \
+        --with-ogdi \
+        --with-perl \
+        --with-xerces=yes \
+        --with-xerces-lib="-lxerces-c" \
         --with-xerces-inc=/usr/include/xercesc \
-        --without-pcraster  \
-        --with-jpeg12=no    \
-        --without-libgrass  \
-        --without-grass     \
+        --without-pcraster \
+        --with-jpeg12=no \
+        --without-libgrass \
+        --without-grass \
         --enable-shared
 
 %{__make} %{?_smp_mflags} -C swig/perl generate
