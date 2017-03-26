@@ -18,11 +18,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   make gcc zlib-devel
 
-Requires:        GeoIP-data
-
-%if 0%{?fedora} < 22 && 0%{?rhel} < 8
-Requires:        geoipupdate
-%endif
+Requires:        MMGeoIP MMGeoIP-IPV6
 
 Obsoletes:       geoip < %{version}-%{release}
 Provides:        geoip = %{version}-%{release}

@@ -42,7 +42,7 @@ Source:            https://github.com/upx/upx/releases/download/v%{version}/%{na
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make ucl-devel zlib-devel
+BuildRequires:     make gcc gcc-c++ ucl-devel zlib-devel
 
 Requires:          ucl zlib
 
