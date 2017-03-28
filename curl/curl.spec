@@ -60,7 +60,7 @@
 %define use_threads_posix  0
 %endif
 
-%if 0%{?fedora} > 21 || 0%{?rhel}
+%if 0%{?fedora} > 21 || 0%{?rhel} > 6
 %define have_multilib_rpm_config 1
 %else
 %define have_multilib_rpm_config 0
@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.52.1
+Version:              7.53.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -303,6 +303,114 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.53.1-0
+- cyassl: fix typo
+- url: Improve CURLOPT_PROXY_CAPATH error handling
+- urldata: include curl_sspi.h when Windows SSPI is enabled
+- formdata: check for EOF when reading from stdin
+- tests: Set CHARSET & LANG to UTF-8 in 1035, 2046 and 2047
+- url: Default the proxy CA bundle location to CURL_CA_BUNDLE
+- rand: added missing #ifdef HAVE_FCNTL_H around fcntl.h header
+
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.53.0-0
+- unix_socket: added --abstract-unix-socket and CURLOPT_ABSTRACT_UNIX_SOCKET
+- CURLOPT_BUFFERSIZE: support enlarging receive buffer
+- CVE-2017-2629: make SSL_VERIFYSTATUS work again
+- gnutls-random: check return code for failed random
+- openssl-random: check return code when asking for random
+- http: remove "Curl_http_done: called premature" message
+- cyassl: use time_t instead of long for timeout
+- build-wolfssl: Sync config with wolfSSL 3.10
+- ftp-gss: check for init before use
+- configure: accept --with-libidn2 instead
+- ftp: failure to resolve proxy should return that error code
+- curl.1: add three more exit codes
+- docs/ciphers: link to our own new page about ciphers
+- vtls: s/SSLEAY/OPENSSL - fixes multi_socket timeouts with openssl
+- darwinssl: fix iOS build
+- darwinssl: fix CFArrayRef leak
+- cmake: use crypt32.lib when building with OpenSSL on windows
+- curl_formadd.3: CURLFORM_CONTENTSLENGTH not needed when chunked
+- digest_sspi: copy terminating NUL as well
+- curl: fix --remote-time incorrect times on Windows
+- curl.1: several updates and corrections
+- content_encoding: change return code on a failure
+- curl.h: CURLE_FUNCTION_NOT_FOUND is no longer in use
+- docs: TCP_KEEPALIVE start and interval default to 60
+- darwinssl: --insecure overrides --cacert if both settings are in use
+- TheArtOfHttpScripting: grammar
+- CIPHERS.md: document GSKit ciphers
+- wolfssl: support setting cipher list
+- wolfssl: display negotiated SSL version and cipher
+- lib506: fix build for Open Watcom
+- asiohiper: improved socket handling
+- examples: make the C++ examples follow our code style too
+- tests/sws: retry send() on EWOULDBLOCK
+- cmake: Fix passing _WINSOCKAPI_ macro to compiler
+- smtp: Fix STARTTLS denied error message
+- imap/pop3: don't print response character in STARTTLS denied messages
+- rand: make it work without TLS backing
+- url: fix parsing for when 'file' is the default protocol
+- url: allow file://X:/path URLs on windows again
+- gnutls: check for alpn and ocsp in configure
+- IDN: Use TR46 'non-transitional' for toASCII translations
+- url: Fix NO_PROXY env var to work properly with --proxy option
+- CURLOPT_PREQUOTE.3: takes a struct curl_slist*, not a char*
+- docs: Add note about libcurl copying strings to CURLOPT_* manpages
+- curl: reset the easy handle at --next
+- --next docs: --trace and --trace-ascii are also global
+- --write-out docs: 'time_total' is not always shown with ms precision
+- http: print correct HTTP string in verbose output when using HTTP/2
+- docs: improved language in README.md HISTORY.md CONTRIBUTE.md
+- http2: disable server push if not requested
+- nss: use the correct lock in nss_find_slot_by_name()
+- usercertinmem.c: improve the short description
+- CURLOPT_CONNECT_TO: Fix compile warnings
+- docs: non-blocking SSL handshake is now supported with NSS
+- *.rc: escape non-ASCII/non-UTF-8 character for clarity
+- mbedTLS: fix multi interface non-blocking handshake
+- PolarSSL: fix multi interface non-blocking handshake
+- VC: remove the makefile.vc6 build infra
+- telnet: fix windows compiler warnings
+- cookies: do not assume a valid domain has a dot
+- polarssl: fix hangs
+- gnutls: disable TLS session tickets
+- mbedtls: disable TLS session tickets
+- mbedtls: implement CTR-DRBG and HAVEGE random generators
+- openssl: Don't use certificate after transferring ownership
+- cmake: Support curl --xattr when built with cmake
+- OS400: Fix symbols
+- docs: Add more HTTPS proxy documentation
+- docs: use more HTTPS links
+- cmdline-opts: Fixed build and test in out of source tree builds
+- CHANGES.0: removed
+- schannel: Remove incorrect SNI disabled message
+- darwinssl: Avoid parsing certificates when not in verbose mode
+- test552: Fix typos
+- telnet: Fix typos
+- transfer: only retry nobody-requests for HTTP
+- http2: reset push header counter fixes crash
+- nss: make FTPS work with --proxytunnel
+- test1139: Added the --manual keyword since the manual is required
+- polarssl, mbedtls: Fix detection of pending data
+- http_proxy: Fix tiny memory leak upon edge case connecting to proxy
+- URL: only accept ";options" in SMTP/POP3/IMAP URL schemes
+- curl.1: ftp.sunet.se is no longer an FTP mirror
+- tool_operate: Show HTTPS-Proxy options on CURLE_SSL_CACERT
+- http2: fix memory-leak when denying push streams
+- configure: Allow disabling pthreads, fall back on Win32 threads
+- curl: fix typo in time condition warning message
+- axtls: adapt to API changes
+- tool_urlglob: Allow a glob range with the same start and stop
+- winbuild: add note on auto-detection of MACHINE in Makefile.vc
+- http: fix missing 'Content-Length: 0' while negotiating auth
+- proxy: fix hostname resolution and IDN conversion
+- docs: fix timeout handling in multi-uv example
+- digest_sspi: Fix nonce-count generation in HTTP digest
+- sftp: improved checks for create dir failures
+- smb: use getpid replacement for windows UWP builds
+- digest_sspi: Handle 'stale=TRUE' directive in HTTP digest
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.52.1-0
 - CVE-2016-9594: unititialized random
 - lib557: fix checksrc warnings

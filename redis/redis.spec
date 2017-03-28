@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.6
+Version:            3.2.8
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -244,6 +244,45 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.8-0
+- Apparently Jemalloc 4.4.0 may contain a deadlock under particular
+  conditions. We reverted back to the previously used Jemalloc
+  versions and plan to upgrade Jemalloc again after having more
+  info about the cause of the bug.
+- MIGRATE could crash the server after a socket error.
+
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.7-0
+- MIGRATE could incorrectly move keys between Redis Cluster nodes by turning
+  keys with an expire set into persisting keys. This bug was introduced with
+  the multiple-keys migration recently. It is now fixed. Only applies to
+  Redis Cluster users that use the resharding features of Redis Cluster.
+- As Redis 4.0 beta and the unstable branch already did (for some months at
+  this point), Redis 3.2.7 also aliases the Host: and POST commands to QUIT
+  avoiding to process the remaining pipeline if there are pending commands.
+  This is a security protection against a "Cross Scripting" attack, that
+  usually involves trying to feed Redis with HTTP in order to execute commands.
+  Example: a developer is running a local copy of Redis for development
+  purposes. She also runs a web browser in the same computer. The web browser
+  could send an HTTP request to http://127.0.0.1:6379 in order to access the
+  Redis instance, since a specially crafted HTTP requesta may also be partially
+  valid Redis protocol. However if POST and Host: break the connection, this
+  problem should be avoided. IMPORTANT: It is important to realize that it
+  is not impossible that another way will be found to talk with a localhost
+  Redis using a Cross Protocol attack not involving sending POST or Host: so
+  this is only a layer of protection but not a definitive fix for this class
+  of issues.
+- A ziplist bug that could cause data corruption, could crash the server and
+  MAY ALSO HAVE SECURITY IMPLICATIONS was fixed. The bug looks complex to
+  exploit, but attacks always get worse, never better (cit). The bug is very
+  very hard to catch in practice, it required manual analysis of the ziplist
+  code in order to be found. However it is also possible that rarely it
+  happened in the wild. Upgrading is required if you use LINSERT and other
+  in-the-middle list manipulation commands.
+- We upgraded to Jemalloc 4.4.0 since the version we used to ship with Redis
+  was an early 4.0 release of Jemalloc. This version may have several
+  improvements including the ability to better reclaim/use the memory of
+  system.
+
 * Wed Dec 07 2016 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
 - A bug with BITFIELD that may cause the bitmap corruption when setting offsets
   larger than the current string size.

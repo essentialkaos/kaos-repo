@@ -38,14 +38,13 @@
 %define __ldconfig        %{_sbin}/ldconfig
 
 %define _pyinclude        %{_includedir}/python2.6
-%define _smp_mflags       -j1
 
 ########################################################################################
 
 Summary:           GDAL/OGR - a translator library for raster and vector geospatial data formats
 Name:              gdal
-Version:           1.10.0
-Release:           1%{?dist}
+Version:           1.11.5
+Release:           0%{?dist}
 License:           MIT and BSD-3-Clause
 Group:             Development/Libraries
 URL:               http://www.gdal.org
@@ -60,10 +59,11 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2 expat-devel
 BuildRequires:     geos-devel >= 3 giflib-devel hdf-devel >= 4.0 libgeotiff-devel
 BuildRequires:     libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel >= 3.6.0
-BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel postgresql92-devel
+BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel
 BuildRequires:     libspatialite-devel python-setuptools ruby-devel sqlite-devel swig
 BuildRequires:     unixODBC-devel libcurl-devel zlib-devel >= 1.1.4 xerces-c-devel
-BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker
+BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker python-devel
+BuildRequires:     freexl-devel postgresql92-devel
 
 Requires:          xerces-c
 
@@ -90,7 +90,7 @@ Requires:          hdf-devel >= 4.0 expat-devel geos-devel >= 3 libgeotiff-devel
 Requires:          libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel
 Requires:          netcdf-devel libspatialite-devel mysql-devel libcurl-devel
 Requires:          postgresql92-devel sqlite-devel >= 3 unixODBC-devel xerces-c-devel
-Requires:          giflib-devel 
+Requires:          giflib-devel freexl-devel
 
 %description devel
 Development Libraries for the GDAL file format library
@@ -130,44 +130,50 @@ rm -rf man
 %build
 export PYTHON_INCLUDES=-I%{_pyinclude}
 
+%if 0%{?fedora} > 18 || 0%{?rhel} > 6
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
+%endif
+
+export CFLAGS="$RPM_OPT_FLAGS -fpic"
 
 %configure \
         --prefix=%{_prefix} \
         --includedir=%{_includedir}/%{name} \
-        --datadir=%{_datadir}/%{name}       \
-        --with-rename-internal-libtiff-symbols=yes    \
+        --datadir=%{_datadir}/%{name} \
+        --with-rename-internal-libtiff-symbols=yes \
         --with-rename-internal-libgeotiff-symbols=yes \
-        --with-threads            \
-        --disable-static          \
-        --with-geotiff            \
-        --with-libtiff            \
-        --with-libz               \
-        --with-cfitsio=no         \
-        --with-netcdf             \
-        --with-hdf4               \
-        --with-geos               \
-        --with-expat              \
-        --with-png                \
-        --with-gif                \
-        --with-jpeg               \
-        --with-odbc               \
-        --with-mysql              \
-        --with-spatialite         \
-        --with-python             \
-        --with-curl               \
-        --with-pg                 \
-        --with-ogdi               \
-        --with-perl               \
-        --with-xerces=yes         \
-        --with-xerces-lib="-lxerces-c"         \
+        --with-threads \
+        --disable-static \
+        --with-geotiff \
+        --with-libtiff \
+        --with-libz \
+        --with-cfitsio=no \
+        --with-netcdf \
+        --with-hdf4 \
+        --with-hdf5 \
+        --with-freexl \
+        --with-geos \
+        --with-expat \
+        --with-png \
+        --with-gif \
+        --with-jpeg \
+        --with-odbc \
+        --with-mysql \
+        --with-spatialite \
+        --with-python \
+        --with-curl \
+        --with-pg \
+        --with-ogdi \
+        --with-perl \
+        --with-xerces=yes \
+        --with-xerces-lib="-lxerces-c" \
         --with-xerces-inc=/usr/include/xercesc \
-        --without-pcraster  \
-        --with-jpeg12=no    \
-        --without-libgrass  \
-        --without-grass     \
+        --without-pcraster \
+        --with-jpeg12=no \
+        --without-libgrass \
+        --without-grass \
         --enable-shared
 
 %{__make} %{?_smp_mflags} -C swig/perl generate
@@ -228,6 +234,7 @@ chrpath --delete %{buildroot}%{_bindir}/gdalserver
 chrpath --delete %{buildroot}%{_bindir}/nearblack
 chrpath --delete %{buildroot}%{_bindir}/ogr2ogr
 chrpath --delete %{buildroot}%{_bindir}/ogrinfo
+chrpath --delete %{buildroot}%{_bindir}/ogrlineref
 chrpath --delete %{buildroot}%{_bindir}/ogrtindex
 chrpath --delete %{buildroot}%{_bindir}/testepsg
 
@@ -256,6 +263,7 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{_bindir}/gcps2wld.py
 %attr(755,root,root) %{_bindir}/gdal2tiles.py
 %attr(755,root,root) %{_bindir}/gdal_edit.py
+%attr(755,root,root) %{_bindir}/gdalcompare.py
 %attr(755,root,root) %{_bindir}/gdalmove.py
 %attr(755,root,root) %{_bindir}/gdal_auth.py
 %attr(755,root,root) %{_bindir}/gdal2xyz.py
@@ -291,29 +299,32 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{_bindir}/nearblack
 %attr(755,root,root) %{_bindir}/ogr2ogr
 %attr(755,root,root) %{_bindir}/ogrinfo
+%attr(755,root,root) %{_bindir}/ogrlineref
 %attr(755,root,root) %{_bindir}/ogrtindex
 %attr(755,root,root) %{_bindir}/testepsg
 %{_datadir}/%{name}
-%{_mandir}/man1/gdalmanage.1*
-%{_mandir}/man1/gdal_edit.1*
-%{_mandir}/man1/gdal_polygonize.1*
-%{_mandir}/man1/gdal_proximity.1*
-%{_mandir}/man1/gdalbuildvrt.1*
-%{_mandir}/man1/gdalmove.1*
 %{_mandir}/man1/gdal2tiles.1*
+%{_mandir}/man1/gdal_calc.1*
 %{_mandir}/man1/gdal_contour.1*
+%{_mandir}/man1/gdal_edit.1*
 %{_mandir}/man1/gdal_fillnodata.1*
 %{_mandir}/man1/gdal_grid.1*
 %{_mandir}/man1/gdal_merge.1*
+%{_mandir}/man1/gdal_polygonize.1*
+%{_mandir}/man1/gdal_proximity.1*
 %{_mandir}/man1/gdal_rasterize.1*
 %{_mandir}/man1/gdal_retile.1*
 %{_mandir}/man1/gdal_sieve.1*
 %{_mandir}/man1/gdal_translate.1*
 %{_mandir}/man1/gdal_utilities.1*
-%{_mandir}/man1/gdallocationinfo.1*
 %{_mandir}/man1/gdaladdo.1*
+%{_mandir}/man1/gdalbuildvrt.1*
+%{_mandir}/man1/gdalcompare.1*
 %{_mandir}/man1/gdaldem.1*
 %{_mandir}/man1/gdalinfo.1*
+%{_mandir}/man1/gdallocationinfo.1*
+%{_mandir}/man1/gdalmanage.1*
+%{_mandir}/man1/gdalmove.1*
 %{_mandir}/man1/gdaltindex.1*
 %{_mandir}/man1/gdaltransform.1*
 %{_mandir}/man1/gdalwarp.1*
@@ -321,6 +332,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/ogr2ogr.1*
 %{_mandir}/man1/ogr_utilities.1*
 %{_mandir}/man1/ogrinfo.1*
+%{_mandir}/man1/ogrlineref.1*
 %{_mandir}/man1/ogrtindex.1*
 %{_mandir}/man1/pct2rgb.1*
 %{_mandir}/man1/rgb2pct.1*
@@ -330,9 +342,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc _html/*
 %attr(755,root,root) %{_bindir}/%{name}-config
-%attr(755,root,root) %{_libdir}/libgdal.so
-%{_libdir}/libgdal.la
 %dir %{_includedir}/%{name}
+%{_pkgconfigdir}/%{name}.pc
+%{_libdir}/libgdal.so
+%{_libdir}/libgdal.la
 %{_includedir}/%{name}/*.h
 %{_mandir}/man1/%{name}-config.1*
 %{_mandir}/man1/gdalsrsinfo.1.gz
@@ -381,6 +394,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0
+- Updated to latest release in 1.x
+
 * Sat Nov 14 2015 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-2
 - Spec improvements
 

@@ -1,6 +1,8 @@
 #!/bin/bash
+
+# redis        init file for starting up the lsyncd daemon
 #
-# chkconfig: - 85 15
+# chkconfig:   - 85 15
 # description: Lightweight inotify based sync daemon
 #
 # processname:  lsyncd
@@ -8,96 +10,93 @@
 # config:       /etc/sysconfig/lsyncd
 # pidfile:      /var/run/lsyncd.pid
 
-# Source function library
-. /etc/init.d/functions
+###############################################################################
 
-# Source networking configuration.
-. /etc/sysconfig/network
+source /etc/init.d/kaosv
 
-# Check that networking is up.
-[ "$NETWORKING" = "no" ] && exit 0
+###############################################################################
 
-LSYNCD_OPTIONS="-pidfile /var/run/lsyncd.pid /etc/lsyncd.conf"
+kv[prog_name]="lsyncd"
 
-if [ -e /etc/sysconfig/lsyncd ]; then
-  . /etc/sysconfig/lsyncd
-fi
+kv.readSysconfig
 
-RETVAL=0
+binary=${BINARY:-/usr/local/bin/lsyncd}
+conf_file=${CONF_FILE:-/etc/lsyncd.conf}
 
-prog="lsyncd"
-thelock=/var/lock/subsys/lsyncd
+kv[nice]=19
+kv[delay_start]=3
+kv[delay_stop]=3
 
-start() {
-	[ -f /etc/lsyncd.conf ] || exit 6
-        echo -n $"Starting $prog: "
-        if [ $UID -ne 0 ]; then
-                RETVAL=1
-                failure
-        else
-                daemon /usr/bin/lsyncd $LSYNCD_OPTIONS
-                RETVAL=$?
-                [ $RETVAL -eq 0 ] && touch $thelock
-        fi;
-        echo
-        return $RETVAL
+kv[search_pattern]="$binary -pidfile"
+
+###############################################################################
+
+kv.addCommand "reload" "Reload configuration file" "reload"
+
+kv.addCommandVars "stop" "force"
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+
+kv.addCommandAlias "restart" "condrestart"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist"
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable"
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
 }
 
-stop() {
-        echo -n $"Stopping $prog: "
-        if [ $UID -ne 0 ]; then
-                RETVAL=1
-                failure
-        else
-                killproc lsyncd
-                RETVAL=$?
-                [ $RETVAL -eq 0 ] && rm -f $thelock
-        fi;
-        echo
-        return $RETVAL
+###############################################################################
+
+reload() {
+  kv.showProcessMessage "Reloading config"
+
+  kv.sendSignal "$SIGNAL_HUP"
+
+  kv.showStatusMessage "$ACTION_OK"
+
+  return $ACTION_OK
 }
 
-reload(){
-        echo -n $"Reloading $prog: "
-        killproc lsyncd -HUP
-        RETVAL=$?
-        echo
-        return $RETVAL
+###############################################################################
+
+startServiceHandler() {
+
+  $binary -pidfile "${kv[pid_file]}" "$conf_file"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
 }
 
-restart(){
-        stop
-        start
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess "$pid"
+    fi
+
+    return $ACTION_ERROR
+  fi
 }
 
-condrestart(){
-    [ -e $thelock ] && restart
-    return 0
-}
+###############################################################################
 
-case "$1" in
-  start)
-        start
-        ;;
-  stop)
-        stop
-        ;;
-  restart)
-        restart
-        ;;
-  reload)
-        reload
-        ;;
-  condrestart)
-        condrestart
-        ;;
-  status)
-        status lsyncd
-        RETVAL=$?
-        ;;
-  *)
-        echo $"Usage: $0 {start|stop|status|restart|condrestart|reload}"
-        RETVAL=1
-esac
+prepare
 
-exit $RETVAL
+kv.go "$@"

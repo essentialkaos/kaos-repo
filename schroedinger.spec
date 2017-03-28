@@ -40,7 +40,7 @@
 Summary:            Portable libraries for the high quality Dirac video codec
 Name:               schroedinger
 Version:            1.0.11
-Release:            1%{?dist}
+Release:            2%{?dist}
 Group:              System Environment/Libraries
 License:            LGPL
 URL:                http://www.diracvideo.org
@@ -98,9 +98,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ###############################################################################
 
@@ -122,6 +124,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Jan 25 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-2
+- Minor improvements
+
 * Thu Nov 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-1
 - Fixed dependencies for devel package
 

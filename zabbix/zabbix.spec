@@ -50,14 +50,14 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.2.3
-Release:              1%{?dist}
+Version:              3.2.4
+Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
 URL:                  http://www.zabbix.com
 
-Source0:              http://heanet.dl.sourceforge.net/project/%{name}/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
+Source0:              http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
 Source1:              %{name}-web22.conf
 Source2:              %{name}-web24.conf
 Source3:              %{name}-logrotate.in
@@ -963,6 +963,55 @@ fi
 ################################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
+- improved bulk inserts for Oracle database backend
+- optimized trigger expression batch processing to avoid recalculation of 
+  identical functions
+- added option to control amount of queued items
+- fixed wrong number round for cpu statistics
+- fixed wrong averages in web monitoring if a web server doesn't respond to 
+  a request
+- fixed button and multiselect positioning in action operations edit form
+- fixed empty value handling in event correlation on oracle databases
+- fixed Oracle and MySQL column limit calculation when using UTF-8
+- removed possibility to execute commit without transaction in processing LLD
+  rules
+- fixed event correlation when using databases other than mysql
+- fixed unnecessary notification sending from dependent triggers
+- fixed handling database failure during transaction commit
+- fixed resolving of user macros with context wich are defined on host or
+  template level
+- fixed cause of error with EventID 5858 in Windows EventLog when using
+  wmi.get key
+- fixed selection of ntext data from Microsoft SQL Server using 'db.odbc.select'
+  item key
+- fixed copying sharing properties while cloning slide shows
+- fixed undefined index on Problem page with disabled guest user
+- fixed possible deadlocks when removing obsolete VMWare services
+- prevented requesting all screens in slide show when slide show screens are
+  deleted
+- fixed displaying maintenance icon for trigger element in maps
+- fixed resolving macros for ip and dns fields in interfaces that are linked to
+  main interface with {HOST.IP} and {HOST.DNS} macros
+- fixed global regexps to be extracted from log.count[] and logrt.count[] keys
+- improved performance for getting last value of web items by limiting query
+  results for values in last 24h; thanks to D.Spindel Ljungmark for patch
+- fixed dependency validation and update when trigger expression is changed
+- fixed event acknowledgement in screens and dashboard widgets when last event
+  is a recovery event
+- added escaping '"', ''', '&', '<' and '>' characters in SOAP XML for VMware
+  requests
+- ensured unique value timestamps (clock, ns) from active agents and senders
+- fixed removing trigger dependencies for triggers that are created from LLD
+  prototypes
+- fixed interfaces displaying in host inventory page
+- fixed potential crash in case of failure in zbx_tls_connect() with mbed TLS
+- fixed compilation warnings regarding gnutls_transport_set_ptr() with GnuTLS
+- fixed certificates with empty issuer and subject fields being rejected with
+  OpenSSL
+- fixed daemon behavior being affected by logging level when processing TLS
+  connections
+
 * Tue Jan 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
 - updated Czech, English (United States), French, Italian, Japanese, Korean,
   Portuguese (Brazil), Russian, Ukrainian translations; thanks to Zabbix

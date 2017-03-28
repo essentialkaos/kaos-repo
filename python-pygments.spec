@@ -31,13 +31,13 @@
 ###############################################################################
 
 %define upstream_name Pygments
-%define pypi_subpath  b8/67/ab177979be1c81bc99c8d0592ef22d547e70bb4c6815c383286ed5dec504
+%define pypi_subpath  71/2a/2e4e77803a8bd6408a2903340ac498cb0a2181811af7c9ec92cb70b0308a
 
 ###############################################################################
 
 Summary:           Syntax highlighting engine written in Python
 Name:              python-pygments
-Version:           2.1.3
+Version:           2.2.0
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Libraries
@@ -102,5 +102,8 @@ mv doc/pygmentize.1 $RPM_BUILD_ROOT%{_mandir}/man1/pygmentize.1
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- Updated to latest version
+
 * Fri Sep 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.3-0
 - Initial build for kaos repo

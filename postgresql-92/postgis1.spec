@@ -54,7 +54,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}%{pg_maj_ver}
 Version:           1.5.8
-Release:           2%{?dist}
+Release:           3%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -210,6 +210,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-3
+- Updated for rebuilt dependencies
+
 * Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-2
 - Fixed number of make threads
 

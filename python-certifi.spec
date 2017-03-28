@@ -43,11 +43,11 @@
 
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               python-%{pkgname}
-Version:            2016.09.26
-Release:            1%{?dist}
+Version:            2017.01.23
+Release:            0%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
-URL:                https://github.com/certifi
+URL:                https://github.com/certifi/certifi
 
 Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
 
@@ -96,6 +96,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.01.23-0
+- Updated to latest release
+
 * Tue Dec 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-1
 - Added certificates bundle to package
 

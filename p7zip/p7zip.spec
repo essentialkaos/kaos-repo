@@ -144,7 +144,8 @@ rm -rf %{buildroot}
 
 %changelog
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 16.02-0
-- Updated to latest stable release
+- 7-Zip now can extract multivolume ZIP archives (z01, z02, ... , zip)
+- Some bugs were fixed
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 15.14.1-0
 - Updated to latest stable release

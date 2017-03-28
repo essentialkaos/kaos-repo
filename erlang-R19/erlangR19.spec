@@ -39,7 +39,7 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           19
-%define ver_min           2
+%define ver_min           3
 %define realname          erlang
 
 ###############################################################################
@@ -60,7 +60,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     ncurses-devel openssl-devel openssl unixODBC-devel tcl-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel gcc-c++
-BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make gcc
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make gcc libxslt
 
 Requires:          tk tcl
 
@@ -1128,6 +1128,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.3-0
+- Updated to latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.2-0
 - Updated to latest stable release
 

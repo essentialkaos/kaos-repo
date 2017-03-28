@@ -50,7 +50,7 @@
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
 
-%define lua_ver           5.3.3
+%define lua_ver           5.3.4
 %define pcre_ver          8.40
 %define libre_ver         2.5.0
 %define ncurses_ver       6.0
@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.7.2
+Version:           1.7.3
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -285,6 +285,34 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
+- BUG/MINOR: stream: Fix how backend-specific analyzers are set on a stream
+- BUILD: ssl: fix build on OpenSSL 1.0.0
+- BUILD: ssl: silence a warning reported for ERR_remove_state()
+- BUILD: ssl: eliminate warning with OpenSSL 1.1.0 regarding 
+  RAND_pseudo_bytes()
+- BUG/MEDIUM: tcp: don't poll for write when connect() succeeds
+- BUG/MINOR: unix: fix connect's polling in case no data are scheduled
+- DOC: lua: improve links
+- BUG/MINOR: lua: Map.end are not reliable because "end" is a reserved
+  keyword
+- MINOR: dns: give ability to dns_init_resolvers() to close a socket when
+  requested
+- BUG/MAJOR: dns: restart sockets after fork()
+- MINOR: chunks: implement a simple dynamic allocator for trash buffers
+- BUG/MEDIUM: http: prevent redirect from overwriting a buffer
+- BUG/MEDIUM: filters: Do not truncate HTTP response when body length is
+  undefined
+- BUG/MEDIUM: http: Prevent replace-header from overwriting a buffer
+- BUG/MINOR: http: Return an error when a replace-header rule failed on
+  the response
+- BUG/MINOR: sendmail: The return of vsnprintf is not cleanly tested
+- BUG/MAJOR: lua segmentation fault when the request is like 
+  'GET ?arg=val HTTP/1.1'
+- BUG/MEDIUM: config: reject anything but "if" or "unless" after a
+  use-backend rule
+- MINOR: http: don't close when redirect location doesn't start with "/"
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
 - BUG/MEDIUM: lua: In some case, the return of sample-fetches is ignored (2)
 - SCRIPTS: git-show-backports: fix a harmless typo

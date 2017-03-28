@@ -2,7 +2,7 @@
 
 Summary:        Ansible linter
 Name:           ansible-lint
-Version:        3.4.10
+Version:        3.4.12
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries 
@@ -16,7 +16,7 @@ BuildArch:      noarch
 
 BuildRequires:  python-devel python-setuptools libffi-devel
 
-Requires:       ansible
+Requires:       ansible python-jinja2 < 2.9
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -51,6 +51,12 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Mar 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.12-0
+- Updated to latest stable release
+
+* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.11-0
+- Updated to latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.10-0
 - Updated to latest stable release
 

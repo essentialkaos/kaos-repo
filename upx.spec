@@ -32,7 +32,7 @@
 
 Summary:           Ultimate Packer for eXecutables
 Name:              upx
-Version:           3.92
+Version:           3.93
 Release:           0%{?dist}
 License:           GPLv2+ and Public Domain
 Group:             Applications/Archiving
@@ -42,7 +42,7 @@ Source:            https://github.com/upx/upx/releases/download/v%{version}/%{na
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make ucl-devel zlib-devel
+BuildRequires:     make gcc gcc-c++ ucl-devel zlib-devel
 
 Requires:          ucl zlib
 
@@ -87,5 +87,11 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.93-0
+- Updated to latest stable release
+
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.92-0
+- Updated to latest stable release
+
 * Tue May 06 2014 Anton Novojilov <andy@essentialkaos.com> - 3.91-0
-- Initial build
+- Initial build for kaos repository

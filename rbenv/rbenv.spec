@@ -36,8 +36,8 @@
 
 Summary:         Simple Ruby version management utility
 Name:            rbenv
-Version:         1.0.0
-Release:         1%{?dist}
+Version:         1.1.0
+Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
@@ -95,6 +95,18 @@ ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 ###############################################################################
 
 %changelog
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- Remove deprecated ruby-local-exec executable
+- Remove support for .rbenv-version legacy version file
+- Remove support for default, global legacy global version files
+- Add support for rbenv shell - style of invocation that restores previous
+  version
+- Adopt Contributor Covenant 1.4
+- Replace . with source for fish shell
+- Unset CDPATH if it's set by the user
+- Fix rbenv <cmd> --help for sh-* commands
+- Expand literal tilde in PATH
+
 * Tue May 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-1
 - Improved spec
 
@@ -147,22 +159,3 @@ ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 - Added /usr/lib/rbenv/hooks to the plugin hook search path.
 - Fixed rbenv which to account for path entries with spaces.
 - Changed rbenv init to accept option arguments in any order.
-
-* Mon Feb 6 2011 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
-- Added an rbenv root command which prints the value of $RBENV_ROOT, or 
-the default root directory if its unset.
-- Clarified Zsh installation instructions in the readme.
-- Removed some redundant code in rbenv rehash.
-- Fixed an issue with calling readlink for paths with spaces.
-- Changed Zsh initialization code to install completion hooks only 
-for interactive shells.
-- Added preliminary support for ksh.
-- rbenv rehash creates or removes shims only when necessary instead of 
-removing and re-creating all shims on each invocation.
-- Fixed that RBENV_DIR, when specified, would be incorrectly expanded 
-to its parent directory.
-- Removed the deprecated set-default and set-local commands.
-- Added a --no-rehash option to rbenv init for skipping the automatic 
-rehash when opening a new shell.
-
-
