@@ -44,6 +44,11 @@ Group:                System Environment/Libraries
 Summary:              Development files for %{name}
 Requires:             %{name} = %{version}
 
+# For CentOS7/RHEL7 libevent2 = libevent
+%if 0%{?rhel} >= 7
+Provides:             %{realname}2-devel = %{version}-%{release}
+%endif
+
 %description devel
 Development files for %{name}
 

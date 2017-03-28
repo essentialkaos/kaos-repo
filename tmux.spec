@@ -7,7 +7,7 @@
 Summary:              A terminal multiplexer
 Name:                 tmux
 Version:              2.3
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
 URL:                  https://github.com/tmux/tmux
@@ -64,6 +64,9 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Mar 28 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3-1
+- Rebuilt with latest version of libevent
+
 * Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3-0
 - New option 'pane-border-status' to add text in the pane borders.
 - Support for hooks on commands: 'after' and 'before' hooks.

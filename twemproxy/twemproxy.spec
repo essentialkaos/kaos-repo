@@ -38,7 +38,7 @@
 Summary:           Fast and lightweight proxy for memcached and redis protocol
 Name:              twemproxy
 Version:           0.4.1
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           Apache 2.0
 Group:             Applications/Internet
 URL:               https://github.com/twitter/twemproxy
@@ -123,6 +123,9 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Mar 28 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-1
+- Rebuilt with latest version of libevent
+
 * Mon Jul 06 2015 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
 - backend server hostnames are resolved lazily
 - redis_auth is only valid for a redis pool
