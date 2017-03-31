@@ -295,19 +295,19 @@ install -pm 644 %{SOURCE12} %{buildroot}%{_sysconfdir}/bash_completion.d/salt.ba
 
 %preun master
 if [[ $1 -eq 0 ]] ; then
-  %{__service} salt-master stop >/dev/null 2>&1
+  %{__service} salt-master stop &>/dev/null || :
   %{__chkconfig} --del salt-master
 fi
 
 %preun syndic
 if [[ $1 -eq 0 ]] ; then
-  %{__service} salt-syndic stop >/dev/null 2>&1
+  %{__service} salt-syndic stop &>/dev/null || :
   %{__chkconfig} --del salt-syndic
 fi
 
 %preun minion
 if [[ $1 -eq 0 ]] ; then
-  %{__service} salt-minion stop >/dev/null 2>&1
+  %{__service} salt-minion stop &>/dev/null || :
   %{__chkconfig} --del salt-minion
 fi
 
@@ -317,7 +317,7 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 if [[ $1 -eq 2 ]] ; then
-  %{__service} salt-master restart
+  %{__service} salt-master restart &>/dev/null || :
 fi
 
 %post minion
@@ -326,7 +326,7 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 if [[ $1 -eq 2 ]] ; then
-  %{__service} salt-minion restart
+  %{__service} salt-minion restart &>/dev/null || :
 fi
 
 %else
@@ -337,7 +337,7 @@ fi
 %else
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable salt-master.service > /dev/null 2>&1 || :
-  %{__sysctl} stop salt-master.service > /dev/null 2>&1 || :
+  %{__sysctl} stop salt-master.service &>/dev/null || :
 fi
 %endif
 
@@ -347,7 +347,7 @@ fi
 %else
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable salt-syndic.service > /dev/null 2>&1 || :
-  %{__sysctl} stop salt-syndic.service > /dev/null 2>&1 || :
+  %{__sysctl} stop salt-syndic.service &>/dev/null || :
 fi
 %endif
 
@@ -357,7 +357,7 @@ fi
 %else
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable salt-minion.service > /dev/null 2>&1 || :
-  %{__sysctl} stop salt-minion.service > /dev/null 2>&1 || :
+  %{__sysctl} stop salt-minion.service &>/dev/null || :
 fi
 %endif
 
@@ -475,6 +475,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Mar 31 2017 Anton Novojilov <andy@essentialkaos.com> - 2016.11.3-1
+- Updated to 2016.11.3
+- Improved spec
+
 * Thu Dec 01 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.11.0-0
 - Updated to 2016.11.0
 
