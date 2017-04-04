@@ -49,8 +49,8 @@ Source2:           %{name}.sysconfig
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:          libevent kaosv >= 2.0
-BuildRequires:     make gcc autoconf m4 libtool libevent-devel
+Requires:          libevent2 kaosv >= 2.0
+BuildRequires:     make gcc autoconf m4 libtool libevent2-devel
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{alias_name} = %{version}-%{release}
