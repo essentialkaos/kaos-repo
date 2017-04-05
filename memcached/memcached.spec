@@ -46,7 +46,7 @@
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
 Version:                  1.4.36
-Release:                  0%{?dist}
+Release:                  1%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
 URL:                      http://memcached.org
@@ -211,6 +211,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed Apr 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.36-1
+- Improved init script
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.36-0
 - Updated to latest release
 

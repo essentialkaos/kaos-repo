@@ -17,3 +17,6 @@ LOG_LEVEL=0
 
 # Path to log file
 LOG_FILE="/var/log/memcached/memcached.log"
+
+# Custom options
+OPTIONS=""
