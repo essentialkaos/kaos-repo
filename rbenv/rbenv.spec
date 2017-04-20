@@ -37,13 +37,15 @@
 Summary:         Simple Ruby version management utility
 Name:            rbenv
 Version:         1.1.0
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
 
 Source0:         https://github.com/rbenv/%{name}/archive/v%{version}.tar.gz
 Source1:         %{name}.profile
+
+Patch0:          %{name}-init-fix.patch
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -62,6 +64,8 @@ tradition of single-purpose tools that do one thing well.
 
 %prep
 %setup -q -n %{name}-%{version}
+
+%patch0 -p1
 
 %build
 
@@ -95,6 +99,9 @@ ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 ###############################################################################
 
 %changelog
+* Thu Apr 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-1
+- Added patch with rbenv-init fix
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
 - Remove deprecated ruby-local-exec executable
 - Remove support for .rbenv-version legacy version file
