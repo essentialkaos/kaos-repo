@@ -963,8 +963,9 @@ fi
 ################################################################################
 
 %changelog
-* Wed Apr 28 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.2.4-1
-- fixed path to tmpfiles configuration files
+* Fri Apr 28 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.2.4-1
+- Fixed path to tmpfiles configuration files
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - improved bulk inserts for Oracle database backend
 - optimized trigger expression batch processing to avoid recalculation of 
