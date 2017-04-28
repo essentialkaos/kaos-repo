@@ -51,7 +51,7 @@
 
 Name:                 zabbix
 Version:              3.2.4
-Release:              0%{?dist}
+Release:              1%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
@@ -501,9 +501,9 @@ install -pDm 755 %{SOURCE12} %{buildroot}%{_sysconfdir}/init.d/zabbix-proxy
 
 # install systemd-tmpfiles conf
 %if 0%{?rhel} >= 7
-install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir}/tmpfiles.d/zabbix-agent.conf
-install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir}/tmpfiles.d/zabbix-server.conf
-install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-agent.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-server.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %endif
 
 # copy sql files for servers
@@ -811,7 +811,7 @@ fi
 %{_mandir}/man8/zabbix_agentd.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-agent.service
-%{_libdir}/tmpfiles.d/zabbix-agent.conf
+%{_libdir32}/tmpfiles.d/zabbix-agent.conf
 %else
 %{_sysconfdir}/init.d/zabbix-agent
 %endif
@@ -848,7 +848,7 @@ fi
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
-%{_libdir}/tmpfiles.d/zabbix-server.conf
+%{_libdir32}/tmpfiles.d/zabbix-server.conf
 %else
 %{_sysconfdir}/init.d/zabbix-server
 %endif
@@ -870,7 +870,7 @@ fi
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
-%{_libdir}/tmpfiles.d/zabbix-server.conf
+%{_libdir32}/tmpfiles.d/zabbix-server.conf
 %else
 %{_sysconfdir}/init.d/zabbix-server
 %endif
@@ -891,7 +891,7 @@ fi
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
-%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %else
 %{_sysconfdir}/init.d/zabbix-proxy
 %endif
@@ -912,7 +912,7 @@ fi
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
-%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %else
 %{_sysconfdir}/init.d/zabbix-proxy
 %endif
@@ -933,7 +933,7 @@ fi
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
-%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %else
 %{_sysconfdir}/init.d/zabbix-proxy
 %endif
@@ -963,6 +963,8 @@ fi
 ################################################################################
 
 %changelog
+* Wed Apr 28 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.2.4-1
+- fixed path to tmpfiles configuration files
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - improved bulk inserts for Oracle database backend
 - optimized trigger expression batch processing to avoid recalculation of 
