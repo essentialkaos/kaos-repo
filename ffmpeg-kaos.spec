@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.2.4
+Version:           3.3
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -93,7 +93,6 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-postproc \
   --enable-avfilter \
   --enable-pthreads \
-  --enable-x11grab \
   --enable-vdpau \
   --disable-avisynth \
   --enable-frei0r \
@@ -150,6 +149,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 3.3-0
+- Updated to version 3.3
+
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - Updated to version 3.2.4
 
@@ -176,60 +178,3 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0-0
 - Updated to version 3.0
-
-* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 2.8.4-0
-- Updated to version 2.8.4
-
-* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 2.8.2-0
-- Updated to version 2.8.2
-
-* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
-- Updated to version 2.8
-
-* Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.7.2-0
-- Updated to version 2.7.2
-
-* Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
-- Updated to version 2.7.1
-
-* Mon Apr 13 2015 Anton Novojilov <andy@essentialkaos.com> - 2.6.2-0
-- Updated to version 2.6.2
-
-* Wed Mar 11 2015 Anton Novojilov <andy@essentialkaos.com> - 2.6-0
-- Updated to version 2.6
-
-* Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 2.5.4-0
-- Updated to version 2.5.4
-
-* Sat Jan 17 2015 Anton Novojilov <andy@essentialkaos.com> - 2.5.3-0
-- Updated to version 2.5.3
-
-* Sat Dec 27 2014 Anton Novojilov <andy@essentialkaos.com> - 2.5.2-0
-- Updated to version 2.5.2
-
-* Sat Dec 20 2014 Anton Novojilov <andy@essentialkaos.com> - 2.5.1-0
-- Updated to version 2.5.1
-
-* Wed Dec 10 2014 Anton Novojilov <andy@essentialkaos.com> - 2.5-0
-- Updated to version 2.5
-
-* Mon Dec 01 2014 Anton Novojilov <andy@essentialkaos.com> - 2.4.4-0
-- Updated to version 2.4.4
-
-* Sat Oct 11 2014 Anton Novojilov <andy@essentialkaos.com> - 2.4.2-0
-- Updated to version 2.4.2
-
-* Fri Sep 19 2014 Anton Novojilov <andy@essentialkaos.com> - 2.4-0
-- Updated to version 2.4
-
-* Fri Aug 29 2014 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
-- Updated to version 2.3.3
-
-* Tue Apr 01 2014 Anton Novojilov <andy@essentialkaos.com> - 2.2-0
-- Updated to version 2.2
-
-* Wed Feb 19 2014 Anton Novojilov <andy@essentialkaos.com> - 2.1.3-0
-- Updated to version 2.1.3
-
-* Tue Oct 08 2013 Anton Novojilov <andy@essentialkaos.com> - 1.2.4-0
-- Updated to 1.2.4

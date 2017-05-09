@@ -6,7 +6,7 @@
 
 Summary:         Library for country/city/organization to IP address or hostname mapping
 Name:            GeoIP
-Version:         1.6.9
+Version:         1.6.10
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         LGPLv2+
@@ -109,5 +109,13 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.10-0
+- GeoIP_database_info now returns the full version string rather than
+  incorrectly truncating it
+- This API is now distributed with a small test copy of GeoIP.dat rather than
+  a full copy
+- Fix issue where Visual Studio 2015 was optimizing out initialization code
+- Fix test/benchmark on Windows
+
 * Sat Mar 25 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.9-0
 - Initial build for kaos repository

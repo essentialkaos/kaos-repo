@@ -60,8 +60,8 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.8
-Release:           1%{?dist}
+Version:           1.8.1
+Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
 URL:               http://golang.org
@@ -760,6 +760,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ########################################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated to latest stable release
+
 * Fri Mar 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-1
 - Improved spec
 
