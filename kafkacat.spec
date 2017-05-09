@@ -38,7 +38,7 @@
 
 Summary:              Generic non-JVM producer and consumer for Apache Kafka 
 Name:                 kafkacat
-Version:              1.3.0
+Version:              1.3.1
 Release:              0%{?dist}
 License:              2-clause BSD
 Group:                Development/Libraries
@@ -98,6 +98,19 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
+- Added support for formatter T - message timestamp
+- Introduce -E argument (don't exit on error)
+- Added offsets_for_times() support (KIP-79): query offset by timestamp with
+  -Q -t ..
+- Now builds on win32 (VS)
+- Use default fallback version if built outside of git repo
+- Fix -X dump
+- Allow brokers to be specified through -X ..
+- Ensure metadata is destroyed in consumer_run
+- Temporary QUEUE_FULL should not be consider permanent errors
+- Readme Change regarding -X parameter
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
 - Fixed project url
 - Added fix for version number output

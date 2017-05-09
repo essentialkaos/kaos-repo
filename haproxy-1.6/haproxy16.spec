@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.11
+Version:           1.6.12
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -77,7 +77,7 @@ Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
 Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
-Source14:          ftp://ftp.cwru.edu/pub/bash/readline-%{readline_ver}.tar.gz
+Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -285,6 +285,61 @@ fi
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.12-0
+- DOC: Add timings events schemas
+- BUG/MINOR: option prefer-last-server must be ignored in some case
+- BUG/MINOR: sample-fetches/stick-tables: bad type for the sample fetches
+  sc*_get_gpt0
+- BUG/MAJOR: channel: Fix the definition order of channel analyzers
+- BUG/MINOR: config: emit a warning if http-reuse is enabled with incompatible
+  options
+- BUG/MINOR: tools: fix off-by-one in port size check
+- BUG/MEDIUM: server: consider AF_UNSPEC as a valid address family
+- MINOR: proto_http.c 502 error txt typo.
+- DOC: add deprecation notice to "block"
+- BUG/MEDIUM: tcp: don't poll for write when connect() succeeds
+- BUG/MINOR: unix: fix connect's polling in case no data are scheduled
+- BUG/MINOR: lua: Map.end are not reliable because "end" is a reserved keyword
+- MINOR: chunks: implement a simple dynamic allocator for trash buffers
+- BUG/MEDIUM: http: prevent redirect from overwriting a buffer
+- BUG/MEDIUM: http: Prevent replace-header from overwriting a buffer
+- BUG/MINOR: http: Return an error when a replace-header rule failed on
+  the response
+- BUG/MINOR: sendmail: The return of vsnprintf is not cleanly tested
+- BUG/MAJOR: lua segmentation fault when the request is like 
+  'GET ?arg=val HTTP/1.1'
+- BUG/MAJOR: connection: update CO_FL_CONNECTED before calling the data layer
+- BUG/MAJOR: stream-int: do not depend on connection flags to detect connection
+- BUG/MEDIUM: connection: ensure to always report the end of handshakes
+- BUG/MEDIUM: listener: do not try to rebind another process' socket
+- BUG/MEDIUM: stream: fix client-fin/server-fin handling
+- BUG/MEDIUM: tcp: don't require privileges to bind to device
+- BUG/MEDIUM: config: reject anything but "if" or "unless" after a use-backend
+  rule
+- BUG/MINOR: checks: attempt clean shutw for SSL check
+- MINOR: fd: add a new flag HAP_POLL_F_RDHUP to struct poller
+- BUG/MINOR: raw_sock: always perfom the last recv if RDHUP is not available
+- BUG/MINOR: cfgparse: loop in tracked servers lists not detected by
+  check_config_validity().
+- BUG: payload: fix payload not retrieving arbitrary lengths
+- MINOR: server: irrelevant error message with 'default-server' config file 
+  keyword.
+- MINOR: config: warn when some HTTP rules are used in a TCP proxy
+- MINOR: doc: 2.4. Examples should be 2.5. Examples
+- DOC/MINOR: Fix typos in proxy protocol doc
+- DOC: Protocol doc: add checksum, TLV type ranges
+- DOC: Protocol doc: add SSL TLVs, rename CHECKSUM
+- DOC: Protocol doc: add noop TLV
+- MINOR: doc: fix use-server example (imap vs mail)
+- MINOR: dns: give ability to dns_init_resolvers() to close a socket when requested
+- BUG/MAJOR: dns: restart sockets after fork()
+- BUG/MEDIUM: peers: fix buffer overflow control in intdecode.
+- BUG/MEDIUM: buffers: Fix how input/output data are injected into buffers
+- DOC: fix parenthesis and add missing "Example" tags
+- DOC: log-format/tcplog/httplog update
+- DOC: Spelling fixes
+- DOC: update the contributing file
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
 - BUILD: contrib: fix ip6range build on Centos 7
 - BUG/MINOR: cli: fix pointer size when reporting data/transport layer name

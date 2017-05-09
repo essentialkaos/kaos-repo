@@ -57,7 +57,7 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             0.10.2.0
+Version:             0.10.2.1
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
@@ -169,6 +169,9 @@ fi
 ########################################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.10.2.1-0
+- Updated to latest release
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.10.2.0-0
 - Updated to latest release
 

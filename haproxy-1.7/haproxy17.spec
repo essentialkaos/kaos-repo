@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.7.3
+Version:           1.7.5
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -77,7 +77,7 @@ Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
 Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
-Source14:          ftp://ftp.cwru.edu/pub/bash/readline-%{readline_ver}.tar.gz
+Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -285,6 +285,58 @@ fi
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.5-0
+- BUG/MEDIUM: peers: fix buffer overflow control in intdecode.
+- BUG/MEDIUM: buffers: Fix how input/output data are injected into buffers
+- BUG/MEDIUM: http: Fix blocked HTTP/1.0 responses when compression is enabled
+- BUG/MINOR: filters: Don't force the stream's wakeup when we wait in
+  flt_end_analyze
+- DOC: fix parenthesis and add missing "Example" tags
+- DOC: update the contributing file
+- DOC: log-format/tcplog/httplog update
+- MINOR: config parsing: add warning when log-format/tcplog/httplog is
+  overriden in "defaults" sections
+
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
+- MINOR: config: warn when some HTTP rules are used in a TCP proxy
+- BUG/MINOR: spoe: Fix soft stop handler using a specific id for spoe filters
+- BUG/MINOR: spoe: Fix parsing of arguments in spoe-message section
+- BUG/MEDIUM: ssl: Clear OpenSSL error stack after trying to parse OCSP file
+- BUG/MEDIUM: cli: Prevent double free in CLI ACL lookup
+- BUG/MINOR: Fix "get map <map> <value>" CLI command
+- BUG/MAJOR: connection: update CO_FL_CONNECTED before calling the data layer
+- BUG/MEDIUM: ssl: switchctx should not return SSL_TLSEXT_ERR_ALERT_WARNING
+- BUG/MINOR: checks: attempt clean shutw for SSL check
+- CONTRIB: tcploop: add limits.h to fix build issue with some compilers
+- CONTRIB: tcploop: make it build on FreeBSD
+- CONTRIB: tcploop: fix time format to silence build warnings
+- CONTRIB: tcploop: report action 'K' (kill) in usage message
+- CONTRIB: tcploop: fix connect's address length
+- CONTRIB: tcploop: use the trash instead of NULL for recv()
+- BUG/MEDIUM: listener: do not try to rebind another process' socket
+- BUG/MEDIUM: filters: Fix channels synchronization in flt_end_analyze
+- BUG/MAJOR: stream-int: do not depend on connection flags to detect connection
+- BUG/MEDIUM: connection: ensure to always report the end of handshakes
+- BUG: payload: fix payload not retrieving arbitrary lengths
+- BUG/MAJOR: http: fix typo in http_apply_redirect_rule
+- MINOR: doc: 2.4. Examples should be 2.5. Examples
+- BUG/MEDIUM: stream: fix client-fin/server-fin handling
+- MINOR: fd: add a new flag HAP_POLL_F_RDHUP to struct poller
+- BUG/MINOR: raw_sock: always perfom the last recv if RDHUP is not available
+- DOC/MINOR: Fix typos in proxy protocol doc
+- DOC: Protocol doc: add checksum, TLV type ranges
+- DOC: Protocol doc: add SSL TLVs, rename CHECKSUM
+- DOC: Protocol doc: add noop TLV
+- MEDIUM: global: add a 'hard-stop-after' option to cap the soft-stop time
+- BUG/MINOR: cfgparse: loop in tracked servers lists not detected by
+  check_config_validity().
+- MINOR: server: irrelevant error message with 'default-server' config file
+  keyword.
+- MINOR: doc: fix use-server example (imap vs mail)
+- BUG/MEDIUM: tcp: don't require privileges to bind to device
+- BUILD: make the release script use shortlog for the final changelog
+- BUILD: scripts: fix typo in announce-release error message
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
 - BUG/MINOR: stream: Fix how backend-specific analyzers are set on a stream
 - BUILD: ssl: fix build on OpenSSL 1.0.0

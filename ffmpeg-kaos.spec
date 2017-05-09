@@ -104,6 +104,7 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-libopencore-amrnb \
   --enable-libopencore-amrwb \
   --enable-libopenjpeg \
+  --enable-libopus \
   --enable-librtmp \
   --enable-libschroedinger \
   --enable-libspeex \

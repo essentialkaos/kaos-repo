@@ -39,14 +39,14 @@
 
 %define api_version       5.1
 %define major_version     2
-%define minor_version     0.2
+%define minor_version     0.5
 
 ###############################################################################
 
 Name:              luajit
 Summary:           Just-In-Time Compiler for Lua
-Version:           2.0.4
-Release:           1%{?dist}
+Version:           2.0.5
+Release:           0%{?dist}
 License:           MIT
 Group:             Development/Tools
 URL:               http://luajit.org
@@ -136,6 +136,46 @@ ln -sf %{_libdir}/libluajit-%{api_version}.so.%{major_version}.%{minor_version} 
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.0.5-0
+- Add workaround for MSVC 2015 stdio changes
+- Limit mcode alloc probing, depending on the available pool size
+- Fix overly restrictive range calculation in mcode allocation
+- Fix out-of-scope goto handling in parser
+- Remove internal __mode = "K" and replace with safe check
+- Add "proto" field to jit.util.funcinfo()
+- Fix GC step size calculation
+- Initialize uv->immutable for upvalues of loaded chunks
+- Fix for cdata vs. non-cdata arithmetics/comparisons
+- Drop leftover regs in 'for' iterator assignment, too
+- Fix PHI remarking in SINK pass
+- Don't try to record outermost pcall() return to lower frame
+- Add guard for obscure aliasing between open upvalues and SSA slots
+- Remove assumption that lj_math_random_step() doesn't clobber FPRs
+- Fix handling of non-numeric strings in arithmetic coercions
+- Fix recording of select(n, ...) with off-trace vararg
+- Fix install for cross-builds
+- Don't allocate unused 2nd result register in JIT compiler backend
+- Drop marks from replayed instructions when sinking
+- Fix unsinking check
+- Properly handle OOM in trace_save()
+- Limit number of arguments given to io.lines() and fp:lines()
+- Fix narrowing of TOBIT
+- OSX: Fix build with recent XCode
+- x86/x64: Don't spill an explicit REF_BASE in the IR
+- x86/x64: Fix instruction length decoder
+- x86/x64: Search for exit jumps with instruction length decoder
+- ARM: Fix BLX encoding for Thumb interworking calls
+- MIPS: Don't use RID_GP as a scratch register
+- MIPS: Fix emitted code for U32 to float conversion
+- MIPS: Backport workaround for compact unwind tables
+- MIPS: Fix cross-endian jit.bcsave
+- MIPS: Fix BC_ISNEXT fallback path
+- MIPS: Fix use of ffgccheck delay slots in interpreter
+- FFI: Fix FOLD rules for int64_t comparisons
+- FFI: Fix SPLIT pass for CONV i64.u64
+- FFI: Fix ipairs() recording
+- FFI: Don't propagate qualifiers into subtypes of complex
+
 * Wed Apr 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.4-1
 - Improved build process
 
