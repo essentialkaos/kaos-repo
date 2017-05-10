@@ -1,7 +1,7 @@
 ###############################################################################
 
-%define main_version 2.7
-%define patch        5
+%define main_version 2.8
+%define patch        2
 
 ###############################################################################
 
@@ -18,7 +18,7 @@ Source1:         nanorc
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc make automake gettext-devel groff ncurses-devel sed
+BuildRequires:   gcc make automake groff ncurses-devel sed
 
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -34,8 +34,6 @@ GNU nano is a small and friendly text editor.
 
 %prep
 %setup -q
-
-autoreconf -fiv
 
 %build
 %configure
@@ -103,6 +101,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.8.2-0
+- Updated to latest stable release
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7.5-0
 - Updated to latest stable release
 
