@@ -963,6 +963,19 @@ fi
 ################################################################################
 
 %changelog
+* Thu May 11 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
+- fixed translation string and validation of TLS settings in host.create(),
+  host.update() and host.massUpdate() methods; added variables to hosts array
+  required by CHost::validateUpdate() method
+- fixed problem generation by timer process
+- fixed missing operator in event correlation form
+- fixed collision of cookies name responsible for storing selected checkboxes
+- fixed undefined index 'ns' in options output array
+- fixed pagination in Maintenance page
+- fixed limit option in event.get method
+- fixed new line handling in SSH agent with numeric type of information
+- fixed wrongly displayed list view after mass update failure
+
 * Fri Apr 28 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.2.4-1
 - Fixed path to tmpfiles configuration files
 
