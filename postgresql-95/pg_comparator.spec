@@ -59,7 +59,7 @@ Group:          Applications/Databases
 Source0:        http://pgfoundry.org/frs/download.php/3661/%{realname}-%{version}.tgz
 Patch0:         %{realname}-Makefile.diff
 URL:            http://pgfoundry.org/projects/pg-comparator
-BuildRequires:  postgresql%{pg_maj_ver}-devel
+BuildRequires:  postgresql%{pg_maj_ver}-devel make gcc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:       perl(Getopt::Long), perl(Time::HiRes)
 Requires:       postgresql%{pg_maj_ver}
@@ -74,15 +74,15 @@ different locations and report differences, with a network and
 time-efficient approach.
 
 %prep
-%setup -q -n %{realname}-%{version}
+%setup -qn %{realname}-%{version}
 %patch0 -p0
 
 %build
-%{__make} PG_CONFIG=%{pg_dir}/bin/pg_config %{?_smp_mflags}
+%{__make} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
 %{__rm} -rf %{buildroot}
-%{__make} PG_CONFIG=%{pg_dir}/bin/pg_config %{?_smp_mflags} install DESTDIR=%{buildroot}
+%{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
 %{_sbindir}/update-alternatives --install /usr/bin/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_maj_ver}0
@@ -108,5 +108,5 @@ fi
 %{pg_dir}/share/contrib/*.sql
 
 %changelog
-* Wed May 10 2017 Andrey Kulikov <avk@brewkeeper.net> 2.2.5-0
+* Wed May 10 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.5-0
 - Initial build

@@ -43,8 +43,8 @@
 
 ###############################################################################
 
-%define pg_maj_ver        96
-%define pg_dir            %{_prefix}/pgsql-9.6
+%define pg_maj_ver        94
+%define pg_dir            %{_prefix}/pgsql-9.4
 %define realname          pg_comparator
 
 ###############################################################################
@@ -97,10 +97,10 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc %{pg_dir}/doc/contrib/README.%{realname}
-%doc %{pg_dir}/doc/contrib/README.pgc_casts
-%doc %{pg_dir}/doc/contrib/README.pgc_checksum
-%doc %{pg_dir}/doc/contrib/README.xor_aggregate
+%doc %{_defaultdocdir}/pgsql/contrib/README.%{realname}
+%doc %{_defaultdocdir}/pgsql/contrib/README.pgc_casts
+%doc %{_defaultdocdir}/pgsql/contrib/README.pgc_checksum
+%doc %{_defaultdocdir}/pgsql/contrib/README.xor_aggregate
 %doc LICENSE
 %{pg_dir}/bin/%{realname}
 %{pg_dir}/lib/pgc_casts.so
