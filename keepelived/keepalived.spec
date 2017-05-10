@@ -184,5 +184,5 @@ fi
 ###############################################################################
 
 %changelog
-* Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.5-0
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.5-0
 - Updated to latest release

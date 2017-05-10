@@ -92,6 +92,7 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %files
+%defattr(-,root,root)
 %doc COPYING AUTHORS ChangeLog NEWS.md README.md
 %{_bindir}/geoiplookup
 %{_bindir}/geoiplookup6
@@ -101,6 +102,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/geoiplookup6.1*
 
 %files devel
+%defattr(-,root,root)
 %{_includedir}/GeoIP.h
 %{_includedir}/GeoIPCity.h
 %{_libdir}/libGeoIP.so
