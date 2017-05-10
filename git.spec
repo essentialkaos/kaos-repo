@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.12.2
+Version:          2.13.0
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -273,6 +273,26 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.13.0-0
+- Use of an empty string as a pathspec element that is used for
+  'everything matches' is still warned and Git asks users to use a
+  more explicit '.' for that instead.  The hope is that existing
+  users will not mind this change, and eventually the warning can be
+  turned into a hard error, upgrading the deprecation into removal of
+  this (mis)feature.  That is not scheduled to happen in the upcoming
+  release (yet).
+- The historical argument order "git merge <msg> HEAD <commit>..."
+  has been deprecated for quite some time, and is now removed.
+- The default location "~/.git-credential-cache/socket" for the
+  socket used to communicate with the credential-cache daemon has
+  been moved to "~/.cache/git/credential/socket".
+- Git now avoids blindly falling back to ".git" when the setup
+  sequence said we are _not_ in Git repository.  A corner case that
+  happens to work right now may be broken by a call to die("BUG").
+  We've tried hard to locate such cases and fixed them, but there
+  might still be cases that need to be addressed--bug reports are
+  greatly appreciated.
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.12.2-0
 - "git status --porcelain" is supposed to give a stable output, but a
   few strings were left as translatable by mistake.
