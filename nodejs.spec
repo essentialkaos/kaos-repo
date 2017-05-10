@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.10.1
+Version:            6.10.3
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -104,6 +104,7 @@ export CXX=clang++
 %{_bindir}/%{shortname}
 %{_bindir}/npm
 %{_docdir}/%{shortname}/gdbinit
+%{_docdir}/%{shortname}/lldb*
 %{_mandir}/man1/%{shortname}.1.gz
 %{_libdir32}/%{shortname}_modules
 %{_datadir}/systemtap/tapset/%{shortname}.stp
@@ -115,6 +116,22 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.3-0
+- module: The module loading global fallback to the Node executable's directory
+  now works correctly on Windows
+- src: fix base64 decoding in rare edgecase
+- tls: fix rare segmentation faults when using TLS
+
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.2-0
+- a fix for memory leak in the crypto module that was introduced in 6.10.1
+- a fix for a regression introduced to the windows repl in 6.10.0
+- a backported fix for V8 to stop a segfault that could occur when using
+  spread syntax
+- crypto: fix memory leak if certificate is revoked
+- deps: upgrade zlib to 1.2.11
+- deps: backport V8 fixes for spread syntax regression causing segfaults
+- repl: Revert commit that broke REPL display on Windows
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.1-0
 - performance: The performance of several APIs has been improved
 - IPC: Batched writes have been enabled for process IPC on platforms that

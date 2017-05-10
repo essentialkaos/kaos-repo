@@ -50,38 +50,49 @@
 ###############################################################################
 
 
-Summary:        Efficient table content comparison and synchronization for PostgreSQL and MySQL
-Name:           %{realname}%{pg_maj_ver}
-Version:        2.2.5
-Release:        0%{?dist}
-License:        BSD
-Group:          Applications/Databases
-Source0:        http://pgfoundry.org/frs/download.php/3661/%{realname}-%{version}.tgz
-Patch0:         %{realname}-Makefile.diff
-URL:            http://pgfoundry.org/projects/pg-comparator
-BuildRequires:  postgresql%{pg_maj_ver}-devel make gcc
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:       perl(Getopt::Long), perl(Time::HiRes)
-Requires:       postgresql%{pg_maj_ver}
+Summary:           Efficient table content comparison and synchronization for PostgreSQL and MySQL
+Name:              %{realname}%{pg_maj_ver}
+Version:           2.2.5
+Release:           0%{?dist}
+License:           BSD
+Group:             Development/Tools
+URL:               http://pgfoundry.org/projects/pg-comparator
 
-Provides:       %{realname} = %{version}-%{release}
+Source:            http://pgfoundry.org/frs/download.php/3661/%{realname}-%{version}.tgz
 
-Requires(post): %{_sbindir}/update-alternatives
+Patch0:            %{realname}-Makefile.diff
+
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:     make gcc
+BuildRequires:     postgresql%{pg_maj_ver}-devel
+
+Requires:          perl(Getopt::Long), perl(Time::HiRes)
+Requires:          postgresql%{pg_maj_ver}
+
+Requires(post):    %{_sbindir}/update-alternatives
+
+Provides:          %{realname} = %{version}-%{release}
+
+###############################################################################
 
 %description
 pg_comparator is a tool to compare possibly very big tables in
 different locations and report differences, with a network and
 time-efficient approach.
 
+###############################################################################
+
 %prep
 %setup -qn %{realname}-%{version}
+
 %patch0 -p0
 
 %build
 %{__make} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
@@ -89,23 +100,27 @@ time-efficient approach.
 
 %postun
 if [[ $1 -eq 0 ]] ; then
-    %{_sbindir}/update-alternatives --remove pgcomparator %{pg_dir}/bin/pg_comparator
+  %{_sbindir}/update-alternatives --remove pgcomparator %{pg_dir}/bin/pg_comparator
 fi
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
+
+###############################################################################
 
 %files
 %defattr(-,root,root,-)
+%doc LICENSE
 %doc %{_defaultdocdir}/pgsql/contrib/README.%{realname}
 %doc %{_defaultdocdir}/pgsql/contrib/README.pgc_casts
 %doc %{_defaultdocdir}/pgsql/contrib/README.pgc_checksum
 %doc %{_defaultdocdir}/pgsql/contrib/README.xor_aggregate
-%doc LICENSE
 %{pg_dir}/bin/%{realname}
 %{pg_dir}/lib/pgc_casts.so
 %{pg_dir}/lib/pgc_checksum.so
 %{pg_dir}/share/contrib/*.sql
+
+###############################################################################
 
 %changelog
 * Wed May 10 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.5-0
