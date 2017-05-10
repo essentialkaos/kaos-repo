@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.12.2
+Version:          2.13.0
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
