@@ -12,10 +12,12 @@ Source:               http://digitalcorpora.org/downloads/%{name}/%{name}-%{vers
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:             boost >= 1.53.0 libpcap
+Requires:             boost >= 1.53.0 libpcap openssl zlib
 
-BuildRequires:        gcc >= 3.0 autoconf m4 >= 1.4 make
-BuildRequires:        boost-devel >= 1.53.0 libpcap-devel
+BuildRequires:        make gcc-c++ autoconf m4 >= 1.4 openssl-devel cairo-devel
+BuildRequires:        boost-devel >= 1.53.0 libpcap-devel zlib-devel
+
+Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
@@ -38,6 +40,7 @@ and stores each flow in a separate file for later analysis.
 
 %install
 rm -rf %{buildroot}
+
 %{make_install} PREFIX=%{buildroot}%{prefix}
 
 %clean
@@ -55,4 +58,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Dec 07 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.4.5-0
-- Initial build.
+- Initial build
