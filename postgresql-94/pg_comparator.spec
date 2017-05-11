@@ -52,7 +52,7 @@
 
 Summary:           Efficient table content comparison and synchronization for PostgreSQL and MySQL
 Name:              %{realname}%{pg_maj_ver}
-Version:           2.2.5
+Version:           2.2.6
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Tools
