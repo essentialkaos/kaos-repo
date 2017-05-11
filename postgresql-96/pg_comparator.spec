@@ -52,13 +52,13 @@
 
 Summary:           Efficient table content comparison and synchronization for PostgreSQL and MySQL
 Name:              %{realname}%{pg_maj_ver}
-Version:           2.2.5
+Version:           2.2.6
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Tools
-URL:               http://pgfoundry.org/projects/pg-comparator
+URL:               https://www.cri.ensmp.fr/people/coelho/pg_comparator
 
-Source:            http://pgfoundry.org/frs/download.php/3661/%{realname}-%{version}.tgz
+Source:            https://www.cri.ensmp.fr/people/coelho/pg_comparator/%{realname}-%{version}.tgz
 
 Patch0:            %{realname}-Makefile.diff
 
@@ -123,5 +123,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed May 11 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.6-0
+- New upstream release
+- Source URL and project URL updated
+
 * Wed May 10 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.5-0
 - Initial build
