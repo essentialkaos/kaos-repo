@@ -43,6 +43,7 @@
 
 ###############################################################################
 
+%define pg_ver            9.6
 %define pg_maj_ver        96
 %define pg_dir            %{_prefix}/pgsql-9.6
 %define realname          pg_comparator
@@ -50,7 +51,7 @@
 ###############################################################################
 
 
-Summary:           Efficient table content comparison and synchronization for PostgreSQL and MySQL
+Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
 Name:              %{realname}%{pg_maj_ver}
 Version:           2.2.6
 Release:           0%{?dist}
