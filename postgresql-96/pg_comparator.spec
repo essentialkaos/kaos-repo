@@ -123,7 +123,7 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Wed May 11 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.6-0
+* Thu May 11 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.6-0
 - New upstream release
 - Source URL and project URL updated
 
