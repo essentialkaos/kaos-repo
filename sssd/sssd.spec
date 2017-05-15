@@ -99,6 +99,7 @@
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
+%define __sysctl          %{_bindir}/systemctl
 
 ###############################################################################
 
@@ -811,13 +812,20 @@ rm -rf %{buildroot}
 %if (0%{?use_systemd} == 1)
 
 %post common
-%service_add_post %{service_name}.service
+if [[ $1 -eq 1 ]] ; then
+  %{__sysctl} enable %{service_name}.service &>/dev/null || :
+fi
 
 %preun common
-%service_del_preun %{service_name}.service
+if [[ $1 -eq 0 ]] ; then
+  %{__sysctl} --no-reload disable %{service_name}.service &>/dev/null || :
+  %{__sysctl} stop %{service_name}.service &>/dev/null || :
+fi
 
 %postun
-%service_del_postun %{service_name}.service
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
 
 %else
 
