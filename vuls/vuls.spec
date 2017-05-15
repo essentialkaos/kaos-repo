@@ -1,7 +1,7 @@
 ###############################################################################
 
 # rpmbuilder:gopack    github.com/future-architect/vuls
-# rpmbuilder:tag       v0.2.0
+# rpmbuilder:tag       v0.3.0
 
 ###############################################################################
 
@@ -59,8 +59,8 @@
 
 Summary:         VULnerability Scanner
 Name:            vuls
-Version:         0.2.0
-Release:         1%{?dist}
+Version:         0.3.0
+Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv3
 URL:             https://github.com/future-architect/vuls
@@ -76,7 +76,7 @@ Source10:        index.html
 
 Patch0:          cve-dictionary-log-path.patch
 
-BuildRequires:   golang >= 1.7
+BuildRequires:   golang >= 1.8
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -220,6 +220,9 @@ fi
 ###############################################################################
 
 %changelog
+* Fri May 12 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
+- Updated to latest stable release
+
 * Wed Jan 25 2017 Anton Novojilov <andy@essentialkaos.com> - 0.2.0-1
 - Improved spec
 

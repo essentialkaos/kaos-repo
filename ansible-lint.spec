@@ -16,7 +16,7 @@ BuildArch:      noarch
 
 BuildRequires:  python-devel python-setuptools libffi-devel
 
-Requires:       ansible python-jinja2 < 2.9
+Requires:       ansible python-jinja2 < 2.9 python-markupsafe >= 0.23
 
 Provides:       %{name} = %{verion}-%{release}
 
