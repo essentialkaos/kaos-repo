@@ -13,8 +13,9 @@ License:         GPLv3+
 Group:           Applications/Editors
 URL:             http://www.nano-editor.org
 
-Source0:         https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
-Source1:         nanorc
+Source:          https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+
+Patch0:          %{name}-nanorc.patch
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -35,6 +36,8 @@ GNU nano is a small and friendly text editor.
 %prep
 %setup -q
 
+%patch0 -p1
+
 %build
 %configure
 %{__make} %{?_smp_mflags}
@@ -44,24 +47,8 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-cp %{SOURCE1} nanorc
-
 install -dm 0755 %{buildroot}%{_sysconfdir}
-
-# Improve default config
-sed -e 's/^# set nowrap/set nowrap/' \
-    -e 's/^#.*set speller.*$/set speller "hunspell"/' \
-    -e 's/^# set linenumbers/set linenumbers/' \
-    -e 's/^# set smooth/set smooth/' \
-    -e 's/^# set softwrap/set softwrap/' \
-    -e 's/^# set tabsize 8/set tabsize 2/' \
-    -e 's/^# set titlecolor/set titlecolor/' \
-    -e 's/^# set statuscolor/set statuscolor/' \
-    -e 's/^# set numbercolor cyan/set numbercolor brightblack/' \
-    -e 's/^# include "/include "/' \
-    doc/sample.nanorc >> %{buildroot}%{_sysconfdir}/nanorc
-
-chmod 644 %{buildroot}%{_sysconfdir}/nanorc
+install -pm 0644 doc/sample.nanorc %{buildroot}%{_sysconfdir}/nanorc
 
 rm -f %{buildroot}%{_infodir}/dir
 

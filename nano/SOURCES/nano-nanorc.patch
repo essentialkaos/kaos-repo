@@ -1,0 +1,68 @@
+diff -urN nano-2.8.2-orig/doc/sample.nanorc.in nano-2.8.2/doc/sample.nanorc.in
+--- nano-2.8.2-orig/doc/sample.nanorc.in	2017-05-15 18:10:11.457989526 -0400
++++ nano-2.8.2/doc/sample.nanorc.in	2017-05-15 18:17:10.000000000 -0400
+@@ -64,7 +64,7 @@
+ # set justifytrim
+ 
+ ## Display line numbers to the left of the text.
+-# set linenumbers
++set linenumbers
+ 
+ ## Enable vim-style lock-files.  This is just to let a vim user know you
+ ## are editing a file [s]he is trying to edit and vice versa. There are
+@@ -103,7 +103,7 @@
+ # set nonewlines
+ 
+ ## Don't wrap text at all.
+-# set nowrap
++set nowrap
+ 
+ ## Set operating directory.  nano will not read or write files outside
+ ## this directory and its subdirectories.  Also, the current directory
+@@ -157,20 +157,20 @@
+ # set smarthome
+ 
+ ## Use smooth scrolling as the default.
+-# set smooth
++set smooth
+ 
+ ## Enable soft line wrapping (AKA full-line display).
+-# set softwrap
++set softwrap
+ 
+ ## Use this spelling checker instead of the internal one.  This option
+ ## does not properly have a default value.
+-# set speller "aspell -x -c"
++set speller "hunspell"
+ 
+ ## Allow nano to be suspended.
+ # set suspend
+ 
+ ## Use this tab size instead of the default; it must be greater than 0.
+-# set tabsize 8
++set tabsize 2
+ 
+ ## Convert typed tabs to spaces.
+ # set tabstospaces
+@@ -201,9 +201,9 @@
+ 
+ ## Paint the interface elements of nano.
+ ## These are examples; by default there are no colors.
+-# set titlecolor brightwhite,blue
+-# set statuscolor brightwhite,green
+-# set numbercolor cyan
++set titlecolor brightwhite,blue
++set statuscolor brightwhite,green
++set numbercolor brightblack
+ # set keycolor cyan
+ # set functioncolor green
+ ## In root's .nanorc you might want to use:
+@@ -256,7 +256,7 @@
+ ## them easier to remember and faster to type using nano's -Y option.
+ ##
+ ## To include all existing syntax definitions, you can do:
+-# include "@PKGDATADIR@/*.nanorc"
++include "/usr/share/nano/*.nanorc"
+ 
+ 
+ ## Key bindings.
