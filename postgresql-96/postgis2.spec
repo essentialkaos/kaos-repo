@@ -55,7 +55,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.6
 Name:              %{realname}2_%{pg_maj_ver}
 Version:           2.3.2
-Release:           0%{?dist}
+Release:           2%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net

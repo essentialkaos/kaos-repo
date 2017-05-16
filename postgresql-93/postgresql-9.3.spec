@@ -73,7 +73,7 @@
 %endif
 
 %define majorver        9.3
-%define minorver        16
+%define minorver        17
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
@@ -1072,6 +1072,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue May 16 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.17-0
+- Updated to latest stable release
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.16-0
 - Updated to latest stable release
 
