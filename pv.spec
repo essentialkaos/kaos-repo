@@ -2,15 +2,16 @@
 
 %define _posixroot        /
 %define _root             /root
-%define _opt              /opt
 %define _bin              /bin
 %define _sbin             /sbin
 %define _srv              /srv
 %define _home             /home
+%define _opt              /opt
 %define _lib32            %{_posixroot}lib
 %define _lib64            %{_posixroot}lib64
 %define _libdir32         %{_prefix}%{_lib32}
 %define _libdir64         %{_prefix}%{_lib64}
+%define _docdir           %{_datadir}/doc
 %define _logdir           %{_localstatedir}/log
 %define _rundir           %{_localstatedir}/run
 %define _lockdir          %{_localstatedir}/lock/subsys
@@ -28,46 +29,36 @@
 %define _loc_bindir       %{_loc_exec_prefix}/bin
 %define _loc_datarootdir  %{_loc_prefix}/share
 %define _loc_includedir   %{_loc_prefix}/include
+%define _loc_mandir       %{_loc_datarootdir}/man
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __useradd         %{_sbindir}/useradd
-%define __groupadd        %{_sbindir}/groupadd
-%define __getent          %{_bindir}/getent
-
 ###############################################################################
 
-Summary:              A powerful build system for the JVM
-Name:                 gradle
-Version:              3.5
+Summary:              Tool for monitoring the progress of data through a pipeline
+Name:                 pv
+Version:              1.6.0
 Release:              0%{?dist}
-License:              ASL 2.0 
-Group:                Development/Tools
-URL:                  http://gradle.org
+License:              Artistic v2.0
+Group:                Applications/System
+URL:                  http://www.ivarch.com/programs/pv.shtml
 
-Source0:              https://services.gradle.org/distributions/%{name}-%{version}-src.zip
+Source0:              http://www.ivarch.com/programs/sources/%{name}-%{version}.tar.bz2
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        jdk8
+BuildRequires:        gcc make gettext
 
 Provides:             %{name} = %{version}-%{release}
 
 ###############################################################################
 
 %description
-Gradle is a build tool with a focus on build automation and support for 
-multi-language development. If you are building, testing, publishing, and 
-deploying software on any platform, Gradle offers a flexible model that can 
-support the entire development lifecycle from compiling and packaging code 
-to publishing web sites. 
-
-Gradle has been designed to support build automation across multiple languages 
-and platforms including Java, Scala, Android, C/C++, and Groovy, and is 
-closely integrated with development tools and continuous integration servers 
-including Eclipse, IntelliJ, and Jenkins.
+Pipe Viewer is a terminal-based tool for monitoring the progress of
+data through a pipeline. It can be inserted into any normal pipeline
+between two processes to give a visual indication of how quickly data
+is passing through, how long it has taken, how near to completion it
+is, and an estimate of how long it will be until completion.
 
 ###############################################################################
 
@@ -75,16 +66,18 @@ including Eclipse, IntelliJ, and Jenkins.
 %setup -q
 
 %build
-./gradlew core:build -x integTest --continue --stacktrace
+%configure
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 
-./gradlew install -Pgradle_installPath=%{buildroot}%{_opt}/%{name}/%{version}
+install -dm 755 %{buildroot}%{_bindir}
+install -dm 755 %{buildroot}%{_mandir}/man1
+install -dm 755 %{buildroot}%{_datarootdir}/locale
 
-ln -sf %{_opt}/%{name}/%{version} %{buildroot}%{_opt}/%{name}/current
-
-###############################################################################
+%{make_install} DESTDIR="%{buildroot}"
+%find_lang %{name}
 
 %clean
 rm -rf %{buildroot}
@@ -93,22 +86,13 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{_opt}/%{name}/*
+%doc README doc/NEWS doc/TODO
+%attr(755,root,root) %{_bindir}/%{name}
+%{_mandir}/man1/%{name}.1*
+%{_datarootdir}/locale/*
 
 ###############################################################################
 
 %changelog
-* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 3.5-0
-- Updated to latest stable release
-
-* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
-- Updated to latest stable release
-
-* Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
-- Updated to latest stable release
-
-* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0-0
-- Updated to latest stable release
-
-* Tue Mar 29 2016 Gleb Goncharov <yum@gongled.me> - 2.12-0
+* Thu May 04 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.6.0-0
 - Initial build

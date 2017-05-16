@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.53.1
+Version:              7.54.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -303,6 +303,129 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 7.54.0-0
+- Add CURL_SSLVERSION_MAX_* constants to CURLOPT_SSLVERSION
+- Add --max-tls
+- Add CURLOPT_SUPPRESS_CONNECT_HEADERS
+- Add --suppress-connect-headers
+- CVE-2017-7468: switch off SSL session id when client cert is used
+- cmake: Replace invalid UTF-8 byte sequence
+- tests: use consistent environment variables for setting charset
+- proxy: fixed a memory leak on OOM
+- ftp: removed an erroneous free in an OOM path
+- docs: de-duplicate file lists in the Makefiles
+- ftp: fixed a NULL pointer dereference on OOM
+- gopher: fixed detection of an error condition from Curl_urldecode
+- url: fix unix-socket support for proxy-disabled builds
+- test1139: allow for the possibility that the man page is not rebuilt
+- cyassl: get library version string at runtime
+- digest_sspi: fix compilation warning
+- tests: enable HTTP/2 tests to run with non-default port numbers
+- warnless: suppress compiler warning
+- darwinssl: Warn that disabling host verify also disables SNI
+- configure: fix for --enable-pthreads
+- checksrc.bat: Ignore curl_config.h.in, curl_config.h
+- no-keepalive.d: fix typo
+- configure: fix --with-zlib when a path is specified
+- build: fix gcc7 implicit fallthrough warnings
+- fix potential use of uninitialized variables
+- CURLOPT_SSL_CTX_FUNCTION.3: Fix EXAMPLE formatting errors
+- CMake: Reorganize SSL support, separate WinSSL and SSPI
+- CMake: Add DarwinSSL support
+- CMake: Add mbedTLS support
+- ares: return error at once if timed out before name resolve starts
+- BINDINGS: added C++, perl, go and Scilab bindings
+- URL: return error on malformed URLs with junk after port number
+- KNOWN_BUGS: Add DarwinSSL won't import PKCS#12 without a password
+- http2: Fix assertion error on redirect with CL=0
+- updatemanpages.pl: Update man pages to use current date and versions
+- --insecure: clarify that this option is for server connections
+- mkhelp: simplified the gzip code
+- build: fixed making man page in out-of-tree tarball builds
+- tests: disabled 1903 due to flakiness
+- openssl: add two /* FALLTHROUGH */ to satisfy coverity
+- cmdline-opts: fixed a few typos
+- authneg: clear auth.multi flag at http_done
+- curl_easy_reset: Also reset the authentication state
+- proxy: skip SSL initialization for closed connections
+- http_proxy: ignore TE and CL in CONNECT 2xx responses
+- tool_writeout: fixed a buffer read overrun on --write-out
+- make: regenerate docs/curl.1 by running make in docs
+- winbuild: add basic support for OpenSSL 1.1.x
+- build: removed redundant DEPENDENCIES from makefiles
+- CURLINFO_LOCAL_PORT.3: added example
+- curl: show HTTPS-Proxy options on CURLE_SSL_CACERT
+- tests: strip more options from non-HTTP --libcurl tests
+- tests: fixed the documented test server port numbers
+- runtests.pl: fixed display of the Gopher IPv6 port number
+- multi: fix streamclose() crash in debug mode
+- cmake: build manual pages
+- cmake: add support for building HTML and PDF docs
+- mbedtls: add support for CURLOPT_SSL_CTX_FUNCTION
+- make: introduce 'test-nonflaky' target
+- CURLINFO_PRIMARY_IP.3: add example
+- tests/README: mention nroff for --manual tests
+- mkhelp: disable compression if the perl gzip module is unavailable
+- openssl: fall back on SSL_ERROR_* string when no error detail
+- asiohiper: make sure socket is open in event_cb
+- tests/README: make "Run" section foolproof
+- curl: check for end of input in writeout backslash handling
+- .gitattributes: turn off CRLF for *.am
+- multi: fix MinGW-w64 compiler warnings
+- schannel: fix variable shadowing warning
+- openssl: exclude DSA code when OPENSSL_NO_DSA is defined
+- http: Fix proxy connection reuse with basic-auth
+- pause: handle mixed types of data when paused
+- http: do not treat FTPS over CONNECT as HTTPS
+- conncache: make hashkey avoid malloc
+- make: use the variable MAKE for recursive calls
+- curl: fix callback argument inconsistency
+- NTLM: check for features with #ifdef instead of #if
+- cmake: add several missing files to the dist
+- select: use correct SIZEOF_ constant
+- connect: fix unreferenced parameter warning
+- schannel: fix unused variable warning
+- gcc7: fix ‘*’ in boolean context
+- http2: silence unused parameter warnings
+- ssh: fix narrowing conversion warning
+- telnet: (win32) fix read callback return variable
+- docs: Explain --fail-early does not imply --fail
+- docs: added examples for CURLINFO_FILETIME.3 and CURLOPT_FILETIME.3
+- tests/server/util: remove in6addr_any for recent MinGW
+- multi: make curl_multi_wait avoid malloc in the typical case
+- include: curl/system.h is a run-time version of curlbuild.h
+- easy: silence compiler warning
+- llist: replace Curl_llist_alloc with Curl_llist_init
+- hash: move key into hash struct to reduce mallocs
+- url: don't free postponed data on connection reuse
+- curl_sasl: declare mechtable static
+- curl: fix Windows Unicode build
+- multi: fix queueing of pending easy handles
+- tool_operate: fix MinGW compiler warning
+- low_speed_limit: improved function for longer time periods
+- gtls: fix compiler warning
+- sspi: print out InitializeSecurityContext() error message
+- schannel: fix compiler warnings
+- vtls: fix unreferenced variable warnings
+- INSTALL.md: fix secure transport configure arguments
+- CURLINFO_SCHEME.3: fix variable type
+- libcurl-thread.3: also mention threaded-resolver
+- nss: load CA certificates even with --insecure
+- openssl: fix this statement may fall through
+- poll: prefer over
+- polarssl: unbreak build with versions < 1.3.8
+- Curl_expire_latest: ignore already expired timers
+- configure: turn implicit function declarations into errors
+- mbedtls: fix memory leak in error path
+- http2: fix handle leak in error path
+- .gitattributes: force shell scripts to LF
+- configure.ac: ignore CR after version numbers
+- extern-scan.pl: strip trailing CR
+- openssl: make SSL_ERROR_to_str more future-proof
+- openssl: fix thread-safety bugs in error-handling
+- openssl: don't try to print nonexistant peer private keys
+- nss: fix MinGW compiler warnings
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.53.1-0
 - cyassl: fix typo
 - url: Improve CURLOPT_PROXY_CAPATH error handling

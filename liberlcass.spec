@@ -1,7 +1,7 @@
 ###############################################################################
 
 %define cpp_driver_name     cpp-driver
-%define cpp_driver_version  2.4.3
+%define cpp_driver_version  2.6.0
 
 %define short_name          erlcass
 
@@ -9,7 +9,7 @@
 
 Summary:              An Erlang Cassandra driver
 Name:                 lib%{short_name}
-Version:              2.6
+Version:              2.7
 Release:              0%{?dist}
 License:              APLv2.0
 Group:                Development/Libraries
@@ -46,6 +46,9 @@ performance.
 
 mkdir -p _build/deps
 %{__tar} xvfz %{SOURCE1} -C _build/deps
+
+# Fix build error with non existent header file
+sed -i '/#include "external_types.hpp"/d' c_src/nif_cass_statement.cc
 
 %build
 export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
@@ -89,5 +92,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7-0
+- Updated to latest stable release
+
 * Wed Oct 19 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.6-0
 - Initial build

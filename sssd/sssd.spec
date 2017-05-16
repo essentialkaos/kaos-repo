@@ -99,6 +99,7 @@
 %define __useradd         %{_sbindir}/useradd
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
+%define __sysctl          %{_bindir}/systemctl
 
 ###############################################################################
 
@@ -119,13 +120,13 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.14.2
+Version:            1.15.2
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
-URL:                http://fedorahosted.org/sssd
+URL:                https://pagure.io/SSSD/sssd/
 
-Source0:            https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
+Source0:            https://releases.pagure.org/SSSD/%{name}/%{name}-%{version}.tar.gz
 Source1:            %{name}.init
 Source2:            %{name}.conf
 
@@ -811,13 +812,20 @@ rm -rf %{buildroot}
 %if (0%{?use_systemd} == 1)
 
 %post common
-%service_add_post %{service_name}.service
+if [[ $1 -eq 1 ]] ; then
+  %{__sysctl} enable %{service_name}.service &>/dev/null || :
+fi
 
 %preun common
-%service_del_preun %{service_name}.service
+if [[ $1 -eq 0 ]] ; then
+  %{__sysctl} --no-reload disable %{service_name}.service &>/dev/null || :
+  %{__sysctl} stop %{service_name}.service &>/dev/null || :
+fi
 
 %postun
-%service_del_postun %{service_name}.service
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
 
 %else
 
@@ -907,21 +915,37 @@ fi
 %{_sbindir}/%{name}
 %if (0%{?use_systemd} == 1)
 %{_unitdir}/%{name}.service
-%{_unitdir}/%{name}-secrets.service
+%{_unitdir}/%{name}-autofs.socket
+%{_unitdir}/%{name}-autofs.service
+%{_unitdir}/%{name}-nss.socket
+%{_unitdir}/%{name}-nss.service
+%{_unitdir}/%{name}-pac.socket
+%{_unitdir}/%{name}-pac.service
+%{_unitdir}/%{name}-pam.socket
+%{_unitdir}/%{name}-pam-priv.socket
+%{_unitdir}/%{name}-pam.service
+%{_unitdir}/%{name}-ssh.socket
+%{_unitdir}/%{name}-ssh.service
+%{_unitdir}/%{name}-sudo.socket
+%{_unitdir}/%{name}-sudo.service
 %{_unitdir}/%{name}-secrets.socket
+%{_unitdir}/%{name}-secrets.service
 %else
 %{_initrddir}/%{name}
 %endif
 
 %dir %{_libexecdir}/%{name}
-%{_libexecdir}/%{name}/sssd_be
-%{_libexecdir}/%{name}/sssd_nss
-%{_libexecdir}/%{name}/sssd_pam
-%{_libexecdir}/%{name}/sssd_autofs
-%{_libexecdir}/%{name}/sssd_secrets
-%{_libexecdir}/%{name}/sssd_ssh
-%{_libexecdir}/%{name}/sssd_sudo
+%{_libexecdir}/%{name}/%{name}_be
+%{_libexecdir}/%{name}/%{name}_nss
+%{_libexecdir}/%{name}/%{name}_pam
+%{_libexecdir}/%{name}/%{name}_autofs
+%{_libexecdir}/%{name}/%{name}_secrets
+%{_libexecdir}/%{name}/%{name}_ssh
+%{_libexecdir}/%{name}/%{name}_sudo
 %{_libexecdir}/%{name}/p11_child
+%if (0%{?use_systemd} == 1)
+%{_libexecdir}/%{name}/%{name}_check_socket_activated_responders
+%endif
 
 %if (0%{?install_pcscd_polkit_rule} == 1)
 %{_datadir}/polkit-1/rules.d/*
@@ -929,6 +953,7 @@ fi
 
 %dir %{_libdir}/%{name}
 %{_libdir}/%{name}/libsss_simple.so
+%{_libdir}/%{name}/libsss_files.so
 
 %{_libdir}/%{name}/libsss_child.so
 %{_libdir}/%{name}/libsss_crypt.so
@@ -978,6 +1003,7 @@ fi
 %{_mandir}/man1/sss_ssh_authorizedkeys.1*
 %{_mandir}/man1/sss_ssh_knownhostsproxy.1*
 %{_mandir}/man5/sssd.conf.5*
+%{_mandir}/man5/sssd-files.5*
 %{_mandir}/man5/sssd-secrets.5*
 %{_mandir}/man5/sssd-simple.5*
 %{_mandir}/man5/sssd-sudo.5*
@@ -989,7 +1015,7 @@ fi
 %defattr(-,root,root,-)
 %doc COPYING
 %{_libdir}/%{name}/libsss_ldap.so
-%{_mandir}/man5/sssd-ldap.5*
+%{_mandir}/man5/%{name}-ldap.5*
 
 %files krb5-common
 %defattr(-,root,root,-)
@@ -1002,7 +1028,7 @@ fi
 %defattr(-,root,root,-)
 %doc COPYING
 %{_libdir}/%{name}/libsss_krb5.so
-%{_mandir}/man5/sssd-krb5.5*
+%{_mandir}/man5/%{name}-krb5.5*
 
 %files common-pac
 %defattr(-,root,root,-)
@@ -1034,10 +1060,12 @@ fi
 %defattr(-,root,root,-)
 %doc COPYING
 %{_libexecdir}/%{name}/sssd_ifp
-%{_mandir}/man5/sssd-ifp.5*
+%{_mandir}/man5/%{name}-ifp.5*
 %{_sysconfdir}/dbus-1/system.d/org.freedesktop.sssd.infopipe.conf
 %{_datadir}/dbus-1/system-services/org.freedesktop.sssd.infopipe.service
-%{_libdir}/%{name}/libsss_config.so
+%if (0%{?use_systemd} == 1)
+%{_unitdir}/sssd-ifp.service
+%endif
 
 %files -n libsss_simpleifp
 %defattr(-,root,root,-)
@@ -1056,14 +1084,14 @@ fi
 %doc src/sss_client/COPYING src/sss_client/COPYING.LESSER
 /%{_lib}/libnss_sss.so.2
 /%{_lib}/security/pam_sss.so
-%{_libdir}/krb5/plugins/libkrb5/sssd_krb5_locator_plugin.so
-%{_libdir}/krb5/plugins/authdata/sssd_pac_plugin.so
+%{_libdir}/krb5/plugins/libkrb5/%{name}_krb5_locator_plugin.so
+%{_libdir}/krb5/plugins/authdata/%{name}_pac_plugin.so
 %if (0%{?with_cifs_utils_plugin} == 1)
 %{_libdir}/cifs-utils/cifs_idmap_sss.so
 %ghost %{_sysconfdir}/cifs-utils/idmap-plugin
 %endif
 %if (0%{?with_krb5_localauth_plugin} == 1)
-%{_libdir}/%{name}/modules/sssd_krb5_localauth_plugin.so
+%{_libdir}/%{name}/modules/%{name}_krb5_localauth_plugin.so
 %endif
 %{_mandir}/man8/pam_sss.8*
 %{_mandir}/man8/sssd_krb5_locator_plugin.8*
@@ -1204,131 +1232,17 @@ fi
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.15.2-0
+- Updated to latest stable release
+
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.14.2-0
-- Several more regressions caused by cache refactoring to use qualified names
-  internally were fixed, including a regression that prevented the krb5_map_user
-  option from working correctly.
-- A regression when logging in with a smart card using the GDM login manager
-  was fixed
-- SSSD now removes the internal timestamp on startup cache when the persistent
-  cache is removed. This enables admins to follow their existing workflow of
-  just removing the persistent cache and start from a fresh slate
-- Several fixes to the sssd-secrets responder are present in this release
-- A bug in the autofs responder that prevented automounter maps from being
-  returned when sssd_be was offline was fixed
-- A similar bug in the NSS responder that prevented netgroups from being
-  returned when sssd_be was offline was fixed
-- Disabling the netlink integration can now be done with a new option
-  disable_netlink. Previously, the netlink integration could be disabled
-  with a sssd command line switch, which is being deprecated in this release.
-- The internal watchdog no longer kills sssd processes in case time shifts
-  during sssd runtime
-- The fail over code is able to cope with concurrent SRV resolution requests
-  better in this release
-- The proxy provider gained a new option proxy_max_children that allows
-  the administrator to control the maximum number of child helper processes
-  that authenticate users with auth_provider=proxy
-- The InfoPipe D-Bus responder exports the UUIDs of user and group objects
-  through a uniqueID property
-- The private pipe directory permissions were changed from 0700 to 0750.
-  The restrictive permissions we causing SELinux dac_override denials
-- The Python packages for python2 were renamed from python-package to
-  python2-package with backwards-compatible Provides and Obsoletes
-- The sssd-common subpackage contains a new manual page sssd-secrets(5)
-- The sssd-tools subpackage explicitly Requires /sbin/service on platforms
-  that don't support systemd in order to be able to restart sssd from
-  the sssctl tool
-- The kill_service option that was no longer useful after we moved from
-  in-process pings to watchdog was removed
-- The --disable-netlink sssd(8) command-line option was removed in favor
-  of [sssd] section option disable_netlink
-- The proxy_max_children option was added. Please see the highlights
-  section for more details.
-- The sssd-secrets responder gained a man page in this release.
-- Two new options containers_nest_level and max_secrets options
-  were added to the sssd-secrets responder. The former allows the
-  administrator to configure the maximum nesting level of secrets
-  containers, the latter allows the administrator to configure the
-  maximum number of secrets that can be stored. Please note that both
-  option apply to the local secrets provider only.
-- The sssd-ldap man page didn't specify different default for user and
-  group name LDAP attribute default for the AD provider. This documentation
-  bug was fixed.
+- Updated to latest stable release
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
-- The IPA provider now supports logins with enterprise principals (also known
-  as additional UPN suffixes). This functionality also enabled Active Directory
-  users from trusted AD domains who use an additional UPN suffix to log in.
-  Please note that this feature requires a recent IPA server.
-- When a user name is overriden in an IPA domain, resolving a group these users
-  are a member of now returns the overriden user names
-- Users can be looked up by and log in with their e-mail address as
-  an identifier. In order to do so, an attribute that represents the user's
-  e-mail address is fetched by default. This attribute can by customized by
-  setting the ldap_user_email configuration option.
-- A new ad_enabled_domains option was added. This option lets the administrator
-  select domains that SSSD should attempt to reach in the AD forest SSSD is
-  joined to. This option is useful for deployments where not all domains are
-  reachable on the network level, yet the administrator needs to access some
-  trusted domains and therefore disabling the subdomains provider completely
-  is not desirable.
-- The sssctl tool has two new commands active-server and servers that allow
-  the administrator to observe the server that SSSD is bound to and the
-  servers that SSSD autodiscovered
-- SSSD used to fail to start when an attribute name is present in both the
-  default SSSD attribute map and the custom ldap_user_extra_attrs map
-- GPO policy procesing no longer fails if the gPCMachineExtensionNames attribute
-  only contains whitespaces
-- Several commits fix regressions related to switching all user and group names
-  to fully qualified format, such as running initgroups for a user who is only
-  a member of a primary group
-- Several patches fix regressions caused by splitting the database into two ldb
-  files, such as when user attributes change without increasing the
-  modifyTimestamp attribute value
-- systemd unit files are now shipped for the sssd-secrets responder, allowing
-  the responder to be socket-activated. To do so, administrators should enable
-  the sssd-secrets.socket and sssd-secrets.service systemd units.
-- The sssd binary has a new switch --disable-netlink that lets sssd skip
-  messages from the kernel's netlink interface.
-- A crash when entries with special characters such as '(' were requested was
-  fixed
-- The ldap_rfc_2307_fallback_to_local_users option was broken in the previous
-  version. This release fixes the functionality.
+- Updated to latest stable release
 
 * Sun Jun 19 2016 Anton Novojilov <andy@essentialkaos.com> - 1.13.4-0
-- The IPA sudo provider was reimplemented. The new version reads the data 
-  from IPA's LDAP tree (as opposed to the compat tree populated by the 
-  slapi-nis plugin that was used previously). The benefit is that deployments 
-  which don't require the compat tree for other purposes, such as support for 
-  non-SSSD clients can disable those autogenerated LDAP trees to conserve 
-  resources that slapi-nis otherwise requires. There should be no visible 
-  changes to the end user.
-- SSSD now has the ability to renew the machine credentials (keytabs) when 
-  the ad provider is used. Please note that a recent version of the adcli 
-  (0.8 or newer) package is required for this feature to work.
-- The automatic ID mapping feature was improved so that the administrator is 
-  no longer required to manually set the range size in case a RID in the AD 
-  domain is larger than the default range size
-- A potential infinite loop in the NFS ID mapping plugin that was resulting 
-  in an excessive memory usage was fixed
-- Clients that are pinned to a particular AD site using the ad_site option 
-  no longer communicate with DCs outside that site during service discovery.
-- The IPA identity provider is now able to resolve external (typically coming 
-  from a trusted AD forest) group members during get-group-information 
-  requests. Please note that resolving external group memberships for AD users 
-  during the initgroup requests used to work even prior to this update. This 
-  feature is mostly useful for cases where an IPA client is using the compat 
-  tree to resolve AD trust users.
-- The IPA ID views feature now works correctly even for deployments without 
-  a trust relationship. Previously, the subdomains IPA provider failed to 
-  read the views data if no master domain record was created on the IPA 
-  server during trust establishment.
-- A race condition in the client libraries between the SSSD closing the 
-  socket as idle and the client application using the socket was fixed. This 
-  bug manifested with a Broken Pipe error message on the client.
-- SSSD is now able to resolve users with the same usernames in different 
-  OUs of an AD domain
-- The smartcard authentication now works properly with gnome-screensaver
+- Updated to latest stable release
 
 * Tue Mar 22 2016 Gleb Goncharov <yum@gongled.ru> - 1.13.3-1
 - Initial build 

@@ -1,7 +1,7 @@
 ###############################################################################
 
-%define main_version 2.7
-%define patch        5
+%define main_version 2.8
+%define patch        2
 
 ###############################################################################
 
@@ -13,12 +13,13 @@ License:         GPLv3+
 Group:           Applications/Editors
 URL:             http://www.nano-editor.org
 
-Source0:         https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
-Source1:         nanorc
+Source:          https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+
+Patch0:          %{name}-nanorc.patch
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc make automake gettext-devel groff ncurses-devel sed
+BuildRequires:   gcc make automake groff ncurses-devel sed
 
 Requires(post):  /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -35,7 +36,7 @@ GNU nano is a small and friendly text editor.
 %prep
 %setup -q
 
-autoreconf -fiv
+%patch0 -p1
 
 %build
 %configure
@@ -46,24 +47,8 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-cp %{SOURCE1} nanorc
-
 install -dm 0755 %{buildroot}%{_sysconfdir}
-
-# Improve default config
-sed -e 's/^# set nowrap/set nowrap/' \
-    -e 's/^#.*set speller.*$/set speller "hunspell"/' \
-    -e 's/^# set linenumbers/set linenumbers/' \
-    -e 's/^# set smooth/set smooth/' \
-    -e 's/^# set softwrap/set softwrap/' \
-    -e 's/^# set tabsize 8/set tabsize 2/' \
-    -e 's/^# set titlecolor/set titlecolor/' \
-    -e 's/^# set statuscolor/set statuscolor/' \
-    -e 's/^# set numbercolor cyan/set numbercolor brightblack/' \
-    -e 's/^# include "/include "/' \
-    doc/sample.nanorc >> %{buildroot}%{_sysconfdir}/nanorc
-
-chmod 644 %{buildroot}%{_sysconfdir}/nanorc
+install -pm 0644 doc/sample.nanorc %{buildroot}%{_sysconfdir}/nanorc
 
 rm -f %{buildroot}%{_infodir}/dir
 
@@ -103,6 +88,9 @@ fi
 ###############################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.8.2-0
+- Updated to latest stable release
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7.5-0
 - Updated to latest stable release
 

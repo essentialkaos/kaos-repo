@@ -1,0 +1,10 @@
+--- Makefile	2017-05-10 06:35:25.449859061 -0400
++++ Makefile	2017-05-10 06:35:58.081650034 -0400
+@@ -18,7 +18,7 @@
+ EXTRA_CLEAN	= $(name).1 $(name).html pod2htm?.tmp
+
+ # get postgresql extension infrastructure
+-PG_CONFIG	= pg_config
++PG_CONFIG	?= pg_config
+ PGXS	:= $(shell $(PG_CONFIG) --pgxs)
+ include $(PGXS)

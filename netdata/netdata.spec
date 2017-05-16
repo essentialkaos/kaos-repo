@@ -1,5 +1,9 @@
 ################################################################################
 
+%global _python_bytecompile_errors_terminate_build 0
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -39,6 +43,7 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
+%define __sysctl          %{_bindir}/systemctl
 
 ################################################################################
 
@@ -49,31 +54,34 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.4.0
+Version:          1.6.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
 URL:              http://netdata.firehol.org
 
-Source0:          http://firehol.org/download/%{name}/releases/v%{version}/%{name}-%{version}.tar.gz
+Source0:          https://github.com/firehol/netdata/releases/download/v%{version}/%{name}-%{version}.tar.bz2
 Source1:          %{name}.sysconfig
 Source2:          %{name}.init
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:    libmnl-devel zlib-devel libuuid-devel
-BuildRequires:    make gcc autoconf automake xz
+BuildRequires:    make gcc autoconf automake xz PyYAML
+
+Requires:         kaosv >= 2.10 libmnl zlib curl jq pkgconfig lm_sensors PyYAML
 
 %if 0%{?rhel} >= 7
-BuildRequires:    libnetfilter_acct-devel systemd
-%endif
-
-Requires:         kaosv >= 2.8 libmnl zlib curl jq pkgconfig
-
-%if 0%{?rhel} >= 7
+BuildRequires:    systemd
 Requires(post):   systemd
 Requires(preun):  systemd
 Requires(postun): systemd
+%else
+Requires(pre):      shadow-utils
+Requires(post):     chkconfig
+Requires(preun):    chkconfig
+Requires(preun):    initscripts
+Requires(postun):   initscripts
 %endif
 
 ################################################################################
@@ -127,25 +135,30 @@ getent group %{service_group} >/dev/null || groupadd -r %{service_group}
 getent passwd %{service_user} >/dev/null || useradd -r -M -g %{service_group} -s /sbin/nologin %{service_user}
 exit 0
 
-%if 0%{?rhel} >= 7
-%post
-%systemd_post %{name}.service
-
-%preun
-%systemd_preun %{name}.service
-
-%postun
-%systemd_postun_with_restart %{name}.service
-%else
 %post
 if [[ $1 -eq 1 ]] ; then
-  %{__chkconfig} --add %{name}
+%if 0%{?rhel} >= 7
+  %{__sysctl} enable %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
+%endif
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{name} stop > /dev/null 2>&1
-  %{__chkconfig} --del %{name}
+%if 0%{?rhel} >= 7
+  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{name}.service &>/dev/null || :
+%else
+  %{__service} %{name} stop &>/dev/null || :
+  %{__chkconfig} --del %{name} &>/dev/null || :
+%endif
+fi
+
+%postun
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
 fi
 %endif
 
@@ -172,6 +185,28 @@ fi
 ################################################################################
 
 %changelog
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
+- dashboard is now faster on firefox, safari, opera, edge (edge is still
+  the slowest)
+- dashboard charts legends now have bigger fonts
+- SHIFT + mousewheel to zoom charts, works on all browsers
+- perfect-scrollbar on the dashboard
+- dashboard 4K resolution fixes
+- dashboard compatibility fixes for embedding charts in third party web sites
+- charts on custom dashboards can have common min/max even if they come from
+  different netdata servers
+- alarm log is now saved and loaded back so that the alarm history is available
+  at the dashboard
+- python.d.plugin has received way to many improvements from many contributors!
+- charts.d.plugin can now be forked to support multiple independent instances
+- registry has been re-factored to lower its memory requirements (required for
+  the public registry)
+- simple patterns in cgroups, disks and alarms
+- netdata-installer.sh can now correctly install netdata in containers
+- supplied logrotate script compatibility fixes
+- spec cleanup @breed808
+- clocks and timers reworked @rlefevre
+
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
 - the fastest netdata ever (with a better look too)
 - improved IoT and containers support

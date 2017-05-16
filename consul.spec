@@ -6,7 +6,7 @@
 
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
-Version:         0.7.5
+Version:         0.8.3
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -16,7 +16,7 @@ Source0:         https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.7
+BuildRequires:   golang >= 1.8
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -41,12 +41,15 @@ export XC_OS=$(go env GOOS)
 export XC_ARCH=$(go env GOARCH)
 export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
+export GIT_IMPORT="github.com/hashicorp/consul/version"
+export GOLDFLAGS="-X $GIT_IMPORT.GitDescribe=%{version}"
 
 pushd src/github.com/hashicorp/%{name}
-  # This is hack for installing dependencies. Build failed on getting
-  # git revision. 
-  %{__make} %{?_smp_mflags} || :
-  $GOPATH/bin/gox -osarch="${XC_OS}/${XC_ARCH}" -output "$GOPATH/%{name}" .
+  %{__make} tools || :
+  $GOPATH/bin/gox -osarch="${XC_OS}/${XC_ARCH}" \
+                  -ldflags "${GOLDFLAGS}" \
+                  -tags="consul" \
+                  -output "$GOPATH/%{name}" .
 popd
 
 %install
@@ -67,6 +70,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.8.1-0
+- Updated to latest stable release
+
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.5-0
 - Updated to latest stable release
 

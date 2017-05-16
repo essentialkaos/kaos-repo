@@ -49,20 +49,17 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-%define base_version      2.2
-%define patch             3
-
 ###############################################################################
 
 Summary:         Advanced System and Process Monitor
 Name:            atop
-Version:         %{base_version}.%{patch}
+Version:         2.3.0
 Release:         0%{?dist}
 License:         GPL
 Group:           Development/System
 URL:             http://www.atoptool.nl
 
-Source0:         http://www.atoptool.nl/download/atop-%{base_version}-%{patch}.tar.gz
+Source0:         https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -96,7 +93,7 @@ as reports.
 ###############################################################################
 
 %prep
-%setup -qn %{name}-%{base_version}-%{patch}
+%setup -qn %{name}-%{version}
 
 %build
 %{__make} %{?_smp_mflags}
@@ -225,5 +222,8 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 ###############################################################################
 
 %changelog
+* Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- Updated to latest stable release
+
 * Fri Jan 20 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.3-0
 - Initial build for kaos repository

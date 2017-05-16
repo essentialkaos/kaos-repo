@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.2.4
+Version:              3.2.6
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -501,9 +501,9 @@ install -pDm 755 %{SOURCE12} %{buildroot}%{_sysconfdir}/init.d/zabbix-proxy
 
 # install systemd-tmpfiles conf
 %if 0%{?rhel} >= 7
-install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir}/tmpfiles.d/zabbix-agent.conf
-install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir}/tmpfiles.d/zabbix-server.conf
-install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-agent.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-server.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %endif
 
 # copy sql files for servers
@@ -811,7 +811,7 @@ fi
 %{_mandir}/man8/zabbix_agentd.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-agent.service
-%{_libdir}/tmpfiles.d/zabbix-agent.conf
+%{_libdir32}/tmpfiles.d/zabbix-agent.conf
 %else
 %{_sysconfdir}/init.d/zabbix-agent
 %endif
@@ -848,7 +848,7 @@ fi
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
-%{_libdir}/tmpfiles.d/zabbix-server.conf
+%{_libdir32}/tmpfiles.d/zabbix-server.conf
 %else
 %{_sysconfdir}/init.d/zabbix-server
 %endif
@@ -870,7 +870,7 @@ fi
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
-%{_libdir}/tmpfiles.d/zabbix-server.conf
+%{_libdir32}/tmpfiles.d/zabbix-server.conf
 %else
 %{_sysconfdir}/init.d/zabbix-server
 %endif
@@ -891,7 +891,7 @@ fi
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
-%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %else
 %{_sysconfdir}/init.d/zabbix-proxy
 %endif
@@ -912,7 +912,7 @@ fi
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
-%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %else
 %{_sysconfdir}/init.d/zabbix-proxy
 %endif
@@ -933,7 +933,7 @@ fi
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
-%{_libdir}/tmpfiles.d/zabbix-proxy.conf
+%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 %else
 %{_sysconfdir}/init.d/zabbix-proxy
 %endif
@@ -963,6 +963,22 @@ fi
 ################################################################################
 
 %changelog
+* Thu May 11 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
+- fixed translation string and validation of TLS settings in host.create(),
+  host.update() and host.massUpdate() methods; added variables to hosts array
+  required by CHost::validateUpdate() method
+- fixed problem generation by timer process
+- fixed missing operator in event correlation form
+- fixed collision of cookies name responsible for storing selected checkboxes
+- fixed undefined index 'ns' in options output array
+- fixed pagination in Maintenance page
+- fixed limit option in event.get method
+- fixed new line handling in SSH agent with numeric type of information
+- fixed wrongly displayed list view after mass update failure
+
+* Fri Apr 28 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.2.4-1
+- Fixed path to tmpfiles configuration files
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - improved bulk inserts for Oracle database backend
 - optimized trigger expression batch processing to avoid recalculation of 
