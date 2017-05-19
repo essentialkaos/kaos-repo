@@ -3,7 +3,7 @@
 Summary:              Enables SQLite to support spatial data
 Name:                 libspatialite
 Version:              4.3.0a
-Release:              1%{?dist}
+Release:              2%{?dist}
 License:              MPLv1.1 or GPLv2+ or LGPLv2+
 Group:                System Environment/Libraries
 URL:                  https://www.gaia-gis.it/fossil/libspatialite
@@ -14,8 +14,10 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        make gcc
 
-BuildRequires:        freexl-devel geos-devel proj-devel sqlite-devel
+BuildRequires:        freexl-devel geos-devel proj-devel sqlite-devel >= 3.18
 BuildRequires:        zlib-devel libxml2-devel
+
+Requires:             sqlite >= 3.18
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -91,5 +93,5 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 4.3.0a-0
+* Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 4.3.0a-2
 - Initial build for kaos repository
