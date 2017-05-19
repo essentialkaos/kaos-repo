@@ -55,7 +55,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.3
 Name:              %{realname}2_%{pg_maj_ver}
 Version:           2.3.2
-Release:           2%{?dist}
+Release:           3%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -69,17 +69,19 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
-BuildRequires:     geos-devel >= 3.5 chrpath make gcc pcre-devel hdf5-devel
+BuildRequires:     geos-devel >= 3.6 chrpath make gcc pcre-devel hdf5-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
 
 %if %raster
 BuildRequires:     gdal-devel >= 1.8.0
 %endif
 
-Requires:          postgresql%{pg_maj_ver} geos >= 3.5 proj hdf5 json-c
+Requires:          postgresql%{pg_maj_ver} geos >= 3.6 proj hdf5 json-c
 Requires:          %{realname}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
+
+Conflicts:         %{realname}%{pg_maj_ver}
 
 Provides:          %{realname} = %{version}-%{release}
 
@@ -263,7 +265,7 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
-* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-3
 - Updated to latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0

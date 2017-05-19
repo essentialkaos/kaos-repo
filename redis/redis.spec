@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.8
+Version:            3.2.9
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -244,6 +244,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu May 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.9-0
+- This release just fixes bugs that are unlikely to cause serious problems
+
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.8-0
 - Apparently Jemalloc 4.4.0 may contain a deadlock under particular
   conditions. We reverted back to the previously used Jemalloc

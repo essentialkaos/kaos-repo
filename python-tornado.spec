@@ -52,7 +52,7 @@
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
 Version:            4.5.1
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
 URL:                http://www.tornadoweb.org
@@ -62,10 +62,10 @@ Source0:            https://github.com/tornadoweb/%{pkgname}/archive/v%{version}
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      python-devel python-setuptools python-unittest2
-BuildRequires:      python-backports-ssl_match_hostname gcc
+BuildRequires:      python-backports-ssl_match_hostname gcc python >= 2.7
 
 Requires:           python-backports-ssl_match_hostname 
-Requires:           python-pycurl python-certifi
+Requires:           python-pycurl python-certifi python >= 2.7
 
 Provides:           %{name} = %{version}-%{release}
 

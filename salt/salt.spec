@@ -59,7 +59,7 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2016.11.4
+Version:          2016.11.5
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -76,7 +76,7 @@ Source7:          %{name}-syndic.service
 Source8:          %{name}-minion.service
 Source9:          %{name}-api.service
 Source10:         README.fedora
-Source11:         %{name}-common.logrotate
+Source11:         %{name}.logrotate
 Source12:         salt.bash
 
 Patch0:           %{name}-%{version}-config.patch
@@ -92,9 +92,9 @@ Requires:         pciutils which yum-utils
 
 %if 0%{?with_python26}
 
-BuildRequires:    python26-devel python26-tornado >= 4.2.1 python26-six
+BuildRequires:    python26-devel python26-tornado <= 4.4.2 python26-six
 Requires:         python26-crypto >= 2.6.1 python26-jinja2 python26-msgpack > 0.3
-Requires:         python26-PyYAML python26-requests >= 1.0.0 python26-tornado >= 4.2.1
+Requires:         python26-PyYAML python26-requests >= 1.0.0 python26-tornado <= 4.4.2
 Requires:         python26-zmq python26-six python26-backports_abc
 Requires:         python26-singledispatch
 
@@ -112,11 +112,11 @@ Requires:         kaosv >= 2.12.0
 
 %endif
 
-BuildRequires:    python-devel python-tornado >= 4.2.1 python-futures >= 2.0
+BuildRequires:    python-devel python-tornado <= 4.4.2 python-futures >= 2.0
 
 Requires:         python-crypto >= 2.6.1 python-jinja2 python-msgpack > 0.3
 Requires:         PyYAML python-requests >= 1.0.0 python-zmq python-markupsafe
-Requires:         python-tornado >= 4.2.1 python-futures >= 2.0 python-six
+Requires:         python-tornado <= 4.4.2 python-futures >= 2.0 python-six
 Requires:         python-backports_abc python-singledispatch
 
 %endif
@@ -475,6 +475,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri May 19 2017 Anton Novojilov <andy@essentialkaos.com> - 2016.11.5-0
+- Updated to 2016.11.5
+- Fixed logrotate config
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2016.11.4-0
 - Updated to 2016.11.4
 
