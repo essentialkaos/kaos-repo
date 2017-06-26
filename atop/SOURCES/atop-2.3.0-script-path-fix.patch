@@ -1,6 +1,6 @@
 diff -urN atop-2.3.0-orig/atop.init atop-2.3.0/atop.init
---- atop-2.3.0-orig/atop.init	2017-06-11 00:31:24.462789639 +0200
-+++ atop-2.3.0/atop.init	2017-06-11 00:34:36.000000000 +0200
+--- atop-2.3.0-orig/atop.init	2017-03-25 13:00:03.000000000 +0400
++++ atop-2.3.0/atop.init	2017-06-26 19:05:02.000000000 +0400
 @@ -31,7 +31,7 @@
  		:
  	else
@@ -12,15 +12,29 @@ diff -urN atop-2.3.0-orig/atop.init atop-2.3.0/atop.init
  	;;
 @@ -66,11 +66,11 @@
  	;;
- 
+
    reload)
 -	/usr/share/atop/atop.daily&
 +	/etc/atop/atop.daily&
  	;;
- 
+
    restart)
 -	/usr/share/atop/atop.daily&
 +	/etc/atop/atop.daily&
  	;;
- 
+
    *)
+diff -urN atop-2.3.0-orig/atop.service atop-2.3.0/atop.service
+--- atop-2.3.0-orig/atop.service	2017-03-25 13:00:03.000000000 +0400
++++ atop-2.3.0/atop.service	2017-06-26 19:04:40.000000000 +0400
+@@ -4,9 +4,8 @@
+
+ [Service]
+ Type=simple
+-ExecStart=/usr/share/atop/atop.daily
++ExecStart=/etc/atop/atop.daily
+ KillSignal=SIGUSR2
+-#ExecStopPost=/usr/bin/sleep 3
+
+ [Install]
+ WantedBy=multi-user.target
