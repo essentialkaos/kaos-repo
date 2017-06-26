@@ -99,7 +99,7 @@ Requires:          %{name}-xmerl = %{version}
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{ver_maj}.%{ver_min}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang18
+Conflicts:         erlang erlangR15 erlangR16 erlang18 erlang19
 
 ###############################################################################
 
