@@ -226,6 +226,9 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 ###############################################################################
 
 %changelog
+* Mon Jun 26 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.3.0-2
+- Added patch with script path fix for systemd
+
 * Sun Jun 11 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-1
 - Added patch with script path fix
 
