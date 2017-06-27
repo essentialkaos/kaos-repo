@@ -54,7 +54,7 @@
 Summary:         Advanced System and Process Monitor
 Name:            atop
 Version:         2.3.0
-Release:         1%{?dist}
+Release:         2%{?dist}
 License:         GPL
 Group:           Development/System
 URL:             http://www.atoptool.nl
@@ -227,7 +227,7 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 
 %changelog
 * Mon Jun 26 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.3.0-2
-- Added patch with script path fix for systemd
+- Added patch with script path fix for systemd unit
 
 * Sun Jun 11 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-1
 - Added patch with script path fix
