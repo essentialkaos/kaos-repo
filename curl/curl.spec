@@ -70,7 +70,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.54.0
+Version:              7.54.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -80,7 +80,6 @@ Source0:              http://curl.haxx.se/download/%{name}-%{version}.tar.bz2
 Source100:            curlbuild.h
 
 Patch101:             0101-%{name}-7.41.1-multilib.patch
-Patch102:             0102-%{name}-7.48.0-debug.patch
 Patch108:             0108-%{name}-7.40.0-threaded-dns-multi.patch
 Patch302:             0302-%{name}-7.47.1-pkgconfig.patch
 
@@ -193,7 +192,6 @@ documentation of the library, too.
 %setup -qn curl-%{version}
 
 %patch101 -p1
-%patch102 -p1
 
 %if 0%{?use_threads_posix} && 0%{?fedora} < 14 && 0%{?rhel} < 7
 %patch108
@@ -303,6 +301,124 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 7.54.1-0
+- curl: show the libcurl release date in --version output
+- CVE-2017-9502: default protocol drive letter buffer overflow
+- openssl: fix memory leak in servercert
+- tests: remove the html and PDF versions from the tarball
+- mbedtls: enable NTLM (& SMB) even if MD4 support is unavailable
+- typecheck-gcc: handle function pointers properly
+- llist: no longer uses malloc
+- gnutls: removed some code when --disable-verbose is configured
+- lib: fix maybe-uninitialized warnings
+- multi: clarify condition in curl_multi_wait
+- schannel: Don't treat encrypted partial record as pending data
+- configure: fix the -ldl check for openssl, add -lpthread check
+- configure: accept -Og and -Ofast GCC flags
+- Makefile: avoid use of GNU-specific form of $<
+- if2ip: fix -Wcast-align warning
+- configure: stop prepending to LDFLAGS, CPPFLAGS
+- curl: set a 100K buffer size by default
+- typecheck-gcc: fix _curl_is_slist_info
+- nss: do not leak PKCS #11 slot while loading a key
+- nss: load libnssckbi.so if no other trust is specified
+- examples: ftpuploadfrommem.c
+- url: declare get_protocol_family() static
+- examples/cookie_interface.c: changed to example.com
+- test1443: test --remote-time
+- curl: use utimes instead of obsolescent utime when available
+- url: fixed a memory leak on OOM while setting CURLOPT_BUFFERSIZE
+- curl_rtmp: fix missing-variable-declarations warnings
+- tests: fixed OOM handling of unit tests to abort test
+- curl_setup: Ensure no more than one IDN lib is enabled
+- tool: Fix missing prototype warnings for CURL_DOES_CONVERSIONS
+- CURLOPT_BUFFERSIZE: 1024 bytes is now the minimum size
+- curl: non-boolean command line args reject --no- prefixes
+- telnet: Write full buffer instead of byte-by-byte
+- typecheck-gcc: add missing string options
+- typecheck-gcc: add support for CURLINFO_SOCKET
+- opt man pages: they all have examples now
+- curl_setup_once: use SEND_QUAL_ARG2 for swrite
+- test557: set a known good numeric locale
+- schannel: return a more specific error code for SEC_E_UNTRUSTED_ROOT
+- tests/server: make string literals const
+- runtests: use -R for random order
+- unit1305: fix compiler warning
+- curl_slist_append.3: clarify a NULL input creates a new list
+- tests/server: run checksrc by default in debug-builds
+- tests: fix -Wcast-qual warnings
+- runtests.pl: simplify the datacheck read section
+- curl: remove --environment and tool_writeenv.c
+- buildconf: fix hang on IRIX
+- tftp: silence bad-function-cast warning
+- asyn-thread: fix unused macro warnings
+- tool_parsecfg: fix -Wcast-qual warning
+- sendrecv: fix MinGW-w64 warning
+- test537: use correct variable type
+- rand: treat fake entropy the same regardless of endianness
+- curl: generate the --help output
+- tests: removed redundant --trace-ascii arguments
+- multi: assign IDs to all timers and make each timer singleton
+- multi: use a fixed array of timers instead of malloc
+- mbedtls: Support server renegotiation request
+- pipeline: fix mistakenly trying to pipeline POSTs
+- lib510: don't write past the end of the buffer if it's too small
+- CURLOPT_HTTPPROXYTUNNEL.3: clarify, add example
+- SecureTransport/DarwinSSL: Implement public key pinning
+- curl.1: clarify --config
+- curl_sasl: fix build error with CURL_DISABLE_CRYPTO_AUTH + USE_NTLM
+- darwinssl: Fix exception when processing a client-side certificate
+- curl.1: mention --oauth2-bearer's argument
+- mkhelp.pl: do not add current time into curl binary
+- asiohiper.cpp / evhiperfifo.c: deal with negative timerfunction input
+- ssh: fix memory leak in disconnect due to timeout
+- tests: stabilize test 1034
+- cmake: auto detection of CURL_CA_BUNDLE/CURL_CA_PATH
+- assert: avoid, use DEBUGASSERT instead
+- LDAP: using ldap_bind_s on Windows with methods
+- redirect: store the "would redirect to" URL when max redirs is reached
+- winbuild: fix the nghttp2 build
+- examples: fix -Wimplicit-fallthrough warnings
+- time: fix type conversions and compiler warnings
+- mbedtls: fix variable shadow warning
+- test557: fix ubsan runtime error due to int left shift
+- transfer: init the infilesize from the postfields
+- docs: clarify NO_PROXY further
+- build-wolfssl: Sync config with wolfSSL 3.11
+- curl-compilers.m4: enable -Wshift-sign-overflow for clang
+- example/externalsocket.c: make it use CLOSESOCKETFUNCTION too
+- lib574.c: use correct callback proto
+- lib583: fix compiler warning
+- curl-compilers.m4: fix compiler_num for clang
+- typecheck-gcc.h: separate getinfo slist checks from other pointers
+- typecheck-gcc.h: check CURLINFO_TLS_SSL_PTR and CURLINFO_TLS_SESSION
+- typecheck-gcc.h: check CURLINFO_CERTINFO
+- build: provide easy code coverage measuring
+- test1537: dedicated tests of the URL (un)escape API calls
+- curl_endian: remove unused functions
+- test1538: verify the libcurl strerror API calls
+- MD(4|5): silence cast-align clang warning
+- dedotdot: fixed output for ".." and "." only input
+- cyassl: define build macros before including ssl.h
+- updatemanpages.pl: error out on too old git version
+- curl_sasl: fix unused-variable warning
+- x509asn1: fix implicit-fallthrough warning with GCC 7
+- libtest: fix implicit-fallthrough warnings with GCC 7
+- BINDINGS: add Ring binding
+- curl_ntlm_core: pass unsigned char to toupper
+- test1262: verify ftp download with -z for "if older than this"
+- test1521: test all curl_easy_setopt options
+- typecheck-gcc: allow CURLOPT_STDERR to be NULL too
+- metalink: remove unused printf() argument
+- file: make speedcheck use current time for checks
+- configure: fix link with librtmp when specifying path
+- examples/multi-uv.c: fix deprecated symbol
+- cmake: Fix inconsistency regarding mbed TLS include directory
+- setopt: check CURLOPT_ADDRESS_SCOPE option range
+- gitignore: ignore all vim swap files
+- urlglob: fix division by zero
+- libressl: OCSP and intermediate certs workaround no longer needed
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 7.54.0-0
 - Add CURL_SSLVERSION_MAX_* constants to CURLOPT_SSLVERSION
 - Add --max-tls

@@ -1,7 +1,7 @@
 ###############################################################################
 
 # rpmbuilder:gopack    github.com/coreos/etcd
-# rpmbuilder:tag       v3.1.7
+# rpmbuilder:tag       v3.2.2
 
 ###############################################################################
 
@@ -11,7 +11,7 @@
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.1.7
+Version:         3.2.2
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
@@ -87,6 +87,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
+- Updated to latest stable release
+
 * Mon May 15 2017 Anton Novojilov <andy@essentialkaos.com> - 3.1.7-0
 - Updated to latest stable release
 

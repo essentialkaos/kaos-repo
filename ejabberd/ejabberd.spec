@@ -52,7 +52,7 @@
 
 Summary:            Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:               ejabberd
-Version:            17.04
+Version:            17.07
 Release:            0%{?dist}
 Group:              Development/Tools
 License:            GPLv2
@@ -208,6 +208,9 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 17.07-0
+- Updated to latest stable release
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 17.04-0
 - Updated to latest stable release
 
