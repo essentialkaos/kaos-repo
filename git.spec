@@ -2,7 +2,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.13.0
+Version:          2.13.2
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -273,6 +273,124 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.13.2-0
+- The "collision detecting" SHA-1 implementation shipped with 2.13.1
+  was still broken on some platforms.  Update to the upstream code
+  again to take their fix.
+- "git checkout --recurse-submodules" did not quite work with a
+  submodule that itself has submodules.
+- Introduce the BUG() macro to improve die("BUG: ...").
+- The "run-command" API implementation has been made more robust
+  against dead-locking in a threaded environment.
+- A recent update to t5545-push-options.sh started skipping all the
+  tests in the script when a web server testing is disabled or
+  unavailable, not just the ones that require a web server.  Non HTTP
+  tests have been salvaged to always run in this script.
+- "git clean -d" used to clean directories that has ignored files,
+  even though the command should not lose ignored ones without "-x".
+  "git status --ignored"  did not list ignored and untracked files
+  without "-uall".  These have been corrected.
+- The timestamp of the index file is now taken after the file is
+  closed, to help Windows, on which a stale timestamp is reported by
+  fstat() on a file that is opened for writing and data was written
+  but not yet closed.
+- "git pull --rebase --autostash" didn't auto-stash when the local history
+  fast-forwards to the upstream.
+- "git describe --contains" penalized light-weight tags so much that
+  they were almost never considered.  Instead, give them about the
+  same chance to be considered as an annotated tag that is the same
+  age as the underlying commit would.
+- The result from "git diff" that compares two blobs, e.g. "git diff
+  $commit1:$path $commit2:$path", used to be shown with the full
+  object name as given on the command line, but it is more natural to
+  use the $path in the output and use it to look up .gitattributes.
+- A flaky test has been corrected.
+- Help contributors that visit us at GitHub.
+- "git stash push <pathspec>" did not work from a subdirectory at all.
+  Bugfix for a topic in v2.13
+
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.13.1-0
+- The Web interface to gmane news archive is long gone, even though
+  the articles are still accessible via NTTP.  Replace the links with
+  ones to public-inbox.org.  Because their message identification is
+  based on the actual message-id, it is likely that it will be easier
+  to migrate away from it if/when necessary.
+- Update tests to pass under GETTEXT_POISON (a mechanism to ensure
+  that output strings that should not be translated are not
+  translated by mistake), and tell TravisCI to run them.
+- Setting "log.decorate=false" in the configuration file did not take
+  effect in v2.13, which has been corrected.
+- An earlier update to test 7400 needed to be skipped on CYGWIN.
+- Git sometimes gives an advice in a rhetorical question that does
+  not require an answer, which can confuse new users and non native
+  speakers.  Attempt to rephrase them.
+- "git read-tree -m" (no tree-ish) gave a nonsense suggestion "use
+  --empty if you want to clear the index".  With "-m", such a request
+  will still fail anyway, as you'd need to name at least one tree-ish
+  to be merged.
+- The codepath in "git am" that is used when running "git rebase"
+  leaked memory held for the log message of the commits being rebased.
+- "pack-objects" can stream a slice of an existing packfile out when
+  the pack bitmap can tell that the reachable objects are all needed
+  in the output, without inspecting individual objects.  This
+  strategy however would not work well when "--local" and other
+  options are in use, and need to be disabled.
+- Clarify documentation for include.path and includeIf.<condition>.path
+  configuration variables.
+- Tag objects, which are not reachable from any ref, that point at
+  missing objects were mishandled by "git gc" and friends (they
+  should silently be ignored instead)
+- A few http:// links that are redirected to https:// in the
+  documentation have been updated to https:// links.
+- Make sure our tests would pass when the sources are checked out
+  with "platform native" line ending convention by default on
+  Windows.  Some "text" files out tests use and the test scripts
+  themselves that are meant to be run with /bin/sh, ought to be
+  checked out with eol=LF even on Windows.
+- Fix memory leaks pointed out by Coverity (and people).
+- The receive-pack program now makes sure that the push certificate
+  records the same set of push options used for pushing.
+- "git cherry-pick" and other uses of the sequencer machinery
+  mishandled a trailer block whose last line is an incomplete line.
+  This has been fixed so that an additional sign-off etc. are added
+  after completing the existing incomplete line.
+- The shell completion script (in contrib/) learned "git stash" has
+  a new "push" subcommand.
+- Travis CI gained a task to format the documentation with both
+  AsciiDoc and AsciiDoctor.
+- Update the C style recommendation for notes for translators, as
+  recent versions of gettext tools can work with our style of
+  multi-line comments.
+- "git clone --config var=val" is a way to populate the
+  per-repository configuration file of the new repository, but it did
+  not work well when val is an empty string.  This has been fixed.
+- A few codepaths in "checkout" and "am" working on an unborn branch
+  tried to access an uninitialized piece of memory.
+- "git for-each-ref --format=..." with (HEAD) in the format used to
+  resolve the HEAD symref as many times as it had processed refs,
+  which was wasteful, and "git branch" shared the same problem.
+- "git interpret-trailers", when used as GIT_EDITOR for "git commit
+  -v", looked for and appended to a trailer block at the very end,
+  i.e. at the end of the "diff" output.  The command has been
+  corrected to pay attention to the cut-mark line "commit -v" adds to
+  the buffer---the real trailer block should appear just before it.
+- A test allowed both "git push" and "git receive-pack" on the other
+  end write their traces into the same file.  This is OK on platforms
+  that allows atomically appending to a file opened with O_APPEND,
+  but on other platforms led to a mangled output, causing
+  intermittent test failures.  This has been fixed by disabling
+  traces from "receive-pack" in the test.
+- "foo\bar\baz" in "git fetch foo\bar\baz", even though there is no
+  slashes in it, cannot be a nickname for a remote on Windows, as
+  that is likely to be a pathname on a local filesystem.
+- The "collision detecting" SHA-1 implementation shipped with 2.13
+  was quite broken on some big-endian platforms and/or platforms that
+  do not like unaligned fetches.  Update to the upstream code which
+  has already fixed these issues.
+- "git am -h" triggered a BUG().
+- The interaction of "url.*.insteadOf" and custom URL scheme's
+  whitelisting is now documented better.
+
 * Wed May 10 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.13.0-0
 - Use of an empty string as a pathspec element that is used for
   'everything matches' is still warned and Git asks users to use a

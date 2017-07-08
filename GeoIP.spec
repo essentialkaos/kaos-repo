@@ -6,7 +6,7 @@
 
 Summary:         Library for country/city/organization to IP address or hostname mapping
 Name:            GeoIP
-Version:         1.6.10
+Version:         1.6.11
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         LGPLv2+
@@ -111,6 +111,10 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
+- Fix use of a NULL pointer when opening a corrupt database with
+  GeoIP_open.
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.10-0
 - GeoIP_database_info now returns the full version string rather than
   incorrectly truncating it
