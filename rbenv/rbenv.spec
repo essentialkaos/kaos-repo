@@ -36,8 +36,8 @@
 
 Summary:         Simple Ruby version management utility
 Name:            rbenv
-Version:         1.1.0
-Release:         1%{?dist}
+Version:         1.1.1
+Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
@@ -99,6 +99,10 @@ ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 ###############################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- Fix setting environment variable in fish shell
+- Rename OLD_RBENV_VERSION to RBENV_* convention
+
 * Thu Apr 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-1
 - Added patch with rbenv-init fix
 

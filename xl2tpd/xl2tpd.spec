@@ -38,7 +38,7 @@
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
-Version:           1.3.8
+Version:           1.3.9
 Release:           0%{?dist}
 License:           GPL+
 Group:             System Environment/Daemons
@@ -146,6 +146,18 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.9-0
+- Add xl2tpd-control man pages
+- Update spec file with newest Soure0 and version
+- Update License file
+- Display PID for call in the logs
+- Use left shift rather than pow() function.
+- Enable Travis integration
+- Remove unnecessary casting of malloc() results
+- Remove an unused line of code in init_config()
+- Fix some undefined behaviour in read_result()
+- Fix feature test macro deprecation warnings
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.8-0
 - Another one fix for control buf handling in udp_xmit
 - Fixing minor bug in Linux that was introduced by 90368

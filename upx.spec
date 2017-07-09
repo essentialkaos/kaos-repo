@@ -32,7 +32,7 @@
 
 Summary:           Ultimate Packer for eXecutables
 Name:              upx
-Version:           3.93
+Version:           3.94
 Release:           0%{?dist}
 License:           GPLv2+ and Public Domain
 Group:             Applications/Archiving
@@ -87,6 +87,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.94-0
+- Updated to latest stable release
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.93-0
 - Updated to latest stable release
 

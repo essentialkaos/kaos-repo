@@ -4,10 +4,6 @@
 
 ################################################################################
 
-%global pkgname futures
-
-################################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -41,15 +37,20 @@
 
 ################################################################################
 
+%global pkgname           futures
+%define pypi_subpath      cc/26/b61e3a4eb50653e8a7339d84eeaa46d1e93b92951978873c220ae64d0733
+
+################################################################################
+
 Summary:            Backport of the concurrent.futures package from Python 3.2
 Name:               python-%{pkgname}
-Version:            3.0.5
+Version:            3.1.1
 Release:            0%{?dist}
 License:            BSD
 Group:              Development/Libraries
 URL:                https://github.com/agronholm/pythonfutures
 
-Source0:            https://pypi.python.org/packages/source/f/%{pkgname}/%{pkgname}-%{version}.tar.gz
+Source0:            https://pypi.python.org/packages/%{pypi_subpath}/%{pkgname}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -90,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
+- Updated to latest stable release
+
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
 - Updated to latest version
 
