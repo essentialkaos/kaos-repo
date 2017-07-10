@@ -79,10 +79,12 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %files
+%defattr(-, root, root, -)
 %doc COPYING
 %{_libdir}/libopus.so.*
 
 %files devel
+%defattr(-, root, root, -)
 %doc README doc/html rfc6716.txt
 %{_includedir}/opus
 %{_libdir}/libopus.so
