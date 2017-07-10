@@ -53,7 +53,7 @@
 
 Summary:            Next generation logging application
 Name:               syslog-ng
-Version:            3.9.1
+Version:            3.10.1
 Release:            0%{?dist}
 License:            GPL
 Group:              System Environment/Daemons
@@ -182,11 +182,14 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.10.1-0
+- Updated to latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.9.1-0
-- Updated to latest version
+- Updated to latest stable release
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.1-0
-- Updated to latest version
+- Updated to latest stable release
 - Improved init script
 
 * Wed Apr 27 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.3-1
@@ -194,7 +197,7 @@ fi
 - Added support of running syslog-ng as non-root user.
 
 * Mon Apr 25 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.3-0
-- Updated to latest version
+- Updated to latest stable release
 - Fixed 'restart' handler in SysV init-script
 
 * Mon Mar 21 2016 Gleb Goncharov <yum@gongled.ru> - 3.7.2-0

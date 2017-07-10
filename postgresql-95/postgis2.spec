@@ -54,8 +54,8 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.5
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.3.2
-Release:           3%{?dist}
+Version:           2.3.3
+Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -265,6 +265,9 @@ rm -rf %{buildroot}
 ########################################################################################
 
 %changelog
+* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
+- Updated to latest stable release
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-3
 - Updated to latest stable release
 

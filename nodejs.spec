@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.10.3
+Version:            6.11.0
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,6 +116,25 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 
+- build: support for building mips64el
+- cluster: disconnect() now returns a reference to the disconnected worker
+- crypto: ability to select cert store at runtime
+- crypto: Use system CAs instead of using bundled ones
+- crypto: The Decipher methods setAuthTag() and setAAD now return this
+- crypto: adding support for OPENSSL_CONF again
+- crypto: make LazyTransform compabile with Streams1
+- deps: upgrade libuv to 1.11.0
+- deps: upgrade libuv to 1.10.2
+- deps: upgrade libuv to 1.10.1
+- deps: upgrade libuv to 1.10.0
+- dns: Implemented {ttl: true} for resolve4() and resolve6()
+- process: add NODE_NO_WARNINGS environment variable
+- readline: add option to stop duplicates in history
+- src: support "--" after "-e" as end-of-options
+- tls: new tls.TLSSocket() supports sec ctx options
+- tls: Allow obvious key/passphrase combinations
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 6.10.3-0
 - module: The module loading global fallback to the Node executable's directory
   now works correctly on Windows

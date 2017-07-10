@@ -51,7 +51,7 @@
 %define hp_datadir        %{_datadir}/%{name}
 
 %define lua_ver           5.3.4
-%define pcre_ver          8.40
+%define pcre_ver          8.41
 %define libre_ver         2.5.0
 %define ncurses_ver       6.0
 %define readline_ver      7.0
@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.7.5
+Version:           1.7.8
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -285,6 +285,65 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.8-0
+- BUG/MINOR: stream: flag TASK_WOKEN_RES not set if task in runqueue
+- BUG/MAJOR: cli: fix custom io_release was crushed by NULL.
+- BUG/MAJOR: map: fix segfault during 'show map/acl' on cli.
+- BUG/MAJOR: compression: Be sure to release the compression state in all cases
+- DOC: fix references to the section about time format.
+- BUG/MEDIUM: map/acl: fix unwanted flags inheritance.
+- BUG/MINOR: stream: Don't forget to remove CF_WAKE_ONCE flag on response channel
+- BUG/MINOR: http: Don't reset the transaction if there are still data to send
+- BUG/MEDIUM: filters: Be sure to call flt_end_analyze for both channels
+- BUG/MINOR: http: properly handle all 1xx informational responses
+
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.7-0
+- BUG/MINOR: Wrong peer task expiration handling during synchronization processing.
+- BUG/MEDIUM: http: Drop the connection establishment when a redirect is performed
+- BUG/MEDIUM: cfgparse: Check if tune.http.maxhdr is in the range 1..32767
+- DOC: fix references to the section about the unix socket
+- BUG/MINOR: haproxy/cli : fix for solaris/illumos distros for CMSG* macros
+- BUG/MINOR: log: pin the front connection when front ip/ports are logged
+
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.6-0
+- DOC: changed "block"(deprecated) examples to http-request deny
+- DOC: add few comments to examples.
+- DOC: update sample code for PROXY protocol
+- DOC: mention lighttpd 1.4.46 implements PROXY
+- DOC: stick-table is available in frontend sections
+- BUG/MINOR: dns: Wrong address family used when creating IPv6 sockets.
+- BUG/MINOR: config: missing goto out after parsing an incorrect ACL character
+- BUG/MINOR: arg: don't try to add an argument on failed memory allocation
+- BUG/MEDIUM: arg: ensure that we properly unlink unresolved arguments on error
+- BUG/MEDIUM: acl: don't free unresolved args in prune_acl_expr()
+- MINOR: lua: ensure the memory allocator is used all the time
+- CLEANUP: logs: typo: simgle => single
+- BUG/MEDIUM: acl: proprely release unused args in prune_acl_expr()
+- BUG/MAJOR: Use -fwrapv.
+- BUG/MINOR: server: don't use "proxy" when px is really meant.
+- BUG/MINOR: server: missing default server 'resolvers' setting duplication.
+- DOC: add layer 4 links/cross reference to "block" keyword.
+- DOC: errloc/errorloc302/errorloc303 missing status codes.
+- BUG/MEDIUM: lua: memory leak
+- MEDIUM: config: don't check config validity when there are fatal errors
+- BUG/MINOR: hash-balance-factor isn't effective in certain circumstances
+- MINOR/DOC: lua: just precise one thing
+- BUG/MINOR: http: Fix conditions to clean up a txn and to handle the next request
+- DOC: update RFC references
+- BUG/MINOR: checks: don't send proxy protocol with agent checks
+- BUG/MAJOR: dns: Broken kqueue events handling (BSD systems).
+- BUG/MEDIUM: lua: segfault if a converter or a sample doesn't return anything
+- BUG/MINOR: Makefile: fix compile error with USE_LUA=1 in ubuntu16.04
+- BUG/MAJOR: http: call manage_client_side_cookies() before erasing the buffer
+- BUG/MINOR: buffers: Fix bi/bo_contig_space to handle full buffers
+- BUG/MINOR: acls: Set the right refflag when patterns are loaded from a map
+- BUG/MINOR: http/filters: Be sure to wait if a filter loops in HTTP_MSG_ENDING
+- BUG/MEDIUM: peers: Peers CLOSE_WAIT issue.
+- BUG/MAJOR: server: Segfault after parsing server state file.
+- BUG/MEDIUM: unix: never unlink a unix socket from the file system
+- scripts: create-release pass -n to tail
+- SCRIPTS: create-release: enforce GIT_COMMITTER_{NAME|EMAIL} validity
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.5-0
 - BUG/MEDIUM: peers: fix buffer overflow control in intdecode.
 - BUG/MEDIUM: buffers: Fix how input/output data are injected into buffers

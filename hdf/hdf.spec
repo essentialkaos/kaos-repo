@@ -6,7 +6,7 @@
 
 Summary:            A general purpose library and file format for storing scientific data
 Name:               hdf
-Version:            4.2.12
+Version:            4.2.13
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
@@ -96,7 +96,8 @@ popd
 
 install -dm 755 %{buildroot}%{_defaultdocdir}/%{name}
 
-mv %{buildroot}%{_prefix}/examples %{buildroot}%{_defaultdocdir}/%{name}/
+mv %{buildroot}%{_datadir}/hdf4_examples \
+   %{buildroot}%{_defaultdocdir}/%{name}/examples
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
@@ -124,5 +125,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 4.2.13-0
+- Updated to latest stable release
+
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 4.2.12-0
 - Initial build for kaos repository

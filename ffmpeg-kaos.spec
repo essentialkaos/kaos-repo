@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.3
+Version:           3.3.2
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -46,7 +46,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc SDL-devel freetype-devel zlib-devel bzip2-devel
 BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
-BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel
+BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel opus-devel
 BuildRequires:     lame-devel libtheora-devel libvorbis-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel schroedinger-devel speex-devel
@@ -56,7 +56,7 @@ BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
 Requires:          opencore-amr librtmp orc libvpx x264
-Requires:          libxvidcore libva schroedinger
+Requires:          libxvidcore libva schroedinger opus
 
 Conflicts:         %{source_name}
 
@@ -150,6 +150,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 3.3.2-0
+- Updated to version 3.3.2
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 3.3-0
 - Updated to version 3.3
 

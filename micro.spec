@@ -1,7 +1,7 @@
 ###############################################################################
 
 # rpmbuilder:gopack    github.com/zyedidia/micro
-# rpmbuilder:tag       v1.1.4
+# rpmbuilder:tag       v1.2.0
 
 ###############################################################################
 
@@ -11,7 +11,7 @@
 
 Summary:         A modern and intuitive terminal-based text editor
 Name:            micro
-Version:         1.1.4
+Version:         1.2.0
 Release:         0%{?dist}
 Group:           Applications/Editors
 License:         MIT
@@ -85,5 +85,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Updated to latest stable release
+
 * Sat Jan 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.3-0
 - Initial build for kaos repository

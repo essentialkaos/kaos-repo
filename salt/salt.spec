@@ -60,7 +60,7 @@
 Summary:          A parallel remote execution system
 Name:             salt
 Version:          2016.11.5
-Release:          0%{?dist}
+Release:          1%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
@@ -106,18 +106,21 @@ BuildRequires:    python-pip python-zmq PyYAML python-requests python-unittest2
 BuildRequires:    python-mock git python-libcloud python-six
 
 %if ((0%{?rhel} == 6) && 0%{?include_tests})
-BuildRequires:    python-argparse
-Requires:         kaosv >= 2.12.0
+BuildRequires:    python-argparse python-tornado <= 4.4.2
+Requires:         kaosv >= 2.12.0 python-tornado <= 4.4.2
+%else
+BuildRequires:    python-tornado
+Requires:         python-tornado
 %endif
 
 %endif
 
-BuildRequires:    python-devel python-tornado <= 4.4.2 python-futures >= 2.0
+BuildRequires:    python-devel python-futures >= 2.0
 
 Requires:         python-crypto >= 2.6.1 python-jinja2 python-msgpack > 0.3
 Requires:         PyYAML python-requests >= 1.0.0 python-zmq python-markupsafe
-Requires:         python-tornado <= 4.4.2 python-futures >= 2.0 python-six
-Requires:         python-backports_abc python-singledispatch
+Requires:         python-futures >= 2.0 python-six python-backports_abc
+Requires:         python-singledispatch
 
 %endif
 
@@ -475,6 +478,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2016.11.5-1
+- Fixed compatibility with latest version of python-tornado
+
 * Fri May 19 2017 Anton Novojilov <andy@essentialkaos.com> - 2016.11.5-0
 - Updated to 2016.11.5
 - Fixed logrotate config

@@ -50,8 +50,8 @@
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
 
-%define lua_ver           5.3.3
-%define pcre_ver          8.40
+%define lua_ver           5.3.4
+%define pcre_ver          8.41
 %define libre_ver         2.5.0
 %define ncurses_ver       6.0
 %define readline_ver      7.0
@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.12
+Version:           1.6.13
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -285,6 +285,37 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-0
+- DOC: changed "block"(deprecated) examples to http-request deny
+- DOC: add few comments to examples.
+- DOC: update sample code for PROXY protocol
+- DOC: mention lighttpd 1.4.46 implements PROXY
+- DOC: stick-table is available in frontend sections
+- BUG/MINOR: dns: Wrong address family used when creating IPv6 sockets.
+- BUG/MINOR: config: missing goto out after parsing an incorrect ACL character
+- BUG/MINOR: arg: don't try to add an argument on failed memory allocation
+- BUG/MEDIUM: arg: ensure that we properly unlink unresolved arguments on error
+- BUG/MEDIUM: acl: don't free unresolved args in prune_acl_expr()
+- BUG/MEDIUM: acl: proprely release unused args in prune_acl_expr()
+- BUG/MAJOR: Use -fwrapv.
+- BUG/MINOR: server: don't use "proxy" when px is really meant.
+- BUG/MINOR: server: missing default server 'resolvers' setting duplication.
+- DOC: errloc/errorloc302/errorloc303 missing status codes.
+- BUG/MEDIUM: lua: memory leak
+- MEDIUM: config: don't check config validity when there are fatal errors
+- BUG/MINOR: http: Fix conditions to clean up a txn and to handle the next request
+- DOC: update RFC references
+- BUG/MINOR: checks: don't send proxy protocol with agent checks
+- BUG/MAJOR: dns: Broken kqueue events handling (BSD systems).
+- BUG/MEDIUM: lua: segfault if a converter or a sample doesn't return anything
+- BUG/MINOR: Makefile: fix compile error with USE_LUA=1 in ubuntu16.04
+- BUG/MAJOR: http: call manage_client_side_cookies() before erasing the buffer
+- BUG/MINOR: buffers: Fix bi/bo_contig_space to handle full buffers
+- BUG/MINOR: acls: Set the right refflag when patterns are loaded from a map
+- BUG/MEDIUM: peers: Peers CLOSE_WAIT issue.
+- BUG/MAJOR: server: Segfault after parsing server state file.
+- BUG/MEDIUM: unix: never unlink a unix socket from the file system
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.12-0
 - DOC: Add timings events schemas
 - BUG/MINOR: option prefer-last-server must be ignored in some case

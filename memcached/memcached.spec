@@ -45,8 +45,8 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.4.36
-Release:                  1%{?dist}
+Version:                  1.4.39
+Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
 URL:                      http://memcached.org
@@ -58,16 +58,22 @@ Source3:                  %{name}.service
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:            gcc automake libevent-devel
+BuildRequires:            gcc automake
 
-Requires:                 initscripts libevent kaosv >= 2.10
+Requires:                 initscripts kaosv >= 2.10
 
 %if 0%{?rhel} >= 7
+BuildRequires:            libevent-devel
+
+Requires:                 libevent
 Requires(pre):            shadow-utils
 Requires(post):           systemd
 Requires(preun):          systemd
 Requires(postun):         systemd
 %else
+BuildRequires:            libevent2-devel
+
+Requires:                 libevent2
 Requires(pre):            shadow-utils
 Requires(post):           %{__chkconfig}
 Requires(preun):          %{__chkconfig} %{__service}
@@ -211,6 +217,9 @@ fi
 ###############################################################################
 
 %changelog
+* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.39-0
+- Updated to latest release
+
 * Wed Apr 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.36-1
 - Improved init script
 

@@ -37,7 +37,7 @@
 
 Summary:              Tool for monitoring the progress of data through a pipeline
 Name:                 pv
-Version:              1.6.0
+Version:              1.6.6
 Release:              0%{?dist}
 License:              Artistic v2.0
 Group:                Applications/System
@@ -94,5 +94,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.6-0
+- Updated to latest stable release
+
 * Thu May 04 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.6.0-0
 - Initial build
