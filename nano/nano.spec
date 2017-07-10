@@ -1,10 +1,5 @@
 ###############################################################################
 
-%define main_version 2.8
-%define patch        4
-
-###############################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -36,6 +31,11 @@
 %define _loc_mandir       %{_loc_datarootdir}/man
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
+
+###############################################################################
+
+%define main_version 2.8
+%define patch        5
 
 ###############################################################################
 
@@ -131,6 +131,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.8.5-0
+- Updated to latest stable release
+
 * Wed Jun 14 2017 Anton Novojilov <andy@essentialkaos.com> - 2.8.4-0
 - Updated to latest stable release
 - Added config root with red status and title
