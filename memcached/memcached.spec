@@ -58,16 +58,22 @@ Source3:                  %{name}.service
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:            gcc automake libevent-devel
+BuildRequires:            gcc automake
 
-Requires:                 initscripts libevent kaosv >= 2.10
+Requires:                 initscripts kaosv >= 2.10
 
 %if 0%{?rhel} >= 7
+BuildRequires:            libevent-devel
+
+Requires:                 libevent
 Requires(pre):            shadow-utils
 Requires(post):           systemd
 Requires(preun):          systemd
 Requires(postun):         systemd
 %else
+BuildRequires:            libevent2-devel
+
+Requires:                 libevent2
 Requires(pre):            shadow-utils
 Requires(post):           %{__chkconfig}
 Requires(preun):          %{__chkconfig} %{__service}
