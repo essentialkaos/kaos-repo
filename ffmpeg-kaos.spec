@@ -56,7 +56,7 @@ BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
 Requires:          opencore-amr librtmp orc libvpx x264
-Requires:          libxvidcore libva schroedinger
+Requires:          libxvidcore libva schroedinger opus
 
 Conflicts:         %{source_name}
 
