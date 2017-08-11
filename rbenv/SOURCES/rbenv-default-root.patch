@@ -1,0 +1,12 @@
+diff -urN rbenv-1.1.1-orig/libexec/rbenv rbenv-1.1.1/libexec/rbenv
+--- rbenv-1.1.1-orig/libexec/rbenv	2017-08-07 12:34:46.006506992 +0200
++++ rbenv-1.1.1/libexec/rbenv	2017-08-07 12:36:09.000000000 +0200
+@@ -51,7 +51,7 @@
+ fi
+ 
+ if [ -z "${RBENV_ROOT}" ]; then
+-  RBENV_ROOT="${HOME}/.rbenv"
++  RBENV_ROOT="/usr/local/rbenv"
+ else
+   RBENV_ROOT="${RBENV_ROOT%/}"
+ fi

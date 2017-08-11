@@ -37,8 +37,8 @@
 ###############################################################################
 
 # Found X264_BUILD in (x264.h)
-%define pkg_build            150
-%define pkg_snapshot_date    20170709
+%define pkg_build            151
+%define pkg_snapshot_date    20170711
 %define pkg_snapshot_prefix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_prefix}
@@ -99,9 +99,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ###############################################################################
 
@@ -121,6 +123,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Jul 12 2017 Anton Novojilov <andy@essentialkaos.com> - 0.151_20170711-0
+- Update to latest stable snapshot
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.150_20170709-0
 - Update to latest stable snapshot
 
