@@ -61,7 +61,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.7.8
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -285,6 +285,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Aug 14 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.8-1
+- Added ExecReload handler to systemd unit
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.8-0
 - BUG/MINOR: stream: flag TASK_WOKEN_RES not set if task in runqueue
 - BUG/MAJOR: cli: fix custom io_release was crushed by NULL.
