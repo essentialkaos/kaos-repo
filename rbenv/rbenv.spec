@@ -36,7 +36,7 @@
 Summary:         Simple Ruby version management utility
 Name:            rbenv
 Version:         1.1.1
-Release:         1%{?dist}
+Release:         2%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
@@ -47,6 +47,7 @@ Source1:         %{name}.profile
 Patch0:          %{name}-init-fix.patch
 Patch1:          %{name}-default-root.patch
 Patch2:          %{name}-configure-sed.patch
+Patch3:          %{name}-hit-prefix-arrow.patch
 
 BuildRequires:   make gcc
 
@@ -69,6 +70,7 @@ tradition of single-purpose tools that do one thing well.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 
