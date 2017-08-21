@@ -120,7 +120,7 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.15.2
+Version:            1.15.3
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -1232,6 +1232,10 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Aug 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.15.3-0
+- Updated to latest stable release
+- Improved init script
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.15.2-0
 - Updated to latest stable release
 
