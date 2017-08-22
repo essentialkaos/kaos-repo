@@ -6,7 +6,7 @@ After=syslog.target network.target
 PIDFile=/var/run/haproxy.pid
 ExecStart=/etc/init.d/haproxy start
 ExecStop=/etc/init.d/haproxy stop
-ExecReload=/bin/kill -SIGUSR1 $MAINPID
+ExecReload=/etc/init.d/haproxy reload
 KillMode=mixed
 Restart=always
 
