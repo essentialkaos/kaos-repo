@@ -30,6 +30,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
+
 Version:            1.5.1
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
@@ -41,7 +42,7 @@ Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang >= 18 git 
+BuildRequires:      erlang >= 18 git
 
 Requires:           erlang >= 18
 
@@ -94,6 +95,9 @@ rm -rf %{buildroot}
 
 %changelog
 * Tue Aug 22 2017 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.5.1-0
+- Updated to latest version
+
+* Wed Aug 23 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
 - Updated to latest version
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
