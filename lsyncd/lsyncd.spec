@@ -46,7 +46,7 @@
 Summary:              File change monitoring and synchronization daemon
 Name:                 lsyncd
 Version:              2.2.2
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              GPLv2+
 Group:                Applications/Internet
 URL:                  https://github.com/axkibe/lsyncd
@@ -168,6 +168,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Aug 28 2017 Gleb Goncharov <inbox@gongled.ru> - 2.2.2-1
+- Fixed invalid path to binary in systemd unit file
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-0
 - Updated to latest stable release
 
