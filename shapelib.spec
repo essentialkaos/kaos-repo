@@ -73,15 +73,18 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %files
+%defattr(-,root,root,-)
 %doc README README.tree ChangeLog web/*.html COPYING
 %{_libdir}/libshp.so.2*
 
 %files devel
+%defattr(-,root,root,-)
 %{_includedir}/shapefil.h
 %{_libdir}/libshp.so
 %{_libdir}/pkgconfig/%{name}.pc
 
 %files tools
+%defattr(-,root,root,-)
 %doc contrib/doc/
 %{_bindir}/*
 
