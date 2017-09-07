@@ -1,5 +1,9 @@
 ###############################################################################
 
+# rpmbuilder:qa-rpaths 0x0001,0x0002
+
+###############################################################################
+
 Summary:         C library for handling ESRI Shapefiles
 Name:            shapelib
 Version:         1.4.0
@@ -52,15 +56,19 @@ This package contains various utility programs distributed with shapelib.
 %{__make} %{?_smp_mflags}
 
 %install
+rm -rf %{buildroot}
 %{make_install}
 
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
+%clean
+rm -rf %{buildroot}
+
 %post 
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun
-%{__ldconfig}
+/sbin/ldconfig
 
 ###############################################################################
 
