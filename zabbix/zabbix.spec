@@ -967,7 +967,29 @@ fi
 
 %changelog
 * Thu Sep 14 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.4.1-0
-- updated to 3.4.1
+- fixed display of previously opened dashboard
+- fixed displaying of graphs in the dashboard widgets;
+  fixed displaying of the right axis in the graph test form
+- updated Czech, English (United States), French, Italian, Japanese, Korean,
+  Portuguese (Brazil), Russian, Ukrainian translations;
+  thanks to Zabbix translators
+- fixed an unneeded data sharing to map widget on navigation tree refresh
+- fixed requeueing of items from unreachable poller to normal poller
+- fixed sbox selection zone in monitoring web graphs
+- fixed crash when syncing actions without operations
+- removed usage of SVG viewBox attribute in IE and disabled map scaling in screens
+- fixed wrong response and error message when invalid or unavailable dashboardid
+  has been requested
+- fixed overlay window displaying on different browsers and removed horizontal
+  scrollbar from widget configuration dialogue
+- fixed error when linking one template to another in template edit form
+- fixed extra new lines in Templates
+- fixed clock and map widget scaling on Safari
+- fixed crash when linking templates with web scenarios during auto registration
+- fixed XML import of web scenarios
+- fixed DB upgrade patch for map shapes on DB2
+- fixed multiple issues with dependent items
+- fixed macro name field length in host configuration form
 
 * Thu May 11 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
 - fixed translation string and validation of TLS settings in host.create(),
