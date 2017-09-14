@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.2.6
+Version:              3.4.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -76,10 +76,11 @@ Patch1:               fonts-config.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc mysql-devel postgresql95-devel net-snmp-devel
+BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
 BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
-BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
+BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0 libevent-devel
+BuildRequires:        pcre-devel
 
 %if 0%{?rhel} >= 7
 BuildRequires:        systemd
@@ -333,7 +334,7 @@ find frontends/php/locale -name '*.sh' -delete
 
 %build
 
-export PATH="/usr/pgsql-9.5/bin:$PATH"
+export PATH="/usr/pgsql-9.6/bin:$PATH"
 
 build_flags="
         --enable-dependency-tracking
@@ -341,27 +342,27 @@ build_flags="
         --libdir=%{_libdir}/%{name}
         --mandir=%{_mandir}
         --enable-agent
-        --enable-server
         --enable-proxy
         --enable-ipv6
         --with-net-snmp
         --with-ldap
         --with-libcurl
         --with-openipmi
-        --with-jabber
         --with-unixodbc
         --with-ssh2
         --with-libxml2
         --with-openssl
+        --with-libevent
+        --with-libpcre
 "
 
-%configure $build_flags --with-mysql
+%configure $build_flags --with-mysql --enable-server --with-jabber
 make %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_mysql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
 
-%configure $build_flags --with-postgresql
+%configure $build_flags --with-postgresql --enable-server --with-jabber
 make %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
@@ -465,6 +466,7 @@ cat conf/zabbix_server.conf | sed \
         -e 's|^DBUser=root|DBUser=zabbix|g' \
         -e '/^# DBSocket=/a \\nDBSocket=%{_localstatedir}/lib/mysql/mysql.sock' \
         -e '/^# SNMPTrapperFile=.*/a \\nSNMPTrapperFile=/var/log/snmptrap/snmptrap.log' \
+        -e '/^# SocketDir=.*/a \\nSocketDir=/var/run/zabbix' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_server.conf
 
 cat conf/zabbix_proxy.conf | sed \
@@ -475,6 +477,7 @@ cat conf/zabbix_proxy.conf | sed \
         -e 's|^DBUser=root|DBUser=zabbix|g' \
         -e '/^# DBSocket=/a \\nDBSocket=%{_localstatedir}/lib/mysql/mysql.sock' \
         -e '/^# SNMPTrapperFile=.*/a \\nSNMPTrapperFile=/var/log/snmptrap/snmptrap.log' \
+        -e '/^# SocketDir=.*/a \\nSocketDir=/var/run/zabbix' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_proxy.conf
 
 # install logrotate configuration files
@@ -963,6 +966,31 @@ fi
 ################################################################################
 
 %changelog
+* Thu Sep 14 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.4.1-0
+- fixed display of previously opened dashboard
+- fixed displaying of graphs in the dashboard widgets;
+  fixed displaying of the right axis in the graph test form
+- updated Czech, English (United States), French, Italian, Japanese, Korean,
+  Portuguese (Brazil), Russian, Ukrainian translations;
+  thanks to Zabbix translators
+- fixed an unneeded data sharing to map widget on navigation tree refresh
+- fixed requeueing of items from unreachable poller to normal poller
+- fixed sbox selection zone in monitoring web graphs
+- fixed crash when syncing actions without operations
+- removed usage of SVG viewBox attribute in IE and disabled map scaling in screens
+- fixed wrong response and error message when invalid or unavailable dashboardid
+  has been requested
+- fixed overlay window displaying on different browsers and removed horizontal
+  scrollbar from widget configuration dialogue
+- fixed error when linking one template to another in template edit form
+- fixed extra new lines in Templates
+- fixed clock and map widget scaling on Safari
+- fixed crash when linking templates with web scenarios during auto registration
+- fixed XML import of web scenarios
+- fixed DB upgrade patch for map shapes on DB2
+- fixed multiple issues with dependent items
+- fixed macro name field length in host configuration form
+
 * Thu May 11 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.6-0
 - fixed translation string and validation of TLS settings in host.create(),
   host.update() and host.massUpdate() methods; added variables to hosts array
