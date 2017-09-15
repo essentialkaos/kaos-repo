@@ -79,11 +79,13 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
 BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
-BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0 libevent-devel
+BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
 BuildRequires:        pcre-devel
 
 %if 0%{?rhel} >= 7
-BuildRequires:        systemd
+BuildRequires:        systemd libevent-devel < 2.1
+%else
+BuildRequires:        libevent-devel
 %endif
 
 ################################################################################
