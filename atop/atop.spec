@@ -54,12 +54,14 @@
 Summary:         Advanced System and Process Monitor
 Name:            atop
 Version:         2.3.0
-Release:         2%{?dist}
+Release:         3%{?dist}
 License:         GPL
 Group:           Development/System
 URL:             http://www.atoptool.nl
 
 Source0:         https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
+Source1:         %{name}.daily
+Source2:         %{name}.sysconfig
 
 Patch0:          %{name}-%{version}-script-path-fix.patch
 
@@ -112,7 +114,10 @@ install -pm 0700 atopacctd %{buildroot}%{_sbindir}/
 ln -sf %{_bindir}/atop  %{buildroot}%{_bindir}/atopsar
 
 install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
-install -pm 0711 atop.daily %{buildroot}%{_sysconfdir}/%{name}/
+install -pm 0711 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}/
+
+install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
+install -pm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 install -dm 0755 %{buildroot}%{_mandir}/man1
 install -dm 0755 %{buildroot}%{_mandir}/man5
@@ -201,6 +206,7 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %files
 %defattr(-,root,root)
 %doc README COPYING AUTHOR ChangeLog
+%config(noreplace) %{_sysconfdir}/sysconfig/atop
 %if %{systemd_enabled}
 %config(noreplace) %{_unitdir}/atop.service
 %config(noreplace) %{_unitdir}/atopacct.service
@@ -226,6 +232,9 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-3
+- Improved atop configuration through sysconfig file
+
 * Mon Jun 26 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.3.0-2
 - Added patch with script path fix for systemd unit
 
