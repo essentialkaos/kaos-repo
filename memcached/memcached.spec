@@ -218,43 +218,76 @@ fi
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
-- Updated to latest release
+- Add max_connections stat to 'stats' output
+- Drop sockets from obviously malicious command strings (HTTP/)
+- stats cachedump: now more likely to show data
+- memcached-tool: fix slab Full? column
+- Fix null pointer ref in logger for bin update cmd
+- Default to unix sockets for tests, make them much less flaky
+- PARALLEL=9 make test -> runs prove in parallel
+- Fix flaky stats.t test
+- --enable-seccomp compiles in options for strict privilege reduction in
+  linux. see output of -h for more information.
+
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Fix for musl libc: avoid huge stack allocation
+- LRU crawler to background-reclaim memory. Mixed-TTL's and LRU reordering
+  leaves many holes, making it difficult to properly size an instance.
+- Segmented LRU. HOT/WARM/COLD and background processing should try harder to
+  keep semi-active items in memory for longer.
+- Automated slab rebalancing. Avoiding slab stagnation as objects change size
+  over time.
+- Faster hash table lookups with murmur3 algorithm (though it's been so long
+  this is now outdated again;)
+- Reduce memory requirements per-item by a few bytes here and there
+- Immediately close connections when hitting the connection limit, instead of
+  hanging until a spot opens up.
+- Items larger than 512k (by default) are assembled by stacking multiple chunks
+  together. Now raising the item size above 1m doesn't drop memory efficiency
+  by spreading out slab classes.
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.39-0
-- Updated to latest release
+- Fix for CVE-2017-9951
+- Save four bytes per item if client flags are 0
+- If client flags are "0", no extra storage is used
 
 * Wed Apr 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.36-1
 - Improved init script
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.36-0
-- Updated to latest release
+- Fix refcount leak in LRU bump buf
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.34-0
-- Updated to latest release
+- Add -o modern switches to -h
+- metadump: Fix preventing dumping of class 63
+- Fix cache_memlimit bug for > 4G values
+- metadump: ensure buffer is flushed to client before finishing
+- Number of small fixes/additions to new logging
+- Add logging endpoint for LRU crawler
+- Evicted_active counter for LRU maintainer
+- Stop pushing NULL byte into watcher stream
+- Scale item hash locks more with more worker threads (minor performance)
+- Further increase systemd service hardening
+- Missing necessary header for atomic_inc_64_nv() used in logger.c (solaris)
+- Fix print format for idle timeout thread
+- Improve binary sasl security fixes
+- Fix clang compile error
+- Widen systemd caps to allow maxconns to increase
+- Add -X option to disable cachedump/metadump
+- Don't double free in lru_crawler on closed clients
+- Fix segfault if metadump client goes away
 
 * Wed Nov 02 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.33-0
-- Updated to latest release
+- Fixed CVE reported by cisco talos
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.32-0
-- Updated to latest release
+- Fix missing evicted_time display in stats output
+- Update old ChangeLog note to visit Github wiki
+- Fix OOM errors with newer LRU
+- Misc typo fixes
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.31-0
-- Updated to latest release
-
-* Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.25-0
-- Updated to latest release
-
-* Tue May 12 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.24-0
-- Updated to latest release
-
-* Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.22-0
-- Updated to latest release
-
-* Tue Oct 28 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.20-2
-- Init script migrated to kaosv2
-
-* Wed Jun 04 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.20-1
-- Some minor fixes
-
-* Wed Jun 04 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.20-0
-- Initial build
+- More fixes for defaults related to large item support.
+- Several improvements to how the LRU crawler's default background job is
+  launched. Should be less aggressive.
+- Fix LRU crawler rate limiting sleep never actually being used.
