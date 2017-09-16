@@ -1,6 +1,6 @@
 ###############################################################################
 
-# rpmbuilder:relative-pack true
+# rpmbuilder:gopack    github.com/xenolf/lego
 
 ###############################################################################
 
@@ -44,7 +44,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         0.3.1
+Version:         0.4.0
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -52,7 +52,7 @@ URL:             https://github.com/xenolf/lego
 
 Source0:         %{name}-%{version}.tar.bz2
 
-BuildRequires:   golang >= 1.4
+BuildRequires:   golang >= 1.8
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -99,6 +99,67 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
+- CLI: The --http-timeout switch. This allows for an override of the default
+  client HTTP timeout.
+- lib: The HTTPClient field. This allows for an override of the default HTTP
+  timeout for library HTTP requests.
+- CLI: The --dns-timeout switch. This allows for an override of the default DNS
+  timeout for library DNS requests.
+- lib: The DNSTimeout switch. This allows for an override of the default client
+  DNS timeout.
+- lib: The QueryRegistration function on acme.Client. This performs a POST on
+  the client registration's URI and gets the updated registration info.
+- lib: The DeleteRegistration function on acme.Client. This deletes the
+  registration as currently configured in the client.
+- lib: The ObtainCertificateForCSR function on acme.Client. The function allows
+  to request a certificate for an already existing CSR.
+- CLI: The --csr switch. Allows to use already existing CSRs for certificate
+  requests on the command line.
+- CLI: The --pem flag. This will change the certificate output so it outputs
+  a .pem file concatanating the .key and .crt files together.
+- CLI: The --dns-resolvers flag. Allows for users to override the default DNS
+  servers used for recursive lookup.
+- lib: Added a memcached provider for the HTTP challenge.
+- CLI: The --memcached-host flag. This allows to use memcached for challenge
+  storage.
+- CLI: The --must-staple flag. This enables OCSP must staple in the generated
+  CSR.
+- lib: The library will now honor entries in your resolv.conf.
+- lib: Added a field IssuerCertificate to the CertificateResource struct.
+- lib: A new DNS provider for OVH.
+- lib: A new DNS provider for DNSMadeEasy.
+- lib: A new DNS provider for Linode.
+- lib: A new DNS provider for AuroraDNS.
+- lib: A new DNS provider for NS1.
+- lib: A new DNS provider for Azure DNS.
+- lib: A new DNS provider for Rackspace DNS.
+- lib: A new DNS provider for Exoscale DNS.
+- lib: A new DNS provider for DNSPod.
+- lib: Exported the PreCheckDNS field so library users can manage the DNS check
+  in tests.
+- lib: The library will now skip challenge solving if a valid Authz already
+  exists.
+- lib: The library will no longer check for auto renewed certificates. This
+  has been removed from the spec and is not supported in Boulder.
+- lib: Fix a problem with the Route53 provider where it was possible the
+  verification was published to a private zone.
+- lib: Loading an account from file should fail if a integral part is nil
+- lib: Fix a potential issue where the Dyn provider could resolve to an
+  incorrect zone.
+- lib: If a registration encounteres a conflict, the old registration is
+  now recovered.
+- CLI: The account.json file no longer has the executable flag set.
+- lib: Made the client registration more robust in case of a 403 HTTP response.
+- lib: Fixed an issue with zone lookups when they have a CNAME in another zone.
+- lib: Fixed the lookup for the authoritative zone for Google Cloud.
+- lib: Fixed a race condition in the nonce store.
+- lib: The Google Cloud provider now removes old entries before trying to add
+  new ones.
+- lib: Fixed a condition where we could stall due to an early error condition.
+- lib: Fixed an issue where Authz object could end up in an active state after
+  an error condition.
+
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.3.1-0
 - lib: A new DNS provider for Vultr.
 - lib: DNS Provider for DigitalOcean could not handle subdomains properly.
