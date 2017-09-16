@@ -60,8 +60,8 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.7.8
-Release:           1%{?dist}
+Version:           1.7.9
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -285,6 +285,30 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.9-0
+- BUG/MINOR: peers: peer synchronization issue (with several peers sections).
+- BUG/MINOR: lua: In error case, the safe mode is not removed
+- BUG/MINOR: lua: executes the function destroying the Lua session in safe
+  mode
+- BUG/MAJOR: lua/socket: resources not detroyed when the socket is aborted
+- BUG/MEDIUM: lua: bad memory access
+- DOC: update CONTRIBUTING regarding optional parts and message format
+- DOC: update the list of OpenSSL versions in the README
+- MINOR: tools: add a portable timegm() alternative
+- BUILD: lua: replace timegm() with my_timegm() to fix build on Solaris 10
+- DOC: Updated 51Degrees git URL to point to a stable version.
+- BUG/MINOR: http: Set the response error state in http_sync_res_state
+- MINOR: http: Reorder/rewrite checks in http_resync_states
+- MINOR: http: Switch requests/responses in TUNNEL mode only by checking txn
+  flags
+- BUG/MEDIUM: http: Switch HTTP responses in TUNNEL mode when body length is
+  undefined
+- BUG/MAJOR: http: Fix possible infinity loop in http_sync_(req|res)_state
+- BUG/MINOR: lua: Fix Server.get_addr() port values
+- BUG/MINOR: lua: Correctly use INET6_ADDRSTRLEN in Server.get_addr()
+- BUG/MINOR: lua: always detach the tcp/http tasks before freeing them
+- BUG/MINOR: lua: Fix bitwise logic for hlua_server_check_* functions.
+
 * Mon Aug 14 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.8-1
 - Added ExecReload handler to systemd unit
 
