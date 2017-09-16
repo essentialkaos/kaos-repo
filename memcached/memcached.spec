@@ -45,7 +45,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.4.39
+Version:                  1.5.1
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -60,7 +60,7 @@ BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__i
 
 BuildRequires:            gcc automake
 
-Requires:                 initscripts kaosv >= 2.10
+Requires:                 initscripts kaosv >= 2.12
 
 %if 0%{?rhel} >= 7
 BuildRequires:            libevent-devel
@@ -217,6 +217,9 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
+- Updated to latest release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.39-0
 - Updated to latest release
 
