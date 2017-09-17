@@ -35,7 +35,7 @@
 ###############################################################################
 
 %define main_version 2.8
-%define patch        5
+%define patch        7
 
 ###############################################################################
 
@@ -131,6 +131,9 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.8.7-0
+- Updated to latest stable release
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.8.5-0
 - Updated to latest stable release
 
