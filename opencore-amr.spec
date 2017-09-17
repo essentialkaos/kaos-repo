@@ -35,7 +35,7 @@
 
 Summary:            Adaptive Multi-Rate Floating-point (AMR) Speech Codec
 Name:               opencore-amr
-Version:            0.1.3
+Version:            0.1.5
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              System Environment/Libraries
@@ -86,15 +86,17 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ###############################################################################
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING AUTHORS ChangeLog NEWS
+%doc ChangeLog LICENSE README
 %{_libdir}/lib%{name}nb.so.*
 %{_libdir}/lib%{name}wb.so.*
 %{_pkgconfigdir}/%{name}nb.pc
@@ -112,9 +114,12 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.5-0
+- Updated to latest version
+
 * Sat Mar 17 2012 Paulo Roma <roma@lcg.ufrj.br> - 0.1.3-0
-- Updated to latest version. 
+- Updated to latest version
 
 * Sat Feb 14 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.1.2-1
-- Initial build.
+- Initial build
 
