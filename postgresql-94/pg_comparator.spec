@@ -53,7 +53,7 @@
 
 Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
 Name:              %{realname}%{pg_maj_ver}
-Version:           2.2.6
+Version:           2.3.1
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Tools
@@ -61,7 +61,7 @@ URL:               https://www.cri.ensmp.fr/people/coelho/pg_comparator
 
 Source:            https://www.cri.ensmp.fr/people/coelho/pg_comparator/%{realname}-%{version}.tgz
 
-Patch0:            %{realname}-Makefile.diff
+Patch0:            %{realname}-Makefile.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -87,7 +87,7 @@ time-efficient approach.
 %prep
 %setup -qn %{realname}-%{version}
 
-%patch0 -p0
+%patch0 -p1
 
 %build
 %{__make} PG_CONFIG=%{pg_dir}/bin/pg_config
@@ -112,18 +112,18 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc LICENSE
-%doc %{_defaultdocdir}/pgsql/contrib/README.%{realname}
-%doc %{_defaultdocdir}/pgsql/contrib/README.pgc_casts
-%doc %{_defaultdocdir}/pgsql/contrib/README.pgc_checksum
-%doc %{_defaultdocdir}/pgsql/contrib/README.xor_aggregate
-%{pg_dir}/bin/%{realname}
-%{pg_dir}/lib/pgc_casts.so
-%{pg_dir}/lib/pgc_checksum.so
-%{pg_dir}/share/contrib/*.sql
+%doc %{_datadir}/doc/pgsql/extension/README.pg_comparator
+%{pg_dir}/bin/pg_comparator
+%{pg_dir}/lib/pgcmp.so
+%{pg_dir}/share/extension/*.sql
+%{pg_dir}/share/extension/pgcmp.control
 
 ###############################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
+- Updated to latest release
+
 * Thu May 11 2017 Andrey Kulikov <avk@brewkeeper.net> - 2.2.6-0
 - New upstream release
 - Source URL and project URL updated
