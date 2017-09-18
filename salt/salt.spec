@@ -59,8 +59,8 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2016.11.5
-Release:          1%{?dist}
+Version:          2017.7.1
+Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
@@ -79,7 +79,7 @@ Source10:         README.fedora
 Source11:         %{name}.logrotate
 Source12:         salt.bash
 
-Patch0:           %{name}-%{version}-config.patch
+Patch0:           %{name}-config.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
@@ -478,6 +478,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.7.1-0
+- Updated to 2017.7.1
+
 * Sat Jun 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2016.11.5-1
 - Fixed compatibility with latest version of python-tornado
 
