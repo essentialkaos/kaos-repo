@@ -1,9 +1,5 @@
 ###############################################################################
 
-# rpmbuilder:qa-rpaths 0x0001,0x0002
-
-###############################################################################
-
 %define python_version %(%{__python} -c "import sys; sys.stdout.write(sys.version[:3])")
 
 ###############################################################################
@@ -53,7 +49,7 @@
 
 Summary:            Next generation logging application
 Name:               syslog-ng
-Version:            3.10.1
+Version:            3.11.1
 Release:            0%{?dist}
 License:            GPL
 Group:              System Environment/Daemons
@@ -70,7 +66,7 @@ Requires:           eventlog libhiredis libnet GeoIP
 
 BuildRequires:      make gcc bison flex glib2-devel pkgconfig pcre-devel
 BuildRequires:      openssl-devel libnet-devel eventlog-devel
-BuildRequires:      libhiredis-devel json-c-devel
+BuildRequires:      libhiredis-devel json-c-devel chrpath
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -128,6 +124,24 @@ install -pm 755 %{SOURCE2} \
 install -pm 644 contrib/rhel-packaging/%{name}.logrotate \
                 %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
+%ifarch x86_64
+chrpath --delete %{buildroot}%{_loc_libdir32}/%{name}/*.so \
+                 %{buildroot}%{_sbindir}/%{name} \
+                 %{buildroot}%{_sbindir}/%{name}-ctl \
+                 %{buildroot}%{_bindir}/loggen \
+                 %{buildroot}%{_bindir}/dqtool \
+                 %{buildroot}%{_bindir}/pdbtool \
+                 %{buildroot}%{_libdir}/*.so*
+%else
+chrpath --delete %{buildroot}%{_loc_libdir}/%{name}/*.so \
+                 %{buildroot}%{_sbindir}/%{name} \
+                 %{buildroot}%{_sbindir}/%{name}-ctl \
+                 %{buildroot}%{_bindir}/loggen \
+                 %{buildroot}%{_bindir}/dqtool \
+                 %{buildroot}%{_bindir}/pdbtool \
+                 %{buildroot}%{_libdir}/*.so*
+%endif
+
 %clean
 rm -rf %{buildroot}
 
@@ -166,6 +180,7 @@ fi
 %{_initrddir}/%{name}
 %{_sbindir}/%{name}
 %{_sbindir}/%{name}-ctl
+%{_sbindir}/%{name}-debun
 %{_bindir}/loggen
 %{_bindir}/dqtool
 %{_bindir}/pdbtool
@@ -182,6 +197,9 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.11.1-0
+- Updated to latest stable release
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.10.1-0
 - Updated to latest stable release
 
