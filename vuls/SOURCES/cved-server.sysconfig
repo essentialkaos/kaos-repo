@@ -1,7 +1,0 @@
-# Sysconfig file for cve-dictionary server
-
-DATA_DIR=""
-IP=""
-PORT=""
-USER=""
-LOG=""
