@@ -6,7 +6,7 @@
 
 Summary:         A search tool that combines the usability of ag with the raw speed of grep
 Name:            ripgrep
-Version:         0.5.1
+Version:         0.6.0
 Release:         0%{?dist}
 Group:           Applications/Text
 License:         MIT or Unlicense
@@ -70,5 +70,8 @@ cargo test
 ###############################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.6.0-0
+- Updated to latest stable release
+
 * Sun Apr 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.5.1-0
 - Initial build for kaos repository
