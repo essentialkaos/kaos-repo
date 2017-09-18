@@ -4,9 +4,9 @@ Before=httpd.service
 After=network.target
 
 [Service]
-PIDFile=/var/run/cved-server.pid
-ExecStart=/etc/init.d/cved-server start
-ExecStop=/etc/init.d/cved-server stop
+PIDFile=/var/run/goval-server.pid
+ExecStart=/etc/init.d/goval-server start
+ExecStop=/etc/init.d/goval-server stop
 
 [Install]
 WantedBy=multi-user.target

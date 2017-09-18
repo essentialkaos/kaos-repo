@@ -53,7 +53,7 @@
 
 %define username          goval
 %define groupname         goval
-%define goval_dir          %{_opt}/goval-dictionary
+%define goval_dir         %{_opt}/goval-dictionary
 
 ###############################################################################
 
@@ -71,7 +71,6 @@ Source2:         goval-server.init
 Source3:         goval-server.service
 Source4:         goval-server.sysconfig
 Source5:         goval-dictionary-fetch.cron
-Source6:         goval-dictionary-fetch
 Source10:        index.html
 
 
@@ -136,7 +135,6 @@ install -dm 755 %{buildroot}%{_logdir}/goval-dictionary
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 install -pm 755 goval-dictionary %{buildroot}%{_bindir}/
-install -pm 755 %{SOURCE6} %{buildroot}%{_bindir}/
 
 ln -sf %{_bindir}/goval-dictionary %{buildroot}%{_bindir}/goval-dictionary
 
