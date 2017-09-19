@@ -30,7 +30,6 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-
 Version:            1.5.1
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
