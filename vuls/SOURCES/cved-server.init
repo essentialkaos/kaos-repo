@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# goval-server  init file for starting up the goval-dictionary server
+# cved-server  init file for starting up the cve-dictionary server
 #
 # chkconfig:   - 20 80
-# description: Starts and stops the goval-dictionary server
+# description: Starts and stops the cve-dictionary server
 
 ###############################################################################
 
@@ -11,19 +11,19 @@ source /etc/init.d/kaosv
 
 ###############################################################################
 
-kv[prog_name]="goval-server"
+kv[prog_name]="cved-server"
 
 kv.readSysconfig
 
-binary="/usr/bin/goval-dictionary"
-fetcher="/usr/bin/goval-dictionary-fetch"
-data_dir="${DATA_DIR:-/opt/goval-dictionary/data}"
+binary="/usr/bin/cve-dictionary"
+fetcher="/usr/bin/cve-dictionary-fetch"
+data_dir="${DATA_DIR:-/opt/cve-dictionary/data}"
 ip="${IP:-127.0.0.1}"
-port="${PORT:-1324}"
-log_dir="${LOG_DIR:-/var/log/goval-dictionary}"
+port="${PORT:-1323}"
+log_dir="${LOG_DIR:-/var/log/cve-dictionary}"
 
 kv[user]="${USER:-vuls}"
-kv[log]="${LOG:-$log_dir/goval-server.log}"
+kv[log]="${LOG:-$log_dir/cved-server.log}"
 
 kv[search_pattern]="$binary -dbpath"
 
@@ -40,8 +40,8 @@ kv.disableOutputRedirect "start" "pre"
 prepare() {
   local has_errors=""
 
-  [[ ! -e $binary ]] && has_errors=true && kv.error "goval-dictionary is not found"
-  [[ ! -x $binary ]] && has_errors=true && kv.error "goval-dictionary must be executable file"
+  [[ ! -e $binary ]] && has_errors=true && kv.error "cve-dictionary is not found"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "cve-dictionary must be executable file"
   [[ ! -e $fetcher ]] && has_errors=true && kv.error "Fetcher is not found"
   [[ ! -x $fetcher ]] && has_errors=true && kv.error "Fetcher must be executable file"
   [[ ! -e $data_dir ]] && has_errors=true && kv.error "Data directory is not exist"
@@ -71,7 +71,7 @@ preStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "server" "-dbpath=${data_dir}/oval.sqlite3" "-bind=${ip}" "-port=${port}" "-log-dir=${log_dir}"
+  kv.daemonize "$binary" "server" "-dbpath=${data_dir}/cve.sqlite3" "-bind=${ip}" "-port=${port}" "-log-dir=${log_dir}"
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
 

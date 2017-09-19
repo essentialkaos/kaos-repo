@@ -1,0 +1,46 @@
+#!/bin/bash
+
+################################################################################
+
+main() {
+  if [[ $# -ne 2 ]] ; then
+    echo "Usage: goval-dictionary-fetch {data-dir} {version}"
+    exit 0
+  fi
+
+  local dir="$1"
+  local version="$2"
+
+  if [[ ! -e "$dir" || ! -d "$dir" ]] ; then
+    echo "Wrong path to data directory"
+    exit 1
+  fi
+
+  fetch "$dir" "$version"
+}
+
+fetch() {
+  local dir="$1"
+  local versions="$2"
+  local version
+
+  if [[ "$versions" == "all" ]] ; then
+    versions=$(getAllVersions)
+  elif [[ "$versions" == "current" ]] ; then
+    versions="7"
+  fi
+
+  for version in $versions ; do
+    goval-dictionary fetch-redhat -dbpath "$dir/oval.sqlite3" $version
+
+    [[ $? -ne 0 ]] && exit 1
+  done
+}
+
+getAllVersions() {
+  echo "6" "7"
+}
+
+################################################################################
+
+main "$@"
