@@ -114,8 +114,8 @@ install -dm 755 %{buildroot}%{_logdir}/%{name}
 install -pm 600 rules/*.rules %{buildroot}%{_sysconfdir}/%{name}/rules
 install -pm 600 *.config %{buildroot}%{_sysconfdir}/%{name}
 install -pm 600 %{name}.yaml %{buildroot}%{_sysconfdir}/%{name}
-install -pm 644 %{SOURCE1} %{buildroot}%{_initddir}/%{name}
-install -pm 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 755 %{SOURCE1} %{buildroot}%{_initddir}/%{name}
+install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 rm -rf %{buildroot}%{_includedir}
@@ -154,7 +154,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/%{name}/rules/*.rules
 %config(noreplace) %attr(600,root,root) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %attr(644,root,root) %{_sysconfdir}/logrotate.d/%{name}
-%attr(644,root,root) %{_initddir}/%{name}
+%attr(755,root,root) %{_initddir}/%{name}
 %attr(750,root,root) %dir %{_logdir}/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}/%{name}/rules
