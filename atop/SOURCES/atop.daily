@@ -33,7 +33,7 @@ fi
 # delete logfiles older than four weeks
 # start a child shell that activates another child shell in
 # the background to avoid a zombie
-( (sleep 3; find "$log_path" -name 'atop_*' -mtime +28 -exec rm {} \;)& )
+( (sleep 3; find "$log_path" -name 'atop_*' -mtime +${keep_time} -exec rm {} \;)& )
 
 # activate atop
 echo $$ > $pid_file

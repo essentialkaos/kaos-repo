@@ -43,7 +43,7 @@
 
 Summary:         Intrusion Detection System
 Name:            suricata
-Version:         2.0.4
+Version:         4.0.0
 Release:         0%{?dist}
 License:         GPLv2
 Group:           Applications/Internet
@@ -54,18 +54,16 @@ Source1:         %{name}.initd
 Source2:         %{name}.sysconfig
 Source3:         %{name}.logrotate
 
-Patch1:          %{name}-2.0-flags.patch
-Patch2:          %{name}-2.0.2-lua.patch
-
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:        kaosv
 
-BuildRequires:   libyaml-devel libnfnetlink-devel libnetfilter_queue-devel 
+BuildRequires:   make gcc gcc-c++ autoconf automake libtool
+BuildRequires:   libyaml-devel libnfnetlink-devel libnetfilter_queue-devel
 BuildRequires:   libnet-devel zlib-devel libpcap-devel pcre-devel
 BuildRequires:   libcap-ng-devel nspr-devel nss-devel nss-softokn-devel
 BuildRequires:   file-devel jansson-devel GeoIP-devel python-devel
-BuildRequires:   autoconf automake libtool lua-devel libluajit-devel
+BuildRequires:   lua-devel libluajit-devel
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -85,9 +83,6 @@ Matching, and GeoIP identification.
 %prep
 %setup -q
 
-%patch1 -p1
-%patch2 -p1
-
 autoreconf -fv --install
 
 %build
@@ -100,7 +95,6 @@ autoreconf -fv --install
            --enable-gccprotect \
            --enable-jansson \
            --enable-geoip \
-           --enable-lua \
            --enable-luajit
 
 %{__make} %{?_smp_mflags}
@@ -150,9 +144,11 @@ rm -rf %{buildroot}
 %doc doc/Setting_up_IPSinline_for_Linux.txt
 %{_sbindir}/%{name}
 %{_bindir}/%{name}sc
-%{_libdir}/libhtp-*
-%{python2_sitelib}/%{name}sc*.egg-info
-%{python2_sitelib}/%{name}sc/*
+%{_libdir}/libhtp*
+%{python_sitelib}/%{name}sc*.egg-info
+%{python_sitelib}/%{name}sc/*
+%{_defaultdocdir}/%{name}/*
+%{_mandir}/man1/%{name}.1*
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.yaml
 %config(noreplace) %{_sysconfdir}/%{name}/*.config
 %config(noreplace) %{_sysconfdir}/%{name}/rules/*.rules
@@ -167,5 +163,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Oct 09 2014 Anton Novojilov <andy@essentialkaos.com> - 2.0.4-0
+* Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
 - Initial build

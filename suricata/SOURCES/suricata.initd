@@ -28,7 +28,7 @@ kv[prog_name]="suricata"
 kv.readSysconfig
 
 binary=${BINARY:-/sbin/suricata}
-config=${CONFIG:-etc/suricata/suricata.yaml}
+config=${CONFIG:-/etc/suricata/suricata.yaml}
 options=${OPTIONS:--i eth0}
 
 kv[search_pattern]="$binary"
