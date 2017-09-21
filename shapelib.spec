@@ -1,9 +1,5 @@
 ###############################################################################
 
-# rpmbuilder:qa-rpaths 0x0001,0x0002
-
-###############################################################################
-
 Summary:         C library for handling ESRI Shapefiles
 Name:            shapelib
 Version:         1.4.0
@@ -16,7 +12,7 @@ Source:          http://download.osgeo.org/%{name}/%{name}-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc-c++ make proj-devel
+BuildRequires:   gcc-c++ make proj-devel chrpath
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -60,6 +56,9 @@ rm -rf %{buildroot}
 %{make_install}
 
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
+
+chrpath --delete %{buildroot}%{_bindir}/*
+chrpath --delete %{buildroot}%{_libdir}/*.so*
 
 %clean
 rm -rf %{buildroot}
