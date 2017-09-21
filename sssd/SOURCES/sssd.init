@@ -42,6 +42,12 @@ startServiceHandler() {
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
 
+  # Change permissions for PID file which allows
+  # to check service status without root privileges
+  if [[ -f "${kv[pid_file]}" ]] ; then
+    chmod 644 "${kv[pid_file]}"
+  fi
+
   kv.getStartStatus
 
   return $?

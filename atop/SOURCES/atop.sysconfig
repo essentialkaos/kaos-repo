@@ -1,0 +1,7 @@
+# sysconfig file for atop service
+
+# Sampling interval
+INTERVAL=600
+
+# Max logs keep time
+KEEP_TIME=28

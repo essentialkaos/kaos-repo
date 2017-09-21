@@ -20,9 +20,10 @@ fetcher="/usr/bin/cve-dictionary-fetch"
 data_dir="${DATA_DIR:-/opt/cve-dictionary/data}"
 ip="${IP:-127.0.0.1}"
 port="${PORT:-1323}"
+log_dir="${LOG_DIR:-/var/log/cve-dictionary}"
 
-kv[user]="${USER:-cved}"
-kv[log]="${LOG:-/var/log/cve-dictionary/cve-dictionary.log}"
+kv[user]="${USER:-vuls}"
+kv[log]="${LOG:-$log_dir/cved-server.log}"
 
 kv[search_pattern]="$binary -dbpath"
 
@@ -59,7 +60,7 @@ preStartServiceHandler() {
     return $ACTION_OK
   fi
 
-  kv.show "Fetching all available CVE data...\n" $GREY
+  kv.show "Fetching all available CVE data..." $GREY
 
   $fetcher "$data_dir" all
   chown ${kv[user]}: $data_dir/*
@@ -70,7 +71,7 @@ preStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "server" "-dbpath=${data_dir}/cve.sqlite3" "-bind=${ip}" "-port=${port}"
+  kv.daemonize "$binary" "server" "-dbpath=${data_dir}/cve.sqlite3" "-bind=${ip}" "-port=${port}" "-log-dir=${log_dir}"
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
 

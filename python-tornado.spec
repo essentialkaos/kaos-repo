@@ -51,8 +51,8 @@
 
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
-Version:            4.5.1
-Release:            1%{?dist}
+Version:            4.5.2
+Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
 URL:                http://www.tornadoweb.org
@@ -122,6 +122,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.2-0
+- Updated to latest version
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.1-0
 - Updated to latest version
 

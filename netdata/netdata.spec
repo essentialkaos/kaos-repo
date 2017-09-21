@@ -54,7 +54,7 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.6.0
+Version:          1.8.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
@@ -185,43 +185,20 @@ fi
 ################################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
+- Updated to latest stable release
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
-- dashboard is now faster on firefox, safari, opera, edge (edge is still
-  the slowest)
-- dashboard charts legends now have bigger fonts
-- SHIFT + mousewheel to zoom charts, works on all browsers
-- perfect-scrollbar on the dashboard
-- dashboard 4K resolution fixes
-- dashboard compatibility fixes for embedding charts in third party web sites
-- charts on custom dashboards can have common min/max even if they come from
-  different netdata servers
-- alarm log is now saved and loaded back so that the alarm history is available
-  at the dashboard
-- python.d.plugin has received way to many improvements from many contributors!
-- charts.d.plugin can now be forked to support multiple independent instances
-- registry has been re-factored to lower its memory requirements (required for
-  the public registry)
-- simple patterns in cgroups, disks and alarms
-- netdata-installer.sh can now correctly install netdata in containers
-- supplied logrotate script compatibility fixes
-- spec cleanup @breed808
-- clocks and timers reworked @rlefevre
+- Updated to latest stable release
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
-- the fastest netdata ever (with a better look too)
-- improved IoT and containers support
-- alarms improved in almost every way
+- Updated to latest stable release
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- netdata has health monitoring / alarms
-- netdata generates badges that can be embeded anywhere
-- netdata plugins are now written in python
-- new plugins: redis, memcached, nginx_log, ipfs, apache_cache
+- Updated to latest stable release
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- netdata is now 30% faster
-- netdata now has a registry (my-netdata dashboard menu)
-- netdata now monitors Linux Containers (docker, lxc, etc)
+- Updated to latest stable release
 
 * Sun Apr 10 2016 Gleb Goncharov <yum@gongled.me> - 1.0.0-0
 - Initial build

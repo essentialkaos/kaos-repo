@@ -2,7 +2,7 @@
 
 Summary:        Ansible linter
 Name:           ansible-lint
-Version:        3.4.13
+Version:        3.4.15
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries 
@@ -51,6 +51,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.15-0
+- Updated to latest stable release
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.13-0
 - Updated to latest stable release
 

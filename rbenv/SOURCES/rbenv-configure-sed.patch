@@ -1,0 +1,32 @@
+diff -urN rbenv-1.1.1-orig/src/configure rbenv-1.1.1/src/configure
+--- rbenv-1.1.1-orig/src/configure	2017-08-07 12:34:46.002506978 +0200
++++ rbenv-1.1.1/src/configure	2017-08-07 13:08:16.000000000 +0200
+@@ -34,16 +34,16 @@
+ eval "$("$src_dir"/shobj-conf -C "$CC" -o "$host_os")"
+ 
+ sed "
+-  s,@CC@,${CC},
+-  s,@CFLAGS@,${CFLAGS},
+-  s,@LOCAL_CFLAGS@,${LOCAL_CFLAGS},
+-  s,@DEFS@,${DEFS},
+-  s,@LOCAL_DEFS@,${LOCAL_DEFS},
+-  s,@SHOBJ_CC@,${SHOBJ_CC},
+-  s,@SHOBJ_CFLAGS@,${SHOBJ_CFLAGS},
+-  s,@SHOBJ_LD@,${SHOBJ_LD},
+-  s,@SHOBJ_LDFLAGS@,${SHOBJ_LDFLAGS//,/\\,},
+-  s,@SHOBJ_XLDFLAGS@,${SHOBJ_XLDFLAGS//,/\\,},
+-  s,@SHOBJ_LIBS@,${SHOBJ_LIBS},
+-  s,@SHOBJ_STATUS@,${SHOBJ_STATUS},
++  s#@CC@#${CC}#
++  s#@CFLAGS@#${CFLAGS}#
++  s#@LOCAL_CFLAGS@#${LOCAL_CFLAGS}#
++  s#@DEFS@#${DEFS}#
++  s#@LOCAL_DEFS@#${LOCAL_DEFS}#
++  s#@SHOBJ_CC@#${SHOBJ_CC}#
++  s#@SHOBJ_CFLAGS@#${SHOBJ_CFLAGS}#
++  s#@SHOBJ_LD@#${SHOBJ_LD}#
++  s#@SHOBJ_LDFLAGS@#${SHOBJ_LDFLAGS//,/\\,}#
++  s#@SHOBJ_XLDFLAGS@#${SHOBJ_XLDFLAGS//,/\\,}#
++  s#@SHOBJ_LIBS@#${SHOBJ_LIBS}#
++  s#@SHOBJ_STATUS@#${SHOBJ_STATUS}#
+ " "$src_dir"/Makefile.in > "$src_dir"/Makefile

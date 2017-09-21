@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            3.2.9
+Version:            4.0.1
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -244,6 +244,35 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
+- Loading two or more modules exporting native data types resulted into the
+  inability to reload the RDB file.
+- Crash in modules when calling from Lua scripts module commands that would
+  block.
+- A Redis Cluster crash due to mis-handling of the "migrate-to" internal
+  flag.
+- Other smaller fixes not worth of a release per se, but nice to add here.
+
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
+- Different replication fixes to PSYNC2, the new 4.0 replication engine.
+- Modules thread safe contexts were introduced. They are an experimental API
+  right now, but the API is considered to be stable and usable when needed.
+- SLOWLOG now logs the offending client name and address. Note that this is
+  a backward compatibility breakage in case old code assumes that the slowlog
+  entry is composed of exactly three entries.
+- The modules native data types RDB format changed.
+- The AOF check utility is now able to deal with RDB preambles.
+- GEORADIUS_RO and GEORADIUSBYMEMBER_RO variants, not supporting the STORE
+  option, were added in order to allow read-only scaling of such queries.
+- HSET is now variadic, and HMSET is considered deprecated (but will be
+  supported for years to come). Please use HSET in new code.
+- GEORADIUS huge radius (>= ~6000 km) corner cases fixed, certain elements
+  near the edges were not returned.
+- DEBUG DIGEST modules API added.
+- HyperLogLog commands no longer crash on certain input (non HLL) strings.
+- Fixed SLAVEOF inside MULTI/EXEC blocks.
+- Many other minor bug fixes and improvements.
+
 * Thu May 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.9-0
 - This release just fixes bugs that are unlikely to cause serious problems
 

@@ -1,0 +1,1 @@
+# 0 5 * * * goval /usr/bin/goval-dictionary fetch-redhat -dbpath="/opt/vuls/data/oval.sqlite3" 6 7 &> /dev/null || :

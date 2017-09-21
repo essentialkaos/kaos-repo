@@ -28,7 +28,6 @@
 
 ###############################################################################
 
-%define install_dir       %{_loc_prefix}/%{name}
 %define profile_dir       %{_sysconfdir}/profile.d
 %define profile           %{profile_dir}/%{name}.sh
 
@@ -37,7 +36,7 @@
 Summary:         Simple Ruby version management utility
 Name:            rbenv
 Version:         1.1.1
-Release:         0%{?dist}
+Release:         2%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
@@ -46,10 +45,13 @@ Source0:         https://github.com/rbenv/%{name}/archive/v%{version}.tar.gz
 Source1:         %{name}.profile
 
 Patch0:          %{name}-init-fix.patch
+Patch1:          %{name}-default-root.patch
+Patch2:          %{name}-configure-sed.patch
+Patch3:          %{name}-hit-prefix-arrow.patch
+
+BuildRequires:   make gcc
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildArch:       noarch
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -66,15 +68,26 @@ tradition of single-purpose tools that do one thing well.
 %setup -q -n %{name}-%{version}
 
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 
+pushd src
+%configure
+%{__make} %{?_smp_mflags}
+popd
+
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}
 install -dm 0755 %{buildroot}%{profile_dir}
 install -dm 0755 %{buildroot}%{_bindir}
+
+install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}/versions
+install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}/shims
 
 cp -r bin libexec completions LICENSE %{buildroot}%{_loc_prefix}/%{name}/
 
@@ -82,23 +95,23 @@ install -pm 755 %{SOURCE1} %{buildroot}%{profile}
 
 ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 
-%post
-%{profile}
-
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
 %files
 %defattr(-,root,root,-)
-%{install_dir}
+%{_loc_prefix}/%{name}
 %{profile}
 %{_bindir}/%{name}
 
 ###############################################################################
 
 %changelog
+* Mon Aug 07 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-1
+- Improvements
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
 - Fix setting environment variable in fish shell
 - Rename OLD_RBENV_VERSION to RBENV_* convention

@@ -60,28 +60,17 @@
 %define use_threads_posix  0
 %endif
 
-%if 0%{?fedora} > 21 || 0%{?rhel} > 6
-%define have_multilib_rpm_config 1
-%else
-%define have_multilib_rpm_config 0
-%endif
-
 ###############################################################################
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.54.1
+Version:              7.55.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
 URL:                  http://curl.haxx.se
 
 Source0:              http://curl.haxx.se/download/%{name}-%{version}.tar.bz2
-Source100:            curlbuild.h
-
-Patch101:             0101-%{name}-7.41.1-multilib.patch
-Patch108:             0108-%{name}-7.40.0-threaded-dns-multi.patch
-Patch302:             0302-%{name}-7.47.1-pkgconfig.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -109,10 +98,6 @@ BuildRequires:        libnghttp2-devel nghttp2
 
 %if 0%{?fedora} > 18 || 0%{?rhel} > 6
 BuildRequires:        libpsl-devel
-%endif
-
-%if %{have_multilib_rpm_config}
-BuildRequires:        multilib-rpm-config
 %endif
 
 Requires:             libcurl%{?_isa} = %{version}-%{release}
@@ -191,14 +176,6 @@ documentation of the library, too.
 %prep
 %setup -qn curl-%{version}
 
-%patch101 -p1
-
-%if 0%{?use_threads_posix} && 0%{?fedora} < 14 && 0%{?rhel} < 7
-%patch108
-%endif
-
-%patch302
-
 %build
 %if ! 0%{?use_nss}
 export CPPFLAGS="$(pkg-config --cflags openssl)"
@@ -248,18 +225,6 @@ install -dm 0755 %{buildroot}%{_datadir}/aclocal
 
 install -pm 0644 docs/libcurl/libcurl.m4 %{buildroot}%{_datadir}/aclocal
 
-%if %{have_multilib_rpm_config}
-  %multilib_fix_c_header --file %{_includedir}/%{name}/curlbuild.h
-%else
-  %if %{__isa_bits} == 64
-    mv %{buildroot}%{_includedir}/%{name}/curlbuild{,-64}.h
-  %else
-    mv %{buildroot}%{_includedir}/%{name}/curlbuild{,-32}.h
-  %endif
-  
-  install -pm 644 %{SOURCE100} %{buildroot}%{_includedir}/%{name}
-%endif
-
 %clean
 rm -rf %{buildroot}
 
@@ -301,6 +266,158 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 7.55.1-0
+- build: fix 'make install' with configure, install docs/libcurl/* too
+- make install: add 8 missing man pages to the installation
+- curl: do bounds check using a double comparison
+- dist: Add dictserver.py/negtelnetserver.py to release
+- digest_sspi: Don't reuse context if the user/passwd has changed
+- gitignore: ignore top-level .vs folder
+- build: check out *.sln files with Windows line endings
+- travis: verify "make install"
+- dist: fix the cmake build by shipping cmake_uninstall.cmake.in too
+- metalink: fix error: ‘*’ in boolean context, suggest ‘&&’ instead
+- configure: use the threaded resolver backend by default if possible
+- mkhelp.pl: allow executing this script directly
+- maketgz: remove old *.dist files before making the tarball
+- openssl: remove CONST_ASN1_BIT_STRING
+- openssl: fix "error: this statement may fall through"
+- proxy: fix memory leak in case of invalid proxy server name
+- curl/system.h: support more architectures (OpenRISC, ARC)
+- docs: fix typos
+- curl/system.h: add Oracle Solaris Studio
+- CURLINFO_TOTAL_TIME: could wrongly return 4200 seconds
+- docs: --connect-to clarified
+- cmake: allow user to override CMAKE_DEBUG_POSTFIX
+- travis: test cmake build on tarball too
+- redirect: make it handle absolute redirects to IDN names
+- curl/system.h: fix for gcc on PowerPC
+- curl --interface: fixed for IPV6 unique local addresses
+- cmake: threads detection improvements
+
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 7.55.0-0
+- curl: allow --header and --proxy-header read from file
+- getinfo: provide sizes as curl_off_t
+- curl: prevent binary output spewed to terminal
+- curl: added --request-target
+- libcurl: added CURLOPT_REQUEST_TARGET
+- curl: added --socks5-{basic,gssapi}: control socks5 auth
+- libcurl: added CURLOPT_SOCKS5_AUTH
+- glob: do not parse after a strtoul() overflow range (CVE-2017-1000101)
+- tftp: reject file name lengths that don't fit (CVE-2017-1000100)
+- file: output the correct buffer to the user (CVE-2017-1000099)
+- includes: remove curl/curlbuild.h and curl/curlrules.h
+- dist: make the hugehelp.c not get regenerated unnecessarily
+- timers: store internal time stamps as time_t instead of doubles
+- progress: let "current speed" be UL + DL speeds combined
+- http-proxy: do the HTTP CONNECT process entirely non-blocking
+- lib/curl_setup.h: remove CURL_WANTS_CA_BUNDLE_ENV
+- fuzz: bring oss-fuzz initial code converted to C89
+- configure: disable nghttp2 too if HTTP has been disabled
+- mk-ca-bundle.pl: Check curl's exit code after certdata download
+- test1148: verify the -# progressbar
+- tests: stabilize test 2032 and 2033
+- HTTPS-Proxy: don't offer h2 for https proxy connections
+- http-proxy: only attempt FTP over HTTP proxy
+- curl-compilers.m4: enable vla warning for clang
+- curl-compilers.m4: enable double-promotion warning
+- curl-compilers.m4: enable missing-variable-declarations clang warning
+- curl-compilers.m4: enable comma clang warning
+- Makefile.m32: enable -W for MinGW32 build
+- CURLOPT_PREQUOTE: not supported for SFTP
+- http2: fix OOM crash
+- PIPELINING_SERVER_BL: cleanup the internal list use
+- mkhelp.pl: fix script name in usage text
+- lib1521: add curl_easy_getinfo calls to the test set
+- travis: do the distcheck test build out-of-tree as well
+- if2ip: fix compiler warning in ISO C90 mode
+- lib: fix the djgpp build
+- typecheck-gcc: add support for CURLINFO_OFF_T
+- travis: enable typecheck-gcc warnings
+- maketgz: switch to xz instead of lzma
+- CURLINFO_REDIRECT_URL.3: mention the CURLOPT_MAXREDIRS case
+- curl-compilers.m4: fix unknown-warning-option on Apple clang
+- winbuild: fix boringssl build
+- curl/system.h: add check for XTENSA for 32bit gcc
+- test1537: fixed memory leak on OOM
+- test1521: fix compiler warnings
+- curl: fix memory leak on test 1147 OOM
+- libtest/make: generate lib1521.c dynamically at build-time
+- curl_strequal.3: fix typo in SYNOPSIS
+- progress: prevent resetting t_starttransfer
+- openssl: improve fallback seed of PRNG with a time based hash
+- http2: improved PING frame handling
+- test1450: add simple testing for DICT
+- make: build the docs subdir only from within src
+- cmake: Added compatibility options for older Windows versions
+- gtls: fix build when sizeof(long) < sizeof(void *)
+- url: make the original string get used on subsequent transfers
+- timeval.c: Use long long constant type for timeval assignment
+- tool_sleep: typecast to avoid macos compiler warning
+- travis.yml: use --enable-werror on debug builds
+- test1451: add SMB support to the testbed
+- configure: remove checks for 5 functions never used
+- configure: try ldap/lber in reversed order first
+- smb: fix build for djgpp/MSDOS
+- travis: install nghttp2 on linux builds
+- smb: add support for CURLOPT_FILETIME
+- cmake: fix send/recv argument scanner for windows
+- inet_pton: fix include on windows to get prototype
+- select.h: avoid macro redefinition harder
+- cmake: if inet_pton is used, bump _WIN32_WINNT
+- asyn-thread.c: fix unused variable warnings on macOS
+- runtests: support "threaded-resolver" as a feature
+- test506: skip if threaded-resolver
+- cmake: remove spurious "-l" from linker flags
+- cmake: add CURL_WERROR for enabling "warning as errors"
+- memdebug: don't setbuf() if the file open failed
+- curl_easy_escape.3: mention the (lack of) encoding
+- test1452: add telnet negotiation
+- CURLOPT_POSTFIELDS.3: explain the 100-continue magic better
+- cmake: offer CMAKE_DEBUG_POSTFIX when building with MSVC
+- tests/valgrind.supp: supress OpenSSL false positive seen on travis
+- curl_setup_once: Remove ERRNO/SET_ERRNO macros
+- curl-compilers.m4: disable warning spam with Cygwin's clang
+- ldap: fix MinGW compiler warning
+- make: fix docs build on OpenBSD
+- curl_setup: always define WIN32_LEAN_AND_MEAN on Windows
+- system.h: include winsock2.h before windows.h
+- winbuild: build with warning level 4
+- rtspd: fix MSVC level 4 warning
+- sockfilt: suppress conversion warning with explicit cast
+- libtest: fix MSVC warning C4706
+- darwinssl: fix pinnedpubkey build error
+- tests/server/resolve.c: fix deprecation warning
+- nss: fix a possible use-after-free in SelectClientCert()
+- checksrc: escape open brace in regex
+- multi: mention integer overflow risk if using > 500 million sockets
+- darwinssl: fix --tlsv1.2 regression
+- timeval: struct curltime is a struct timeval replacement
+- curl_rtmp: fix a compiler warning
+- include.d: clarify that it concerns the response headers
+- cmake: support make uninstall
+- include.d: clarify --include is only for response headers
+- libcurl: Stop using error codes defined under CURL_NO_OLDIES
+- http: fix response code parser to avoid integer overflow
+- configure: fix the check for IdnToUnicode
+- multi: fix request timer management
+- curl_threads: fix MSVC compiler warning
+- travis: build on osx with openssl
+- travis: build on osx with libressl
+- CURLOPT_NETRC.3: mention the file name on windows
+- cmake: set MSVC warning level to 4
+- netrc: skip lines starting with '#'
+- darwinssl: fix curlssl_sha256sum() compiler warnings on first argument
+- BUILD.WINDOWS: mention buildconf.bat for builds off git
+- darwinssl: silence compiler warnings
+- travis: build on osx with darwinssl
+- FTP: skip unnecessary CWD when in nocwd mode
+- gssapi: fix memory leak of output token in multi round context
+- getparameter: avoid returning uninitialized 'usedarg'
+- curl (debug build) easy_events: make event data static
+- curl: detect and bail out early on parameter integer overflows
+- configure: fix recv/send/select detection on Android
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 7.54.1-0
 - curl: show the libcurl release date in --version output
 - CVE-2017-9502: default protocol drive letter buffer overflow

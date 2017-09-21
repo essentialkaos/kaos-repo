@@ -53,8 +53,8 @@
 
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
-Version:           2.2.5
-Release:           1%{?dist}
+Version:           2.2.6
+Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
 URL:               http://main.slony.info
@@ -209,6 +209,14 @@ fi
 ########################################################################################
 
 %changelog
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-0
+- slonik_build_env can now accept multiple -schema options on the command line
+- Support for PG10. This involved changes to PG version detection
+- Disallow createEvent and data changes in the same transaction.
+- Fix some failover issues when doing a multi-node failover with a cascade node
+- Bug 341 - suppress log trigger/deny when running in 'local' mode
+- Fix issue when receiving DDL from non origin nodes
+
 * Wed Dec 07 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.5-1
 - Added systemd support
 

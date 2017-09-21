@@ -37,13 +37,13 @@
 
 Summary:            Video Acceleration (VA) API for Linux
 Name:               libva
-Version:            1.7.0
+Version:            1.8.3
 Release:            0%{?dist}
 Group:              System Environment/Libraries
 License:            MIT
-URL:                http://freedesktop.org/wiki/Software/vaapi
+URL:                https://github.com/01org/libva
 
-Source0:            https://www.freedesktop.org/software/vaapi/releases/%{name}/%{name}-%{version}.tar.bz2
+Source0:            https://github.com/01org/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -87,6 +87,7 @@ Libva headers and libraries which provides the VA API video acceleration API.
 %build
 libtoolize -f
 autoreconf -fi
+
 %configure --disable-static --enable-glx
 
 %{__make} %{?_smp_mflags}
@@ -110,14 +111,6 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc COPYING NEWS
-%{_bindir}/avcenc
-%{_bindir}/h264encode
-%{_bindir}/jpegenc
-%{_bindir}/loadjpeg
-%{_bindir}/mpeg2vaenc
-%{_bindir}/mpeg2vldemo
-%{_bindir}/putsurface
-%{_bindir}/vainfo
 %{_libdir}/%{name}*.so*
 %{_pkgconfigdir}/%{name}*.pc
 
@@ -126,12 +119,13 @@ rm -rf %{buildroot}
 %{_includedir}/va/*.h
 %{_libdir}/%{name}*.so
 %{_libdir}/%{name}*.la
-%{_libdir}/dri/dummy_drv_video.so
-%{_libdir}/dri/dummy_drv_video.la
 
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
+- Updated to latest version
+
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 1.7.0-0
 - Updated to latest version
   + Bump VA API version to 0.39

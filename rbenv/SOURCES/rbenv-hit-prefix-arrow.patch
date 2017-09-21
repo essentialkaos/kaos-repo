@@ -1,0 +1,12 @@
+diff -urN rbenv-1.1.1-orig/libexec/rbenv-versions rbenv-1.1.1/libexec/rbenv-versions
+--- rbenv-1.1.1-orig/libexec/rbenv-versions	2017-08-07 12:34:46.003506990 +0200
++++ rbenv-1.1.1/libexec/rbenv-versions	2017-08-15 11:47:16.000000000 +0200
+@@ -69,7 +69,7 @@
+   current_version=""
+   include_system=""
+ else
+-  hit_prefix="* "
++  hit_prefix="→ "
+   miss_prefix="  "
+   current_version="$(rbenv-version-name || true)"
+   include_system="1"

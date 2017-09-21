@@ -39,17 +39,17 @@
 
 Summary:            A minimalistic plugin API for video effects
 Name:               frei0r
-Version:            1.5
+Version:            1.6.1
 Release:            0%{?dist}
 License:            GPLv2+
 Group:              System Environment/Libraries
 URL:                http://frei0r.dyne.org
 
-Source0:            https://github.com/ddennedy/%{name}/archive/v%{version}.tar.gz
+Source0:            https://github.com/dyne/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc automake libtool
+BuildRequires:      make gcc gcc-c++ automake libtool
 BuildRequires:      autoconf opencv-devel >= 1.0.0 gavl-devel >= 0.2.3
 
 Provides:           %{name} = %{version}-%{release}
@@ -95,7 +95,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog README TODO
+%doc AUTHORS COPYING ChangeLog README.md TODO
 %{_includedir}/%{name}.h
 %{_docdir}/%{pkg_name}/*
 %{_libdir}/%{name}-1/*.so
@@ -104,6 +104,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Updated to latest stable release
+
 * Wed Apr 13 2016 Gleb Goncharov <yum@gongled.ru> - 1.5-0
 - Updated to latest version 
 

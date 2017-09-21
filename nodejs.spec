@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.11.0
+Version:            6.11.3
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,7 +116,32 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
-* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.3-0
+- Codesigning is fixed on macOS
+- Snapshots are turned back on!!!
+- win32 volume-relative paths are working again!
+- v6.x can now build with ICU 59
+
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.2-0
+- add mips64el to valid_arch
+- Updated root certificates based on NSS 3.30
+- upgrade OpenSSL to version 1.0.2.l
+- parse errors are now reported when NODE_DEBUG=http
+- Agent construction can now be envoked without 'new'
+- node will now throw an Error when zlib rejects the value of windowBits,
+  instead of crashing
+
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.1-0
+- Disable V8 snapshots - The hashseed embedded in the snapshot is currently the
+  same for all runs of the binary
+- CVE-2017-1000381 - The c-ares function ares_parse_naptr_reply(), which is
+  used for parsing NAPTR responses, could be triggered to read memory outside
+  of the given input buffer if the passed in DNS response packet was crafted in
+  a particular way. This patch checks that there is enough data for the required
+  elements of an NAPTR record (2 int16, 3 bytes for string lengths) before
+  processing a record
+
+* Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.0-0
 - build: support for building mips64el
 - cluster: disconnect() now returns a reference to the disconnected worker
 - crypto: ability to select cert store at runtime

@@ -6,14 +6,14 @@
 
 Summary:         An audio codec for use in low-delay speech and audio communication
 Name:            opus
-Version:         1.1.5
+Version:         1.2.1
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
 URL:             http://www.opus-codec.org
 
-Source0:         https://ftp.osuosl.org/pub/xiph/releases/%{name}/%{name}-%{version}.tar.gz
-Source1:         http://tools.ietf.org/rfc/rfc6716.txt 
+Source0:         https://archive.mozilla.org/pub/%{name}/%{name}-%{version}.tar.gz
+Source1:         http://tools.ietf.org/rfc/rfc6716.txt
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

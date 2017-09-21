@@ -120,7 +120,7 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.15.2
+Version:            1.15.3
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -147,15 +147,18 @@ Requires:           python3-sssdconfig = %{version}-%{release}
 Requires:           python-sssdconfig = %{version}-%{release}
 %endif
 
-BuildRequires:      autoconf automake libtool m4 popt-devel libtalloc-devel libtevent-devel 
-BuildRequires:      libtdb-devel libldb-devel libdhash-devel >= 0.4.2 libcollection-devel
-BuildRequires:      libini_config-devel >= 1.1 dbus-devel dbus-libs openldap-devel
-BuildRequires:      pam-devel nss-devel nspr-devel pcre-devel libxslt libxml2
-BuildRequires:      docbook-style-xsl krb5-devel c-ares-devel python-devel check-devel
-BuildRequires:      doxygen libselinux-devel libsemanage-devel bind-utils 
-BuildRequires:      keyutils-libs-devel gettext-devel pkgconfig findutils glib2-devel
+BuildRequires:      autoconf automake libtool m4 popt-devel libtalloc-devel
+BuildRequires:      libtevent-devel libtdb-devel libldb-devel
+BuildRequires:      libdhash-devel >= 0.4.2 libcollection-devel
+BuildRequires:      libini_config-devel >= 1.1 dbus-devel dbus-libs
+BuildRequires:      openldap-devel pam-devel nss-devel nspr-devel pcre-devel
+BuildRequires:      libxslt libxml2 docbook-style-xsl krb5-devel c-ares-devel
+BuildRequires:      python-devel check-devel doxygen libselinux-devel
+BuildRequires:      libsemanage-devel bind-utils keyutils-libs-devel
+BuildRequires:      gettext-devel pkgconfig findutils glib2-devel
 BuildRequires:      selinux-policy-targeted samba4-devel libsmbclient-devel
-BuildRequires:      libnl3-devel http-parser-devel jansson-devel
+BuildRequires:      libnl3-devel http-parser-devel jansson-devel libuuid-devel
+BuildRequires:      libcurl-devel
 
 %if 0%{?fedora}
 BuildRequires:      libcmocka-devel >= 1.0.0
@@ -682,6 +685,17 @@ License:            GPLv3+ and LGPLv3+
 %description winbind-idmap
 The idmap_sss module provides a way for Winbind to call SSSD to map UIDs/GIDs
 and SIDs.
+
+###############################################################################
+
+%package kcm
+Summary:            SSSD Kerberos Cache Manager
+Group:              Applications/System
+License:            GPLv3+ and LGPLv3+
+
+%description kcm
+The KCM server keeps track of each credential caches's owner and performs
+access check control based on the UID and GID of the KCM client.
 
 ###############################################################################
 
@@ -1229,9 +1243,27 @@ fi
 %{_libdir}/samba/idmap/sss.so
 %{_mandir}/man8/idmap_sss.8*
 
+%files kcm
+%defattr(-,root,root,-)
+%{_includedir}/sss_certmap.h
+%{_libdir}/libsss_certmap.so*
+%{_libdir}/pkgconfig/sss_certmap.pc
+%{_mandir}/man5/sss-certmap.5*
+%{_mandir}/man8/sssd-kcm.8*
+%if (0%{?use_systemd} == 1)
+%{_unitdir}/sssd-kcm.service
+%{_unitdir}/sssd-kcm.socket
+%endif
+%attr(4750,root,%{service_group}) %{_libexecdir}/%{name}/sssd_kcm
+%{_datadir}/sssd-kcm/kcm_default_ccache
+
 ###############################################################################
 
 %changelog
+* Tue Aug 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.15.3-0
+- Updated to latest stable release
+- Improved init script
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.15.2-0
 - Updated to latest stable release
 
