@@ -91,5 +91,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Thu Sep 07 2017 Gleb Goncharov <inbox@gongled.ru> - 1.4.0-0
-- Initial build.
-
+- Initial build
