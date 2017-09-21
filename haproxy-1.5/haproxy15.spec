@@ -58,7 +58,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.5.19
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           GPLv2+
 Group:             System Environment/Daemons
 URL:               http://haproxy.1wt.eu
@@ -253,6 +253,9 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-2
+- Fixed systemd ExecReload handler
+
 * Mon Aug 14 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-1
 - Added ExecReload handler to systemd unit
 
