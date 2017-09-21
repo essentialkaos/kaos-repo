@@ -44,8 +44,6 @@
 %define __systemctl       %{_bindir}/systemctl
 
 %define _statdpath        %{_sharedstatedir}/nfs/statd
-%define _pkgdir           %{_prefix}/lib/systemd
-
 %define all_32bit_archs   i386 i486 i586 i686 athlon ppc sparcv9
 
 %define rpcuser_name      rpcuser
@@ -177,15 +175,15 @@ rm -rf %{buildroot}/*
 install -d %{buildroot}%{_sbin}
 install -d %{buildroot}%{_sbindir}
 install -d %{buildroot}%{_libexecdir}/%{name}
-install -d %{buildroot}%{_pkgdir}/system
-install -d %{buildroot}%{_pkgdir}/system-generators
+install -d %{buildroot}%{_unitdir}/../system
+install -d %{buildroot}%{_unitdir}/../system-generators
 install -d %{buildroot}%{_mandir}/man8
 install -d %{buildroot}%{_sysconfdir}/sysconfig
 install -d %{buildroot}%{_sysconfdir}/request-key.d
 install -d %{buildroot}%{_sysconfdir}/modprobe.d
 install -d %{buildroot}%{_sysconfdir}/exports.d
 install -d %{buildroot}/run/sysconfig
-install -d %{buildroot}%{_pkgdir}/scripts
+install -d %{buildroot}%{_unitdir}/../scripts
 install -d %{buildroot}%{_sharedstatedir}/nfs/rpc_pipefs
 install -d %{buildroot}%{_sharedstatedir}/nfs/statd/sm
 install -d %{buildroot}%{_sharedstatedir}/nfs/statd/sm.bak
@@ -328,7 +326,7 @@ fi
 %{_sbindir}/nfsidmap
 %{_sbindir}/blkmapd
 %{_mandir}/*/*
-%{_pkgdir}/*/*
+%{_unitdir}/../*/*
 %attr(755,root,root) /usr/libexec/nfs-utils/nfs-utils_env.sh
 %attr(4755,root,root) /sbin/mount.nfs
 %{_sbin}/mount.nfs4
