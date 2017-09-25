@@ -60,7 +60,7 @@
 Summary:          A parallel remote execution system
 Name:             salt
 Version:          2017.7.1
-Release:          1%{?dist}
+Release:          2%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
@@ -294,6 +294,9 @@ install -pm 644 %{SOURCE10} .
 install -pm 644 %{SOURCE11} %{buildroot}%{_sysconfdir}/logrotate.d/salt
 install -pm 644 %{SOURCE12} %{buildroot}%{_sysconfdir}/bash_completion.d/salt.bash
 
+%clean
+rm -rf %{buildroot}
+
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 
 %preun master
@@ -335,53 +338,44 @@ fi
 %else
 
 %preun master
-%if 0%{?systemd_preun:1}
-  %systemd_preun salt-master.service
-%else
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable salt-master.service > /dev/null 2>&1 || :
   %{__sysctl} stop salt-master.service &>/dev/null || :
 fi
-%endif
 
 %preun syndic
-%if 0%{?systemd_preun:1}
-  %systemd_preun salt-syndic.service
-%else
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable salt-syndic.service > /dev/null 2>&1 || :
   %{__sysctl} stop salt-syndic.service &>/dev/null || :
 fi
-%endif
 
 %preun minion
-%if 0%{?systemd_preun:1}
-  %systemd_preun salt-minion.service
-%else
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable salt-minion.service > /dev/null 2>&1 || :
   %{__sysctl} stop salt-minion.service &>/dev/null || :
 fi
-%endif
 
 %post master
-%if 0%{?systemd_post:1}
-  %systemd_post salt-master.service
-%else
-  %{__sysctl} daemon-reload &>/dev/null || :
-%endif
+if [[ $1 -eq 1 ]] ; then
+%{__sysctl} preset salt-master.service &>/dev/null || :
+fi
+
+if [[ $1 -eq 2 ]] ; then
+%{__sysctl} daemon-reload &>/dev/null || :
+%{__sysctl} restart salt-master.service &>/dev/null || :
+fi
 
 %post minion
-%if 0%{?systemd_post:1}
-  %systemd_post salt-minion.service
-%else
-  %{__sysctl} daemon-reload &>/dev/null || :
-%endif
+if [[ $1 -eq 1 ]] ; then
+%{__sysctl} preset salt-minion.service &>/dev/null || :
+fi
+
+if [[ $1 -eq 2 ]] ; then
+%{__sysctl} daemon-reload &>/dev/null || :
+%{__sysctl} restart salt-minion.service &>/dev/null || :
+fi
 
 %endif
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -472,12 +466,15 @@ rm -rf %{buildroot}
 
 %files package-manager
 %defattr(-,root,root)
-/usr/share/man/man1/spm.1.*
+%{_mandir}/man1/spm.1.*
 %{_bindir}/spm
 
 ################################################################################
 
 %changelog
+* Mon Sep 25 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.7.1-2
+- Improved spec
+
 * Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.7.1-1
 - Improved logging settings
 

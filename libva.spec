@@ -38,7 +38,7 @@
 Summary:            Video Acceleration (VA) API for Linux
 Name:               libva
 Version:            1.8.3
-Release:            0%{?dist}
+Release:            1%{?dist}
 Group:              System Environment/Libraries
 License:            MIT
 URL:                https://github.com/01org/libva
@@ -102,9 +102,11 @@ rm -rf %{buildroot}
 
 ###############################################################################
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ###############################################################################
 
@@ -123,6 +125,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Sep 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-1
+- Minor spec improvement
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
 - Updated to latest version
 
