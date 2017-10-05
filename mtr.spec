@@ -30,6 +30,8 @@ into one program.
 export CFLAGS="%{optflags} -fPIE"
 export LDFLAGS="-z now -pie"
 
+echo "%{version}" > .tarball-version
+
 autoreconf -fi
 
 %configure --without-gtk
