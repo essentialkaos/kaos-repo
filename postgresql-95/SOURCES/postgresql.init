@@ -17,10 +17,10 @@ INIT_DIR="/etc/init.d"
 
 ###############################################################################
 
-VERSION={{VERSION}}
-MAJOR_VERSION={{MAJOR_VERSION}}
-PKG_VERSION={{PKG_VERSION}}
-PREV_VERSION={{PREV_VERSION}}
+VERSION="{{VERSION}}"
+MAJOR_VERSION="{{MAJOR_VERSION}}"
+PKG_VERSION="{{PKG_VERSION}}"
+PREV_VERSION="{{PREV_VERSION}}"
 USER_NAME="{{USER_NAME}}"
 GROUP_NAME="{{GROUP_NAME}}"
 
@@ -32,19 +32,20 @@ kv[prog_name]="postgresql"
 
 kv.readSysconfig "${kv[prog_name]}-${MAJOR_VERSION}"
 
-kv[lock_file]=${kv[lock_dir]}/${kv[prog_name]}${PKG_VERSION}
-kv[pid_file]=${kv[pid_dir]}/${kv[prog_name]}${PKG_VERSION}.pid
+kv[lock_file]="${kv[lock_dir]}/${kv[prog_name]}${PKG_VERSION}"
+kv[pid_file]="${kv[pid_dir]}/${kv[prog_name]}${PKG_VERSION}.pid"
 
-pg_engine=${PG_ENGINE:-/usr/${short_name}-${MAJOR_VERSION}/bin}
-pg_postmaster=${PG_POSTMASTER:-${pg_engine}/postmaster}
-pg_data=${PG_DATA:-/var/lib/${short_name}/${MAJOR_VERSION}/data}
-pg_log=${PG_LOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgstartup.log}
-pg_uplog=${PG_UPLOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgupgrade.log}
-timeout=${TIMEOUT:-300}
+pg_engine="${PG_ENGINE:-/usr/${short_name}-${MAJOR_VERSION}/bin}"
+pg_postmaster="${PG_POSTMASTER:-${pg_engine}/postmaster}"
+pg_data="${PG_DATA:-/var/lib/${short_name}/${MAJOR_VERSION}/data}"
+pg_log="${PG_LOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgstartup.log}"
+pg_uplog="${PG_UPLOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgupgrade.log}"
+timeout="${TIMEOUT:-300}"
+disable_auto_numa="${DISABLE_AUTO_NUMA}"
 
-pg_ctl=$pg_engine/pg_ctl
-pg_upgrade=$pg_engine/pg_upgrade
-pg_initdb=$pg_engine/initdb
+pg_ctl="$pg_engine/pg_ctl"
+pg_upgrade="$pg_engine/pg_upgrade"
+pg_initdb="$pg_engine/initdb"
 
 export pg_data
 export pg_port
@@ -73,18 +74,10 @@ kv.disableOutputRedirect "start" "pre"
 
 ###############################################################################
 
-prepare() {
-  local has_errors=""
-
-  [[ ! -f $pg_postmaster ]] && has_errors=true && kv.error "Error! File $pg_postmaster is not exist."
-  [[ ! -x $pg_postmaster ]] && has_errors=true && kv.error "Error! File $pg_postmaster is not executable."
-
-  [[ $has_errors ]] && kv.exit $ACTION_ERROR
-}
-
-###############################################################################
-
 preStartServiceHandler() {
+  [[ ! -f "$pg_postmaster" ]] && return $ACTION_ERROR
+  [[ ! -x "$pg_postmaster" ]] && return $ACTION_ERROR
+
   createLog || return $ACTION_ERROR
   checkData || return $ACTION_ERROR
 }
@@ -92,12 +85,16 @@ preStartServiceHandler() {
 startServiceHandler() {
   kv[log]="$pg_log"
 
-  kv.run $pg_ctl start -D "$pg_data" -s -w -t $timeout
+  if [[ -n "$disable_auto_numa" || $(getNumaNodesCount) == "1" ]] ; then
+    kv.run "$pg_ctl" start -D "$pg_data" -s -w -t "$timeout"
+  else
+    kv.run numactl --interleave=all "$pg_ctl" start -D "$pg_data" -s -w -t "$timeout"
+  fi
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
 
   if kv.getStartStatus "$pg_data/postmaster.pid" true ; then
-    local pid=`head -1 "$pg_data/postmaster.pid" 2>/dev/null`
+    local pid=$(head -1 "$pg_data/postmaster.pid" 2>/dev/null)
 
     kv.createPid "$pid"
 
@@ -108,9 +105,9 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  local pid=`kv.getPid`
+  local pid=$(kv.getPid)
 
-  kv.run $pg_ctl stop -D "$pg_data" -s -m fast
+  kv.run "$pg_ctl" stop -D "$pg_data" -s -m fast
 
   if kv.getStopStatus ; then
     return $ACTION_OK
@@ -125,7 +122,7 @@ stopServiceHandler() {
 }
 
 initdb() {
-  if [[ -f $pg_data/PG_VERSION ]] ; then
+  if [[ -f "$pg_data/PG_VERSION" ]] ; then
     kv.error "Error! Data directory is not empty." $ACTION_ERROR
   fi
 
@@ -145,36 +142,36 @@ upgrade() {
 
   local cur_version="${1-$MAJOR_VERSION}"
   local prev_version="${2-$PREV_VERSION}"
-  local cur_init=$PROG_NAME-$cur_version
-  local prev_init=$PROG_NAME-$prev_version
+  local cur_init="$PROG_NAME-$cur_version"
+  local prev_init="$PROG_NAME-$prev_version"
 
-  if [[ ! -f $INIT_DIR/$cur_init ]] ; then
+  if [[ ! -f "$INIT_DIR/$cur_init" ]] ; then
     kv.error "Couldn't find init script $INIT_DIR/$cur_init" $ACTION_ERROR
   fi
 
-  if [[ ! -f $INIT_DIR/$prev_init ]] ; then
+  if [[ ! -f "$INIT_DIR/$prev_init" ]] ; then
     kv.error "Couldn't find init script $INIT_DIR/$prev_init"
     kv.error "Please install ${PROG_NAME}${prev_version/./}-server RPM first."
     return $ACTION_ERROR
   fi
 
-  if [[ ! -x $pg_engine/pg_upgrade ]] ; then
+  if [[ ! -x "$pg_engine/pg_upgrade" ]] ; then
     kv.show "Please install the ${PROG_NAME}${PKG_VERSION}-contrib RPM for pg_upgrade command."
     return $ACTION_ERROR
   fi
 
-  local old_data=`sed -n 's/^PGDATA=//p' $INIT_DIR/$PROG_NAME-$cur_version`
-  local old_port=`sed -n 's/^PGPORT=//p' $INIT_DIR/$PROG_NAME-$prev_version`
-  local new_data=`sed -n 's/^PGDATA=//p' $INIT_DIR/$PROG_NAME-$cur_version`
-  local new_port=`sed -n 's/^PGPORT=//p' $INIT_DIR/$PROG_NAME-$prev_version`
+  local old_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/$PROG_NAME-$cur_version")
+  local old_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/$PROG_NAME-$prev_version")
+  local new_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/$PROG_NAME-$cur_version")
+  local new_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/$PROG_NAME-$prev_version")
 
-  /sbin/service ${PROG_NAME}${PKG_VERSION} initdb
+  /sbin/service "${PROG_NAME}${PKG_VERSION}" initdb
 
   if [[ $? -ne 0 ]] ; then
     kv.error "Initialization failed!" $ACTION_ERROR
   fi
 
-  kv.run $pg_upgrade -b /usr/${SHORT_NAME}-${prev_version}/bin/ -B $pg_engine/ -d "$old_data" -D "$new_data" -p $old_port -P $new_port -c
+  kv.run "$pg_upgrade" -b "/usr/${SHORT_NAME}-${prev_version}/bin/" -B $pg_engine/ -d "$old_data" -D "$new_data" -p "$old_port" -P "$new_port" -c
 
   if [[ $? -ne 0 ]] ; then
     kv.error "Cluster check failed. Please see the output above." $ACTION_ERROR
@@ -182,18 +179,18 @@ upgrade() {
 
   kv.show "Clusters checked successfully, proceeding with upgrade from $prev_version to $cur_version..."
 
-  /sbin/service $prev_init stop
+  /sbin/service "$prev_init" stop
 
-  rm -f $pg_uplog &> /dev/null
-  touch $pg_uplog || return 1
-  chown $USER_NAME:$GROUP_NAME $pg_uplog
-  chmod go-rwx $PGUPLOG
+  rm -f "$pg_uplog" &> /dev/null
+  touch "$pg_uplog" || return 1
+  chown "$USER_NAME:$GROUP_NAME" "$pg_uplog"
+  chmod go-rwx "$PGUPLOG"
 
   kv.restoreSEContext "$pg_uplog"
 
   kv.show "Performing upgrade..."
 
-  kv.run $pg_upgrade -b /usr/${SHORT_NAME}-${prev_version}/bin/ -B $pg_engine/ -d "$old_data" -D "$new_data" -p $old_port -P $new_port
+  kv.run "$pg_upgrade" -b "/usr/${SHORT_NAME}-${prev_version}/bin/" -B "$pg_engine/" -d "$old_data" -D "$new_data" -p "$old_port" -P "$new_port"
 
   kv.show "Upgrade complete" $GREEN
 }
@@ -201,7 +198,7 @@ upgrade() {
 reload() {
   kv.showProcessMessage "Reloading configs"
 
-  kv.run $pg_ctl reload -D "$pg_data" -s
+  kv.run "$pg_ctl" reload -D "$pg_data" -s
 
   local status=$?
 
@@ -213,7 +210,7 @@ reload() {
 promote() {
   kv.showProcessMessage "Promoting"
 
-  kv.run $pg_ctl promote -D "$pg_data" -s
+  kv.run "$pg_ctl" promote -D "$pg_data" -s
 
   local status=$?
 
@@ -229,38 +226,54 @@ initNewDB() {
 
   local loc="$1"
 
-  [[ -z "$loc" ]] && loc=`getLocale`
+  [[ -z "$loc" ]] && loc=$(getLocale)
 
-  if [[ ! -e $pg_data && ! -h $pg_data ]] ; then
-    mkdir -p $pg_data || return $ACTION_ERROR
-    chown $USER_NAME:$GROUP_NAME $pg_data
-    chmod go-rwx $pg_data
+  if [[ ! -e "$pg_data" && ! -h "$pg_data" ]] ; then
+    mkdir -p "$pg_data" || return $ACTION_ERROR
+    chown "$USER_NAME:$GROUP_NAME" "$pg_data"
+    chmod go-rwx "$pg_data"
   fi
 
   kv.restoreSEContext "$pg_data"
 
   createLog || return $ACTION_ERROR
 
-  kv.run $pg_initdb --pgdata="$pg_data" --auth="ident" --locale="$loc"
+  kv.run "$pg_initdb" --pgdata="$pg_data" --auth="ident" --locale="$loc"
 
-  mkdir $pg_data/pg_log
-  chown $USER_NAME:$GROUP_NAME $pg_data/pg_log
-  chmod go-rwx $pg_data/pg_log
+  mkdir "$pg_data/pg_log"
+  chown "$USER_NAME:$GROUP_NAME" "$pg_data/pg_log"
+  chmod go-rwx "$pg_data/pg_log"
 
-  [[ -f $pg_data/PG_VERSION ]] && return $ACTION_OK || return $ACTION_ERROR
+  if [[ -f "$pg_data/PG_VERSION" ]] ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
 }
 
 getLocale() {
-  local lang=`locale | head -1 | cut -f2 -d= | sed 's/"//g'`
+  local lang=$(locale | head -1 | cut -f2 -d= | sed 's/"//g')
 
-  [[ -n "$lang" ]] && echo "$lang" || echo "en_US.UTF-8"
+  if [[ -n "$lang" ]] ; then
+    echo "$lang"
+  else
+    echo "en_US.UTF-8"
+  fi
+}
+
+getNumaNodesCount() {
+  if [[ ! -x /usr/bin/numactl ]] ; then
+    echo 1
+  fi
+
+  numactl --hardware | head -1 | cut -f2 -d' '
 }
 
 ###############################################################################
 
 checkData() {
   if [[ -f "$pg_data/PG_VERSION" && -d "$pg_data/base" ]] ; then
-    if [[ `cat "$pg_data/PG_VERSION"` != "$MAJOR_VERSION" ]] ; then
+    if [[ $(cat "$pg_data/PG_VERSION") != "$MAJOR_VERSION" ]] ; then
       local docdir="(Your System's documentation directory)"
 
       [[ -d "/usr/doc/postgresql-$VERSION" ]] && docdir=/usr/doc
@@ -283,14 +296,12 @@ checkData() {
 createLog() {
   if [[ ! -e "$pg_log" && ! -h "$pg_log" ]] ; then
     touch "$pg_log" || return 1
-    chown $USER_NAME:$GROUP_NAME "$pg_log"
+    chown "$USER_NAME:$GROUP_NAME" "$pg_log"
     chmod go-rwx "$pg_log"
     kv.restoreSEContext "$pg_log"
   fi
 }
 
 ###############################################################################
-
-prepare
 
 kv.go $@
