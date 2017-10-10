@@ -44,7 +44,6 @@
 %define __systemctl       %{_bindir}/systemctl
 
 %define _statdpath        %{_sharedstatedir}/nfs/statd
-%define all_32bit_archs   i386 i486 i586 i686 athlon ppc sparcv9
 
 %define rpcuser_name      rpcuser
 %define rpcuser_group     rpcuser
@@ -97,21 +96,21 @@ Requires:             kmod keyutils quota libnfsidmap libevent >= 2.0.22
 Requires:             libtirpc >= 0.2.3-1 libblkid libcap libmount
 Requires:             gssproxy => 0.3.0-0
 
-Provides:             exportfs    = %{epoch}:%{version}-%{release}
-Provides:             nfsstat     = %{epoch}:%{version}-%{release}
-Provides:             showmount   = %{epoch}:%{version}-%{release}
-Provides:             rpcdebug    = %{epoch}:%{version}-%{release}
-Provides:             rpc.idmapd  = %{epoch}:%{version}-%{release}
-Provides:             rpc.mountd  = %{epoch}:%{version}-%{release}
-Provides:             rpc.nfsd    = %{epoch}:%{version}-%{release}
-Provides:             rpc.statd   = %{epoch}:%{version}-%{release}
-Provides:             rpc.gssd    = %{epoch}:%{version}-%{release}
-Provides:             mount.nfs   = %{epoch}:%{version}-%{release}
-Provides:             mount.nfs4  = %{epoch}:%{version}-%{release}
-Provides:             umount.nfs  = %{epoch}:%{version}-%{release}
-Provides:             umount.nfs4 = %{epoch}:%{version}-%{release}
-Provides:             sm-notify   = %{epoch}:%{version}-%{release}
-Provides:             start-statd = %{epoch}:%{version}-%{release}
+Provides:             exportfs = %{version}-%{release}
+Provides:             nfsstat = %{version}-%{release}
+Provides:             showmount = %{version}-%{release}
+Provides:             rpcdebug = %{version}-%{release}
+Provides:             rpc.idmapd = %{version}-%{release}
+Provides:             rpc.mountd = %{version}-%{release}
+Provides:             rpc.nfsd = %{version}-%{release}
+Provides:             rpc.statd = %{version}-%{release}
+Provides:             rpc.gssd = %{version}-%{release}
+Provides:             mount.nfs = %{version}-%{release}
+Provides:             mount.nfs4 = %{version}-%{release}
+Provides:             umount.nfs = %{version}-%{release}
+Provides:             umount.nfs4 = %{version}-%{release}
+Provides:             sm-notify = %{version}-%{release}
+Provides:             start-statd = %{version}-%{release}
 
 Requires(pre):        shadow-utils >= 4.0.3-25
 Requires(pre):        util-linux
@@ -161,16 +160,16 @@ CFLAGS="`echo $RPM_OPT_FLAGS $ARCH_OPT_FLAGS $PIE -D_FILE_OFFSET_BITS=64`"
     CFLAGS="$CFLAGS" \
     CPPFLAGS="$DEFINES" \
     LDFLAGS="-pie" \
+    --enable-libmount-mount \
     --enable-mountconfig \
     --enable-ipv6 \
     --with-statdpath=%{_statdpath} \
-    --enable-libmount-mount \
     --with-systemd
 
-make %{?_smp_mflags} all
+%{__make} %{?_smp_mflags} all
 
 %install
-rm -rf %{buildroot}/*
+rm -rf %{buildroot}
 
 install -d %{buildroot}%{_sbin}
 install -d %{buildroot}%{_sbindir}
@@ -189,7 +188,7 @@ install -d %{buildroot}%{_sharedstatedir}/nfs/statd/sm
 install -d %{buildroot}%{_sharedstatedir}/nfs/statd/sm.bak
 install -d %{buildroot}%{_sharedstatedir}/nfs/v4recovery
 
-make DESTDIR=%{buildroot} install
+%{make_install}
 
 # rpc.svcgssd is no longer supported.
 rm -rf %{buildroot}%{_unitdir}/rpc-svcgssd.service
@@ -203,10 +202,10 @@ install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/modprobe.d/lockd.conf
 
 # create symlinks for backward compatibility with an older versions nfs-utils
 pushd %{buildroot}%{_unitdir}
-    ln -s nfs-server.service nfs.service
-    ln -s rpc-gssd.service nfs-secure.service
-    ln -s nfs-idmapd.service  nfs-idmap.service
-    ln -s rpc-statd.service nfs-lock.service
+  ln -s nfs-server.service nfs.service
+  ln -s rpc-gssd.service nfs-secure.service
+  ln -s nfs-idmapd.service  nfs-idmap.service
+  ln -s rpc-statd.service nfs-lock.service
 popd
 
 touch %{buildroot}%{_sharedstatedir}/nfs/rmtab
@@ -216,57 +215,61 @@ mv %{buildroot}%{_sbindir}/rpc.statd %{buildroot}/sbin
 ###############################################################################
 
 %clean
-rm -rf %{buildroot}/*
+rm -rf %{buildroot}
 
 %pre
 # move files so the running service will have this applied as well
 for x in gssd idmapd ; do
-    if [[ -f /var/lock/subsys/rpc.$x ]]; then
-        mv /var/lock/subsys/rpc.$x /var/lock/subsys/rpc$x
-    fi
+  if [[ -f /var/lock/subsys/rpc.$x ]] ; then
+    mv /var/lock/subsys/rpc.$x /var/lock/subsys/rpc$x
+  fi
 done
 
 # Create rpcuser gid as long as it does not already exist
-cat /etc/group | cut -d ':' -f 1 | grep --quiet %{rpcuser_group} 2>/dev/null
-if [ "$?" -eq 1 ]; then
-    %{__groupadd} -g %{rpcuser_gid} %{rpcuser_group} >/dev/null 2>&1 || :
+cat /etc/group | cut -d ':' -f 1 | grep --quiet %{rpcuser_group} &>/dev/null
+
+if [[ $? -eq 1 ]] ; then
+  %{__groupadd} -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
 else
-    %{__groupmod} -g %{rpcuser_gid} %{rpcuser_group} >/dev/null 2>&1 || :
+  %{__groupmod} -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
 fi
 
 # Create rpcuser uid as long as it does not already exist.
-cat /etc/passwd | cut -d ':' -f 1 | grep --quiet %{rpcuser_name} 2>/dev/null
-if [ "$?" -eq 1 ]; then
-    %{__useradd} -l -c "RPC Service User" -r -g %{rpcuser_uid} \
-      -s /sbin/nologin -u %{rpcuser_uid} \
-      -d %{rpcuser_home} %{rpcuser_name} >/dev/null 2>&1 || :
+cat /etc/passwd | cut -d ':' -f 1 | grep --quiet %{rpcuser_name} &>/dev/null
+
+if [[ $? -eq 1 ]] ; then
+  %{__useradd} -l -c "RPC Service User" -r -g %{rpcuser_uid} \
+    -s /sbin/nologin -u %{rpcuser_uid} \
+    -d %{rpcuser_home} %{rpcuser_name} &>/dev/null || :
 else
-    %{__usermod} -u %{rpcuser_uid} -g %{rpcuser_uid} rpcuser >/dev/null 2>&1 || :
+  %{__usermod} -u %{rpcuser_uid} -g %{rpcuser_uid} rpcuser &>/dev/null || :
 fi
 
 # Create nfsnobody gid as long as it does not already exist
-cat /etc/group | cut -d ':' -f 1 | grep --quiet %{nfsnobody_group} 2>/dev/null
-if [ "$?" -eq 1 ]; then
-    %{__groupadd} -g %{nfsnobody_gid} %{nfsnobody_group} >/dev/null 2>&1 || :
+cat /etc/group | cut -d ':' -f 1 | grep --quiet %{nfsnobody_group} &>/dev/null
+if [[ "$?" -eq 1 ]] ; then
+  %{__groupadd} -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
 else
-    %{__groupmod} -g %{nfsnobody_gid} %{nfsnobody_group} >/dev/null 2>&1 || :
+  %{__groupmod} -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
 fi
 
 # Create nfsnobody uid as long as it does not already exist.
-cat /etc/passwd | cut -d ':' -f 1 | grep --quiet %{nfsnobody_name} 2>/dev/null
-if [ $? -eq 1 ]; then
-    %{__useradd} -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
-      -s /sbin/nologin -u %{nfsnobody_uid} \
-      -d %{nfsnobody_home} %{nfsnobody_name} >/dev/null 2>&1 || :
+cat /etc/passwd | cut -d ':' -f 1 | grep --quiet %{nfsnobody_name} &>/dev/null
+
+if [[ $? -eq 1 ]]; then
+  %{__useradd} -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
+    -s /sbin/nologin -u %{nfsnobody_uid} \
+    -d %{nfsnobody_home} %{nfsnobody_name} &>/dev/null || :
 else
-    %{__usermod} -u %{nfsnobody_uid} -g %{nfsnobody_uid} %{nfsnobody_name} >/dev/null 2>&1 || :
+    %{__usermod} -u %{nfsnobody_uid} -g %{nfsnobody_uid} %{nfsnobody_name} &>/dev/null || :
 fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
-    %{__systemctl} enable nfs-client.target >/dev/null 2>&1 || :
-    %{__systemctl} start nfs-client.target  >/dev/null 2>&1 || :
+  %{__systemctl} enable nfs-client.target &>/dev/null || :
+  %{__systemctl} start nfs-client.target &>/dev/null || :
 fi
+
 %systemd_post nfs-config
 %systemd_post nfs-server
 
@@ -275,17 +278,17 @@ chown -R rpcuser:rpcuser %{rpcuser_home}/statd
 
 %preun
 if [[ $1 -eq 0 ]]; then
-    %systemd_preun nfs-client.target
-    %systemd_preun nfs-server.server
+  %systemd_preun nfs-client.target
+  %systemd_preun nfs-server.server
 
-    rm -rf /var/lib/nfs/statd /var/lib/nfs/v4recovery
+  rm -rf /var/lib/nfs/statd /var/lib/nfs/v4recovery
 fi
 
 %postun
 %systemd_postun_with_restart nfs-client.target
 %systemd_postun_with_restart nfs-server
 
-%{__systemctl} --system daemon-reload >/dev/null 2>&1 || :
+%{__systemctl} --system daemon-reload &>/dev/null || :
 
 ###############################################################################
 
@@ -336,5 +339,5 @@ fi
 ###############################################################################
 
 %changelog
-* Tue Aug 01 2017 Gleb Goncharov <ggoncharov@fun-box.ru> 1.3.4-0
-- Initial build.
+* Tue Aug 01 2017 Gleb Goncharov <ggoncharov@fun-box.ru> 1.3.4-1
+- Initial build
