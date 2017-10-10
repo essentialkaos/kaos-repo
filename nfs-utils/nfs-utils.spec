@@ -62,8 +62,8 @@
 
 Summary:              NFS utilities and supporting clients and daemons for the kernel NFS server
 Name:                 nfs-utils
-Version:              1.3.4
 Epoch:                1
+Version:              1.3.4
 Release:              0%{?dist}
 License:              MIT and GPLv2 and GPLv2+ and BSD
 Group:                System Environment/Daemons
@@ -96,21 +96,21 @@ Requires:             kmod keyutils quota libnfsidmap libevent >= 2.0.22
 Requires:             libtirpc >= 0.2.3-1 libblkid libcap libmount
 Requires:             gssproxy => 0.3.0-0
 
-Provides:             exportfs = %{version}-%{release}
-Provides:             nfsstat = %{version}-%{release}
-Provides:             showmount = %{version}-%{release}
-Provides:             rpcdebug = %{version}-%{release}
-Provides:             rpc.idmapd = %{version}-%{release}
-Provides:             rpc.mountd = %{version}-%{release}
-Provides:             rpc.nfsd = %{version}-%{release}
-Provides:             rpc.statd = %{version}-%{release}
-Provides:             rpc.gssd = %{version}-%{release}
-Provides:             mount.nfs = %{version}-%{release}
-Provides:             mount.nfs4 = %{version}-%{release}
-Provides:             umount.nfs = %{version}-%{release}
-Provides:             umount.nfs4 = %{version}-%{release}
-Provides:             sm-notify = %{version}-%{release}
-Provides:             start-statd = %{version}-%{release}
+Provides:             exportfs = %{epoch}:%{version}-%{release}
+Provides:             nfsstat = %{epoch}:%{version}-%{release}
+Provides:             showmount = %{epoch}:%{version}-%{release}
+Provides:             rpcdebug = %{epoch}:%{version}-%{release}
+Provides:             rpc.idmapd = %{epoch}:%{version}-%{release}
+Provides:             rpc.mountd = %{epoch}:%{version}-%{release}
+Provides:             rpc.nfsd = %{epoch}:%{version}-%{release}
+Provides:             rpc.statd = %{epoch}:%{version}-%{release}
+Provides:             rpc.gssd = %{epoch}:%{version}-%{release}
+Provides:             mount.nfs = %{epoch}:%{version}-%{release}
+Provides:             mount.nfs4 = %{epoch}:%{version}-%{release}
+Provides:             umount.nfs = %{epoch}:%{version}-%{release}
+Provides:             umount.nfs4 = %{epoch}:%{version}-%{release}
+Provides:             sm-notify = %{epoch}:%{version}-%{release}
+Provides:             start-statd = %{epoch}:%{version}-%{release}
 
 Requires(pre):        shadow-utils >= 4.0.3-25
 Requires(pre):        util-linux
