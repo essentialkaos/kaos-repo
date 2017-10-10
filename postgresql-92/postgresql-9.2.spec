@@ -221,7 +221,7 @@ Group:             Applications/Databases
 
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version} %{name}-libs >= %{version}
-Requires:          kaosv >= 2.10
+Requires:          kaosv >= 2.13 numactl
 
 Provides:          %{realname}-server = %{version}-%{release}
 
