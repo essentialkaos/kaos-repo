@@ -1,0 +1,12 @@
+diff -up nfs-utils-1.3.3/utils/nfsidmap/nfsidmap.c.orig nfs-utils-1.3.3/utils/nfsidmap/nfsidmap.c
+--- nfs-utils-1.3.3/utils/nfsidmap/nfsidmap.c.orig	2016-03-16 12:29:29.054788094 -0400
++++ nfs-utils-1.3.3/utils/nfsidmap/nfsidmap.c	2016-03-16 12:31:58.234450259 -0400
+@@ -430,7 +430,7 @@ int main(int argc, char **argv)
+ 
+ 	xlog_stderr(verbose);
+ 	if ((argc - optind) != 2) {
+-		xlog_warn("Bad arg count. Check /etc/request-key.conf");
++		xlog_err("Bad arg count. Check /etc/request-key.d/request-key.conf");
+ 		xlog_warn(usage, progname);
+ 		return EXIT_FAILURE;
+ 	}

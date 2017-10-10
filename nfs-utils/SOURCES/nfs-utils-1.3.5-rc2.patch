@@ -1,0 +1,583 @@
+diff --git a/.gitignore b/.gitignore
+index 5164637..126d12c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -69,6 +69,9 @@ tests/nsm_client/nlm_sm_inter_clnt.c
+ tests/nsm_client/nlm_sm_inter_svc.c
+ tests/nsm_client/nlm_sm_inter_xdr.c
+ utils/nfsidmap/nfsidmap
++systemd/nfs-server-generator
++systemd/nfs-config.service
++systemd/rpc-gssd.service
+ # cscope database files
+ cscope.*
+ # generic editor backup et al
+diff --git a/configure.ac b/configure.ac
+index 1daf5b8..d60f3a2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -511,8 +511,20 @@ AC_SUBST([AM_CFLAGS], ["$my_am_cflags"])
+ # Make sure that $ACLOCAL_FLAGS are used during a rebuild
+ AC_SUBST([ACLOCAL_AMFLAGS], ["-I $ac_macro_dir \$(ACLOCAL_FLAGS)"])
+ 
++# make libexecdir available for substituion in config files
++# 2 "evals" needed late to expand variable names.
++AC_SUBST([_libexecdir])
++AC_CONFIG_COMMANDS_PRE([eval eval _libexecdir=$libexecdir])
++
++# make _sysconfdir available for substituion in config files
++# 2 "evals" needed late to expand variable names.
++AC_SUBST([_sysconfdir])
++AC_CONFIG_COMMANDS_PRE([eval eval _sysconfdir=$sysconfdir])
++
+ AC_CONFIG_FILES([
+ 	Makefile
++	systemd/nfs-config.service
++	systemd/rpc-gssd.service
+ 	linux-nfs/Makefile
+ 	support/Makefile
+ 	support/export/Makefile
+diff --git a/support/export/export.c b/support/export/export.c
+index e1bebce..0b8a858 100644
+--- a/support/export/export.c
++++ b/support/export/export.c
+@@ -15,6 +15,8 @@
+ #include <sys/param.h>
+ #include <netinet/in.h>
+ #include <stdlib.h>
++#include <dirent.h>
++#include <errno.h>
+ #include "xmalloc.h"
+ #include "nfslib.h"
+ #include "exportfs.h"
+@@ -96,6 +98,69 @@ export_read(char *fname)
+ }
+ 
+ /**
++ * export_d_read - read entries from /etc/exports.
++ * @fname: name of directory to read from
++ *
++ * Returns number of read entries.
++ * Based on mnt_table_parse_dir() in
++ *  util-linux-ng/shlibs/mount/src/tab_parse.c
++ */
++int
++export_d_read(const char *dname)
++{
++	int n = 0, i;
++	struct dirent **namelist = NULL;
++	int volumes = 0;
++
++
++	n = scandir(dname, &namelist, NULL, versionsort);
++	if (n < 0) {
++		if (errno == ENOENT)
++			/* Silently return */
++			return volumes;
++		xlog(L_NOTICE, "scandir %s: %s", dname, strerror(errno));
++	} else if (n == 0)
++		return volumes;
++
++	for (i = 0; i < n; i++) {
++		struct dirent *d = namelist[i];
++		size_t namesz;
++		char fname[PATH_MAX + 1];
++		int fname_len;
++
++
++		if (d->d_type != DT_UNKNOWN
++		    && d->d_type != DT_REG
++		    && d->d_type != DT_LNK)
++			continue;
++		if (*d->d_name == '.')
++			continue;
++
++#define _EXT_EXPORT_SIZ   (sizeof(_EXT_EXPORT) - 1)
++		namesz = strlen(d->d_name);
++		if (!namesz
++		    || namesz < _EXT_EXPORT_SIZ + 1
++		    || strcmp(d->d_name + (namesz - _EXT_EXPORT_SIZ),
++			      _EXT_EXPORT))
++			continue;
++
++		fname_len = snprintf(fname, PATH_MAX +1, "%s/%s", dname, d->d_name);
++		if (fname_len > PATH_MAX) {
++			xlog(L_WARNING, "Too long file name: %s in %s", d->d_name, dname);
++			continue;
++		}
++
++		volumes += export_read(fname);
++	}
++
++	for (i = 0; i < n; i++)
++		free(namelist[i]);
++	free(namelist);
++
++	return volumes;
++}
++
++/**
+  * export_create - create an in-core nfs_export record from an export entry
+  * @xep: export entry to lookup
+  * @canonical: if set, e_hostname is known to be canonical DNS name
+diff --git a/support/include/exportfs.h b/support/include/exportfs.h
+index 4cac203..f033329 100644
+--- a/support/include/exportfs.h
++++ b/support/include/exportfs.h
+@@ -135,6 +135,7 @@ int 				client_member(const char *client,
+ 						const char *name);
+ 
+ int				export_read(char *fname);
++int				export_d_read(const char *dname);
+ void				export_reset(nfs_export *);
+ nfs_export *			export_lookup(char *hname, char *path, int caconical);
+ nfs_export *			export_find(const struct addrinfo *ai,
+diff --git a/systemd/Makefile.am b/systemd/Makefile.am
+index 03f96e9..49c9b8d 100644
+--- a/systemd/Makefile.am
++++ b/systemd/Makefile.am
+@@ -39,8 +39,16 @@ endif
+ EXTRA_DIST = $(unit_files)
+ 
+ unit_dir = /usr/lib/systemd/system
++generator_dir = /usr/lib/systemd/system-generators
++
++EXTRA_PROGRAMS	= nfs-server-generator
++genexecdir = $(generator_dir)
++nfs_server_generator_LDADD = ../support/export/libexport.a \
++			     ../support/nfs/libnfs.a \
++			     ../support/misc/libmisc.a
+ 
+ if INSTALL_SYSTEMD
++genexec_PROGRAMS = nfs-server-generator
+ install-data-hook: $(unit_files)
+ 	mkdir -p $(DESTDIR)/$(unitdir)
+ 	cp $(unit_files) $(DESTDIR)/$(unitdir)
+diff --git a/systemd/nfs-config.service b/systemd/nfs-config.service
+deleted file mode 100644
+index bd69e84..0000000
+--- a/systemd/nfs-config.service
++++ /dev/null
+@@ -1,13 +0,0 @@
+-[Unit]
+-Description=Preprocess NFS configuration
+-After=local-fs.target
+-DefaultDependencies=no
+-
+-[Service]
+-Type=oneshot
+-# This service needs to run any time any nfs service
+-# is started, so changes to local config files get
+-# incorporated.  Having "RemainAfterExit=no" (the default)
+-# ensures this happens.
+-RemainAfterExit=no
+-ExecStart=/usr/libexec/nfs-utils/nfs-utils_env.sh
+diff --git a/systemd/nfs-config.service.in b/systemd/nfs-config.service.in
+new file mode 100644
+index 0000000..e89dc54
+--- /dev/null
++++ b/systemd/nfs-config.service.in
+@@ -0,0 +1,13 @@
++[Unit]
++Description=Preprocess NFS configuration
++After=local-fs.target
++DefaultDependencies=no
++
++[Service]
++Type=oneshot
++# This service needs to run any time any nfs service
++# is started, so changes to local config files get
++# incorporated.  Having "RemainAfterExit=no" (the default)
++# ensures this happens.
++RemainAfterExit=no
++ExecStart=@_libexecdir@/nfs-utils/nfs-utils_env.sh
+diff --git a/systemd/nfs-server-generator.c b/systemd/nfs-server-generator.c
+new file mode 100644
+index 0000000..f47718e
+--- /dev/null
++++ b/systemd/nfs-server-generator.c
+@@ -0,0 +1,150 @@
++/*
++ * nfs-server-generator:
++ *   systemd generator to create ordering dependencies between
++ *   nfs-server and various filesystem mounts
++ *
++ * 1/ nfs-server should start Before any 'nfs' mountpoints are
++ *    mounted, in case they are loop-back mounts.  This ordering is particularly
++ *    important for the shutdown side, so the nfs-server is stopped
++ *    after the filesystems are unmounted.
++ * 2/ nfs-server should start After all exported filesystems are mounted
++ *    so there is no risk of exporting the underlying directory.
++ *    This is particularly important for _net mounts which
++ *    are not caught by "local-fs.target".
++ */
++
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif
++
++#include <sys/stat.h>
++#include <sys/types.h>
++#include <unistd.h>
++#include <stdlib.h>
++#include <string.h>
++#include <ctype.h>
++#include <stdio.h>
++#include <mntent.h>
++
++#include "misc.h"
++#include "nfslib.h"
++#include "exportfs.h"
++
++/* A simple "set of strings" to remove duplicates
++ * found in /etc/exports
++ */
++struct list {
++	struct list *next;
++	char *name;
++};
++static int is_unique(struct list **lp, char *path)
++{
++	struct list *l = *lp;
++
++	while (l) {
++		if (strcmp(l->name, path) == 0)
++			return 0;
++		l = l->next;
++	}
++	l = malloc(sizeof(*l));
++	if (l == NULL)
++		return 0;
++	l->name = path;
++	l->next = *lp;
++	*lp = l;
++	return 1;
++}
++
++/* We need to convert a path name to a systemd unit
++ * name.  This requires some translation ('/' -> '-')
++ * and some escaping.
++ */
++static void systemd_escape(FILE *f, char *path)
++{
++	while (*path == '/')
++		path++;
++	if (!*path) {
++		/* "/" becomes "-", otherwise leading "/" is ignored */
++		fputs("-", f);
++		return;
++	}
++	while (*path) {
++		char c = *path++;
++
++		if (c == '/') {
++			/* multiple non-trailing slashes become '-' */
++			while (*path == '/')
++				path++;
++			if (*path)
++				fputs("-", f);
++		} else if (isalnum(c) || c == ':' || c == '.')
++			fputc(c, f);
++		else
++			fprintf(f, "\\x%02x", c & 0xff);
++	}
++}
++
++int main(int argc, char *argv[])
++{
++	char		*path;
++	char		dirbase[] = "/nfs-server.service.d";
++	char		filebase[] = "/order-with-mounts.conf";
++	nfs_export	*exp;
++	int		i;
++	struct list	*list = NULL;
++	FILE		*f, *fstab;
++	struct mntent	*mnt;
++
++	if (argc != 4 || argv[1][0] != '/') {
++		fprintf(stderr, "nfs-server-generator: create systemd dependencies for nfs-server\n");
++		fprintf(stderr, "Usage: normal-dir early-dir late-dir\n");
++		exit(1);
++	}
++
++	path = malloc(strlen(argv[1]) + sizeof(dirbase) + sizeof(filebase));
++	if (!path)
++		exit(2);
++	if (export_read(_PATH_EXPORTS) +
++	    export_d_read(_PATH_EXPORTS_D) == 0)
++		/* Nothing is exported, so nothing to do */
++		exit(0);
++
++	strcat(strcpy(path, argv[1]), dirbase);
++	mkdir(path, 0755);
++	strcat(path, filebase);
++	f = fopen(path, "w");
++	if (!f)
++		exit(1);
++	fprintf(f, "# Automatically generated by nfs-server-generator\n\n[Unit]\n");
++
++	for (i = 0; i < MCL_MAXTYPES; i++) {
++		for (exp = exportlist[i].p_head; exp; exp = exp->m_next) {
++			if (!is_unique(&list, exp->m_export.e_path))
++				continue;
++			if (strchr(exp->m_export.e_path, ' '))
++				fprintf(f, "RequiresMountsFor=\"%s\"\n",
++					exp->m_export.e_path);
++			else
++				fprintf(f, "RequiresMountsFor=%s\n",
++					exp->m_export.e_path);
++		}
++	}
++
++	fstab = setmntent("/etc/fstab", "r");
++	if (!fstab)
++		exit(1);
++
++	while ((mnt = getmntent(fstab)) != NULL) {
++		if (strcmp(mnt->mnt_type, "nfs") != 0 &&
++		    strcmp(mnt->mnt_type, "nfs4") != 0)
++			continue;
++		fprintf(f, "Before= ");
++		systemd_escape(f, mnt->mnt_dir);
++		fprintf(f, ".mount\n");
++	}
++
++	fclose(fstab);
++	fclose(f);
++
++	exit(0);
++}
+diff --git a/systemd/nfs-server.service b/systemd/nfs-server.service
+index 2ccdc63..196c818 100644
+--- a/systemd/nfs-server.service
++++ b/systemd/nfs-server.service
+@@ -16,9 +16,6 @@ Before= rpc-statd-notify.service
+ Wants=auth-rpcgss-module.service
+ After=rpc-gssd.service gssproxy.service rpc-svcgssd.service
+ 
+-# start/stop server before/after client
+-Before=remote-fs-pre.target
+-
+ Wants=nfs-config.service
+ After=nfs-config.service
+ 
+diff --git a/systemd/rpc-gssd.service b/systemd/rpc-gssd.service
+deleted file mode 100644
+index d4a3819..0000000
+--- a/systemd/rpc-gssd.service
++++ /dev/null
+@@ -1,19 +0,0 @@
+-[Unit]
+-Description=RPC security service for NFS client and server
+-DefaultDependencies=no
+-Conflicts=umount.target
+-Requires=var-lib-nfs-rpc_pipefs.mount
+-After=var-lib-nfs-rpc_pipefs.mount
+-
+-ConditionPathExists=/etc/krb5.keytab
+-
+-PartOf=nfs-utils.service
+-
+-Wants=nfs-config.service
+-After=nfs-config.service
+-
+-[Service]
+-EnvironmentFile=-/run/sysconfig/nfs-utils
+-
+-Type=forking
+-ExecStart=/usr/sbin/rpc.gssd $GSSDARGS
+diff --git a/systemd/rpc-gssd.service.in b/systemd/rpc-gssd.service.in
+new file mode 100644
+index 0000000..1a7911c
+--- /dev/null
++++ b/systemd/rpc-gssd.service.in
+@@ -0,0 +1,19 @@
++[Unit]
++Description=RPC security service for NFS client and server
++DefaultDependencies=no
++Conflicts=umount.target
++Requires=var-lib-nfs-rpc_pipefs.mount
++After=var-lib-nfs-rpc_pipefs.mount
++
++ConditionPathExists=@_sysconfdir@/krb5.keytab
++
++PartOf=nfs-utils.service
++
++Wants=nfs-config.service
++After=nfs-config.service
++
++[Service]
++EnvironmentFile=-/run/sysconfig/nfs-utils
++
++Type=forking
++ExecStart=/usr/sbin/rpc.gssd $GSSDARGS
+diff --git a/utils/exportfs/exportfs.c b/utils/exportfs/exportfs.c
+index a00b5ea..4ac2c15 100644
+--- a/utils/exportfs/exportfs.c
++++ b/utils/exportfs/exportfs.c
+@@ -26,7 +26,6 @@
+ #include <fcntl.h>
+ #include <netdb.h>
+ #include <errno.h>
+-#include <dirent.h>
+ #include <limits.h>
+ #include <time.h>
+ 
+@@ -47,7 +46,6 @@ static void	error(nfs_export *exp, int err);
+ static void	usage(const char *progname, int n);
+ static void	validate_export(nfs_export *exp);
+ static int	matchhostname(const char *hostname1, const char *hostname2);
+-static int	export_d_read(const char *dname);
+ static void grab_lockfile(void);
+ static void release_lockfile(void);
+ 
+@@ -700,63 +698,6 @@ out:
+ 	return result;
+ }
+ 
+-/* Based on mnt_table_parse_dir() in
+-   util-linux-ng/shlibs/mount/src/tab_parse.c */
+-static int
+-export_d_read(const char *dname)
+-{
+-	int n = 0, i;
+-	struct dirent **namelist = NULL;
+-	int volumes = 0;
+-
+-
+-	n = scandir(dname, &namelist, NULL, versionsort);
+-	if (n < 0) {
+-		if (errno == ENOENT)
+-			/* Silently return */
+-			return volumes;
+-		xlog(L_NOTICE, "scandir %s: %s", dname, strerror(errno));
+-	} else if (n == 0)
+-		return volumes;
+-
+-	for (i = 0; i < n; i++) {
+-		struct dirent *d = namelist[i];
+-		size_t namesz;
+-		char fname[PATH_MAX + 1];
+-		int fname_len;
+-
+-
+-		if (d->d_type != DT_UNKNOWN
+-		    && d->d_type != DT_REG
+-		    && d->d_type != DT_LNK)
+-			continue;
+-		if (*d->d_name == '.')
+-			continue;
+-
+-#define _EXT_EXPORT_SIZ   (sizeof(_EXT_EXPORT) - 1)
+-		namesz = strlen(d->d_name);
+-		if (!namesz
+-		    || namesz < _EXT_EXPORT_SIZ + 1
+-		    || strcmp(d->d_name + (namesz - _EXT_EXPORT_SIZ),
+-			      _EXT_EXPORT))
+-			continue;
+-
+-		fname_len = snprintf(fname, PATH_MAX +1, "%s/%s", dname, d->d_name);
+-		if (fname_len > PATH_MAX) {
+-			xlog(L_WARNING, "Too long file name: %s in %s", d->d_name, dname);
+-			continue;
+-		}
+-
+-		volumes += export_read(fname);
+-	}
+-
+-	for (i = 0; i < n; i++)
+-		free(namelist[i]);
+-	free(namelist);
+-
+-	return volumes;
+-}
+-
+ static char
+ dumpopt(char c, char *fmt, ...)
+ {
+diff --git a/utils/idmapd/idmapd.man b/utils/idmapd/idmapd.man
+index b9200c7..d4ab894 100644
+--- a/utils/idmapd/idmapd.man
++++ b/utils/idmapd/idmapd.man
+@@ -23,6 +23,29 @@ is the NFSv4 ID <-> name mapping daemon.  It provides functionality to
+ the NFSv4 kernel client and server, to which it communicates via
+ upcalls, by translating user and group IDs to names, and vice versa.
+ .Pp
++The system derives the
++.I user
++part of the string by performing a password or group lookup.
++The lookup mechanism is configured in
++.Pa /etc/idmapd.conf
++.Pp
++By default, the
++.I domain
++part of the string is the system's DNS domain name.
++It can also be specified in
++.Pa /etc/idmapd.conf
++if the system is multi-homed,
++or if the system's DNS domain name does
++not match the name of the system's Kerberos realm.
++.Pp
++When the domain is not specified in /etc/idmapd.conf
++the local DNS server will be queried for the 
++.Sy _nfsv4idmapdomain 
++text record. If the record exists
++that will be used as the domain. When the record
++does not exist, the domain part of the DNS domain
++will used. 
++.Pp
+ Note that on more recent kernels only the NFSv4 server uses
+ .Nm .
+ The NFSv4 client instead uses
+diff --git a/utils/mount/stropts.c b/utils/mount/stropts.c
+index 9de6794..d5dfb5e 100644
+--- a/utils/mount/stropts.c
++++ b/utils/mount/stropts.c
+@@ -948,6 +948,7 @@ static int nfs_is_permanent_error(int error)
+ 	case ETIMEDOUT:
+ 	case ECONNREFUSED:
+ 	case EHOSTUNREACH:
++	case EOPNOTSUPP:	/* aka RPC_PROGNOTREGISTERED */
+ 	case EAGAIN:
+ 		return 0;	/* temporary */
+ 	default:
+@@ -1019,8 +1020,7 @@ static int nfsmount_parent(struct nfsmount_info *mi)
+ 	if (nfs_try_mount(mi))
+ 		return EX_SUCCESS;
+ 
+-	/* retry background mounts when the server is not up */
+-	if (nfs_is_permanent_error(errno) && errno != EOPNOTSUPP) {
++	if (nfs_is_permanent_error(errno)) {
+ 		mount_error(mi->spec, mi->node, errno);
+ 		return EX_FAIL;
+ 	}
+@@ -1055,8 +1055,7 @@ static int nfsmount_child(struct nfsmount_info *mi)
+ 		if (nfs_try_mount(mi))
+ 			return EX_SUCCESS;
+ 
+-		/* retry background mounts when the server is not up */
+-		if (nfs_is_permanent_error(errno) && errno != EOPNOTSUPP)
++		if (nfs_is_permanent_error(errno))
+ 			break;
+ 
+ 		if (time(NULL) > timeout)
+diff --git a/utils/nfsidmap/nfsidmap.man b/utils/nfsidmap/nfsidmap.man
+index 2f17cf2..2af16f3 100644
+--- a/utils/nfsidmap/nfsidmap.man
++++ b/utils/nfsidmap/nfsidmap.man
+@@ -39,6 +39,15 @@ if the system is multi-homed,
+ or if the system's DNS domain name does
+ not match the name of the system's Kerberos realm.
+ .PP
++When the domain is not specified in 
++.I /etc/idmapd.conf
++the local DNS server will be queried for the 
++.I _nfsv4idmapdomain 
++text record. If the record exists
++that will be used as the domain. When the record
++does not exist, the domain part of the DNS domain
++will used. 
++.PP
+ The
+ .I /usr/sbin/nfsidmap
+ program performs translations on behalf of the kernel.
