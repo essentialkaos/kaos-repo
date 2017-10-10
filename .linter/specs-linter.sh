@@ -112,16 +112,16 @@ runLinter() {
   fi
 
   if [[ $errors -eq 0 && $warnings -eq 0 ]] ; then
-    printf "${CL_DARK}[${CL_NORM} ${CL_GREEN} 0${CL_NORM} / ${CL_GREEN} 0${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$file"
+    printf "${CL_DARK}[${CL_NORM} ${CL_GREEN} 0${CL_NORM} ${CL_DARK}⋮${CL_NORM} ${CL_GREEN} 0${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$file"
   else
     if [[ $errors -eq 0 && $warnings -ne 0 ]] ; then
-      printf "${CL_DARK}[${CL_NORM} ${CL_GREEN}%2s${CL_NORM} / ${CL_BROWN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
+      printf "${CL_DARK}[${CL_NORM} ${CL_GREEN}%2s${CL_NORM} ${CL_DARK}⋮${CL_NORM} ${CL_BROWN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
       warn_count=$(( $warn_count + $warnings ))
     elif [[ $errors -ne 0 && $warnings -eq 0 ]] ; then
-      printf "${CL_DARK}[${CL_NORM} ${CL_RED}%2s${CL_NORM} / ${CL_GREEN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
+      printf "${CL_DARK}[${CL_NORM} ${CL_RED}%2s${CL_NORM} ${CL_DARK}⋮${CL_NORM} ${CL_GREEN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
       errors_count=$(( $errors_count + $errors ))
     else
-      printf "${CL_DARK}[${CL_NORM} ${CL_RED}%2s${CL_NORM} / ${CL_BROWN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
+      printf "${CL_DARK}[${CL_NORM} ${CL_RED}%2s${CL_NORM} ${CL_DARK}⋮${CL_NORM} ${CL_BROWN}%2s${CL_NORM} ${CL_DARK}]${CL_NORM} %s\n" "$errors" "$warnings" "$file"
       errors_count=$(( $errors_count + $errors ))
       warn_count=$(( $warn_count + $warnings ))
     fi
