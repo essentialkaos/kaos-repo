@@ -74,7 +74,7 @@
 
 %define majorver        9.3
 %define minorver        19
-%define rel             0
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
 %define realname        postgresql
@@ -220,7 +220,7 @@ Group:             Applications/Databases
 
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version} %{name}-libs >= %{version}
-Requires:          kaosv >= 2.10
+Requires:          kaosv >= 2.13 numactl
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -1072,6 +1072,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Tue Oct 10 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.19-1
+- Improved init script
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.19-0
 - Updated to latest stable release
 

@@ -53,6 +53,7 @@
 %{!?plperl:%define plperl 1}
 %{!?ssl:%define ssl 1}
 %{!?intdatetimes:%define intdatetimes 1}
+%{!?icu:%define icu 1}
 %{!?kerberos:%define kerberos 1}
 %{!?nls:%define nls 1}
 %{!?xml:%define xml 1}
@@ -61,6 +62,12 @@
 %{!?runselftest:%define runselftest 0}
 %{!?uuid:%define uuid 1}
 %{!?ldap:%define ldap 1}
+
+%if 0%{?fedora} > 21
+%{!?plpython3:%global plpython3 1}
+%else
+%{!?plpython3:%global plpython3 0}
+%endif
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?systemd_enabled:%global systemd_enabled 0}
@@ -72,19 +79,18 @@
 %{!?selinux:%global selinux 1}
 %endif
 
-
-%define majorver        9.2
-%define minorver        23
-%define rel             1
+%define majorver        10
+%define minorver        0
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
-%define pkgver          92
+%define pkgver          100
 %define realname        postgresql
 %define shortname       pgsql
 %define tinyname        pg
 %define service_name    %{realname}-%{majorver}
 %define install_dir     %{_usr}/%{shortname}-%{majorver}
 
-%define prev_version    9.1
+%define prev_version    9.6
 
 %define username        postgres
 %define groupname       postgres
@@ -93,7 +99,7 @@
 ###############################################################################
 
 Summary:           PostgreSQL %{majorver} client programs and libraries
-Name:              %{realname}%{pkgver}
+Name:              %{realname}%{majorver}
 Version:           %{fullver}
 Release:           %{rel}%{?dist}
 License:           PostgreSQL
@@ -116,10 +122,7 @@ Source11:          %{realname}.service
 Patch1:            rpm-%{shortname}.patch
 Patch2:            %{realname}-logging.patch
 Patch3:            %{realname}-perl-rpath.patch
-
-%if 0%{?rhel} && 0%{?rhel} <= 5
-Patch4:            %{realname}-prefer-ncurses.patch
-%endif
+Patch4:            %{realname}-var-run-socket.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -146,6 +149,11 @@ BuildRequires:     openssl-devel
 BuildRequires:     krb5-devel e2fsprogs-devel
 %endif
 
+%if %icu
+BuildRequires:     libicu-devel
+Requires:          libicu
+%endif
+
 %if %nls
 BuildRequires:     gettext >= 0.10.35
 %endif
@@ -159,7 +167,7 @@ BuildRequires:     pam-devel
 %endif
 
 %if %uuid
-BuildRequires:     uuid-devel
+BuildRequires:     libuuid-devel
 %endif
 
 %if %ldap
@@ -170,7 +178,16 @@ Requires:          %{__ldconfig} initscripts
 Requires:          %{name}-libs = %{version}
 
 %if %{systemd_enabled}
-Requires:          systemd
+BuildRequires:     systemd systemd-devel
+
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%else
+Requires(post):   chkconfig
+Requires(preun):  chkconfig
+Requires(preun):  initscripts
+Requires(postun): initscripts
 %endif
 
 Requires(post):    %{__updalt}
@@ -204,7 +221,6 @@ if you're installing the postgresql%{pkgver}-server package.
 Summary:           The shared libraries required for any PostgreSQL clients
 Group:             Applications/Databases
 
-Provides:          libpq.so.5 = %{version}
 Provides:          %{realname}-libs = %{version}-%{release}
 
 %description libs
@@ -220,8 +236,9 @@ Summary:           The programs needed to create and run a PostgreSQL server
 Group:             Applications/Databases
 
 Requires:          %{__useradd} %{__chkconfig}
-Requires:          %{name} = %{version} %{name}-libs >= %{version}
-Requires:          kaosv >= 2.13 numactl
+Requires:          %{name} = %{version}-%{release}
+Requires:          %{name}-libs = %{version}-%{release}
+Requires:          glibc kaosv >= 2.13 numactl
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -270,7 +287,13 @@ included in the PostgreSQL distribution.
 Summary:           PostgreSQL development header files and libraries
 Group:             Development/Libraries
 
-Requires:          %{name} = %{version}
+%if %icu
+Requires:          libicu-devel
+%endif
+
+AutoReq:           no
+Requires:          %{name} = %{version}-%{release}
+Requires:          %{name}-libs = %{version}-%{release}
 Provides:          %{realname}-devel = %{version}-%{release}
 
 %description devel
@@ -365,12 +388,9 @@ system, including regression tests and benchmarks.
 %setup -q -n %{realname}-%{version}
 
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-
-%if 0%{?rhel} && 0%{?rhel} <= 5
-%patch4 -p1
-%endif
+%patch2 -p0
+%patch3 -p0
+%patch4 -p0
 
 # Copy pdf with documentation to build directory
 cp -p %{SOURCE7} .
@@ -387,9 +407,23 @@ CFLAGS="${CFLAGS} -I%{_includedir}/et" ; export CFLAGS
 
 # Strip out -ffast-math from CFLAGS....
 
-CFLAGS=`echo "$CFLAGS" | xargs -n 1 | grep -v ffast-math | xargs -n 100`
+CFLAGS=$(echo "$CFLAGS" | xargs -n 1 | grep -v ffast-math | xargs -n 100)
+CFLAGS="$CFLAGS -DLINUX_OOM_SCORE_ADJ=0"
 
+%if 0%{?rhel}
+  LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
+%endif
+
+%if %icu
+%if 0%{?rhel} && 0%{?rhel} <= 6
+  ICU_CFLAGS='-I%{_includedir}' ; export ICU_CFLAGS
+  ICU_LIBS='-L%{_libdir} -licui18n -licuuc -licudata' ; export ICU_LIBS
+%endif
+%endif
+
+export CFLAGS
 export LIBNAME=%{_lib}
+
 %{_configure} --disable-rpath \
   --prefix=%{install_dir} \
   --includedir=%{install_dir}/include \
@@ -398,6 +432,9 @@ export LIBNAME=%{_lib}
 %if %beta
   --enable-debug \
   --enable-cassert \
+%endif
+%if %icu
+  --with-icu \
 %endif
 %if %plperl
   --with-perl \
@@ -416,7 +453,6 @@ export LIBNAME=%{_lib}
   --with-pam \
 %endif
 %if %kerberos
-  --with-krb5 \
   --with-gssapi \
   --with-includes=%{kerbdir}/include \
   --with-libraries=%{kerbdir}/%{_lib} \
@@ -431,7 +467,7 @@ export LIBNAME=%{_lib}
   --disable-thread-safety \
 %endif
 %if %uuid
-  --with-ossp-uuid \
+  --with-uuid=e2fs \
 %endif
 %if %xml
   --with-libxml \
@@ -442,7 +478,8 @@ export LIBNAME=%{_lib}
 %endif
   --with-system-tzdata=%{_datadir}/zoneinfo \
   --sysconfdir=%{_sysconfdir}/sysconfig/%{shortname} \
-  --docdir=%{_docdir}
+  --docdir=%{install_dir}/doc \
+  --htmldir=%{install_dir}/doc/html
 
 %{__make} %{?_smp_mflags} all
 %{__make} %{?_smp_mflags} -C contrib all
@@ -454,6 +491,28 @@ export LIBNAME=%{_lib}
 sed "s|C=\`pwd\`;|C=%{install_dir}/lib/tutorial;|" < src/tutorial/Makefile > src/tutorial/GNUmakefile
 %{__make} %{?_smp_mflags} -C src/tutorial NO_PGXS=1 all
 rm -f src/tutorial/GNUmakefile
+
+# run_testsuite WHERE
+# -------------------
+# Run 'make check' in WHERE path.  When that command fails, return the logs
+# given by PostgreSQL build system and set 'test_failure=1'.
+
+run_testsuite()
+{
+  make -C "$1" MAX_CONNECTIONS=5 check && return 0
+
+  test_failure=1
+
+  (
+    set +x
+    echo "=== trying to find all regression.diffs files in build directory ==="
+    find -name 'regression.diffs' | \
+    while read line; do
+      echo "=== make failure: $line ==="
+      cat "$line"
+    done
+  )
+}
 
 %if %runselftest
   pushd src/test/regress
@@ -509,7 +568,7 @@ install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
 
 sed -i 's/{{VERSION}}/%{version}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{MAJOR_VERSION}}/%{majorver}/g' %{buildroot}%{_initddir}/%{service_name}
-sed -i 's/{{PKG_VERSION}}/%{pkgver}/g' %{buildroot}%{_initddir}/%{service_name}
+sed -i 's/{{PKG_VERSION}}/%{majorver}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_initddir}/%{service_name}
@@ -522,19 +581,22 @@ install -pm 644 %{SOURCE11} %{buildroot}%{_unitdir}/postgresql-%{majorver}.servi
 
 sed -i 's/{{VERSION}}/%{version}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{MAJOR_VERSION}}/%{majorver}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
-sed -i 's/{{PKG_VERSION}}/%{pkgver}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
+sed -i 's/{{PKG_VERSION}}/%{majorver}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 
 %endif
 
-ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{pkgver}
+ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{majorver}
 
 %if %pam
 install -d %{buildroot}%{_sysconfdir}/pam.d
-install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{pkgver}
+install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{majorver}
 %endif
+
+# Create the directory for sockets
+install -dm 755 %{buildroot}%{_rundir}/%{realname}
 
 # PGDATA needs removal of group and world permissions due to pg_pwd hole.
 install -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/data
@@ -590,12 +652,18 @@ cp /dev/null plpython.lst
   %find_lang ecpglib6-%{majorver}
   %find_lang initdb-%{majorver}
   %find_lang libpq5-%{majorver}
+  %find_lang pg_archivecleanup-%{majorver}
   %find_lang pg_basebackup-%{majorver}
   %find_lang pg_config-%{majorver}
   %find_lang pg_controldata-%{majorver}
   %find_lang pg_ctl-%{majorver}
   %find_lang pg_dump-%{majorver}
-  %find_lang pg_resetxlog-%{majorver}
+  %find_lang pg_resetwal-%{majorver}
+  %find_lang pg_rewind-%{majorver}
+  %find_lang pg_test_fsync-%{majorver}
+  %find_lang pg_test_timing-%{majorver}
+  %find_lang pg_upgrade-%{majorver}
+  %find_lang pg_waldump-%{majorver}
   %find_lang pgscripts-%{majorver}
 
   %if %plperl
@@ -620,9 +688,29 @@ cp /dev/null plpython.lst
 %endif
 
 cat libpq5-%{majorver}.lang > pg_libpq5.lst
-cat pg_config-%{majorver}.lang ecpg-%{majorver}.lang ecpglib6-%{majorver}.lang > pg_devel.lst
-cat initdb-%{majorver}.lang pg_ctl-%{majorver}.lang psql-%{majorver}.lang pg_dump-%{majorver}.lang pg_basebackup-%{majorver}.lang pgscripts-%{majorver}.lang > pg_main.lst
-cat postgres-%{majorver}.lang pg_resetxlog-%{majorver}.lang pg_controldata-%{majorver}.lang plpgsql-%{majorver}.lang > pg_server.lst
+
+cat pg_config-%{majorver}.lang \
+    ecpg-%{majorver}.lang \
+    ecpglib6-%{majorver}.lang > pg_devel.lst
+
+cat initdb-%{majorver}.lang \
+    pg_ctl-%{majorver}.lang \
+    psql-%{majorver}.lang \
+    pg_dump-%{majorver}.lang \
+    pg_basebackup-%{majorver}.lang \
+    pg_rewind-%{majorver}.lang \
+    pg_upgrade-%{majorver}.lang \
+    pg_test_timing-%{majorver}.lang \
+    pg_test_fsync-%{majorver}.lang \
+    pg_archivecleanup-%{majorver}.lang \
+    pg_waldump-%{majorver}.lang \
+    pgscripts-%{majorver}.lang > pg_main.lst
+
+cat postgres-%{majorver}.lang \
+    pg_resetwal-%{majorver}.lang \
+    pg_controldata-%{majorver}.lang \
+    plpgsql-%{majorver}.lang > pg_server.lst
+
 
 ###############################################################################
 
@@ -630,7 +718,7 @@ cat postgres-%{majorver}.lang pg_resetxlog-%{majorver}.lang pg_controldata-%{maj
 if [[ $1 -eq 1 ]] ; then
   %{__getent} group %{groupname} >/dev/null || %{__groupadd} -g %{gid} -o -r %{groupname}
   %{__getent} passwd %{username} >/dev/null || \
-         %{__useradd} -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
+              %{__useradd} -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
 fi
 
 touch %{_logdir}/%{shortname}
@@ -716,10 +804,8 @@ chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null 
 %{__updalt} --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}0
 %{__updalt} --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}0
 %{__updalt} --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}0
-%{__updalt} --install %{_bindir}/createlang    %{shortname}-createlang    %{install_dir}/bin/createlang    %{pkgver}0
 %{__updalt} --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}0
 %{__updalt} --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}0
-%{__updalt} --install %{_bindir}/droplang      %{shortname}-droplang      %{install_dir}/bin/droplang      %{pkgver}0
 %{__updalt} --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}0
 %{__updalt} --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}0
 %{__updalt} --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}0
@@ -731,10 +817,8 @@ chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null 
 
 %{__updalt} --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}0
 %{__updalt} --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/createlang.1    %{shortname}-createlangman    %{install_dir}/share/man/man1/createlang.1    %{pkgver}0
 %{__updalt} --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}0
 %{__updalt} --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/droplang.1      %{shortname}-droplangman      %{install_dir}/share/man/man1/droplang.1      %{pkgver}0
 %{__updalt} --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}0
 %{__updalt} --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}0
 %{__updalt} --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}0
@@ -745,10 +829,7 @@ chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null 
 %{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}0
 
 %post libs
-%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf \
-                      %{shortname}-ld-conf \
-                      %{install_dir}/share/%{service_name}-libs.conf \
-                      %{pkgver}0
+%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}0
 %{__ldconfig}
 
 # Drop alternatives entries for common binaries and man files
@@ -758,10 +839,8 @@ if [[ $1 -eq 0 ]] ; then
   %{__updalt} --remove %{shortname}-psql          %{install_dir}/bin/psql
   %{__updalt} --remove %{shortname}-clusterdb     %{install_dir}/bin/clusterdb
   %{__updalt} --remove %{shortname}-createdb      %{install_dir}/bin/createdb
-  %{__updalt} --remove %{shortname}-createlang    %{install_dir}/bin/createlang
   %{__updalt} --remove %{shortname}-createuser    %{install_dir}/bin/createuser
   %{__updalt} --remove %{shortname}-dropdb        %{install_dir}/bin/dropdb
-  %{__updalt} --remove %{shortname}-droplang      %{install_dir}/bin/droplang
   %{__updalt} --remove %{shortname}-dropuser      %{install_dir}/bin/dropuser
   %{__updalt} --remove %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup
   %{__updalt} --remove %{shortname}-pg_config     %{install_dir}/bin/pg_config
@@ -773,11 +852,8 @@ if [[ $1 -eq 0 ]] ; then
 
   %{__updalt} --remove %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1
   %{__updalt} --remove %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1
-  %{__updalt} --remove %{shortname}-createlangman    %{install_dir}/share/man/man1/createlang.1
-  %{__updalt} --remove %{shortname}-createlangman    %{install_dir}/share/man/man1/createlang.1
   %{__updalt} --remove %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1
   %{__updalt} --remove %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1
-  %{__updalt} --remove %{shortname}-droplangman      %{install_dir}/share/man/man1/droplang.1
   %{__updalt} --remove %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1
   %{__updalt} --remove %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1
   %{__updalt} --remove %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1
@@ -804,36 +880,47 @@ rm -rf %{buildroot}
 %doc doc/KNOWN_BUGS doc/MISSING_FEATURES
 %doc COPYRIGHT doc/bug.template
 %doc README.rpm-dist
+%{install_dir}/bin/pgbench
 %{install_dir}/bin/clusterdb
 %{install_dir}/bin/createdb
-%{install_dir}/bin/createlang
 %{install_dir}/bin/createuser
 %{install_dir}/bin/dropdb
-%{install_dir}/bin/droplang
 %{install_dir}/bin/dropuser
+%{install_dir}/bin/pg_archivecleanup
 %{install_dir}/bin/pg_basebackup
 %{install_dir}/bin/pg_config
 %{install_dir}/bin/pg_dump
 %{install_dir}/bin/pg_dumpall
+%{install_dir}/bin/pg_isready
 %{install_dir}/bin/pg_restore
+%{install_dir}/bin/pg_rewind
 %{install_dir}/bin/pg_test_fsync
-%{install_dir}/bin/pg_receivexlog
+%{install_dir}/bin/pg_test_timing
+%{install_dir}/bin/pg_receivewal
+%{install_dir}/bin/pg_upgrade
+%{install_dir}/bin/pg_waldump
 %{install_dir}/bin/psql
 %{install_dir}/bin/reindexdb
 %{install_dir}/bin/vacuumdb
 %{install_dir}/share/man/man1/clusterdb.*
 %{install_dir}/share/man/man1/createdb.*
-%{install_dir}/share/man/man1/createlang.*
 %{install_dir}/share/man/man1/createuser.*
 %{install_dir}/share/man/man1/dropdb.*
-%{install_dir}/share/man/man1/droplang.*
 %{install_dir}/share/man/man1/dropuser.*
+%{install_dir}/share/man/man1/pg_archivecleanup.1
 %{install_dir}/share/man/man1/pg_basebackup.*
 %{install_dir}/share/man/man1/pg_config.*
 %{install_dir}/share/man/man1/pg_dump.*
 %{install_dir}/share/man/man1/pg_dumpall.*
-%{install_dir}/share/man/man1/pg_receivexlog.*
+%{install_dir}/share/man/man1/pg_isready.*
+%{install_dir}/share/man/man1/pg_receivewal.*
 %{install_dir}/share/man/man1/pg_restore.*
+%{install_dir}/share/man/man1/pg_rewind.*
+%{install_dir}/share/man/man1/pg_test_fsync.1
+%{install_dir}/share/man/man1/pg_test_timing.1
+%{install_dir}/share/man/man1/pg_upgrade.1
+%{install_dir}/share/man/man1/pg_waldump.1
+%{install_dir}/share/man/man1/pgbench.1
 %{install_dir}/share/man/man1/psql.*
 %{install_dir}/share/man/man1/reindexdb.*
 %{install_dir}/share/man/man1/vacuumdb.*
@@ -849,43 +936,59 @@ rm -rf %{buildroot}
 
 %files contrib
 %defattr(-,root,root)
+%doc %{install_dir}/doc/extension/*.example
 %{install_dir}/lib/_int.so
 %{install_dir}/lib/adminpack.so
+%{install_dir}/lib/amcheck.so
 %{install_dir}/lib/auth_delay.so
 %{install_dir}/lib/autoinc.so
 %{install_dir}/lib/auto_explain.so
+%{install_dir}/lib/bloom.so
 %{install_dir}/lib/btree_gin.so
 %{install_dir}/lib/btree_gist.so
 %{install_dir}/lib/chkpass.so
 %{install_dir}/lib/citext.so
 %{install_dir}/lib/cube.so
 %{install_dir}/lib/dblink.so
-%{install_dir}/lib/dummy_seclabel.so
 %{install_dir}/lib/earthdistance.so
 %{install_dir}/lib/file_fdw.so*
 %{install_dir}/lib/fuzzystrmatch.so
 %{install_dir}/lib/insert_username.so
 %{install_dir}/lib/isn.so
 %{install_dir}/lib/hstore.so
+%if %plperl
+%{install_dir}/lib/hstore_plperl.so
+%endif
+%if %plpython
+%{install_dir}/lib/hstore_plpython2.so
+%endif
 %{install_dir}/lib/passwordcheck.so
 %{install_dir}/lib/pg_freespacemap.so
 %{install_dir}/lib/pg_stat_statements.so
 %{install_dir}/lib/pgrowlocks.so
+%{install_dir}/lib/postgres_fdw.so
 %{install_dir}/lib/sslinfo.so
 %{install_dir}/lib/lo.so
 %{install_dir}/lib/ltree.so
+%if %plpython
+%{install_dir}/lib/ltree_plpython2.so
+%endif
 %{install_dir}/lib/moddatetime.so
 %{install_dir}/lib/pageinspect.so
 %{install_dir}/lib/pgcrypto.so
 %{install_dir}/lib/pgstattuple.so
 %{install_dir}/lib/pg_buffercache.so
+%{install_dir}/lib/pg_prewarm.so
 %{install_dir}/lib/pg_trgm.so
-%{install_dir}/lib/pg_upgrade_support.so
+%{install_dir}/lib/pg_visibility.so
 %{install_dir}/lib/refint.so
 %{install_dir}/lib/seg.so
 %{install_dir}/lib/tablefunc.so
 %{install_dir}/lib/tcn.so
+%{install_dir}/lib/test_decoding.so
 %{install_dir}/lib/timetravel.so
+%{install_dir}/lib/tsm_system_rows.so
+%{install_dir}/lib/tsm_system_time.so
 %{install_dir}/lib/unaccent.so
 %if %xml
 %{install_dir}/lib/pgxml.so
@@ -894,7 +997,9 @@ rm -rf %{buildroot}
 %{install_dir}/lib/uuid-ossp.so
 %endif
 %{install_dir}/share/extension/adminpack*
+%{install_dir}/share/extension/amcheck*
 %{install_dir}/share/extension/autoinc*
+%{install_dir}/share/extension/bloom*
 %{install_dir}/share/extension/btree_gin*
 %{install_dir}/share/extension/btree_gist*
 %{install_dir}/share/extension/chkpass*
@@ -917,44 +1022,40 @@ rm -rf %{buildroot}
 %{install_dir}/share/extension/pageinspect*
 %{install_dir}/share/extension/pg_buffercache*
 %{install_dir}/share/extension/pg_freespacemap*
+%{install_dir}/share/extension/pg_prewarm*
 %{install_dir}/share/extension/pg_stat_statements*
 %{install_dir}/share/extension/pg_trgm*
+%{install_dir}/share/extension/pg_visibility*
 %{install_dir}/share/extension/pgcrypto*
 %{install_dir}/share/extension/pgrowlocks*
 %{install_dir}/share/extension/pgstattuple*
+%{install_dir}/share/extension/postgres_fdw*
 %{install_dir}/share/extension/refint*
 %{install_dir}/share/extension/seg*
 %{install_dir}/share/extension/sslinfo*
 %{install_dir}/share/extension/tablefunc*
 %{install_dir}/share/extension/tcn*
-%{install_dir}/share/extension/test_parser*
 %{install_dir}/share/extension/timetravel*
-%{install_dir}/share/extension/tsearch2*
+%{install_dir}/share/extension/tsm_system*
 %{install_dir}/share/extension/unaccent*
 %if %uuid
 %{install_dir}/share/extension/uuid-ossp*
 %endif
 %{install_dir}/share/extension/xml2*
 %{install_dir}/bin/oid2name
-%{install_dir}/bin/pgbench
 %{install_dir}/bin/vacuumlo
-%{install_dir}/bin/pg_archivecleanup
+%{install_dir}/bin/pg_recvlogical
 %{install_dir}/bin/pg_standby
-%{install_dir}/bin/pg_test_timing
-%{install_dir}/bin/pg_upgrade
 %{install_dir}/share/man/man1/oid2name.1
-%{install_dir}/share/man/man1/pg_archivecleanup.1
+%{install_dir}/share/man/man1/pg_recvlogical.1
 %{install_dir}/share/man/man1/pg_standby.1
-%{install_dir}/share/man/man1/pg_test_fsync.1
-%{install_dir}/share/man/man1/pg_test_timing.1
-%{install_dir}/share/man/man1/pg_upgrade.1
-%{install_dir}/share/man/man1/pgbench.1
 %{install_dir}/share/man/man1/vacuumlo.1
 
 %files libs -f pg_libpq5.lst
 %defattr(-,root,root)
 %{install_dir}/lib/libpq.so.*
 %{install_dir}/lib/libecpg.so*
+%{install_dir}/lib/libpgfeutils.a
 %{install_dir}/lib/libpgtypes.so.*
 %{install_dir}/lib/libecpg_compat.so.*
 %{install_dir}/lib/libpqwalreceiver.so
@@ -967,20 +1068,21 @@ rm -rf %{buildroot}
 %if %{systemd_enabled}
 %config(noreplace) %{_unitdir}/postgresql-%{majorver}.service
 %endif
-%{_initddir}/%{tinyname}%{pkgver}
+%attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
+%{_initddir}/%{tinyname}%{majorver}
 %if %pam
-%config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{pkgver}
+%config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{majorver}
 %endif
 %{install_dir}/bin/initdb
 %{install_dir}/bin/pg_controldata
 %{install_dir}/bin/pg_ctl
-%{install_dir}/bin/pg_resetxlog
+%{install_dir}/bin/pg_resetwal
 %{install_dir}/bin/postgres
 %{install_dir}/bin/postmaster
 %{install_dir}/share/man/man1/initdb.*
 %{install_dir}/share/man/man1/pg_controldata.*
 %{install_dir}/share/man/man1/pg_ctl.*
-%{install_dir}/share/man/man1/pg_resetxlog.*
+%{install_dir}/share/man/man1/pg_resetwal.*
 %{install_dir}/share/man/man1/postgres.*
 %{install_dir}/share/man/man1/postmaster.*
 %{install_dir}/share/postgres.bki
@@ -999,11 +1101,10 @@ rm -rf %{buildroot}
 %{install_dir}/lib/dict_snowball.so
 %{install_dir}/lib/dict_xsyn.so
 %{install_dir}/lib/euc2004_sjis2004.so
+%{install_dir}/lib/pgoutput.so
 %{install_dir}/lib/plpgsql.so
 %dir %{install_dir}/share/extension
 %{install_dir}/share/extension/plpgsql*
-%{install_dir}/lib/test_parser.so
-%{install_dir}/lib/tsearch2.so
 
 %dir %{install_dir}/lib
 %dir %{install_dir}/share
@@ -1024,6 +1125,7 @@ rm -rf %{buildroot}
 %{install_dir}/lib/libpq.so
 %{install_dir}/lib/libecpg.so
 %{install_dir}/lib/libpq.a
+%{install_dir}/lib/libpgcommon.a
 %{install_dir}/lib/libecpg.a
 %{install_dir}/lib/libecpg_compat.so
 %{install_dir}/lib/libecpg_compat.a
@@ -1031,12 +1133,14 @@ rm -rf %{buildroot}
 %{install_dir}/lib/libpgtypes.so
 %{install_dir}/lib/libpgtypes.a
 %{install_dir}/lib/pgxs/*
+%{install_dir}/lib/pkgconfig/*
 %{install_dir}/share/man/man1/ecpg.*
 
 %if %plperl
 %files plperl -f pg_plperl.lst
 %defattr(-,root,root)
 %{install_dir}/lib/plperl.so
+%{install_dir}/lib/hstore_plperl.so
 %{install_dir}/share/extension/plperl*
 %endif
 
@@ -1044,10 +1148,6 @@ rm -rf %{buildroot}
 %files pltcl -f pg_pltcl.lst
 %defattr(-,root,root)
 %{install_dir}/lib/pltcl.so
-%{install_dir}/bin/pltcl_delmod
-%{install_dir}/bin/pltcl_listmod
-%{install_dir}/bin/pltcl_loadmod
-%{install_dir}/share/unknown.pltcl
 %{install_dir}/share/extension/pltcl*
 %endif
 
@@ -1055,8 +1155,17 @@ rm -rf %{buildroot}
 %files plpython -f pg_plpython.lst
 %defattr(-,root,root)
 %{install_dir}/lib/plpython*.so
+%{install_dir}/lib/hstore_plpython2.so
+%{install_dir}/lib/ltree_plpython2.so
 %{install_dir}/share/extension/plpython2u*
 %{install_dir}/share/extension/plpythonu*
+%endif
+
+%if %plpython3
+%files plpython3 -f pg_plpython3.lst
+%defattr(-,%{username},%{groupname})
+%{pgbaseinstdir}/share/extension/plpython3*
+%{pgbaseinstdir}/lib/plpython3.so
 %endif
 
 %if %test
@@ -1069,71 +1178,5 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
-* Tue Oct 10 2017 Anton Novojilov <andy@essentialkaos.com> - 9.2.23-1
-- Improved init script
-
-* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.2.23-0
-- Updated to latest stable release
-
-* Tue May 16 2017 Anton Novojilov <andy@essentialkaos.com> - 9.2.21-0
-- Updated to latest stable release
-
-* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 9.2.20-0
-- Updated to latest stable release
-
-* Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.19-0
-- Updated to latest stable release
-- Added systemd support
-
-* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.18-0
-- Updated to latest stable release
-
-* Mon Jun 27 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.17-2
-- Added installing pg_config link using update-alternatives
-- Added installing pg_basebackup link using update-alternatives
-
-* Mon May 23 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.17-1
-- Fixed reading locale bug on CentOS7+
-
-* Mon May 16 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.17-0
-- Updated to latest stable release
-
-* Thu Apr 07 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.16-0
-- Updated to latest stable release
-
-* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 9.2.15-0
-- Updated to latest stable release
-
-* Fri Oct 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.2.14-0
-- Updated to latest stable release
-
-* Tue Jun 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.2.13-0
-- Updated to latest stable release
-
-* Tue Jun 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.2.12-0
-- Updated to latest stable release
-
-* Sat May 23 2015 Anton Novojilov <andy@essentialkaos.com> - 9.2.11-0
-- Updated to latest stable release
-
-* Mon Feb 09 2015 Anton Novojilov <andy@essentialkaos.com> - 9.2.10-0
-- Updated to latest stable release
-
-* Wed Dec 31 2014 Anton Novojilov <andy@essentialkaos.com> - 9.2.9-8
-- Init script updated to kaosv 2.4 with oom killer disable feature
-  for postmaster
-
-* Fri Dec 19 2014 Anton Novojilov <andy@essentialkaos.com> - 9.2.9-7
-- Improved spec
-
-* Fri Nov 07 2014 Anton Novojilov <andy@essentialkaos.com> - 9.2.9-6
-- Fixed bug in spec with post and postun scriptlets execution
-
-* Tue Oct 28 2014 Anton Novojilov <andy@essentialkaos.com> - 9.2.9-5
-- Init script migrated to kaosv2
-
-* Sun Oct 05 2014 Anton Novojilov <andy@essentialkaos.com> - 9.2.9-4
-- Fixed bug with database initialization in init.d script
-
-* Tue Sep 16 2014 Anton Novojilov <andy@essentialkaos.com> - 9.2.0-0
+* Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
 - Initial build
