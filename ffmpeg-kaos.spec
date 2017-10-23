@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.3.4
+Version:           3.4
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -49,14 +49,13 @@ BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
 BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel opus-devel
 BuildRequires:     lame-devel libtheora-devel libvorbis-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
-BuildRequires:     dirac-devel schroedinger-devel speex-devel
+BuildRequires:     dirac-devel speex-devel libvpx-devel >= 0.9.6 xavs-devel
 BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
 BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
-BuildRequires:     libvpx-devel >= 0.9.6 xavs-devel libnut-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
 Requires:          opencore-amr librtmp orc libvpx x264
-Requires:          libxvidcore libva schroedinger opus
+Requires:          libxvidcore libva opus
 
 Conflicts:         %{source_name}
 
@@ -100,13 +99,11 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-libdc1394 \
   --enable-libgsm \
   --enable-libmp3lame \
-  --enable-libnut \
   --enable-libopencore-amrnb \
   --enable-libopencore-amrwb \
   --enable-libopenjpeg \
   --enable-libopus \
   --enable-librtmp \
-  --enable-libschroedinger \
   --enable-libspeex \
   --enable-libtheora \
   --enable-libvorbis \
@@ -150,6 +147,9 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4-0
+- Updated to version 3.4
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.3.4-0
 - Updated to version 3.3.4
 
