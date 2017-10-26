@@ -31,7 +31,7 @@
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
 Version:            1.5.2
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                http://elixir-lang.org
@@ -41,9 +41,9 @@ Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang >= 18 git
+BuildRequires:      erlang >= 20 git
 
-Requires:           erlang >= 18
+Requires:           erlang >= 20
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
@@ -93,6 +93,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Oct 25 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-1
+- Fixed Erlang OTP version dependency
+
 * Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
 - Updated to latest version
 
