@@ -57,6 +57,8 @@ Source5:            sentinel.init
 Source6:            sentinel.sysconfig
 Source7:            %{name}.service
 Source8:            sentinel.service
+Source9:            %{name}-limit-systemd
+Source10:           sentinel-limit-systemd
 
 Patch0:             %{name}-config.patch
 Patch1:             sentinel-config.patch
@@ -66,7 +68,10 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      make gcc tcl
 
 Requires:           %{name}-cli >= %{version}
-Requires:           logrotate kaosv >= 2.10
+Requires:           logrotate
+%if 0%{?rhel} <= 6
+Requires:           kaosv >= 2.10
+%endif
 
 %if 0%{?rhel} >= 7
 Requires(pre):      shadow-utils
@@ -137,14 +142,20 @@ install -dm 755 %{buildroot}%{_localstatedir}/lib/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
 
+%if 0%{?rhel} <= 6
 install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 install -pm 755 %{SOURCE5} %{buildroot}%{_initrddir}/sentinel
+%endif
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
+install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/%{name}.service.d
+install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d
 install -pm 644 %{SOURCE7} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
+install -pm 644 %{SOURCE9} %{buildroot}%{_sysconfdir}/systemd/system/%{name}.service.d/limit.conf
+install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
 %endif
 
 chmod 755 %{buildroot}%{_bindir}/%{name}-*
@@ -221,12 +232,16 @@ rm -rf %{buildroot}
 %dir %attr(0755, %{name}, root) %{_localstatedir}/log/%{name}
 %dir %attr(0755, %{name}, root) %{_localstatedir}/run/%{name}
 
+%if 0%{?rhel} <= 6
 %{_initrddir}/%{name}
 %{_initrddir}/sentinel
+%endif
 
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %{_unitdir}/sentinel.service
+%{_sysconfdir}/systemd/system/%{name}.service.d/limit.conf
+%{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
 %endif
 
 %{_bindir}/%{name}-server
@@ -239,7 +254,7 @@ rm -rf %{buildroot}
 %files cli
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
-%{_bindir}/redis-cli
+%{_bindir}/%{name}-cli
 
 ###############################################################################
 
