@@ -3,9 +3,11 @@ Description=Redis Sentinel
 After=syslog.target network.target
 
 [Service]
+ExecStart=/usr/bin/redis-sentinel /etc/sentinel.conf --daemonize no
+KillSignal=SIGTERM
+User=redis
+Group=redis
 PIDFile=/var/run/redis/sentinel.pid
-ExecStart=/etc/init.d/sentinel start
-ExecStop=/etc/init.d/sentinel stop
 
 [Install]
 WantedBy=multi-user.target
