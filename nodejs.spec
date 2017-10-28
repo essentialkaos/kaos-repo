@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.11.3
+Version:            6.11.5
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,6 +116,13 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Thu Oct 26 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.5-0
+- CVE-2017-14919 - In zlib v1.2.9, a change was made that causes an error to
+  be raised when a raw deflate stream is initialized with windowBits set to 8.
+
+* Thu Oct 26 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.4-0
+- support passing undefined to listen() to match behavior in v4.x and v8.x
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.3-0
 - Codesigning is fixed on macOS
 - Snapshots are turned back on!!!
