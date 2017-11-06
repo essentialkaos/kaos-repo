@@ -237,7 +237,7 @@ fi
 - Fixed -o no_hashexpand to disable hash table expansion
 - Fixed chunked items set in binprot, read from ascii
 
-* Mon Nov 06 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.3-0
+* Mon Nov 06 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-0
 - Fixed more binary protocol documentation errors.
 - Fixed segfault during 31b -> 32b hash table expand
 - Create hashtables larger than 32bit
