@@ -29,6 +29,7 @@ kv[prog_name]="memcached"
 kv.readSysconfig
 
 binary="${BINARY:-/usr/bin/memcached}"
+listen="${LISTEN:-127.0.0.1}"
 port="${PORT:-11211}"
 user="${USER:-memcached}"
 max_conn="${MAX_CONN:-1024}"
@@ -59,9 +60,9 @@ startServiceHandler() {
       "3") log_arg="-vvv" ;;
     esac
 
-    kv.run "$binary -d -P ${kv[pid_file]} -u $user -p $port -m $cache_size -c $max_conn $options $log_arg >> $log_file 2>&1"
+    kv.run "$binary -d -P ${kv[pid_file]} -u $user -l $listen -p $port -m $cache_size -c $max_conn $options $log_arg >> $log_file 2>&1"
   else 
-    kv.run "$binary -d -P ${kv[pid_file]} -u $user -p $port -m $cache_size -c $max_conn $options"
+    kv.run "$binary -d -P ${kv[pid_file]} -u $user -l $listen -p $port -m $cache_size -c $max_conn $options"
   fi
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
