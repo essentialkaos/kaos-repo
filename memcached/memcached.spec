@@ -58,7 +58,7 @@ Source3:                  %{name}.service
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:            gcc automake git which
+BuildRequires:            gcc automake which
 
 %if 0%{?rhel} <= 6
 Requires:                 initscripts kaosv >= 2.12
