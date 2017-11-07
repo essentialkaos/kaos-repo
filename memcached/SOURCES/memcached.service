@@ -4,7 +4,7 @@ Before=httpd.service
 After=network.target
 
 [Service]
-EnvironmentFile=-/etc/sysconfig/memcached
+EnvironmentFile=/etc/sysconfig/memcached
 Type=forking
 ExecStart=/usr/bin/memcached -d -l $LISTEN -p $PORT -m $CACHE_SIZE -c $MAX_CONN -u $USER $OPTIONS
 
