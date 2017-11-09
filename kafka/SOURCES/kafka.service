@@ -1,0 +1,22 @@
+[Unit]
+Description=Apache Kafka broker
+Documentation=http://kafka.apache.org/documentation.html
+Requires=network.target remote-fs.target syslog.target
+After=network.target remote-fs.target syslog.target
+ConditionPathExists=/etc/kafka/kafka.conf
+ConditionPathExists=/var/lib/kafka
+
+[Service]
+Type=forking
+PIDFile=/var/run/kafka.pid
+User=kafka
+Group=kafka
+WorkingDirectory=/var/lib/kafka
+EnvironmentFile=/etc/sysconfig/kafka
+ExecStart=/opt/kafka/bin/kafka-server-start.sh -daemon /etc/kafka/kafka.conf
+KillSignal=SIGTERM
+Restart=on-failure
+SyslogIdentifier=kafka
+
+[Install]
+WantedBy=multi-user.target
