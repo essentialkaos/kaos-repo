@@ -79,14 +79,14 @@ Source7:              log4j.properties
 Source8:              log4j-cli.properties
 Source9:              java.env
 
-BuildRequires:        java-1.8.0-openjdk-devel java-devel
+BuildRequires:        java-devel
 BuildRequires:        tar wget ant hostname ant-junit cppunit-doc
 BuildRequires:        hamcrest-demo hamcrest-javadoc hamcrest patch xz libtool
 BuildRequires:        python-devel gcc make libtool autoconf cppunit-devel
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:             java logrotate nc libzookeeper
+Requires:             logrotate nc libzookeeper
 
 %if 0%{?rhel} <= 6
 Requires(post):       chkconfig initscripts
