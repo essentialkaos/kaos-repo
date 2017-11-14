@@ -74,7 +74,6 @@ Source5:             %{name}.sysconfig
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:           noarch
 
-Requires:            java
 %if 0%{?rhel} <= 6
 Requires:            kaosv
 %else
