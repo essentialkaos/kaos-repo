@@ -46,7 +46,7 @@
 
 ###############################################################################
 
-%define _noarch_libdir           /usr/lib
+%define _noarch_libdir           %{_libdir32}
 %define _zookeeper_noarch_libdir %{_noarch_libdir}/zookeeper
 %define _maindir                 %{buildroot}%{_zookeeper_noarch_libdir}
 
