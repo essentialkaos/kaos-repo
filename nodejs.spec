@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            6.11.5
+Version:            8.9.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,6 +116,9 @@ export CXX=clang++
 ###############################################################################
 
 %changelog
+* Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
+- Updated to the LTS release
+
 * Thu Oct 26 2017 Anton Novojilov <andy@essentialkaos.com> - 6.11.5-0
 - CVE-2017-14919 - In zlib v1.2.9, a change was made that causes an error to
   be raised when a raw deflate stream is initialized with windowBits set to 8.
