@@ -103,6 +103,7 @@ export CXX=clang++
 %doc AUTHORS LICENSE README.md
 %{_bindir}/%{shortname}
 %{_bindir}/npm
+%{_bindir}/npx
 %{_docdir}/%{shortname}/gdbinit
 %{_docdir}/%{shortname}/lldb*
 %{_mandir}/man1/%{shortname}.1.gz
