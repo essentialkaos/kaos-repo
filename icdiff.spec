@@ -2,7 +2,7 @@
 
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.9.0
+Version:           1.9.1
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
@@ -53,6 +53,9 @@ Improved colored diff.
 ###############################################################################
 
 %changelog
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
+- Handle files with CR characters better and add --strip-trailing-cr
+
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
 - Fix setup.py by symlinking icdiff to icdiff.py
 
