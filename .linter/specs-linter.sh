@@ -75,7 +75,7 @@ main() {
     rpmlint_conf="$1"
   fi
 
-  for spec in $(find . -name '*.spec' -mtime -1 | sort) ; do
+  for spec in $(git --no-pager show --name-only --oneline --decorate HEAD | sed -e '1d' | egrep '.spec$') ; do
     runLinter "$spec"
   done
 
