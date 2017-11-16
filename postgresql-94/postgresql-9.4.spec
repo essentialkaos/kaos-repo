@@ -73,8 +73,8 @@
 %endif
 
 %define majorver        9.4
-%define minorver        14
-%define rel             1
+%define minorver        15
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          94
 %define realname        postgresql
@@ -1081,6 +1081,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 9.4.15-0
+- Updated to latest stable release
+
 * Tue Oct 10 2017 Anton Novojilov <andy@essentialkaos.com> - 9.4.14-1
 - Improved init script
 
