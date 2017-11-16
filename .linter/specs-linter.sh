@@ -75,7 +75,7 @@ main() {
     rpmlint_conf="$1"
   fi
 
-  for spec in $(find . -name '*.spec' -mtime +3 | sort) ; do
+  for spec in $(find . -name '*.spec' -mtime -1 | sort) ; do
     runLinter "$spec"
   done
 
