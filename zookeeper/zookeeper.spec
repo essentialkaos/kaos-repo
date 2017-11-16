@@ -80,7 +80,7 @@ Source8:              log4j-cli.properties
 Source9:              java.env
 
 BuildRequires:        java-devel
-BuildRequires:        tar wget ant hostname ant-junit cppunit-doc
+BuildRequires:        tar wget ant ant-junit cppunit-doc
 BuildRequires:        hamcrest-demo hamcrest-javadoc hamcrest patch xz libtool
 BuildRequires:        python-devel gcc make libtool autoconf cppunit-devel
 
