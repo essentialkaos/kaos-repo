@@ -75,6 +75,8 @@ main() {
     rpmlint_conf="$1"
   fi
 
+  echo ""
+
   for spec in $(git --no-pager show --name-only --oneline --decorate HEAD | sed -e '1d' | egrep '.spec$') ; do
     runLinter "$spec"
   done
