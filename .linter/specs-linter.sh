@@ -75,9 +75,7 @@ main() {
     rpmlint_conf="$1"
   fi
 
-  echo ""
-
-  for spec in $(git --no-pager show --name-only --oneline --decorate HEAD | sed -e '1d' | egrep '.spec$') ; do
+  for spec in $(find . -name '*.spec' | sort) ; do
     runLinter "$spec"
   done
 
