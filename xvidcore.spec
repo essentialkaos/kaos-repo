@@ -2,7 +2,7 @@
 
 Summary:            Free reimplementation of the OpenDivX video codec
 Name:               xvidcore
-Version:            1.3.3
+Version:            1.3.4
 Release:            0%{?dist}
 License:            XviD
 Group:              System Environment/Libraries
@@ -96,5 +96,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
+- Updated to latest release
+
 * Sun Apr 24 2016 Gleb Goncharov <yum@gongled.ru> - 1.3.3-0
 - Updated to latest version

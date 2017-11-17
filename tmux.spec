@@ -6,7 +6,7 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              2.5
+Version:              2.6
 Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
@@ -64,6 +64,78 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6-0
+- Add select-pane -T to set pane title.
+- Fix memory leak when lines with BCE are removed from history.
+- Fix (again) the "prefer unattached" behaviour of attach-session.
+- Reorder how keys are checked to allow keys to be specified that have a
+  leading escape.
+- Support REP escape sequence (\033[b).
+- Run alert hooks based on options rather than always, and allow further bells
+  even if there is an existing bell.
+- Add -d flag to display-panes to override display-panes-time.
+- Add selection_present format when in copy mode (allows key bindings that do
+  something different if there is a selection).
+- Add pane_at_left, pane_at_right, pane_at_top and pane_at_bottom formats.
+- Make bell, activity and silence alerting more consistent by: removing the
+  bell-on-alert option; adding activity-action and silence-action options with
+  the same possible values as the existing bell-action; adding a "both" value
+  for the visual-bell, visual-activity and visual-silence options to trigger
+  both a bell and a message.
+- Add a pane_pipe format to show if pipe-pane is active.
+- Block signals between forking and resetting signal handlers so that the
+  libevent signal handler doesn't get called in the child and incorrectly write
+  into the signal pipe that it still shares with the parent.
+- Allow punctuation in pane_current_command.
+- Add -c for respawn-pane and respawn-window.
+- Wait for any remaining data to flush when a pane is closed while pipe-pane is
+  in use.
+- Fix working out current client with no target.
+- Try to fallback to C.UTF-8 as well as en_US.UTF-8 when looking for a UTF-8
+  locale.
+- Add user-keys option for user-defined key escape sequences (mapped to User0
+  to User999 keys).
+- Add pane-set-clipboard hook.
+- FAQ file has moved out of repository to online.
+- Fix problem with high CPU usage when a client dies unexpectedly.
+  941.
+- Do a dance on OS X 10.10 and above to return tmux to the user namespace,
+  allowing access to the clipboard.
+- Do not allow escape sequences which expect a specific terminator (APC, DSC,
+  OSC) to wait for forever - use a small timeout. This reduces the chance of
+  the pane locking up completely when sent garbage (cat /dev/random or
+  similar).
+- Support SIGUSR2 to toggle logging on a running server, also generate the
+  "out" log file with -vv not -vvvv.
+- Make set-clipboard a three state option: on (tmux both sends to outside
+  terminal and accepts from applications inside); external (tmux sends outside
+  but does not accept inside); and off.
+- Fix OSC 4 palette setting for bright foreground colours.
+- Use setrgbf and setrgbb terminfo(5) capabilities to set RGB colours, if they
+  are available. (Tc is still supported as well.)
+- Fix redrawing panes when they are resized several times but end up with the
+  size unchanged (for example, splitw/resizep -Z/breakp).
+- Major rewrite of choose mode. Now includes preview, sorting, searching and
+  tagging; commands that can be executed directly from the mode (for example,
+  to delete one or more buffers); and filtering in tree mode.
+- choose-window and choose-session are now aliases of choose-tree (in the
+  command-alias option).
+- Support OSC 10 and OSC 11 to set foreground and background colours.
+- Check the U8 capability to determine whether to use UTF-8 line drawing
+  characters for ACS.
+- Some missing notifications for layout changes.
+- Control mode clients now do not affect session sizes until they issue
+  refresh-client -C. new-session -x and -y works with control clients even if
+  the session is not detached.
+- All new sessions that are unattached (whether with -d or started with no
+  terminal) are now created with size 80 x 24. Whether the status line is on or
+  off does not affect the size of new sessions until they are attached.
+- Expand formats in option names and add -F flag to expand them in option values.
+- Remember the search string for a pane even if copy mode is exited and entered
+  again.
+- Some further BCE fixes (scroll up, reverse index).
+- Improvements to how terminals are cleared (entirely or partially).
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5-0
 - Reset updated flag when restarting #() command so that new output is properly
   recognised

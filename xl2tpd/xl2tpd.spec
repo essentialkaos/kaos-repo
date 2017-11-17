@@ -38,7 +38,7 @@
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
-Version:           1.3.9
+Version:           1.3.10
 Release:           0%{?dist}
 License:           GPL+
 Group:             System Environment/Daemons
@@ -146,6 +146,11 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.10-0
+- Update STRLEN in file.h to 100 (from 80)
+- xl2tpd-control: fix xl2tpd hanged up in "fopen"
+- Update version in spec and opewnrt Makefile
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.9-0
 - Add xl2tpd-control man pages
 - Update spec file with newest Soure0 and version

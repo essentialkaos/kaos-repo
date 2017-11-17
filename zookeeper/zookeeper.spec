@@ -308,6 +308,6 @@ fi
 - Updated to the latest release 
 - Improved RPM spec
 
-- Tue Dec 09 2014 Anton Novojilov <andy@essentialkaos.com> - 3.4.6-0
+* Tue Dec 09 2014 Anton Novojilov <andy@essentialkaos.com> - 3.4.6-0
 - Initial build
 
