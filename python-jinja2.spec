@@ -9,7 +9,7 @@
 
 Summary:        Sandboxed template engine
 Name:           python-jinja2
-Version:        2.9.6
+Version:        2.10
 Release:        0%{?dist}
 License:        BSD 
 Group:          Development/Libraries 
@@ -58,6 +58,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ########################################################################################
 
 %changelog
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.10-0
+- Updated to latest stable release
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.6-0
 - Updated to latest stable release
 
