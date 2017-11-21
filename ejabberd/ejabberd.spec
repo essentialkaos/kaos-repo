@@ -52,7 +52,7 @@
 
 Summary:            Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:               ejabberd
-Version:            17.09
+Version:            17.08
 Release:            0%{?dist}
 Group:              Development/Tools
 License:            GPLv2
@@ -122,8 +122,7 @@ ejabberd, Erlang, XMPP and messaging in general.
            --enable-pam \
            --enable-zlib \
            --enable-redis \
-           --enable-json \
-           --disable-graphics
+           --enable-json
 
 %{__make} %{?_smp_mflags}
 
@@ -209,9 +208,6 @@ fi
 ###############################################################################
 
 %changelog
-* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 17.09-0
-- Updated to latest stable release
-
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 17.08-0
 - Updated to latest stable release
 
