@@ -1,6 +1,6 @@
 ###############################################################################
 
-Summary:              Main loop abstraction library
+Summary:         Main loop abstraction library
 Name:            libverto
 Version:         0.3.0
 Release:         0%{?dist}
