@@ -35,7 +35,7 @@
 Summary:           Very high compression ratio file archiver
 Name:              p7zip
 Version:           16.02
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           LGPLv2 and (LGPLv2+ or CPL)
 Group:             Applications/Archiving
 URL:               http://p7zip.sourceforge.net
@@ -128,7 +128,6 @@ rm -rf %{buildroot}
 %dir %{_libexecdir}/%{name}/
 %{_libexecdir}/%{name}/%{shortname}
 %{_libexecdir}/%{name}/7zCon.sfx
-%{_libexecdir}/%{name}/Codecs/*
 %{_mandir}/man1/%{shortname}.1*
 %exclude %{_mandir}/man1/7zr.1*
 
@@ -138,11 +137,15 @@ rm -rf %{buildroot}
 %{_bindir}/7z
 %{_libexecdir}/%{name}/7z
 %{_libexecdir}/%{name}/7z.so
+%{_libexecdir}/%{name}/Codecs/*
 %{_mandir}/man1/7z.1*
 
 ###############################################################################
 
 %changelog
+* Wed Nov 22 2017 Anton Novojilov <andy@essentialkaos.com> - 16.02-1
+- Moved Rar.so from base package to plugins package
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 16.02-0
 - 7-Zip now can extract multivolume ZIP archives (z01, z02, ... , zip)
 - Some bugs were fixed
