@@ -37,10 +37,10 @@ as GNU Screen.
 ./autogen.sh
 %configure
 
-%{__make}  %{?_smp_mflags} LDFLAGS="%{optflags}"
+%{__make} %{?_smp_mflags} LDFLAGS="%{optflags}"
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %{make_install} INSTALLBIN="install -pm 755" INSTALLMAN="install -pm 644"
 
 %post
@@ -51,13 +51,13 @@ else
 fi
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ###############################################################################
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES FAQ TODO
+%doc CHANGES TODO
 %{_bindir}/tmux
 %{_mandir}/man1/tmux.1.*
 
