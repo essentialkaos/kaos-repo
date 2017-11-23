@@ -2,17 +2,17 @@
 
 Name:               libconfig
 Summary:            C/C++ configuration file library
-Version:            1.5
+Version:            1.7
 Release:            0%{?dist}
 License:            LGPLv2+
 Group:              Development/Libraries
-URL:                http://www.hyperrealm.com/libconfig/
+URL:                https://hyperrealm.github.io/libconfig
 
-Source0:            http://www.hyperrealm.com/libconfig/%{name}-%{version}.tar.gz
+Source0:            https://hyperrealm.github.io/%{name}/dist/%{name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      texinfo-tex bison byacc flex gcc gcc-c++
+BuildRequires:      make texinfo-tex bison byacc flex gcc gcc-c++
 
 ###############################################################################
 
@@ -41,9 +41,7 @@ libconfig.
 ###############################################################################
 
 %prep
-%setup -q
-iconv -f iso-8859-1 -t utf-8 -o AUTHORS{.utf8,}
-mv AUTHORS{.utf8,}
+%setup -qn %{name}-%{version}
 
 %build
 %configure --disable-static
@@ -79,10 +77,15 @@ rm -rf %{buildroot}
 %{_libdir}/libconfig*.so
 %{_libdir}/pkgconfig/libconfig*.pc
 %{_infodir}/libconfig.info*
+%{_libdir}/cmake/%{name}++/*.cmake
+%{_libdir}/cmake/%{name}/*.cmake
 
 ###############################################################################
 
 %changelog
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7-0
+- Updated to version 1.7
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5-0
 - Updated to version 1.5
 

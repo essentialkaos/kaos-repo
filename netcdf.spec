@@ -6,15 +6,13 @@
 
 Summary:            Libraries for the Unidata network Common Data Form
 Name:               netcdf
-Version:            4.4.1.1
+Version:            4.5.0
 Release:            0%{?dist}
 License:            NetCDF
 Group:              Applications/Engineering
 URL:                http://www.unidata.ucar.edu/downloads/netcdf/
 
 Source0:            ftp://ftp.unidata.ucar.edu/pub/%{name}/%{name}-%{version}.tar.gz
-
-Patch0:             %{name}-pkgconfig.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -66,8 +64,6 @@ This package contains the netCDF C static libs.
 %prep
 %setup -q
 
-%patch0 -p1 -b .pkgconfig
-
 %build
 #Do out of tree builds
 %global _configure ../configure
@@ -98,7 +94,8 @@ rm -rf %{buildroot}
 
 %{__make} -C build install DESTDIR=%{buildroot}
 
-chrpath --delete %{buildroot}/%{_bindir}/nc{copy,dump,gen,gen3}
+chrpath --delete %{buildroot}%{_bindir}/nc{copy,dump,gen,gen3}
+chrpath --delete %{buildroot}%{_bindir}/ocprint
 
 rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{_infodir}/dir
@@ -126,6 +123,7 @@ rm -rf %{buildroot}
 %{_bindir}/ncdump
 %{_bindir}/ncgen
 %{_bindir}/ncgen3
+%{_bindir}/ocprint
 %{_libdir}/*.so.*
 %{_mandir}/man1/*
 
@@ -146,5 +144,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.0-0
+- Updated to latest release
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 4.4.1.1-0
 - Initial build for kaos repository

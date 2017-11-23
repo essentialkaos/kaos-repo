@@ -1,6 +1,7 @@
 ###############################################################################
 
 # rpmbuilder:gopack    github.com/xenolf/lego
+# rpmbuilder:tag       v0.4.1
 
 ###############################################################################
 
@@ -44,7 +45,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         0.4.0
+Version:         0.4.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -52,7 +53,7 @@ URL:             https://github.com/xenolf/lego
 
 Source0:         %{name}-%{version}.tar.bz2
 
-BuildRequires:   golang >= 1.8
+BuildRequires:   golang >= 1.9
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -99,6 +100,16 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
+- lib: A new DNS provider for OTC.
+- lib: The AWS_HOSTED_ZONE_ID environment variable for the Route53 DNS
+  provider to directly specify the zone.
+- lib: The RFC2136_TIMEOUT enviroment variable to make the timeout for
+  the RFC2136 provider configurable.
+- lib: The GCE_SERVICE_ACCOUNT_FILE environment variable to specify a
+  service account file for the Google Cloud DNS provider.
+- lib: Fixed an authentication issue with the latest Azure SDK.
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
 - CLI: The --http-timeout switch. This allows for an override of the default
   client HTTP timeout.

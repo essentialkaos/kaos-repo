@@ -45,7 +45,7 @@
 
 Name:              keepalived
 Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           1.3.6
+Version:           1.3.9
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://www.keepalived.org
@@ -170,6 +170,7 @@ fi
 %{_mandir}/man1/genhash.1*
 %{_mandir}/man5/%{name}.conf.5*
 %{_mandir}/man8/%{name}.8*
+%{_defaultdocdir}/%{name}/README
 
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
@@ -184,6 +185,15 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.9-0
+- Updated to latest release
+
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.8-0
+- Updated to latest release
+
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.7-0
+- Updated to latest release
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.6-0
 - Updated to latest release
 

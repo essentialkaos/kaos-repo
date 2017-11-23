@@ -3,9 +3,12 @@ Description=Redis
 After=syslog.target network.target
 
 [Service]
+Type=notify
+ExecStart=/usr/bin/redis-server /etc/redis.conf --supervised systemd
+KillSignal=SIGTERM
+User=redis
+Group=redis
 PIDFile=/var/run/redis/redis.pid
-ExecStart=/etc/init.d/redis start
-ExecStop=/etc/init.d/redis stop
 
 [Install]
 WantedBy=multi-user.target

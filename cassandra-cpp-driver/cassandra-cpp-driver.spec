@@ -45,7 +45,7 @@
 
 Summary:              DataStax C/C++ Driver for Apache Cassandra
 Name:                 cassandra-%{short_name}
-Version:              2.6.0
+Version:              2.7.1
 Release:              0%{?dist}
 License:              APLv2.0
 Group:                Development/Libraries
@@ -152,6 +152,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.7.1-0
+- Updated to latest stable release
+
 * Fri May 12 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
 - Updated to latest stable release
 

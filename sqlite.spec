@@ -1,12 +1,12 @@
 ###############################################################################
 
-%define tarversion  3200100
+%define tarversion  3210000
 
 ###############################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
-Version:            3.20.1
+Version:            3.21.0
 Release:            0%{?dist}
 License:            GPL
 Group:              Development/Tools

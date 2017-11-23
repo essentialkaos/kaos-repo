@@ -64,7 +64,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.55.1
+Version:              7.56.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,154 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 7.56.1-0
+- imap: if a FETCH response has no size, don't call write callback
+- ftp: UBsan fixup 'pointer index expression overflowed
+- failf: skip the sprintf() if there are no consumers
+- fuzzer: move to using external curl-fuzzer
+- lib/Makefile.m32: allow customizing dll suffixes
+- docs: fix typo in curl_mime_data_cb man page
+- darwinssl: add support for TLSv1.3
+- build: fix --disable-crypto-auth
+- lib/config-win32.h: let SMB/SMBS be enabled with OpenSSL/NSS
+- openssl: fix build without HAVE_OPAQUE_EVP_PKEY
+- strtoofft: Remove extraneous null check
+- multi_cleanup: call DONE on handles that never got that
+- tests: added flaky keyword to tests 587 and 644
+- pingpong: return error when trying to send without connection
+- remove_handle: call multi_done() first, then clear dns cache pointer
+- mime: be tolerant about setting the same header list twice in a part
+- mime: improve unbinding top multipart from easy handle
+- mime: avoid resetting a part's encoder when part's contents change
+- mime: refuse to add subparts to one of their own descendants
+- RTSP: avoid integer overflow on funny RTSP responses
+- curl: don't pass semicolons when parsing Content-Disposition
+- openssl: enable PKCS12 support for !BoringSSL
+- FAQ: s/CURLOPT_PROGRESSFUNCTION/CURLOPT_XFERINFOFUNCTION
+- CURLOPT_NOPROGRESS.3: also refer to xferinfofunction
+- CURLOPT_XFERINFODATA.3: fix duplicate see also
+- test298: verify --ftp-method nowcwd with URL encoded path
+- FTP: URL decode path for dir listing in nocwd mode
+- smtp_done: fix memory leak on send failure
+- ftpserver: support case insensitive commands
+- test950; verify SMTP with custom request
+- openssl: don't use old BORINGSSL_YYYYMM macros
+- setopt: update current connection SSL verify params
+- winbuild/BUILD.WINDOWS.txt: mention WITH_NGHTTP2
+- curl: reimplement stdin buffering in -F option
+- mime: keep "text/plain" content type if user-specified
+- mime: fix the content reader to handle >16K data properly
+- configure: remove the C++ compiler check
+- memdebug: trace send, recv and socket
+- runtests: use valgrind for torture as well
+- ldap: silence clang warning
+- makefile.m32: allow to override gcc, ar and ranlib
+- setopt: avoid integer overflows when setting millsecond values
+- setopt: range check most long options
+- ftp: reject illegal IP/port in PASV 227 response
+- mime: do not reuse previously computed multipart size
+- vtls: change struct Curl_ssl `close' field name to `close_one'
+- os400: add missing symbols in config file
+- mime: limit bas64-encoded lines length to 76 characters
+- mk-ca-bundle: Remove URL for aurora
+- mk-ca-bundle: Fix URL for NSS
+
+* Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 7.56.0-0
+- curl: enable compression for SCP/SFTP with --compressed-ssh
+- libcurl: enable compression for SCP/SFTP with CURLOPT_SSH_COMPRESSION
+- vtls: added dynamic changing SSL backend with curl_global_sslset()
+- new MIME API, curl_mime_init() and friends
+- openssl: initial SSLKEYLOGFILE implementation
+- FTP: zero terminate the entry path even on bad input
+- examples/ftpuploadresume.c: use portable code
+- runtests: match keywords case insensitively
+- travis: build the examples too
+- strtoofft: reduce integer overflow risks globally
+- zsh.pl: produce a working completion script again
+- cmake: remove dead code for CURL_DISABLE_RTMP
+- progress: Track total times following redirects
+- configure: fix --disable-threaded-resolver
+- cmake: remove dead code for DISABLED_THREADSAFE
+- configure: fix clang version detection
+- darwinssi: fix error: variable length array used
+- travis: add metalink to some osx builds
+- configure: check for __builtin_available() availability
+- http_proxy: fix build error for CURL_DOES_CONVERSIONS
+- examples/ftpuploadresume: checksrc compliance
+- ftp: fix CWD when doing multicwd then nocwd on same connection
+- system.h: remove all CURL_SIZEOF_* defines
+- http: Don't wait on CONNECT when there is no proxy
+- system.h: check for __ppc__ as well
+- http2_recv: return error better on fatal h2 errors
+- scripts/contri*sh: use "git log --use-mailmap"
+- tftp: fix memory leak on too long filename
+- system.h: fix build for hppa
+- cmake: enable picky compiler options with clang and gcc
+- makefile.m32: add support for libidn2
+- curl: turn off MinGW CRT's globbing
+- request-target.d: mention added in 7.55.0
+- curl: shorten and clean up CA cert verification error message
+- imap: support PREAUTH
+- CURLOPT_USERPWD.3: see also CURLOPT_PROXYUSERPWD
+- examples/threaded-ssl: mention that this is for openssl before 1.1
+- winbuild: fix embedded manifest option
+- tests: Make sure libtests & unittests call curl_global_cleanup()
+- system.h: include sys/poll.h for AIX
+- darwinssl: handle long strings in TLS certs
+- strtooff: fix build for systems with long long but no strtoll
+- asyn-thread: Improved cleanup after OOM situations
+- HELP-US.md: "How to get started helping out in the curl project"
+- curl.h: CURLSSLBACKEND_WOLFSSL used wrong value
+- unit1301: fix error message on first test
+- ossfuzz: moving towards the ideal integration
+- http: fix a memory leakage in checkrtspprefix()
+- examples/post-callback: stop returning one byte at a time
+- schannel: return CURLE_SSL_CACERT on failed verification
+- MAIL-ETIQUETTE: added "1.9 Your emails are public"
+- http-proxy: treat all 2xx as CONNECT success
+- openssl: use OpenSSL's default ciphers by default
+- runtests.pl: support attribute "nonewline" in part verify/upload
+- configure: remove --enable-soname-bump and SONAME_BUMP
+- travis: add c-ares enabled builds linux + osx
+- vtls: fix WolfSSL 3.12 build problems
+- http-proxy: when not doing CONNECT, that phase is done immediately
+- configure: fix curl_off_t check's include order
+- configure: use -Wno-varargs on clang 3.9[.X] debug builds
+- rtsp: do not call fwrite() with NULL pointer FILE *
+- mbedtls: enable CA path processing
+- travis: add build without HTTP/SMTP/IMAP
+- checksrc: verify more code style rules
+- HTTP proxy: on connection re-use, still use the new remote port
+- tests: add initial gssapi test using stub implementation
+- rtsp: Segfault when using WRITEDATA
+- docs: clarify the CURLOPT_INTERLEAVE* options behavior
+- non-ascii: use iconv() with 'char **' argument
+- server/getpart: provide dummy function to build conversion enabled
+- conversions: fix several compiler warnings
+- openssl: add missing includes
+- schannel: Support partial send for when data is too large
+- socks: fix incorrect port number in SOCKS4 error message
+- curl: fix integer overflow in timeout options
+- travis: on mac, don't install openssl or libidn
+- cookies: reject oversized cookies instead of truncating
+- cookies: use lock when using CURLINFO_COOKIELIST
+- curl: check fseek() return code and bail on error
+- examples/post-callback: use long for CURLOPT_POSTFIELDSIZE
+- openssl: only verify RSA private key if supported
+- tests: make the imap server not verify user+password
+- imap: quote atoms properly when escaping characters
+- tests: fix a compiler warning in test 643
+- file_range: avoid integer overflow when figuring out byte range
+- curl.h: include on cygwin too
+- reuse_conn: don't copy flags that are known to be equal
+- http: fix adding custom empty headers to repeated requests
+- docs: clarify the use of environment variables for proxy
+- docs: link CURLOPT_CONNECTTIMEOUT and CURLOPT_CONNECTTIMEOUT_MS
+- connect: fix race condition with happy eyeballs timeout
+- cookie: fix memory leak if path was set twice in header
+- vtls: compare and clone ssl configs properly
+- proxy: read the "no_proxy" variable only if necessary
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 7.55.1-0
 - build: fix 'make install' with configure, install docs/libcurl/* too
 - make install: add 8 missing man pages to the installation

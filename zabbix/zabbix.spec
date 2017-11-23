@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.1
+Version:              3.4.4
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -968,6 +968,186 @@ fi
 ################################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.4-0
+- added service sorting by name if multiple services has same 'sortorder' value
+- added Windows service configuration check to determine if service can be
+  trigger started
+- implemented default widget refresh interval
+- improved error message for case when none of supported database modules exists
+- fixed multiple security issues
+- fixed target list to be meaningless if custom set of commands is executed
+  on zabbix server
+- fixed update proxy lastaccess value when receiving data
+- fixed crash of VMware collector with DebugLevel=4
+- added floating value range validation for metrics calculated by server
+- added validation for groupid and hostid parameters in dashboard view
+- fixed error in action update when changing media type
+- fixed CPU count for LPAR partitions in IBM AIX
+- fixed problem.get and event.get API methods when "selectTags" option contains
+  extended output
+- fixed windows agent to support UTF-16LE, UCS-2, UCS-2LE encodings
+- fixed last access not being updated for passive proxies after getting
+  historical data
+- fixed use of current host as filter when selecting items for graph forms
+  and trigger forms
+- fixed scrollbar causing a JS error in "500 latest values" page due to
+  unnecessarily initialization
+- fixed problem counting in host groups in navigation tree widget
+- fixed OS type detection logic
+- fixed problems with session management
+- fixed {HOST.*} macro support in map trigger elements
+- fixed advanced label support in map editing mode
+- fixed ETag comparison check in jsLoader for web server with enabled
+  compression
+- fixed undefined index error in dashboard problems widget
+- improved pre-processing manager performance when processing large number
+  of values
+- added an informative warning about lack of data for macros used in LLD
+  rule filter
+
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.3-0
+- modified server, proxy and agent to follow changes in /etc/resolv.conf
+- fixed missing information in "Status of Zabbix" widget with huge sessions
+  table
+- fixed error when template is added to hosts via mass update form
+- fixed trap, snmptrap items of log type not being processed by proxy
+- fixed default value for JMX endpoint on item type change in edit form and mass
+  update form
+- fixed system.run, user parameter and external check not to become unsupported
+  when exit code is different than zero
+- fixed IT services calculation in parallel transactions not seeing each other
+  changes when calculating common parent service
+- fixed hanging of preprocessing manager process due to file descriptor limit
+  exhaustion when too many data gathering processes are configured to start
+- fixed IE and Opera specific javascript bug; improved the depth control of
+  navigation tree items; improved coding style and performance
+- fixed simple graph widget item support: only supported dynamic items, only
+  real hosts, show only hosts with items
+- added 'filter field should not be empty' validation for sysmap widget form
+- fixed user permission check for macros containing user personal information
+  in notification messages
+- improved task database operations to handle/prevent creation of tasks without
+  corresponding data records
+- fixed {HOST.*} macro expansion for map trigger elements in map constructor
+- fixed detection of PostgreSQL 10
+- fixed simultaneous sending of the same history data from passive proxy
+- fixed links in select popup for user groups; updated group selection field
+  in Administration->Users
+- fixed difference between item and web scenario item graphs on simple graph
+  widget
+- improved performance of hostgeneral.unlink() method; fixed SQL statement
+- added horizontal scrollbar to the map in view mode; removed homepage label
+  in maps and graphs; made graph timestamp visible only if debug-mode is on
+- fixed error in simple graph widget for web scenario items
+- fixed problem box stretching in navigation tree in IE11; fixed position of
+  all navigation tree problem boxes in Edge
+- fixed escaping of translation strings with apostrophe in forms: dashboard
+  sharing and monitoring, administration of housekeeper and trigger options,
+  item edit and mass update, xml import, host edit, web scenario, trigger
+  configuration.
+- fixed the housekeeper for not deleting events in open problem state
+- moved item state,lastlogsize,mtime,lastclock configuration cache update
+  from value reception to value processing
+- reduced memory used by pre-processor manager item cache
+- fixed error displaying of zabbix server status widget
+- fixed SQL errors in event.get() method
+- fixed possibility to enter deleys with suffixes for new elements of slideshows
+- fixed behavior for graph prototypes when item prototype is deleted
+- fixed response for script.get() method with "editable" flag
+- fixed dcheck.get(), dhost.get() and dservice.get() permission checks for admin
+  users
+
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
+- improved permission schema of the dashboards for normal adminitrators
+- removed starting point from all OIDs; shortened old IOS Cisco templates names
+- added preprocessing_queue item/graph/screen widget in Template App Zabbix
+  Server
+- renamed action acknowledgment operation 'Notify all who left acknowledgement
+  and comments' to 'Notify all involved'
+- added users who received notifications regarding the problem to 'Notify all
+  involved' acknowledgment operation recipient list
+- enabled Turkish translation to be displayed by default
+- updated Chinese (China), English (United States), Japanese, Korean, Turkish
+  translations; thanks to Zabbix translators
+- implemented feature to open first available dashboard from the list
+- implemented dashboard widget minimum height limit
+- fixed losing "now" on timeline
+- fixed data conversion for ssh checks of numeric value type
+- fixed service port validation if auto-discovery is performed by the zabbix
+  proxy
+- fixed crash when using item of log value type as master item for dependent
+  items
+- fixed processing of log keys with non log value types for items monitored
+  by proxies
+- fixed non well formed numeric value encaunteration in slideshow; implemented
+  getBBox workaround for Firefox
+- fixed false positives on 'High bandwidth usage' trigger in
+  Template_Module_Interfaces_* templates
+- fixed crash that could occur during connection failures to MySQL
+- fixed sorting by host name for items on availability report page
+- added support of strings in "sortfield" and "sortorder" parameters, and added
+  sorting by "name" for dashboard.get()
+- added item select filter for simple graph to allow select only supported item
+- fixed map minimum severity option in screens
+- fixed trigger not being calculated for newly received item values if last one
+  of those is unsupported value
+- fixed notification sound not being played for message with timeout set to
+  greater than minute
+- fixed heap corruption in Windows agent; thanks to Ronnie Kaech for the patch
+- fixed result of hostinterface.replacehostinterfaces method
+- added new context for 'Second' string to be properly translated in maintenance
+  period form
+- fixed trapper item "Allowed hosts" field user macro support
+- fixed address and ports array size in zbx_init_ipmi_host() to match OpenIPMI
+  internals
+- fixed potential loss of data when server/proxy processes zabbix_sender data
+- eliminated sending of DNS AAAA queries when checking IPv4 incoming connection
+  in agent or for trapper item and A queries in case of IPv6
+- fixed multiple browser sensitive javascript bugs in navigation tree widget
+  and improved coding style
+- fixed label macro resolving in maps
+- implemented widget field validation before dashboard is loaded and fixed
+  undefined index for tag field in dashboard widgets
+- fixed macro expansion in map editor
+- fixed graph not being displayed if item update interval contains macro
+- fixed delayed first refresh in map widget; improved coding style
+- fixed regular expression pre-processing step to fail if the pattern does
+  not match input data
+- allowed libcurl to choose SMTP authentication mechanism other than PLAIN
+- fixed frontend side DNS parser logic to be same as server side DNS parser
+  logic
+- fixed trigger expression validation test form
+- fixed scroll duration in dashboard after adding a new widget
+- fixed housekeeping of problems and events for deleted items and triggers;
+  added optional database patch to cleanup problems for deleted items and
+  triggers
+- fixed incorrect SQL query in availability reports
+- fixed undefined index error on latest data page when host was deleted in
+  another session
+- optimized data selection of user preferences stored in profiles
+- fixed removal of multiselect options using backspace button
+- fixed a rounding of large unsigned numbers
+- removed delay between sending batches of cached historical data by active
+  proxies
+- fixed item helper description for proc_info and diplay order for vfs.dir.size
+- fixed line graph was displayed as points for data taken from trends
+- fixed visibility of item data first row for 'latest data' page and 'audit log'
+  page
+- fixed maps not loading without built-in JSON support
+- fixed incorrect subnet mask calculation when CIDR is less than 8
+- fixed processing of lld rules in not supported state
+- fixed parallel processing of multiple values for same lld rule
+- fixed inconsistency of 'mode' parameter check in vfs_dir_size(); thanks to
+  MATSUDA Daiki for patch
+- fixed XML import when preprocessing param value is space character
+- fixed possible SQL errors in dashboard.create() and dashboard.update() methods
+- fixed improper DB::refreshIds() call when selected row is locked
+- fixed memory related bugs in item preprocessing
+- fixed trigger resolving in services configuration; fixed popup window size
+- fixed an error in screens if screen trigger overview element contains
+  deleted host group
+- fixed template replacement in mass update form
+
 * Thu Sep 14 2017 Andrey Kulikov <avk@brewkeeper.net> - 3.4.1-0
 - fixed display of previously opened dashboard
 - fixed displaying of graphs in the dashboard widgets;

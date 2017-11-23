@@ -30,7 +30,7 @@
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
-Version:            0.3.0
+Version:            0.4.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -71,8 +71,11 @@ operations, pgcenter can start psql session for this purposes.
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
+install -dm 755 %{buildroot}%{_mandir}/man1
 
 %{make_install}
+
+%{__make} install-man PREFIX=%{buildroot}%{_prefix}
 
 %clean
 rm -rf %{buildroot}
@@ -83,10 +86,20 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc COPYRIGHT README.md
 %{_bindir}/%{name}
+%{_datadir}/%{name}/*.sql
+%{_mandir}/man1/%{name}.1.*
 
 ###############################################################################
 
 %changelog
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
+- PostgreSQL 10 support
+- Extended general overview
+- Add xact_age and time_age fields into pg_stat_replications
+- Add backend_type into pg_stat_activity
+- Add stats_age into pg_stat_database
+- Some bug fixes and code optimizations
+
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
 - use qsort_r() instead of hand-made sorting - sort is now available for all
   columns;

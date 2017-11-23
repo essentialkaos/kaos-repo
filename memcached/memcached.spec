@@ -45,7 +45,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.1
+Version:                  1.5.3
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -58,9 +58,11 @@ Source3:                  %{name}.service
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:            gcc automake
+BuildRequires:            gcc automake which
 
+%if 0%{?rhel} <= 6
 Requires:                 initscripts kaosv >= 2.12
+%endif
 
 %if 0%{?rhel} >= 7
 BuildRequires:            libevent-devel
@@ -132,12 +134,16 @@ sed -i "s/UNKNOWN/%{version}/" version.m4
 %{make_install} INSTALL="install -p"
 
 install -dm 755 %{buildroot}%{_bindir}
+%if 0%{?rhel} <= 6
 install -dm 755 %{buildroot}%{_initrddir}
+%endif
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_rundir}/%{name}
 install -dm 755 %{buildroot}%{_logdir}/%{name}
 
+%if 0%{?rhel} <= 6
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
+%endif
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 %if 0%{?rhel} >= 7
@@ -197,7 +203,9 @@ fi
 %{_bindir}/%{name}-tool
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
+%if 0%{?rhel} <= 6
 %{_initrddir}/%{name}
+%endif
 
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
@@ -217,6 +225,24 @@ fi
 ###############################################################################
 
 %changelog
+* Mon Nov 06 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.3-0
+- Added listen option to support bindings on IP address
+- Improved systemd unit file
+- Added get and touch command for ascii protocol
+- Added warning about time on very low TTL's in doc/protocol.txt
+- Pledged privdropping support for OpenBSD
+- Made for loop more clear in logger watcher
+- Fixed theoretical leak in process_bin_stat
+- Fixed use of unitialized array in lru_maintainer
+- Fixed -o no_hashexpand to disable hash table expansion
+- Fixed chunked items set in binprot, read from ascii
+
+* Mon Nov 06 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-0
+- Fixed more binary protocol documentation errors.
+- Fixed segfault during 31b -> 32b hash table expand
+- Create hashtables larger than 32bit
+- Some non-user-facing code changes for supporting future features.
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - Add max_connections stat to 'stats' output
 - Drop sockets from obviously malicious command strings (HTTP/)

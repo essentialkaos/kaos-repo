@@ -38,7 +38,7 @@
 
 Name:              tsung
 Summary:           A distributed multi-protocol load testing tool
-Version:           1.6.0
+Version:           1.7.0
 Release:           0%{?dist}
 Group:             Development/Tools
 License:           GPLv2
@@ -94,10 +94,9 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES CONTRIBUTORS COPYING TODO
+%doc CONTRIBUTORS COPYING TODO
 %{_bindir}/%{name}*
 %{_bindir}/tsplot
-%{_libdir}/erlang/lib/*
 %{_libdir}/%{name}/
 %{_datadir}/%{name}/
 %{_mandir}/man1/%{name}*.1*
@@ -106,6 +105,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
+- Updated to latest stable release
+
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
 - Updated to latest stable release
 
