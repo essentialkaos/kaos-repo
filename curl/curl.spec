@@ -64,7 +64,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.56.1
+Version:              7.57.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,80 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Wed Nov 29 2017 Anton Novojilov <andy@essentialkaos.com> - 7.57.0-0
+- auth: add support for RFC7616 - HTTP Digest access authentication
+- share: add support for sharing the connection cache
+- HTTP: implement Brotli content encoding
+- CVE-2017-8816: NTLM buffer overflow via integer overflow
+- CVE-2017-8817: FTP wildcard out of bounds read
+- CVE-2017-8818: SSL out of buffer access
+- curl_mime_filedata.3: fix typos
+- libtest: Add required test libraries for lib1552 and lib1553
+- fix time diffs for systems using unsigned time_t
+- ftplistparser: memory leak fix: free temporary memory always
+- multi: allow table handle sizes to be overridden
+- wildcards: don't use with non-supported protocols
+- curl_fnmatch: return error on illegal wildcard pattern
+- transfer: Fix chunked-encoding upload too early exit
+- curl_setup: Improve detection of CURL_WINDOWS_APP
+- resolvers: only include anything if needed
+- setopt: fix CURLOPT_SSH_AUTH_TYPES option read
+- appveyor: add a win32 build
+- Curl_timeleft: change return type to timediff_t
+- cmake: Export libcurl and curl targets to use by other cmake projects
+- curl: in -F option arg, comma is a delimiter for files only
+- curl: improved ";type=" handling in -F option arguments
+- timeval: use mach_absolute_time() on MacOS
+- curlx: the timeval functions are no longer provided as curlx_*
+- mkhelp.pl: do not generate comment with current date
+- memdebug: use send/recv signature for curl_dosend/curl_dorecv
+- cookie: avoid NULL dereference
+- url: fix CURLOPT_POSTFIELDSIZE arg value check to allow -1
+- include: remove conncache.h inclusion from where its not needed
+- CURLOPT_MAXREDIRS: allow -1 as a value
+- tests: Fixed torture tests on tests 556 and 650
+- http2: Fixed OOM handling in upgrade request
+- url: fix CURLOPT_DNS_CACHE_TIMEOUT arg value check to allow -1
+- CURLOPT_INFILESIZE: accept -1
+- curl: pass through [] in URLs instead of calling globbing error
+- curl: speed up handling of many URLs
+- ntlm: avoid malloc(0) for zero length passwords
+- url: remove faulty arg value check from CURLOPT_SSH_AUTH_TYPES
+- HTTP: support multiple Content-Encodings
+- travis: add a job with brotli enabled
+- url: remove unncessary NULL-check
+- fnmatch: remove dead code
+- connect: store IPv6 connection status after valid connection
+- imap: deal with commands case insensitively
+- --interface: add support for Linux VRF
+- content_encoding: fix inflate_stream for no bytes available
+- cmake: Correctly include curl.rc in Windows builds
+- cmake: Add missing setmode check
+- connect.c: remove executable bit on file
+- SMB: fix uninitialized local variable
+- zlib/brotli: only include header files in modules needing them
+- URL: return error on malformed URLs with junk after IPv6 bracket
+- openssl: fix too broad use of HAVE_OPAQUE_EVP_PKEY
+- macOS: Fix missing connectx function with Xcode version older than 9.0
+- --resolve: allow IP address within [] brackets
+- examples/curlx: Fix code style
+- ntlm: remove unnecessary NULL-check to please scan-build
+- Curl_llist_remove: fix potential NULL pointer deref
+- mime: fix "Value stored to 'sz' is never read" scan-build error
+- openssl: fix "Value stored to 'rc' is never read" scan-build error
+- http2: fix "Value stored to 'hdbuf' is never read" scan-build error
+- http2: fix "Value stored to 'end' is never read" scan-build error
+- Curl_open: fix OOM return error correctly
+- url: reject ASCII control characters and space in host names
+- examples/rtsp: clear RANGE again after use
+- connect: improve the bind error message
+- make: fix "make distclean"
+- connect: add support for new TCP Fast Open API on Linux
+- metalink: fix memory-leak and NULL pointer dereference
+- URL: update "file:" URL handling
+- ssh: remove check for a NULL pointer
+- global_init: ignore CURL_GLOBAL_SSL's absense
+
 * Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 7.56.1-0
 - imap: if a FETCH response has no size, don't call write callback
 - ftp: UBsan fixup 'pointer index expression overflowed
