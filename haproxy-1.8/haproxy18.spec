@@ -81,7 +81,13 @@ Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc gcc-c++ cmake golang zlib-devel openssl-devel
+BuildRequires:     make cmake golang zlib-devel openssl-devel
+
+%if 0%{?rhel} >= 7
+BuildRequires:     gcc gcc-c++
+%else
+BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
+%endif
 
 Requires:          setup >= 2.8.14-14 kaosv >= 2.10
 
@@ -126,6 +132,11 @@ mkdir boringssl
 %{__tar} xzvf %{SOURCE14}
 
 %build
+
+%if 0%{?rhel} < 7
+# Use gcc and gcc-c++ from devtoolset for build on CentOS6
+export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
+%endif
 
 ### DEPS BUILD START ###
 
@@ -296,5 +307,4 @@ fi
 
 %changelog
 * Wed Nov 29 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.8.0-0
-- Initial build. 
-
+- Initial build
