@@ -1,0 +1,162 @@
+#!/bin/bash
+
+# chkconfig: - 85 15
+# description: HA-Proxy is a TCP/HTTP reverse proxy which is particularly suited \
+#              for high availability environments.
+# processname: haproxy
+# config:      /etc/haproxy/haproxy.cfg
+# pidfile:     /var/run/haproxy.pid
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="haproxy"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/sbin/haproxy}
+conf_file=${CONF_FILE:-/etc/haproxy/haproxy.cfg}
+
+kv[pid_file]="/var/run/haproxy.pid"
+
+kv[delay_start]=${DELAY_START:-15}
+kv[delay_stop]=${DELAY_STOP:-120}
+
+kv[search_pattern]="$binary -D -f $conf_file -p ${kv[pid_file]}"
+
+###############################################################################
+
+kv.addCommand "start"    "Start ${kv[prog_name]}"
+kv.addCommand "stop"     "Stop ${kv[prog_name]}"
+kv.addCommand "restart"  "Restart (stop+start) ${kv[prog_name]}"    "restart"
+kv.addCommand "status"   "Show current status of ${kv[prog_name]}"
+kv.addCommand "reload"   "Reload configuration files"               "reload"
+kv.addCommand "check"    "Validate config"                          "check"
+
+kv.addCommandVars "stop" "force"
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "start" "preStartServiceHandler" "pre"
+kv.addHandler "stop"  "stopServiceHandler"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist"
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable"
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+###############################################################################
+
+reload() {
+  if ! check ; then
+    return $ACTION_ERROR
+  fi
+
+  kv.showProcessMessage "Reloading config"
+
+  $binary -D -f "$conf_file" -p "${kv[pid_file]}" -sf $(cat "${kv[pid_file]}") &> /dev/null
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  return $status
+}
+
+check() {
+  kv.showProcessMessage "Checking ${kv[prog_name]} config"
+
+  testServiceConfig true
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  if [[ $status -ne 0 ]] ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+
+  return $ACTION_OK
+}
+
+restart() {
+  if check ; then
+    kv.restart
+  fi
+
+  return $?
+}
+
+###############################################################################
+
+preStartServiceHandler() {
+  if ! testServiceConfig true ; then
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+}
+
+startServiceHandler() {
+
+  $binary -D -f "$conf_file" -p "${kv[pid_file]}"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_USR1"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess "$pid"
+    fi
+
+    return $ACTION_ERROR
+  fi
+}
+
+###############################################################################
+
+testServiceConfig() {
+  local quiet="$1"
+
+  if [[ $quiet ]] ; then
+    $binary -c -q -f "$conf_file" &> /dev/null
+  else
+    $binary -c -V -f "$conf_file"
+  fi
+
+  local status=$?
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@
