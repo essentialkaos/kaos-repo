@@ -52,7 +52,7 @@
 
 %define lua_ver           5.3.4
 %define pcre_ver          8.41
-%define libre_ver         2.5.0
+%define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -61,7 +61,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.6.13
-Release:           2%{?dist}
+Release:           3%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -75,13 +75,19 @@ Source5:           %{name}.service
 
 Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source12:          https://boringssl.googlesource.com/boringssl/+archive/%{boringssl_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc gcc-c++ zlib-devel
+BuildRequires:     make zlib-devel
+
+%if 0%{?rhel} >= 7
+BuildRequires:     gcc gcc-c++
+%else
+BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
+%endif
 
 Requires:          setup >= 2.8.14-14 kaosv >= 2.10
 
@@ -117,17 +123,40 @@ possibility not to expose fragile web servers to the net.
 %prep
 %setup -q
 
+mkdir boringssl
+
 %{__tar} xzvf %{SOURCE10}
 %{__tar} xzvf %{SOURCE11}
-%{__tar} xzvf %{SOURCE12}
+%{__tar} xzvf %{SOURCE12} -C boringssl
 %{__tar} xzvf %{SOURCE13}
 %{__tar} xzvf %{SOURCE14}
 
 %build
 
+%if 0%{?rhel} < 7
+# Use gcc and gcc-c++ from devtoolset for build on CentOS6
+export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
+%endif
+
 ### DEPS BUILD START ###
 
 export BUILDDIR=$(pwd)
+
+# Static BoringSSL build
+mkdir boringssl/build
+
+pushd boringssl/build &> /dev/null
+  cmake ../
+  %{__make} %{?_smp_mflags}
+popd
+
+mkdir -p "boringssl/.openssl/lib"
+
+pushd boringssl/.openssl &> /dev/null
+  ln -s ../include
+popd
+
+cp boringssl/build/crypto/libcrypto.a boringssl/build/ssl/libssl.a boringssl/.openssl/lib
 
 # Static NCurses build
 pushd ncurses-%{ncurses_ver}
@@ -152,14 +181,6 @@ pushd lua-%{lua_ver}
                             MYLDFLAGS="-L$BUILDDIR/readline-%{readline_ver}/build/lib -L$BUILDDIR/ncurses-%{ncurses_ver}/build/lib -lreadline -lncurses" \
                             linux
   %{__make} %{?_smp_mflags} INSTALL_TOP=$(pwd)/build install
-popd
-
-# Static LibreSSL build
-pushd libressl-%{libre_ver}
-  mkdir build
-  ./configure --prefix=$(pwd)/build --enable-shared=no
-  %{__make} %{?_smp_mflags}
-  %{__make} install
 popd
 
 # Static PCRE build
@@ -285,6 +306,9 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-3
+- Migrated from LibreSSL to BoringSSL
+
 * Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-2
 - Fixed systemd ExecReload handler
 
