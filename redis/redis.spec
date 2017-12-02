@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.4
+Version:            4.0.5
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -259,6 +259,10 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sat Dec 02 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.5-0
+- Redis 4.0.4 fix for PSYNC2 was broken, causing the slave to crash when
+  receiving an RDB file from the master that contained a duplicated Lua script
+
 * Fri Dec 01 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.4-0
 - Several PSYNC2 bugs can corrupt the slave data set after a restart and
   a successful PSYNC2 handshake
