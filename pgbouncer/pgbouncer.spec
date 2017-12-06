@@ -48,7 +48,7 @@
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
 Version:           1.7.2
-Release:           2%{?dist}
+Release:           3%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -103,6 +103,7 @@ install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_initrddir}
+install -dm 755 %{buildroot}%{_rundir}/%{name}
 
 install -pm 644 etc/pgbouncer.ini %{buildroot}%{_sysconfdir}/%{name}
 install -pm 700 etc/mkauth.py %{buildroot}%{_sysconfdir}/%{name}/
@@ -173,6 +174,7 @@ fi
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %endif
+%{_rundir}/%{name}
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man5/%{name}.*
 %{_sysconfdir}/%{name}/mkauth.py*
@@ -181,6 +183,9 @@ fi
 ###############################################################################
 
 %changelog
+* Tue Dec 05 2017 Gleb Goncharov <andy@essentialkaos.com> - 1.7.2-3
+- Fixed bug with pid file location and kaosv
+
 * Tue Mar 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-2
 - Rebuilt with latest version of libevent2
 
