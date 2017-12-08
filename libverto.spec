@@ -3,7 +3,7 @@
 Summary:         Main loop abstraction library
 Name:            libverto
 Version:         0.3.0
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         MIT
 Group:           Development/Libraries
 URL:             https://github.com/latchset/libverto
@@ -264,5 +264,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-1
+- Improved spec
+
 * Wed Nov 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
 - Initial build for kaos-repo
