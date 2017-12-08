@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.5
+Version:            4.0.6
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -70,7 +70,7 @@ BuildRequires:      make gcc tcl
 Requires:           %{name}-cli >= %{version}
 Requires:           logrotate
 %if 0%{?rhel} <= 6
-Requires:           kaosv >= 2.10
+Requires:           kaosv >= 2.13
 %endif
 
 %if 0%{?rhel} >= 7
@@ -259,6 +259,9 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.6-0
+- More errors in the fixes for PSYNC2 in Redis 4.0.5 were identified
+
 * Sat Dec 02 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.5-0
 - Redis 4.0.4 fix for PSYNC2 was broken, causing the slave to crash when
   receiving an RDB file from the master that contained a duplicated Lua script

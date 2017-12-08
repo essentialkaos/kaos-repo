@@ -3,9 +3,10 @@ language: bash
 cache: apt
 
 before_install:
-  - echo "deb http://us.archive.ubuntu.com/ubuntu vivid main universe" | sudo tee -a /etc/apt/sources.list 
+  - echo "deb http://us.archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
   - sudo apt-get install -y rpmlint
+  - sudo ln -sf /usr/bin/python2.7 /usr/bin/python2.6
 
 script:
   - bash .linter/specs-linter.sh .linter/rpmlint.conf

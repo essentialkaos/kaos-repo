@@ -3,7 +3,7 @@
 Summary:         Main loop abstraction library
 Name:            libverto
 Version:         0.3.0
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         MIT
 Group:           Development/Libraries
 URL:             https://github.com/latchset/libverto
@@ -208,44 +208,54 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %files
+%defattr(-,root,root)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/%{name}.so.*
 
 %files devel
+%defattr(-,root,root)
 %{_includedir}/verto.h
 %{_includedir}/verto-module.h
 %{_libdir}/%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 
 %files glib
+%defattr(-,root,root)
 %{_libdir}/%{name}-glib.so.*
 
 %files glib-devel
+%defattr(-,root,root)
 %{_includedir}/verto-glib.h
 %{_libdir}/%{name}-glib.so
 %{_libdir}/pkgconfig/%{name}-glib.pc
 
 %files libevent
+%defattr(-,root,root)
 %{_libdir}/%{name}-libevent.so.*
 
 %files libevent-devel
+%defattr(-,root,root)
 %{_includedir}/verto-libevent.h
 %{_libdir}/%{name}-libevent.so
 %{_libdir}/pkgconfig/%{name}-libevent.pc
 
 %files tevent
+%defattr(-,root,root)
 %{_libdir}/%{name}-tevent.so.*
 
 %files tevent-devel
+%defattr(-,root,root)
 %{_includedir}/verto-tevent.h
 %{_libdir}/%{name}-tevent.so
 %{_libdir}/pkgconfig/%{name}-tevent.pc
 
 %if !0%{?rhel}
 %files libev
+%defattr(-,root,root)
 %{_libdir}/%{name}-libev.so.*
 
 %files libev-devel
+%defattr(-,root,root)
 %{_includedir}/verto-libev.h
 %{_libdir}/%{name}-libev.so
 %{_libdir}/pkgconfig/%{name}-libev.pc
@@ -254,5 +264,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-1
+- Improved spec
+
 * Wed Nov 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
 - Initial build for kaos-repo
