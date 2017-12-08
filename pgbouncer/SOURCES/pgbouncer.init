@@ -27,7 +27,6 @@ MULTIBOUNCER="/etc/init.d/multibouncer"
 ###############################################################################
 
 kv[prog_name]="pgbouncer"
-kv[search_pattern]="pgbouncer"
 
 kv.readSysconfig
 
@@ -37,7 +36,7 @@ conf_file=${CONF_FILE:-/etc/pgbouncer/pgbouncer.ini}
 log_dir=${LOG_DIR:-/var/log/pgbouncer}
 
 kv[user]="$user"
-
+kv[search_pattern]="$binary"
 kv[pid_file]=$(kv.readProperty "$conf_file" "pidfile")
 
 kv[oom_adj]="$OOM_DISABLE"
