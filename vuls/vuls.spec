@@ -1,7 +1,7 @@
 ###############################################################################
 
 # rpmbuilder:gopack    github.com/future-architect/vuls
-# rpmbuilder:tag       v0.4.0
+# rpmbuilder:tag       v0.4.1
 
 ###############################################################################
 
@@ -63,7 +63,7 @@
 
 Summary:         VULnerability Scanner
 Name:            vuls
-Version:         0.4.0
+Version:         0.4.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv3
@@ -307,6 +307,9 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
+- Updated to latest stable release
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
 - Updated to latest stable release
 

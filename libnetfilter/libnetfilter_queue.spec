@@ -43,15 +43,13 @@
 
 Summary:         Userspace library for packets that have been queued by the kernel packet filter
 Name:            libnetfilter_queue
-Version:         1.0.2
+Version:         1.0.3
 Release:         0%{?dist}
 License:         GPLv2
 Group:           System Environment/Libraries
 URL:             http://netfilter.org
 
 Source0:         http://ftp.netfilter.org/pub/%{name}/%{name}-%{version}.tar.bz2
-
-Patch1:          rhel6-iptos.diff
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -83,7 +81,6 @@ Header files and static libraries for libnetfilter_queue package.
 
 %prep
 %setup -q
-%patch1 -p1
 
 # Update headers for compatibility with libnfnetlink 1.0
 sed -i 's/linux_nfnetlink.h/libnfnetlink.h/' include/libnetfilter_queue/linux_nfnetlink_queue.h
@@ -123,5 +120,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.3-0
+- Updated to latest release
+
 * Fri Oct 10 2014 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
 - Initial build

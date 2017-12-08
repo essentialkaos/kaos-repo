@@ -6,7 +6,7 @@
 
 Summary:         Vendor Package Management for Golang
 Name:            glide
-Version:         0.12.3
+Version:         0.13.1
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
@@ -16,7 +16,7 @@ Source0:         https://github.com/Masterminds/%{name}/archive/v%{version}.tar.
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.7
+BuildRequires:   golang >= 1.9
 
 Requires:        golang
 
@@ -79,5 +79,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.13.1-0
+- Updated to latest release
+
 * Sat Nov 26 2016 Anton Novojilov <andy@essentialkaos.com> - 0.12.3-0
 - Initial build for kaos repo

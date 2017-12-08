@@ -51,14 +51,14 @@
 %define hp_datadir        %{_datadir}/%{name}
 
 %define pcre_ver          8.40
-%define libre_ver         2.5.0
+%define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
 
 ###############################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.5.19
-Release:           2%{?dist}
+Release:           3%{?dist}
 License:           GPLv2+
 Group:             System Environment/Daemons
 URL:               http://haproxy.1wt.eu
@@ -71,11 +71,17 @@ Source4:           %{name}.sysconfig
 Source5:           %{name}.service
 
 Source10:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source11:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source11:          https://boringssl.googlesource.com/boringssl/+archive/%{boringssl_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc gcc-c++ zlib-devel
+BuildRequires:     make zlib-devel
+
+%if 0%{?rhel} >= 7
+BuildRequires:     gcc gcc-c++
+%else
+BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
+%endif
 
 Requires:          setup >= 2.8.14-14 kaosv >= 2.10
 
@@ -111,20 +117,35 @@ possibility not to expose fragile web servers to the net.
 %prep
 %setup -q
 
+mkdir boringssl
+
 %{__tar} xzvf %{SOURCE10}
-%{__tar} xzvf %{SOURCE11}
+%{__tar} xzvf %{SOURCE11} -C boringssl
 
 %build
 
+%if 0%{?rhel} < 7
+# Use gcc and gcc-c++ from devtoolset for build on CentOS6
+export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
+%endif
+
 ### DEPS BUILD START ###
 
-# Static LibreSSL build
-pushd libressl-%{libre_ver}
-  mkdir build
-  ./configure  --prefix=$(pwd)/build --enable-shared=no
+# Static BoringSSL build
+mkdir boringssl/build
+
+pushd boringssl/build &> /dev/null
+  cmake ../
   %{__make} %{?_smp_mflags}
-  %{__make} install
 popd
+
+mkdir -p "boringssl/.openssl/lib"
+
+pushd boringssl/.openssl &> /dev/null
+  ln -s ../include
+popd
+
+cp boringssl/build/crypto/libcrypto.a boringssl/build/ssl/libssl.a boringssl/.openssl/lib
 
 # Static PCRE build
 pushd pcre-%{pcre_ver}
@@ -253,6 +274,9 @@ fi
 ###############################################################################
 
 %changelog
+* Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-3
+- Migrated from LibreSSL to BoringSSL
+
 * Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-2
 - Fixed systemd ExecReload handler
 

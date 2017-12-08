@@ -48,7 +48,7 @@
   %define with_cifs_utils_plugin_option --disable-cifs-idmap-plugin
 %endif
 
-%if (0%{?fedora} || (0%{?rhel} == 7 &&  0%{?rhel7_minor} >= 1) || (0%{?rhel} == 6 &&  0%{?rhel6_minor} >= 7))
+%if (0%{?fedora} || 0%{?rhel} >= 6 )
   %define with_krb5_localauth_plugin 1
 %endif
 
@@ -120,7 +120,7 @@
 
 Summary:            System Security Services Daemon 
 Name:               sssd
-Version:            1.15.3
+Version:            1.16.0
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -1019,6 +1019,7 @@ fi
 %{_mandir}/man5/sssd.conf.5*
 %{_mandir}/man5/sssd-files.5*
 %{_mandir}/man5/sssd-secrets.5*
+%{_mandir}/man5/sssd-session-recording.5*
 %{_mandir}/man5/sssd-simple.5*
 %{_mandir}/man5/sssd-sudo.5*
 %{_mandir}/man5/sss_rpcidmapd.5*
@@ -1260,6 +1261,9 @@ fi
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
+- Updated to latest stable release
+
 * Tue Aug 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.15.3-0
 - Updated to latest stable release
 - Improved init script

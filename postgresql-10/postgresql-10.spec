@@ -80,7 +80,7 @@
 %endif
 
 %define majorver        10
-%define minorver        0
+%define minorver        1
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          100
@@ -1178,5 +1178,8 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.1-0
+- Updated to latest stable release
+
 * Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
 - Initial build

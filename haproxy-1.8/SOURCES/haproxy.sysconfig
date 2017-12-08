@@ -1,0 +1,6 @@
+# Sysconfig for haproxy service
+
+BINARY=""
+CONF_FILE=""
+DELAY_START=""
+DELAY_STOP=""

@@ -46,7 +46,7 @@
 
 Summary:            MP3 encoder and frame analyzer
 Name:               lame
-Version:            3.99.5
+Version:            3.100
 Release:            0%{?dist}
 License:            LGPLv2+
 Group:              Applications/Multimedia
@@ -146,130 +146,37 @@ rm -rf %{buildroot}
 ###############################################################################
 
 %changelog
+* Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.100-0
+- Improved detection of MPEG audio data in RIFF WAVE files
+- Fix possible race condition causing build failures in libmp3lame
+- Don't include the debian directory as one that is needed during builds
+- New switch --gain <decibel>, range -20.0 to +12.0, a more convenient way to
+  apply Gain adjustment in decibels, than the use of --scale <factor>
+- Resurrect Owen Taylor's code dated from 97-11-3 to properly deal with GTK1
+- Bug in path handling
+- Problem with Tag genre
+- No progress indication with pipe input
+- Scale (empty) silent encode without warning
+- Environment variable LAMEOPT doesn't work anymore
+- Input file name displayed with wrong character encoding (on windows console
+  with CP_UTF8)
+- Fix dereference NULL and Buffer not NULL terminated issues
+- Dereference of a null pointer possible in loop
+- Make sure functions with SSE instructions maintain their own properly
+  aligned stack
+- Multiple Stack and Heap Corruptions from Malicious File
+- A division by zero vulnerability
+- CVE-2017-9410 fill_buffer_resample function in libmp3lame/util.c heap-based
+  buffer over-read and ap
+- CVE-2017-9411 fill_buffer_resample function in libmp3lame/util.c invalid
+  memory read and application crash
+- CVE-2017-9412 unpack_read_samples function in frontend/get_audio.c invalid
+  memory read and application crash
+- clip detect scale suggestion unaware of scale input value
+- HIP decoder bug fixed: decoding mixed blocks of lower sample frequency
+  Layer3 data resulted in internal buffer overflow (write)
+- Add lame_encode_buffer_interleaved_int()
+
 * Thu Apr 14 2016 Gleb Goncharov <yum@gongled.ru> - 3.99.5-0
-- Spec refactoring.
-- Updated to latest version.
-
-* Sun Nov 27 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.99.3-23
-- Update to 3.99.3.
-
-* Mon Nov  1 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.98.4-22
-- Fix build for nasm >= 2.09.x.
-
-* Sun Apr  4 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.98.4-21
-- Update to 3.98.4.
-
-* Fri Nov 14 2008 Paulo Roma <roma@lcg.ufrj.br> - 3.98.2-19
-- Providing lame-libs because of rpmfusion.
-- Only including the relevant files in doc.
-
-* Tue Sep 23 2008 Paulo Roma <roma@lcg.ufrj.br> - 3.98.2-18
-- Fixed mp3rtp.
-- Using %%check.
-
-* Fri Jul 18 2008 Paulo Roma <roma@lcg.ufrj.br> - 3.98-17
-- Removed patch0 (libm).
-- Using %%bcond_with mp3rtp (the build fails with it).
-- Using nasm for x86_64.
-- Disabled rpath.
-- Changed license.
-- Converted ChangeLog to utf8.
-
-* Thu Jul 17 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.98-16
-- Update to 3.98.
-
-* Wed Dec 27 2006 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.97-15
-- fix unresolved symbols from libm (Rex Dieter).
-
-* Sun Oct 15 2006 Axel Thimm <Axel.Thimm@ATrpms.net> - 3.97-14
-- Update to 3.97.
-
-* Fri Oct  1 2004 Axel Thimm <Axel.Thimm@ATrpms.net>
-- Update to 3.96.1.
-
-* Tue Apr 13 2004 Axel Thimm <Axel.Thimm@ATrpms.net>
-- Update to 3.96.
-
-* Wed Jan 14 2004 Axel Thimm <Axel.Thimm@ATrpms.net>
-- Update to 3.95.1.
-
-* Mon Nov 17 2003 Axel Thimm <Axel.Thimm@ATrpms.net>
-- Update to 3.94alpha cvs build.
-
-* Thu Oct  9 2003 Axel Thimm <Axel.Thimm@ATrpms.net>
-- Update to 3.94alpha cvs build.
-- Many small fixes.
-
-* Mon Mar 31 2003 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Rebuilt for Red Hat Linux 9.
-- Exclude .la file.
-
-* Mon Jan 13 2003 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Update to 3.93.1.
-- Removed Epoch: tag, upgrade by hand! :-/
-
-* Sat Oct  5 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Fix unpackaged doc problem.
-
-* Fri Sep 27 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Rebuilt for Red Hat Linux 8.0.
-- Simplified deps as it now builds VBR code fine with default nasm and gcc 3.2.
-
-* Tue Jul 16 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Fix to the lamecc stuff.
-
-* Wed Jul 10 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Changes to now support ppc with no ugly workarounds.
-
-* Thu May  2 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Rebuilt against Red Hat Linux 7.3.
-- Added the %%{?_smp_mflags} expansion.
-
-* Wed Apr 24 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Update to 3.92.
-
-* Mon Apr  8 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Added a symlink from lame.h to lame/lame.h to fix some include file
-  detection for most recent programs that use lame.
-
-* Wed Jan  2 2002 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Update to 3.91.
-- Simplified the compilation optimizations after heavy home-made tests.
-- Now build only i386 version but optimized for i686. Don't worry i686
-  owners, you loose only 1% in speed but gain about 45% compared to if
-  you had no optimizations at all!
-
-* Mon Dec 24 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Update to 3.90.1.
-- Enabled the GTK+ frame analyzer.
-- Spec file cleanup (CVS, man page, bindir are now fixed).
-
-* Fri Nov 16 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Rebuilt with mpg123 decoding support.
-
-* Tue Oct 23 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Fixed the %%pre and %%post that should have been %%post and %%postun, silly me!
-- Removed -malign-double (it's evil, Yosi told me and I tested, brrr ;-)).
-- Now build with gcc3, VBR encoding gets a hell of a boost, impressive!
-  I recommend you now use "lame --r3mix", it's the best.
-- Tried to re-enable vorbis, but it's a no-go.
-
-* Thu Jul 26 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Build with kgcc to have VBR working.
-
-* Wed Jul 25 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Update to 3.89beta : Must be built with a non-patched version of nasm
-  to work!
-
-* Mon May  7 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Rebuilt for Red Hat 7.1.
-- Disabled the vorbis support since it fails to build with it.
-- Added a big optimisation section, thanks to Yosi Markovich
-  <senna@camelot.com> for this and other pointers.
-
-* Sun Feb 11 2001 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Split the package, there is now a -devel
-
-* Thu Oct 26 2000 Matthias Saou <matthias.saou@est.une.marmotte.net>
-- Initial RPM release for RedHat 7.0 from scratch
-
+- Spec refactoring
+- Updated to latest version

@@ -38,8 +38,8 @@
 %define __ldconfig        %{_sbin}/ldconfig
 
 %define major_version     8
-%define minor_version     4
-%define patch_level       5
+%define minor_version     5
+%define patch_level       9
 
 
 ###############################################################################
@@ -52,7 +52,7 @@ License:           LGPLv2+
 Group:             System Environment/Libraries
 URL:               http://www.vips.ecs.soton.ac.uk
 
-Source:            http://www.vips.ecs.soton.ac.uk/supported/%{major_version}.%{minor_version}/%{name}-%{version}.tar.gz
+Source:            https://github.com/jcupitt/libvips/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -161,6 +161,9 @@ rm -rf %{buildroot}%{_datadir}/locale
 ###############################################################################
 
 %changelog
+* Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 8.5.9-0
+- Updated to latest release
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 8.4.5-0
 - Updated to latest release
 

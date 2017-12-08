@@ -38,7 +38,7 @@
 
 # Found X264_BUILD in (x264.h)
 %define pkg_build            152
-%define pkg_snapshot_date    20170918
+%define pkg_snapshot_date    20171117
 %define pkg_snapshot_prefix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_prefix}
