@@ -108,6 +108,19 @@ is designed to support the following:
 
 ################################################################################
 
+%package server
+Summary:             Kafka server
+Group:               Applications/Databases
+
+BuildArch:           noarch
+
+Requires:            kafka
+
+%description server
+Configuration and startup files for Apache Kafka broker.
+
+########################################################################################
+
 %prep
 %setup -q
 
@@ -155,12 +168,12 @@ popd
 
 ########################################################################################
 
-%pre
+%pre server
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
 getent passwd %{user_name} >/dev/null || %{__useradd} -s /sbin/nologin -M -r -g %{group_name} -d %{home_dir} %{user_name}
 exit 0
 
-%post
+%post server
 if [[ $1 -eq 1 ]] ; then
 %if 0%{?rhel} <= 6
   %{__chkconfig} --add %{service_name}
@@ -169,7 +182,7 @@ if [[ $1 -eq 1 ]] ; then
 %endif
 fi
 
-%preun
+%preun server
 if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} <= 6
   %{__service} %{service_name} stop > /dev/null 2>&1
@@ -180,7 +193,7 @@ if [[ $1 -eq 0 ]] ; then
 %endif
 fi
 
-%postun
+%postun server
 %if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__systemctl} daemon-reload &>/dev/null || :
@@ -190,13 +203,16 @@ fi
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
+%{home_dir}
+
+%files server
 %defattr(-,%{user_name},%{group_name},-)
 %dir %{_datadir}/%{name}
 %dir %{_logdir}/%{name}
 %dir %{_localstatedir}/%{name}
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/*.conf
-%{home_dir}
 
 %defattr(-,root,root,-)
 %if 0%{?rhel} <= 6
