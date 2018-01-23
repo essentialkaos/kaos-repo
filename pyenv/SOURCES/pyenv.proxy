@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ -z $PYENV_ROOT ]] ; then
-  source /etc/profile.d/pyenv.sh
-fi
-
-/usr/local/pyenv/libexec/pyenv $@
