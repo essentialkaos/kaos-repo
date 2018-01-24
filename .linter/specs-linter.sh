@@ -2,6 +2,7 @@
 
 ########################################################################################
 
+# Main func
 main() {
   downloadPerfecto
   printLintersInfo
@@ -23,6 +24,7 @@ main() {
   exit 0
 }
 
+# Donwload latest version of perfecto
 downloadPerfecto() {
   wget https://apps.kaos.io/perfecto/latest/linux/x86_64/perfecto
   
@@ -33,11 +35,12 @@ downloadPerfecto() {
   chmod +x perfecto
 }
 
+# Print info about version of rpmlint and perfecto
 printLintersInfo() {
-  echo -e "\n"
+  echo -e "--------------------------------------------------------------------------------"
   rpmlint -V
   ./perfecto -v
-  echo -e "\n"
+  echo -e "--------------------------------------------------------------------------------"
 }
 
 ########################################################################################
