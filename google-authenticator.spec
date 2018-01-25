@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 Summary:         One-time passcode support using open standards
 Name:            google-authenticator
@@ -16,7 +16,7 @@ BuildRequires:   make gcc libtool m4 pam-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 The Google Authenticator package contains a pluggable authentication
@@ -31,7 +31,7 @@ These implementations support the HMAC-Based One-time Password (HOTP)
 algorithm specified in RFC 4226 and the Time-based One-time Password
 (TOTP) algorithm currently in draft.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -64,7 +64,7 @@ install -pm 755 %{name} %{buildroot}%{_bindir}/
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -72,7 +72,7 @@ rm -rf %{buildroot}
 /%{_lib}/security/*.so
 %{_bindir}/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.02-0

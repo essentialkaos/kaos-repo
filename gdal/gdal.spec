@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -39,7 +39,7 @@
 
 %define _pyinclude        %{_includedir}/python2.6
 
-########################################################################################
+################################################################################
 
 Summary:           GDAL/OGR - a translator library for raster and vector geospatial data formats
 Name:              gdal
@@ -69,7 +69,7 @@ Requires:          xerces-c
 
 Provides:          %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 GDAL is a translator library for raster geospatial data formats that
@@ -79,7 +79,7 @@ supported formats. The related OGR library (which lives within the
 GDAL source tree) provides a similar capability for simple features
 vector data.
 
-########################################################################################
+################################################################################
 
 %package devel
 Summary:           GDAL library header files
@@ -95,7 +95,7 @@ Requires:          giflib-devel freexl-devel
 %description devel
 Development Libraries for the GDAL file format library
 
-########################################################################################
+################################################################################
 
 %package perl
 Summary:           Perl bindings for GDAL
@@ -107,7 +107,7 @@ Requires:          perl perl-base perl-ExtUtils-MakeMaker
 %description perl
 Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
 
-########################################################################################
+################################################################################
 
 %package python
 Summary:           GDAL Python module
@@ -117,7 +117,7 @@ Requires:          %{name} = %{version}-%{release}
 %description python
 The GDAL python modules provide support to handle multiple GIS file formats.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -252,7 +252,7 @@ rm -rf %{buildroot}
 %postun
 %{__ldconfig}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -391,7 +391,7 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{python_sitearch}/osgeo/_osr.so
 %{python_sitearch}/osgeo/*.py*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0

@@ -1,9 +1,9 @@
-########################################################################################
+################################################################################
 
 %define package_name      elasticsearch
 %define source_name       %{package_name}-py
 
-########################################################################################
+################################################################################
 
 Summary:        Python client for Elasticsearch 2.x
 Name:           python-%{package_name}
@@ -23,14 +23,14 @@ BuildRequires:  python-devel python-setuptools
 
 Provides:       %{name} = %{verion}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Official low-level client for Elasticsearch. Its goal is to provide common ground for 
 all Elasticsearch-related code in Python; because of this it tries to be opinion-free 
 and very extendable.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{source_name}-%{version}
@@ -45,13 +45,13 @@ python setup.py build
 rm -rf %{buildroot}
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 6.0.0-0

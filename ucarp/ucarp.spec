@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -40,7 +40,7 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
-########################################################################################
+################################################################################
 
 Summary:              Common Address Redundancy Protocol (CARP)
 Name:                 ucarp
@@ -69,7 +69,7 @@ Requires(postun):     /sbin/service
 
 Provides:             %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 UCARP allows a couple of hosts to share common virtual IP addresses in order
@@ -80,7 +80,7 @@ Strong points of the CARP protocol are: very low overhead, cryptographically
 signed messages, interoperability between different operating systems and no
 need for any dedicated extra network link between redundant hosts.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -125,7 +125,7 @@ if [[ $1 -eq 0 ]] ; then
   %{__chkconfig} --del %{name}
 fi
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -138,7 +138,7 @@ fi
 %{_sbindir}/%{name}
 %{_datadir}/locale/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Mon Nov 23 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-8

@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-########################################################################################
+################################################################################
 
 %define pg_maj_ver        93
 %define pg_low_fullver    9.3.0
@@ -45,7 +45,7 @@
 
 %define realname          pg_repack
 
-########################################################################################
+################################################################################
 
 Summary:           Reorganize tables in PostgreSQL databases without any locks
 Name:              %{realname}%{pg_maj_ver}
@@ -67,14 +67,14 @@ Requires:          postgresql%{pg_maj_ver}
 
 Provides:          %{realname} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 pg_repack can re-organize tables on a postgres database without any locks so that
 you can retrieve or update rows in tables being reorganized.
 The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{realname}-%{version}
@@ -95,7 +95,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -105,7 +105,7 @@ rm -rf %{buildroot}
 %{pg_dir}/share/extension/%{realname}--%{version}.sql
 %{pg_dir}/share/extension/%{realname}.control
 
-########################################################################################
+################################################################################
 
 %changelog
 * Tue Nov 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0

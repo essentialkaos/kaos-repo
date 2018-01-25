@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 
 %{!?_without_check: %define _with_check 1}
 
-########################################################################################
+################################################################################
 
 Summary:           GEOS is a C++ port of the Java Topology Suite
 Name:              geos
@@ -49,7 +49,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     doxygen libtool python-devel gcc-c++ make swig m4
 
-########################################################################################
+################################################################################
 
 %description
 GEOS (Geometry Engine - Open Source) is a C++ port of the Java Topology 
@@ -58,7 +58,7 @@ JTS in C++. This includes all the OpenGIS "Simple Features for SQL" spatial
 predicate functions and spatial operators, as well as specific JTS topology 
 functions such as IsValid()
 
-########################################################################################
+################################################################################
 
 %package devel
 Summary:           Development files for GEOS
@@ -75,7 +75,7 @@ functions such as IsValid()
 This package contains the development files to build applications that 
 use GEOS
 
-########################################################################################
+################################################################################
 
 %package python
 Summary:           Python modules for GEOS
@@ -85,7 +85,7 @@ Requires:          %{name} = %{version}-%{release}
 %description python
 Python module to build applications using GEOS and python
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -129,7 +129,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -158,7 +158,7 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}/*.py?
 %{python_sitearch}/%{name}/_%{name}.so
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.6.2-0

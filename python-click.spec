@@ -1,8 +1,8 @@
-########################################################################################
+################################################################################
 
 %define package_name      click
 
-########################################################################################
+################################################################################
 
 Summary:        A simple wrapper around optparse for powerful command line utilities.
 Name:           python-click
@@ -22,7 +22,7 @@ BuildArch:      noarch
 
 Provides:       %{name} = %{verion}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Click is a Python package for creating beautiful command line interfaces
@@ -30,7 +30,7 @@ in a composable way with as little code as necessary. It's the "Command
 Line Interface Creation Kit". It's highly configurable but comes with
 sensible defaults out of the box.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{package_name}-%{version}
@@ -45,13 +45,13 @@ python setup.py build
 rm -rf %{buildroot}
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 6.7-0

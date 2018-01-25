@@ -2,7 +2,7 @@
 
 # rpmbuilder:qa-rpaths 0x0001,0x0002
 
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -43,13 +43,13 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
-########################################################################################
+################################################################################
 
 %define rules_dir         %{_sysconfdir}/%{name}/rules
 %define daemon_name       snortd
 %define usershell         /bin/false
 
-########################################################################################
+################################################################################
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
@@ -70,7 +70,7 @@ BuildRequires:   pcre-devel libpcap-devel libdnet-devel daq-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Snort is an open source network intrusion detection system, capable of
@@ -80,7 +80,7 @@ used to detect a variety of attacks and probes, such as buffer overflows,
 stealth port scans, CGI attacks, SMB probes, OS fingerprinting attempts,
 and much more.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -184,7 +184,7 @@ if [[ $1 -eq 0 ]] ; then
   %{__chkconfig} --del %{daemon_name}
 fi
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -213,7 +213,7 @@ fi
 
 %attr(0755,%{name},%{name}) %dir %{_var}/log/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.11-0

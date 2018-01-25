@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
@@ -18,14 +18,14 @@ Requires:        GeoIP
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Open source real-time web log analyzer and interactive viewer that runs
 in a terminal in *nix systems. It provides fast and valuable HTTP statistics
 for system administrators that require a visual server report on the fly.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -42,7 +42,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -52,7 +52,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{name}.1*
 %{_docdir}/%{name}/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-0

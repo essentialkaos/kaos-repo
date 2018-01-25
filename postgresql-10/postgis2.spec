@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-########################################################################################
+################################################################################
 
 %define maj_ver           2.4
 %define pg_maj_ver        10
@@ -50,7 +50,7 @@
 
 %define _smp_mflags       -j1
 
-########################################################################################
+################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
 Name:              %{realname}2_%{pg_maj_ver}
@@ -87,7 +87,7 @@ Conflicts:         %{realname}%{pg_maj_ver}
 
 Provides:          %{realname} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 PostGIS adds support for geographic objects to the PostgreSQL object-relational
@@ -97,7 +97,7 @@ systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS
 follows the OpenGIS "Simple Features Specification for SQL" and has been 
 certified as compliant with the "Types and Functions" profile.
 
-########################################################################################
+################################################################################
 
 %package client
 Summary:           Client tools and their libraries of PostGIS
@@ -109,7 +109,7 @@ Provides:          %{realname}-client = %{version}-%{release}
 The postgis-client package contains the client tools and their libraries
 of PostGIS.
 
-########################################################################################
+################################################################################
 
 %package devel
 Summary:           Development headers and libraries for PostGIS
@@ -122,7 +122,7 @@ The postgis-devel package contains the header files and libraries
 needed to compile C or C++ applications which will directly interact
 with PostGIS.
 
-########################################################################################
+################################################################################
 
 %package docs
 Summary:           Extra documentation for PostGIS
@@ -131,7 +131,7 @@ Group:             Applications/Databases
 %description docs
 The postgis-docs package includes PDF documentation of PostGIS.
 
-########################################################################################
+################################################################################
 
 %if %utils
 %package utils
@@ -144,7 +144,7 @@ Provides:          %{realname}-utils = %{version}-%{release}
 The postgis-utils package provides the utilities for PostGIS.
 %endif
 
-########################################################################################
+################################################################################
 
 %define __perl_requires %{SOURCE2}
 
@@ -215,7 +215,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -267,7 +267,7 @@ rm -rf %{buildroot}
 %doc %{realname}-%{version}.pdf
 %doc %{pg_dir}/doc/extension/README.address_standardizer
 
-########################################################################################
+################################################################################
 
 %changelog
 * Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0

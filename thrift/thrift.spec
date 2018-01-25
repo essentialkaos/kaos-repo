@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,7 +32,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 Summary:         Software framework for cross-language services development
 Name:            thrift
@@ -51,7 +51,7 @@ BuildRequires:   automake autoconf libtool gcc gcc-c++ openssl-devel bison
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 
@@ -60,7 +60,7 @@ development combines a software stack with a code generation engine to
 build services that work efficiently and seamlessly between C++, Java,
 Python, %{?php_langname}and other languages.
 
-########################################################################################
+################################################################################
 
 %package devel
 
@@ -73,7 +73,7 @@ Requires:        pkgconfig
 The thrift-devel package contains libraries and header files for
 developing applications that use thrift.
 
-########################################################################################
+################################################################################
 
 %package -n erlang-%{name}
 
@@ -87,7 +87,7 @@ BuildRequires:   erlang
 %description -n erlang-%{name}
 The erlang-thrift package contains Erlang bindings for thrift.
 
-########################################################################################
+################################################################################
 
 %package -n erlangR15-%{name}
 
@@ -101,7 +101,7 @@ BuildRequires:   erlang
 %description -n erlangR15-%{name}
 The erlangR15-thrift package contains ErlangR15 bindings for thrift.
 
-########################################################################################
+################################################################################
 
 %package -n erlangR16-%{name}
 
@@ -115,7 +115,7 @@ BuildRequires:   erlang
 %description -n erlangR16-%{name}
 The erlangR16-thrift package contains ErlangR16 bindings for thrift.
 
-########################################################################################
+################################################################################
 
 %package -n erlang17-%{name}
 
@@ -129,7 +129,7 @@ BuildRequires:   erlang
 %description -n erlang17-%{name}
 The erlang17-thrift package contains Erlang17 bindings for thrift.
 
-########################################################################################
+################################################################################
 
 %package -n erlang18-%{name}
 
@@ -143,7 +143,7 @@ BuildRequires:   erlang
 %description -n erlang18-%{name}
 The erlang18-thrift package contains Erlang18 bindings for thrift.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -186,7 +186,7 @@ gzip -9v %{buildroot}%{_mandir}/man1/%{name}.1
 %clean
 %{__rm} -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -219,7 +219,7 @@ gzip -9v %{buildroot}%{_mandir}/man1/%{name}.1
 %doc LICENSE NOTICE
 %{_libdir}/erlang/lib/%{name}-%{version}/
 
-########################################################################################
+################################################################################
 
 %changelog
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-0

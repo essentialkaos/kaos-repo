@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
@@ -6,7 +6,7 @@
 %define __python /usr/bin/python26
 %endif
 
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,11 +37,11 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 %define shortname         s3
 
-########################################################################################
+################################################################################
 
 Summary:         Command line tool for managing Amazon S3 and CloudFront services
 Name:            s3cmd
@@ -62,14 +62,14 @@ BuildRequires:   python python-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 S3cmd lets you copy files from/to Amazon S3 (Simple Storage Service) using a simple 
 to use command line client. Supports rsync-like backup, GPG encryption, and more. Also 
 supports management of Amazons CloudFront content delivery network.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -90,7 +90,7 @@ export S3CMD_PACKAGING=1
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -98,7 +98,7 @@ rm -rf %{buildroot}
 %{_bindir}/*
 %{python_sitelib}/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Thu Mar 10 2016 Gleb Goncharov <yum@gongled.ru> - 1.6.1-1

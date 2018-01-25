@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-########################################################################################
+################################################################################
 
 %define maj_ver           1.5
 %define pg_maj_ver        92
@@ -49,7 +49,7 @@
 
 %define _smp_mflags       -j1
 
-########################################################################################
+################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}%{pg_maj_ver}
@@ -78,7 +78,7 @@ Requires(post):    %{_sbindir}/update-alternatives
 
 Provides:          %{realname} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 PostGIS adds support for geographic objects to the PostgreSQL object-relational
@@ -88,7 +88,7 @@ systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS
 follows the OpenGIS "Simple Features Specification for SQL" and has been 
 certified as compliant with the "Types and Functions" profile.
 
-########################################################################################
+################################################################################
 
 %package client
 Summary:           Client tools and their libraries of PostGIS
@@ -100,7 +100,7 @@ Provides:          %{realname}-client = %{version}-%{release}
 The postgis-client package contains the client tools and their libraries
 of PostGIS.
 
-########################################################################################
+################################################################################
 
 %package docs
 Summary:           Extra documentation for PostGIS
@@ -109,7 +109,7 @@ Group:             Applications/Databases
 %description docs
 The postgis-docs package includes PDF documentation of PostGIS.
 
-########################################################################################
+################################################################################
 
 %if %utils
 %package utils
@@ -122,7 +122,7 @@ Provides:          %{realname}-utils = %{version}-%{release}
 The postgis-utils package provides the utilities for PostGIS.
 %endif
 
-########################################################################################
+################################################################################
 
 %define __perl_requires %{SOURCE2}
 
@@ -181,7 +181,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -207,7 +207,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc %{realname}-%{version}.pdf
 
-########################################################################################
+################################################################################
 
 %changelog
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-3

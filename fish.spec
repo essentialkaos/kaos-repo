@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -30,7 +30,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 Summary:            Friendly interactive shell (FISh)
 Name:               fish
@@ -48,14 +48,14 @@ BuildRequires:      ncurses-devel gettext gcc-c++ autoconf
 
 Requires:           bc python which man
 
-########################################################################################
+################################################################################
 
 %description
 fish is a shell geared towards interactive use. Its features are
 focused on user friendliness and discoverability. The language syntax
 is simple but incompatible with other shell languages.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -84,7 +84,7 @@ if [[ $1 -eq 0 ]] ; then
   mv %{_sysconfdir}/%{name}.tmp %{_sysconfdir}/shells
 fi
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -97,7 +97,7 @@ fi
 %{_datadir}/pkgconfig/%{name}.pc
 %attr(0755,root,root) %{_bindir}/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0

@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 
 %define _smp_mflags       -j1
 
-########################################################################################
+################################################################################
 
 Summary:          HTTP benchmarking tool
 Name:             wrk
@@ -50,7 +50,7 @@ BuildRequires:    make gcc
 
 Provides:         %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 wrk is a modern HTTP benchmarking tool capable of generating significant
@@ -60,7 +60,7 @@ design with scalable event notification systems such as epoll and kqueue.
 An optional LuaJIT script can perform HTTP request generation, response
 processing, and custom reporting.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q

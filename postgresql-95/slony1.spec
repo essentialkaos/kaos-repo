@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -38,7 +38,7 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __sysctl          %{_bindir}/systemctl
 
-########################################################################################
+################################################################################
 
 %define maj_ver           2.2
 %define pg_maj_ver        95
@@ -49,7 +49,7 @@
 %define username          postgres
 %define groupname         postgres
 
-########################################################################################
+################################################################################
 
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
@@ -78,7 +78,7 @@ Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.10
 Requires:          systemd
 %endif
 
-########################################################################################
+################################################################################
 
 %description
 Slony-I is a "master to multiple slaves" replication system for PostgreSQL with 
@@ -91,7 +91,7 @@ reasonably limited number of slave systems.
 Slony-I is a system for data centers and backup sites, where the normal mode of 
 operation is that all nodes are available.
 
-########################################################################################
+################################################################################
 
 %global __perl_requires %{SOURCE2}
 
@@ -190,7 +190,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -206,7 +206,7 @@ fi
 %attr(755,root,root) %{_unitdir}/%{realname}-%{pg_maj_ver}.service
 %endif
 
-########################################################################################
+################################################################################
 
 %changelog
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-0
