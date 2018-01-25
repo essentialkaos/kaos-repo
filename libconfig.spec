@@ -17,9 +17,9 @@ BuildRequires:      make texinfo-tex bison byacc flex gcc gcc-c++
 ################################################################################
 
 %description
-Libconfig is a simple library for manipulating structured configuration 
-files. This file format is more compact and more readable than XML. And 
-unlike XML, it is type-aware, so it is not necessary to do string parsing 
+Libconfig is a simple library for manipulating structured configuration
+files. This file format is more compact and more readable than XML. And
+unlike XML, it is type-aware, so it is not necessary to do string parsing
 in application code.
 
 ################################################################################
@@ -35,7 +35,7 @@ Requires(post):      /sbin/install-info
 Requires(preun):     /sbin/install-info
 
 %description devel
-Development libraries and headers for developing software against 
+Development libraries and headers for developing software against
 libconfig.
 
 ################################################################################
@@ -45,24 +45,28 @@ libconfig.
 
 %build
 %configure --disable-static
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot}
+%{make_install}
+
 rm -rf %{buildroot}%{_libdir}/*.la
 rm -rf %{buildroot}%{_infodir}/dir
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
 
 %post devel
 /sbin/install-info %{_infodir}/%{name}.info %{_infodir}/dir || :
-
-%postun -p /sbin/ldconfig
 
 ################################################################################
 

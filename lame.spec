@@ -87,7 +87,7 @@ Group:              Development/Libraries
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
-Libraries provide the functions necessary to convert raw PCM and WAV files to 
+Libraries provide the functions necessary to convert raw PCM and WAV files to
 MP3 files.
 
 ################################################################################

@@ -64,8 +64,8 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Libva is open source library to provide hardware accelerated video 
-encoding and decoding. It supported by GStreamer, VLC media player, Mpv and 
+Libva is open source library to provide hardware accelerated video
+encoding and decoding. It supported by GStreamer, VLC media player, Mpv and
 MPlayer.
 
 ################################################################################
@@ -133,7 +133,8 @@ rm -rf %{buildroot}
 
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 1.7.0-0
 - Updated to latest version
-  + Bump VA API version to 0.39
-  + Add support for VP9 10bit decode API
-  + Allow libva to load the vaapi driver provided by Mesa Gallium for nouveau and radeon
-  + Fix libva-glx against OpenGL 3.1 or above
+- Bump VA API version to 0.39
+- Add support for VP9 10bit decode API
+- Allow libva to load the vaapi driver provided by Mesa Gallium for nouveau
+  and radeon
+- Fix libva-glx against OpenGL 3.1 or above

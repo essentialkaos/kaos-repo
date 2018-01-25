@@ -68,8 +68,8 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Libva is open source library to provide hardware accelerated video 
-encoding and decoding. It supported by GStreamer, VLC media player, Mpv and 
+Libva is open source library to provide hardware accelerated video
+encoding and decoding. It supported by GStreamer, VLC media player, Mpv and
 MPlayer.
 
 ################################################################################

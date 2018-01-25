@@ -8,7 +8,7 @@ Summary:        Sandboxed template engine
 Name:           python-jinja
 Version:        2.8
 Release:        0%{?dist}
-License:        BSD 
+License:        BSD
 Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
 

@@ -62,7 +62,8 @@ Modified library of Fraunhofer AAC decoder and encoder.
 %build
 autoreconf -fiv
 %{_configure} --prefix=%{_prefix}
-%{__make}
+
+%{__make} %{?_smp_mflags}
 
 %install
 %{__rm} -rf %{buildroot}

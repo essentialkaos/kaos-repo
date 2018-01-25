@@ -130,4 +130,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Sat Jun 14 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.7.4-0
-- Updated to latest version 
+- Updated to latest version

@@ -36,7 +36,7 @@
 
 ################################################################################
 
-Summary:              Generic non-JVM producer and consumer for Apache Kafka 
+Summary:              Generic non-JVM producer and consumer for Apache Kafka
 Name:                 kafkacat
 Version:              1.3.1
 Release:              0%{?dist}
@@ -57,16 +57,16 @@ Provides:             %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-kafkacat is fast and lightweight client for Apache Kafka. 
+kafkacat is fast and lightweight client for Apache Kafka.
 
-In producer mode kafkacat reads messages from stdin, delimited with a 
-configurable delimeter, and produces them to the provided Kafka cluster, 
+In producer mode kafkacat reads messages from stdin, delimited with a
+configurable delimeter, and produces them to the provided Kafka cluster,
 topic and partition.
 
 In consumer mode kafkacat reads messages from a topic and partition and prints
-them to stdout using the configured message delimiter. 
+them to stdout using the configured message delimiter.
 
-kafkacat also features a Metadata list mode to display the current state of 
+kafkacat also features a Metadata list mode to display the current state of
 the Kafka cluster and its topics and partitions.
 
 ################################################################################
@@ -117,4 +117,4 @@ rm -rf %{buildroot}
 - Updated to latest version
 
 * Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 1.2.0-0
-- Initial build 
+- Initial build

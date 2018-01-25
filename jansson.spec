@@ -78,15 +78,15 @@ Header files for Jansson JSON Library
 rm -rf %{buildroot}
 
 %{__make} install INSTALL="install -p" DESTDIR="%{buildroot}"
-rm -f %{buildroot}/%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.la
 
 %clean
 rm -rf %{buildroot}
 
-%post 
+%post
 /sbin/ldconfig
 
-%postun 
+%postun
 /sbin/ldconfig
 
 ################################################################################

@@ -183,7 +183,7 @@ rm -rf %{buildroot}
 - Updated to latest release.
 
 * Sun Jan 31 2016 Gleb Goncharov <yum@gongled.me> - 0.2.0-1
-- Added certificates path 
+- Added certificates path
 
 * Fri Jan 22 2016 Gleb Goncharov <yum@gongled.me> - 0.2.0-0
-- Initial build 
+- Initial build

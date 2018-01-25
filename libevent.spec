@@ -76,8 +76,8 @@ install -dm 755 %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample
 chmod +x doxygen/html
 
 cp -r doxygen/html/* %{buildroot}%{_docdir}/%{name}-devel-%{version}/html/
-cp -r sample/*.c %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
-cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
+cp -r sample/*.c %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample/
+cp -r sample/Makefile* %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample/
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
@@ -118,7 +118,7 @@ cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
 
 %changelog
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.15-0
-- Avoid integer overflow bugs in evbuffer_add() and related functions. 
+- Avoid integer overflow bugs in evbuffer_add() and related functions.
   See CVE-2014-6272 advisory for more information.
 - Pass flags to fcntl(F_SETFL) as int, not long
 - Backport and tweak the LICENSE file for 1.4
@@ -133,7 +133,8 @@ cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
 - Check for POLLERR, POLLHUP and POLLNVAL for Solaris event ports
 - Fix a bug that could allow dns requests with duplicate tx ids
 - Avoid truncating huge values for content-length
-- Take generated files out of git; add correct m4 magic for libtool to auto* files
+- Take generated files out of git; add correct m4 magic for libtool to
+  auto* files
 - Prefer autoregen -ivf to manual autogen.sh
 
 * Tue Feb 11 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.14b-1

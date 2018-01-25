@@ -36,7 +36,7 @@ Requires(postun):     /sbin/ldconfig
 ################################################################################
 
 %description
-An Erlang Cassandra driver, based on DataStax C++ driver focused on 
+An Erlang Cassandra driver, based on DataStax C++ driver focused on
 performance.
 
 ################################################################################
