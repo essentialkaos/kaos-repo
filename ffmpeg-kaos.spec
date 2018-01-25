@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.4
+Version:           3.4.1
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -47,7 +47,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     make gcc SDL-devel freetype-devel zlib-devel bzip2-devel
 BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
 BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel opus-devel
-BuildRequires:     lame-devel libtheora-devel libvorbis-devel
+BuildRequires:     lame-devel libtheora-devel libvorbis-devel vo-amrwbenc-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel speex-devel libvpx-devel >= 0.9.6 xavs-devel
 BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
@@ -55,7 +55,7 @@ BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
 Requires:          opencore-amr librtmp orc libvpx x264
-Requires:          libxvidcore libva opus
+Requires:          libxvidcore libva opus vo-amrwbenc
 
 Conflicts:         %{source_name}
 
@@ -101,6 +101,7 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-libmp3lame \
   --enable-libopencore-amrnb \
   --enable-libopencore-amrwb \
+  --enable-libvo-amrwbenc \
   --enable-libopenjpeg \
   --enable-libopus \
   --enable-librtmp \
@@ -147,6 +148,10 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 ###############################################################################
 
 %changelog
+* Thu Jan 25 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
+- Updated to version 3.4.1
+- Added vo-amrwbenc support
+
 * Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4-0
 - Updated to version 3.4
 
