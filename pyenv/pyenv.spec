@@ -57,8 +57,8 @@ Provides:        %{name} = %{version}-%{release}
 ###############################################################################
 
 %description
-pyenv lets you easily switch between multiple versions 
-of Python. Its simple, unobtrusive, and follows the UNIX 
+pyenv lets you easily switch between multiple versions
+of Python. Its simple, unobtrusive, and follows the UNIX
 tradition of single-purpose tools that do one thing well.
 
 ###############################################################################
