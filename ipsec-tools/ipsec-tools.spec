@@ -47,7 +47,7 @@ Patch1:            make-peer_certfile-dnssec-validate-dnssec.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Provides:          racoon
+Provides:          racoon = %{version}-%{release}
 
 BuildRequires:     flex kernel-headers libselinux-devel
 BuildRequires:     openssl-devel readline-devel pam-devel krb5-devel openldap-devel

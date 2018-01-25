@@ -45,7 +45,7 @@ Version:            1.4.8
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
-URL:                https://docs.enlightenment.org/api/imlib2/html 
+URL:                https://docs.enlightenment.org/api/imlib2/html
 
 Source0:            http://prdownloads.sourceforge.net/enlightenment/%{name}-%{version}.tar.bz2
 
@@ -247,7 +247,7 @@ gz compressed image loader/saver for Imlib2.
 
 ################################################################################
 
-%package loader_id3 
+%package loader_id3
 Summary:            Imlib2 .id3 loader
 Group:              System Environment/Libraries
 
@@ -365,4 +365,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Tue Apr 12 2016 Gleb Goncharov <yum@gongled.ru> - 1.4.8-0
-- Initial build 
+- Initial build

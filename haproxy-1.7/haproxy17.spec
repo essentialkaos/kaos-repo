@@ -343,14 +343,17 @@ fi
 - BUG/MAJOR: compression: Be sure to release the compression state in all cases
 - DOC: fix references to the section about time format.
 - BUG/MEDIUM: map/acl: fix unwanted flags inheritance.
-- BUG/MINOR: stream: Don't forget to remove CF_WAKE_ONCE flag on response channel
+- BUG/MINOR: stream: Don't forget to remove CF_WAKE_ONCE flag on response
+  channel
 - BUG/MINOR: http: Don't reset the transaction if there are still data to send
 - BUG/MEDIUM: filters: Be sure to call flt_end_analyze for both channels
 - BUG/MINOR: http: properly handle all 1xx informational responses
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.7-0
-- BUG/MINOR: Wrong peer task expiration handling during synchronization processing.
-- BUG/MEDIUM: http: Drop the connection establishment when a redirect is performed
+- BUG/MINOR: Wrong peer task expiration handling during synchronization
+  processing.
+- BUG/MEDIUM: http: Drop the connection establishment when a redirect is
+  performed
 - BUG/MEDIUM: cfgparse: Check if tune.http.maxhdr is in the range 1..32767
 - DOC: fix references to the section about the unix socket
 - BUG/MINOR: haproxy/cli : fix for solaris/illumos distros for CMSG* macros
@@ -379,7 +382,8 @@ fi
 - MEDIUM: config: don't check config validity when there are fatal errors
 - BUG/MINOR: hash-balance-factor isn't effective in certain circumstances
 - MINOR/DOC: lua: just precise one thing
-- BUG/MINOR: http: Fix conditions to clean up a txn and to handle the next request
+- BUG/MINOR: http: Fix conditions to clean up a txn and to handle the next
+  request
 - DOC: update RFC references
 - BUG/MINOR: checks: don't send proxy protocol with agent checks
 - BUG/MAJOR: dns: Broken kqueue events handling (BSD systems).
@@ -451,7 +455,7 @@ fi
 - BUG/MINOR: stream: Fix how backend-specific analyzers are set on a stream
 - BUILD: ssl: fix build on OpenSSL 1.0.0
 - BUILD: ssl: silence a warning reported for ERR_remove_state()
-- BUILD: ssl: eliminate warning with OpenSSL 1.1.0 regarding 
+- BUILD: ssl: eliminate warning with OpenSSL 1.1.0 regarding
   RAND_pseudo_bytes()
 - BUG/MEDIUM: tcp: don't poll for write when connect() succeeds
 - BUG/MINOR: unix: fix connect's polling in case no data are scheduled
@@ -469,7 +473,7 @@ fi
 - BUG/MINOR: http: Return an error when a replace-header rule failed on
   the response
 - BUG/MINOR: sendmail: The return of vsnprintf is not cleanly tested
-- BUG/MAJOR: lua segmentation fault when the request is like 
+- BUG/MAJOR: lua segmentation fault when the request is like
   'GET ?arg=val HTTP/1.1'
 - BUG/MEDIUM: config: reject anything but "if" or "unless" after a
   use-backend rule
@@ -497,14 +501,16 @@ fi
 - BUILD: lua: build failed on FreeBSD.
 - BUG/MINOR: option prefer-last-server must be ignored in some case
 - MINOR: stats: Support "select all" for backend actions
-- BUG/MINOR: sample-fetches/stick-tables: bad type for the sample fetches sc*_get_gpt0
+- BUG/MINOR: sample-fetches/stick-tables: bad type for the sample fetches
+  sc*_get_gpt0
 - BUG/MAJOR: channel: Fix the definition order of channel analyzers
 - BUG/MINOR: http: report real parser state in error captures
 - BUILD: scripts: automatically update the branch in version.h when releasing
 - BUG/MAJOR: http: fix risk of getting invalid reports of bad requests
 - MINOR: http: custom status reason.
 - MINOR: connection: add sample fetch "fc_rcvd_proxy"
-- BUG/MINOR: config: emit a warning if http-reuse is enabled with incompatible options
+- BUG/MINOR: config: emit a warning if http-reuse is enabled with incompatible
+  options
 - BUG/MINOR: tools: fix off-by-one in port size check
 - BUG/MEDIUM: server: consider AF_UNSPEC as a valid address family
 - MEDIUM: server: split the address and the port into two different fields
@@ -524,8 +530,10 @@ fi
 - BUG/MEDIUM: http: Fix tunnel mode when the CONNECT method is used
 - BUG/MINOR: http: Keep the same behavior between 1.6 and 1.7 for tunneled txn
 - BUG/MINOR: filters: Protect args in macros HAS_DATA_FILTERS and IS_DATA_FILTER
-- BUG/MINOR: filters: Invert evaluation order of HTTP_XFER_BODY and XFER_DATA analyzers
-- BUG/MINOR: http: Call XFER_DATA analyzer when HTTP txn is switched in tunnel mode
+- BUG/MINOR: filters: Invert evaluation order of HTTP_XFER_BODY and XFER_DATA
+  analyzers
+- BUG/MINOR: http: Call XFER_DATA analyzer when HTTP txn is switched in tunnel
+  mode
 - BUG/MAJOR: stream: fix session abort on resource shortage
 - BUG/MINOR: cli: allow the backslash to be escaped on the CLI
 - BUG/MEDIUM: cli: fix "show stat resolvers" and "show tls-keys"
@@ -537,10 +545,12 @@ fi
 - BUG/MINOR: stats: fix be/sessions/max output in html stats
 - MINOR: proxy: Add fe_name/be_name fetchers next to existing fe_id/be_id
 - DOC: lua: Documentation about some entry missing
-- MINOR: Do not forward the header "Expect: 100-continue" when the option http-buffer-request is set
+- MINOR: Do not forward the header "Expect: 100-continue" when the option
+  http-buffer-request is set
 - DOC: Add undocumented argument of the trace filter
 - DOC: Fix some typo in SPOE documentation
-- BUG/MINOR: cli: be sure to always warn the cli applet when input buffer is full
+- BUG/MINOR: cli: be sure to always warn the cli applet when input buffer is
+  full
 - MINOR: applet: Count number of (active) applets
 - MINOR: task: Rename run_queue and run_queue_cur counters
 - BUG/MEDIUM: stream: Save unprocessed events for a stream
@@ -578,7 +588,8 @@ fi
 - BUG/MEDIUM: stick-table: fix regression caused by recent fix for out-of-memory
 - BUG/MINOR: cli: properly decrement ref count on tables during failed dumps
 - BUG/MEDIUM: lua: In some case, the return of sample-fetche is ignored
-- MINOR: filters: Add check_timeouts callback to handle timers expiration on streams
+- MINOR: filters: Add check_timeouts callback to handle timers expiration on
+  streams
 - MINOR: spoe: Add 'timeout processing' option to limit time to process an event
 - MINOR: spoe: Remove useless 'timeout ack' option
 - MINOR: spoe: Add 'option continue-on-error' statement in spoe-agent section
@@ -590,7 +601,8 @@ fi
 - BUG/MINOR: cli: fix pointer size when reporting data/transport layer name
 - BUG/MINOR: cli: dequeue from the proxy when changing a maxconn
 - BUG/MINOR: cli: wake up the CLI's task after a timeout update
-- MINOR: connection: add a few functions to report the data and xprt layers' names
+- MINOR: connection: add a few functions to report the data and xprt layers'
+  names
 - MINOR: connection: add names for transport and data layers
 - REORG: cli: split dumpstats.c in src/cli.c and src/stats.c
 - REORG: cli: split dumpstats.h in stats.h and cli.h
@@ -608,7 +620,8 @@ fi
 - REORG: cli: move get/set weight to server.c
 - REORG: cli: move "show stat" to stats.c
 - REORG: cli: move "show info" to stats.c
-- REORG: cli: move dump_text(), dump_text_line(), and dump_binary() to standard.c
+- REORG: cli: move dump_text(), dump_text_line(), and dump_binary() to
+  standard.c
 - REORG: cli: move table dump/clear/set to stick_table.c
 - REORG: cli: move "show errors" out of cli.c
 - REORG: cli: make "show env" also use the generic keyword registration
@@ -631,12 +644,14 @@ fi
 - BUILD: server: remove a build warning introduced by latest series
 - BUG/MINOR: log-format: uncatched memory allocation functions
 - CLEANUP: log-format: useless file and line in json converter
-- CLEANUP/MINOR: log-format: unexport functions parse_logformat_var_args() and parse_logformat_var()
+- CLEANUP/MINOR: log-format: unexport functions parse_logformat_var_args() and
+  parse_logformat_var()
 - CLEANUP: log-format: fix return code of the function parse_logformat_var()
 - CLEANUP: log-format: fix return code of function parse_logformat_var_args()
 - CLEANUP: log-format: remove unused arguments
 - MEDIUM: log-format: strict parsing and enable fail
-- MEDIUM: log-format/conf: take into account the parse_logformat_string() return code
+- MEDIUM: log-format/conf: take into account the parse_logformat_string() return
+  code
 - BUILD: ssl: make the SSL layer build again with openssl 0.9.8
 - BUILD: vars: remove a build warning on vars.c
 - MINOR: lua: add utility function for check boolean argument

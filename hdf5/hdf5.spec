@@ -1,5 +1,17 @@
 ################################################################################
 
+%global _configure ../configure
+
+%global configure_opts \\\
+  --disable-silent-rules \\\
+  --enable-fortran \\\
+  --enable-fortran2003 \\\
+  --enable-hl \\\
+  --enable-shared \\\
+%{nil}
+
+################################################################################
+
 Summary:              A general purpose library and file format for storing scientific data
 Name:                 hdf5
 Version:              1.8.19
@@ -59,16 +71,6 @@ HDF5 static libraries.
 %setup -q
 
 %build
-
-%global _configure ../configure
-
-%global configure_opts \\\
-  --disable-silent-rules \\\
-  --enable-fortran \\\
-  --enable-fortran2003 \\\
-  --enable-hl \\\
-  --enable-shared \\\
-%{nil}
 
 export CC=gcc
 export CXX=g++

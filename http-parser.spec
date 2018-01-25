@@ -33,8 +33,9 @@ connection).
 ################################################################################
 
 %package devel
-Summary:          Development headers and libraries for http-parser
-Requires:         %{name} = %{version}-%{release}
+Summary:         Development headers and libraries for http-parser
+Group:           Development/Libraries
+Requires:        %{name} = %{version}-%{release}
 
 %description devel
 Development headers and libraries for http-parser.

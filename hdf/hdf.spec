@@ -27,11 +27,11 @@ Provides:           %{name} = %{version}-%{release}
 
 %description
 HDF is a general purpose library and file format for storing scientific data.
-HDF can store two primary objects: datasets and groups. A dataset is 
-essentially a multidimensional array of data elements, and a group is a 
-structure for organizing objects in an HDF file. Using these two basic 
-objects, one can create and store almost any kind of scientific data 
-structure, such as images, arrays of vectors, and structured and unstructured 
+HDF can store two primary objects: datasets and groups. A dataset is
+essentially a multidimensional array of data elements, and a group is a
+structure for organizing objects in an HDF file. Using these two basic
+objects, one can create and store almost any kind of scientific data
+structure, such as images, arrays of vectors, and structured and unstructured
 grids. You can also mix and match them in HDF files according to your needs.
 
 ################################################################################

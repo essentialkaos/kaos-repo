@@ -125,7 +125,7 @@ for i in txt html ; do
 done
 
 mkdir -p %{buildroot}%{_mandir}/man1
-mkdir -p __doc/doc 
+mkdir -p __doc/doc
 
 cp -p doc/*.{gif,jpg,png,html,txt,ico,css} __doc/doc
 
