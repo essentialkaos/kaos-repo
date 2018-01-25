@@ -1,0 +1,13 @@
+diff --git a/libexec/pyenv b/libexec/pyenv
+index 79a2014..258a112 100755
+--- a/libexec/pyenv
++++ b/libexec/pyenv
+@@ -51,7 +51,7 @@ else
+ fi
+ 
+ if [ -z "${PYENV_ROOT}" ]; then
+-  PYENV_ROOT="${HOME}/.pyenv"
++  PYENV_ROOT="/usr/local/pyenv"
+ else
+   PYENV_ROOT="${PYENV_ROOT%/}"
+ fi
