@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:              A fast data comprssion utility using google snappy
 Name:                 snzip
@@ -59,7 +59,7 @@ Requires:             snappy
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Snzip is a compress/decompress command line utility using snappy.
@@ -67,7 +67,7 @@ This supports five type of file formats; framing-format, old framing-format,
 snzip format, snappy-java format and snappy-in-java format.
 The default format is framing-format.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -89,7 +89,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -101,7 +101,7 @@ rm -rf %{buildroot}
 %{_docdir}/%{name}/NEWS
 %{_docdir}/%{name}/README.md
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.4-1

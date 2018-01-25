@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -29,7 +29,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:         Lightweight library for embedding a webserver in applications
 Name:            libmicrohttpd
@@ -49,7 +49,7 @@ BuildRequires:   libcurl-devel graphviz doxygen
 Requires(post):  info
 Requires(preun): info
 
-###############################################################################
+################################################################################
 
 %description
 GNU libmicrohttpd is a small C library that is supposed to make it
@@ -65,7 +65,7 @@ Key features that distinguish libmicrohttpd from other projects are:
 * Creates binary of only 25k (for now)
 * Three different threading models
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:         Development files for libmicrohttpd
@@ -75,7 +75,7 @@ Requires:        %{name} = %{version}-%{release}
 %description devel
 Development files for libmicrohttpd
 
-###############################################################################
+################################################################################
 
 %package doc
 Summary:         Documentation for libmicrohttpd
@@ -85,7 +85,7 @@ Requires:        %{name} = %{version}-%{release}
 %description doc
 Doxygen documentation for libmicrohttpd and some example source code
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -136,7 +136,7 @@ fi
 %postun
 %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -158,7 +158,7 @@ fi
 %doc examples
 %doc html
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.55-0

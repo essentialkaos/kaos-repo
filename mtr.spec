@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              A network diagnostic tool
 Name:                 mtr
@@ -15,13 +15,13 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        autoconf automake libtool ncurses-devel
 
-###############################################################################
+################################################################################
 
 %description
 Mtr is a network diagnostic tool that combines ping and traceroute
 into one program.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -50,7 +50,7 @@ ln -sf %{_datadir}/bash-completion/completions/%{name} \
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -61,7 +61,7 @@ rm -rf %{buildroot}
 %{_datadir}/bash-completion/completions/%{name}
 %{_sysconfdir}/bash_completion.d/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Oct 04 2017 Anton Novojilov <andy@essentialkaos.com> - 0.92-0

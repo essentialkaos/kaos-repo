@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,7 +34,7 @@
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
 
 Summary:              Generic non-JVM producer and consumer for Apache Kafka 
 Name:                 kafkacat
@@ -54,7 +54,7 @@ Requires:             librdkafka
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 kafkacat is fast and lightweight client for Apache Kafka. 
@@ -69,7 +69,7 @@ them to stdout using the configured message delimiter.
 kafkacat also features a Metadata list mode to display the current state of 
 the Kafka cluster and its topics and partitions.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -88,14 +88,14 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, 0755)
 %doc LICENSE README.md
 %{_bindir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0

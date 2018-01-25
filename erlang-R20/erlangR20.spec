@@ -1,9 +1,9 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:qa-rpaths 0x0001,0x0002
 # rpmbuilder:pedantic  true
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,12 +32,12 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 #define __cputoolize true
 %define _disable_ld_no_undefined 1
 
-###############################################################################
+################################################################################
 
 %define _smp_mflags       -j1
 
@@ -47,7 +47,7 @@
 %define ver_min           1
 %define realname          erlang
 
-###############################################################################
+################################################################################
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
@@ -106,7 +106,7 @@ Provides:          %{realname} = %{ver_maj}.%{ver_min}-%{release}
 
 Conflicts:         erlang erlangR15 erlangR16 erlang18 erlang19
 
-###############################################################################
+################################################################################
 
 %description
 Erlang is a general-purpose programming language and runtime
@@ -114,7 +114,7 @@ environment. Erlang has built-in support for concurrency, distribution
 and fault tolerance. Erlang is used in several large telecommunication
 systems from Ericsson.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-stack
 Summary:  Erlang bundle
@@ -181,7 +181,7 @@ memory management, distribution, networking, etc. The development package
 in addition contains the Erlang sources for all base libraries.
 Includes the Erlang/OTP graphical libraries.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-base
 Summary:   Erlang architecture independent files
@@ -202,7 +202,7 @@ memory management, distribution, networking, etc. The development package
 in addition contains the Erlang sources for all base libraries.
 Includes the Erlang/OTP graphical libraries.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-devel
 Summary:  Erlang header
@@ -215,7 +215,7 @@ Provides: %{name}-devel = %{version}-%{release}
 Erlang headers.
 This package is used to build some library.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-manpages
 Summary:  Erlang man pages
@@ -228,7 +228,7 @@ Documentation for the Erlang programming language in `man' format. This
 documentation can be read using the command `erl -man mod', where `mod' is
 the name of the module you want documentation on.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-dialyzer
 Summary:  Static analysis tool
@@ -241,7 +241,7 @@ Dialyzer is a static analysis tool that identifies software discrepancies
 such as type errors, unreachable code, unnecessary tests, etc in single
 Erlang modules or entire (sets of) applications.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-diameter
 Summary:  An implementation of the Diameter protocol as defined by RFC 3588
@@ -252,7 +252,7 @@ Group:    Development/Tools
 %description -n %{name}-diameter
 An implementation of the Diameter protocol as defined by RFC 3588.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-edoc
 Summary:  The Erlang program documentation generator
@@ -265,7 +265,7 @@ Group:    Development/Tools
 %description -n %{name}-edoc
 This module provides the main user interface to EDoc.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-eldap
 Summary:  The Erlang LDAP library
@@ -280,7 +280,7 @@ Group:    Development/Tools
 Eldap is a module which provides a client API to the Lightweight Directory
 Access Protocol (LDAP).
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-emacs
 Summary:  Emacs support for The Erlang language
@@ -292,7 +292,7 @@ Requires: emacs
 %description -n %{name}-emacs
 This module provides Erlang support to Emacs.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-jinterface
 Summary:  Low level interface to Java
@@ -306,7 +306,7 @@ Erlang processes. It can also be used for communication with other Java
 processes using the same package, as well as C processes using the
 Erl_Interface library.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-asn1
 Summary:  Provides support for Abstract Syntax Notation One
@@ -318,7 +318,7 @@ Group:    Development/Tools
 Asn1 application contains modules with compile-time and run-time support for
 ASN.1.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-common_test
 Summary:  Portable framework for automatic testing
@@ -329,7 +329,7 @@ Group:    Development/Tools
 %description -n %{name}-common_test
 A portable Erlang framework for automatic testing.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-compiler
 Summary:  Byte code compiler for Erlang which produces highly compact code
@@ -341,7 +341,7 @@ Group:    Development/Tools
 Compiler application compiles Erlang code to byte-code. The highly compact
 byte-code is executed by the Erlang emulator.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosEvent
 Summary:  Orber OMG Event Service
@@ -353,7 +353,7 @@ Group:    Development/Tools
 The cosEvent application is an Erlang implementation of a CORBA Service
 CosEvent.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosEventDomain
 Summary:  Orber OMG Event Domain Service
@@ -365,7 +365,7 @@ Group:    Development/Tools
 The cosEventDomain application is an Erlang implementation of a CORBA
 Service CosEventDomainAdmin.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosFileTransfer
 Summary:  Orber OMG File Transfer Service
@@ -377,7 +377,7 @@ Group:    Development/Tools
 The cosFileTransfer Application is an Erlang implementation of the
 OMG CORBA File Transfer Service.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosNotification
 Summary:  Orber OMG Notification Service
@@ -389,7 +389,7 @@ Group:    Development/Tools
 The cosNotification application is an Erlang implementation of the OMG
 CORBA Notification Service.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosProperty
 Summary:  Orber OMG Property Service
@@ -401,7 +401,7 @@ Group:    Development/Tools
 The cosProperty Application is an Erlang implementation of the OMG
 CORBA Property Service.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosTime
 Summary:  Orber OMG Timer and TimerEvent Services
@@ -413,7 +413,7 @@ Group:    Development/Tools
 The cosTime application is an Erlang implementation of the OMG
 CORBA Time and TimerEvent Services.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-cosTransactions
 Summary:  Orber OMG Transaction Service
@@ -425,7 +425,7 @@ Group:    Development/Tools
 The cosTransactions application is an Erlang implementation of the OMG
 CORBA Transaction Service.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-crypto
 Summary:  Cryptographical support
@@ -436,7 +436,7 @@ Group:    Development/Tools
 %description -n %{name}-crypto
 Cryptographical support for erlang.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-debugger
 Summary:  Debugger for debugging and testing of Erlang programs
@@ -449,7 +449,7 @@ Debugger is a graphical tool which can be used for debugging and testing
 of Erlang programs. For example, breakpoints can be set, code can be single
 stepped and variable values can be displayed and changed.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-erl_docgen
 Summary:  Documentation generator
@@ -460,7 +460,7 @@ Group:    Development/Tools
 %description -n %{name}-erl_docgen
 Documentation generator for erlang.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-erl_interface
 Summary:  Low level interface to C
@@ -471,7 +471,7 @@ Group:    Development/Tools
 %description -n %{name}-erl_interface
 Low level interface to C for erlang.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-et
 Summary:  Event Tracer
@@ -483,7 +483,7 @@ Group:    Development/Tools
 The Event Tracer (ET) uses the built-in trace mechanism in Erlang and
 provides tools for collection and graphical viewing of trace data.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-eunit
 Summary:  Erlang support for unit testing
@@ -494,7 +494,7 @@ Group:    Development/Tools
 %description -n %{name}-eunit
 Erlang support for unit testing.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-hipe
 Summary:  High performance erlang
@@ -505,7 +505,7 @@ Group:    Development/Tools
 %description -n %{name}-hipe
 High-performance erlang.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-inviso
 Summary:  Erlang trace tool
@@ -516,7 +516,7 @@ Group:    Development/Tools
 %description -n %{name}-inviso
 An Erlang trace tool.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-ic
 Summary:  IDL compiler
@@ -527,7 +527,7 @@ Group:    Development/Tools
 %description -n %{name}-ic
 The IC application is an Erlang implementation of an IDL compiler.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-inets
 Summary:  Set of services such as a Web server and a ftp client etc
@@ -541,7 +541,7 @@ server and a FTP client has been incorporated in Inets. The HTTP server
 is an efficient implementation of HTTP 1.1 as defined in RFC 2616, i.e.
 a Web server.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-megaco
 Summary:  Framework for building applications on top of the Megaco/H.248 protocol
@@ -553,7 +553,7 @@ Group:    Development/Tools
 Megaco/H.248 is a protocol for control of elements in a physically decomposed
 multimedia gateway, enabling separation of call control from media conversion.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-mnesia
 Summary:  Heavy duty real-time distributed database
@@ -566,7 +566,7 @@ Mnesia is a distributed DataBase Management System (DBMS), appropriate for
 telecommunications applications and other Erlang applications which require
 continuous operation and exhibit soft real-time properties.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-observer
 Summary:  Observer, tools for tracing and investigation of distributed systems
@@ -578,7 +578,7 @@ Group:    Development/Tools
 The OBSERVER application contains tools for tracing and investigation of
 distributed systems.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-odbc
 Summary:  Interface to relational SQL-databases built on ODBC
@@ -590,7 +590,7 @@ Group:    Development/Tools
 The ODBC application is an interface to relational SQL-databases built
 on ODBC (Open Database).
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-orber
 Summary:  CORBA Object Request Broker
@@ -602,7 +602,7 @@ Group:    Development/Tools
 The Orber application is an Erlang implementation of a CORBA Object Request
 Broker.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-os_mon
 Summary:  Monitor which allows inspection of the underlying operating system
@@ -614,7 +614,7 @@ Group:    Development/Tools
 The operating system monitor OS_Mon monitors operating system disk and memory
 usage etc.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-otp_mibs
 Summary:  Snmp management information base for Erlang
@@ -626,7 +626,7 @@ Group:    Development/Tools
 The OTP_Mibs application provides an SNMP management information base for
 Erlang nodes.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-parsetools
 Summary:  Set of parsing and lexical analysis tools
@@ -640,7 +640,7 @@ module. Yecc is an LALR-1 parser generator for Erlang, similar to yacc.
 Yecc takes a BNF grammar definition as input, and produces Erlang code for
 a parser as output.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-public_key
 Summary:  Erlang API to public key infrastructure
@@ -651,7 +651,7 @@ Group:    Development/Tools
 %description -n %{name}-public_key
 Erlang API to public key infrastructure.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-reltool
 Summary:  A release management tool for Erlang
@@ -666,7 +666,7 @@ the dependencies and enables interactive customization of a
 target system. The backend provides a batch interface for
 generation of customized target systems.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-runtime_tools
 Summary:  Runtime tools, tools to include in a production system
@@ -677,7 +677,7 @@ Group:    Development/Tools
 %description -n %{name}-runtime_tools
 Runtime tools, tools to include in a production system.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-snmp
 Summary:  Simple Network Management Protocol (SNMP) support
@@ -689,7 +689,7 @@ Group:    Development/Tools
 A multilingual Simple Network Management Protocol Extensible Agent, featuring
 a MIB compiler and facilities for implementing SNMP MIBs etc.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-ssh
 Summary:  Secure Shell application with ssh and sftp support
@@ -700,7 +700,7 @@ Group:    Development/Tools
 %description -n %{name}-ssh
 Secure Shell application with ssh and sftp support.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-ssl
 Summary:  Interface to UNIX BSD sockets with Secure Sockets Layer
@@ -711,7 +711,7 @@ Group:    Development/Tools
 %description -n %{name}-ssl
 The SSL application provides secure communication over sockets.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-syntax_tools
 Summary:  Set of modules for working with Erlang source code
@@ -725,7 +725,7 @@ erl_parse data structures, and provides modules for analysis and
 manipulation, flexible pretty printing, and preservation of source-code
 comments. Now includes erl_tidy: automatic code tidying and checking.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-tools
 Summary:  Set of programming tools including a coverage analyzer etc
@@ -737,7 +737,7 @@ Requires: %{name}-base = %{version}-%{release}
 The Tools application contains a number of stand-alone tools, which are
 useful when developing Erlang programs.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-typer
 Summary:  Type annotator of Erlang code
@@ -748,7 +748,7 @@ Requires: %{name}-base = %{version}-%{release}
 %description -n %{name}-typer
 A type annotator of Erlang code.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-wx
 Summary:  Graphic system for Erlang
@@ -760,7 +760,7 @@ Requires: %{name}-base = %{version}-%{release}
 A Graphics System used to write platform independent user interfaces
 for Erlang.
 
-###############################################################################
+################################################################################
 
 %package -n %{name}-xmerl
 Summary:  XML processing tools
@@ -775,7 +775,7 @@ single-pass, highly customizable XML processor. Other components are an
 export/translation facility and an XPATH query engine. This version fixes
 a few bugs in the scanner, and improves HTML export.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn otp_src_%{ver_maj}.%{ver_min}
@@ -863,7 +863,7 @@ rm -rf %{buildroot}%{_mandir}/man3/zlib.3.*
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -1092,7 +1092,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/xmerl-*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 20.1-0

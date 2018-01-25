@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
@@ -45,7 +45,7 @@ Requires:           bash >= 4
 
 Provides:           %{name} = %{version}-%{release} 
 
-###############################################################################
+################################################################################
 
 %description
 Lynis is a security auditing for Unix derivatives like Linux, BSD, and 
@@ -59,7 +59,7 @@ You should be able to trust, understand, and even alter the software.
 Many agree with us, as the software is being used by thousands every 
 day to protect their systems.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -82,7 +82,7 @@ cp -r db extras include plugins %{buildroot}%{_datadir}/%{name}/
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -92,7 +92,7 @@ rm -rf %{buildroot}
 %{_mandir}/man8/%{name}.*
 %{_datadir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.7-0

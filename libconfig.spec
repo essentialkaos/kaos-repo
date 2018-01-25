@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Name:               libconfig
 Summary:            C/C++ configuration file library
@@ -14,7 +14,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      make texinfo-tex bison byacc flex gcc gcc-c++
 
-###############################################################################
+################################################################################
 
 %description
 Libconfig is a simple library for manipulating structured configuration 
@@ -22,7 +22,7 @@ files. This file format is more compact and more readable than XML. And
 unlike XML, it is type-aware, so it is not necessary to do string parsing 
 in application code.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:             Development files for libconfig
@@ -38,7 +38,7 @@ Requires(preun):     /sbin/install-info
 Development libraries and headers for developing software against 
 libconfig.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -64,7 +64,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -80,7 +80,7 @@ rm -rf %{buildroot}
 %{_libdir}/cmake/%{name}++/*.cmake
 %{_libdir}/cmake/%{name}/*.cmake
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7-0

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,7 +28,7 @@
 
 %define bashcompl         %{_sysconfdir}/bash_completion.d
 
-###############################################################################
+################################################################################
 
 Summary:            Tig is an ncurses-based text-mode interface for git
 Name:               tig
@@ -49,7 +49,7 @@ BuildRequires:      make autoconf asciidoc xmlto ncurses-devel
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Tig is a git repository browser that additionally can act as a pager
@@ -61,7 +61,7 @@ and showing the commit with the log message, diffstat, and the diff.
 
 Using it as a pager, it will display input from stdin and colorize it.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -88,7 +88,7 @@ install -pm 644 contrib/tig-completion.bash %{buildroot}%{bashcompl}/%{name}
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -101,7 +101,7 @@ install -pm 644 contrib/tig-completion.bash %{buildroot}%{bashcompl}/%{name}
 %{_mandir}/man5/*.5*
 %{_mandir}/man7/*.7*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2-0

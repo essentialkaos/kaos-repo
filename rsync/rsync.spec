@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -30,7 +30,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __sysctl          %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 Summary:            A program for synchronizing files over a network
 Name:               rsync
@@ -64,7 +64,7 @@ Requires:           chkconfig initscripts
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Rsync uses a reliable algorithm to bring remote and host files into
@@ -75,7 +75,7 @@ just as a more capable replacement for the rcp command. A technical
 report which describes the rsync algorithm is included in this
 package.
 
-###############################################################################
+################################################################################
 
 %package daemon
 Summary:            Service for anonymous access to rsync
@@ -86,7 +86,7 @@ Requires:           %{name} = %{version}-%{release}
 Rsync can be used to offer read only access to anonymous clients. This
 package provides the anonymous rsync service.
 
-###############################################################################
+################################################################################
 
 %prep
 
@@ -166,7 +166,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -187,7 +187,7 @@ fi
 %{_initddir}/rsyncd
 %endif
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Feb 15 2017 Anton Novojilov <andy@essentialkaos.com> - 3.1.2-0

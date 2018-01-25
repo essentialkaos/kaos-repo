@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:          Core git tools
 Name:             git
@@ -23,7 +23,7 @@ Provides:         git-core = %{version}-%{release}
 Obsoletes:        git-core <= 1.5.4.2
 Obsoletes:        git-p4 <= 1.5.4.2
 
-###############################################################################
+################################################################################
 
 %description
 Git is a fast, scalable, distributed revision control system with an
@@ -34,7 +34,7 @@ The git rpm installs the core tools with minimal dependencies.  To
 install all git packages, including tools for integrating with other
 SCMs, install the git-all meta-package.
 
-###############################################################################
+################################################################################
 
 %package all
 Summary:           Meta-package to pull in all git tools
@@ -59,7 +59,7 @@ and full access to internals.
 
 This is a dummy package which brings in all subpackages.
 
-###############################################################################
+################################################################################
 
 %package svn
 Summary:        Git tools for importing Subversion repositories
@@ -70,7 +70,7 @@ Requires:       git = %{version}-%{release} subversion
 %description svn
 Git tools for importing Subversion repositories.
 
-###############################################################################
+################################################################################
 
 %package cvs
 Summary:        Git tools for importing CVS repositories
@@ -83,7 +83,7 @@ Requires:       git = %{version}-%{release} cvs cvsps
 %description cvs
 Git tools for importing CVS repositories.
 
-###############################################################################
+################################################################################
 
 %package arch
 Summary:        Git tools for importing Arch repositories
@@ -96,7 +96,7 @@ Requires:       git = %{version}-%{release} tla
 %description arch
 Git tools for importing Arch repositories.
 
-###############################################################################
+################################################################################
 
 %package email
 Summary:        Git tools for sending email
@@ -109,7 +109,7 @@ Requires:       git = %{version}-%{release}
 %description email
 Git tools for sending email.
 
-###############################################################################
+################################################################################
 
 %package gui
 Summary:        Git GUI tool
@@ -122,7 +122,7 @@ Requires:       git = %{version}-%{release} tk >= 8.4
 %description gui
 Git GUI tool
 
-###############################################################################
+################################################################################
 
 %package -n gitk
 Summary:        Git revision tree visualiser ('gitk')
@@ -135,7 +135,7 @@ Requires:       git = %{version}-%{release} tk >= 8.4
 %description -n gitk
 Git revision tree visualiser ('gitk')
 
-###############################################################################
+################################################################################
 
 %package -n gitweb
 Summary:        Git web interface
@@ -148,7 +148,7 @@ Requires:       git = %{version}-%{release}
 %description -n gitweb
 Browsing git repository on the web
 
-###############################################################################
+################################################################################
 
 %package -n perl-Git
 Summary:        Perl interface to Git
@@ -166,7 +166,7 @@ AutoReq:        no
 %description -n perl-Git
 Perl interface to Git
 
-###############################################################################
+################################################################################
 
 %define path_settings ETC_GITCONFIG=/etc/gitconfig prefix=%{_prefix} mandir=%{_mandir} htmldir=%{_docdir}/%{name}-%{version}
 %{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
@@ -206,7 +206,7 @@ install -m 644 -T contrib/completion/git-completion.bash %{buildroot}%{_sysconfd
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files -f bin-man-doc-files
 %defattr(-,root,root)
@@ -270,7 +270,7 @@ rm -rf %{buildroot}
 %files all
 # No files for you!
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.15.0-0

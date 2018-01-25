@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,7 +28,7 @@
 
 %define shortname         node
 
-###############################################################################
+################################################################################
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
@@ -51,7 +51,7 @@ Provides:           %{name} = %{version}-%{release}
 Provides:           %{shortname} = %{version}-%{release} 
 Provides:           npm = %{version}-%{release} 
 
-###############################################################################
+################################################################################
 
 %description
 Node.js is a platform built on Chromes JavaScript runtime for 
@@ -60,7 +60,7 @@ uses an event-driven, non-blocking I/O model that makes it
 lightweight and efficient, perfect for data-intensive 
 real-time applications that run across distributed devices.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -73,7 +73,7 @@ BuildArch:          noarch
 %description devel
 This package provides the header files for nodejs.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{shortname}-v%{version}
@@ -96,7 +96,7 @@ export CXX=clang++
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -114,7 +114,7 @@ export CXX=clang++
 %defattr(-,root,root,-)
 %{_includedir}/%{shortname}/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0

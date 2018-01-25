@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:            A general purpose library and file format for storing scientific data
 Name:               hdf
@@ -23,7 +23,7 @@ BuildRequires:      flex byacc libjpeg-devel zlib-devel
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 HDF is a general purpose library and file format for storing scientific data.
@@ -34,7 +34,7 @@ objects, one can create and store almost any kind of scientific data
 structure, such as images, arrays of vectors, and structured and unstructured 
 grids. You can also mix and match them in HDF files according to your needs.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            HDF development files
@@ -48,7 +48,7 @@ Provides:           %{name}-static = %{version}-%{release}
 %description devel
 HDF development headers and libraries.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -107,7 +107,7 @@ mv %{buildroot}%{_datadir}/hdf4_examples \
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -122,7 +122,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}/
 %{_defaultdocdir}/%{name}/examples
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 4.2.13-0

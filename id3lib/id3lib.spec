@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Library for manipulating ID3v1 and ID3v2 tags
 Name:               id3lib
@@ -56,7 +56,7 @@ BuildRequires:      make gcc-c++ autoconf automake libtool zlib-devel doxygen
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 This package provides a software library for manipulating ID3v1 and
@@ -67,7 +67,7 @@ size conversions, (re)synchronisation of tag frames, seamless tag
 (de)compression, and optional padding facilities. Additionally, it can
 tell mp3 header info, like bitrate etc.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -80,7 +80,7 @@ Requires:           zlib-devel
 %description devel
 This package provides files needed to develop with the id3lib library.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -143,7 +143,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -162,7 +162,7 @@ rm -rf %{buildroot}
 %{_includedir}/id3/
 %{_libdir}/libid3.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-33

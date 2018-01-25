@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:             1394-based digital camera control library
 Name:                libdc1394
@@ -45,14 +45,14 @@ BuildRequires:       kernel-headers libraw1394-devel libusb1-devel
 
 Provides:            %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Libdc1394 is a library that is intended to provide a high level programming
 interface for application developers who wish to control IEEE 1394 based
 cameras that conform to the 1394-based Digital Camera Specification.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:             Header files and libraries for libdc1394
@@ -66,7 +66,7 @@ This package contains the header files and libraries
 for libdc1394. If you like to develop programs using libdc1394,
 you will need to install libdc1394-devel.
 
-###############################################################################
+################################################################################
 
 %package docs
 Summary:             Development documentation for libdc1394
@@ -75,7 +75,7 @@ Group:               Documentation
 %description docs
 This package contains the development documentation for libdc1394.
 
-###############################################################################
+################################################################################
 
 %package tools
 Summary:             Tools for use with libdc1394
@@ -87,7 +87,7 @@ Requires:            %{name} = %{version}-%{release}
 This package contains tools that are useful when working and
 developing with libdc1394.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -123,7 +123,7 @@ done
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -147,7 +147,7 @@ rm -rf %{buildroot}
 %{_bindir}/dc1394_*
 %{_mandir}/man1/dc1394_*.1.gz
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 26 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.4-0

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -58,7 +58,7 @@
 %define nfsnobody_gid     65534
 %define nfsnobody_home    %{_sharedstatedir}/nfs
 
-###############################################################################
+################################################################################
 
 Summary:              NFS utilities and supporting clients and daemons for the kernel NFS server
 Name:                 nfs-utils
@@ -118,7 +118,7 @@ Requires(post):       systemd-units
 Requires(preun):      systemd-units
 Requires(postun):     systemd-units
 
-###############################################################################
+################################################################################
 
 %description
 The nfs-utils package provides a daemon for the kernel NFS server and
@@ -132,7 +132,7 @@ clients which are mounted on that host.
 
 This package also contains the mount.nfs and umount.nfs program.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -212,7 +212,7 @@ touch %{buildroot}%{_sharedstatedir}/nfs/rmtab
 
 mv %{buildroot}%{_sbindir}/rpc.statd %{buildroot}/sbin
 
-###############################################################################
+################################################################################
 
 %clean
 rm -rf %{buildroot}
@@ -290,7 +290,7 @@ fi
 
 %{__systemctl} --system daemon-reload &>/dev/null || :
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -336,7 +336,7 @@ fi
 %{_sbin}/umount.nfs
 %{_sbin}/umount.nfs4
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Aug 01 2017 Gleb Goncharov <ggoncharov@fun-box.ru> 1.3.4-1

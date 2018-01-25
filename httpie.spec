@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,7 +28,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:           A Curl-like tool for humans
 Name:              httpie
@@ -51,7 +51,7 @@ BuildRequires:     python python-setuptools sed
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 HTTPie is a CLI HTTP utility built out of frustration with existing tools. The
@@ -62,7 +62,7 @@ HTTPie does so by providing an http command that allows for issuing arbitrary
 HTTP requests using a simple and natural syntax and displaying colorized
 responses.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -80,7 +80,7 @@ sed -i 's/requests>=2.11.0/requests>=2.6.0/' setup.py
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -89,7 +89,7 @@ sed -i 's/requests>=2.11.0/requests>=2.6.0/' setup.py
 %{python_sitelib}/%{name}-%{version}*
 %{_bindir}/http
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.8-0

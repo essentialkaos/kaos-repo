@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:         Library for country/city/organization to IP address or hostname mapping
 Name:            GeoIP
@@ -24,7 +24,7 @@ Obsoletes:       geoip < %{version}-%{release}
 Provides:        geoip = %{version}-%{release}
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 GeoIP is a C library that enables the user to find the country that any IP
@@ -34,7 +34,7 @@ It uses file based databases that can optionally be updated on a weekly basis
 by installing the geoipupdate-cron (IPv4) and/or geoipupdate-cron6 (IPv6)
 packages.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:         Development headers and libraries for GeoIP
@@ -52,7 +52,7 @@ Obsoletes:       geoip-devel < %{version}-%{release}
 %description devel
 Development headers and static libraries for building GeoIP-based applications.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -89,7 +89,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -108,7 +108,7 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIP.so
 %{_libdir}/pkgconfig/geoip.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0

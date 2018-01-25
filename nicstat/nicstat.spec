@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:           Network traffic statics utility
 Name:              nicstat
@@ -17,14 +17,14 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     gcc
 
-###############################################################################
+################################################################################
 
 %description
 nicstat is a Solaris and Linux command-line that prints out network statistics 
 for all network interface cards (NICs), including packets, kilobytes per second,
 average packet sizes and more.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-src-%{version}
@@ -50,7 +50,7 @@ install -pm 644 %{name}.1 %{buildroot}%{_mandir}/man1/
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_mandir}/man1/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.95-1

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              Abstract asynchronous event notification library
 Name:                 libevent
@@ -14,7 +14,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        gcc make automake libtool doxygen openssl-devel
 
-###############################################################################
+################################################################################
 
 %description
 The libevent API provides a mechanism to execute a callback function
@@ -24,7 +24,7 @@ loop found in event driven network servers. An application just needs
 to call event_dispatch() and can then add or remove events dynamically
 without having to change the event loop.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:              Header files, libraries and development documentation for %{name}
@@ -36,7 +36,7 @@ This package contains the header files, static libraries and development
 documentation for %{name}. If you like to develop programs using %{name},
 you will need to install %{name}-devel.
 
-###############################################################################
+################################################################################
 
 %package doc
 Summary:              Development documentation for %{name}
@@ -49,7 +49,7 @@ This package contains the development documentation for %{name}.
 If you like to develop programs using %{name}-devel, you will
 need to install %{name}-doc.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-release-%{version}-stable
@@ -85,7 +85,7 @@ cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,0755)
@@ -114,7 +114,7 @@ cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
 %{_docdir}/%{name}-devel-%{version}/html/*
 %{_docdir}/%{name}-devel-%{version}/sample/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.15-0

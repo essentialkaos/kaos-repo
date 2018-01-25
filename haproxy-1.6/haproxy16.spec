@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -40,7 +40,7 @@
 %define __userdel         %{_sbindir}/userdel
 %define __getent          %{_bindir}/getent
 
-###############################################################################
+################################################################################
 
 %define hp_user           %{name}
 %define hp_user_id        188
@@ -56,7 +56,7 @@
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
-###############################################################################
+################################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
@@ -106,7 +106,7 @@ Requires(postun):  initscripts
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 HAProxy is a free, fast and reliable solution offering high
@@ -118,7 +118,7 @@ modern hardware. Its mode of operation makes integration with existing
 architectures very easy and riskless, while still offering the
 possibility not to expose fragile web servers to the net.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -282,7 +282,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -303,7 +303,7 @@ fi
 %{_mandir}/man1/%{name}.1.gz
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-3

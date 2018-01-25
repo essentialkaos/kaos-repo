@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -35,7 +35,7 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
 
 Summary:            Portable libraries for the high quality Dirac video codec
 Name:               schroedinger
@@ -54,7 +54,7 @@ BuildRequires:      orc-devel >= 0.4.10 glew-devel >= 1.5.1
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 The Schrödinger project will implement portable libraries for the high
@@ -65,7 +65,7 @@ The Schrödinger project is a project done by BBC R&D and Fluendo in
 order to create a set of high quality decoder and encoder libraries
 for the Dirac video codec.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for schroedinger
@@ -77,7 +77,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 Development files for schroedinger.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -104,14 +104,14 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc COPYING* NEWS TODO
 %{_libdir}/lib%{name}-*.so.*
 
-###############################################################################
+################################################################################
 
 %files devel
 %defattr(-,root,root,-)
@@ -121,7 +121,7 @@ rm -rf %{buildroot}
 %{_libdir}/*.la
 %{_pkgconfigdir}/%{name}-*.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Jan 25 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-2

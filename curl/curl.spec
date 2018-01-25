@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,7 +32,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %{!?_without_nss: %{!?_with_nss: %define _with_nss --with-nss}}
 %{?_with_nss:     %define is_nss_enabled 1}
@@ -65,7 +65,7 @@
 %define libssh2_version   %(pkg-config --modversion libssh2 2>/dev/null || echo 0)
 %define cares_version     %(pkg-config --modversion libcares 2>/dev/null || echo 0)
 
-###############################################################################
+################################################################################
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
@@ -110,7 +110,7 @@ Requires:             libcurl%{?_isa} = %{version}-%{release}
 Requires:             %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
 %endif
 
-###############################################################################
+################################################################################
 
 %description
 curl is a command line tool for transferring data with URL syntax, supporting
@@ -120,7 +120,7 @@ uploading, HTTP form based upload, proxies, cookies, user+password
 authentication (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer
 resume, proxy tunneling and a busload of other useful tricks.
 
-###############################################################################
+################################################################################
 
 %package -n libcurl
 Summary:              A library for getting files from web servers
@@ -149,7 +149,7 @@ FTP uploading, HTTP form based upload, proxies, cookies, user+password
 authentication (Basic, Digest, NTLM, Negotiate, Kerberos4), file transfer
 resume, HTTP proxy tunneling and more.
 
-###############################################################################
+################################################################################
 
 %package -n libcurl-devel
 Summary:              Files needed for building applications with libcurl
@@ -169,7 +169,7 @@ The libcurl-devel package includes header files and libraries necessary for
 developing programs that use the libcurl library. It contains the API
 documentation of the library, too.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn curl-%{version}
@@ -234,7 +234,7 @@ rm -rf %{buildroot}
 %postun -n libcurl
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -263,7 +263,7 @@ rm -rf %{buildroot}
 %{_datadir}/aclocal/libcurl.m4
 %exclude %{_libdir}/libcurl.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Nov 29 2017 Anton Novojilov <andy@essentialkaos.com> - 7.57.0-0

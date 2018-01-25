@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              Interactive process viewer
 Name:                 htop
@@ -13,12 +13,12 @@ Source:               http://hisham.hm/htop/releases/%{version}/%{name}-%{versio
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:        gcc >= 3.0 ncurses-devel
 
-###############################################################################
+################################################################################
 
 %description
 htop is an interactive process viewer for Linux.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -34,7 +34,7 @@ htop is an interactive process viewer for Linux.
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, 0755)
@@ -44,7 +44,7 @@ htop is an interactive process viewer for Linux.
 %{_datadir}/applications/htop.desktop
 %{_datadir}/pixmaps/htop.png
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-0

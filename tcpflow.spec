@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              Network traffic recorder
 Name:                 tcpflow
@@ -19,7 +19,7 @@ BuildRequires:        boost-devel >= 1.53.0 libpcap-devel zlib-devel
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 tcpflow is a program that captures data transmitted as part of TCP
@@ -29,7 +29,7 @@ packets seen on the wire, but usually doesn't store the data that's actually
 being transmitted. In contrast, tcpflow reconstructs the actual data streams
 and stores each flow in a separate file for later analysis.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -46,7 +46,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -54,7 +54,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Dec 07 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.4.5-0

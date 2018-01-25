@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,12 +34,12 @@
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
 
 %define realname       rdkafka
 %define minor_ver      1
 
-###############################################################################
+################################################################################
 
 Summary:             Apache Kafka C/C++ client library
 Name:                librdkafka
@@ -57,7 +57,7 @@ BuildRequires:       make gcc gcc-c++ zlib-devel
 
 Requires:            zlib
 
-###############################################################################
+################################################################################
 
 %description
 C library implementation of the Apache Kafka protocol, containing both 
@@ -65,7 +65,7 @@ Producer and Consumer support. It was designed with message delivery
 reliability and high performance in mind, current figures exceed 
 800000 msgs/second for the producer and 3 million msgs/second for the consumer.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:             Header files and libraries for librdkafka C development
@@ -76,7 +76,7 @@ Requires:            %{name} = %{version}
 The %{name}-devel package contains the header files and
 libraries to develop applications using a Kafka databases.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -105,7 +105,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -125,7 +125,7 @@ rm -rf %{buildroot}
 %{_pkgconfigdir}/%{realname}.pc
 %{_pkgconfigdir}/%{realname}++.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.1-0

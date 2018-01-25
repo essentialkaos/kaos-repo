@@ -32,11 +32,11 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define pkg_name   faad
 
-###############################################################################
+################################################################################
 
 Summary:           Library and frontend for decoding MPEG2/4 AAC
 Name:              faad2
@@ -59,13 +59,13 @@ Obsoletes:         faad2-libs <= %{version}
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 FAAD 2 is a LC, MAIN and LTP profile, MPEG2 and MPEG-4 AAC decoder,
 completely written from scratch.
 
-###############################################################################
+################################################################################
 
 %package -n libfaad2
 Summary:           Libraries for faad2
@@ -76,7 +76,7 @@ Requires:          %{name} = %{version}
 %description -n libfaad2
 Libraries from faad2 that are needed to build programs that use it.
 
-###############################################################################
+################################################################################
 
 %package -n libfaad2-devel
 Summary:           Header files for faad2
@@ -87,7 +87,7 @@ Requires:          %{name} = %{version}
 %description -n libfaad2-devel
 Header files from faad2 that are needed to build programs that use it.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -117,7 +117,7 @@ rm -rf %{buildroot}
 %postun -n lib%{name}
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -136,7 +136,7 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Sep 05 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 2.7-0

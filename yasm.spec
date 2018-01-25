@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Modular Assembler
 Name:               yasm
@@ -45,7 +45,7 @@ BuildRequires:      make gcc bison byacc xmlto gettext-devel
 Provides:           %{name} = %{version}-%{release} 
 Provides:           bundled(md5-plumb) = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Yasm is a complete rewrite of the NASM assembler under the "new" BSD License
@@ -55,7 +55,7 @@ supported (eg, NASM, TASM, GAS, etc.) in addition to multiple output object
 formats and even multiple instruction sets. Another primary module of the
 overall design is an optimizer module.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Header files and static libraries for the yasm Modular Assembler
@@ -75,7 +75,7 @@ formats and even multiple instruction sets. Another primary module of the
 overall design is an optimizer module.
 Install this package if you need to rebuild applications that use yasm.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -93,7 +93,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -111,7 +111,7 @@ rm -rf %{buildroot}
 %{_libdir}/libyasm.a
 %{_mandir}/man7/yasm_*.7*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0

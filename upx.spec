@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,7 +28,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:           Ultimate Packer for eXecutables
 Name:              upx
@@ -46,7 +46,7 @@ BuildRequires:     make gcc gcc-c++ ucl-devel zlib-devel
 
 Requires:          ucl zlib
 
-###############################################################################
+################################################################################
 
 %description
 UPX is a free, portable, extendable, high-performance executable
@@ -54,7 +54,7 @@ packer for several different executable formats. It achieves an
 excellent compression ratio and offers very fast decompression. Your
 executables suffer no memory overhead or other drawbacks.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}-src
@@ -76,7 +76,7 @@ install -Dpm 755 src/%{name}.out %{buildroot}%{_bindir}/%{name}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -84,7 +84,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.94-0

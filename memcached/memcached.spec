@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -36,12 +36,12 @@
 %define __getent          %{_bindir}/getent
 %define __sysctl          %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %define username          memcached
 %define groupname         memcached
 
-###############################################################################
+################################################################################
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
@@ -82,14 +82,14 @@ Requires(preun):          %{__chkconfig} %{__service}
 Requires(postun):         %{__service}
 %endif
 
-###############################################################################
+################################################################################
 
 %description
 memcached is a high-performance, distributed memory object caching
 system, generic in nature, but intended for use in speeding up dynamic
 web applications by alleviating database load.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:                  Files needed for development using memcached protocol
@@ -100,7 +100,7 @@ Requires:                 %{name} = %{version}-%{release}
 Install memcached-devel if you are developing C/C++ applications that require access to the
 memcached binary include files.
 
-###############################################################################
+################################################################################
 
 %package debug
 Summary:                  Debug version of memcached
@@ -110,7 +110,7 @@ Requires:                 %{name} = %{version}-%{release}
 %description debug
 Version of memcached show more additional information for debugging.
 
-###############################################################################
+################################################################################
 
 %prep
 
@@ -159,7 +159,7 @@ touch %{buildroot}%{_logdir}/%{name}/%{name}.log
 %clean 
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %pre
 %{__getent} group %{groupname} >/dev/null || %{__groupadd} -r %{groupname}
@@ -192,7 +192,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -222,7 +222,7 @@ fi
 %defattr(-,root,root,0755)
 %{_bindir}/%{name}-debug
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Nov 06 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.3-0

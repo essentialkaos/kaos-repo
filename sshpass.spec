@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Non-interactive SSH authentication utility
 Name:               sshpass
@@ -44,14 +44,14 @@ BuildRequires:      make gcc
 
 Provides:           %{name} = %{version}-%{release} 
 
-###############################################################################
+################################################################################
 
 %description
 Tool for non-interactively performing password authentication with so called
 "interactive keyboard password authentication" of SSH. Most users should use
 more secure public key authentication of SSH instead.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -68,7 +68,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -76,7 +76,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_datadir}/man/man1/%{name}.1*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Oct 04 2016 Anton Novojilov <andy@essentialkaos.com> - 1.06-0

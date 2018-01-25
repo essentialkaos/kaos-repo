@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 
 %define alias_name        nutcracker
 
-###############################################################################
+################################################################################
 
 Summary:           Fast and lightweight proxy for memcached and redis protocol
 Name:              twemproxy
@@ -55,14 +55,14 @@ BuildRequires:     make gcc autoconf m4 libtool libevent2-devel
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{alias_name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 twemproxy (pronounced "two-em-proxy"), aka nutcracker is a fast and 
 lightweight proxy for memcached and redis protocol. It was primarily built to 
 reduce the connection count on the backend caching servers.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -106,7 +106,7 @@ fi
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -120,7 +120,7 @@ fi
 %{_sysconfdir}/%{name}/%{alias_name}.yml
 %config(noreplace)%{_sysconfdir}/%{name}/%{name}.yml
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Mar 28 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-1

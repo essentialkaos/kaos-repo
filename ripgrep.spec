@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:         A search tool that combines the usability of ag with the raw speed of grep
 Name:            ripgrep
@@ -20,7 +20,7 @@ BuildRequires:   cargo
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 ripgrep is a line oriented search tool that combines the usability of 
@@ -29,7 +29,7 @@ The Silver Searcher (similar to ack) with the raw speed of GNU grep.
 ripgrep works by recursively searching your current directory for a 
 regex pattern.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 cargo test
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -67,7 +67,7 @@ cargo test
 %{_mandir}/man1/rg.1*
 %{_datadir}/bash-completion
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.1-0

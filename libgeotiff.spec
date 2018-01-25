@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              GeoTIFF format library
 Name:                 libgeotiff
@@ -17,7 +17,7 @@ BuildRequires:        libtiff-devel libjpeg-devel proj-devel zlib-devel
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 GeoTIFF represents an effort by over 160 different remote sensing, 
@@ -25,7 +25,7 @@ GIS, cartographic, and surveying related companies and organizations
 to establish a TIFF based interchange format for georeferenced 
 raster imagery.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development library and header for the GeoTIFF file format library
@@ -37,7 +37,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 The GeoTIFF library provides support for development of geotiff image format.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -106,7 +106,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -131,7 +131,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0

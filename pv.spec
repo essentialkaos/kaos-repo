@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:              Tool for monitoring the progress of data through a pipeline
 Name:                 pv
@@ -51,7 +51,7 @@ BuildRequires:        gcc make gettext
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Pipe Viewer is a terminal-based tool for monitoring the progress of
@@ -60,7 +60,7 @@ between two processes to give a visual indication of how quickly data
 is passing through, how long it has taken, how near to completion it
 is, and an estimate of how long it will be until completion.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -82,7 +82,7 @@ install -dm 755 %{buildroot}%{_datarootdir}/locale
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -91,7 +91,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{name}.1*
 %{_datarootdir}/locale/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.6-0

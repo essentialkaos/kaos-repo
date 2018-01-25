@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,7 +34,7 @@
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
 
 Name:              tsung
 Summary:           A distributed multi-protocol load testing tool
@@ -54,7 +54,7 @@ Requires:          erlang perl(Template)
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 tsung is a distributed load testing tool. It is protocol-independent and can 
@@ -67,7 +67,7 @@ For HTTP, it supports 1.0 and 1.1, has a proxy mode to record sessions,
 supports GET and POST methods, Cookies, and Basic WWW-authentication. 
 It also has support for SSL.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -90,7 +90,7 @@ rm -rf %{buildroot}%{_defaultdocdir}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -102,7 +102,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{name}*.1*
 %{_mandir}/man1/tsplot.1*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,7 +28,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:           User-space IPsec tools for various IPsec implementations
 Name:              ipsec-tools
@@ -52,13 +52,13 @@ Provides:          racoon
 BuildRequires:     flex kernel-headers libselinux-devel
 BuildRequires:     openssl-devel readline-devel pam-devel krb5-devel openldap-devel
 
-###############################################################################
+################################################################################
 
 %description
 User-space IPsec tools for various IPsec implementations. A port of KAME's
 libipsec, setkey, and racoon to the Linux OS. Also works on various BSD systems.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:           Development files for %{name}
@@ -67,7 +67,7 @@ Group:             Development/Tools
 %description devel
 Development files for %{name}
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -124,7 +124,7 @@ install -Dm 755 %{SOURCE1} %{buildroot}%{_initrddir}/racoon
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -151,7 +151,7 @@ rm -rf %{buildroot}
 %exclude %{_libdir}/*.la
 %doc %{_mandir}/man3/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Apr 11 2014 Anton Novojilov <andy@essentialkaos.com> - 0.8.2-0

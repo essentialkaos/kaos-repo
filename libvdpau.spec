@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:         Wrapper library for the Video Decode and Presentation API
 Name:            libvdpau
@@ -23,14 +23,14 @@ BuildRequires:   tetex-latex
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 VDPAU is the Video Decode and Presentation API for UNIX. It provides an
 interface to video decode acceleration and presentation hardware present in
 modern GPUs.
 
-###############################################################################
+################################################################################
 
 %package docs
 
@@ -42,7 +42,7 @@ Obsoletes:       libvdpau-docs < 0.6-2
 %description docs
 The libvdpau-docs package contains documentation for libvdpau.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:        Development files for libvdpau
@@ -54,7 +54,7 @@ Requires:       pkgconfig libX11-devel
 The libvdpau-devel package contains libraries and header files for developing
 applications that use libvdpau.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -87,7 +87,7 @@ mv doc/html-out html
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -107,7 +107,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}.so
 %{_libdir}/pkgconfig/vdpau.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Mar 24 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0

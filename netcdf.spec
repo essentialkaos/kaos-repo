@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:            Libraries for the Unidata network Common Data Form
 Name:               netcdf
@@ -23,7 +23,7 @@ Requires:           hdf5
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 NetCDF (network Common Data Form) is an interface for array-oriented 
@@ -35,7 +35,7 @@ library, and format support the creation, access, and sharing of
 scientific data. The NetCDF software was developed at the Unidata 
 Program Center in Boulder, Colorado.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for netcdf
@@ -48,7 +48,7 @@ Requires:           pkgconfig hdf5-devel libcurl-devel
 This package contains the netCDF C header files, shared devel libs, and 
 man pages.
 
-###############################################################################
+################################################################################
 
 %package static
 Summary:            Static libs for netcdf
@@ -59,7 +59,7 @@ Requires:           %{name} = %{version}-%{release}
 %description static
 This package contains the netCDF C static libs.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -114,7 +114,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -141,7 +141,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_libdir}/*.a
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.0-0

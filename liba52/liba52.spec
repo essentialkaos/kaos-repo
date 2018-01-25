@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:qa-rpaths 0x0001,0x0010
 
@@ -36,11 +36,11 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define pkg_name          a52dec
 
-###############################################################################
+################################################################################
 
 Summary:           A free library for decoding ATSC A/52 (aka AC-3) streams
 Name:              liba52
@@ -60,7 +60,7 @@ BuildRequires:     autoconf make gcc
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 liba52 is a free library for decoding ATSC A/52 streams. It is released
@@ -68,7 +68,7 @@ under the terms of the GPL license. The A/52 standard is used in a
 variety of applications, including digital television and DVD. It is
 also known as AC-3.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:           Header files and static libraries for liba52.
@@ -84,7 +84,7 @@ also known as AC-3.
 These are the header files and static libraries from liba52 that are needed
 to build programs that use it.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{pkg_name}-%{version}
@@ -111,7 +111,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -126,7 +126,7 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Jun 14 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.7.4-0

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,7 +34,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
@@ -56,7 +56,7 @@ Requires(post):    %{__chkconfig}
 Requires(preun):   %{__chkconfig}
 Requires(preun):   %{__service}
 
-###############################################################################
+################################################################################
 
 %description
 xl2tpd is an implementation of the Layer 2 Tunnelling Protocol (RFC 2661).
@@ -83,7 +83,7 @@ or via a patch in contrib for 2.4.x kernels.
 Xl2tpd is based on the 0.69 L2TP by Jeff McAdams <jeffm@iglou.com>
 It was de-facto maintained by Jacco de Leeuw <jacco2@dds.nl> in 2002 and 2003.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -126,7 +126,7 @@ if [[ $1 -ge 1 ]] ; then
   %{__service} %{name} condrestart 2>&1 >/dev/null
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -143,7 +143,7 @@ fi
 %ghost %dir %{_rundir}/%{name}
 %ghost %attr(0600,root,root) %{_rundir}/%{name}/l2tp-control
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.10-0

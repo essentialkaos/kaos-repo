@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,12 +26,12 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 %define profile_dir       %{_sysconfdir}/profile.d
 %define profile           %{profile_dir}/%{name}.sh
 
-###############################################################################
+################################################################################
 
 Summary:         Simple Python version management utility
 Name:            pyenv
@@ -54,14 +54,14 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 pyenv lets you easily switch between multiple versions
 of Python. Its simple, unobtrusive, and follows the UNIX
 tradition of single-purpose tools that do one thing well.
 
-###############################################################################
+################################################################################
 
 %package plugin-python-build
 Summary:         pyenv plugin for installing Python versions
@@ -75,7 +75,7 @@ Provides:        %{name} = %{version}-%{release}
 pyenv plugin which provides installation Python to shims directory
 from the source codes.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -114,7 +114,7 @@ popd
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -129,7 +129,7 @@ rm -rf %{buildroot}
 %{_loc_bindir}/%{name}-uninstall
 %{_loc_bindir}/python-build
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Jan 23 2018 Gleb Goncharov <inbox@gongled.ru> - 1.2.1-0

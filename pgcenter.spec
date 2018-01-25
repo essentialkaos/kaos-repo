@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
@@ -44,7 +44,7 @@ BuildRequires:      make gcc postgresql94-devel ncurses-devel
 
 Provides:           %{name} = %{version}-%{release} 
 
-###############################################################################
+################################################################################
 
 %description
 PostgreSQL provides various statistics which includes information about 
@@ -59,7 +59,7 @@ services, viewing log files and canceling or terminating database backends
 (by pid or using state mask). However if need execute some specific 
 operations, pgcenter can start psql session for this purposes.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -80,7 +80,7 @@ install -dm 755 %{buildroot}%{_mandir}/man1
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -89,7 +89,7 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}/*.sql
 %{_mandir}/man1/%{name}.1.*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0

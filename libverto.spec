@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:         Main loop abstraction library
 Name:            libverto
@@ -26,7 +26,7 @@ BuildRequires:   libevent-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 libverto provides a way for libraries to expose asynchronous interfaces
@@ -41,7 +41,7 @@ timeout and signal functionality. Currently glib is the only module
 that does not provide these three because it lacks signal. However,
 glib will support signal in the future.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -53,7 +53,7 @@ Requires:        pkgconfig
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-###############################################################################
+################################################################################
 
 %package glib
 
@@ -65,7 +65,7 @@ Module for %{name} which provides integration with glib.
 
 This package does NOT yet provide %{name}-module-base.
 
-###############################################################################
+################################################################################
 
 %package glib-devel
 
@@ -77,7 +77,7 @@ Requires:        %{name}-devel = %{version}-%{release}
 The %{name}-glib-devel package contains libraries and header files for
 developing applications that use %{name}-glib.
 
-###############################################################################
+################################################################################
 
 %package libevent
 
@@ -88,7 +88,7 @@ Provides:        %{name}-module-base = %{version}-%{release}
 %description libevent
 Module for %{name} which provides integration with libevent.
 
-###############################################################################
+################################################################################
 
 %package libevent-devel
 
@@ -100,7 +100,7 @@ Requires:        %{name}-devel = %{version}-%{release}
 The %{name}-libevent-devel package contains libraries and header files for
 developing applications that use %{name}-libevent.
 
-###############################################################################
+################################################################################
 
 %package tevent
 
@@ -114,7 +114,7 @@ Module for %{name} which provides integration with tevent.
 This package provides %{name}-module-base since it supports io, timeout
 and signal.
 
-###############################################################################
+################################################################################
 
 %package tevent-devel
 
@@ -126,7 +126,7 @@ Requires:        %{name}-devel = %{version}-%{release}
 The %{name}-tevent-devel package contains libraries and header files for
 developing applications that use %{name}-tevent.
 
-###############################################################################
+################################################################################
 
 %if !0%{?rhel}
 %package libev
@@ -141,7 +141,7 @@ Module for %{name} which provides integration with libev.
 This package provides %{name}-module-base since it supports io, timeout
 and signal.
 
-###############################################################################
+################################################################################
 
 %package libev-devel
 
@@ -157,7 +157,7 @@ This package provides %{name}-module-base since it supports io, timeout
 and signal.
 %endif
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -205,7 +205,7 @@ rm -rf %{buildroot}
 /sbin/ldconfig
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -261,7 +261,7 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/%{name}-libev.pc
 %endif
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-1

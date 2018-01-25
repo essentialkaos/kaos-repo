@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?systemd_enabled:%global systemd_enabled 0}
@@ -6,7 +6,7 @@
 %{!?systemd_enabled:%global systemd_enabled 1}
 %endif
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -49,7 +49,7 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 Summary:         Advanced System and Process Monitor
 Name:            atop
@@ -79,7 +79,7 @@ Requires:        initscripts
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 The program atop is an interactive monitor to view the load on
@@ -94,7 +94,7 @@ information in raw format for long-term analysis.
 The program atopsar can be used to view system-level statistics
 as reports.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -201,7 +201,7 @@ fi
 rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -229,7 +229,7 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %{_sysconfdir}/logrotate.d/psaccu_atop
 %dir %{_logdir}/%{name}/
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-3

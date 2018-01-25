@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -42,7 +42,7 @@
 %define patch_level       9
 
 
-###############################################################################
+################################################################################
 
 Name:              vips
 Summary:           C/C++ library for processing large images
@@ -62,7 +62,7 @@ BuildRequires:     glib2-devel libxml2-devel libexif-devel
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 VIPS is an image processing library. It is good for very large images
@@ -72,7 +72,7 @@ with color.
 This package should be installed if you want to use a program compiled
 against VIPS.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:           Development files for %{name}
@@ -84,7 +84,7 @@ Requires:          vips = %{version}-%{release}
 Package contains the header files and libraries necessary for developing 
 programs using VIPS. It also contains a C++ API and development man pages.
 
-###############################################################################
+################################################################################
 
 %package tools
 Summary:           Command-line tools for %{name}
@@ -94,7 +94,7 @@ Requires:          vips = %{version}-%{release}
 %description tools
 Package contains command-line tools for working with VIPS.
 
-###############################################################################
+################################################################################
 
 %package doc
 Summary:           Documentation for %{name}
@@ -106,7 +106,7 @@ Conflicts:         %{name} > %{version}-%{release}
 Package contains extensive documentation about VIPS in both HTML and 
 PDF formats.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -139,7 +139,7 @@ rm -rf %{buildroot}%{_datadir}/locale
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -158,7 +158,7 @@ rm -rf %{buildroot}%{_datadir}/locale
 %{_bindir}/*
 %{_mandir}/man1/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 8.5.9-0

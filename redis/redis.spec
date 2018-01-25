@@ -1,12 +1,12 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:pedantic true 
 
-###############################################################################
+################################################################################
 
 %global with_tests   %{?_with_tests:1}%{!?_with_tests:0}
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -38,7 +38,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __sysctl          %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 Summary:            A persistent key-value database
 Name:               redis
@@ -86,7 +86,7 @@ Requires(preun):    initscripts
 Requires(postun):   initscripts
 %endif
 
-###############################################################################
+################################################################################
 
 %description
 Redis is an advanced key-value store. It is similar to memcached but the data
@@ -96,7 +96,7 @@ atomic operations to push/pop elements, add/remove elements, perform server side
 union, intersection, difference between sets, and so forth. Redis supports
 different kind of sorting abilities.
 
-###############################################################################
+################################################################################
 
 %package cli
 
@@ -105,7 +105,7 @@ Summary:            Client for working with Redis from console
 %description cli
 Client for working with Redis from console
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -216,7 +216,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -256,7 +256,7 @@ rm -rf %{buildroot}
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
 %{_bindir}/%{name}-cli
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.6-0

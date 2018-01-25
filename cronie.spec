@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -35,14 +35,14 @@
 
 %define service_name      crond
 
-###############################################################################
+################################################################################
 
 %bcond_without selinux
 %bcond_without pam
 %bcond_without audit
 %bcond_without inotify
 
-###############################################################################
+################################################################################
 
 Summary:           Cron daemon for executing programs at set times
 Name:              cronie
@@ -78,7 +78,7 @@ BuildRequires:     audit-libs-devel >= 1.4.1
 
 Requires(post):    coreutils sed
 
-###############################################################################
+################################################################################
 
 %description
 Cronie contains the standard UNIX daemon crond that runs specified programs at
@@ -86,7 +86,7 @@ scheduled times and related tools. It is a fork of the original vixie-cron and
 has security and configuration enhancements like the ability to use pam and
 SELinux.
 
-###############################################################################
+################################################################################
 
 %package anacron
 Summary:           Utility for running regular jobs
@@ -109,7 +109,7 @@ Using anacron allows running the periodic jobs even if the system is often
 powered off and it also allows randomizing the time of the job execution
 for better utilization of resources shared among multiple systems.
 
-###############################################################################
+################################################################################
 
 %package noanacron
 Summary:           Utility for running simple regular jobs in old cron style
@@ -122,7 +122,7 @@ Requires:          %{name} = %{version}-%{release}
 Old style of running {hourly,daily,weekly,monthly}.jobs without anacron. No
 extra features.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -221,7 +221,7 @@ exit 0
 %{__chkconfig} --add %{service_name}
 [[ -f %{_lockdir}/subsys/%{name} ]] && ( rm -f %{_lockdir}/subsys/%{name} ; %{__service} %{service_name} restart ) &>/dev/null || :
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -258,7 +258,7 @@ exit 0
 %defattr(-,root,root,-)
 %attr(0644,root,root) %{_sysconfdir}/cron.d/dailyjobs
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Oct 03 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-2

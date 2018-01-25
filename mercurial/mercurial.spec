@@ -1,13 +1,13 @@
-###############################################################################
+################################################################################
 
 %define shortname      hg
 %define emacs_version  22.1
 
-###############################################################################
+################################################################################
 
 %define _emacs_bytecompile /usr/bin/emacs -batch --no-init-file --no-site-file --eval '(progn (setq load-path (cons "." load-path)))' -f batch-byte-compile
 
-###############################################################################
+################################################################################
 
 Summary:           Distributed source control management tool
 Name:              mercurial
@@ -32,14 +32,14 @@ Requires:          python
 Provides:          %{shortname} = %{version}-%{release}
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Mercurial is a free, distributed source control management tool. It 
 efficiently handles projects of any size and offers an easy and intuitive 
 interface.
 
-###############################################################################
+################################################################################
 
 %package -n emacs-mercurial
 Summary:           Mercurial version control system support for Emacs
@@ -55,7 +55,7 @@ Contains byte compiled elisp packages for mercurial.
 To get started: start emacs, load hg-mode with M-x hg-mode, and show 
 help with C-c h h
 
-###############################################################################
+################################################################################
 
 %package -n emacs-mercurial-el
 Summary:           Elisp source files for mercurial under GNU Emacs
@@ -65,7 +65,7 @@ Requires:          emacs-mercurial = %{version}-%{release}
 %description -n emacs-mercurial-el
 This package contains the elisp source files for mercurial under GNU Emacs.
 
-###############################################################################
+################################################################################
 
 %package hgk
 Summary:           Hgk interface for mercurial
@@ -77,7 +77,7 @@ A Mercurial extension for displaying the change history graphically using
 Tcl/Tk. Displays branches and merges in an easily understandable way and 
 shows diffs for each revision. Based on gitk for the git SCM.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -131,7 +131,7 @@ grep -v locale %{name}-base.files > %{name}-base-filtered.files
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files -f %{name}-base-filtered.files -f %{shortname}.lang
 %defattr(-,root,root,-)
@@ -163,7 +163,7 @@ rm -rf %{buildroot}
 %{_libexecdir}/%{name}/
 %{_sysconfdir}/%{name}/hgrc.d/hgk.rc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 4.3.1-0

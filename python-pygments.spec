@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,12 +28,12 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define upstream_name Pygments
 %define pypi_subpath  71/2a/2e4e77803a8bd6408a2903340ac498cb0a2181811af7c9ec92cb70b0308a
 
-###############################################################################
+################################################################################
 
 Summary:           Syntax highlighting engine written in Python
 Name:              python-pygments
@@ -53,7 +53,7 @@ BuildRequires:     python python-setuptools python-nose
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Pygments is a generic syntax highlighter for general use in all kinds
@@ -70,7 +70,7 @@ need to prettify source code. Highlights are:
   * it is usable as a command-line tool and as a library
   * ... and it highlights even Brainf*ck!
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn Pygments-%{version}
@@ -90,7 +90,7 @@ mv doc/pygmentize.1 $RPM_BUILD_ROOT%{_mandir}/man1/pygmentize.1
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -99,7 +99,7 @@ mv doc/pygmentize.1 $RPM_BUILD_ROOT%{_mandir}/man1/pygmentize.1
 %{_mandir}/man1/pygmentize.1.gz
 %{_bindir}/pygmentize
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0

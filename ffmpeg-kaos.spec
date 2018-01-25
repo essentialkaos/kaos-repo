@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -30,7 +30,7 @@
 
 %define source_name       ffmpeg
 
-###############################################################################
+################################################################################
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
@@ -61,7 +61,7 @@ Conflicts:         %{source_name}
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 FFmpeg is a very fast video and audio converter. It can also grab from a
@@ -72,7 +72,7 @@ usually to give only the target bitrate you want. FFmpeg can also convert
 from any sample rate to any other, and resize video on the fly with a high
 quality polyphase filter.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{source_name}-%{version}
@@ -133,7 +133,7 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 %clean
 %{__rm} -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -145,7 +145,7 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 %{_mandir}/man1/ff*.1.*
 %{_mandir}/man3/lib*.3.*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Jan 25 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0

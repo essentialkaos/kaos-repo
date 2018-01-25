@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:            Library to extract data from within an Excel spreadsheet 
 Name:               freexl
@@ -16,7 +16,7 @@ BuildRequires:      make gcc doxygen
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 FreeXL is a library to extract valid data
@@ -28,7 +28,7 @@ Design goals:
 - easily and universally portable
 - completely ignore any GUI-related oddity
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development Libraries for FreeXL
@@ -41,7 +41,7 @@ Requires:           pkgconfig
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -87,7 +87,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -101,7 +101,7 @@ rm -rf %{buildroot}
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/freexl.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.4-0

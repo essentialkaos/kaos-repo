@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,13 +26,13 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 %define realname       hiredis
 %define minor_ver      13
 %define rel            3
 
-###############################################################################
+################################################################################
 
 Summary:             Minimalistic C client for Redis
 Name:                lib%{realname}
@@ -48,12 +48,12 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} 
 
 BuildRequires:       gcc make
 
-###############################################################################
+################################################################################
 
 %description 
 Hiredis is a minimalistic C client library for the Redis database.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:             Header files and libraries for hiredis C development
@@ -64,7 +64,7 @@ Requires:            %{name} = %{version}
 The %{name}-devel package contains the header files and 
 libraries to develop applications using a Redis database.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{realname}-0.%{minor_ver}.%{rel}
@@ -88,7 +88,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -102,7 +102,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}.a
 %{_libdir}/pkgconfig/%{realname}.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Sep 17 2015 Anton Novojilov <andy@essentialkaos.com> - 0.13.3-0

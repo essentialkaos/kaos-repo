@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Portable file system cache diagnostics and control
 Name:               vmtouch
@@ -44,7 +44,7 @@ BuildRequires:      make gcc
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 
@@ -52,7 +52,7 @@ vmtouch is a tool for learning about and controlling the file system cache
 of unix and unix-like systems. It is BSD licensed so you can basically 
 do whatever you want with it.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -71,7 +71,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -79,7 +79,7 @@ rm -rf %{buildroot}
 %{_sbindir}/%{name}
 %{_mandir}/man8/%{name}.8*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0

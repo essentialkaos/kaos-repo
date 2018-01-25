@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:         Run a command as a Unix daemon
 Name:            daemonize
@@ -14,7 +14,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   make gcc
 
-###############################################################################
+################################################################################
 
 %description
 daemonize runs a command as a Unix daemon. As defined in W. Richard Stevens'
@@ -41,7 +41,7 @@ themselves. However, you’ll occasionally run across one that does not.
 When you must run a daemon program that does not properly make itself into a
 true Unix daemon, you can use daemonize to force it to run as a true daemon.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-release-%{version}
@@ -58,7 +58,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -66,7 +66,7 @@ rm -rf %{buildroot}
 %{_sbindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7.7-0

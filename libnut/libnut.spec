@@ -1,9 +1,9 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:svn      svn://svn.mplayerhq.hu/nut/src/trunk
 # rpmbuilder:revision r690
 
-###############################################################################
+################################################################################
 
 Summary:            Library for creating and demuxing NUT files
 Name:               libnut
@@ -24,7 +24,7 @@ BuildRequires:      gcc make
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 NUT is a patent-free, multimedia container format originally conceived 
@@ -38,7 +38,7 @@ present in alternative formats, like excessive CPU and size overhead,
 file size limits, inability to allow fine grained seeking or restrictions 
 on the type of data they can contain.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for NUT library
@@ -51,7 +51,7 @@ libnut is a free library for creating and demuxing NUT files. It
 supports frame accurate seeking for active streams, recovery from 
 errors and dynamic index generation during playback.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -69,13 +69,13 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -91,7 +91,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}.a
 %{_includedir}/%{name}.h
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri May 13 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-1

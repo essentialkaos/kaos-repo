@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -35,7 +35,7 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
 
 Summary:            VisualOn AMR-WB encoder library
 Name:               vo-amrwbenc
@@ -53,7 +53,7 @@ BuildRequires:      gcc make
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 This library contains an encoder implementation of the Adaptive
@@ -61,7 +61,7 @@ Multi Rate Wideband (AMR-WB) audio codec. The library is based
 on a codec implementation by VisualOn as part of the Stagefright
 framework from the Google Android project.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for vo-amrwbenc
@@ -73,7 +73,7 @@ Requires:           %{name} = %{version}-%{release}
 The vo-amrwbenc devel package contains libraries and header files for
 developing applications that use vo-amrwbenc.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -98,7 +98,7 @@ rm -rf %{buildroot}
 %postun
 %{__ldconfig}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -111,7 +111,7 @@ rm -rf %{buildroot}
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Jan 25 2018 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-2

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,7 +32,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define __ldconfig        %{_sbin}/ldconfig
 %define __service         %{_sbin}/service
@@ -44,7 +44,7 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %define _noarch_libdir           %{_libdir32}
 %define _zookeeper_noarch_libdir %{_noarch_libdir}/zookeeper
@@ -57,7 +57,7 @@
 %define zookeeper_uid            65529
 %define zookeeper_gid            65529
 
-###############################################################################
+################################################################################
 
 Summary:              High-performance coordination service for distributed applications
 Name:                 zookeeper
@@ -100,7 +100,7 @@ Requires(pre):        systemd
 Provides:             %{name} = %{version}-%{release}
 AutoReqProv:          no
 
-###############################################################################
+################################################################################
 
 %description
 ZooKeeper is a distributed, open-source coordination service for distributed
@@ -116,7 +116,7 @@ prone to errors such as race conditions and deadlock. The motivation behind
 ZooKeeper is to relieve distributed applications the responsibility of
 implementing coordination services from scratch.
 
-###############################################################################
+################################################################################
 
 %package -n libzookeeper
 Summary:              C client interface to zookeeper server
@@ -134,7 +134,7 @@ zookeeper operations and runs its own event loop in a separate thread.
 
 Sync and Async APIs can be mixed and matched within the same appliction.
 
-###############################################################################
+################################################################################
 
 %package -n libzookeeper-devel
 Summary:              Headers and static libraries for libzookeeper
@@ -145,7 +145,7 @@ Requires:             gcc
 This package contains the libraries and header files needed for
 developing with libzookeeper.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -226,7 +226,7 @@ echo "Environment=CLASSPATH=${CLASSPATH}" >> %{buildroot}%{_unitdir}/%{name}.ser
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %pre
 if [[ $1 -eq 1 ]] ; then
@@ -264,7 +264,7 @@ if [[ $1 -eq 0 ]] ; then
 %endif
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -301,7 +301,7 @@ fi
 %{_libdir}/*.la
 %{_libdir}/*.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Aug 07 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.4.10-0

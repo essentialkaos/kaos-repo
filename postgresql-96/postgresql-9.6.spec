@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -41,7 +41,7 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %define beta 0
 
@@ -95,7 +95,7 @@
 %define groupname       postgres
 %define gid             26
 
-###############################################################################
+################################################################################
 
 Summary:           PostgreSQL %{majorver} client programs and libraries
 Name:              %{realname}%{pkgver}
@@ -185,7 +185,7 @@ Requires(postun):  %{__updalt}
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 PostgreSQL is an advanced Object-Relational database management system
@@ -204,7 +204,7 @@ If you want to manipulate a PostgreSQL database on a local or remote PostgreSQL
 server, you need this package. You also need to install this package
 if you're installing the postgresql%{pkgver}-server package.
 
-###############################################################################
+################################################################################
 
 %package libs
 Summary:           The shared libraries required for any PostgreSQL clients
@@ -218,7 +218,7 @@ PostgreSQL client program or interface. You will need to install this package
 to use any other PostgreSQL package or any clients that need to connect to a
 PostgreSQL server.
 
-###############################################################################
+################################################################################
 
 %package server
 Summary:           The programs needed to create and run a PostgreSQL server
@@ -241,7 +241,7 @@ postgresql%{pkgver}-server if you want to create and maintain your own
 PostgreSQL databases and/or your own PostgreSQL server. You also need
 to install the postgresql package.
 
-###############################################################################
+################################################################################
 
 %package docs
 Summary:           Extra documentation for PostgreSQL
@@ -256,7 +256,7 @@ Install this package if you want to help with the PostgreSQL documentation
 project, or if you want to generate printed documentation. This package also
 includes HTML version of the documentation.
 
-###############################################################################
+################################################################################
 
 %package contrib
 Summary:           Contributed source and binaries distributed with PostgreSQL
@@ -269,7 +269,7 @@ Provides:          %{realname}-contrib = %{version}-%{release}
 The postgresql%{pkgver}-contrib package contains contributed packages that are
 included in the PostgreSQL distribution.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:           PostgreSQL development header files and libraries
@@ -286,7 +286,7 @@ with a PostgreSQL database management server and the ecpg Embedded C
 Postgres preprocessor. You need to install this package if you want to
 develop applications which will interact with a PostgreSQL server.
 
-###############################################################################
+################################################################################
 
 %if %plperl
 %package plperl
@@ -308,7 +308,7 @@ system. The postgresql%{pkgver}-plperl package contains the PL/Perl language
 for the backend.
 %endif
 
-###############################################################################
+################################################################################
 
 %if %plpython
 %package plpython
@@ -326,7 +326,7 @@ system. The postgresql%{pkgver}-plpython package contains the PL/Python language
 for the backend.
 %endif
 
-###############################################################################
+################################################################################
 
 %if %pltcl
 %package pltcl
@@ -345,7 +345,7 @@ system. The postgresql%{pkgver}-pltcl package contains the PL/Tcl language
 for the backend.
 %endif
 
-###############################################################################
+################################################################################
 
 %if %test
 %package test
@@ -362,7 +362,7 @@ binaries of various tests for the PostgreSQL database management
 system, including regression tests and benchmarks.
 %endif
 
-###############################################################################
+################################################################################
 
 %define __perl_requires %{SOURCE16}
 
@@ -640,7 +640,7 @@ cat initdb-%{majorver}.lang pg_ctl-%{majorver}.lang psql-%{majorver}.lang \
 
 cat postgres-%{majorver}.lang pg_resetxlog-%{majorver}.lang pg_controldata-%{majorver}.lang plpgsql-%{majorver}.lang > pg_server.lst
 
-###############################################################################
+################################################################################
 
 %pre server
 if [[ $1 -eq 1 ]] ; then
@@ -810,7 +810,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files -f pg_main.lst
 %defattr(-,root,root)
@@ -1119,7 +1119,7 @@ rm -rf %{buildroot}
 %attr(-,%{username},%{groupname}) %dir %{install_dir}/lib/test
 %endif
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.6-0

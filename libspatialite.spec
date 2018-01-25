@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              Enables SQLite to support spatial data
 Name:                 libspatialite
@@ -21,14 +21,14 @@ Requires:             sqlite >= 3.18
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 SpatiaLite is a a library extending the basic SQLite core
 in order to get a full fledged Spatial DBMS, really simple
 and lightweight, but mostly OGC-SFS compliant.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development libraries and headers for SpatiaLite
@@ -41,7 +41,7 @@ Requires:           pkgconfig
 The %{name}-devel package contains libraries and header files for
 developing applications that use %{name}.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -73,7 +73,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files 
 %defattr(-,root,root,-)
@@ -90,7 +90,7 @@ rm -rf %{buildroot}
 %{_libdir}/mod_spatialite.so
 %{_libdir}/pkgconfig/spatialite.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 4.3.0a-2

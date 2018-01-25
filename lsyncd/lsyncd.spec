@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -41,7 +41,7 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 Summary:              File change monitoring and synchronization daemon
 Name:                 lsyncd
@@ -72,7 +72,7 @@ Requires:             kaosv
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Lsyncd watches a local directory trees event monitor interface (inotify).
@@ -84,7 +84,7 @@ Lsyncd is thus a light-weight live mirror solution that is comparatively
 easy to install not requiring new file systems or block devices and does
 not hamper local file system performance.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-release-%{version}
@@ -149,7 +149,7 @@ if [[ $1 -ge 1 ]] ; then
 %endif
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -165,7 +165,7 @@ fi
 %{_initddir}/%{name}
 %endif
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Aug 28 2017 Gleb Goncharov <inbox@gongled.ru> - 2.2.2-1

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,12 +26,12 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 %define profile_dir       %{_sysconfdir}/profile.d
 %define profile           %{profile_dir}/%{name}.sh
 
-###############################################################################
+################################################################################
 
 Summary:         Simple Ruby version management utility
 Name:            rbenv
@@ -55,14 +55,14 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 rbenv lets you easily switch between multiple versions 
 of Ruby. Its simple, unobtrusive, and follows the UNIX 
 tradition of single-purpose tools that do one thing well.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -98,7 +98,7 @@ ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -106,7 +106,7 @@ rm -rf %{buildroot}
 %{profile}
 %{_bindir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Aug 07 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-1

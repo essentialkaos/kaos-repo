@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
@@ -48,14 +48,14 @@ Requires:           erlang >= 20
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Elixir is a programming language built on top of the Erlang VM.
 As Erlang, it is a functional language built to support distributed,
 fault-tolerant, non-stop applications with hot code swapping.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -79,7 +79,7 @@ ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}%
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -90,7 +90,7 @@ rm -rf %{buildroot}
 %{_bindir}/mix
 %{_datadir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Oct 25 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-1

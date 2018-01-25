@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %define tarversion  3210000
 
-###############################################################################
+################################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
@@ -20,7 +20,7 @@ BuildRequires:      make gcc readline-devel tcl-devel
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 SQLite is a C library that implements an embeddable SQL database
@@ -34,7 +34,7 @@ directly to and from the database files on disk.
 SQLite can be used via the sqlite command line tool or via any
 application that supports the Qt database plug-ins.
 
-###############################################################################
+################################################################################
 
 %package devel
 Group:              Development/Libraries
@@ -55,7 +55,7 @@ directly to and from the database files on disk.
 SQLite can be used via the sqlite command-line tool or via any
 application which supports the Qt database plug-ins.
 
-###############################################################################
+################################################################################
 
 %package tcl
 Group:              Development/Libraries
@@ -69,7 +69,7 @@ SQLite is a C library that implements an embeddable SQL database
 engine. Programs that link with the SQLite library can have SQL
 database access without running a separate RDBMS process.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn sqlite-autoconf-%{tarversion}
@@ -107,7 +107,7 @@ popd
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -125,7 +125,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_mandir}/mann/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.20.1-0

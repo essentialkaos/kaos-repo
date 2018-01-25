@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:         The Oil Run-time Compiler
 Name:            orc
@@ -20,7 +20,7 @@ BuildRequires:   make gcc libtool chrpath
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %package doc
 Summary:         Documentation for Orc
@@ -33,7 +33,7 @@ Requires:        %{name} = %{version}-%{release}
 %description doc
 Documentation for Orc.
 
-###############################################################################
+################################################################################
 
 %description
 Orc is a library and set of tools for compiling and executing
@@ -42,7 +42,7 @@ is a generic assembly language that represents many of the features
 available in SIMD architectures, including saturated addition and
 subtraction, and many arithmetic operations.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:         Development files and static libraries for Orc
@@ -55,7 +55,7 @@ Requires:        %{name}-compiler pkgconfig
 This package contains the files needed to build packages that depend
 on orc.
 
-###############################################################################
+################################################################################
 
 %package compiler
 Summary:         Orc compiler
@@ -67,7 +67,7 @@ Requires:        pkgconfig
 %description compiler
 The Orc compiler, to produce optimized code.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -109,7 +109,7 @@ chrpath --delete %{buildroot}%{_libdir}/liborc-*.so.*
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -133,7 +133,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_bindir}/orcc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Mar 24 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.26-0
