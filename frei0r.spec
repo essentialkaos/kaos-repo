@@ -108,10 +108,10 @@ rm -rf %{buildroot}
 - Updated to latest stable release
 
 * Wed Apr 13 2016 Gleb Goncharov <yum@gongled.ru> - 1.5-0
-- Updated to latest version 
+- Updated to latest version
 
 * Mon Mar 17 2014 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.4-0
-- Updated to latest version 
+- Updated to latest version
 
 * Mon Mar 14 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.3-0
 - Initial build

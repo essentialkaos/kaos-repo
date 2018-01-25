@@ -46,12 +46,12 @@ cd libpam
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
-install -dm 755 %{buildroot}/%{_lib}/security
+install -dm 755 %{buildroot}%{_lib}/security
 
 cd libpam
 
 install -pm 755 .libs/pam_google_authenticator.so \
-                %{buildroot}/%{_lib}/security/pam_google_authenticator.so
+                %{buildroot}%{_lib}/security/pam_google_authenticator.so
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 

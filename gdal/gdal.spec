@@ -169,7 +169,7 @@ export CFLAGS="$RPM_OPT_FLAGS -fpic"
         --with-perl \
         --with-xerces=yes \
         --with-xerces-lib="-lxerces-c" \
-        --with-xerces-inc=/usr/include/xercesc \
+        --with-xerces-inc=%{_includedir}/xercesc \
         --without-pcraster \
         --with-jpeg12=no \
         --without-libgrass \
@@ -241,7 +241,7 @@ chrpath --delete %{buildroot}%{_bindir}/testepsg
 cp %{buildroot}%{python_sitearch}/osgeo/gdalnumeric.py* %{buildroot}%{python_sitearch}/
 
 rm -f %{buildroot}%{_mandir}/man1/_*_BUILD_gdal*
-rm -f %{buildroot}/usr/man/man1/*.1.gz
+rm -f %{buildroot}%{_usr}/man/man1/*.1.gz
 
 %clean
 rm -rf %{buildroot}

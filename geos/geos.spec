@@ -52,10 +52,10 @@ BuildRequires:     doxygen libtool python-devel gcc-c++ make swig m4
 ################################################################################
 
 %description
-GEOS (Geometry Engine - Open Source) is a C++ port of the Java Topology 
-Suite (JTS). As such, it aims to contain the complete functionality of 
-JTS in C++. This includes all the OpenGIS "Simple Features for SQL" spatial 
-predicate functions and spatial operators, as well as specific JTS topology 
+GEOS (Geometry Engine - Open Source) is a C++ port of the Java Topology
+Suite (JTS). As such, it aims to contain the complete functionality of
+JTS in C++. This includes all the OpenGIS "Simple Features for SQL" spatial
+predicate functions and spatial operators, as well as specific JTS topology
 functions such as IsValid()
 
 ################################################################################
@@ -66,13 +66,13 @@ Group:             Development/Libraries
 Requires:          %{name} = %{version}-%{release}
 
 %description devel
-GEOS (Geometry Engine - Open Source) is a C++ port of the Java Topology 
-Suite (JTS). As such, it aims to contain the complete functionality of 
-JTS in C++. This includes all the OpenGIS "Simple Features for SQL" spatial 
-predicate functions and spatial operators, as well as specific JTS topology 
+GEOS (Geometry Engine - Open Source) is a C++ port of the Java Topology
+Suite (JTS). As such, it aims to contain the complete functionality of
+JTS in C++. This includes all the OpenGIS "Simple Features for SQL" spatial
+predicate functions and spatial operators, as well as specific JTS topology
 functions such as IsValid()
 
-This package contains the development files to build applications that 
+This package contains the development files to build applications that
 use GEOS
 
 ################################################################################

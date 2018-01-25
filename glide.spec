@@ -25,15 +25,15 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Are you used to tools such as Cargo, npm, Composer, Nuget, Pip, Maven, 
-Bundler, or other modern package managers? If so, Glide is the comparable 
+Are you used to tools such as Cargo, npm, Composer, Nuget, Pip, Maven,
+Bundler, or other modern package managers? If so, Glide is the comparable
 Go tool.
 
-Manage your vendor and vendored packages with ease. Glide is a tool for 
-managing the vendor directory within a Go package. This feature, first 
-introduced in Go 1.5, allows each package to have a vendor directory 
-containing dependent packages for the project. These vendor packages can 
-be installed by a tool (e.g. glide), similar to go get or they can be 
+Manage your vendor and vendored packages with ease. Glide is a tool for
+managing the vendor directory within a Go package. This feature, first
+introduced in Go 1.5, allows each package to have a vendor directory
+containing dependent packages for the project. These vendor packages can
+be installed by a tool (e.g. glide), similar to go get or they can be
 vendored and distributed with the package.
 
 ################################################################################

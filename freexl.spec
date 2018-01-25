@@ -1,6 +1,6 @@
 ################################################################################
 
-Summary:            Library to extract data from within an Excel spreadsheet 
+Summary:            Library to extract data from within an Excel spreadsheet
 Name:               freexl
 Version:            1.0.4
 Release:            0%{?dist}

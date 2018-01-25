@@ -88,14 +88,15 @@ Provides:          go = %{version}-%{release}
 
 %description
 
-Go is an open source programming language that makes it easy to build simple, reliable, 
-and efficient software.
+Go is an open source programming language that makes it easy to build
+simple, reliable, and efficient software.
 
 ################################################################################
 
 %package src
 
 Summary:           Golang compiler source tree
+Group:             Development/Languages
 BuildArch:         noarch
 
 %description src
@@ -108,6 +109,7 @@ Golang compiler source tree
 %package pkg-bin-linux-386
 
 Summary:           Golang compiler tool for linux 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 Requires:          golang-pkg-linux-386 = %{version}-%{release}
 Requires(post):    golang-pkg-linux-386 = %{version}-%{release}
@@ -132,6 +134,7 @@ Golang compiler tool for linux 386
 %package pkg-bin-linux-amd64
 
 Summary:           Golang compiler tool for linux amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 Requires:          golang-pkg-linux-amd64 = %{version}-%{release}
 Requires(post):    golang-pkg-linux-amd64 = %{version}-%{release}
@@ -156,6 +159,7 @@ Golang compiler tool for linux amd64
 %package pkg-bin-linux-arm
 
 Summary:           Golang compiler tool for linux arm
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 Requires:          golang-pkg-linux-arm = %{version}-%{release}
 Requires(post):    golang-pkg-linux-arm = %{version}-%{release}
@@ -178,6 +182,7 @@ Golang compiler tool for linux arm
 %package pkg-linux-386
 
 Summary:           Golang compiler toolchain to compile for linux 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 Provides:          go(API)(cgo) = %{go_api}
 
@@ -191,6 +196,7 @@ Golang compiler toolchain to compile for linux 386
 %package pkg-linux-amd64
 
 Summary:           Golang compiler toolchain to compile for linux amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 Provides:          go(API)(cgo) = %{go_api}
 
@@ -204,6 +210,7 @@ Golang compiler toolchain to compile for linux amd64
 %package pkg-linux-arm
 
 Summary:           Golang compiler toolchain to compile for linux arm
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 Provides:          go(API)(cgo) = %{go_api}
 
@@ -217,6 +224,7 @@ Golang compiler toolchain to compile for linux arm
 %package pkg-darwin-386
 
 Summary:           Golang compiler toolchain to compile for darwin 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -229,6 +237,7 @@ Golang compiler toolchain to compile for darwin 386
 %package pkg-darwin-amd64
 
 Summary:           Golang compiler toolchain to compile for darwin amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -241,6 +250,7 @@ Golang compiler toolchain to compile for darwin amd64
 %package pkg-windows-386
 
 Summary:           Golang compiler toolchain to compile for windows 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -253,6 +263,7 @@ Golang compiler toolchain to compile for windows 386
 %package pkg-windows-amd64
 
 Summary:           Golang compiler toolchain to compile for windows amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -265,6 +276,7 @@ Golang compiler toolchain to compile for windows amd64
 %package pkg-plan9-386
 
 Summary:           Golang compiler toolchain to compile for plan9 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -277,6 +289,7 @@ Golang compiler toolchain to compile for plan9 386
 %package pkg-plan9-amd64
 
 Summary:           Golang compiler toolchain to compile for plan9 amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -289,6 +302,7 @@ Golang compiler toolchain to compile for plan9 amd64
 %package pkg-freebsd-386
 
 Summary:           Golang compiler toolchain to compile for freebsd 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -301,6 +315,7 @@ Golang compiler toolchain to compile for freebsd 386
 %package pkg-freebsd-amd64
 
 Summary:           Golang compiler toolchain to compile for freebsd amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -313,6 +328,7 @@ Golang compiler toolchain to compile for freebsd amd64
 %package pkg-freebsd-arm
 
 Summary:           Golang compiler toolchain to compile for freebsd arm
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -325,6 +341,7 @@ Golang compiler toolchain to compile for freebsd arm
 %package pkg-netbsd-386
 
 Summary:           Golang compiler toolchain to compile for netbsd 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -337,6 +354,7 @@ Golang compiler toolchain to compile for netbsd 386
 %package pkg-netbsd-amd64
 
 Summary:           Golang compiler toolchain to compile for netbsd amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -349,6 +367,7 @@ Golang compiler toolchain to compile for netbsd amd64
 %package pkg-netbsd-arm
 
 Summary:           Golang compiler toolchain to compile for netbsd arm
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -361,6 +380,7 @@ Golang compiler toolchain to compile for netbsd arm
 %package pkg-openbsd-386
 
 Summary:           Golang compiler toolchain to compile for openbsd 386
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -373,6 +393,7 @@ Golang compiler toolchain to compile for openbsd 386
 %package pkg-openbsd-amd64
 
 Summary:           Golang compiler toolchain to compile for openbsd amd64
+Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
@@ -440,7 +461,7 @@ rm -f $src_list
 touch $src_list
 
 pushd %{buildroot}%{goroot}
-  
+
   find src/ -type d -printf '%%%dir %{goroot}/%p\n' >> $src_list
   find src/ ! -type d -printf '%{goroot}/%p\n' >> $src_list
 

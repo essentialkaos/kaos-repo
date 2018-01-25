@@ -1,5 +1,10 @@
 ################################################################################
 
+%define path_settings ETC_GITCONFIG=/etc/gitconfig prefix=%{_prefix} mandir=%{_mandir} htmldir=%{_docdir}/%{name}-%{version}
+%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+
+################################################################################
+
 Summary:          Core git tools
 Name:             git
 Version:          2.15.0
@@ -12,7 +17,7 @@ Source:           http://kernel.org/pub/software/scm/git/%{name}-%{version}.tar.
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    gcc make gettext xmlto asciidoc > 6.0.3 lynx 
+BuildRequires:    gcc make gettext xmlto asciidoc > 6.0.3 lynx
 BuildRequires:    libcurl-devel expat-devel openssl-devel zlib-devel >= 1.2
 
 Requires:         perl-Git = %{version}-%{release}
@@ -168,21 +173,18 @@ Perl interface to Git
 
 ################################################################################
 
-%define path_settings ETC_GITCONFIG=/etc/gitconfig prefix=%{_prefix} mandir=%{_mandir} htmldir=%{_docdir}/%{name}-%{version}
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
-
 %prep
 %setup -q
 
 %build
-make %{_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" \
+%{__make} %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" \
      %{path_settings} \
      all
 
 %install
 rm -rf %{buildroot}
 
-make %{_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" DESTDIR=%{buildroot} \
+%{__make} %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" DESTDIR=%{buildroot} \
      %{path_settings} \
      INSTALLDIRS=vendor install %{!?_without_docs: install-doc}
 

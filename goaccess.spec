@@ -129,7 +129,7 @@ rm -rf %{buildroot}
 - Added 'MicroMessenger' (WeChat) to the list of browsers
 - Added --no-html-last-updated command line option
 - Added --num-tests command line option
-- Added "Remote User" panel to capture HTTP authentication requests. Use %
+- Added "Remote User" panel to capture HTTP authentication requests. Use %%
   within the log-format variable to enable this panel
 - Added SemrushBot to set of crawlers
 - Added tebibyte unit to the byte to string function converter
@@ -161,8 +161,8 @@ rm -rf %{buildroot}
 - Fixed integer to string key conversion for unique visitors. This fixes th
   issue where resulting keys would collide with existing keys and thus no
   keeping the right visitors count on certain panels
-- Fixed memory leak when unable to URL decode %q specifier
-- Fixed memory leak when unable to URL decode %U specifier
+- Fixed memory leak when unable to URL decode %%q specifier
+- Fixed memory leak when unable to URL decode %%U specifier
 - Fixed month name abbreviation on app.js
 - Fixed percentage integer overflow with large numbers on 32bits platforms
 - Fixed percent calculation due to integer division rounding to zero
@@ -176,13 +176,13 @@ rm -rf %{buildroot}
 - Added the proper byte swap functions used by Sun Solaris.
 - Added the proper default --http-method/protocol values on the config file.
 - Changed bar transition to scale delay dynamically to the length of the
-    dataset.
+  dataset.
 - Fixed build issue on platforms lacking of open_memstream() by refactoring
-    the JSON module to use its own memory buffer.
+  the JSON module to use its own memory buffer.
 - Fixed issue where the server wouldn't send cached buffer to slow clients.
 - Fixed OS X build check of ncursesw.
 - Implemented a throttle mechanism for slow clients to avoid caching too much
-    data on the server-side.
+  data on the server-side.
 - Removed flickering on D3 line and bar chart redraw.
 
 * Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
@@ -267,32 +267,32 @@ rm -rf %{buildroot}
 
 * Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.5-0
 - Added major performance improvements to the default storage when parsing and
-    storing data.
+  storing data.
 - Added the ability to parse virtual hosts and a new panel to display metrics
-    per virtual host.
+  per virtual host.
 - Added the ability to parse HTTP/2 requests.
 - Added the ability to use GNU getline() to parse full line requests.
 - Added the ability to output debug info if a log file is specified, even
-    without `--enable-debug`.
+  without `--enable-debug`.
 - Added OS X 'El Capitan'.
 - Added WebDav HTTP methods and HTTP status from RFC 2518 and  RFC 3253.
 - Fixed detection of some Googlebots.
 - Fixed issue where time served metrics were not shown when loading persisted
-    data.
+  data.
 - Fixed linker error on OSX: ld: library not found for -lrt.
 - Fixed percentage on the HTML output when excluding IPs.
 - Removed GLib dependency and refactored storage functionality. By removing
-    this dependency, GoAccess is able to store data in a more efficient manner,
-    for instance, it avoids storing integer data as void* (generic typing), thus
-    greatly improving memory consumption for integers.
+  this dependency, GoAccess is able to store data in a more efficient manner,
+  for instance, it avoids storing integer data as void* (generic typing), thus
+  greatly improving memory consumption for integers.
 
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
 - Fixed inability to parse color due to a missing POSIX extension. ERR:
-    Invalid bg/fg color pairs
-- Added `%~` specifier to move forward through a log string until a non-space
-    char is found.
+  Invalid bg/fg color pairs
+- Added `%%~` specifier to move forward through a log string until a non-space
+  char is found.
 - Added the ability to parse static files containing a query string
-    `--all-static-files`.
+  `--all-static-files`.
 - Added the ability to parse native Squid access.log format.
 - Added the ability to log invalid requests to a file `--invalid-requests`.
 - Added additional overall metric - total valid requests.
@@ -305,11 +305,12 @@ rm -rf %{buildroot}
 - Added column headers for every enabled metric on each panel.
 - Added cumulative time served metric.
 - Added maximum time served metric (slowest running requests).
-- Added the ability to parse the query string specifier '(prc)q' from a log file.
+- Added the ability to parse the query string specifier '(prc)q' from a log
+  file.
 - Added CloudFlare status codes.
 - Added command option to disable column name metrics --no-column-names.
 - Added AWS Elastic Load Balancing to the list of predefined log/date/time
-    formats.
+  formats.
 - Added DragonFly BSD to the list of OSs.
 - Added Slackbot to the list of crawlers/browsers.
 - Disabled REFERRERS by default.
@@ -329,7 +330,8 @@ rm -rf %{buildroot}
 - Added timestamp log-format specifier.
 - Ensure agents' hash table is destroyed upon exiting the program.
 - Ensure 'Game Systems' are processed correctly.
-- Ensure visitors panel header is updated depending if crawlers are parsed or not.
+- Ensure visitors panel header is updated depending if crawlers are parsed or
+  not.
 - Fixed issue where the date value was set as time value  in the config dialog.
 - Fixed memory leak in the hits metrics when using the in-memory storage (GLib).
 
@@ -344,7 +346,8 @@ rm -rf %{buildroot}
 - Ensure there is a character indicator to see which panel is active.
 - Fixed Cygwin compile issue attempting to use -rdynamic.
 - Fixed issue where a single IP did not get excluded after an IP range.
-- Fixed issue where requests show up in the wrong view even when --no-query-string is used.
+- Fixed issue where requests show up in the wrong view even when
+  --no-query-string is used.
 - Fixed issue where some browsers were not recognized or marked as 'unknown'.
 - Fixed memory leak when excluding an IP range.
 - Fixed overflows on sort comparison functions.
@@ -364,31 +367,34 @@ rm -rf %{buildroot}
 - Added command line option to disable summary metrics on the CSV output
 - Added numeric formatting to the HTML output to improve readability
 - Added request method specifier to the default W3C log format
-- Added support for GeoIP Country IPv6 and GeoIP City IPv6 through --geoip-database
+- Added support for GeoIP Country IPv6 and GeoIP City IPv6 through
+  --geoip-database
 - Added the ability to ignore parsing and displaying given panel(s)
 - Added the ability to ignore referer sites from being counted
-    A good case scenario is to ignore own domains. i.e., owndomain.tld
-    This also allows ignoring hosts using wildcards
-    For instance, *.mydomain.tld or www.mydomain.* or www?.mydomain.tld
+  A good case scenario is to ignore own domains. i.e., owndomain.tld
+  This also allows ignoring hosts using wildcards
+  For instance, *.mydomain.tld or www.mydomain.* or www?.mydomain.tld
 - Added time/hour distribution module. e.g., 00-23
 - Added 'visitors' metrics to all panels
 - Added Windows 10 (v6.4) to the real windows user agents
 - Changed AC_PREREQ macro version so it builds on old versions of autoconf
 - Changed GEOIP database load to GEOIP_MEMORY_CACHE for faster lookups
 - Changed maximum number of choices to display per panel to 366 fron 300
-- Ensure config file is read from home dir if unable to open it from sysconfdir path
+- Ensure config file is read from home dir if unable to open it from sysconfdir
+  path
 - Fixed array overflows when exceeding MAX_* limits on command line options
-- Fixed a SEGFAULT where sscanf could not handle special chars within the referer
+- Fixed a SEGFAULT where sscanf could not handle special chars within the
+  referer
 - Fixed character encoding on geolocation output (ISO-8859 to UTF8)
 - Fixed issue on wild cards containing '?' at the end of the string
 - Fixed issue where a 'Nothing valid to process' error was triggered when the
-    number of invalid hits was equal to the number of valid hits
+  number of invalid hits was equal to the number of valid hits
 - Fixed issue where outputting to a file left a zero-byte file in pwd
 - Improved parsing of operating systems
 - Refactored log parser so it allows with ease the addition of new modules. This
-    also attempts to decouple the core functionality from the rendering functions
-    It also gives the flexibility to add children metrics to root metrics for any
-    module. e.g., Request A was visited by IP1, IP2, IP3, etc
+  also attempts to decouple the core functionality from the rendering functions
+  It also gives the flexibility to add children metrics to root metrics for any
+  module. e.g., Request A was visited by IP1, IP2, IP3, etc
 - Restyled HTML output
 
 * Fri Feb 20 2015 Anton Novojilov <andy@essentialkaos.com> - 0.8.5-0
