@@ -16,7 +16,7 @@ This repository contains spec files and patches used for building RPM packages f
 [sudo] yum install -y https://yum.kaos.io/7/release/x86_64/kaos-repo-8.0-0.el7.noarch.rpm
 ```
 
-### RPMLint Status
+### [Perfecto](https://github.com/essentialkaos/perfecto) Check Status
 
 | Branch | Status |
 |------------|--------|
