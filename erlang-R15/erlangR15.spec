@@ -34,6 +34,11 @@
 
 ###############################################################################
 
+#define __cputoolize true
+%define _disable_ld_no_undefined 1
+
+###############################################################################
+
 %define _smp_mflags       -j1
 
 %define elibdir           %{_libdir}/erlang/lib
@@ -112,7 +117,7 @@ Conflicts:         erlang erlangR16 erlang17 erlang18
 
 ###############################################################################
 
-%description 
+%description
 Erlang is a general-purpose programming language and runtime
 environment. Erlang has built-in support for concurrency, distribution
 and fault tolerance. Erlang is used in several large telecommunication
@@ -263,8 +268,8 @@ Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
 
 %description -n %{name}-dialyzer
-Dialyzer is a static analysis tool that identifies software discrepancies 
-such as type errors, unreachable code, unnecessary tests, etc in single 
+Dialyzer is a static analysis tool that identifies software discrepancies
+such as type errors, unreachable code, unnecessary tests, etc in single
 Erlang modules or entire (sets of) applications.
 
 ###############################################################################
@@ -294,7 +299,7 @@ This module provides the main user interface to EDoc.
 ###############################################################################
 
 %package -n %{name}-eldap
-Summary:  The Erlang LDAP library 
+Summary:  The Erlang LDAP library
 License:  MPL
 Requires: %{name}-asn1 = %{version}-%{release}
 Requires: %{name}-base = %{version}-%{release}
@@ -626,7 +631,7 @@ Requires:   %{name}-base = %{version}-%{release}
 Group:    Development/Tools
 
 %description -n %{name}-odbc
-The ODBC application is an interface to relational SQL-databases built 
+The ODBC application is an interface to relational SQL-databases built
 on ODBC (Open Database).
 
 ###############################################################################
@@ -899,8 +904,6 @@ ERL_TOP=`pwd`; export ERL_TOP
 
 # enable dynamic linking for ssl
 sed -i 's|SSL_DYNAMIC_ONLY=no|SSL_DYNAMIC_ONLY=yes|' erts/configure
-#define __cputoolize true
-%define _disable_ld_no_undefined 1
 
 %configure \
   --prefix=%{_prefix} \

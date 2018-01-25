@@ -7,21 +7,9 @@ main() {
   downloadPerfecto
   printLintersInfo
 
-  local has_errors
-
   for spec in $(find . -name '*.spec' | sort) ; do
     ./perfecto --format tiny --lint-config "$1" "$spec"
-
-    if [[ $? -ne 0 && -z "$has_errors" ]] ; then
-      has_errors=true
-    fi
   done
-
-  if [[ -n "$has_errors" ]] ; then
-    exit 1
-  fi
-
-  exit 0
 }
 
 # Donwload latest version of perfecto
