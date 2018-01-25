@@ -39,7 +39,7 @@
 %{?_without_nss:  %define is_nss_enabled 0}
 
 %if 0%{?fedora} > 15 || 0%{?rhel} > 5
-%define is_nss_supported 1 
+%define is_nss_supported 1
 %else
 %define is_nss_supported 0
 %endif
@@ -59,6 +59,11 @@
 %else
 %define use_threads_posix  0
 %endif
+
+# Require at least the version of libssh2/c-ares that we were built against,
+# to ensure that we have the necessary symbols available (#525002, #642796)
+%define libssh2_version   %(pkg-config --modversion libssh2 2>/dev/null || echo 0)
+%define cares_version     %(pkg-config --modversion libcares 2>/dev/null || echo 0)
 
 ###############################################################################
 
@@ -114,13 +119,6 @@ SMTP, POP3 and RTSP.  curl supports SSL certificates, HTTP POST, HTTP PUT, FTP
 uploading, HTTP form based upload, proxies, cookies, user+password
 authentication (Basic, Digest, NTLM, Negotiate, kerberos...), file transfer
 resume, proxy tunneling and a busload of other useful tricks.
-
-###############################################################################
-
-# Require at least the version of libssh2/c-ares that we were built against,
-# to ensure that we have the necessary symbols available (#525002, #642796)
-%define libssh2_version   %(pkg-config --modversion libssh2 2>/dev/null || echo 0)
-%define cares_version     %(pkg-config --modversion libcares 2>/dev/null || echo 0)
 
 ###############################################################################
 
@@ -181,7 +179,7 @@ documentation of the library, too.
 export CPPFLAGS="$(pkg-config --cflags openssl)"
 %endif
 
-[ -x /usr/kerberos/bin/krb5-config ] && KRB5_PREFIX="=/usr/kerberos"
+[ -x %{_usr}/kerberos/bin/krb5-config ] && KRB5_PREFIX="=%{_usr}/kerberos"
 
 %configure \
 %if 0%{?use_nss}
@@ -215,11 +213,13 @@ export CPPFLAGS="$(pkg-config --cflags openssl)"
 sed -i \
         -e 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' \
         -e 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-make %{_smp_mflags} V=1
+
+%{__make} %{?_smp_mflags} V=1
 
 %install
 rm -rf %{buildroot}
-make DESTDIR=%{buildroot} INSTALL="install -p" install
+
+%{make_install} INSTALL="install -p"
 
 install -dm 0755 %{buildroot}%{_datadir}/aclocal
 
@@ -1079,7 +1079,7 @@ rm -rf %{buildroot}
 - dist: add CurlSymbolHiding.cmake to the tarball
 - docs: Remove that --proto is just used for initial retrieval
 - configure: Fixed builds with libssh2 in a custom location
-- curl.1: --trace supports % for sending to stderr!
+- curl.1: --trace supports %% for sending to stderr!
 - cookies: same domain handling changed to match browser behavior
 - formpost: trying to attach a directory no longer crashes
 - CURLOPT_DEBUGFUNCTION.3: fixed unused argument warning
@@ -1126,7 +1126,7 @@ rm -rf %{buildroot}
 - http: refuse to pass on response body when NO_NODY is set
 - cmake: fix curl-config --static-libs
 - mbedtls: switch off NTLM in build if md4 isn't available
-- curl: --create-dirs on windows groks both forward and backward slashes 
+- curl: --create-dirs on windows groks both forward and backward slashes
 
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.2-0
 - mbedtls: Added support for NTLM

@@ -198,11 +198,11 @@ rm -rf %{buildroot}
 
 %postun
 if [[ $1 -ge 1 ]]; then
-  %{__service} %{service_name} condrestart >/dev/null 2>&1 || :
+  %{__service} %{service_name} condrestart &>/dev/null || :
 fi
 
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{service_name} stop >/dev/null 2>&1 || :
+  %{__service} %{service_name} stop &>/dev/null || :
   %{__chkconfig} --del %{service_name}
 fi
 
@@ -215,11 +215,11 @@ cp -a %{_sysconfdir}/crontab %{_sysconfdir}/crontab.rpmsave
 exit 0
 
 %triggerun -- vixie-cron
-%{__cp} -a %{_lockdir}/subsys/%{service_name} %{_lockdir}/subsys/%{name} > /dev/null 2>&1 || :
+%{__cp} -a %{_lockdir}/subsys/%{service_name} %{_lockdir}/subsys/%{name} &>/dev/null || :
 
 %triggerpostun -- vixie-cron
 %{__chkconfig} --add %{service_name}
-[[ -f %{_lockdir}/subsys/%{name} ]] && ( rm -f %{_lockdir}/subsys/%{name} ; %{__service} %{service_name} restart ) > /dev/null 2>&1 || :
+[[ -f %{_lockdir}/subsys/%{name} ]] && ( rm -f %{_lockdir}/subsys/%{name} ; %{__service} %{service_name} restart ) &>/dev/null || :
 
 ###############################################################################
 

@@ -74,7 +74,7 @@ install -dm 755 %{buildroot}%{_bindir}
 
 cp -ra bin lib %{buildroot}%{_datadir}/%{name}/%{version}/
 
-ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}/%{_bindir}/
+ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}

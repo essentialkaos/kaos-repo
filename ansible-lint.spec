@@ -1,11 +1,11 @@
-########################################################################################
+################################################################################
 
 Summary:        Ansible linter
 Name:           ansible-lint
 Version:        3.4.17
 Release:        0%{?dist}
 License:        MIT
-Group:          Development/Libraries 
+Group:          Development/Libraries
 URL:            https://github.com/willthames/ansible-lint
 
 Source:         https://github.com/willthames/ansible-lint/archive/v%{version}.tar.gz
@@ -20,13 +20,13 @@ Requires:       ansible python-jinja2 < 2.9 python-markupsafe >= 0.23
 
 Provides:       %{name} = %{verion}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
-ansible-lint checks playbooks for practices and behaviour that could potentially 
+ansible-lint checks playbooks for practices and behaviour that could potentially
 be improved.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -41,14 +41,14 @@ python setup.py build
 rm -rf %{buildroot}
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
 %{_bindir}/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.17-0

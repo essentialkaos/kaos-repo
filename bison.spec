@@ -125,9 +125,9 @@ Bison manual section for more information.
 rm -rf %{buildroot}
 %{make_install}
 
-rm -f %{buildroot}/%{_bindir}/yacc
-rm -f %{buildroot}/%{_infodir}/dir
-rm -f %{buildroot}/%{_mandir}/man1/yacc*
+rm -f %{buildroot}%{_bindir}/yacc
+rm -f %{buildroot}%{_infodir}/dir
+rm -f %{buildroot}%{_mandir}/man1/yacc*
 rm -rf %{buildroot}%{_docdir}/%{name}/examples
 
 %find_lang %{name}

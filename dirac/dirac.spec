@@ -1,4 +1,4 @@
-################################################################################
+#################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,9 +34,9 @@
 
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
-Summary:           Open source video codec 
+Summary:           Open source video codec
 Name:              dirac
 Version:           1.0.2
 Release:           15%{?dist}
@@ -62,15 +62,15 @@ BuildRequires:     tetex tetex-latex
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Dirac is an open source video codec. It uses a traditional hybrid video codec
-architecture, but with the wavelet transform instead of the usual block 
-transforms.  Motion compensation uses overlapped blocks to reduce block 
+architecture, but with the wavelet transform instead of the usual block
+transforms.  Motion compensation uses overlapped blocks to reduce block
 artefacts that would upset the transform coding stage.
 
-###############################################################################
+################################################################################
 
 %package libs
 Summary:           Libraries for dirac
@@ -79,19 +79,19 @@ Group:             System Environment/Libraries
 %description libs
 This package contains libraries for dirac.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:           Development files for dirac
 Group:             Development/Libraries
 
-Requires:          %{name}-libs = %{version}-%{release} 
+Requires:          %{name}-libs = %{version}-%{release}
 Requires:          pkgconfig
 
 %description devel
 This package contains development files for dirac.
 
-###############################################################################
+################################################################################
 
 %package docs
 Summary:        Documentation for dirac
@@ -100,7 +100,7 @@ Group:          Documentation
 %description docs
 This package contains documentation files for dirac.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -133,7 +133,7 @@ sed -i 's/-Werror//g' configure.ac configure
 sed -i.rpath 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i.rpath 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-%{__make} %{?_smp_mflags} 
+%{__make} %{?_smp_mflags}
 
 
 %install
@@ -154,7 +154,7 @@ sed -i -e 's|/home/guest/dirac-0.5.0/util/conversion|%{_bindir}|' %{buildroot}%{
 
 chrpath --delete %{buildroot}%{_bindir}/%{name}*
 
-%post libs 
+%post libs
 %{__ldconfig}
 
 %postun libs
@@ -163,14 +163,14 @@ chrpath --delete %{buildroot}%{_bindir}/%{name}*
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README.Dirac TODO
 %doc README.instrumentation
-%{_bindir}/create_dirac_testfile.pl                   
-%{_bindir}/dirac_*                             
+%{_bindir}/create_dirac_testfile.pl
+%{_bindir}/dirac_*
 
 %files devel
 %defattr(-,root,root,-)
@@ -187,7 +187,7 @@ rm -rf %{buildroot}
 %{_libdir}/libdirac_decoder.so.*
 %{_libdir}/libdirac_encoder.so.*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Feb 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-15
