@@ -32,9 +32,9 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
-Summary:           ISO/MPEG 2/4 AAC Encoder library 
+Summary:           ISO/MPEG 2/4 AAC Encoder library
 Name:              faac
 Version:           1.28
 Release:           0%{?dist}
@@ -52,17 +52,17 @@ BuildRequires:     autoconf automake make libtool gcc gcc-c++
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-FAAC is an encoder for a lossy sound compression scheme specified in MPEG-2 
-Part 7 and MPEG-4 Part 3 standards and known as Advanced Audio Coding (AAC). 
+FAAC is an encoder for a lossy sound compression scheme specified in MPEG-2
+Part 7 and MPEG-4 Part 3 standards and known as Advanced Audio Coding (AAC).
 
-This encoder is useful for producing files that can be played back on iPod. 
-Moreover, iPod does not understand other sound compression schemes in video 
+This encoder is useful for producing files that can be played back on iPod.
+Moreover, iPod does not understand other sound compression schemes in video
 files.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:           Header files and static libraries for faac.
@@ -73,7 +73,7 @@ Requires:          %{name} = %{version}
 These are the header files and static libraries from faac that are needed
 to build programs that use it.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -104,7 +104,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -119,8 +119,8 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/*.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sun Mar 01 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.28-0
-- Initial build 
+- Initial build
