@@ -55,15 +55,15 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-The Real-Time Messaging Protocol (RTMP) is used for streaming multimedia 
-content across a TCP/IP network. This API provides most client functions and 
-a few server functions needed to support RTMP, RTMP tunneled in HTTP (RTMPT), 
-encrypted RTMP (RTMPE), RTMP over SSL/TLS (RTMPS) and tunneled variants of 
-these encrypted types (RTMPTE, RTMPTS). 
+The Real-Time Messaging Protocol (RTMP) is used for streaming multimedia
+content across a TCP/IP network. This API provides most client functions and
+a few server functions needed to support RTMP, RTMP tunneled in HTTP (RTMPT),
+encrypted RTMP (RTMPE), RTMP over SSL/TLS (RTMPS) and tunneled variants of
+these encrypted types (RTMPTE, RTMPTS).
 
-The basic RTMP specification has been published by Adobe but this API was 
-reverse-engineered without use of the Adobe specification. As such, it may 
-deviate from any published specifications but it usually duplicates the actual 
+The basic RTMP specification has been published by Adobe but this API was
+reverse-engineered without use of the Adobe specification. As such, it may
+deviate from any published specifications but it usually duplicates the actual
 behavior of the original Adobe clients.
 
 ################################################################################
@@ -108,14 +108,16 @@ rm -rf %{buildroot}
   sbindir=%{_sbindir} \
   mandir=%{_mandir} \
   incdir=%{_includedir}/librtmp \
-  libdir=%{_libdir} 
+  libdir=%{_libdir}
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 

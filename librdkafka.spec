@@ -1,5 +1,11 @@
 ################################################################################
 
+%ifarch i386
+%define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i386 -mtune=atom -fasynchronous-unwind-tables
+%endif
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -60,9 +66,9 @@ Requires:            zlib
 ################################################################################
 
 %description
-C library implementation of the Apache Kafka protocol, containing both 
-Producer and Consumer support. It was designed with message delivery 
-reliability and high performance in mind, current figures exceed 
+C library implementation of the Apache Kafka protocol, containing both
+Producer and Consumer support. It was designed with message delivery
+reliability and high performance in mind, current figures exceed
 800000 msgs/second for the producer and 3 million msgs/second for the consumer.
 
 ################################################################################
@@ -82,10 +88,6 @@ libraries to develop applications using a Kafka databases.
 %setup -q
 
 %build
-
-%ifarch i386
-%define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i386 -mtune=atom -fasynchronous-unwind-tables
-%endif
 
 %configure
 
@@ -146,5 +148,5 @@ rm -rf %{buildroot}
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
 - Updated to latest release
 
-* Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.0.99-0 
-- Initial build 
+* Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.0.99-0
+- Initial build

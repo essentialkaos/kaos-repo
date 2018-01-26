@@ -35,6 +35,7 @@ modern GPUs.
 %package docs
 
 Summary:         Documentation for libvdpau
+Group:           Documentation
 BuildArch:       noarch
 Provides:        libvdpau-docs = %{version}-%{release}
 Obsoletes:       libvdpau-docs < 0.6-2
@@ -45,10 +46,10 @@ The libvdpau-docs package contains documentation for libvdpau.
 ################################################################################
 
 %package devel
-Summary:        Development files for libvdpau
-
-Requires:       %{name} = %{version}-%{release}
-Requires:       pkgconfig libX11-devel  
+Summary:         Development files for libvdpau
+Group:           Development/Libraries
+Requires:        %{name} = %{version}-%{release}
+Requires:        pkgconfig libX11-devel
 
 %description devel
 The libvdpau-devel package contains libraries and header files for developing

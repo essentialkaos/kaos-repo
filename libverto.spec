@@ -46,6 +46,7 @@ glib will support signal in the future.
 %package devel
 
 Summary:         Development files for %{name}
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 Requires:        pkgconfig
 
@@ -58,6 +59,7 @@ developing applications that use %{name}.
 %package glib
 
 Summary:         glib module for %{name}
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 
 %description glib
@@ -70,6 +72,7 @@ This package does NOT yet provide %{name}-module-base.
 %package glib-devel
 
 Summary:         Development files for %{name}-glib
+Group:           Development/Libraries
 Requires:        %{name}-glib = %{version}-%{release}
 Requires:        %{name}-devel = %{version}-%{release}
 
@@ -82,6 +85,7 @@ developing applications that use %{name}-glib.
 %package libevent
 
 Summary:         libevent module for %{name}
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 Provides:        %{name}-module-base = %{version}-%{release}
 
@@ -93,6 +97,7 @@ Module for %{name} which provides integration with libevent.
 %package libevent-devel
 
 Summary:         Development files for %{name}-libevent
+Group:           Development/Libraries
 Requires:        %{name}-libevent = %{version}-%{release}
 Requires:        %{name}-devel = %{version}-%{release}
 
@@ -105,6 +110,7 @@ developing applications that use %{name}-libevent.
 %package tevent
 
 Summary:         tevent module for %{name}
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 Provides:        %{name}-module-base = %{version}-%{release}
 
@@ -119,6 +125,7 @@ and signal.
 %package tevent-devel
 
 Summary:         Development files for %{name}-tevent
+Group:           Development/Libraries
 Requires:        %{name}-tevent = %{version}-%{release}
 Requires:        %{name}-devel = %{version}-%{release}
 
@@ -132,6 +139,7 @@ developing applications that use %{name}-tevent.
 %package libev
 
 Summary:         libev module for %{name}
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 Provides:        %{name}-module-base = %{version}-%{release}
 
@@ -146,6 +154,7 @@ and signal.
 %package libev-devel
 
 Summary:         Development files for %{name}-libev
+Group:           Development/Libraries
 Requires:        %{name}-libev = %{version}-%{release}
 Requires:        %{name}-devel = %{version}-%{release}
 

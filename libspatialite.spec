@@ -75,7 +75,7 @@ rm -rf %{buildroot}
 
 ################################################################################
 
-%files 
+%files
 %defattr(-,root,root,-)
 %doc COPYING AUTHORS
 %{_libdir}/%{name}.so.*

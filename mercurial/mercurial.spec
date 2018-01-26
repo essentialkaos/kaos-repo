@@ -35,8 +35,8 @@ Provides:          %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Mercurial is a free, distributed source control management tool. It 
-efficiently handles projects of any size and offers an easy and intuitive 
+Mercurial is a free, distributed source control management tool. It
+efficiently handles projects of any size and offers an easy and intuitive
 interface.
 
 ################################################################################
@@ -52,7 +52,7 @@ BuildArch:         noarch
 
 %description -n emacs-mercurial
 Contains byte compiled elisp packages for mercurial.
-To get started: start emacs, load hg-mode with M-x hg-mode, and show 
+To get started: start emacs, load hg-mode with M-x hg-mode, and show
 help with C-c h h
 
 ################################################################################
@@ -73,8 +73,8 @@ Group:             Development/Tools
 Requires:          %{shortname} = %{version}-%{release} tk
 
 %description hgk
-A Mercurial extension for displaying the change history graphically using 
-Tcl/Tk. Displays branches and merges in an easily understandable way and 
+A Mercurial extension for displaying the change history graphically using
+Tcl/Tk. Displays branches and merges in an easily understandable way and
 shows diffs for each revision. Based on gitk for the git SCM.
 
 ################################################################################
@@ -83,14 +83,14 @@ shows diffs for each revision. Based on gitk for the git SCM.
 %setup -qn %{name}-%{version}
 
 %build
-make %{?_smp_mflags} all
+%{__make} %{?_smp_mflags} all
 
 %install
 rm -rf %{buildroot}
 
 %{__python} setup.py install -O1 --root %{buildroot} --prefix %{_prefix} --record=%{name}.files
 
-make install-doc DESTDIR=%{buildroot} MANDIR=%{_mandir}
+%{__make} install-doc DESTDIR=%{buildroot} MANDIR=%{_mandir}
 
 install -dm 755 %{buildroot}%{_libexecdir}/%{name}
 install -dm 755 %{buildroot}%{_sysconfdir}/bash_completion.d

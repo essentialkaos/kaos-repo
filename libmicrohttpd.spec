@@ -221,5 +221,5 @@ fi
 * Fri Jun 8 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.20-0
 - Updated to latest release
 
-* Thu Apr 12 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.19-0 
+* Thu Apr 12 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.19-0
 - Updated to latest release

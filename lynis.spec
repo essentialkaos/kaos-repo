@@ -43,20 +43,20 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           bash >= 4
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-Lynis is a security auditing for Unix derivatives like Linux, BSD, and 
-Solaris. It performs an in-depth security scan on the system to detect 
-software and security issues. Besides information related to security, 
-it will also scan for general system information, vulnerable software 
+Lynis is a security auditing for Unix derivatives like Linux, BSD, and
+Solaris. It performs an in-depth security scan on the system to detect
+software and security issues. Besides information related to security,
+it will also scan for general system information, vulnerable software
 packages, and possible configuration issues.
 
-We believe software should be simple, updated on a regular basis and open. 
-You should be able to trust, understand, and even alter the software. 
-Many agree with us, as the software is being used by thousands every 
+We believe software should be simple, updated on a regular basis and open.
+You should be able to trust, understand, and even alter the software.
+Many agree with us, as the software is being used by thousands every
 day to protect their systems.
 
 ################################################################################

@@ -35,12 +35,13 @@ echo "%{version}" > .tarball-version
 autoreconf -fi
 
 %configure --without-gtk
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 
-%{__make} DESTDIR=%{buildroot} install
+%{make_install}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/bash_completion.d
 

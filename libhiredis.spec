@@ -50,7 +50,7 @@ BuildRequires:       gcc make
 
 ################################################################################
 
-%description 
+%description
 Hiredis is a minimalistic C client library for the Redis database.
 
 ################################################################################
@@ -60,8 +60,8 @@ Summary:             Header files and libraries for hiredis C development
 Group:               Development/Libraries
 Requires:            %{name} = %{version}
 
-%description devel 
-The %{name}-devel package contains the header files and 
+%description devel
+The %{name}-devel package contains the header files and
 libraries to develop applications using a Redis database.
 
 ################################################################################
@@ -70,7 +70,7 @@ libraries to develop applications using a Redis database.
 %setup -qn %{realname}-0.%{minor_ver}.%{rel}
 
 %build
-%{__make} %{?_smp_mflags} OPTIMIZATION="%{optflags}" 
+%{__make} %{?_smp_mflags} OPTIMIZATION="%{optflags}"
 
 %install
 rm -rf %{buildroot}
@@ -79,7 +79,7 @@ rm -rf %{buildroot}
 
 ln -s %{_libdir}/%{name}.so.0.%{minor_ver} %{buildroot}%{_libdir}/%{name}.so.0
 
-%clean 
+%clean
 rm -rf %{buildroot}
 
 %post
@@ -120,14 +120,14 @@ rm -rf %{buildroot}
 - Windows compatibility layer for parser code (tzickel)
 - Properly escape data printed to PKGCONF file (Dan Skorupski)
 - Fix tests when assert() undefined (Keith Bennett, Matt Stancliff)
-- Implement a reconnect method for the client context, this changes 
+- Implement a reconnect method for the client context, this changes
   the structure of redisContext (Aaron Bedra)
 - Fix memory leak in async reply handling (Salvatore Sanfilippo)
-- Rename struct member to avoid name clash with pre-c99 
+- Rename struct member to avoid name clash with pre-c99
   code (Alex Balashov, ncopa)
 
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.1-0
-- Fix `make install`: DESTDIR support, install all required files, install 
+- Fix `make install`: DESTDIR support, install all required files, install
   PKGCONF in proper location
 - Fix `make test` as 32 bit build on 64 bit platform
 

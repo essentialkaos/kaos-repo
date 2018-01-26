@@ -197,7 +197,7 @@ install -pm 755 tools/rpcdebug/rpcdebug %{buildroot}%{_sbindir}
 install -pm 644 utils/mount/nfsmount.conf %{buildroot}%{_sysconfdir}
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/request-key.d
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/nfs
-install -pm 755 %{SOURCE3} %{buildroot}/usr/libexec/nfs-utils/nfs-utils_env.sh
+install -pm 755 %{SOURCE3} %{buildroot}%{_libexecdir}/nfs-utils/nfs-utils_env.sh
 install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/modprobe.d/lockd.conf
 
 # create symlinks for backward compatibility with an older versions nfs-utils
@@ -220,13 +220,13 @@ rm -rf %{buildroot}
 %pre
 # move files so the running service will have this applied as well
 for x in gssd idmapd ; do
-  if [[ -f /var/lock/subsys/rpc.$x ]] ; then
-    mv /var/lock/subsys/rpc.$x /var/lock/subsys/rpc$x
+  if [[ -f %{_lockdir}/rpc.$x ]] ; then
+    mv %{_lockdir}/rpc.$x %{_lockdir}/rpc$x
   fi
 done
 
 # Create rpcuser gid as long as it does not already exist
-cat /etc/group | cut -d ':' -f 1 | grep --quiet %{rpcuser_group} &>/dev/null
+cat %{_sysconfdir}/group | cut -d ':' -f 1 | grep --quiet %{rpcuser_group} &>/dev/null
 
 if [[ $? -eq 1 ]] ; then
   %{__groupadd} -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
@@ -235,7 +235,7 @@ else
 fi
 
 # Create rpcuser uid as long as it does not already exist.
-cat /etc/passwd | cut -d ':' -f 1 | grep --quiet %{rpcuser_name} &>/dev/null
+cat %{_sysconfdir}/passwd | cut -d ':' -f 1 | grep --quiet %{rpcuser_name} &>/dev/null
 
 if [[ $? -eq 1 ]] ; then
   %{__useradd} -l -c "RPC Service User" -r -g %{rpcuser_uid} \
@@ -246,7 +246,7 @@ else
 fi
 
 # Create nfsnobody gid as long as it does not already exist
-cat /etc/group | cut -d ':' -f 1 | grep --quiet %{nfsnobody_group} &>/dev/null
+cat %{_sysconfdir}/group | cut -d ':' -f 1 | grep --quiet %{nfsnobody_group} &>/dev/null
 if [[ "$?" -eq 1 ]] ; then
   %{__groupadd} -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
 else
@@ -254,7 +254,7 @@ else
 fi
 
 # Create nfsnobody uid as long as it does not already exist.
-cat /etc/passwd | cut -d ':' -f 1 | grep --quiet %{nfsnobody_name} &>/dev/null
+cat %{_sysconfdir}/passwd | cut -d ':' -f 1 | grep --quiet %{nfsnobody_name} &>/dev/null
 
 if [[ $? -eq 1 ]]; then
   %{__useradd} -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
@@ -281,7 +281,7 @@ if [[ $1 -eq 0 ]]; then
   %systemd_preun nfs-client.target
   %systemd_preun nfs-server.server
 
-  rm -rf /var/lib/nfs/statd /var/lib/nfs/v4recovery
+  rm -rf %{_sharedstatedir}/nfs/statd %{_sharedstatedir}/nfs/v4recovery
 fi
 
 %postun
@@ -330,7 +330,7 @@ fi
 %{_sbindir}/blkmapd
 %{_mandir}/*/*
 %{_unitdir}/../*/*
-%attr(755,root,root) /usr/libexec/nfs-utils/nfs-utils_env.sh
+%attr(755,root,root) %{_libexecdir}/nfs-utils/nfs-utils_env.sh
 %attr(4755,root,root) /sbin/mount.nfs
 %{_sbin}/mount.nfs4
 %{_sbin}/umount.nfs
@@ -339,5 +339,5 @@ fi
 ################################################################################
 
 %changelog
-* Tue Aug 01 2017 Gleb Goncharov <ggoncharov@fun-box.ru> 1.3.4-1
+* Tue Aug 01 2017 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.3.4-1
 - Initial build

@@ -90,14 +90,14 @@ sed -i.fedora \
  -e '/BININSTALL/s|-s||' \
  configure
 
-%configure --datadir=%{_datadir} 
+%configure --datadir=%{_datadir}
 
 %{__make} %{?_smp_mflags} V=1
 
 %install
 rm -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot}
+%{make_install}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
@@ -135,7 +135,7 @@ if [[ $1 -eq 1 ]] ; then
 %endif
 fi
 
-chown -R %{username}:%{groupname} /etc/%{name}
+chown -R %{username}:%{groupname} %{_sysconfdir}/%{name}
 
 %pre
 %{__getent} group %{groupname} >/dev/null || %{__groupadd} -r %{groupname}

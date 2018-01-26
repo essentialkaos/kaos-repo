@@ -62,7 +62,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
-%doc COPYING README 
+%doc COPYING README
 %{_libdir}/libmetalink.so.*
 
 %files devel

@@ -74,7 +74,7 @@ Libpsl...
 
 %package devel
 Summary:            Development files for %{name}
-
+Group:              Development/Tools
 Requires:           %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
@@ -85,6 +85,7 @@ developing applications that use %{name}.
 
 %package -n psl
 Summary:            Commandline utility to explore the Public Suffix List
+Group:              Development/Tools
 
 %description -n psl
 This package contains a commandline utility to explore the Public Suffix List,

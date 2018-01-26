@@ -25,7 +25,7 @@ MAD (libmad) is a high-quality MPEG audio decoder. It currently supports
 MPEG-1 and the MPEG-2 extension to Lower Sampling Frequencies, as well as
 the so-called MPEG 2.5 format. All three audio layers (Layer I, Layer II,
 and Layer III a.k.a. MP3) are fully implemented.
- 
+
 MAD does not yet support MPEG-2 multichannel audio (although it should be
 backward compatible with such streams) nor does it currently support AAC.
 
@@ -73,7 +73,7 @@ rm -rf %{buildroot}
 
 ################################################################################
 
-%files 
+%files
 %defattr(-, root, root, -)
 %doc CHANGES COPYING COPYRIGHT CREDITS README TODO
 %{_libdir}/*.so.*

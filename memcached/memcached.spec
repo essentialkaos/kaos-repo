@@ -1,5 +1,11 @@
 ################################################################################
 
+%ifarch i386
+  %define optflags -O2 -g -march=i686
+%endif
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -93,12 +99,12 @@ web applications by alleviating database load.
 
 %package devel
 Summary:                  Files needed for development using memcached protocol
-Group:                    Development/Libraries 
+Group:                    Development/Libraries
 Requires:                 %{name} = %{version}-%{release}
 
 %description devel
-Install memcached-devel if you are developing C/C++ applications that require access to the
-memcached binary include files.
+Install memcached-devel if you are developing C/C++ applications that require
+access to the memcached binary include files.
 
 ################################################################################
 
@@ -117,10 +123,6 @@ Version of memcached show more additional information for debugging.
 %setup -q
 ./autogen.sh
 
-%ifarch i386
-  %define optflags -O2 -g -march=i686
-%endif
-
 %configure
 sed -i 's/-Werror/ /' Makefile
 sed -i "s/UNKNOWN/%{version}/" version.m4
@@ -129,7 +131,7 @@ sed -i "s/UNKNOWN/%{version}/" version.m4
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} INSTALL="install -p"
 
@@ -156,8 +158,8 @@ install -pm 755 scripts/%{name}-tool %{buildroot}%{_bindir}/%{name}-tool
 
 touch %{buildroot}%{_logdir}/%{name}/%{name}.log
 
-%clean 
-%{__rm} -rf %{buildroot}
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 

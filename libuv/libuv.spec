@@ -39,7 +39,7 @@
 
 ################################################################################
 
-Summary:              Cross-platform asychronous I/O 
+Summary:              Cross-platform asychronous I/O
 Name:                 libuv
 Version:              1.16.1
 Release:              0%{?dist}
@@ -63,8 +63,8 @@ Provides:             %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-A multi-platform support library with a focus on asynchronous I/O. 
-It was primarily developed for use by Node.js, but it’s also used by Luvit, 
+A multi-platform support library with a focus on asynchronous I/O.
+It was primarily developed for use by Node.js, but it’s also used by Luvit,
 Julia, pyuv, and others.
 
 ################################################################################

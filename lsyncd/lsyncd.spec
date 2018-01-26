@@ -93,7 +93,7 @@ not hamper local file system performance.
 mkdir build
 pushd build
   cmake ..
-  make
+  %{__make} %{?_smp_mflags}
 popd
 
 %install
@@ -131,17 +131,17 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %preun
-if [[ $1 -eq 0 ]] ; then 
+if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
 %else
   %{__service} stop %{name} &>/dev/null || :
 %endif
-fi 
+fi
 
 %postun
-if [[ $1 -ge 1 ]] ; then 
+if [[ $1 -ge 1 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} try-restart %{name}.service &>/dev/null || :
 %else
@@ -176,7 +176,7 @@ fi
 
 * Wed Feb 15 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-1
 - Fixed rsync version in dependencies
-- Init script migrated to kaosv 
+- Init script migrated to kaosv
 
 * Tue Jan 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
 - Initial build for kaos-repo

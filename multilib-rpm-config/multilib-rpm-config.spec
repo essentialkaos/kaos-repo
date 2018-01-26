@@ -5,6 +5,9 @@
 %global macrosdir       %(d=%{_rpmconfigdir}/macros.d; [ -d $d ] || d=%{_sysconfdir}/rpm; echo $d)
 %global rrcdir          %_libexecdir
 
+%global ml_fix          %rrcdir/multilib-fix
+%global ml_info         %rrcdir/multilib-info
+
 ################################################################################
 
 Summary:         Multilib packaging helpers
@@ -45,9 +48,6 @@ issues.
 install -m 644 %{SOURCE2} %{SOURCE3} .
 
 %build
-%global ml_fix %rrcdir/multilib-fix
-%global ml_info %rrcdir/multilib-info
-
 lib_sed_pattern='/@LIB@/ {
     r %{SOURCE4}
     d

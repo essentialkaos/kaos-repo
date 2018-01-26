@@ -27,15 +27,15 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-NUT is a patent-free, multimedia container format originally conceived 
-by a few MPlayer and FFmpeg developers that were dissatisfied with the 
-limitations of all currently available multimedia container formats 
-such as AVI, Ogg or Matroska. 
+NUT is a patent-free, multimedia container format originally conceived
+by a few MPlayer and FFmpeg developers that were dissatisfied with the
+limitations of all currently available multimedia container formats
+such as AVI, Ogg or Matroska.
 
-It aims to be simple, flexible, extensible, compact and error resistant 
-(error resilient), thus addressing most if not all of the shortcomings 
-present in alternative formats, like excessive CPU and size overhead, 
-file size limits, inability to allow fine grained seeking or restrictions 
+It aims to be simple, flexible, extensible, compact and error resistant
+(error resilient), thus addressing most if not all of the shortcomings
+present in alternative formats, like excessive CPU and size overhead,
+file size limits, inability to allow fine grained seeking or restrictions
 on the type of data they can contain.
 
 ################################################################################
@@ -47,8 +47,8 @@ Group:              Development/Libraries
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
-libnut is a free library for creating and demuxing NUT files. It 
-supports frame accurate seeking for active streams, recovery from 
+libnut is a free library for creating and demuxing NUT files. It
+supports frame accurate seeking for active streams, recovery from
 errors and dynamic index generation during playback.
 
 ################################################################################
@@ -64,6 +64,7 @@ errors and dynamic index generation during playback.
 
 %install
 rm -rf %{buildroot}
+
 %{make_install} PREFIX=%{_prefix} LIBDIR=%{_libdir}
 
 %clean
@@ -71,9 +72,11 @@ rm -rf %{buildroot}
 
 ################################################################################
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 

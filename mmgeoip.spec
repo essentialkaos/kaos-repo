@@ -46,6 +46,7 @@ MaxMinds data for GeoIP
 %package IPV6
 
 Summary:           MaxMinds data for GeoIP (IPV6)
+Group:             Applications/Databases
 Requires:          GeoIP
 
 %description IPV6

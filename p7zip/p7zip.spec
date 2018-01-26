@@ -99,7 +99,7 @@ cp -f makefile.linux_amd64_asm makefile.machine
 cp -f makefile.linux_any_cpu_gcc_4.X makefile.machine
 %endif
 
-make %{?_smp_mflags} all2 \
+%{__make} %{?_smp_mflags} all2 \
     OPTFLAGS="%{optflags}" \
     DEST_HOME=%{_prefix} \
     DEST_BIN=%{_bindir} \
@@ -109,7 +109,7 @@ make %{?_smp_mflags} all2 \
 %install
 rm -rf %{buildroot}
 
-make install \
+%{__make} install \
     DEST_DIR=%{buildroot} \
     DEST_HOME=%{_prefix} \
     DEST_BIN=%{_bindir} \
