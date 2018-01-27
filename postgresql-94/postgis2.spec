@@ -39,23 +39,25 @@
 
 ################################################################################
 
+%{!?utils:%define utils 1}
+%{!?raster:%define raster 1}
+
 %define maj_ver           2.3
 %define pg_maj_ver        94
 %define pg_low_fullver    9.4.0
 %define pg_dir            %{_prefix}/pgsql-9.4
 %define realname          postgis
 
-%{!?utils:%define utils 1}
-%{!?raster:%define raster 1}
-
 %define _smp_mflags       -j1
+
+%define __perl_requires   filter-requires-perl-Pg.sh
 
 ################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.4
 Name:              %{realname}2_%{pg_maj_ver}
 Version:           2.3.3
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
@@ -91,8 +93,8 @@ Provides:          %{realname} = %{version}-%{release}
 PostGIS adds support for geographic objects to the PostgreSQL object-relational
 database. In effect, PostGIS "spatially enables" the PostgreSQL server,
 allowing it to be used as a backend spatial database for geographic information
-systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS 
-follows the OpenGIS "Simple Features Specification for SQL" and has been 
+systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS
+follows the OpenGIS "Simple Features Specification for SQL" and has been
 certified as compliant with the "Types and Functions" profile.
 
 ################################################################################
@@ -144,8 +146,6 @@ The postgis-utils package provides the utilities for PostGIS.
 
 ################################################################################
 
-%define __perl_requires %{SOURCE2}
-
 %prep
 %setup -q -n %{realname}-%{version}
 # Copy .pdf file to top directory before installing.
@@ -193,9 +193,9 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 %{__ldconfig}
 
-%{_sbindir}/update-alternatives --install /usr/bin/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install /usr/bin/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install /usr/bin/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{realname}-%{maj_ver}/raster2pgsql %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{realname}-%{maj_ver}/raster2pgsql %{pg_maj_ver}0
 
 %postun
 %{__ldconfig}
@@ -265,6 +265,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-1
+- Improved spec
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
 - Updated to latest stable release
 

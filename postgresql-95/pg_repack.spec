@@ -70,8 +70,8 @@ Provides:          %{realname} = %{version}-%{release}
 ################################################################################
 
 %description
-pg_repack can re-organize tables on a postgres database without any locks so that
-you can retrieve or update rows in tables being reorganized.
+pg_repack can re-organize tables on a postgres database without any locks so
+that you can retrieve or update rows in tables being reorganized.
 The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
 
 ################################################################################
@@ -84,6 +84,7 @@ The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
 
 %install
 rm -rf %{buildroot}
+
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post

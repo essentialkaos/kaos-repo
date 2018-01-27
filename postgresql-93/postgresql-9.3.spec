@@ -74,7 +74,7 @@
 
 %define majorver        9.3
 %define minorver        20
-%define rel             0
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
 %define realname        postgresql
@@ -88,6 +88,8 @@
 %define username        postgres
 %define groupname       postgres
 %define gid             26
+
+%define __perl_requires %{SOURCE9}
 
 ################################################################################
 
@@ -207,10 +209,10 @@ Provides:          libpq.so = %{version}
 Provides:          %{realname}-libs = %{version}-%{release}
 
 %description libs
-The postgresql%{pkgver}-libs package provides the essential shared libraries for any
-PostgreSQL client program or interface. You will need to install this package
-to use any other PostgreSQL package or any clients that need to connect to a
-PostgreSQL server.
+The postgresql%{pkgver}-libs package provides the essential shared libraries
+for any PostgreSQL client program or interface. You will need to install this
+package to use any other PostgreSQL package or any clients that need to connect
+to a PostgreSQL server.
 
 ################################################################################
 
@@ -244,11 +246,11 @@ Group:             Applications/Databases
 Provides:          %{realname}-docs = %{version}-%{release}
 
 %description docs
-The postgresql%{pkgver}-docs package includes the SGML source for the documentation
-as well as the documentation in PDF format and some extra documentation.
-Install this package if you want to help with the PostgreSQL documentation
-project, or if you want to generate printed documentation. This package also
-includes HTML version of the documentation.
+The postgresql%{pkgver}-docs package includes the SGML source for the
+documentation as well as the documentation in PDF format and some extra
+documentation. Install this package if you want to help with the PostgreSQL
+documentation project, or if you want to generate printed documentation. This
+package also includes HTML version of the documentation.
 
 ################################################################################
 
@@ -356,8 +358,6 @@ system, including regression tests and benchmarks.
 %endif
 
 ################################################################################
-
-%define __perl_requires %{SOURCE16}
 
 %prep
 
@@ -1072,6 +1072,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.20-1
+- Improved spec
+
 * Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.20-0
 - Updated to latest stable release
 

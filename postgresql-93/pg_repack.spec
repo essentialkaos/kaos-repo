@@ -70,8 +70,8 @@ Provides:          %{realname} = %{version}-%{release}
 ################################################################################
 
 %description
-pg_repack can re-organize tables on a postgres database without any locks so that
-you can retrieve or update rows in tables being reorganized.
+pg_repack can re-organize tables on a postgres database without any locks so
+that you can retrieve or update rows in tables being reorganized.
 The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
 
 ################################################################################

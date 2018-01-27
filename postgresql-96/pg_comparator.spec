@@ -90,14 +90,15 @@ time-efficient approach.
 %patch0 -p1
 
 %build
-%{__make} PG_CONFIG=%{pg_dir}/bin/pg_config
+%{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
 rm -rf %{buildroot}
+
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
-%{_sbindir}/update-alternatives --install /usr/bin/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_maj_ver}0
 
 %postun
 if [[ $1 -eq 0 ]] ; then
