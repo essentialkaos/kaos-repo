@@ -45,6 +45,12 @@
 
 ################################################################################
 
+%ifarch %ix86
+  %define optflags -O2 -g -march=i686
+%endif
+
+################################################################################
+
 %define rules_dir         %{_sysconfdir}/%{name}/rules
 %define daemon_name       snortd
 %define usershell         /bin/false
@@ -86,10 +92,6 @@ and much more.
 %setup -q
 
 %build
-
-%ifarch %ix86
-  %define optflags -O2 -g -march=i686
-%endif
 
 export AM_CFLAGS="%{optflags}"
 
@@ -139,10 +141,10 @@ ln -sf %{_libdir}/%{name}-%{version}_dynamicengine/libsf_engine.so \
 install -pm 755 src/dynamic-preprocessors/build%{_libdir}/snort_dynamicpreprocessor/*.so* \
                 %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor
 
-for file in %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor/*.so ; do  
+for file in %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor/*.so ; do
   preprocessor=`basename $file`
-  ln -sf %{_libdir}/%{name}-%{version}_dynamicpreprocessor/$preprocessor.0 $file     
-done  
+  ln -sf %{_libdir}/%{name}-%{version}_dynamicpreprocessor/$preprocessor.0 $file
+done
 
 install -pm 644 %{name}.8 %{buildroot}%{_mandir}/man8/
 install -pm 755 rpm/%{daemon_name} %{buildroot}%{_initrddir}

@@ -64,7 +64,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      python-devel python-setuptools python-unittest2
 BuildRequires:      python-backports-ssl_match_hostname gcc python >= 2.7
 
-Requires:           python-backports-ssl_match_hostname 
+Requires:           python-backports-ssl_match_hostname
 Requires:           python-pycurl python-certifi python >= 2.7
 
 Provides:           %{name} = %{version}-%{release}

@@ -85,9 +85,9 @@ rm -rf %{buildroot}
 %{make_install} INSTALL="install -p"
 
 # Remove unneeded files.
-find %{buildroot}/%{_libdir} -name \*.a -or -name \*.la -delete
+find %{buildroot}%{_libdir} -name \*.a -or -name \*.la -delete
 
-rm -rf %{buildroot}/%{_libdir}/orc
+rm -rf %{buildroot}%{_libdir}/orc
 
 touch -r stamp-h1 %{buildroot}%{_includedir}/%{name}-0.4/orc/orc-stdint.h
 

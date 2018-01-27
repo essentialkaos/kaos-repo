@@ -79,6 +79,7 @@ package.
 
 %package daemon
 Summary:            Service for anonymous access to rsync
+Group:              Applications/Internet
 BuildArch:          noarch
 Requires:           %{name} = %{version}-%{release}
 

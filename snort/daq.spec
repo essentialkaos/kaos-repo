@@ -4,6 +4,12 @@
 
 ################################################################################
 
+%ifarch %ix86
+  %define optflags -O2 -g -march=i686
+%endif
+
+################################################################################
+
 %define _smp_mflags -j1
 
 ################################################################################
@@ -46,10 +52,6 @@ Header files and static libraries for Data Acquisition Library.
 %setup -q
 
 %build
-
-%ifarch %ix86
-  %define optflags -O2 -g -march=i686
-%endif
 
 %configure --prefix=%{_prefix} \
            --enable-static

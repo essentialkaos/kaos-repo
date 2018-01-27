@@ -28,6 +28,7 @@ attribute file (.dbf).
 
 %package devel
 Summary:         Development files for shapelib
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 
 %description devel
@@ -37,6 +38,7 @@ This package contains libshp and the appropriate header files.
 
 %package tools
 Summary:         shapelib utility programs
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 
 %description tools
@@ -63,7 +65,7 @@ chrpath --delete %{buildroot}%{_libdir}/*.so*
 %clean
 rm -rf %{buildroot}
 
-%post 
+%post
 /sbin/ldconfig
 
 %postun

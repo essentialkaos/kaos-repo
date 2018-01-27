@@ -49,7 +49,7 @@ Source0:            http://www.diracvideo.org/download/%{name}/%{name}-%{version
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc gcc-c++ make libtool 
+BuildRequires:      gcc gcc-c++ make libtool
 BuildRequires:      orc-devel >= 0.4.10 glew-devel >= 1.5.1
 
 Provides:           %{name} = %{version}-%{release}
@@ -58,7 +58,7 @@ Provides:           %{name} = %{version}-%{release}
 
 %description
 The Schrödinger project will implement portable libraries for the high
-quality Dirac video codec created by BBC Research and Development. 
+quality Dirac video codec created by BBC Research and Development.
 Dirac is a free and open source codec producing very high image quality video.
 
 The Schrödinger project is a project done by BBC R&D and Fluendo in

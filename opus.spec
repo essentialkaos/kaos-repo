@@ -24,8 +24,8 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-The Opus codec is designed for interactive speech and audio transmission over 
-the Internet. It is designed by the IETF Codec Working Group and incorporates 
+The Opus codec is designed for interactive speech and audio transmission over
+the Internet. It is designed by the IETF Codec Working Group and incorporates
 technology from Skype's SILK codec and Xiph.Org's CELT codec.
 
 ################################################################################

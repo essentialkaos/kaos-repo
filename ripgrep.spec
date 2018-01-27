@@ -23,10 +23,10 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-ripgrep is a line oriented search tool that combines the usability of 
+ripgrep is a line oriented search tool that combines the usability of
 The Silver Searcher (similar to ack) with the raw speed of GNU grep.
 
-ripgrep works by recursively searching your current directory for a 
+ripgrep works by recursively searching your current directory for a
 regex pattern.
 
 ################################################################################

@@ -47,17 +47,17 @@ Requires:           zlib
 BuildRequires:      make gcc clang python >= 2.6 openssl-devel zlib-devel
 BuildRequires:      gcc-c++ libstdc++-devel
 
-Provides:           %{name} = %{version}-%{release} 
-Provides:           %{shortname} = %{version}-%{release} 
-Provides:           npm = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
+Provides:           %{shortname} = %{version}-%{release}
+Provides:           npm = %{version}-%{release}
 
 ################################################################################
 
 %description
-Node.js is a platform built on Chromes JavaScript runtime for 
-easily building fast, scalable network applications. Node.js 
-uses an event-driven, non-blocking I/O model that makes it 
-lightweight and efficient, perfect for data-intensive 
+Node.js is a platform built on Chromes JavaScript runtime for
+easily building fast, scalable network applications. Node.js
+uses an event-driven, non-blocking I/O model that makes it
+lightweight and efficient, perfect for data-intensive
 real-time applications that run across distributed devices.
 
 ################################################################################
@@ -118,5 +118,4 @@ export CXX=clang++
 
 %changelog
 * Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
-- Initial build 
-
+- Initial build
