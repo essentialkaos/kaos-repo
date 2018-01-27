@@ -64,7 +64,7 @@ L2TP allows you to tunnel PPP over UDP. Some ISPs use L2TP to tunnel user
 sessions from dial-in servers (modem banks, ADSL DSLAMs) to back-end PPP
 servers. Another important application is Virtual Private Networks where
 the IPsec protocol is used to secure the L2TP connection (L2TP/IPsec,
-RFC 3193). The L2TP/IPsec protocol is mainly used by Windows and 
+RFC 3193). The L2TP/IPsec protocol is mainly used by Windows and
 Mac OS X clients. On Linux, xl2tpd can be used in combination with IPsec
 implementations such as Openswan.
 Example configuration files for such a setup are included in this RPM.
@@ -88,7 +88,7 @@ It was de-facto maintained by Jacco de Leeuw <jacco2@dds.nl> in 2002 and 2003.
 %prep
 %setup -q
 
-rm -f linux/include/linux/if_pppol2tp.h 
+rm -f linux/include/linux/if_pppol2tp.h
 
 %build
 export CFLAGS="$CFLAGS -fPIC -Wall"
@@ -130,7 +130,7 @@ fi
 
 %files
 %defattr(-,root,root)
-%doc BUGS CHANGES CREDITS LICENSE README.* 
+%doc BUGS CHANGES CREDITS LICENSE README.*
 %doc doc/README.patents examples/chapsecrets.sample
 %config(noreplace) %{_sysconfdir}/%{name}/*
 %config(noreplace) %{_sysconfdir}/ppp/*
@@ -233,9 +233,11 @@ fi
 - Solve some memory leaks that show up after several days of running with
   flapping tunnels and calls.
 - Fix for avoiding xltpd occasionally going into an endless loop.
-- Fixed issue with strtok modifying contents when pushing details for ppd plugins
+- Fixed issue with strtok modifying contents when pushing details for ppd
+  plugins
 - Added the ability to add a pppd plugin and params to an lns
-- Modified lns_remove to close each call rather than just calling destroy_tunnel()
+- Modified lns_remove to close each call rather than just calling
+  destroy_tunnel()
 - Added control method to remove an lns
 - Refactored the do_control() method to use a handler approach for processing
 - Fixed potential null pointer when creating a new lns

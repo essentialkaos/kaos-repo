@@ -305,7 +305,7 @@ fi
 
 %changelog
 * Mon Aug 07 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.4.10-0
-- Updated to the latest release 
+- Updated to the latest release
 - Improved RPM spec
 
 * Tue Dec 09 2014 Anton Novojilov <andy@essentialkaos.com> - 3.4.6-0

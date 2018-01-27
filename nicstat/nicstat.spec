@@ -20,7 +20,7 @@ BuildRequires:     gcc
 ################################################################################
 
 %description
-nicstat is a Solaris and Linux command-line that prints out network statistics 
+nicstat is a Solaris and Linux command-line that prints out network statistics
 for all network interface cards (NICs), including packets, kilobytes per second,
 average packet sizes and more.
 

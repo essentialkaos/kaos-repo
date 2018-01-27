@@ -53,9 +53,9 @@ Provides:          %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-The TZUpdater tool is provided to allow you to update installed Java Development Kit 
-(JDK) and Java Runtime Environment (JRE) software with more recent timezone data, 
-to accommodate daylight saving time (DST) changes in different countries.
+The TZUpdater tool is provided to allow you to update installed Java Development
+Kit (JDK) and Java Runtime Environment (JRE) software with more recent timezone
+data, to accommodate daylight saving time (DST) changes in different countries.
 
 ################################################################################
 

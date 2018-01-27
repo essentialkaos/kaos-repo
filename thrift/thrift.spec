@@ -65,6 +65,7 @@ Python, %{?php_langname}and other languages.
 %package devel
 
 Summary:         Development files for %{name}
+Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 Requires:        pkgconfig
@@ -78,6 +79,7 @@ developing applications that use thrift.
 %package -n erlang-%{name}
 
 Summary:         Erlang support for thrift
+Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 Requires:        erlang
@@ -92,6 +94,7 @@ The erlang-thrift package contains Erlang bindings for thrift.
 %package -n erlangR15-%{name}
 
 Summary:         ErlangR15 support for thrift
+Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 Requires:        erlangR15
@@ -106,6 +109,7 @@ The erlangR15-thrift package contains ErlangR15 bindings for thrift.
 %package -n erlangR16-%{name}
 
 Summary:         ErlangR16 support for thrift
+Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 Requires:        erlangR16
@@ -120,6 +124,7 @@ The erlangR16-thrift package contains ErlangR16 bindings for thrift.
 %package -n erlang17-%{name}
 
 Summary:         Erlang17 support for thrift
+Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 Requires:        erlang17
@@ -134,6 +139,7 @@ The erlang17-thrift package contains Erlang17 bindings for thrift.
 %package -n erlang18-%{name}
 
 Summary:         Erlang18 support for thrift
+Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 Requires:        erlang18
@@ -166,7 +172,7 @@ export GOBJECT_CFLAGS=$(pkg-config --cflags gobject-2.0)
            --without-lua \
            --without-go
 
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}

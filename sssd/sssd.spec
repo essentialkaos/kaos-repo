@@ -118,7 +118,7 @@
 
 ################################################################################
 
-Summary:            System Security Services Daemon 
+Summary:            System Security Services Daemon
 Name:               sssd
 Version:            1.16.0
 Release:            0%{?dist}
@@ -245,7 +245,7 @@ Summary:            SSSD Client libraries for NSS and PAM
 Group:              Applications/System
 License:            LGPLv3+
 
-Requires(post):     %{__ldconfig} 
+Requires(post):     %{__ldconfig}
 Requires(postun):   %{__ldconfig}
 
 %description client
@@ -517,7 +517,7 @@ Utility library to validate FreeIPA HBAC rules for authorization requests
 %package -n libipa_hbac-devel
 Summary:            FreeIPA HBAC Evaluator library
 Group:              Development/Libraries
-License:            LGPLv3+ 
+License:            LGPLv3+
 
 Requires:           libipa_hbac = %{version}-%{release}
 
@@ -741,9 +741,9 @@ rm -rf %{buildroot}
 sed -i -e 's:/usr/bin/python:/usr/bin/python3:' src/tools/sss_obfuscate
 %endif
 
-%{make_install} DESTDIR=%{buildroot}
+%{make_install}
 
-/usr/lib/rpm/find-lang.sh %{buildroot} %{name}
+%{_libdir32}/rpm/find-lang.sh %{buildroot} %{name}
 
 install -dm 755 %{buildroot}%{_initrddir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
@@ -861,7 +861,7 @@ fi
 %post client
 if [[ $1 -eq 1 ]] ; then
   %{__ldconfig}
-  
+
   %{alt_add} %{_sysconfdir}/cifs-utils/idmap-plugin \
              cifs-idmap-plugin \
              %{_libdir}/cifs-utils/cifs_idmap_sss.so 20
@@ -1281,4 +1281,4 @@ fi
 - Updated to latest stable release
 
 * Tue Mar 22 2016 Gleb Goncharov <yum@gongled.ru> - 1.13.3-1
-- Initial build 
+- Initial build

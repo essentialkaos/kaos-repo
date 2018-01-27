@@ -43,7 +43,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      make gcc gcc-c++ m4 autoconf automake libtool
 BuildRequires:      bison flex ncurses-devel
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -116,17 +116,18 @@ rm -rf %{buildroot}
 
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.7-0
 - Added a manual page. man tcpkali after installation.
-- Exceed 64k connections limit by using all available IP aliases on network interfaces.
+- Exceed 64k connections limit by using all available IP aliases on network
+  interfaces.
 - --latency-marker-skip <N> to ignore the first occurrences of a marker.
 - --listen-mode=active to send data for connections received through -l.
 - --source-ip <IP> option to restrict or change source IPs.
 - "Bandwidth per channel:" output changed to ⇅ to reflect bi-direction.
 
 * Thu May 14 2015 Anton Novojilov <andy@essentialkaos.com> - 0.6-0
-- Parse \{connection.uid} type expressions in --first-message, --message, 
-  --latency-marker parameters, allowing constructing payloads unique per 
+- Parse \{connection.uid} type expressions in --first-message, --message,
+  --latency-marker parameters, allowing constructing payloads unique per
   connection.
-- Added "k" multiplier to --connections; allowing for a -c10k 
+- Added "k" multiplier to --connections; allowing for a -c10k
   option (inside joke ;)
 
 * Wed Apr 15 2015 Anton Novojilov <andy@essentialkaos.com> - 0.5-0
@@ -137,7 +138,8 @@ rm -rf %{buildroot}
 - --websocket now awaits response after sending HTTP upgrade headers
 - Add WebSocket masking on client->server communication (mandated by RFC)
 - Use Boyer-Moore-Horspool to search --latency-marker in the stream
-- Add --sndbuf and --rcvbuf command line options to adjust kernel buffers via setsockopt(SO_*BUF)
+- Add --sndbuf and --rcvbuf command line options to adjust kernel buffers via
+  setsockopt(SO_*BUF)
 - Record latencies even if only a portion of a message has been sent
 
 * Wed Mar 04 2015 Anton Novojilov <andy@essentialkaos.com> - 0.4.2-0

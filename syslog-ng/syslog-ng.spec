@@ -73,9 +73,9 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-The syslog-ng application is a flexible and highly scalable system logging 
-tool. It is often used to manage log messages and implement centralized 
-logging, where the aim is to collect the log messages of several devices to a 
+The syslog-ng application is a flexible and highly scalable system logging
+tool. It is often used to manage log messages and implement centralized
+logging, where the aim is to collect the log messages of several devices to a
 single, central log server.
 
 ################################################################################

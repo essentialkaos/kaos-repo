@@ -102,7 +102,7 @@ Summary:              Zabbix Agent
 Group:                Applications/Internet
 
 Requires:             logrotate
-Requires(pre):        /usr/sbin/useradd
+Requires(pre):        %{_sbindir}/useradd
 %if 0%{?rhel} >= 7
 Requires(post):       systemd
 Requires(preun):      systemd
@@ -359,19 +359,19 @@ build_flags="
 "
 
 %configure $build_flags --with-mysql --enable-server --with-jabber
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_mysql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
 
 %configure $build_flags --with-postgresql --enable-server --with-jabber
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
 
 %configure $build_flags --with-sqlite3
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 rm -f src/zabbix_server/zabbix_server
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_sqlite3
@@ -1159,7 +1159,8 @@ fi
 - fixed requeueing of items from unreachable poller to normal poller
 - fixed sbox selection zone in monitoring web graphs
 - fixed crash when syncing actions without operations
-- removed usage of SVG viewBox attribute in IE and disabled map scaling in screens
+- removed usage of SVG viewBox attribute in IE and disabled map scaling in
+  screens
 - fixed wrong response and error message when invalid or unavailable dashboardid
   has been requested
 - fixed overlay window displaying on different browsers and removed horizontal
@@ -1191,11 +1192,11 @@ fi
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - improved bulk inserts for Oracle database backend
-- optimized trigger expression batch processing to avoid recalculation of 
+- optimized trigger expression batch processing to avoid recalculation of
   identical functions
 - added option to control amount of queued items
 - fixed wrong number round for cpu statistics
-- fixed wrong averages in web monitoring if a web server doesn't respond to 
+- fixed wrong averages in web monitoring if a web server doesn't respond to
   a request
 - fixed button and multiselect positioning in action operations edit form
 - fixed empty value handling in event correlation on oracle databases
@@ -1259,31 +1260,32 @@ fi
 - changed vmware.vm.cpu.ready item units and description
 
 * Tue Oct 04 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.2.1-0
-- improved concurrent VMware item polling speed, reduced size of cached VMware data
-- updated Chinese (China), French, Italian, Portuguese (Brazil) translations; 
+- improved concurrent VMware item polling speed, reduced size of cached VMware
+  data
+- updated Chinese (China), French, Italian, Portuguese (Brazil) translations;
   thanks to Zabbix translators
 - increased width of input fields
 - fixed link "Help" to a proper version of Zabbix manual
-- fixed parameter parsing in calculated items when it contains double quote 
+- fixed parameter parsing in calculated items when it contains double quote
   escaping
 - fixed trigger update after executing event correlation 'close new' operation
 - fixed possible delay when proxy sends cached history to server
 - fixed long SNMP OID not being accepted
-- fixed error when upgrading graph_theme table in proxy database 
+- fixed error when upgrading graph_theme table in proxy database
   from 1.8 to 2.0
 - fixed forms behaviour when enter key is pressed
-- fixed escaped double quote parsing in quoted parameters in array in item 
+- fixed escaped double quote parsing in quoted parameters in array in item
   key parameters
 - fixed compilation failure for OpenBSD 5.8, 5.9, 6.0
 - fixed validation of new host group when creating/updating template
 - changed translation string "Acknowledges" => "Acknowledgements"
-- implemented dynamic default sortorder for icon mappings, now default 
+- implemented dynamic default sortorder for icon mappings, now default
   sortorder increases by one with each entry of mapping
 - fixed timeline in Problem view which shows "Yesterday" instead of "Today"
-- fixed checkbox functionality and display of undefined indexes in trigger 
+- fixed checkbox functionality and display of undefined indexes in trigger
   expression and recovery expression constructor
 - added converting of SNMP lld rules in XML import
-- removed mistaken support of {ITEM.VALUE} and {ITEM.LASTVALUE} macros in 
+- removed mistaken support of {ITEM.VALUE} and {ITEM.LASTVALUE} macros in
   trigger URLs
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0

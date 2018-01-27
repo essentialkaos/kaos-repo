@@ -93,9 +93,9 @@ need for any dedicated extra network link between redundant hosts.
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot}
+%{make_install}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_libexecdir}/%{name}
@@ -107,7 +107,7 @@ install -pm 600 %{SOURCE2} %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/
 install -pm 700 %{SOURCE4} %{SOURCE5} %{buildroot}%{_libexecdir}/%{name}/
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %pre
 # Legacy, in case we update from an older package where the service was "carp"

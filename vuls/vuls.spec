@@ -65,7 +65,7 @@ Summary:         VULnerability Scanner
 Name:            vuls
 Version:         0.4.1
 Release:         0%{?dist}
-Group:           Development/Tools
+Group:           Applications/System
 License:         GPLv3
 URL:             https://github.com/future-architect/vuls
 
@@ -106,6 +106,7 @@ Vulnerability scanner for Linux/FreeBSD, agentless, written in golang.
 Summary:         CVE data fetcher and server for VULS
 Version:         0.1.1
 Release:         0%{?dist}
+Group:           Applications/System
 
 Requires:        kaosv sqlite
 
@@ -114,10 +115,10 @@ Requires:        systemd
 %endif
 
 %description -n cve-dictionary
-This is tool to build a local copy of the NVD (National Vulnerabilities 
-Database) and the Japanese JVN [2], which contain security vulnerabilities 
-according to their CVE identifiers [3] including exhaustive information and 
-a risk score. The local copy is generated in sqlite format, and the tool has a 
+This is tool to build a local copy of the NVD (National Vulnerabilities
+Database) and the Japanese JVN [2], which contain security vulnerabilities
+according to their CVE identifiers [3] including exhaustive information and
+a risk score. The local copy is generated in sqlite format, and the tool has a
 server mode for easy querying.
 
 ################################################################################
@@ -127,6 +128,7 @@ server mode for easy querying.
 Summary:         OVAL data fetcher and server for VULS
 Version:         0.0.1
 Release:         0%{?dist}
+Group:           Applications/System
 
 Requires:        kaosv sqlite
 
@@ -135,7 +137,7 @@ Requires:        systemd
 %endif
 
 %description -n goval-dictionary
-This is tool to build a local copy of the OVAL. The local copy is generated 
+This is tool to build a local copy of the OVAL. The local copy is generated
 in sqlite format, and the tool has a server mode for easy querying.
 
 ################################################################################
@@ -233,7 +235,7 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %preun -n goval-dictionary
-if [[ $1 -eq 0 ]] ; then 
+if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable goval-server.service &>/dev/null || :
   %{__systemctl} stop goval-server.service &>/dev/null || :
@@ -243,7 +245,7 @@ if [[ $1 -eq 0 ]] ; then
 fi
 
 %preun -n cve-dictionary
-if [[ $1 -eq 0 ]] ; then 
+if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable cved-server.service &>/dev/null || :
   %{__systemctl} stop cved-server.service &>/dev/null || :
@@ -253,7 +255,7 @@ if [[ $1 -eq 0 ]] ; then
 fi
 
 %postun -n goval-dictionary
-if [[ $1 -ge 1 ]] ; then 
+if [[ $1 -ge 1 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} try-restart goval-server.service &>/dev/null || :
 %else
@@ -262,7 +264,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 
 %postun -n cve-dictionary
-if [[ $1 -ge 1 ]] ; then 
+if [[ $1 -ge 1 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} try-restart cved-server.service &>/dev/null || :
 %else

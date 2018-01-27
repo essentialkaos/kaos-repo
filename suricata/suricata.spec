@@ -86,8 +86,8 @@ Matching, and GeoIP identification.
 autoreconf -fv --install
 
 %build
-%configure --with-libnspr-includes=/usr/include/nspr4 \
-           --with-libnss-includes=/usr/include/nss3 \
+%configure --with-libnspr-includes=%{_includedir}/nspr4 \
+           --with-libnss-includes=%{_includedir}/nss3 \
            --disable-gccmarch-native \
            --disable-coccinelle \
            --enable-nfqueue \

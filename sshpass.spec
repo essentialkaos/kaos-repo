@@ -42,7 +42,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      make gcc
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -58,7 +58,8 @@ more secure public key authentication of SSH instead.
 
 %build
 %configure
-make %{?_smp_mflags}
+
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
