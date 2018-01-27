@@ -58,8 +58,8 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-rbenv lets you easily switch between multiple versions 
-of Ruby. Its simple, unobtrusive, and follows the UNIX 
+rbenv lets you easily switch between multiple versions
+of Ruby. Its simple, unobtrusive, and follows the UNIX
 tradition of single-purpose tools that do one thing well.
 
 ################################################################################
@@ -150,34 +150,35 @@ rm -rf %{buildroot}
 - Fixed bug with profile export
 
 * Mon May 13 2013 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
-- rbenv now prefers .ruby-version files to .rbenv-version files for specifying 
-  local application-specific versions. The .ruby-version file has the same 
+- rbenv now prefers .ruby-version files to .rbenv-version files for specifying
+  local application-specific versions. The .ruby-version file has the same
   format as .rbenv-version but is compatible with other Ruby version managers.
-- Deprecated ruby-local-exec and moved its functionality into the standard 
+- Deprecated ruby-local-exec and moved its functionality into the standard
   ruby shim. See the ruby-local-exec wiki page for upgrade instructions.
-- Modified shims to include the full path to rbenv so that they can be invoked 
+- Modified shims to include the full path to rbenv so that they can be invoked
   without having rbenvs bin directory in the $PATH.
-- Sped up rbenv init by avoiding rbenv reinitialization and by using a simpler 
-  indexing approach. (Users of chef-rbenv should upgrade to the latest version 
+- Sped up rbenv init by avoiding rbenv reinitialization and by using a simpler
+  indexing approach. (Users of chef-rbenv should upgrade to the latest version
   to fix a compatibility issue.)
-- Reworked rbenv help so that usage and documentation is stored as a comment 
+- Reworked rbenv help so that usage and documentation is stored as a comment
   in each subcommand, enabling plugin commands to hook into the help system.
-- Added support for full completion of the command line, not just the first 
+- Added support for full completion of the command line, not just the first
   argument.
 - Updated installation instructions for Zsh and Ubuntu users.
 - Fixed rbenv which and rbenv prefix with system Ruby versions.
-- Changed rbenv exec to avoid prepending the system Ruby location to $PATH to 
+- Changed rbenv exec to avoid prepending the system Ruby location to $PATH to
   fix issues running system Ruby commands that invoke other commands.
-- Changed rbenv rehash to ensure it exits with a 0 status code under normal 
+- Changed rbenv rehash to ensure it exits with a 0 status code under normal
   operation, and to ensure outdated shims are removed first when rehashing.
-- Modified rbenv rehash to run hash -r afterwards, when shell integration is 
+- Modified rbenv rehash to run hash -r afterwards, when shell integration is
   enabled, to ensure the shells command cache is cleared.
 - Removed use of the += operator to support older versions of Bash.
 - Adjusted non-bare rbenv versions output to include system, if present.
 - Improved documentation for installing and uninstalling Ruby versions.
-- Fixed rbenv versions not to display a warning if the currently specified 
+- Fixed rbenv versions not to display a warning if the currently specified
   version doesnt exist.
-- Fixed an instance of local variable leakage in the rbenv shell function wrapper.
+- Fixed an instance of local variable leakage in the rbenv shell function
+  wrapper.
 - Changed rbenv shell to ensure it exits with a non-zero status on failure.
 - Added rbenv --version for printing the current version of rbenv.
 - Added /usr/lib/rbenv/hooks to the plugin hook search path.

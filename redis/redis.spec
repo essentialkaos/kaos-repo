@@ -1,6 +1,6 @@
 ################################################################################
 
-# rpmbuilder:pedantic true 
+# rpmbuilder:pedantic true
 
 ################################################################################
 
@@ -101,6 +101,7 @@ different kind of sorting abilities.
 %package cli
 
 Summary:            Client for working with Redis from console
+Group:              Applications/Databases
 
 %description cli
 Client for working with Redis from console
@@ -571,7 +572,7 @@ rm -rf %{buildroot}
         not) when master and slave are of different versions. (Oran Agra,
         Salvatore Sanfilippo)
 - [NEW] Log clients details when SLAVEOF command is received. (Salvatore
-        Sanfilippo with inputs from Nick Craver and Marc Gravell). 
+        Sanfilippo with inputs from Nick Craver and Marc Gravell).
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - [FIX] Fix blocking operations timeout precision when HZ is at its default

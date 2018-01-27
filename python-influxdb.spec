@@ -28,8 +28,8 @@ Provides:       %{name} = %{verion}-%{release}
 ################################################################################
 
 %description
-%{name} is a client for interacting with InfluxDB - an open-source distributed time 
-series database.
+%{name} is a client for interacting with InfluxDB - an open-source distributed
+time series database.
 
 ################################################################################
 

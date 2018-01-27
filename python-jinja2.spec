@@ -2,7 +2,7 @@
 
 %define package_name      jinja2
 
-# Fix for https://github.com/pallets/jinja/issues/653 
+# Fix for https://github.com/pallets/jinja/issues/653
 %global _python_bytecompile_errors_terminate_build 0
 
 ################################################################################
@@ -11,8 +11,8 @@ Summary:        Sandboxed template engine
 Name:           python-jinja2
 Version:        2.10
 Release:        0%{?dist}
-License:        BSD 
-Group:          Development/Libraries 
+License:        BSD
+Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
 
 Source:         https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
@@ -28,9 +28,9 @@ Provides:       %{name} = %{verion}-%{release}
 ################################################################################
 
 %description
-Jinja is a sandboxed template engine written in pure Python. It 
-provides a Django-like non-XML syntax and compiles templates into 
-executable python code. It's basically a combination of Django 
+Jinja is a sandboxed template engine written in pure Python. It
+provides a Django-like non-XML syntax and compiles templates into
+executable python code. It's basically a combination of Django
 templates and python code.
 
 ################################################################################

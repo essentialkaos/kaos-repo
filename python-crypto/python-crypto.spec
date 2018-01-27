@@ -81,7 +81,7 @@ Provides:         pycrypto = %{version}-%{release}
 ################################################################################
 
 %description
-PyCrypto is a collection of both secure hash functions (such as MD5 and 
+PyCrypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 ################################################################################
@@ -92,7 +92,7 @@ Summary:          Cryptography library for Python 3
 Group:            Development/Libraries
 
 %description -n python3-crypto
-PyCrypto is a collection of both secure hash functions (such as MD5 and 
+PyCrypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 This is the Python 3 build of the package.

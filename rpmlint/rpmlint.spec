@@ -54,14 +54,14 @@ Provides:           %{name} = %{version}-%{release}
 
 %description
 
-rpmlint is a tool for checking common errors in rpm packages. rpmlint can be 
-used to test individual packages before uploading or to check an entire 
-distribution. By default all applicable checks are performed but specific 
+rpmlint is a tool for checking common errors in rpm packages. rpmlint can be
+used to test individual packages before uploading or to check an entire
+distribution. By default all applicable checks are performed but specific
 checks can be performed by using command line parameters.
 
-rpmlint can check binary rpms (files and installed ones), source rpms, and 
-plain specfiles, but all checks do not apply to all argument types. For 
-best check coverage, run rpmlint on source rpms instead of plain specfiles, 
+rpmlint can check binary rpms (files and installed ones), source rpms, and
+plain specfiles, but all checks do not apply to all argument types. For
+best check coverage, run rpmlint on source rpms instead of plain specfiles,
 and installed binary rpms instead of uninstalled binary rpm files.
 
 ################################################################################
@@ -80,11 +80,10 @@ install -pm 644 %{SOURCE2} RhelCheck.py
 %install
 rm -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot} \
-                  ETCDIR=%{_sysconfdir} \
-                  MANDIR=%{_mandir} \
-                  LIBDIR=%{_datadir}/rpmlint \
-                  BINDIR=%{_bindir}
+%{make_install} ETCDIR=%{_sysconfdir} \
+                MANDIR=%{_mandir} \
+                LIBDIR=%{_datadir}/rpmlint \
+                BINDIR=%{_bindir}
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_datadir}/rpmlint/config
 

@@ -42,21 +42,21 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      make gcc postgresql94-devel ncurses-devel
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-PostgreSQL provides various statistics which includes information about 
-tables, indexes, functions and other database objects and their usage. 
-Moreover, statistics has detailed information about connections, current 
-queries and database operations (INSERT/DELETE/UPDATE). But most of this 
-statistics are provided as permanently incremented counters. The pgcenter 
-provides convenient interface to this statistics and allow viewing statistics 
-changes in time interval, eg. per second. The pgcenter provides fast access 
-for database management task, such as editing configuration files, reloading 
-services, viewing log files and canceling or terminating database backends 
-(by pid or using state mask). However if need execute some specific 
+PostgreSQL provides various statistics which includes information about
+tables, indexes, functions and other database objects and their usage.
+Moreover, statistics has detailed information about connections, current
+queries and database operations (INSERT/DELETE/UPDATE). But most of this
+statistics are provided as permanently incremented counters. The pgcenter
+provides convenient interface to this statistics and allow viewing statistics
+changes in time interval, eg. per second. The pgcenter provides fast access
+for database management task, such as editing configuration files, reloading
+services, viewing log files and canceling or terminating database backends
+(by pid or using state mask). However if need execute some specific
 operations, pgcenter can start psql session for this purposes.
 
 ################################################################################

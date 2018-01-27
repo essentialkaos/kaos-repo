@@ -26,9 +26,9 @@ Provides:       %{name} = %{verion}-%{release}
 ################################################################################
 
 %description
-Official low-level client for Elasticsearch. Its goal is to provide common ground for 
-all Elasticsearch-related code in Python; because of this it tries to be opinion-free 
-and very extendable.
+Official low-level client for Elasticsearch. Its goal is to provide common
+ground for all Elasticsearch-related code in Python; because of this it tries
+to be opinion-free and very extendable.
 
 ################################################################################
 

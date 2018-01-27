@@ -85,7 +85,7 @@ need to prettify source code. Highlights are:
 %{__python} setup.py install --root %{buildroot}
 
 install -dm 755 %{buildroot}%{_mandir}/man1
-mv doc/pygmentize.1 $RPM_BUILD_ROOT%{_mandir}/man1/pygmentize.1
+mv doc/pygmentize.1 %{buildroot}%{_mandir}/man1/pygmentize.1
 
 %clean
 %{__rm} -rf %{buildroot}
