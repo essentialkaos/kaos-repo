@@ -50,8 +50,8 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-pip is a tool for installing and managing Python packages, such as those found in the 
-Python Package Index. It’s a replacement for easy_install.
+pip is a tool for installing and managing Python packages, such as those found
+in the Python Package Index. It’s a replacement for easy_install.
 
 ################################################################################
 

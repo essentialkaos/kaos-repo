@@ -140,4 +140,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Mon Sep 05 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 2.7-0
-- Initial build. 
+- Initial build

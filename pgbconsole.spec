@@ -42,19 +42,19 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      make gcc postgresql94-devel ncurses-devel
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-pgbConsole is the top-like console for Pgbouncer - PostgreSQL connection 
-pooler. 
+pgbConsole is the top-like console for Pgbouncer - PostgreSQL connection
+pooler.
 
 Features:
 - top-like interface
-- show information about client/servers connections, pools/databases info 
+- show information about client/servers connections, pools/databases info
   and statistics.
-- ability to perform admin commands, such as pause, resume, reload 
+- ability to perform admin commands, such as pause, resume, reload
   and others.
 - ability to show log files or edit configuration in local pgbouncers.
 - see details in doc directory.
