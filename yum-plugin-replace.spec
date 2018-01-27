@@ -57,7 +57,7 @@ IUS Community Project whose packages have alternative names as to not
 automatically upgrade stock packages.  They also do not Obsolete the packages
 they provide, therefore making upgrading a little bit more tedious.  For
 example upgrading 'mysql' to 'mysql50' or 'mysql51' requires first
-uninstalling 'mysql' and then installing the alternate package name. 
+uninstalling 'mysql' and then installing the alternate package name.
 
 ################################################################################
 

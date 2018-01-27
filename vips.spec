@@ -81,7 +81,7 @@ Requires:          libjpeg-turbo-devel libtiff-devel zlib-devel
 Requires:          vips = %{version}-%{release}
 
 %description devel
-Package contains the header files and libraries necessary for developing 
+Package contains the header files and libraries necessary for developing
 programs using VIPS. It also contains a C++ API and development man pages.
 
 ################################################################################
@@ -103,7 +103,7 @@ Conflicts:         %{name} < %{version}-%{release}
 Conflicts:         %{name} > %{version}-%{release}
 
 %description doc
-Package contains extensive documentation about VIPS in both HTML and 
+Package contains extensive documentation about VIPS in both HTML and
 PDF formats.
 
 ################################################################################

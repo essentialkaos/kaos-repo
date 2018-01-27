@@ -130,7 +130,8 @@ rm -rf %{buildroot}
 - All new sessions that are unattached (whether with -d or started with no
   terminal) are now created with size 80 x 24. Whether the status line is on or
   off does not affect the size of new sessions until they are attached.
-- Expand formats in option names and add -F flag to expand them in option values.
+- Expand formats in option names and add -F flag to expand them in option
+  values.
 - Remember the search string for a pane even if copy mode is exited and entered
   again.
 - Some further BCE fixes (scroll up, reverse index).

@@ -57,14 +57,14 @@ Provides:          %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-tsung is a distributed load testing tool. It is protocol-independent and can 
-currently be used to stress and benchmark HTTP, Jabber/XMPP, PostgreSQL, 
+tsung is a distributed load testing tool. It is protocol-independent and can
+currently be used to stress and benchmark HTTP, Jabber/XMPP, PostgreSQL,
 MySQL and LDAP servers.
-It simulates user behaviour using an XML description file, reports many 
-measurements in real time (statistics can be customized with transactions, 
+It simulates user behaviour using an XML description file, reports many
+measurements in real time (statistics can be customized with transactions,
 and graphics generated using gnuplot).
-For HTTP, it supports 1.0 and 1.1, has a proxy mode to record sessions, 
-supports GET and POST methods, Cookies, and Basic WWW-authentication. 
+For HTTP, it supports 1.0 and 1.1, has a proxy mode to record sessions,
+supports GET and POST methods, Cookies, and Basic WWW-authentication.
 It also has support for SSL.
 
 ################################################################################

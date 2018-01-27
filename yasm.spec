@@ -42,7 +42,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      make gcc bison byacc xmlto gettext-devel
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 Provides:           bundled(md5-plumb) = %{version}-%{release}
 
 ################################################################################

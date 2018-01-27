@@ -48,8 +48,8 @@ Provides:           %{name} = %{version}-%{release}
 
 %description
 
-vmtouch is a tool for learning about and controlling the file system cache 
-of unix and unix-like systems. It is BSD licensed so you can basically 
+vmtouch is a tool for learning about and controlling the file system cache
+of unix and unix-like systems. It is BSD licensed so you can basically
 do whatever you want with it.
 
 ################################################################################

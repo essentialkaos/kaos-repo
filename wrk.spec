@@ -82,7 +82,7 @@ cp scripts/* %{buildroot}%{_loc_datarootdir}/%{name}/scripts/
 %clean
 %{__rm} -rf %{buildroot}
 
-###########################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, 0755)
@@ -90,7 +90,7 @@ cp scripts/* %{buildroot}%{_loc_datarootdir}/%{name}/scripts/
 %{_loc_datarootdir}/%{name}/scripts/*
 %{_bindir}/%{name}
 
-###########################################################################
+################################################################################
 
 %changelog
 * Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0

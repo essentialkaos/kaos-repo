@@ -36,6 +36,12 @@
 
 ################################################################################
 
+%ifarch %ix86
+  %define optflags -O2 -g -pipe -Wall -fexceptions -fstack-protector -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -Wp,-D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4
+%endif
+
+################################################################################
+
 # Found X264_BUILD in (x264.h)
 %define pkg_build            152
 %define pkg_snapshot_date    20171117
@@ -83,9 +89,6 @@ Header files and shared libraries for x264.
 %setup -qn %{name}-snapshot-%{pkg_snapshot_version}-stable
 
 %build
-%ifarch %ix86
-  %define optflags -O2 -g -pipe -Wall -fexceptions -fstack-protector -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -Wp,-D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4
-%endif
 
 %configure --enable-pic --enable-debug --enable-shared
 

@@ -22,7 +22,7 @@ Provides:           %{name} = %{version}-%{release}
 
 %description
 Xvid is a high quality MPEG-4 ASP video codec. Xvid encoded MPEG-4 videos can i
-be played back by other MPEG-4 implementations decoders such as DivX, FFmpeg 
+be played back by other MPEG-4 implementations decoders such as DivX, FFmpeg
 MPEG-4 or standalone DVD players capable of MPEG-4 playback.
 
 ################################################################################
