@@ -456,7 +456,7 @@ rm -f src/tutorial/GNUmakefile
 
 %if %runselftest
   pushd src/test/regress
-    %{__make} all
+    %{__make} %{?_smp_mflags} all
     cp ../../../contrib/spi/refint.so .
     cp ../../../contrib/spi/autoinc.so .
     %{__make} MAX_CONNECTIONS=5 check
@@ -472,7 +472,7 @@ rm -f src/tutorial/GNUmakefile
 
 %if %test
   pushd src/test/regress
-    %{__make} all
+    %{__make} %{?_smp_mflags} all
   popd
 %endif
 

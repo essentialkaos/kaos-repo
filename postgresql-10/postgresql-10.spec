@@ -499,7 +499,7 @@ rm -f src/tutorial/GNUmakefile
 
 run_testsuite()
 {
-  make -C "$1" MAX_CONNECTIONS=5 check && return 0
+  %{__make} -C "$1" MAX_CONNECTIONS=5 check && return 0
 
   test_failure=1
 
@@ -516,7 +516,7 @@ run_testsuite()
 
 %if %runselftest
   pushd src/test/regress
-    %{__make} all
+    %{__make} %{?_smp_mflags} all
     cp ../../../contrib/spi/refint.so .
     cp ../../../contrib/spi/autoinc.so .
     %{__make} MAX_CONNECTIONS=5 check
@@ -532,7 +532,7 @@ run_testsuite()
 
 %if %test
   pushd src/test/regress
-    %{__make} all
+    %{__make} %{?_smp_mflags} all
   popd
 %endif
 
