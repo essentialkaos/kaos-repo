@@ -87,7 +87,7 @@ popd
 %install
 rm -rf %{buildroot}
 
-%{__make} -C build install DESTDIR=%{buildroot}
+%{make_install} -C build
 
 rm %{buildroot}%{_libdir}/*.la
 
