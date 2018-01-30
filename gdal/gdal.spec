@@ -184,7 +184,9 @@ export CFLAGS="$RPM_OPT_FLAGS -fpic"
 %install
 rm -rf %{buildroot}
 
-%{__make} %{?_smp_mflags} install install-man DESTDIR=%{buildroot} INST_MAN=%{_mandir}
+%{make_install}
+
+%{__make} install-man DESTDIR=%{buildroot} INST_MAN=%{_mandir}
 
 rm -rf _html
 cp -a html _html
@@ -193,8 +195,9 @@ cp -a ogr/html _html/ogr
 # fix python installation path
 sed -i 's|setup.py install|setup.py install --prefix=%{_prefix} --root=%{buildroot}|' swig/python/GNUmakefile
 
-%{__make} DESTDIR=%{buildroot} install
-%{__make} DESTDIR=%{buildroot} INST_MAN=%{_mandir} install-man
+%{make_install}
+
+%{__make} install-man DESTDIR=%{buildroot} INST_MAN=%{_mandir}
 
 # cleanup junks
 rm -rf %{buildroot}%{_includedir}/%{name}/%{name}

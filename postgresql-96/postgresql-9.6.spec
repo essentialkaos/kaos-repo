@@ -675,6 +675,7 @@ fi
 # postgres' .bash_profile.
 # We now don't install .bash_profile as we used to in pre 9.0. Instead, use cat,
 # so that package manager will be happy during upgrade to new major version.
+# perfecto:absolve 3
 echo "[[ -f /etc/profile ]] && source /etc/profile
 PGDATA=/var/lib/pgsql/%{majorver}/data
 export PGDATA" > %{_sharedstatedir}/%{shortname}/.bash_profile

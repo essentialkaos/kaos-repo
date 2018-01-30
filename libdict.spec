@@ -29,6 +29,12 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+%define __ldconfig        %{_sbin}/ldconfig
+
 ################################################################################
 
 %define shortname         dict
@@ -37,7 +43,7 @@
 
 Summary:         ANSI C library of key-value data structures with generic interfaces
 Name:            lib%{shortname}
-Version:         0.2.1
+Version:         0.3.0
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -87,9 +93,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+%{__ldconfig}
 
-%postun -p /sbin/ldconfig
+%postun
+%{__ldconfig}
 
 ################################################################################
 
@@ -107,5 +115,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Mar 13 2014 Anton Novojilov <andy@essentialkaos.com> - 0.2.1-0
+* Thu Mar 13 2014 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
 - Initial build

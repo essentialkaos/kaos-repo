@@ -26,6 +26,12 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+%define __ldconfig        %{_sbin}/ldconfig
+
 ################################################################################
 
 Summary:         Jansson JSON Library
@@ -68,7 +74,10 @@ Header files for Jansson JSON Library
 %setup -q
 
 %build
-%{_configure} --libdir=%{_libdir} --includedir=%{_includedir} --disable-static
+%{_configure} --libdir=%{_libdir} \
+              --includedir=%{_includedir} \
+              --disable-static
+
 %{__make} %{?_smp_mflags}
 
 %check
@@ -77,17 +86,18 @@ Header files for Jansson JSON Library
 %install
 rm -rf %{buildroot}
 
-%{__make} install INSTALL="install -p" DESTDIR="%{buildroot}"
+%{make_install} INSTALL="install -p"
+
 rm -f %{buildroot}%{_libdir}/*.la
 
 %clean
 rm -rf %{buildroot}
 
 %post
-/sbin/ldconfig
+%{__ldconfig}
 
 %postun
-/sbin/ldconfig
+%{__ldconfig}
 
 ################################################################################
 

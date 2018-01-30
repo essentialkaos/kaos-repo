@@ -452,6 +452,7 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/zabbix.conf
 %endif
 
 # generate config files
+# perfecto:absolve 6
 cat conf/zabbix_agentd.conf | sed \
         -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_agentd.pid' \
         -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_agentd.log|g' \
@@ -459,6 +460,7 @@ cat conf/zabbix_agentd.conf | sed \
         -e '/^# Include=$/a \\nInclude=%{_sysconfdir}/zabbix/zabbix_agentd.d/' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_agentd.conf
 
+# perfecto:absolve 12
 cat conf/zabbix_server.conf | sed \
         -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_server.pid' \
         -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
@@ -471,6 +473,7 @@ cat conf/zabbix_server.conf | sed \
         -e '/^# SocketDir=.*/a \\nSocketDir=/var/run/zabbix' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_server.conf
 
+# perfecto:absolve 10
 cat conf/zabbix_proxy.conf | sed \
         -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_proxy.pid' \
         -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_proxy.log|g' \
