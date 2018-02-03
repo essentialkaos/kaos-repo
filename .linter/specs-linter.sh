@@ -26,7 +26,7 @@ main() {
 
 # Donwload latest version of perfecto
 downloadPerfecto() {
-  wget https://apps.kaos.io/perfecto/latest/linux/x86_64/perfecto
+  wget https://apps.kaos.st/perfecto/latest/linux/x86_64/perfecto
   
   if [[ $? -ne 0 ]] ; then
     exit 1
