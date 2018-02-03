@@ -1,6 +1,6 @@
 [kaos-testing]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
-baseurl=https://yum.kaos.io/$releasever/testing/$basearch
+baseurl=https://yum.kaos.st/$releasever/testing/$basearch
 failovermethod=priority
 priority=1
 enabled=0
@@ -9,7 +9,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 
 [kaos-testing-src]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for RHEL$releasever/CentOS$releasever - $basearch
-baseurl=https://yum.kaos.io/$releasever/testing/SRPMS
+baseurl=https://yum.kaos.st/$releasever/testing/SRPMS
 failovermethod=priority
 priority=1
 enabled=0

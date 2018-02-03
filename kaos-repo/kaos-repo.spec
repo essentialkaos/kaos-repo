@@ -25,7 +25,7 @@
 
 Summary:         ESSENTIAL KAOS Public Repo
 Name:            kaos-repo
-Version:         8.0
+Version:         9.0
 Release:         0%{?dist}
 License:         EKOL
 Vendor:          ESSENTIALKAOS
@@ -99,6 +99,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 01 2018 Anton Novojilov <andy@essentialkaos.com> - 9.0-0
+- Migrated from kaos.io to kaos.st
+
 * Thu Mar 23 2017 Anton Novojilov <andy@essentialkaos.com> - 8.0-0
 - Dropped support of x32 arch
 
