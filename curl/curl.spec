@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.57.0
+Version:              7.58.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,92 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 7.58.0-0
+- new libssh-powered SSH SCP/SFTP back-end
+- curl-config: add --ssl-backends
+- http2: fix incorrect trailer buffer size
+- http: prevent custom Authorization headers in redirects
+- travis: add boringssl build
+- examples/xmlstream.c: don't switch off CURL_GLOBAL_SSL
+- SSL: Avoid magic allocation of SSL backend specific data
+- lib: don't export all symbols, just everything curl_*
+- libssh2: send the correct CURLE error code on scp file not found
+- libssh2: return CURLE_UPLOAD_FAILED on failure to upload
+- openssl: enable pkcs12 in boringssl builds
+- libssh2: remove dead code from SSH_SFTP_QUOTE
+- sasl_getmesssage: make sure we have a long enough string to pass
+- conncache: fix several lock issues
+- threaded-shared-conn.c: new example
+- conncache: only allow multiplexing within same multi handle
+- configure: check for netinet/in6.h
+- URL: tolerate backslash after drive letter for FILE:
+- openldap: add commented out debug possibilities
+- include: get netinet/in.h before linux/tcp.h
+- CONNECT: keep close connection flag in http_connect_state struct
+- BINDINGS: another PostgreSQL client
+- curl: limit -# update frequency for unknown total size
+- configure: add AX_CODE_COVERAGE only if using gcc
+- curl.h: remove incorrect comment about ERRORBUFFER
+- openssl: improve data-pending check for https proxy
+- curl: remove __EMX__ #ifdefs
+- CURLOPT_PRIVATE.3: fix grammar
+- sftp: allow quoted commands to use relative paths
+- CURLOPT_DNS_CACHE_TIMEOUT.3: see also CURLOPT_RESOLVE
+- RESOLVE: output verbose text when trying to set a duplicate name
+- openssl: Disable file buffering for Win32 SSLKEYLOGFILE
+- multi_done: prune DNS cache
+- tests: update .gitignore for libtests
+- tests: mark data files as non-executable in git
+- CURLOPT_DNS_LOCAL_IP4.3: fixed the "SEE ALSO" to not self-reference
+- curl.1: documented two missing valid exit codes
+- curl.1: mention http:// and https:// as valid proxy prefixes
+- vtls: replaced getenv() with curl_getenv()
+- setopt: less *or equal* than INT_MAX/1000 should be fine
+- examples/smtp-mail.c: use separate defines for options and mail
+- curl: support >256 bytes warning messsages
+- conncache: fix a return code
+- krb5: fix a potential access of uninitialized memory
+- rand: add a clang-analyzer work-around
+- CURLOPT_READFUNCTION.3: refer to argument with correct name
+- brotli: allow compiling with version 0.6.0
+- content_encoding: rework zlib_inflate
+- curl_easy_reset: release mime-related data
+- examples/rtsp: fix error handling macros
+- build-openssl.bat: Added support for VC15
+- build-wolfssl.bat: Added support for VC15
+- build: Added Visual Studio 2017 project files
+- winbuild: Added support for VC15
+- curl: Support size modifiers for --max-filesize
+- examples/cacertinmem: ignore cert-already-exists error
+- brotli: data at the end of content can be lost
+- curl_version_info.3: call the argument 'age'
+- openssl: fix memory leak of SSLKEYLOGFILE filename
+- build: remove HAVE_LIMITS_H check
+- --mail-rcpt: fix short-text description
+- scripts: allow all perl scripts to be run directly
+- progress: calculate transfer speed on milliseconds if possible
+- system.h: check __LONG_MAX__ for defining curl_off_t
+- easy: fix connection ownership in curl_easy_pause
+- setopt: reintroduce non-static Curl_vsetopt() for OS400 support
+- setopt: fix SSLVERSION to allow CURL_SSLVERSION_MAX_ values
+- configure.ac: append extra linker flags instead of prepending them
+- HTTP: bail out on negative Content-Length: values
+- docs: comment about CURLE_READ_ERROR returned by curl_mime_filedata
+- mime: clone mime tree upon easy handle duplication
+- openssl: enable SSLKEYLOGFILE support by default
+- smtp/pop3/imap_get_message: decrease the data length too...
+- CURLOPT_TCP_NODELAY.3: fix typo
+- SMB: fix numeric constant suffix and variable types
+- ftp-wildcard: fix matching an empty string with "*[^a]"
+- curl_fnmatch: only allow 5 '*' sections in a single pattern
+- openssl: fix potential memory leak in SSLKEYLOGFILE logic
+- SSH: Fix state machine for ssh-agent authentication
+- examples/url2file.c: add missing curl_global_cleanup() call
+- http2: don't close connection when single transfer is stopped
+- libcurl-env.3: first version
+- curl: progress bar refresh, get width using ioctl()
+- CONNECT_TO: fail attempt to set an IPv6 numerical without IPv6 support
+
 * Wed Nov 29 2017 Anton Novojilov <andy@essentialkaos.com> - 7.57.0-0
 - auth: add support for RFC7616 - HTTP Digest access authentication
 - share: add support for sharing the connection cache
