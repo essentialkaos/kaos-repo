@@ -49,6 +49,7 @@ BuildRequires:      gcc-c++ libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{shortname} = %{version}-%{release}
+Provides:           %{name}(engine) = %{version}-%{release}
 Provides:           npm = %{version}-%{release}
 
 ################################################################################
@@ -117,5 +118,8 @@ export CXX=clang++
 ################################################################################
 
 %changelog
+* Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-1
+- Add nodejs(engine) provides tag
+
 * Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
 - Initial build
