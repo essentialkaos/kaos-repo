@@ -181,6 +181,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.7.2-4
+- Fixed typo with systemd unit description
+
 * Thu Dec 07 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-3
 - Fixed bug with searching process pid in init script
 
