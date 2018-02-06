@@ -10,7 +10,7 @@ main() {
   local has_errors
 
   for spec in $(find . -name '*.spec' | sort) ; do
-    ./perfecto -e error -f tiny -c "$1" "$spec"
+    ./perfecto -f tiny -c "$1" "$spec"
 
     if [[ $? -ne 0 && -z "$has_errors" ]] ; then
       has_errors=true
