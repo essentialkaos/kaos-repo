@@ -30,8 +30,8 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.5.2
-Release:            1%{?dist}
+Version:            1.6.1
+Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                http://elixir-lang.org
@@ -93,6 +93,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Updated to latest version
+
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
+- Updated to latest version
+
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
+- Updated to latest version
+
 * Wed Oct 25 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-1
 - Fixed Erlang OTP version dependency
 
