@@ -21,7 +21,7 @@
 
 Summary:            Libraries for the Unidata network Common Data Form
 Name:               netcdf
-Version:            4.5.0
+Version:            4.6.0
 Release:            0%{?dist}
 License:            NetCDF
 Group:              Applications/Engineering
@@ -145,6 +145,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.6.0-0
+- Updated to latest release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.0-0
 - Updated to latest release
 

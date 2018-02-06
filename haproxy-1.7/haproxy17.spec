@@ -52,7 +52,7 @@
 
 %define lua_ver           5.3.4
 %define pcre_ver          8.41
-%define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
+%define libre_ver         2.5.0
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -60,8 +60,8 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.7.9
-Release:           1%{?dist}
+Version:           1.7.10
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -75,7 +75,7 @@ Source5:           %{name}.service
 
 Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source12:          https://boringssl.googlesource.com/boringssl/+archive/%{boringssl_ver}.tar.gz
+Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
@@ -127,7 +127,7 @@ mkdir boringssl
 
 %{__tar} xzvf %{SOURCE10}
 %{__tar} xzvf %{SOURCE11}
-%{__tar} xzvf %{SOURCE12} -C boringssl
+%{__tar} xzvf %{SOURCE12}
 %{__tar} xzvf %{SOURCE13}
 %{__tar} xzvf %{SOURCE14}
 
@@ -142,21 +142,13 @@ export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-# Static BoringSSL build
-mkdir boringssl/build
-
-pushd boringssl/build &> /dev/null
-  cmake ../
+# Static LibreSSL build
+pushd libressl-%{libre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
+  %{__make} install
 popd
-
-mkdir -p "boringssl/.openssl/lib"
-
-pushd boringssl/.openssl &> /dev/null
-  ln -s ../include
-popd
-
-cp boringssl/build/crypto/libcrypto.a boringssl/build/ssl/libssl.a boringssl/.openssl/lib
 
 # Static NCurses build
 pushd ncurses-%{ncurses_ver}
@@ -306,8 +298,64 @@ fi
 ################################################################################
 
 %changelog
-* Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.9-1
-- Migrated from LibreSSL to BoringSSL
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.10-0
+- BUG/MEDIUM: connection: remove useless flag CO_FL_DATA_RD_SH
+- BUG/MEDIUM: lua: HTTP services must take care of body-less status codes
+- BUG/MEDIUM: stream: properly set the required HTTP analysers on use-service
+- BUG/MEDIUM: http: Fix a regression bug when a HTTP response is in TUNNEL mode
+- BUG/MEDIUM: epoll: ensure we always consider HUP and ERR
+- BUG/MEDIUM: http: Close streams for connections closed before a redirect
+- BUG/MINOR: Lua: The socket may be destroyed when we try to access.
+- BUG/MEDIUM: compression: Fix check on txn in smp_fetch_res_comp_algo
+- BUG/MINOR: compression: Check response headers before http-response rules eval
+- BUG/MINOR: log: fixing small memory leak in error code path.
+- BUG/MINOR: contrib/halog: fixing small memory leak
+- BUG/MEDIUM: tcp/http: set-dst-port action broken
+- BUG/MEDIUM: tcp-check: properly indicate polling state before performing I/O
+- BUG/MINOR: tcp-check: don't quit with pending data in the send buffer
+- BUG/MEDIUM: tcp-check: don't call tcpcheck_main() from the I/O handlers!
+- BUG/MINOR: tcp-check: don't initialize then break a connection starting with
+  a comment
+- BUG/MEDIUM: http: Return an error when url_dec sample converter failed
+- BUG/MAJOR: stream-int: don't re-arm recv if send fails
+- DOC: 51d: add 51Degrees git URL that points to release version 3.2.12.12
+- DOC: 51d: Updated git URL and instructions for getting Hash Trie data files.
+- DOC: fix some typos
+- BUILD/MINOR: 51d: fix warning when building with 51Degrees release version
+  3.2.12.12
+- MINOR: tcp-check: make tcpcheck_main() take a check, not a connection
+- MINOR: checks: don't create then kill a dummy connection before tcp-checks
+- DOC: 1.7 is stable
+- BUG/MEDIUM: ssl: fix OCSP expiry calculation
+- MINOR: server: Handle weight increase in consistent hash.
+- BUG/MINOR: stats: Clear a bit more counters with in
+  cli_parse_clear_counters().
+- BUG/MINOR: ssl: ocsp response with 'revoked' status is correct
+- BUG/MINOR: ssl: OCSP_single_get0_status can return -1
+- BUG/MINOR: cli: restore "set ssl tls-key" command
+- BUG/MEDIUM: prevent buffers being overwritten during build_logline() execution
+- BUG/MINOR: spoe: Don't compare engine name and SPOE scope when both are NULL
+- BUG/MINOR: dns: Fix CLI keyword declaration
+- BUG/MINOR: mailers: Fix a memory leak when email alerts are released
+- BUG/MINOR: cli: do not perform an invalid action on "set server check-port"
+- BUG/MEDIUM: stream: don't ignore res.analyse_exp anymore
+- MEDIUM: http: always reject the "PRI" method
+- BUG/MEDIUM: deviceatlas: ignore not valuable HTTP request data
+- BUG/MAJOR: stream: ensure analysers are always called upon close
+- BUG/MEDIUM: deinit: correctly deinitialize the proxy and global listener tasks
+- BUG/MINOR: Use crt_base instead of ca_base when crt is parsed on a server line
+- BUG/MINOR: stream: fix tv_request calculation for applets
+- BUG/MINOR: listener: Allow multiple "process" options on "bind" lines
+- DOC/MINOR: intro: typo, wording, formatting fixes
+- CONTRIB: halog: Add help text for -s switch in halog program
+- CONTRIB: iprange: Fix compiler warning in iprange.c
+- CONTRIB: halog: Fix compiler warnings in halog.c
+- BUG/MINOR: http: properly detect max-age=0 and s-maxage=0 in responses
+- BUG/MEDIUM: kqueue: Don't bother closing the kqueue after fork.
+- BUG/MEDIUM: peers: set NOLINGER on the outgoing stream interface
+- BUG/MEDIUM: http: don't disable lingering on requests with tunnelled responses
+- BUG/MEDIUM: lua: fix crash when using bogus mode in register_service()
+- BUG/MEDIUM: http: don't automatically forward request close
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.9-0
 - BUG/MINOR: peers: peer synchronization issue (with several peers sections).

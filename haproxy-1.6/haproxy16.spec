@@ -52,7 +52,7 @@
 
 %define lua_ver           5.3.4
 %define pcre_ver          8.41
-%define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
+%define libre_ver         2.5.0
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -60,8 +60,8 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.13
-Release:           3%{?dist}
+Version:           1.6.14
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -75,7 +75,7 @@ Source5:           %{name}.service
 
 Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source12:          https://boringssl.googlesource.com/boringssl/+archive/%{boringssl_ver}.tar.gz
+Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
@@ -127,7 +127,7 @@ mkdir boringssl
 
 %{__tar} xzvf %{SOURCE10}
 %{__tar} xzvf %{SOURCE11}
-%{__tar} xzvf %{SOURCE12} -C boringssl
+%{__tar} xzvf %{SOURCE12}
 %{__tar} xzvf %{SOURCE13}
 %{__tar} xzvf %{SOURCE14}
 
@@ -142,21 +142,13 @@ export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-# Static BoringSSL build
-mkdir boringssl/build
-
-pushd boringssl/build &> /dev/null
-  cmake ../
+# Static LibreSSL build
+pushd libressl-%{libre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
+  %{__make} install
 popd
-
-mkdir -p "boringssl/.openssl/lib"
-
-pushd boringssl/.openssl &> /dev/null
-  ln -s ../include
-popd
-
-cp boringssl/build/crypto/libcrypto.a boringssl/build/ssl/libssl.a boringssl/.openssl/lib
 
 # Static NCurses build
 pushd ncurses-%{ncurses_ver}
@@ -306,8 +298,68 @@ fi
 ################################################################################
 
 %changelog
-* Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-3
-- Migrated from LibreSSL to BoringSSL
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.14-0
+- BUG/MINOR: Wrong peer task expiration handling during synchronization
+  processing.
+- BUG/MEDIUM: http: Drop the connection establishment when a redirect is
+  performed
+- BUG/MEDIUM: cfgparse: Check if tune.http.maxhdr is in the range 1..32767
+- BUG/MINOR: haproxy/cli : fix for solaris/illumos distros for CMSG* macros
+- BUG/MINOR: log: pin the front connection when front ip/ports are logged
+- BUG/MINOR: stream: flag TASK_WOKEN_RES not set if task in runqueue
+- BUG/MAJOR: map: fix segfault during 'show map/acl' on cli.
+- DOC: fix references to the section about time format.
+- BUG/MEDIUM: map/acl: fix unwanted flags inheritance.
+- BUG/MINOR: stream: Don't forget to remove CF_WAKE_ONCE flag on response
+  channel
+- BUG/MINOR: http: properly handle all 1xx informational responses
+- BUG/MINOR: peers: peer synchronization issue (with several peers sections).
+- BUG/MINOR: Fix the sending function in Lua's cosocket
+- BUG/MINOR: lua: In error case, the safe mode is not removed
+- BUG/MINOR: lua: executes the function destroying the Lua session in safe mode
+- BUG/MAJOR: lua/socket: resources not detroyed when the socket is aborted
+- BUG/MEDIUM: lua: bad memory access
+- DOC: update CONTRIBUTING regarding optional parts and message format
+- DOC: update the list of OpenSSL versions in the README
+- DOC: Updated 51Degrees git URL to point to a stable version.
+- BUG/MINOR: lua: always detach the tcp/http tasks before freeing them
+- BUG/MEDIUM: connection: remove useless flag CO_FL_DATA_RD_SH
+- BUG/MEDIUM: lua: HTTP services must take care of body-less status codes
+- BUG/MEDIUM: stream: properly set the required HTTP analysers on use-service
+- BUG/MEDIUM: epoll: ensure we always consider HUP and ERR
+- BUG/MINOR: Lua: The socket may be destroyed when we try to access.
+- BUG/MINOR: contrib/halog: fixing small memory leak
+- BUG/MEDIUM: tcp-check: properly indicate polling state before performing I/O
+- BUG/MINOR: tcp-check: don't quit with pending data in the send buffer
+- BUG/MEDIUM: tcp-check: don't call tcpcheck_main() from the I/O handlers!
+- BUG/MINOR: tcp-check: don't initialize then break a connection starting with
+  a comment
+- BUG/MEDIUM: http: Return an error when url_dec sample converter failed
+- BUG/MAJOR: stream-int: don't re-arm recv if send fails
+- DOC: fix some typos
+- BUG/MEDIUM: ssl: fix OCSP expiry calculation
+- MINOR: server: Handle weight increase in consistent hash.
+- BUG/MINOR: stats: Clear a bit more counters with in
+  cli_parse_clear_counters().
+- BUG/MINOR: ssl: ocsp response with 'revoked' status is correct
+- BUG/MINOR: ssl: OCSP_single_get0_status can return -1
+- BUG/MEDIUM: prevent buffers being overwritten during build_logline() execution
+- BUG/MINOR: mailers: Fix a memory leak when email alerts are released
+- BUG/MEDIUM: stream: don't ignore res.analyse_exp anymore
+- MEDIUM: http: always reject the "PRI" method
+- BUG/MAJOR: stream: ensure analysers are always called upon close
+- BUG/MEDIUM: deinit: correctly deinitialize the proxy and global listener tasks
+- BUG/MINOR: Use crt_base instead of ca_base when crt is parsed on a server line
+- BUG/MINOR: listener: Allow multiple "process" options on "bind" lines
+- DOC/MINOR: intro: typo, wording, formatting fixes
+- CONTRIB: halog: Add help text for -s switch in halog program
+- CONTRIB: iprange: Fix compiler warning in iprange.c
+- CONTRIB: halog: Fix compiler warnings in halog.c
+- BUG/MINOR: http: properly detect max-age=0 and s-maxage=0 in responses
+- BUG/MEDIUM: kqueue: Don't bother closing the kqueue after fork.
+- BUG/MEDIUM: peers: set NOLINGER on the outgoing stream interface
+- BUG/MEDIUM: lua: fix crash when using bogus mode in register_service()
+- BUG/MEDIUM: http: don't automatically forward request close
 
 * Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-2
 - Fixed systemd ExecReload handler

@@ -34,13 +34,13 @@
 
 Summary:            Friendly interactive shell (FISh)
 Name:               fish
-Version:            2.6.0
+Version:            2.7.1
 Release:            0%{?dist}
 License:            GPL2
 Group:              System Environment/Shells
 URL:                http://fishshell.com
 
-Source0:            %{url}/files/%{version}/%{name}-%{version}.tar.gz
+Source0:            https://github.com/fish-shell/fish-shell/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -100,6 +100,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
+- Updated to latest stable release
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
 - Updated to latest stable release
 

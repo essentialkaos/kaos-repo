@@ -44,7 +44,7 @@
 Summary:           GDAL/OGR - a translator library for raster and vector geospatial data formats
 Name:              gdal
 Version:           1.11.5
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           MIT and BSD-3-Clause
 Group:             Development/Libraries
 URL:               http://www.gdal.org
@@ -397,6 +397,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-1
+- Rebuilt with latest version of netcdf
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0
 - Updated to latest release in 1.x
 

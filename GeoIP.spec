@@ -6,7 +6,7 @@
 
 Summary:         Library for country/city/organization to IP address or hostname mapping
 Name:            GeoIP
-Version:         1.6.11
+Version:         1.6.12
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         LGPLv2+
@@ -111,6 +111,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.12-0
+- Populate metro and area code when performing lookups in IPv6 City databases.
+  Previously this was only done when using IPv4 City databases.
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
 - Fix use of a NULL pointer when opening a corrupt database with
   GeoIP_open.

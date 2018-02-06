@@ -52,7 +52,7 @@
 
 %define lua_ver           5.3.4
 %define pcre_ver          8.41
-%define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
+%define boringssl_ver     376f3f172732dbc258c6f3294401d64dec763668
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.0
+Version:           1.8.3
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -156,7 +156,9 @@ pushd boringssl/.openssl &> /dev/null
   ln -s ../include
 popd
 
-cp boringssl/build/crypto/libcrypto.a boringssl/build/ssl/libssl.a boringssl/.openssl/lib
+cp boringssl/build/crypto/libcrypto.a \
+   boringssl/build/ssl/libssl.a \
+   boringssl/.openssl/lib
 
 # Static NCurses build
 pushd ncurses-%{ncurses_ver}
@@ -186,7 +188,10 @@ popd
 # Static PCRE build
 pushd pcre-%{pcre_ver}
   mkdir build
-  ./configure --prefix=$(pwd)/build --enable-shared=no --enable-utf8 --enable-jit
+  ./configure --prefix=$(pwd)/build \
+              --enable-shared=no \
+              --enable-utf8 \
+              --enable-jit
   %{__make} %{?_smp_mflags}
   %{__make} install
 popd
@@ -306,5 +311,130 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
+- BUG/MEDIUM: h2: properly handle and report some stream errors
+- BUG/MEDIUM: h2: improve handling of frames received on closed streams
+- DOC/MINOR: configuration: typo, formatting fixes
+- BUG/MEDIUM: h2: ensure we always know the stream before sending a reset
+- BUG/MEDIUM: mworker: don't close stdio several time
+- MINOR: don't close stdio anymore
+- BUG/MEDIUM: http: don't automatically forward request close
+- BUG/MAJOR: hpack: don't return direct references to the dynamic headers table
+- MEDIUM: h2: prepare a graceful shutdown when the frontend is stopped
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
+- BUG/MINOR: action: Don't check http capture rules when no id is defined
+- BUG/MAJOR: hpack: don't pretend large headers fit in empty table
+- BUG/MINOR: ssl: support tune.ssl.cachesize 0 again
+- BUG/MEDIUM: mworker: also close peers sockets in the master
+- BUG/MEDIUM: ssl engines: Fix async engines fds were not considered to fix fd
+  limit automatically.
+- BUG/MEDIUM: checks: a down server going to maint remains definitely stucked
+  on down state.
+- BUG/MEDIUM: peers: set NOLINGER on the outgoing stream interface
+- BUG/MEDIUM: h2: fix handling of end of stream again
+- MINOR: mworker: Update messages referencing exit-on-failure
+- MINOR: mworker: Improve wording in `void mworker_wait()`
+- CONTRIB: halog: Add help text for -s switch in halog program
+- BUG/MEDIUM: email-alert: don't set server check status from a email-alert task
+- BUG/MEDIUM: threads/vars: Fix deadlock in register_name
+- MINOR: systemd: remove comment about HAPROXY_STATS_SOCKET
+- DOC: notifications: add precisions about thread usage
+- BUG/MEDIUM: lua/notification: memory leak
+- MINOR: conn_stream: add new flag CS_FL_RCV_MORE to indicate pending data
+- BUG/MEDIUM: stream-int: always set SI_FL_WAIT_ROOM on CS_FL_RCV_MORE
+- BUG/MEDIUM: h2: automatically set CS_FL_RCV_MORE when the output buffer is
+  full
+- BUG/MEDIUM: h2: enable recv polling whenever demuxing is possible
+- BUG/MEDIUM: h2: work around a connection API limitation
+- BUG/MEDIUM: h2: debug incoming traffic in h2_wake()
+- MINOR: h2: store the demux padding length in the h2c struct
+- BUG/MEDIUM: h2: support uploading partial DATA frames
+- MINOR: h2: don't demand that a DATA frame is complete before processing it
+- BUG/MEDIUM: h2: don't switch the state to HREM before end of DATA frame
+- BUG/MEDIUM: h2: don't close after the first DATA frame on tunnelled responses
+- BUG/MEDIUM: http: don't disable lingering on requests with tunnelled responses
+- BUG/MEDIUM: h2: fix stream limit enforcement
+- BUG/MINOR: stream-int: don't try to receive again after receiving an EOS
+- BUG: MAJOR: lb_map: server map calculation broken
+- BUG: MINOR: http: don't check http-request capture id when len is provided
+- BUILD/MINOR: Makefile : enabling USE_CPU_AFFINITY
+- BUG/MEDIUM: mworker: Set FD_CLOEXEC flag on log fd
+- DOC/MINOR: intro: typo, wording, formatting fixes
+- MINOR: netscaler: respect syntax
+- MINOR: netscaler: remove the use of cip_magic only used once
+- MINOR: netscaler: rename cip_len to clarify its uage
+- BUG/MEDIUM: netscaler: use the appropriate IPv6 header size
+- BUG/MAJOR: netscaler: address truncated CIP header detection
+- CONTRIB: iprange: Fix compiler warning in iprange.c
+- CONTRIB: halog: Fix compiler warnings in halog.c
+- BUG/MINOR: h2: properly report a stream error on RST_STREAM
+- MINOR: mux: add flags to describe a mux's capabilities
+- MINOR: stream-int: set flag SI_FL_CLEAN_ABRT when mux supports clean aborts
+- BUG/MEDIUM: stream: don't consider abortonclose on muxes which close cleanly
+- MINOR: netscaler: check in one-shot if buffer is large enough for IP and TCP
+  header
+- MEDIUM: netscaler: do not analyze original IP packet size
+- MEDIUM: netscaler: add support for standard NetScaler CIP protocol
+- BUG/MEDIUM: checks: a server passed in maint state was not forced down.
+- BUG/MEDIUM: lua: fix crash when using bogus mode in register_service()
+- MINOR: http: adjust the list of supposedly cacheable methods
+- MINOR: http: update the list of cacheable status codes as per RFC7231
+- MINOR: http: start to compute the transaction's cacheability from the request
+- BUG/MINOR: http: do not ignore cache-control: public
+- BUG/MINOR: http: properly detect max-age=0 and s-maxage=0 in responses
+- BUG/MINOR: cache: do not force the TX_CACHEABLE flag before checking
+  cacheability
+- MINOR: http: add a function to check request's cache-control header field
+- BUG/MEDIUM: cache: do not try to retrieve host-less requests from the cache
+- BUG/MEDIUM: cache: replace old object on store
+- BUG/MEDIUM: cache: respect the request cache-control header
+- BUG/MEDIUM: cache: don't cache the response on no-cache="set-cookie"
+- BUG/MAJOR: connection: refine the situations where we don't send shutw()
+- BUG/MEDIUM: checks: properly set servers to stopping state on 404
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- BUG/MEDIUM: kqueue: Don't bother closing the kqueue after fork.
+- DOC: cache: update sections and fix some typos
+- BUILD/MINOR: deviceatlas: enable thread support
+- BUG/MEDIUM: tcp-check: Don't lock the server in tcpcheck_main
+- BUG/MEDIUM: ssl: don't allocate shctx several time
+- BUG/MEDIUM: cache: bad computation of the remaining size
+- BUILD: checks: don't include server.h
+- BUG/MEDIUM: stream: fix session leak on applet-initiated connections
+- BUILD/MINOR: haproxy : FreeBSD/cpu affinity needs pthread_np header
+- BUG/MINOR: ssl: CO_FL_EARLY_DATA removal is managed by stream
+- BUG/MEDIUM: threads/peers: decrement, not increment jobs on quitting
+- BUG/MEDIUM: h2: don't report an error after parsing a 100-continue response
+- BUG/MEDIUM: peers: fix some track counter rules dont register entries for
+  sync.
+- BUG/MAJOR: thread/peers: fix deadlock on peers sync.
+- BUILD/MINOR: haproxy: compiling config cpu parsing handling when needed
+- BUG/MINOR: mworker: fix validity check for the pipe FDs
+- BUG/MINOR: mworker: detach from tty when in daemon mode
+- MINOR: threads: Fix pthread_setaffinity_np on FreeBSD.
+- BUG/MAJOR: thread: Be sure to request a sync between threads only once at a
+  time
+- BUILD: Fix LDFLAGS vs. LIBS re linking order in various makefiles
+- BUG/MEDIUM: checks: Be sure we have a mux if we created a cs.
+- BUG/MINOR: hpack: fix debugging output of pseudo header names
+- BUG/MINOR: hpack: must reject huffman literals padded with more than 7 bits
+- BUG/MINOR: hpack: reject invalid header index
+- BUG/MINOR: hpack: dynamic table size updates are only allowed before headers
+- BUG/MAJOR: h2: correctly check the request length when building an H1 request
+- BUG/MINOR: h2: immediately close if receiving GOAWAY after the last stream
+- BUG/MINOR: h2: try to abort closed streams as soon as possible
+- BUG/MINOR: h2: ":path" must not be empty
+- BUG/MINOR: h2: fix a typo causing PING/ACK to be responded to
+- BUG/MINOR: h2: the TE header if present may only contain trailers
+- BUG/MEDIUM: h2: enforce the per-connection stream limit
+- BUG/MINOR: h2: do not accept SETTINGS_ENABLE_PUSH other than 0 or 1
+- BUG/MINOR: h2: reject incorrect stream dependencies on HEADERS frame
+- BUG/MINOR: h2: properly check PRIORITY frames
+- BUG/MINOR: h2: reject response pseudo-headers from requests
+- BUG/MEDIUM: h2: remove connection-specific headers from request
+- BUG/MEDIUM: h2: do not accept upper case letters in request header names
+- BUG/MINOR: h2: use the H2_F_DATA_* macros for DATA frames
+
 * Wed Nov 29 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.8.0-0
 - Initial build
