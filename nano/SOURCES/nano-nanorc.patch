@@ -1,8 +1,8 @@
-diff -urN nano-2.8.7-orig/doc/sample.nanorc.in nano-2.8.7/doc/sample.nanorc.in
---- nano-2.8.7-orig/doc/sample.nanorc.in	2017-09-17 23:47:28.400490850 +0200
-+++ nano-2.8.7/doc/sample.nanorc.in	2017-09-17 23:52:13.000000000 +0200
-@@ -69,7 +69,7 @@
- # set justifytrim
+diff -urN nano-2.9.3-orig/doc/sample.nanorc.in nano-2.9.3/doc/sample.nanorc.in
+--- nano-2.9.3-orig/doc/sample.nanorc.in	2018-02-07 13:55:37.617535105 +0300
++++ nano-2.9.3/doc/sample.nanorc.in	2018-02-07 13:58:31.000000000 +0300
+@@ -58,7 +58,7 @@
+ # set historylog
  
  ## Display line numbers to the left of the text.
 -# set linenumbers
@@ -10,7 +10,7 @@ diff -urN nano-2.8.7-orig/doc/sample.nanorc.in nano-2.8.7/doc/sample.nanorc.in
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -108,7 +108,7 @@
+@@ -97,7 +97,7 @@
  # set nonewlines
  
  ## Don't wrap text at all.
@@ -19,7 +19,7 @@ diff -urN nano-2.8.7-orig/doc/sample.nanorc.in nano-2.8.7/doc/sample.nanorc.in
  
  ## Set operating directory.  nano will not read or write files outside
  ## this directory and its subdirectories.  Also, the current directory
-@@ -162,20 +162,20 @@
+@@ -151,20 +151,20 @@
  # set smarthome
  
  ## Use smooth scrolling as the default.
@@ -44,7 +44,7 @@ diff -urN nano-2.8.7-orig/doc/sample.nanorc.in nano-2.8.7/doc/sample.nanorc.in
  
  ## Convert typed tabs to spaces.
  # set tabstospaces
-@@ -206,10 +206,10 @@
+@@ -198,10 +198,10 @@
  
  ## Paint the interface elements of nano.
  ## These are examples; by default there are no colors.
@@ -59,7 +59,7 @@ diff -urN nano-2.8.7-orig/doc/sample.nanorc.in nano-2.8.7/doc/sample.nanorc.in
  # set keycolor cyan
  # set functioncolor green
  ## In root's .nanorc you might want to use:
-@@ -263,7 +263,7 @@
+@@ -255,7 +255,7 @@
  ## them easier to remember and faster to type using nano's -Y option.
  ##
  ## To include all existing syntax definitions, you can do:

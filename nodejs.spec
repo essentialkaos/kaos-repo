@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            8.9.1
+Version:            8.9.4
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -118,8 +118,11 @@ export CXX=clang++
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.9.4-0
+- Updated to latest stable release
+
 * Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-1
 - Add nodejs(engine) provides tag
 
 * Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
-- Initial build
+- Initial build for 8.x

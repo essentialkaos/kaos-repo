@@ -43,7 +43,7 @@
 
 Summary:         Minimalistic Netlink communication library
 Name:            libmnl
-Version:         1.0.3
+Version:         1.0.4
 Release:         0%{?dist}
 License:         LGPL-2.1+
 Group:           System Environment/Libraries
@@ -115,5 +115,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.4-0
+- Updated to latest stable release
+
 * Fri Oct 10 2014 Anton Novojilov <andy@essentialkaos.com> - 1.0.3-0
 - Initial build

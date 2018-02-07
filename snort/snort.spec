@@ -59,7 +59,7 @@
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
-Version:         2.9.11
+Version:         2.9.11.1
 Release:         0%{?dist}
 License:         GPL
 Group:           Applications/Internet
@@ -218,6 +218,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.11.1-0
+- Updated to latest version
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.11-0
 - Updated to latest version
 

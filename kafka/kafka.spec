@@ -57,7 +57,7 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             0.11.0.1
+Version:             1.0.0
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
@@ -72,7 +72,7 @@ Source4:             %{name}.sysconfig
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:           noarch
 
-Requires:            jre8 kaosv
+Requires:            kaosv
 
 BuildRequires:       jdk8 gradle
 
@@ -169,6 +169,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
+- Updated to latest release
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.0.1-0
 - Updated to latest release
 

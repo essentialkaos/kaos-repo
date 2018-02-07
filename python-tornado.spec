@@ -51,7 +51,7 @@
 
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
-Version:            4.5.2
+Version:            4.5.3
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
@@ -122,6 +122,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-0
+- Updated to latest version
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.2-0
 - Updated to latest version
 

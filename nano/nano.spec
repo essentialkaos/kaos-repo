@@ -35,7 +35,7 @@
 ################################################################################
 
 %define main_version 2.9
-%define patch        0
+%define patch        3
 
 ################################################################################
 
@@ -131,6 +131,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.3-0
+- Updated to latest stable release
+
 * Mon Nov 20 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.0-0
 - Updated to latest stable release
 

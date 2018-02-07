@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.4
+Version:              3.4.6
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -83,9 +83,11 @@ BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
 BuildRequires:        pcre-devel
 
 %if 0%{?rhel} >= 7
-BuildRequires:        systemd libevent-devel < 2.1
+Requires:             libevent
+BuildRequires:        systemd libevent-devel
 %else
-BuildRequires:        libevent-devel
+Requires:             libevent2
+BuildRequires:        libevent2-devel
 %endif
 
 ################################################################################

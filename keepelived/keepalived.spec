@@ -45,7 +45,7 @@
 
 Name:              keepalived
 Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           1.3.9
+Version:           1.4.1
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://www.keepalived.org
@@ -185,6 +185,12 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.1-0
+- Updated to latest release
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Updated to latest release
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.9-0
 - Updated to latest release
 

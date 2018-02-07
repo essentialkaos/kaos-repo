@@ -30,7 +30,7 @@
 
 Summary:             1394-based digital camera control library
 Name:                libdc1394
-Version:             2.2.4
+Version:             2.2.5
 Release:             0%{?dist}
 License:             LGPLv2+
 Group:               System Environment/Libraries
@@ -150,5 +150,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.5-0
+- Updated to latest stable release
+
 * Sat Nov 26 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.4-0
 - Initial build for kaos repo

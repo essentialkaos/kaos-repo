@@ -14,7 +14,7 @@
 
 Summary:              A general purpose library and file format for storing scientific data
 Name:                 hdf5
-Version:              1.8.19
+Version:              1.8.20
 Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
@@ -183,6 +183,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.20-0
+- Updated to latest stable release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.19-0
 - Updated to latest stable release
 

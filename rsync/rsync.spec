@@ -34,7 +34,7 @@
 
 Summary:            A program for synchronizing files over a network
 Name:               rsync
-Version:            3.1.2
+Version:            3.1.3
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/Internet
@@ -191,5 +191,8 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.1.3-0
+- Updated to latest stable release
+
 * Wed Feb 15 2017 Anton Novojilov <andy@essentialkaos.com> - 3.1.2-0
 - Initial build for kaos repository

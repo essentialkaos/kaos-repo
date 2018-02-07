@@ -45,8 +45,8 @@
 
 Summary:         Command line tool for managing Amazon S3 and CloudFront services
 Name:            s3cmd
-Version:         1.6.1
-Release:         1%{?dist}
+Version:         2.0.1
+Release:         0%{?dist}
 Group:           Applications/System
 License:         GPL
 URL:             http://s3tools.org/s3cmd
@@ -102,6 +102,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
+- Updated to latest release
+
 * Thu Mar 10 2016 Gleb Goncharov <yum@gongled.ru> - 1.6.1-1
 - Fixed incompatibility with CentOS/RHEL 7.x
 

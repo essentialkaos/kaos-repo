@@ -47,8 +47,8 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.7.2
-Release:           3%{?dist}
+Version:           1.8.1
+Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -181,6 +181,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated to latest stable release
+
 * Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.7.2-4
 - Fixed typo with systemd unit description
 

@@ -38,13 +38,13 @@
 ################################################################################
 
 %global pkgname           futures
-%define pypi_subpath      cc/26/b61e3a4eb50653e8a7339d84eeaa46d1e93b92951978873c220ae64d0733
+%define pypi_subpath      1f/9e/7b2ff7e965fc654592269f2906ade1c7d705f1bf25b7d469fa153f7d19eb
 
 ################################################################################
 
 Summary:            Backport of the concurrent.futures package from Python 3.2
 Name:               python-%{pkgname}
-Version:            3.1.1
+Version:            3.2.0
 Release:            0%{?dist}
 License:            BSD
 Group:              Development/Libraries
@@ -84,13 +84,16 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES LICENSE
+%doc LICENSE
 %{python_sitelib}/concurrent
 %{python_sitelib}/%{pkgname}-*.egg-info*
 
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2.0-0
+- Updated to latest stable release
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
 - Updated to latest stable release
 

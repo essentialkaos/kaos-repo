@@ -51,7 +51,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.3
+Version:                  1.5.4
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -227,6 +227,12 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.4-0
+- make -I argument less position dependent
+- external storage base commit
+- lru_crawler metadump output ends with "END\r\n"
+- fix: -o no_lru_crawler didn't work
+
 * Mon Nov 06 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.3-0
 - Added listen option to support bindings on IP address
 - Improved systemd unit file
