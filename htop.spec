@@ -2,7 +2,7 @@
 
 Summary:              Interactive process viewer
 Name:                 htop
-Version:              2.0.2
+Version:              2.1.0
 Release:              0%{?dist}
 License:              GPL
 Group:                Applications/System
@@ -47,6 +47,24 @@ htop is an interactive process viewer for Linux.
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.1.0-0
+- Linux: Delay accounting metrics
+- DragonFly BSD support
+- Support for real-time signals
+- 'c' key now works with threads as well
+- Session column renamed from SESN to SID
+- Improved UI for meter style selection
+- Improved code for constructing process tree
+- Compile-time option to disable setuid
+- Error checking of various standard library operations
+- Replacement of sprintf with snprintf
+- Linux: performance improvements in battery meter
+- Linux: update process TTY device
+- Linux: add support for sorting TASK_IDLE
+- Linux: add upper-bound to running process counter
+- BUGFIX: avoid crash when battery is removed
+- BUGFIX: macOS: fix infinite loop in tree view
+
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-0
 - Mac OS X: stop trying when task_for_pid fails for a process, stops spamming
   logs with errors
