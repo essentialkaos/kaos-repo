@@ -37,7 +37,7 @@
 
 Summary:          HTTP benchmarking tool
 Name:             wrk
-Version:          4.0.2
+Version:          4.1.0
 Release:          0%{?dist}
 License:          Apache 2.0
 Group:            Development/Tools
@@ -86,13 +86,16 @@ cp scripts/* %{buildroot}%{_loc_datarootdir}/%{name}/scripts/
 
 %files
 %defattr(-, root, root, 0755)
-%doc LICENSE README NOTICE
+%doc LICENSE README.md NOTICE
 %{_loc_datarootdir}/%{name}/scripts/*
 %{_bindir}/%{name}
 
 ################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
+- Updated to latest release
+
 * Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
 - Updated to latest release
 

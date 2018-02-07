@@ -43,8 +43,8 @@
 ################################################################################
 
 # Found X264_BUILD in (x264.h)
-%define pkg_build            152
-%define pkg_snapshot_date    20171117
+%define pkg_build            153
+%define pkg_snapshot_date    20180207
 %define pkg_snapshot_prefix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_prefix}
@@ -63,7 +63,7 @@ Source0:            http://ftp.videolan.org/pub/videolan/%{name}/snapshots/%{nam
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc gcc-c++ make nasm yasm gettext
+BuildRequires:      gcc gcc-c++ make nasm >= 2.13 yasm gettext
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -126,81 +126,23 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.153_20180207-0
+- Updated to latest stable snapshot
+
 * Tue Sep 19 2017 Anton Novojilov <andy@essentialkaos.com> - 0.152_20170918-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Wed Jul 12 2017 Anton Novojilov <andy@essentialkaos.com> - 0.151_20170711-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.150_20170709-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.149_20170321-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.148_20160905-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Mon Apr 18 2016 Gleb Goncharov <yum@gongled.ru> - 0.148_20160416-0
-- Update to latest stable snapshot
-
-* Mon Apr 07 2014 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.142-20_20140406.2245
-- Update to latest stable snapshot
-
-* Fri Nov 15 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.138-19_20130917.2245
-- Update to latest stable snapshot
-
-* Wed Sep 18 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.136-19_20130917.2245
-- Update to latest stable snapshot
-
-* Fri May 10 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.130-18_20130509.2245
-- Update to latest stable snapshot
-
-* Sat Nov 12 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.118-17_20111111.2245
-- Update to latest stable snapshot
-
-* Sat Jun 11 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.115-16_20110610.2245
-- Update to latest stable snapshot
-
-* Wed Mar  9 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.114-15_20110308.2245
-- Update to latest stable snapshot
-
-* Sat Oct  2 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.106-13_20101001.2245
-- Update to latest git
-
-* Tue Jun 22 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.98-12_20100621.2245
-- Update to latest git
-
-* Thu Apr  1 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.92-12_20100401.2245
-- Update to latest git
-
-* Fri Nov 20 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.79-11_20091119.2245
-- Update to latest git
-
-* Mon Jul 20 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.68-10_20090719.2245
-- Update to latest git
-
-* Sun Nov 16 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.65-8_20081108.2245
-- x264-libs from a 3rd party repo generates conflicts
-
-* Sun Nov  9 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.65-6_20081108.2245
-- Update to latest git
-
-* Fri Jun 27 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20080626_2245-5
-- Update to latest git
-
-* Tue Feb 26 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20080225_2245-5
-- Update to latest svn
-
-* Sun Apr 15 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070414_2245-4
-- Update to latest svn
-
-* Wed Feb  7 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070206_2245-3
-- Update to latest svn
-
-* Wed Jan  3 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070102_2245-2
-- Update to latest svn
-
-* Wed Sep 13 2006 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20060912_2245-1
-- Initial build
-
+- Updated to latest stable snapshot

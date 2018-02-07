@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/future-architect/vuls
-# rpmbuilder:tag       v0.4.1
+# rpmbuilder:tag       v0.4.2
 
 ################################################################################
 
@@ -56,14 +56,14 @@
 %define goval_dir         %{_opt}/goval-dictionary
 %define cved_dir          %{_opt}/cve-dictionary
 
-%define goval_version     0.0.1
-%define gocve_version     0.1.1
+%define goval_version     0.0.2
+%define gocve_version     0.1.2
 
 ################################################################################
 
 Summary:         VULnerability Scanner
 Name:            vuls
-Version:         0.4.1
+Version:         0.4.2
 Release:         0%{?dist}
 Group:           Applications/System
 License:         GPLv3
@@ -86,7 +86,7 @@ Source22:        cved-server.sysconfig
 Source23:        cve-dictionary-fetch.cron
 Source24:        cve-dictionary-fetch
 
-BuildRequires:   golang >= 1.8
+BuildRequires:   golang >= 1.9
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -104,7 +104,7 @@ Vulnerability scanner for Linux/FreeBSD, agentless, written in golang.
 %package -n cve-dictionary
 
 Summary:         CVE data fetcher and server for VULS
-Version:         0.1.1
+Version:         %{gocve_version}
 Release:         0%{?dist}
 Group:           Applications/System
 
@@ -126,7 +126,7 @@ server mode for easy querying.
 %package -n goval-dictionary
 
 Summary:         OVAL data fetcher and server for VULS
-Version:         0.0.1
+Version:         %{goval_version}
 Release:         0%{?dist}
 Group:           Applications/System
 
@@ -309,6 +309,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.4.2-0
+- Updated to latest stable release
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
 - Updated to latest stable release
 
