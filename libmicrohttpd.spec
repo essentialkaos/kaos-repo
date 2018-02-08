@@ -33,7 +33,7 @@
 
 Summary:         Lightweight library for embedding a webserver in applications
 Name:            libmicrohttpd
-Version:         0.9.55
+Version:         0.9.59
 Release:         0%{?dist}
 License:         GNU LGPL
 Group:           Development/Libraries
@@ -122,11 +122,13 @@ rm -rf %{buildroot}
 
 %post doc
 %{_sbin}/install-info %{_infodir}/microhttpd.info.gz %{_infodir}/dir || :
+%{_sbin}/install-info %{_infodir}/libmicrohttpd_performance_data.png.gz %{_infodir}/dir || :
 %{_sbin}/install-info %{_infodir}/microhttpd-tutorial.info.gz %{_infodir}/dir || :
 
 %preun doc
 if [[ $1 -eq 0 ]] ; then
   %{_sbin}/install-info --delete %{_infodir}/microhttpd.info.gz %{_infodir}/dir || :
+  %{_sbin}/install-info --delete %{_infodir}/libmicrohttpd_performance_data.png.gz %{_infodir}/dir || :
   %{_sbin}/install-info --delete %{_infodir}/microhttpd-tutorial.info.gz %{_infodir}/dir || :
 fi
 
@@ -154,6 +156,7 @@ fi
 %{_mandir}/man3/%{name}.3.gz
 %{_infodir}/%{name}.info.gz
 %{_infodir}/%{name}-tutorial.info.gz
+%{_infodir}/libmicrohttpd_performance_data.png.gz
 %doc AUTHORS README ChangeLog
 %doc examples
 %doc html
@@ -161,6 +164,18 @@ fi
 ################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.59-0
+- Updated to latest release
+
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.58-0
+- Updated to latest release
+
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.57-0
+- Updated to latest release
+
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.56-0
+- Updated to latest release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.55-0
 - Updated to latest release
 
