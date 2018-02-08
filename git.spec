@@ -270,6 +270,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 
 %files all
+%defattr(-,root,root,-)
 # No files for you!
 
 ################################################################################

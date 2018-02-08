@@ -94,15 +94,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
 # No files for you!
 
 %files -n libnghttp2
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc COPYING AUTHORS
 %{_libdir}/libnghttp2.so.*
 
 %files -n libnghttp2-devel
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc README.rst
 %{_includedir}/nghttp2
 %{_libdir}/pkgconfig/libnghttp2.pc

@@ -320,45 +320,59 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{_libdir}/%{name}/filters/*.so
 
 %files loader_lbm
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/lbm.so
 
 %files loader_jpeg
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/jpeg.so
 
 %files loader_png
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/png.so
 
 %files loader_argb
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/argb.so
 
 %files loader_bmp
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/bmp.so
 
 %files loader_ff
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/ff.so
 
 %files loader_gif
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/gif.so
 
 %files loader_pnm
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/pnm.so
 
 %files loader_tga
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/tga.so
 
 %files loader_tiff
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/tiff.so
 
 %files loader_xpm
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/xpm.so
 
 %files loader_bz2
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/bz2.so
 
 %files loader_gz
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/zlib.so
 
 %files loader_id3
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/id3.so
 
 ################################################################################
