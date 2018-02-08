@@ -33,12 +33,9 @@
 ################################################################################
 
 %{?!with_python:      %global with_python      1}
-%{?!with_python3:     %global with_python3     1}
 %{?!with_munin:       %global with_munin       1}
 
-%if 0%{with_python} == 0
-%global with_python3 0
-%else
+%if 0%{with_python} == 1
 %if 0%{?rhel} <= 6
 %{!?__python2: %global __python2 /usr/bin/python2}
 %{!?python2_sitelib: %global python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
@@ -82,10 +79,6 @@ BuildRequires:      libevent-devel systemd pkgconfig
 
 %if 0%{with_python}
 BuildRequires:      python2-devel swig
-%endif
-
-%if 0%{with_python3}
-BuildRequires:      python34-devel
 %endif
 
 Requires(post):     systemd
@@ -169,19 +162,6 @@ Python 2 modules and extensions for unbound
 
 ################################################################################
 
-%if 0%{with_python3}
-%package -n python3-unbound
-Summary:            Python 3 modules and extensions for unbound
-Group:              Applications/System
-
-Requires:           %{name}-libs = %{version}-%{release}
-
-%description -n python3-unbound
-Python 3 modules and extensions for unbound
-%endif
-
-################################################################################
-
 %prep
 %setup -qcn %{name}-%{version}
 
@@ -193,10 +173,6 @@ pushd %{name}-%{version}
 %endif
 cp -pr doc pythonmod libunbound ../
 popd
-
-%if 0%{?with_python3}
-cp -a %{name}-%{version}_python2 %{name}-%{version}_python3
-%endif # with_python3
 
 %build
 # This is needed to rebuild the configure script to support Python 3.x
@@ -234,27 +210,6 @@ pushd %{name}-%{version}
 popd
 %endif
 
-%if 0%{with_python3}
-pushd %{name}-%{version}_python3
-%configure --with-libevent \
-           --with-pthreads \
-           --with-ssl \
-           --disable-rpath \
-           --disable-static \
-           --enable-sha2 \
-           --disable-gost \
-           --enable-ecdsa \
-           --with-pythonmodule \
-           --with-pyunbound PYTHON=%{__python3} \
-           --with-conf-file=%{_sysconfdir}/%{name}/unbound.conf \
-           --with-pidfile=%{_localstatedir}/run/%{name}/%{name}.pid \
-           --with-rootkey-file=%{_sharedstatedir}/unbound/root.key
-
-%{__make} %{?_smp_mflags}
-%{__make} %{?_smp_mflags} streamtcp
-popd
-%endif
-
 %install
 rm -rf %{buildroot}
 
@@ -270,13 +225,6 @@ pushd %{name}-%{version}
 install -m 0755 streamtcp %{buildroot}%{_sbindir}/unbound-streamtcp
 
 %if 0%{with_python}
-popd
-%endif
-
-%if 0%{with_python3}
-pushd %{name}-%{version}_python3
-%{make_install} unbound-event-install
-install -m 0755 streamtcp %{buildroot}%{_sbindir}/unbound-streamtcp
 popd
 %endif
 
@@ -306,12 +254,9 @@ done
 pushd %{name}-%{version}_python2
 %endif
 
-%if 0%{with_python3}
-install -m 0644 testcode/streamtcp.1 \
-                %{buildroot}%{_mandir}/man1/unbound-streamtcp.1
-%endif
 install -Dm 0644 contrib/libunbound.pc \
                  %{buildroot}%{_libdir}/pkgconfig/libunbound.pc
+
 %if 0%{with_python}
 popd
 %endif
@@ -327,10 +272,6 @@ rm -f %{buildroot}%{_libdir}/*.la
 
 %if 0%{with_python}
 rm -f %{buildroot}%{python2_sitearch}/*.la
-%endif
-
-%if 0%{with_python3}
-rm -f %{buildroot}%{python3_sitearch}/*.la
 %endif
 
 for mpage in ub_ctx ub_result ub_ctx_create ub_ctx_delete ub_ctx_set_option ub_ctx_get_option ub_ctx_config ub_ctx_set_fwd ub_ctx_resolvconf ub_ctx_hosts ub_ctx_add_ta ub_ctx_add_ta_file ub_ctx_trustedkeys ub_ctx_debugout ub_ctx_debuglevel ub_ctx_async ub_poll ub_wait ub_fd ub_process ub_resolve ub_resolve_async ub_cancel ub_resolve_free ub_strerror ub_ctx_print_local_zones ub_ctx_zone_add ub_ctx_zone_remove ub_ctx_data_add ub_ctx_data_remove ; do
@@ -362,7 +303,7 @@ getent passwd unbound >/dev/null || useradd -r -g unbound -d %{_sysconfdir}/unbo
 %systemd_post unbound-anchor.timer
 
 if [[ "$1" -eq 1 ]] ; then
-    %{__sysctl} start unbound-anchor.timer &>/dev/null || :
+  %{__sysctl} start unbound-anchor.timer &>/dev/null || :
 fi
 
 %preun
@@ -423,15 +364,6 @@ fi
 %doc pythonmod/LICENSE
 %doc libunbound/python/examples/*
 %doc pythonmod/examples/*
-%endif
-
-%if 0%{with_python3}
-%files -n python3-unbound
-%defattr(-,root,root,-)
-%doc pythonmod/LICENSE
-%doc libunbound/python/examples/*
-%doc pythonmod/examples/*
-%{python3_sitearch}/*
 %endif
 
 %if 0%{with_munin}
