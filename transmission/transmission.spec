@@ -233,38 +233,38 @@ fi
 %files common
 %license COPYING
 %doc AUTHORS NEWS README
-%{_bindir}/transmission-remote
-%{_bindir}/transmission-create
-%{_bindir}/transmission-edit
-%{_bindir}/transmission-show
-%{_datadir}/transmission/
+%{_bindir}/%{name}-remote
+%{_bindir}/%{name}-create
+%{_bindir}/%{name}-edit
+%{_bindir}/%{name}-show
+%{_datadir}/%{name}/
 %{_datadir}/pixmaps/*
-%{_datadir}/icons/hicolor/*/apps/transmission.*
-%doc %{_mandir}/man1/transmission-remote*
-%doc %{_mandir}/man1/transmission-create*
-%doc %{_mandir}/man1/transmission-edit*
-%doc %{_mandir}/man1/transmission-show*
+%{_datadir}/icons/hicolor/*/apps/%{name}.*
+%doc %{_mandir}/man1/%{name}-remote*
+%doc %{_mandir}/man1/%{name}-create*
+%doc %{_mandir}/man1/%{name}-edit*
+%doc %{_mandir}/man1/%{name}-show*
 
 %files cli
-%{_bindir}/transmission-cli
-%doc %{_mandir}/man1/transmission-cli*
+%{_bindir}/%{name}-cli
+%doc %{_mandir}/man1/%{name}-cli*
 
 %files daemon
-%{_bindir}/transmission-daemon
-%{_unitdir}/transmission-daemon.service
-%attr(-,transmission, transmission)%{_sharedstatedir}/transmission/
-%doc %{_mandir}/man1/transmission-daemon*
+%{_bindir}/%{name}-daemon
+%{_unitdir}/%{name}-daemon.service
+%attr(-,%{service_user},%{service_group})%{service_home}
+%doc %{_mandir}/man1/%{name}-daemon*
 
 %files gtk -f %{name}-gtk.lang
-%{_bindir}/transmission-gtk
+%{_bindir}/%{name}-gtk
 %{_datadir}/appdata/%{name}-gtk.appdata.xml
-%{_datadir}/applications/transmission-gtk.desktop
-%doc %{_mandir}/man1/transmission-gtk.*
+%{_datadir}/applications/%{name}-gtk.desktop
+%doc %{_mandir}/man1/%{name}-gtk.*
 
 %files qt
-%{_bindir}/transmission-qt
-%{_datadir}/applications/transmission-qt.desktop
-%doc %{_mandir}/man1/transmission-qt.*
+%{_bindir}/%{name}-qt
+%{_datadir}/applications/%{name}-qt.desktop
+%doc %{_mandir}/man1/%{name}-qt.*
 
 ################################################################################
 
