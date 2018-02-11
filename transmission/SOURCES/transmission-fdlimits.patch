@@ -1,0 +1,25 @@
+--- libtransmission/fdlimit.c.orig	2018-01-10 20:21:41.933611849 +0100
++++ libtransmission/fdlimit.c	2018-01-10 20:22:02.367013913 +0100
+@@ -365,22 +365,6 @@
+       fileset_construct (&i->fileset, FILE_CACHE_SIZE);
+       session->fdInfo = i;
+ 
+-#ifndef _WIN32
+-      /* set the open-file limit to the largest safe size wrt FD_SETSIZE */
+-      struct rlimit limit;
+-      if (!getrlimit (RLIMIT_NOFILE, &limit))
+-        {
+-          const int old_limit = (int) limit.rlim_cur;
+-          const int new_limit = MIN (limit.rlim_max, FD_SETSIZE);
+-          if (new_limit != old_limit)
+-            {
+-              limit.rlim_cur = new_limit;
+-              setrlimit (RLIMIT_NOFILE, &limit);
+-              getrlimit (RLIMIT_NOFILE, &limit);
+-              tr_logAddInfo ("Changed open file limit from %d to %d", old_limit, (int)limit.rlim_cur);
+-            }
+-        }
+-#endif
+     }
+ }
+ 
