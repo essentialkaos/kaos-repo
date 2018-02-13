@@ -12,7 +12,8 @@ main() {
   for spec in $(find . -name '*.spec' | sort) ; do
     ./perfecto -f tiny -c "$1" "$spec"
 
-    if [[ $? -ne 0 && -z "$has_errors" ]] ; then
+    if [[ $? -ne 0 ]] ; then
+      ./perfecto -c "$1" "$spec"
       has_errors=true
     fi
   done
