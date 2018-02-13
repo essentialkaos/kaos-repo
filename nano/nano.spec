@@ -47,7 +47,8 @@ License:         GPLv3+
 Group:           Applications/Editors
 URL:             http://www.nano-editor.org
 
-Source:          https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+Source0:         https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+Source1:         https://github.com/essentialkaos/blackhole-syntax-nano/archive/master.tar.gz
 
 Patch0:          %{name}-nanorc.patch
 
@@ -70,6 +71,8 @@ GNU nano is a small and friendly text editor.
 %prep
 %setup -q
 
+%{__tar} xzvf %{SOURCE1}
+
 %patch0 -p1
 
 %build
@@ -91,6 +94,10 @@ cp %{buildroot}%{_sysconfdir}/nanorc %{buildroot}%{_root}/.nanorc
 
 sed -i 's/^set titlecolor brightwhite,blue/set titlecolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
 sed -i 's/^set statuscolor brightwhite,green/set statuscolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
+
+rm -f %{buildroot}%{_datadir}/%{name}/*.nanorc
+cp blackhole-syntax-nano-master/*.nanorc \
+   %{buildroot}%{_datadir}/%{name}/
 
 rm -f %{buildroot}%{_infodir}/dir
 
