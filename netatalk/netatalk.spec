@@ -94,7 +94,7 @@ Version:           3.1.11
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/System
-URL:               http://netatalk.sourceforge.net/
+URL:               http://netatalk.sourceforge.net
 
 Source0:           http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:           %{name}.pam-system-auth
@@ -198,7 +198,7 @@ that use %{name}.
 %prep
 %setup -q
 %if 0%{?with_libevent}
-%{__rm} -fr libevent/
+rm -fr libevent/
 %endif
 
 # Avoid re-running the autotools
@@ -213,65 +213,65 @@ export CFLAGS="$CFLAGS -fsigned-char"
 %endif
 
 %configure \
-        --localstatedir=%{_localstatedir}/lib       \
+        --localstatedir=%{_localstatedir}/lib \
 %if 0%{?with_acls}
-        --with-acl                                  \
+        --with-acl \
 %endif
 %if 0%{?with_cracklib}
-        --with-cracklib                             \
+        --with-cracklib \
 %endif
 %if 0%{?with_docbook}
         --with-docbook=%{_datadir}/sgml/docbook/xsl-stylesheets-%{docbook_ver} \
 %endif
-        --with-kerberos                             \
-        --with-libgcrypt                            \
-        --with-pam                                  \
-        --with-pkgconfdir=%{_sysconfdir}/%{name}/   \
+        --with-kerberos \
+        --with-libgcrypt \
+        --with-pam \
+        --with-pkgconfdir=%{_sysconfdir}/%{name}/ \
         --with-shadow                               \
-        --with-tbd=no                               \
-        --with-uams-path=%{_libdir}/%{name}         \
-        --enable-pgp-uam                            \
-        --enable-shared                             \
-        --enable-krbV-uam                           \
-        --enable-overwrite                          \
+        --with-tbd=no \
+        --with-uams-path=%{_libdir}/%{name} \
+        --enable-pgp-uam \
+        --enable-shared \
+        --enable-krbV-uam \
+        --enable-overwrite \
 %if 0%{?with_systemd}
-        --with-init-style=redhat-systemd            \
+        --with-init-style=redhat-systemd \
 %else
-        --with-init-style=redhat-sysv               \
+        --with-init-style=redhat-sysv \
 %endif
 %if 0%{?with_tracker}
-        --with-spotlight                            \
-        --with-tracker-pkgconfig-version=%{tracker_ver}  \
+        --with-spotlight \
+        --with-tracker-pkgconfig-version=%{tracker_ver} \
         --with-dbus-daemon=%{_bindir}/dbus-daemon \
 %endif
 %if 0%{?with_libevent}
-        --without-libevent                          \
-        --with-libevent-header=%{_includedir}       \
-        --with-libevent-lib=%{_libdir}              \
+        --without-libevent \
+        --with-libevent-header=%{_includedir} \
+        --with-libevent-lib=%{_libdir} \
 %endif
-        --without-tdb                               \
-        --with-bdb                                  \
-        --disable-silent-rules                      \
+        --without-tdb \
+        --with-bdb \
+        --disable-silent-rules \
         --disable-static
 
 %{__make} %{?_smp_mflags}
 %{__make} -C doc/manual html-local
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 %{make_install}
 
-%{__mkdir_p} %{buildroot}%{_var}/lock/%{name}
+mkdir -p %{buildroot}%{_var}/lock/%{name}
 
 install -pm 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 
 find %{buildroot} -name '*.la' -delete -print
 
 %check
-sh test/afpd/test.sh
+bash test/afpd/test.sh
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -302,6 +302,7 @@ fi
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
 %doc AUTHORS CONTRIBUTORS NEWS
 %if 0%{?rhel} >= 7
 %license COPYING COPYRIGHT
@@ -331,6 +332,7 @@ fi
 %{_localstatedir}/lib
 
 %files devel
+%defattr(-,root,root,-)
 %{_bindir}/%{name}-config
 %{_datadir}/aclocal/%{name}.m4
 %{_includedir}/atalk/
@@ -342,4 +344,3 @@ fi
 %changelog
 * Sun Feb 11 2018 <inbox@gongled.ru> - 3.1.11-0
 - Initial build
-
