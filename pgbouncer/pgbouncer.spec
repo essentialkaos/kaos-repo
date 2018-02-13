@@ -63,13 +63,25 @@ Patch0:            %{name}-ini.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc libevent2-devel openssl-devel
+BuildRequires:     make gcc openssl-devel
 
-Requires:          libevent2 openssl kaosv >= 2.10
+Requires:          openssl kaosv >= 2.14
+
+%if 0%{?rhel} >= 7
+BuildRequires:     libevent-devel
+Requires:          libevent
+
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%else
+BuildRequires:     libevent2-devel
+Requires:          libevent2
 
 Requires(post):    chkconfig
 Requires(preun):   chkconfig initscripts
 Requires(postun):  initscripts
+%endif
 
 ################################################################################
 
@@ -181,8 +193,12 @@ fi
 ################################################################################
 
 %changelog
-* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+* Wed Feb 14 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
 - Updated to latest stable release
+
+* Mon Feb 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-5
+- Improved init script
+- Improved spec
 
 * Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.7.2-4
 - Fixed typo with systemd unit description

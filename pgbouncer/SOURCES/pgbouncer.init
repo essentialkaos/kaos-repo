@@ -22,7 +22,8 @@ source /etc/init.d/kaosv
 
 ###############################################################################
 
-MULTIBOUNCER="/etc/init.d/multibouncer"
+DEFAULT_PID_FILE="/var/run/pgbouncer/pgbouncer.pid"
+PG_RUN_DIR="/var/run/postgresql"
 
 ###############################################################################
 
@@ -35,12 +36,6 @@ user=${USER:-pgbouncer}
 conf_file=${CONF_FILE:-/etc/pgbouncer/pgbouncer.ini}
 log_dir=${LOG_DIR:-/var/log/pgbouncer}
 
-kv[user]="$user"
-kv[search_pattern]="$binary"
-kv[pid_file]=$(kv.readProperty "$conf_file" "pidfile")
-
-kv[oom_adj]="$OOM_DISABLE"
-
 is_restart=""
 
 ###############################################################################
@@ -50,9 +45,12 @@ kv.addCommand "pause"  "Pause processing new queries"                           
 kv.addCommand "resume" "Resume work from previous pause command"                       "resume"
 
 kv.addHandler "start"    "startHandler"
-kv.addHandler "start"    "preStartHandler" "pre"
 kv.addHandler "stop"     "stopHandler"
 kv.addHandler "restart"  "restartHandler"
+
+kv.addHandler "start" "preStartHandler"  "pre"
+kv.addHandler "start" "postStartHandler" "post"
+kv.addHandler "stop"  "preStopHandler"   "pre"
 
 kv.disableOutputRedirect "start" "pre"
 
@@ -64,6 +62,7 @@ reload() {
   kv.sendSignal "$SIGNAL_HUP"
 
   kv.showStatusMessage $ACTION_OK
+
   return $ACTION_OK
 }
 
@@ -71,8 +70,9 @@ pause() {
   kv.showProcessMessage "Pausing"
 
   kv.sendSignal "$SIGNAL_USR1"
-  
+
   kv.showStatusMessage $ACTION_OK
+
   return $ACTION_OK
 }
 
@@ -80,29 +80,114 @@ resume() {
   kv.showProcessMessage "Resuming"
 
   kv.sendSignal "$SIGNAL_USR2"
-  
+
   kv.showStatusMessage $ACTION_OK
+
   return $ACTION_OK
 }
 
 ###############################################################################
 
 preStartHandler() {
-  local port=$(kv.readProperty "$conf_file" "listen_port")
+  local has_errors
+
+  local port=$(readConfigProperty "$conf_file" "listen_port")
 
   if [[ -z "${kv[pid_file]}" || -z "$port" ]] ; then
     kv.error "Can't read properties from configuration file"
+    has_errors=true
   fi
 
   if kv.isBoundPort "$port" ; then
     kv.error "Port $port already bound"
+    has_errors=true
+  fi
+
+  if [[ ! -r $binary ]] ; then
+    kv.error "Binary file $binary must be readable"
+    has_errors=true
+  fi
+
+  if [[ ! -x $binary ]] ; then
+    kv.error "Binary file $binary must be executable"
+    has_errors=true
+  fi
+
+  if [[ ! -f $conf_file ]] ; then
+    kv.error "Configuration file $conf_file doesn't exist"
+    has_errors=true
+  fi
+
+  if ! kv.hasUser "$user" ; then
+    kv.error "User $user doesn't exist on system"
+    has_errors=true
+  fi
+
+  if [[ ! -d $log_dir ]] ; then
+    mkdir -p $log_dir &> /dev/null
+
+    if [[ $? -ne 0 ]] ; then
+      kv.error "Can't create logs directory $log_dir"
+      has_errors=true
+    fi
+
+    chown $user:$user $log_dir -R &> /dev/null
+  fi
+
+  if [[ -z "${kv[pid_file]}" ]] ; then
+    kv.error "Can't read \"pid\" property from configuration file"
+    has_errors=true
+  fi
+
+  if [[ -n "$has_errors" ]] ; then
+    kv.exit 1
+  fi
+}
+
+postStartHandler() {
+  if [[ ! -e "$PG_RUN_DIR" ]] ; then
+    return $ACTION_OK
+  fi
+
+  local socket_dir=$(readConfigProperty "$conf_file" "unix_socket_dir")
+
+  if [[ -n "$socket_dir" && "$socket_dir" != "/tmp" ]] ; then
+    return $ACTION_OK
+  fi
+
+  local port=$(readConfigProperty "$conf_file" "listen_port")
+
+  if [[ -z "$port" ]] ; then
+    return $ACTION_OK
+  fi
+
+  if [[ ! -e "/tmp/.s.PGSQL.${port}" || -e "$PG_RUN_DIR/.s.PGSQL.${port}" ]] ; then
+    return $ACTION_OK
+  fi
+
+  # Create ink to pgbouncer socket in PG dir
+  ln -sf "/tmp/.s.PGSQL.${port}" "$PG_RUN_DIR/.s.PGSQL.${port}" &>/dev/null
+
+  return $ACTION_OK
+}
+
+preStopHandler() {
+  local port=$(readConfigProperty "$conf_file" "listen_port")
+
+  if [[ -z "$port" ]] ; then
+    return $ACTION_OK
+  fi
+
+  # Remove link to pgbouncer socket from PG dir
+  if [[ -e "$PG_RUN_DIR/.s.PGSQL.${port}" ]] ; then
+    rm -f "$PG_RUN_DIR/.s.PGSQL.${port}" &>/dev/null
   fi
 }
 
 startHandler() {
   if [[ -z "$is_restart" ]] ; then
     kv.run "$binary" "-d -q $conf_file"
-  else 
+  else
     kv.run "$binary" "-R -d -q $conf_file"
   fi
 
@@ -126,51 +211,31 @@ restartHandler() {
 
 ###############################################################################
 
-prepare() {
-  if [[ $USER_ID -ne 0 ]] ; then
+configure() {
+  kv[user]="$user"
+  kv[search_pattern]="$binary"
+  kv[pid_file]=$(readConfigProperty "$conf_file" "pidfile" "$DEFAULT_PID_FILE")
+  kv[oom_adj]="$OOM_DISABLE"
+}
+
+readConfigProperty() {
+  local config="$1"
+  local prop_name="$2"
+  local def_value="$3"
+
+  local prop=$(kv.readProperty "$config" "$prop_name")
+
+  if [[ "${prop:0:1}" == ";" ]] ; then
+    echo "${def_value}"
     return
   fi
 
-  if [[ -f $MULTIBOUNCER ]] ; then
-    kv.warn "Looks like you have multibouncer installed on system."
-    kv.warn "We highly recommend to use multibouncer for working with pgbouncer instances."
-    kv.exit 0
-  fi
-
-  if [[ ! -r $binary ]] ; then
-    kv.error "Binary file $binary must be readable."
-  fi
-
-  if [[ ! -x $binary ]] ; then
-    kv.error "Binary file $binary must be executable."
-  fi
-
-  if [[ ! -f $conf_file ]] ; then
-    kv.error "Configuration file $conf_file is not exist."
-  fi
-
-  if ! kv.hasUser "$user" ; then
-    kv.error "User $user is not exist on system." 
-  fi
-
-  if [[ ! -d $log_dir ]] ; then
-    mkdir -p $log_dir &> /dev/null
-
-    if [[ $? -ne 0 ]] ; then
-      kv.error "Can't create logs directory $log_dir" 
-    fi
-
-    chown $user:$user $log_dir -R &> /dev/null
-  fi
-
-  if [[ -z "${kv[pid_file]}" ]] ; then
-    kv.error "Can't read pid property from configuration file"
-  fi
+  echo "${prop}"
 }
 
 ###############################################################################
 
-prepare
+configure
 
 kv.go $@
 
