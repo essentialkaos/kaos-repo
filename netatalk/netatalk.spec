@@ -120,7 +120,11 @@ BuildRequires:     libdb-devel
 BuildRequires:     db4-devel
 %endif
 %if 0%{?with_libevent}
+%if 0%{?rhel} >= 7
 BuildRequires:     libevent-devel
+%else
+BuildRequires:     libevent2-devel
+%endif
 %endif
 %if 0%{?with_docbook}
 BuildRequires:     libxslt
