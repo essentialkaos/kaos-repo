@@ -229,10 +229,12 @@ fi
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
 
 %files common
 %license COPYING
 %doc AUTHORS NEWS README
+%defattr(-,root,root,-)
 %{_bindir}/%{name}-remote
 %{_bindir}/%{name}-create
 %{_bindir}/%{name}-edit
@@ -246,22 +248,26 @@ fi
 %doc %{_mandir}/man1/%{name}-show*
 
 %files cli
+%defattr(-,root,root,-)
 %{_bindir}/%{name}-cli
 %doc %{_mandir}/man1/%{name}-cli*
 
 %files daemon
+%defattr(-,root,root,-)
 %{_bindir}/%{name}-daemon
 %{_unitdir}/%{name}-daemon.service
 %attr(-,%{service_user},%{service_group})%{service_home}
 %doc %{_mandir}/man1/%{name}-daemon*
 
 %files gtk -f %{name}-gtk.lang
+%defattr(-,root,root,-)
 %{_bindir}/%{name}-gtk
 %{_datadir}/appdata/%{name}-gtk.appdata.xml
 %{_datadir}/applications/%{name}-gtk.desktop
 %doc %{_mandir}/man1/%{name}-gtk.*
 
 %files qt
+%defattr(-,root,root,-)
 %{_bindir}/%{name}-qt
 %{_datadir}/applications/%{name}-qt.desktop
 %doc %{_mandir}/man1/%{name}-qt.*
