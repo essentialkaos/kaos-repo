@@ -232,9 +232,9 @@ fi
 %defattr(-,root,root,-)
 
 %files common
+%defattr(-,root,root,-)
 %license COPYING
 %doc AUTHORS NEWS README
-%defattr(-,root,root,-)
 %{_bindir}/%{name}-remote
 %{_bindir}/%{name}-create
 %{_bindir}/%{name}-edit
