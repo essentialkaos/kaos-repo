@@ -179,7 +179,7 @@ popd
 %{__make} %{?_smp_mflags} check
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 %{make_install} INSTALL_ROOT=%{buildroot}%{_prefix} -C qt
@@ -199,7 +199,7 @@ install -pm 0644 daemon/%{name}-daemon.service  %{buildroot}%{_unitdir}/
 install -pm 0644 %{SOURCE1} %{buildroot}%{_datadir}/appdata/%{name}-gtk.appdata.xml
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -276,4 +276,4 @@ fi
 
 %changelog
 * Sun Feb 11 2018 Gleb Goncharov <inbox@gongled.ru> - 2.93-0
-- Initial build.
+- Initial build
