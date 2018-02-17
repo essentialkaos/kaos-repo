@@ -7,13 +7,13 @@ This repository contains spec files and patches used for building RPM packages f
 #### CentOS/RHEL 6.x
 
 ```
-[sudo] yum install -y https://yum.kaos.st/6/release/x86_64/kaos-repo-9.0-0.el6.noarch.rpm
+[sudo] yum install -y https://yum.kaos.st/6/release/x86_64/kaos-repo-9.1-0.el6.noarch.rpm
 ```
 
 #### CentOS/RHEL 7.x
 
 ```
-[sudo] yum install -y https://yum.kaos.st/7/release/x86_64/kaos-repo-9.0-0.el7.noarch.rpm
+[sudo] yum install -y https://yum.kaos.st/7/release/x86_64/kaos-repo-9.1-0.el7.noarch.rpm
 ```
 
 ### [Perfecto](https://github.com/essentialkaos/perfecto) Check Status
