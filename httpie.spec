@@ -70,15 +70,15 @@ sed -i '/#!\/usr\/bin\/env/d' %{name}/__main__.py
 sed -i 's/requests>=2.11.0/requests>=2.6.0/' setup.py
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-%{__python} setup.py install --root %{buildroot}
+python setup.py install --root %{buildroot}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -93,35 +93,35 @@ sed -i 's/requests>=2.11.0/requests>=2.6.0/' setup.py
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.8-0
-- Extended auth plugin API.
-- Added exit status code 7 for plugin errors.
-- Added support for curses-less Python installations.
-- Fixed REQUEST_ITEM arg incorrectly being reported as required.
-- Improved CTRL-C interrupt handling.
-- Added the standard exit status code 130 for keyboard interrupts.
+- Extended auth plugin API
+- Added exit status code 7 for plugin errors
+- Added support for curses-less Python installations
+- Fixed REQUEST_ITEM arg incorrectly being reported as required
+- Improved CTRL-C interrupt handling
+- Added the standard exit status code 130 for keyboard interrupts
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.6-0
 - Added Python 3 as a dependency for Homebrew installations to ensure some of
   the newer HTTP features work out of the box for macOS
-  users (starting with HTTPie 0.9.4.).
+  users (starting with HTTPie 0.9.4.)
 - Added the ability to unset a request header with Header:, and send an
-  empty value with Header;.
+  empty value with Header;
 - Added --default-scheme <URL_SCHEME> to enable things like $ alias
-  https='http --default-scheme=https.
-- Added -I as a shortcut for --ignore-stdin.
+  https='http --default-scheme=https
+- Added -I as a shortcut for --ignore-stdin
 - Added fish shell completion (located in extras/httpie-completion.fish
-  in the Github repo).
+  in the Github repo)
 - Updated requests to 2.10.0 so that SOCKS support can be added via pip
-  install requests[socks].
+  install requests[socks]
 - Changed the default JSON Accept header from application/json to
-  application/json, */*.
+  application/json, */*
 - Changed the pre-processing of request HTTP headers so that any
-  leading and trailing whitespace is removed.
+  leading and trailing whitespace is removed
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
 - Added Content-Type of files uploaded in multipart/form-data requests
 - Added --ssl=<PROTOCOL> to specify the desired SSL/TLS protocol version
-  to use for HTTPS requests.
+  to use for HTTPS requests
 - Added JSON detection with --json, -j to work around incorrect Content-Type
 - Added --all to show intermediate responses such as redirects (with --follow)
 - Added --history-print, -P WHAT to specify formatting of intermediate responses

@@ -331,10 +331,9 @@ find frontends/php/locale -name '*.po' -delete
 find frontends/php/locale -name '*.sh' -delete
 
 # traceroute command path for global script
-%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
-%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/postgresql/data.sql
-%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/sqlite3/data.sql
-
+sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
+sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/postgresql/data.sql
+sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/sqlite3/data.sql
 
 %build
 
@@ -521,26 +520,26 @@ docdir=%{buildroot}%{_docdir}/zabbix-server-mysql-%{version}
 cat database/mysql/schema.sql > $docdir/create.sql
 cat database/mysql/images.sql >> $docdir/create.sql
 cat database/mysql/data.sql >> $docdir/create.sql
-%{__gzip} $docdir/create.sql
+gzip $docdir/create.sql
 
 docdir=%{buildroot}%{_docdir}/zabbix-server-pgsql-%{version}
 cat database/postgresql/schema.sql > $docdir/create.sql
 cat database/postgresql/images.sql >> $docdir/create.sql
 cat database/postgresql/data.sql >> $docdir/create.sql
-%{__gzip} $docdir/create.sql
+gzip $docdir/create.sql
 
 # copy sql files for proxies
 docdir=%{buildroot}%{_docdir}/zabbix-proxy-mysql-%{version}
 cp database/mysql/schema.sql $docdir/schema.sql
-%{__gzip} $docdir/schema.sql
+gzip $docdir/schema.sql
 
 docdir=%{buildroot}%{_docdir}/zabbix-proxy-pgsql-%{version}
 cp database/postgresql/schema.sql $docdir/schema.sql
-%{__gzip} $docdir/schema.sql
+gzip $docdir/schema.sql
 
 docdir=%{buildroot}%{_docdir}/zabbix-proxy-sqlite3-%{version}
 cp database/sqlite3/schema.sql $docdir/schema.sql
-%{__gzip} $docdir/schema.sql
+gzip $docdir/schema.sql
 
 
 %clean

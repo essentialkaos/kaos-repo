@@ -1,6 +1,6 @@
 ################################################################################
 
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 
 ################################################################################
 
@@ -69,12 +69,12 @@ A backport of recent additions to the 'collections.abc' module.
 %setup -q -n %{pkgname}-%{version}
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}

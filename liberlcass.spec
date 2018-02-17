@@ -45,7 +45,7 @@ performance.
 %setup -qn %{short_name}-%{version}
 
 mkdir -p _build/deps
-%{__tar} xvfz %{SOURCE1} -C _build/deps
+tar xvfz %{SOURCE1} -C _build/deps
 
 # Fix build error with non existent header file
 sed -i '/#include "external_types.hpp"/d' c_src/nif_cass_statement.cc

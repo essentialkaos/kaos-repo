@@ -66,12 +66,12 @@ autoreconf -fiv
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
 %ifarch x86_64
-  %{__mv} %{buildroot}%{_libdir32} %{buildroot}%{_libdir}
+  mv %{buildroot}%{_libdir32} %{buildroot}%{_libdir}
 %endif
 
 %post
@@ -81,7 +81,7 @@ autoreconf -fiv
 /sbin/ldconfig
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

@@ -1,6 +1,6 @@
 ################################################################################
 
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 
 %{!?_without_check: %define _with_check 1}
 
@@ -44,18 +44,18 @@ A library for safe markup escaping.
 %setup -qn MarkupSafe-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 rm -f %{buildroot}/%{python_sitearch}/markupsafe/*.c
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
-%{__python} setup.py test
+python setup.py test
 %endif
 
 %clean

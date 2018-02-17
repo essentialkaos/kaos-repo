@@ -123,7 +123,7 @@ unset FAKE_BUILD_DATE
 %{__make} %{?_smp_mflags} LIBTOOL=libtool
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
@@ -137,7 +137,7 @@ rm -rf %{buildroot}%{_datadir}/locale
 %postun -p %{__ldconfig}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

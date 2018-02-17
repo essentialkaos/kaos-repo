@@ -88,7 +88,7 @@ shows diffs for each revision. Based on gitk for the git SCM.
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --root %{buildroot} --prefix %{_prefix} --record=%{name}.files
+python setup.py install -O1 --root %{buildroot} --prefix %{_prefix} --record=%{name}.files
 
 %{__make} install-doc DESTDIR=%{buildroot} MANDIR=%{_mandir}
 

@@ -110,7 +110,7 @@ pushd core/build/distributions
 popd
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_opt}/%{name}
 install -dm 755 %{buildroot}%{_datadir}/%{name}
@@ -132,7 +132,7 @@ pushd core/build/distributions/%{name}_%{major_version}-%{version}
 popd
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %pre
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}

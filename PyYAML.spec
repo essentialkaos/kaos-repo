@@ -38,12 +38,12 @@ configuration files to object serialization and persistance.
 chmod a-x examples/yaml-highlight/yaml_hl.py
 
 %build
-CFLAGS="${RPM_OPT_FLAGS}" %{__python} setup.py --with-libyaml build
+CFLAGS="${RPM_OPT_FLAGS}" python setup.py --with-libyaml build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}

@@ -1,7 +1,7 @@
 ################################################################################
 
 %global __python26 /usr/bin/python2.6
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %global tarball_name apache-libcloud
 
@@ -68,12 +68,12 @@ products that work between any of the services that it supports.
 %setup -qn %{tarball_name}-%{version}
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}

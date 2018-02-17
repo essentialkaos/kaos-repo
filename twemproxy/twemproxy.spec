@@ -74,10 +74,9 @@ autoreconf -fvi
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} PREFIX=%{buildroot} mandir=%{_mandir}
-
 
 install -dm 755 %{buildroot}%{_initrddir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
@@ -104,7 +103,7 @@ if [[ $1 -eq 0 ]]; then
 fi
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

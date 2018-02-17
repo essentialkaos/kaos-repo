@@ -76,19 +76,19 @@ need to prettify source code. Highlights are:
 %setup -qn Pygments-%{version}
 
 %build
-%{__python} setup.py build
-%{__sed} -i 's/\r//' LICENSE
+python setup.py build
+sed -i 's/\r//' LICENSE
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-%{__python} setup.py install --root %{buildroot}
+python setup.py install --root %{buildroot}
 
 install -dm 755 %{buildroot}%{_mandir}/man1
 mv doc/pygmentize.1 %{buildroot}%{_mandir}/man1/pygmentize.1
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

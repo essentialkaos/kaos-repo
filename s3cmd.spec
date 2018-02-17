@@ -1,6 +1,6 @@
 ################################################################################
 
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 %if 0%{?rhel} == 5
 %define __python /usr/bin/python26
@@ -78,15 +78,15 @@ network.
 %build
 export S3CMD_PACKAGING=1
 
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
 export S3CMD_PACKAGING=1
 
-%{__python} setup.py install --root=%{buildroot} --prefix=%{_prefix}
-%{__ln_s} %{name} %{buildroot}%{_bindir}/%{shortname}
+python setup.py install --root=%{buildroot} --prefix=%{_prefix}
+ln -sf %{name} %{buildroot}%{_bindir}/%{shortname}
 
 %clean
 rm -rf %{buildroot}

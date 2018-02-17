@@ -71,7 +71,7 @@ GNU nano is a small and friendly text editor.
 %prep
 %setup -q
 
-%{__tar} xzvf %{SOURCE1}
+tar xzvf %{SOURCE1}
 
 %patch0 -p1
 

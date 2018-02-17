@@ -58,15 +58,16 @@ in the Python Package Index. It’s a replacement for easy_install.
 %prep
 %setup -qn %{name}-%{version}
 
-%{__sed} -i '1d' %{name}/__init__.py
+sed -i '1d' %{name}/__init__.py
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
+
 rm -rf %{buildroot}%{_bindir}/%{name}-*
 
 %clean

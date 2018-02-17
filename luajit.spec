@@ -96,7 +96,7 @@ export CFLAGS="$CFLAGS -fPIC"
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} PREFIX=%{_usr} INSTALL_LIB=%{buildroot}%{_libdir}
 
@@ -110,7 +110,7 @@ ln -sf %{_libdir}/libluajit-%{api_version}.so.%{major_version}.%{minor_version} 
 %{__ldconfig}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

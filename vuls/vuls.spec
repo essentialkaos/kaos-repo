@@ -145,8 +145,8 @@ in sqlite format, and the tool has a server mode for easy querying.
 %prep
 %setup -q
 
-%{__tar} xjfv %{SOURCE1}
-%{__tar} xjfv %{SOURCE2}
+tar xjfv %{SOURCE1}
+tar xjfv %{SOURCE2}
 
 rm -rf github.com/kotakanbe/goval-dictionary
 rm -rf github.com/kotakanbe/go-cve-dictionary

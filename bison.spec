@@ -133,8 +133,7 @@ rm -rf %{buildroot}%{_docdir}/%{name}/examples
 %find_lang %{name}
 %find_lang %{name}-runtime
 
-%{__gzip} -9nf %{buildroot}%{_infodir}/%{name}.info*
-
+gzip -9nf %{buildroot}%{_infodir}/%{name}.info*
 
 %clean
 rm -rf %{buildroot}

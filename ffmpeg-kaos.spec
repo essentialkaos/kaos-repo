@@ -124,14 +124,14 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} incdir=%{buildroot}%{_includedir}/%{source_name}
 
-%{__rm} -rf doc/Makefile
+rm -rf doc/Makefile
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

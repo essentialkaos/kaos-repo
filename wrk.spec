@@ -69,7 +69,7 @@ processing, and custom reporting.
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_loc_datarootdir}
@@ -80,7 +80,7 @@ install -pm 755 %{name} %{buildroot}%{_bindir}/
 cp scripts/* %{buildroot}%{_loc_datarootdir}/%{name}/scripts/
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

@@ -31,15 +31,15 @@ Improved colored diff.
 %setup -qn %{name}-release-%{version}
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

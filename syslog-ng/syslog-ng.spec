@@ -1,6 +1,6 @@
 ################################################################################
 
-%define python_version %(%{__python} -c "import sys; sys.stdout.write(sys.version[:3])")
+%define python_version %(python -c "import sys; sys.stdout.write(sys.version[:3])")
 
 ################################################################################
 

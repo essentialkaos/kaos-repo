@@ -190,7 +190,7 @@ gzip -9v %{buildroot}%{_mandir}/man1/%{name}.1
 /sbin/ldconfig
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

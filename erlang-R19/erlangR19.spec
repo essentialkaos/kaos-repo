@@ -1,7 +1,6 @@
 ################################################################################
 
 # rpmbuilder:qa-rpaths 0x0001,0x0002
-# rpmbuilder:pedantic  true
 
 ################################################################################
 
@@ -39,20 +38,20 @@
 
 ################################################################################
 
-%define _smp_mflags       -j1
-
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           19
 %define ver_min           3
 %define realname          erlang
 
+%define libre_ver         2.6.4
+
 ################################################################################
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_min}
-Release:           0%{?dist}
+Release:           1%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -61,11 +60,19 @@ Source0:           http://www.erlang.org/download/otp_src_%{ver_maj}.%{ver_min}.
 Source1:           http://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
 Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
+Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel openssl-devel openssl unixODBC-devel tcl-devel
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel gcc-c++
-BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make gcc libxslt
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt zlib-devel
+BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make
+
+%if 0%{?rhel} >= 7
+BuildRequires:     gcc gcc-c++
+%else
+BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
+%endif
 
 Requires:          tk tcl
 
@@ -807,13 +814,34 @@ a few bugs in the scanner, and improves HTML export.
 %prep
 %setup -qn otp_src_%{ver_maj}.%{ver_min}
 
+tar xzvf %{SOURCE10}
+
 %build
-export CFLAGS="%{optflags} -fno-strict-aliasing -DOPENSSL_NO_EC=1"
+
+export CFLAGS="%{optflags} -fPIC"
+export CXXLAGS=$CFLAGS
+
+%if 0%{?rhel} < 7
+# Use gcc and gcc-c++ from devtoolset for build on CentOS6
+export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
+%endif
+
+export BUILDDIR=$(pwd)
+
+### Static LibreSSL build start ###
+
+pushd libressl-%{libre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no
+  %{__make} %{?_smp_mflags}
+  %{__make} install
+popd
+
+### Static LibreSSL build complete ###
+
+export CFLAGS="%{optflags} -fno-strict-aliasing"
 export CXXLAGS=$CFLAGS
 ERL_TOP=`pwd`; export ERL_TOP
-
-# enable dynamic linking for ssl
-sed -i 's|SSL_DYNAMIC_ONLY=no|SSL_DYNAMIC_ONLY=yes|' erts/configure
 
 %configure \
   --prefix=%{_prefix} \
@@ -831,9 +859,11 @@ sed -i 's|SSL_DYNAMIC_ONLY=no|SSL_DYNAMIC_ONLY=yes|' erts/configure
   --enable-smp-support \
   --with-ssl \
   --disable-erlang-mandir \
-  --enable-dynamic-ssl-lib
+  --disable-dynamic-ssl-lib \
+  --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
+  --with-ssl-rpath=no
 
-%{__make} %{?_smp_mflags}
+%{__make} -j1
 
 %install
 rm -rf %{buildroot}
@@ -1131,6 +1161,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-1
+- Rebuilt with EC support
+- Rebuilt with statically linked LibreSSL
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.3-0
 - Updated to latest stable release
 

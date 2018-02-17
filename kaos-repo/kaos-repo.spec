@@ -25,7 +25,7 @@
 
 Summary:         ESSENTIAL KAOS Public Repo
 Name:            kaos-repo
-Version:         9.0
+Version:         9.1
 Release:         0%{?dist}
 License:         EKOL
 Vendor:          ESSENTIALKAOS
@@ -44,7 +44,7 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-This package contains yum repo file for access to ESSENTIAL KAOS
+This package contains yum configuration files for access to ESSENTIAL KAOS
 repository.
 
 ################################################################################
@@ -99,6 +99,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 9.1-0
+- Added bugtracker URL
+
 * Thu Feb 01 2018 Anton Novojilov <andy@essentialkaos.com> - 9.0-0
 - Migrated from kaos.io to kaos.st
 

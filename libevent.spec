@@ -64,11 +64,11 @@ need to install %{name}-doc.
 %{__make} doxygen
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
-%{__rm} -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.la
 
 install -dm 755 %{buildroot}%{_docdir}/%{name}-devel-%{version}/html
 install -dm 755 %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample
@@ -83,7 +83,7 @@ cp -r sample/Makefile* %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample/
 %postun -p /sbin/ldconfig
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 

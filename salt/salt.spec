@@ -9,9 +9,9 @@
 
 %global include_tests 1
 
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
-%{!?pythonpath: %global pythonpath %(%{__python} -c "import os, sys; print(os.pathsep.join(x for x in sys.path if x))")}
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%{!?pythonpath: %global pythonpath %(python -c "import os, sys; print(os.pathsep.join(x for x in sys.path if x))")}
 
 ################################################################################
 
@@ -250,7 +250,7 @@ other existing packaging systems including RPM, Yum, and Pacman.
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --root %{buildroot}
+python setup.py install -O1 --root %{buildroot}
 
 # Add some directories
 install -dm 755 %{buildroot}%{_var}/cache/salt

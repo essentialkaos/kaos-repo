@@ -125,11 +125,11 @@ possibility not to expose fragile web servers to the net.
 
 mkdir boringssl
 
-%{__tar} xzvf %{SOURCE10}
-%{__tar} xzvf %{SOURCE11}
-%{__tar} xzvf %{SOURCE12} -C boringssl
-%{__tar} xzvf %{SOURCE13}
-%{__tar} xzvf %{SOURCE14}
+tar xzvf %{SOURCE10}
+tar xzvf %{SOURCE11}
+tar xzvf %{SOURCE12} -C boringssl
+tar xzvf %{SOURCE13}
+tar xzvf %{SOURCE14}
 
 %build
 
