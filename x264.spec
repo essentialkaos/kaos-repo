@@ -43,8 +43,8 @@
 ################################################################################
 
 # Found X264_BUILD in (x264.h)
-%define pkg_build            153
-%define pkg_snapshot_date    20180207
+%define pkg_build            152
+%define pkg_snapshot_date    20180219
 %define pkg_snapshot_prefix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_prefix}
@@ -90,6 +90,12 @@ Header files and shared libraries for x264.
 
 %build
 
+# Fail build if header file contains different build version
+if [[ $(grep '#define X264_BUILD' x264.h | cut -f3 -d" ") != "%{pkg_build}" ]] ; then
+  echo "Header file contains different build version!"
+  exit 1
+fi
+
 %configure --enable-pic --enable-debug --enable-shared
 
 %{__make} %{?_smp_mflags}
@@ -126,7 +132,7 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.153_20180207-0
+* Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 0.152_20180219-0
 - Updated to latest stable snapshot
 
 * Tue Sep 19 2017 Anton Novojilov <andy@essentialkaos.com> - 0.152_20170918-0
