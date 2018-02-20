@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -35,7 +35,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 %define __ln              %{_bin}/ln
 %define __touch           %{_bin}/touch
@@ -45,7 +45,7 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
-########################################################################################
+################################################################################
 
 %define major_version     2.11
 %define user_name         kafka
@@ -53,7 +53,7 @@
 %define service_name      kafka
 %define home_dir          %{_opt}/%{name}
 
-########################################################################################
+################################################################################
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
@@ -81,7 +81,7 @@ Requires(pre):       %{__chkconfig} initscripts
 
 Provides:            %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Apache Kafka is a distributed publish-subscribe messaging system. It
@@ -96,7 +96,7 @@ is designed to support the following:
   maintaining per-partition ordering semantics.
 * Support for parallel data load into Hadoop.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -110,7 +110,7 @@ pushd core/build/distributions
 popd
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_opt}/%{name}
 install -dm 755 %{buildroot}%{_datadir}/%{name}
@@ -132,7 +132,7 @@ pushd core/build/distributions/%{name}_%{major_version}-%{version}
 popd
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %pre
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
@@ -150,7 +150,7 @@ if [[ $1 -eq 0 ]] ; then
   %{__chkconfig} --del %{service_name}
 fi
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,%{user_name},%{group_name},-)
@@ -166,7 +166,7 @@ fi
 %config(noreplace) %{_logrotatedir}/%{name}
 %config(noreplace) %{_sysconfigdir}/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.0.1-0

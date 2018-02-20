@@ -6,7 +6,7 @@
 
 Summary:         A search tool that combines the usability of ag with the raw speed of grep
 Name:            ripgrep
-Version:         0.7.1
+Version:         0.8.0
 Release:         0%{?dist}
 Group:           Applications/Text
 License:         MIT or Unlicense
@@ -16,7 +16,7 @@ Source0:         https://github.com/BurntSushi/%{name}/archive/%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   cargo
+BuildRequires:   cargo asciidoc libxslt-devel libxml2 docbook-style-xsl
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -35,7 +35,7 @@ regex pattern.
 %setup -qn %{name}-%{version}
 
 %build
-cargo build --release
+cargo build --release --verbose
 
 %install
 rm -rf %{buildroot}
@@ -45,9 +45,10 @@ install -dm 755 %{buildroot}%{_mandir}/man1
 install -dm 755 %{buildroot}%{_datadir}/bash-completion/completions
 
 install -pm 755 target/release/rg %{buildroot}%{_bindir}/
-install -pm 644 doc/rg.1 %{buildroot}%{_mandir}/man1/
+install -pm 644 $(find target -name "rg.1" | head -1) \
+                %{buildroot}%{_mandir}/man1/
 
-install -pm 644 target/release/build/ripgrep-*/out/rg.bash-completion \
+install -pm 644 $(find target -name "rg.bash" | head -1) \
                 %{buildroot}%{_datadir}/bash-completion/completions/rg
 
 %clean
@@ -64,12 +65,15 @@ cargo test
 %defattr(-,root,root,-)
 %doc README.md CHANGELOG.md COPYING LICENSE-MIT UNLICENSE
 %{_bindir}/rg
-%{_mandir}/man1/rg.1*
+%{_mandir}/man1/rg.*
 %{_datadir}/bash-completion
 
 ################################################################################
 
 %changelog
+* Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 0.8.0-0
+- Updated to latest stable release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.1-0
 - Updated to latest stable release
 
