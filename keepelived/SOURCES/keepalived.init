@@ -26,13 +26,14 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="keepalived"
-kv[search_pattern]="keepalived"
 
 kv.readSysconfig
 
 binary=${BINARY:-/usr/sbin/keepalived}
 options=${KEEPALIVED_OPTIONS:--D}
 config=${CONFIG:-/etc/keepalived/keepalived.conf}
+
+kv[search_pattern]="$binary $options -f $config"
 
 ###############################################################################
 
