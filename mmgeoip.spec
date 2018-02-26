@@ -14,12 +14,12 @@
 %define _loc_datarootdir  %{_loc_prefix}/share
 %define _loc_includedir   %{_loc_prefix}/include
 
-########################################################################################
+################################################################################
 
 Summary:           MaxMinds data for GeoIP
 Name:              MMGeoIP
 Version:           1.2
-Release:           14%{?dist}
+Release:           15%{?dist}
 License:           Copyright © 2010 Achillefs Charmpilas
 Group:             Applications/Databases
 URL:               http://www.maxmind.com/
@@ -36,22 +36,23 @@ Requires:          GeoIP
 
 Provides:          %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 MaxMinds data for GeoIP
 
-########################################################################################
+################################################################################
 
 %package IPV6
 
 Summary:           MaxMinds data for GeoIP (IPV6)
+Group:             Applications/Databases
 Requires:          GeoIP
 
 %description IPV6
 MaxMinds IPV6 data for GeoIP
 
-########################################################################################
+################################################################################
 
 %prep
 %build
@@ -79,7 +80,7 @@ install -pm 755 GeoIPV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -92,9 +93,12 @@ rm -rf %{buildroot}
 %{_loc_datarootdir}/GeoIP/GeoLiteCityV6.dat
 %{_loc_datarootdir}/GeoIP/GeoIPV6.dat
 
-########################################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2-15
+- Data updated
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-14
 - Data updated
 

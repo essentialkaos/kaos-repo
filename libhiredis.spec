@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,13 +26,13 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 %define realname       hiredis
 %define minor_ver      13
 %define rel            3
 
-###############################################################################
+################################################################################
 
 Summary:             Minimalistic C client for Redis
 Name:                lib%{realname}
@@ -48,29 +48,29 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} 
 
 BuildRequires:       gcc make
 
-###############################################################################
+################################################################################
 
-%description 
+%description
 Hiredis is a minimalistic C client library for the Redis database.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:             Header files and libraries for hiredis C development
 Group:               Development/Libraries
 Requires:            %{name} = %{version}
 
-%description devel 
-The %{name}-devel package contains the header files and 
+%description devel
+The %{name}-devel package contains the header files and
 libraries to develop applications using a Redis database.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{realname}-0.%{minor_ver}.%{rel}
 
 %build
-%{__make} %{?_smp_mflags} OPTIMIZATION="%{optflags}" 
+%{__make} %{?_smp_mflags} OPTIMIZATION="%{optflags}"
 
 %install
 rm -rf %{buildroot}
@@ -79,7 +79,7 @@ rm -rf %{buildroot}
 
 ln -s %{_libdir}/%{name}.so.0.%{minor_ver} %{buildroot}%{_libdir}/%{name}.so.0
 
-%clean 
+%clean
 rm -rf %{buildroot}
 
 %post
@@ -88,7 +88,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -102,7 +102,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}.a
 %{_libdir}/pkgconfig/%{realname}.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Sep 17 2015 Anton Novojilov <andy@essentialkaos.com> - 0.13.3-0
@@ -120,14 +120,14 @@ rm -rf %{buildroot}
 - Windows compatibility layer for parser code (tzickel)
 - Properly escape data printed to PKGCONF file (Dan Skorupski)
 - Fix tests when assert() undefined (Keith Bennett, Matt Stancliff)
-- Implement a reconnect method for the client context, this changes 
+- Implement a reconnect method for the client context, this changes
   the structure of redisContext (Aaron Bedra)
 - Fix memory leak in async reply handling (Salvatore Sanfilippo)
-- Rename struct member to avoid name clash with pre-c99 
+- Rename struct member to avoid name clash with pre-c99
   code (Alex Balashov, ncopa)
 
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.12.1-0
-- Fix `make install`: DESTDIR support, install all required files, install 
+- Fix `make install`: DESTDIR support, install all required files, install
   PKGCONF in proper location
 - Fix `make test` as 32 bit build on 64 bit platform
 

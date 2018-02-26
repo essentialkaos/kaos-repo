@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -30,17 +30,17 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 Summary:            Friendly interactive shell (FISh)
 Name:               fish
-Version:            2.6.0
+Version:            2.7.1
 Release:            0%{?dist}
 License:            GPL2
 Group:              System Environment/Shells
 URL:                http://fishshell.com
 
-Source0:            %{url}/files/%{version}/%{name}-%{version}.tar.gz
+Source0:            https://github.com/fish-shell/fish-shell/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -48,14 +48,14 @@ BuildRequires:      ncurses-devel gettext gcc-c++ autoconf
 
 Requires:           bc python which man
 
-########################################################################################
+################################################################################
 
 %description
 fish is a shell geared towards interactive use. Its features are
 focused on user friendliness and discoverability. The language syntax
 is simple but incompatible with other shell languages.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -84,7 +84,7 @@ if [[ $1 -eq 0 ]] ; then
   mv %{_sysconfdir}/%{name}.tmp %{_sysconfdir}/shells
 fi
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -97,9 +97,12 @@ fi
 %{_datadir}/pkgconfig/%{name}.pc
 %attr(0755,root,root) %{_bindir}/*
 
-########################################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
+- Updated to latest stable release
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
 - Updated to latest stable release
 

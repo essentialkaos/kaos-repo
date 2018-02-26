@@ -1,12 +1,12 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:         Library for country/city/organization to IP address or hostname mapping
 Name:            GeoIP
-Version:         1.6.11
+Version:         1.6.12
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         LGPLv2+
@@ -24,7 +24,7 @@ Obsoletes:       geoip < %{version}-%{release}
 Provides:        geoip = %{version}-%{release}
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 GeoIP is a C library that enables the user to find the country that any IP
@@ -34,7 +34,7 @@ It uses file based databases that can optionally be updated on a weekly basis
 by installing the geoipupdate-cron (IPv4) and/or geoipupdate-cron6 (IPv6)
 packages.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:         Development headers and libraries for GeoIP
@@ -52,7 +52,7 @@ Obsoletes:       geoip-devel < %{version}-%{release}
 %description devel
 Development headers and static libraries for building GeoIP-based applications.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -89,7 +89,7 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -108,9 +108,13 @@ rm -rf %{buildroot}
 %{_libdir}/libGeoIP.so
 %{_libdir}/pkgconfig/geoip.pc
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.12-0
+- Populate metro and area code when performing lookups in IPv6 City databases.
+  Previously this was only done when using IPv4 City databases.
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
 - Fix use of a NULL pointer when opening a corrupt database with
   GeoIP_open.

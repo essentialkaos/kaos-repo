@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,7 +28,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:           Fraunhofer FDK AAC codec library
 Name:              libfdk-aac
@@ -48,13 +48,13 @@ Requires:          glibc
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 
 Modified library of Fraunhofer AAC decoder and encoder.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn fdk-aac-%{version}
@@ -62,15 +62,16 @@ Modified library of Fraunhofer AAC decoder and encoder.
 %build
 autoreconf -fiv
 %{_configure} --prefix=%{_prefix}
-%{__make}
+
+%{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
 %ifarch x86_64
-  %{__mv} %{buildroot}%{_libdir32} %{buildroot}%{_libdir}
+  mv %{buildroot}%{_libdir32} %{buildroot}%{_libdir}
 %endif
 
 %post
@@ -80,9 +81,9 @@ autoreconf -fiv
 /sbin/ldconfig
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -90,7 +91,7 @@ autoreconf -fiv
 %{_includedir}/*
 %{_libdir}/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.5-0

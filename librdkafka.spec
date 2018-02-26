@@ -1,4 +1,10 @@
-###############################################################################
+################################################################################
+
+%ifarch i386
+%define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i386 -mtune=atom -fasynchronous-unwind-tables
+%endif
+
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,16 +40,16 @@
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
 
 %define realname       rdkafka
 %define minor_ver      1
 
-###############################################################################
+################################################################################
 
 Summary:             Apache Kafka C/C++ client library
 Name:                librdkafka
-Version:             0.11.1
+Version:             0.11.3
 Release:             0%{?dist}
 License:             2-clause BSD
 Group:               Development/Libraries
@@ -57,15 +63,15 @@ BuildRequires:       make gcc gcc-c++ zlib-devel
 
 Requires:            zlib
 
-###############################################################################
+################################################################################
 
 %description
-C library implementation of the Apache Kafka protocol, containing both 
-Producer and Consumer support. It was designed with message delivery 
-reliability and high performance in mind, current figures exceed 
+C library implementation of the Apache Kafka protocol, containing both
+Producer and Consumer support. It was designed with message delivery
+reliability and high performance in mind, current figures exceed
 800000 msgs/second for the producer and 3 million msgs/second for the consumer.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:             Header files and libraries for librdkafka C development
@@ -76,16 +82,12 @@ Requires:            %{name} = %{version}
 The %{name}-devel package contains the header files and
 libraries to develop applications using a Kafka databases.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 %build
-
-%ifarch i386
-%define optflags -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -m32 -march=i386 -mtune=atom -fasynchronous-unwind-tables
-%endif
 
 %configure
 
@@ -105,7 +107,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -125,9 +127,12 @@ rm -rf %{buildroot}
 %{_pkgconfigdir}/%{realname}.pc
 %{_pkgconfigdir}/%{realname}++.pc
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.3-0
+- Updated to latest release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.1-0
 - Updated to latest release
 
@@ -146,5 +151,5 @@ rm -rf %{buildroot}
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
 - Updated to latest release
 
-* Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.0.99-0 
-- Initial build 
+* Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.0.99-0
+- Initial build

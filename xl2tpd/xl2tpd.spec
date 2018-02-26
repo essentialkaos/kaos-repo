@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,11 +34,11 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
-Version:           1.3.10
+Version:           1.3.10.1
 Release:           0%{?dist}
 License:           GPL+
 Group:             System Environment/Daemons
@@ -56,7 +56,7 @@ Requires(post):    %{__chkconfig}
 Requires(preun):   %{__chkconfig}
 Requires(preun):   %{__service}
 
-###############################################################################
+################################################################################
 
 %description
 xl2tpd is an implementation of the Layer 2 Tunnelling Protocol (RFC 2661).
@@ -64,7 +64,7 @@ L2TP allows you to tunnel PPP over UDP. Some ISPs use L2TP to tunnel user
 sessions from dial-in servers (modem banks, ADSL DSLAMs) to back-end PPP
 servers. Another important application is Virtual Private Networks where
 the IPsec protocol is used to secure the L2TP connection (L2TP/IPsec,
-RFC 3193). The L2TP/IPsec protocol is mainly used by Windows and 
+RFC 3193). The L2TP/IPsec protocol is mainly used by Windows and
 Mac OS X clients. On Linux, xl2tpd can be used in combination with IPsec
 implementations such as Openswan.
 Example configuration files for such a setup are included in this RPM.
@@ -83,12 +83,12 @@ or via a patch in contrib for 2.4.x kernels.
 Xl2tpd is based on the 0.69 L2TP by Jeff McAdams <jeffm@iglou.com>
 It was de-facto maintained by Jacco de Leeuw <jacco2@dds.nl> in 2002 and 2003.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
-rm -f linux/include/linux/if_pppol2tp.h 
+rm -f linux/include/linux/if_pppol2tp.h
 
 %build
 export CFLAGS="$CFLAGS -fPIC -Wall"
@@ -126,11 +126,11 @@ if [[ $1 -ge 1 ]] ; then
   %{__service} %{name} condrestart 2>&1 >/dev/null
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
-%doc BUGS CHANGES CREDITS LICENSE README.* 
+%doc BUGS CHANGES CREDITS LICENSE README.*
 %doc doc/README.patents examples/chapsecrets.sample
 %config(noreplace) %{_sysconfdir}/%{name}/*
 %config(noreplace) %{_sysconfdir}/ppp/*
@@ -143,9 +143,13 @@ fi
 %ghost %dir %{_rundir}/%{name}
 %ghost %attr(0600,root,root) %{_rundir}/%{name}/l2tp-control
 
-###############################################################################
+################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.10.1-0
+- Have max retries as a configuration
+- Add more into to "select timeout" debug message
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.10-0
 - Update STRLEN in file.h to 100 (from 80)
 - xl2tpd-control: fix xl2tpd hanged up in "fopen"
@@ -233,9 +237,11 @@ fi
 - Solve some memory leaks that show up after several days of running with
   flapping tunnels and calls.
 - Fix for avoiding xltpd occasionally going into an endless loop.
-- Fixed issue with strtok modifying contents when pushing details for ppd plugins
+- Fixed issue with strtok modifying contents when pushing details for ppd
+  plugins
 - Added the ability to add a pppd plugin and params to an lns
-- Modified lns_remove to close each call rather than just calling destroy_tunnel()
+- Modified lns_remove to close each call rather than just calling
+  destroy_tunnel()
 - Added control method to remove an lns
 - Refactored the do_control() method to use a handler approach for processing
 - Fixed potential null pointer when creating a new lns

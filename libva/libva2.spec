@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,11 +33,11 @@
 
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 %define realname          libva
 
-###############################################################################
+################################################################################
 
 Summary:            Video Acceleration (VA) API for Linux
 Name:               %{realname}2
@@ -65,14 +65,14 @@ Obsoletes:          libva-freeworld < %{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-Libva is open source library to provide hardware accelerated video 
-encoding and decoding. It supported by GStreamer, VLC media player, Mpv and 
+Libva is open source library to provide hardware accelerated video
+encoding and decoding. It supported by GStreamer, VLC media player, Mpv and
 MPlayer.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Libraries and headers for (VA) API
@@ -83,7 +83,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 Libva headers and libraries which provides the VA API video acceleration API.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{realname}-%{version}
@@ -104,7 +104,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %post
 /sbin/ldconfig
@@ -112,7 +112,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -126,7 +126,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{realname}*.so
 %{_libdir}/%{realname}*.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0

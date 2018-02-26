@@ -54,7 +54,7 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.8.0
+Version:          1.9.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
@@ -101,7 +101,7 @@ Real-time performance monitoring, in the greatest possible detail!
         --with-math \
         --with-user=%{service_user}
 
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -119,7 +119,7 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
-install -pm 644 system/%{name}.service %{buildroot}/%{_unitdir}
+install -pm 644 system/%{name}.service %{buildroot}%{_unitdir}/
 %else
 install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
@@ -185,6 +185,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
+- Updated to latest stable release
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
 - Updated to latest stable release
 

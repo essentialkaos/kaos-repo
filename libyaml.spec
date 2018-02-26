@@ -50,7 +50,9 @@ developing applications that use LibYAML.
 
 %install
 rm -rf %{buildroot}
-%{__make} DESTDIR=%{buildroot} INSTALL="install -p" install
+
+%{make_install} INSTALL="install -p"
+
 rm -f %{buildroot}%{_libdir}/*.{la,a}
 
 %check

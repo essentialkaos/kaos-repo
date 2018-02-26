@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -31,7 +31,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:            Adaptive Multi-Rate Floating-point (AMR) Speech Codec
 Name:               opencore-amr
@@ -49,7 +49,7 @@ BuildRequires:      gcc gcc-c++ make
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 3GPP released reference implementations 3GPP Adaptive Multi-Rate
@@ -57,7 +57,7 @@ Floating-point (AMR) Speech Codec (3GPP TS 26.104 V 7.0.0) and 3GPP
 AMR Adaptive Multi-Rate - Wideband (AMR-WB) Speech Codec (3GPP TS
 26.204 V7.0.0).
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for opencore-amr
@@ -68,7 +68,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 This is the package containing the header files for opencore-amr libraries.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -92,7 +92,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -111,7 +111,7 @@ rm -rf %{buildroot}
 %{_libdir}/lib%{name}nb.la
 %{_libdir}/lib%{name}wb.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.5-0

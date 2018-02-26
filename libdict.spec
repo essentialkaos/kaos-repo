@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -29,15 +29,21 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+%define __ldconfig        %{_sbin}/ldconfig
+
+################################################################################
 
 %define shortname         dict
 
-###############################################################################
+################################################################################
 
 Summary:         ANSI C library of key-value data structures with generic interfaces
 Name:            lib%{shortname}
-Version:         0.2.1
+Version:         0.3.0
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -52,14 +58,14 @@ BuildRequires:   clang make
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 libdict is a small C library that provides access to RFC2229
 dictionary servers. This is done through a series of functions, each
 representing a major function of the dict server.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -71,7 +77,7 @@ Requires:        %{name} = %{version}-%{release}
 %description devel
 Header files and static libraries for libdict.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -87,11 +93,13 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+%{__ldconfig}
 
-%postun -p /sbin/ldconfig
+%postun
+%{__ldconfig}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -104,8 +112,8 @@ rm -rf %{buildroot}
 %{_libdir}/libdict.a
 %{_libdir}/libdict_p.a
 
-###############################################################################
+################################################################################
 
 %changelog
-* Thu Mar 13 2014 Anton Novojilov <andy@essentialkaos.com> - 0.2.1-0
+* Thu Mar 13 2014 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-0
 - Initial build

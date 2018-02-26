@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -30,11 +30,11 @@
 
 %define source_name       ffmpeg
 
-###############################################################################
+################################################################################
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           3.4
+Version:           3.4.2
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -47,7 +47,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     make gcc SDL-devel freetype-devel zlib-devel bzip2-devel
 BuildRequires:     imlib2-devel liba52-devel libdc1394-devel libraw1394-devel
 BuildRequires:     libstdc++-devel libfaad2-devel gsm-devel opus-devel
-BuildRequires:     lame-devel libtheora-devel libvorbis-devel
+BuildRequires:     lame-devel libtheora-devel libvorbis-devel vo-amrwbenc-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel speex-devel libvpx-devel >= 0.9.6 xavs-devel
 BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
@@ -55,13 +55,13 @@ BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
 Requires:          opencore-amr librtmp orc libvpx x264
-Requires:          libxvidcore libva opus
+Requires:          libxvidcore libva opus vo-amrwbenc
 
 Conflicts:         %{source_name}
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 FFmpeg is a very fast video and audio converter. It can also grab from a
@@ -72,7 +72,7 @@ usually to give only the target bitrate you want. FFmpeg can also convert
 from any sample rate to any other, and resize video on the fly with a high
 quality polyphase filter.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{source_name}-%{version}
@@ -101,6 +101,7 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-libmp3lame \
   --enable-libopencore-amrnb \
   --enable-libopencore-amrwb \
+  --enable-libvo-amrwbenc \
   --enable-libopenjpeg \
   --enable-libopus \
   --enable-librtmp \
@@ -123,16 +124,16 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} incdir=%{buildroot}%{_includedir}/%{source_name}
 
-%{__rm} -rf doc/Makefile
+rm -rf doc/Makefile
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -144,9 +145,16 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
 %{_mandir}/man1/ff*.1.*
 %{_mandir}/man3/lib*.3.*
 
-###############################################################################
+################################################################################
 
 %changelog
+* Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
+- Updated to version 3.4.2
+
+* Thu Jan 25 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
+- Updated to version 3.4.1
+- Added vo-amrwbenc support
+
 * Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4-0
 - Updated to version 3.4
 

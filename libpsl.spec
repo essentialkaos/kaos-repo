@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            C library for the Publix Suffix List
 Name:               libpsl
@@ -45,7 +45,7 @@ BuildRequires:      libicu-devel libtool libxslt chrpath
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 libpsl is a C library to handle the Public Suffix List. A "public suffix" is a
@@ -70,28 +70,29 @@ Libpsl...
 - is thread-safe;
 - handles IDNA2008 UTS#46;
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for %{name}
-
+Group:              Development/Tools
 Requires:           %{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 This package contains libraries and header files for
 developing applications that use %{name}.
 
-###############################################################################
+################################################################################
 
 %package -n psl
 Summary:            Commandline utility to explore the Public Suffix List
+Group:              Development/Tools
 
 %description -n psl
 This package contains a commandline utility to explore the Public Suffix List,
 for example it checks if domains are public suffixes, checks if cookie-domain
 is acceptable for domains and so on.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -124,7 +125,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -146,7 +147,7 @@ rm -rf %{buildroot}
 %{_bindir}/psl
 %{_mandir}/man1/psl*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0

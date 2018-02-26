@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            UCL compression library
 Name:               ucl
@@ -42,9 +42,9 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      make gcc gcc-c++
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 UCL is a portable lossless data compression library written in ANSI C.
@@ -52,7 +52,7 @@ UCL implements a number of compression algorithms that achieve an
 excellent compression ratio while allowing *very* fast decompression.
 Decompression requires no additional memory.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Header files, libraries and development documentation for ucl
@@ -64,7 +64,7 @@ This package contains the header files, static libraries and development
 documentation for ucl. If you like to develop programs using ucl,
 you will need to install ucl-devel.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -88,7 +88,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, 0755)
@@ -102,7 +102,7 @@ rm -rf %{buildroot}
 %exclude %{_libdir}/libucl.la
 %{_libdir}/libucl.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.03-0

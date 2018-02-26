@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %define _smp_mflags -j1
 
-###############################################################################
+################################################################################
 
 Summary:              A terminal multiplexer
 Name:                 tmux
@@ -20,7 +20,7 @@ BuildRequires:        make automake gcc ncurses-devel libevent2-devel
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 tmux is a "terminal multiplexer."  It enables a number of terminals (or
@@ -28,7 +28,7 @@ windows) to be accessed and controlled from a single terminal.  tmux is
 intended to be a simple, modern, BSD-licensed alternative to programs such
 as GNU Screen.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -53,7 +53,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -61,7 +61,7 @@ rm -rf %{buildroot}
 %{_bindir}/tmux
 %{_mandir}/man1/tmux.1.*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6-0
@@ -130,7 +130,8 @@ rm -rf %{buildroot}
 - All new sessions that are unattached (whether with -d or started with no
   terminal) are now created with size 80 x 24. Whether the status line is on or
   off does not affect the size of new sessions until they are attached.
-- Expand formats in option names and add -F flag to expand them in option values.
+- Expand formats in option names and add -F flag to expand them in option
+  values.
 - Remember the search string for a pane even if copy mode is exited and entered
   again.
 - Some further BCE fixes (scroll up, reverse index).

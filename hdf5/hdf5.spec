@@ -1,8 +1,20 @@
-###############################################################################
+################################################################################
+
+%global _configure ../configure
+
+%global configure_opts \\\
+  --disable-silent-rules \\\
+  --enable-fortran \\\
+  --enable-fortran2003 \\\
+  --enable-hl \\\
+  --enable-shared \\\
+%{nil}
+
+################################################################################
 
 Summary:              A general purpose library and file format for storing scientific data
 Name:                 hdf5
-Version:              1.8.19
+Version:              1.8.20
 Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
@@ -19,7 +31,7 @@ BuildRequires:        chrpath
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 HDF5 is a general purpose library and file format for storing scientific data.
@@ -30,7 +42,7 @@ objects, one can create and store almost any kind of scientific data
 structure, such as images, arrays of vectors, and structured and unstructured
 grids. You can also mix and match them in HDF5 files according to your needs.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            HDF5 development files
@@ -42,7 +54,7 @@ Requires:           zlib-devel
 %description devel
 HDF5 development headers and libraries.
 
-###############################################################################
+################################################################################
 
 %package static
 Summary:            HDF5 static libraries
@@ -53,22 +65,12 @@ Requires:           %{name}-devel = %{version}-%{release}
 %description static
 HDF5 static libraries.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 %build
-
-%global _configure ../configure
-
-%global configure_opts \\\
-  --disable-silent-rules \\\
-  --enable-fortran \\\
-  --enable-fortran2003 \\\
-  --enable-hl \\\
-  --enable-shared \\\
-%{nil}
 
 export CC=gcc
 export CXX=g++
@@ -85,7 +87,7 @@ popd
 %install
 rm -rf %{buildroot}
 
-%{__make} -C build install DESTDIR=%{buildroot}
+%{make_install} -C build
 
 rm %{buildroot}%{_libdir}/*.la
 
@@ -139,7 +141,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -178,9 +180,12 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_libdir}/*.a
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.20-0
+- Updated to latest stable release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.19-0
 - Updated to latest stable release
 

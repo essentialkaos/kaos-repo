@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define realname      libevent
 
@@ -8,7 +8,7 @@
 %define pkgname       libevent2
 %endif
 
-###############################################################################
+################################################################################
 
 Summary:              Abstract asynchronous event notification library
 Name:                 %{pkgname}
@@ -29,7 +29,7 @@ BuildRequires:        gcc make automake libtool openssl-devel zlib-devel
 Provides:             %{realname}2 = %{version}-%{release}
 %endif
 
-###############################################################################
+################################################################################
 
 %description
 The libevent API provides a mechanism to execute a callback function when
@@ -37,7 +37,7 @@ a specific event occurs on a file descriptor or after a timeout has been
 reached. Furthermore, libevent also support callbacks due to signals or regular
 timeouts.
 
-###############################################################################
+################################################################################
 
 %package devel
 Group:                System Environment/Libraries
@@ -52,7 +52,7 @@ Provides:             %{realname}2-devel = %{version}-%{release}
 %description devel
 Development files for %{name}
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{realname}-release-%{version}-stable
@@ -82,7 +82,7 @@ rm -f %{buildroot}%{_libdir}/*.la
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -97,7 +97,7 @@ rm -rf %{buildroot}
 %{_includedir}/event2/
 %{_libdir}/%{realname}*.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.8-0

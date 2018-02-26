@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,16 +34,22 @@
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
 
-###############################################################################
+################################################################################
+
+%ifarch %ix86
+  %define optflags -O2 -g -pipe -Wall -fexceptions -fstack-protector -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -Wp,-D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4
+%endif
+
+################################################################################
 
 # Found X264_BUILD in (x264.h)
 %define pkg_build            152
-%define pkg_snapshot_date    20171117
+%define pkg_snapshot_date    20180219
 %define pkg_snapshot_prefix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_prefix}
 
-###############################################################################
+################################################################################
 
 Summary:            H.264 (MPEG-4 AVC) encoder library
 Name:               x264
@@ -57,16 +63,16 @@ Source0:            http://ftp.videolan.org/pub/videolan/%{name}/snapshots/%{nam
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc gcc-c++ make nasm yasm gettext
+BuildRequires:      gcc gcc-c++ make nasm >= 2.13 yasm gettext
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 x264 is a free library for encoding H.264/AVC video streams.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for x264
@@ -77,15 +83,18 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 Header files and shared libraries for x264.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-snapshot-%{pkg_snapshot_version}-stable
 
 %build
-%ifarch %ix86
-  %define optflags -O2 -g -pipe -Wall -fexceptions -fstack-protector -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -Wp,-D_FORTIFY_SOURCE=2 --param=ssp-buffer-size=4
-%endif
+
+# Fail build if header file contains different build version
+if [[ $(grep '#define X264_BUILD' x264.h | cut -f3 -d" ") != "%{pkg_build}" ]] ; then
+  echo "Header file contains different build version!"
+  exit 1
+fi
 
 %configure --enable-pic --enable-debug --enable-shared
 
@@ -105,7 +114,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -120,84 +129,26 @@ rm -rf %{buildroot}
 %{_includedir}/%{name}_config.h
 %{_pkgconfigdir}/%{name}.pc
 
-###############################################################################
+################################################################################
 
 %changelog
+* Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 0.152_20180219-0
+- Updated to latest stable snapshot
+
 * Tue Sep 19 2017 Anton Novojilov <andy@essentialkaos.com> - 0.152_20170918-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Wed Jul 12 2017 Anton Novojilov <andy@essentialkaos.com> - 0.151_20170711-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.150_20170709-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.149_20170321-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.148_20160905-0
-- Update to latest stable snapshot
+- Updated to latest stable snapshot
 
 * Mon Apr 18 2016 Gleb Goncharov <yum@gongled.ru> - 0.148_20160416-0
-- Update to latest stable snapshot
-
-* Mon Apr 07 2014 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.142-20_20140406.2245
-- Update to latest stable snapshot
-
-* Fri Nov 15 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.138-19_20130917.2245
-- Update to latest stable snapshot
-
-* Wed Sep 18 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.136-19_20130917.2245
-- Update to latest stable snapshot
-
-* Fri May 10 2013 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.130-18_20130509.2245
-- Update to latest stable snapshot
-
-* Sat Nov 12 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.118-17_20111111.2245
-- Update to latest stable snapshot
-
-* Sat Jun 11 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.115-16_20110610.2245
-- Update to latest stable snapshot
-
-* Wed Mar  9 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.114-15_20110308.2245
-- Update to latest stable snapshot
-
-* Sat Oct  2 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.106-13_20101001.2245
-- Update to latest git
-
-* Tue Jun 22 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.98-12_20100621.2245
-- Update to latest git
-
-* Thu Apr  1 2010 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.92-12_20100401.2245
-- Update to latest git
-
-* Fri Nov 20 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.79-11_20091119.2245
-- Update to latest git
-
-* Mon Jul 20 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.68-10_20090719.2245
-- Update to latest git
-
-* Sun Nov 16 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.65-8_20081108.2245
-- x264-libs from a 3rd party repo generates conflicts
-
-* Sun Nov  9 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.65-6_20081108.2245
-- Update to latest git
-
-* Fri Jun 27 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20080626_2245-5
-- Update to latest git
-
-* Tue Feb 26 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20080225_2245-5
-- Update to latest svn
-
-* Sun Apr 15 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070414_2245-4
-- Update to latest svn
-
-* Wed Feb  7 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070206_2245-3
-- Update to latest svn
-
-* Wed Jan  3 2007 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20070102_2245-2
-- Update to latest svn
-
-* Wed Sep 13 2006 Axel Thimm <Axel.Thimm@ATrpms.net> - svn20060912_2245-1
-- Initial build
-
+- Updated to latest stable snapshot

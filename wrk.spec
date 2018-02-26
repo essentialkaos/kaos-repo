@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,11 +33,11 @@
 
 %define _smp_mflags       -j1
 
-########################################################################################
+################################################################################
 
 Summary:          HTTP benchmarking tool
 Name:             wrk
-Version:          4.0.2
+Version:          4.1.0
 Release:          0%{?dist}
 License:          Apache 2.0
 Group:            Development/Tools
@@ -50,7 +50,7 @@ BuildRequires:    make gcc
 
 Provides:         %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 wrk is a modern HTTP benchmarking tool capable of generating significant
@@ -60,7 +60,7 @@ design with scalable event notification systems such as epoll and kqueue.
 An optional LuaJIT script can perform HTTP request generation, response
 processing, and custom reporting.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -69,7 +69,7 @@ processing, and custom reporting.
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_loc_datarootdir}
@@ -80,19 +80,22 @@ install -pm 755 %{name} %{buildroot}%{_bindir}/
 cp scripts/* %{buildroot}%{_loc_datarootdir}/%{name}/scripts/
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###########################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, 0755)
-%doc LICENSE README NOTICE
+%doc LICENSE README.md NOTICE
 %{_loc_datarootdir}/%{name}/scripts/*
 %{_bindir}/%{name}
 
-###########################################################################
+################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
+- Updated to latest release
+
 * Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
 - Updated to latest release
 

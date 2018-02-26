@@ -1,5 +1,5 @@
 [Unit]
-Description=Redis
+Description=PgBouncer
 After=syslog.target network.target
 
 [Service]

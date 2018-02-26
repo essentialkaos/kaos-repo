@@ -1,12 +1,12 @@
-###############################################################################
+################################################################################
 
-# rpmbuilder:pedantic true 
+# rpmbuilder:pedantic true
 
-###############################################################################
+################################################################################
 
 %global with_tests   %{?_with_tests:1}%{!?_with_tests:0}
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -38,11 +38,11 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __sysctl          %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.6
+Version:            4.0.8
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -86,7 +86,7 @@ Requires(preun):    initscripts
 Requires(postun):   initscripts
 %endif
 
-###############################################################################
+################################################################################
 
 %description
 Redis is an advanced key-value store. It is similar to memcached but the data
@@ -96,16 +96,17 @@ atomic operations to push/pop elements, add/remove elements, perform server side
 union, intersection, difference between sets, and so forth. Redis supports
 different kind of sorting abilities.
 
-###############################################################################
+################################################################################
 
 %package cli
 
 Summary:            Client for working with Redis from console
+Group:              Applications/Databases
 
 %description cli
 Client for working with Redis from console
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -216,7 +217,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -256,9 +257,38 @@ rm -rf %{buildroot}
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
 %{_bindir}/%{name}-cli
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.8-0
+- Redis 4.0.8 fixes a single critical bug in the radix tree data structure
+  used for Redis Cluster keys slot tracking.
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.7-0
+- Many 32 bit overflows were addressed in order to allow to use Redis with
+  a very significant amount of data, memory size permitting.
+- MEMORY USAGE fixed for the list type.
+- Allow read-only scripts in Redis Cluster.
+- Fix AOF pipes setup in edge case.
+- AUTH option for MIGRATE.
+- HyperLogLogs are no longer converted from sparse to dense in order
+  to be merged.
+- Fix AOF rewrite dead loop under edge cases.
+- Fix processing of large bulk strings
+- Added RM_UnlinkKey in modules API.
+- Fix Redis Cluster crashes when certain commands with a variable number
+  of arguments are called in an improper way.
+- Fix memory leak in lazyfree engine.
+- Fix many potentially successful partial synchronizations that end
+  doing a full SYNC, because of a bug destroying the replication
+  backlog on the slave. So after a failover the slave was often not able
+  to PSYNC with masters, and a full SYNC was triggered. The bug only
+  happened after 1 hour of uptime so escaped the unit tests.
+- Improve anti-affinity in master/slave allocation for Redis Cluster
+  when the cluster is created.
+- Improve output buffer handling for slaves, by not limiting the amount
+  of writes a slave could receive.
+
 * Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.6-0
 - More errors in the fixes for PSYNC2 in Redis 4.0.5 were identified
 
@@ -571,7 +601,7 @@ rm -rf %{buildroot}
         not) when master and slave are of different versions. (Oran Agra,
         Salvatore Sanfilippo)
 - [NEW] Log clients details when SLAVEOF command is received. (Salvatore
-        Sanfilippo with inputs from Nick Craver and Marc Gravell). 
+        Sanfilippo with inputs from Nick Craver and Marc Gravell).
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - [FIX] Fix blocking operations timeout precision when HZ is at its default

@@ -1,6 +1,6 @@
 ################################################################################
 
-%global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")
+%global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")
 
 ################################################################################
 
@@ -72,12 +72,12 @@ library by Dom Lachowicz.
 %setup -qn pyenchant-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
+python setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
 
 %clean
 rm -rf %{buildroot}

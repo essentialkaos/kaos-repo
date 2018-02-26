@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-########################################################################################
+################################################################################
 
 Summary:            Tool for installing and managing Python packages
 Name:               pip
@@ -47,32 +47,33 @@ BuildRequires:      python-devel python-setuptools-devel
 
 Provides:           %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
-pip is a tool for installing and managing Python packages, such as those found in the 
-Python Package Index. It’s a replacement for easy_install.
+pip is a tool for installing and managing Python packages, such as those found
+in the Python Package Index. It’s a replacement for easy_install.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
 
-%{__sed} -i '1d' %{name}/__init__.py
+sed -i '1d' %{name}/__init__.py
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
+
 rm -rf %{buildroot}%{_bindir}/%{name}-*
 
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -80,7 +81,7 @@ rm -rf %{buildroot}
 %attr(755, root, root) %{_bindir}/%{name}*
 %{python_sitelib}/%{name}*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 9.0.1-0

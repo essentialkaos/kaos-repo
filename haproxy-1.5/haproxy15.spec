@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -40,7 +40,7 @@
 %define __userdel         %{_sbindir}/userdel
 %define __getent          %{_bindir}/getent
 
-###############################################################################
+################################################################################
 
 %define hp_user           %{name}
 %define hp_user_id        188
@@ -53,7 +53,7 @@
 %define pcre_ver          8.40
 %define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
 
-###############################################################################
+################################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
@@ -100,7 +100,7 @@ Requires(postun):  initscripts
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 HAProxy is a free, fast and reliable solution offering high
@@ -112,15 +112,15 @@ modern hardware. Its mode of operation makes integration with existing
 architectures very easy and riskless, while still offering the
 possibility not to expose fragile web servers to the net.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 mkdir boringssl
 
-%{__tar} xzvf %{SOURCE10}
-%{__tar} xzvf %{SOURCE11} -C boringssl
+tar xzvf %{SOURCE10}
+tar xzvf %{SOURCE11} -C boringssl
 
 %build
 
@@ -245,7 +245,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -271,7 +271,7 @@ fi
 %{_mandir}/man1/%{name}.1.gz
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-3
@@ -296,11 +296,13 @@ fi
 - MINOR: systemd: Perform sanity check on config before reload
 - BUG/MINOR: init: always ensure that global.rlimit_nofile matches actual limits
 - BUG/MINOR: init: ensure that FD limit is raised to the max allowed
-- Revert "BUG/MINOR: ssl: fix potential memory leak in ssl_sock_load_dh_params()"
+- Revert "BUG/MINOR: ssl: fix potential memory leak in
+  ssl_sock_load_dh_params()"
 - BUG/MEDIUM: stream-int: completely detach connection on connect error
 - DOC: minor typo fixes to improve HTML parsing by haproxy-dconv
 - BUG/MAJOR: compression: initialize avail_in/next_in even during flush
-- BUG/MAJOR: stick-counters: possible crash when using sc_trackers with wrong table
+- BUG/MAJOR: stick-counters: possible crash when using sc_trackers with wrong
+  table
 - BUG/MAJOR: stream: properly mark the server address as unset on connect retry
 - BUG/MINOR: payload: fix SSLv2 version parser
 - MINOR: cli: allow the semi-colon to be escaped on the CLI
@@ -351,7 +353,8 @@ fi
 - BUG/MEDIUM: channel: incorrect polling condition may delay event delivery
 - BUG/MEDIUM: channel: fix miscalculation of available buffer space (3rd try)
 - MINOR: channel: add new function channel_congested()
-- BUG/MEDIUM: http: fix risk of CPU spikes with pipelined requests from dead client
+- BUG/MEDIUM: http: fix risk of CPU spikes with pipelined requests from dead
+  client
 - BUG/MAJOR: channel: fix miscalculation of available buffer space (4th try)
 - BUG/MEDIUM: stream: ensure the SI_FL_DONT_WAKE flag is properly cleared
 - BUG/MEDIUM: channel: fix inconsistent handling of 4GB-1 transfers
@@ -383,7 +386,8 @@ fi
 - BUG/MEDIUM: cli: changing compression rate-limiting must require admin level
 - BUILD: freebsd: double declaration
 - BUG/MEDIUM: sample: urlp can't match an empty value
-- BUG/MEDIUM: peers: table entries learned from a remote are pushed to others after a random delay.
+- BUG/MEDIUM: peers: table entries learned from a remote are pushed to others
+  after a random delay.
 - BUG/MEDIUM: peers: old stick table updates could be repushed.
 - CLEANUP: haproxy: using _GNU_SOURCE instead of __USE_GNU macro.
 - BUG/MINOR: chunk: make chunk_dup() always check and set dst->size
@@ -402,7 +406,8 @@ fi
 - DOC: add server name at rate-limit sessions example
 - BUG/MEDIUM: ssl: fix off-by-one in ALPN list allocation
 - BUG/MEDIUM: ssl: fix off-by-one in NPN list allocation
-- BUG/MEDIUM: stats: stats bind-process doesn't propagate the process mask correctly
+- BUG/MEDIUM: stats: stats bind-process doesn't propagate the process mask
+  correctly
 - BUG/MINOR: http: Be sure to process all the data received from a server
 - BUG/MEDIUM: chunks: always reject negative-length chunks
 - BUG/MINOR: systemd: ensure we don't miss signals
@@ -412,8 +417,10 @@ fi
 - CLEANUP: stats: Avoid computation with uninitialized bits.
 - CLEANUP: pattern: Ignore unknown samples in pat_match_ip().
 - CLEANUP: map: Avoid memory leak in out-of-memory condition.
-- BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and last rule is a CONNECT with no port
-- BUG/MINOR: tcpcheck: fix incorrect list usage resulting in failure to load certain configs
+- BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and
+  last rule is a CONNECT with no port
+- BUG/MINOR: tcpcheck: fix incorrect list usage resulting in failure to load
+  certain configs
 - MINOR: cfgparse: warn when uid parameter is not a number
 - MINOR: cfgparse: warn when gid parameter is not a number
 - BUG/MINOR: standard: Avoid free of non-allocated pointer
@@ -444,7 +451,8 @@ fi
 - BUG/MINOR: config: check that tune.bufsize is always positive
 - BUG/MEDIUM: proxy: ignore stopped peers
 - BUG/MEDIUM: proxy: do not wake stopped proxies' tasks during soft_stop()
-- BUG/MINOR: http: Add OPTIONS in supported http methods (found by find_http_meth)
+- BUG/MINOR: http: Add OPTIONS in supported http methods (found by
+  find_http_meth)
 - BUILD: enable build on Linux/s390x
 - DOC: backend section missing parameters
 - DOC: stats paramaters available in frontend
@@ -460,7 +468,8 @@ fi
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.14-0
 - BUILD/MINOR: tools: rename popcount to my_popcountl
-- BUG/MAJOR: buffers: make the buffer_slow_realign() function respect output data
+- BUG/MAJOR: buffers: make the buffer_slow_realign() function respect output
+  data
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.13-0
 - BUG/MINOR: check: fix tcpcheck error message
@@ -473,7 +482,8 @@ fi
 - BUG/MINOR: cfgparse: fix typo in 'option httplog' error message
 - BUG/MEDIUM: cfgparse: segfault when userlist is misused
 - BUG/MEDIUM: stats: properly initialize the scope before dumping stats
-- BUG/MEDIUM: http: don't forward client shutdown without NOLINGER except for tunnels
+- BUG/MEDIUM: http: don't forward client shutdown without NOLINGER except for
+  tunnels
 - CLEANUP: checks: fix double usage of cur / current_step in tcp-checks
 - BUG/MEDIUM: checks: do not dereference head of a tcp-check at the end
 - CLEANUP: checks: simplify the loop processing of tcp-checks
@@ -490,8 +500,10 @@ fi
 - MAJOR: peers: allow peers section to be used with nbproc > 1
 - DOC: relax the peers restriction to single-process
 - CLEANUP: config: fix misleading information in error message.
-- MINOR: config: report the number of processes using a peers section in the error case
-- BUG/MEDIUM: config: properly compute the default number of processes for a proxy
+- MINOR: config: report the number of processes using a peers section in the
+  error case
+- BUG/MEDIUM: config: properly compute the default number of processes for a
+  proxy
 
 * Tue May 12 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.12-0
 - BUG/MINOR: ssl: Display correct filename in error message
@@ -501,7 +513,8 @@ fi
 - BUG/MEDIUM: pattern: some entries are not deleted with case insensitive match
 - BUG/MEDIUM: buffer: one byte miss in buffer free space check
 - BUG/MAJOR: http: don't read past buffer's end in http_replace_value
-- BUG/MEDIUM: http: the function "(req|res)-replace-value" doesn't respect the HTTP syntax
+- BUG/MEDIUM: http: the function "(req|res)-replace-value" doesn't respect the
+  HTTP syntax
 - BUG/MEDIUM: peers: correctly configure the client timeout
 - BUG/MINOR: compression: consider the expansion factor in init
 - BUG/MEDIUM: http: hdr_cnt would not count any header when called without name
@@ -512,7 +525,8 @@ fi
 - DOC: http: update the comments about the rules for determining transfer-length
 - BUG/MEDIUM: http: do not restrict parsing of transfer-encoding to HTTP/1.1
 - BUG/MEDIUM: http: incorrect transfer-coding in the request is a bad request
-- BUG/MEDIUM: http: remove content-length form responses with bad transfer-encoding
+- BUG/MEDIUM: http: remove content-length form responses with bad
+  transfer-encoding
 - MEDIUM: http: restrict the HTTP version token to 1 digit as per RFC7230
 - MEDIUM: http: add option-ignore-probes to get rid of the floods of 408
 - BUG/MINOR: config: clear proxy->table.peers.p for disabled proxies
@@ -521,7 +535,8 @@ fi
 - MEDIUM: peers: add the ability to disable a peers section
 - DOC: document option http-ignore-probes
 - DOC: fix the comments about the meaning of msg->sol in HTTP
-- BUG/MEDIUM: http: wait for the exact amount of body bytes in wait_for_request_body
+- BUG/MEDIUM: http: wait for the exact amount of body bytes in
+  wait_for_request_body
 - BUG/MAJOR: http: prevent risk of reading past end with balance url_param
 - DOC: update the doc on the proxy protocol
 
@@ -534,16 +549,20 @@ fi
 - BUG/MINOR: stats:Fix incorrect printf type.
 - DOC: add missing entry for log-format and clarify the text
 - BUG/MEDIUM: http: fix header removal when previous header ends with pure LF
-- BUG/MEDIUM: channel: fix possible integer overflow on reserved size computation
+- BUG/MEDIUM: channel: fix possible integer overflow on reserved size
+  computation
 - BUG/MINOR: channel: compare to_forward with buf->i, not buf->size
 - MINOR: channel: add channel_in_transit()
 - MEDIUM: channel: make buffer_reserved() use channel_in_transit()
 - MEDIUM: channel: make bi_avail() use channel_in_transit()
-- BUG/MEDIUM: channel: don't schedule data in transit for leaving until connected
+- BUG/MEDIUM: channel: don't schedule data in transit for leaving until
+  connected
 - BUG/MAJOR: log: don't try to emit a log if no logger is set
 - BUG/MINOR: args: add missing entry for ARGT_MAP in arg_type_names
-- BUG/MEDIUM: http: make http-request set-header compute the string before removal
-- BUG/MINOR: http: fix incorrect header value offset in replace-hdr/replace-value
+- BUG/MEDIUM: http: make http-request set-header compute the string before
+  removal
+- BUG/MINOR: http: fix incorrect header value offset in
+  replace-hdr/replace-value
 - BUG/MINOR: http: abort request processing on filter failure
 
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.10-0
@@ -569,7 +588,8 @@ fi
 - BUG/MEDIUM: checks: fix conflicts between agent checks and ssl healthchecks
 - BUG/MEDIUM: ssl: fix bad ssl context init can cause segfault in case of OOM.
 - BUG/MINOR: samples: fix unnecessary memcopy converting binary to string.
-- BUG/MEDIUM: connection: sanitize PPv2 header length before parsing address information
+- BUG/MEDIUM: connection: sanitize PPv2 header length before parsing address
+  information
 - BUG/MEDIUM: pattern: don't load more than once a pattern list.
 - BUG/MEDIUM: ssl: force a full GC in case of memory shortage
 - BUG/MINOR: config: don't inherit the default balance algorithm in frontends
@@ -581,7 +601,8 @@ fi
 - BUG/MAJOR: sessions: unlink session from list on out of memory
 
 * Thu Nov 06 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-0
-- BUG/MAJOR: buffer: check the space left is enough or not when input data in a buffer is wrapped
+- BUG/MAJOR: buffer: check the space left is enough or not when input data in a
+  buffer is wrapped
 - BUG/BUILD: revert accidental change in the makefile from latest SSL fix
 
 * Thu Oct 23 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.6-0
@@ -602,11 +623,14 @@ fi
 - MEDIUM: http: enable header manipulation for 101 responses
 - BUG/MEDIUM: config: propagate frontend to backend process binding again.
 - MEDIUM: config: properly propagate process binding between proxies
-- MEDIUM: config: make the frontends automatically bind to the listeners' processes
+- MEDIUM: config: make the frontends automatically bind to the listeners'
+  processes
 - MEDIUM: config: compute the exact bind-process before listener's maxaccept
-- MEDIUM: config: only warn if stats are attached to multi-process bind directives
+- MEDIUM: config: only warn if stats are attached to multi-process bind
+  directives
 - MEDIUM: config: report it when tcp-request rules are misplaced
-- MINOR: config: detect the case where a tcp-request content rule has no inspect-delay
+- MINOR: config: detect the case where a tcp-request content rule has no
+  inspect-delay
 - MEDIUM: systemd-wrapper: support multiple executable versions and names
 - BUG/MEDIUM: remove debugging code from systemd-wrapper
 - BUG/MEDIUM: http: adjust close mode when switching to backend
@@ -622,12 +646,16 @@ fi
 - MEDIUM: ssl: add 300s supported time skew on OCSP response update.
 - MINOR: checks: mysql-check: Add support for v4.1+ authentication
 - MEDIUM: ssl: Add the option to use standardized DH parameters >= 1024 bits
-- MEDIUM: ssl: fix detection of ephemeral diffie-hellman key exchange by using the cipher description.
-- MEDIUM: http: add actions "replace-header" and "replace-values" in http-req/resp
+- MEDIUM: ssl: fix detection of ephemeral diffie-hellman key exchange by using
+  the cipher description.
+- MEDIUM: http: add actions "replace-header" and "replace-values" in
+  http-req/resp
 - MEDIUM: Break out check establishment into connect_chk()
 - MEDIUM: Add port_to_str helper
-- BUG/MEDIUM: fix ignored values for half-closed timeouts (client-fin and server-fin) in defaults section.
-- BUG/MEDIUM: Fix unhandled connections problem with systemd daemon mode and SO_REUSEPORT.
+- BUG/MEDIUM: fix ignored values for half-closed timeouts (client-fin and
+  server-fin) in defaults section.
+- BUG/MEDIUM: Fix unhandled connections problem with systemd daemon mode
+  and SO_REUSEPORT.
 - MINOR: regex: fix a little configuration memory leak.
 - MINOR: regex: Create JIT compatible function that return match strings
 - MEDIUM: regex: replace all standard regex function by own functions
@@ -661,7 +689,8 @@ fi
 - MEDIUM: stats: report the last check and last agent's output on the CSV status
 - MINOR: freq_ctr: introduce a new averaging method
 - MEDIUM: session: maintain per-backend and per-server time statistics
-- MEDIUM: stats: report per-backend and per-server time stats in HTML and CSV outputs
+- MEDIUM: stats: report per-backend and per-server time stats in HTML and CSV
+  outputs
 - BUG/MINOR: http: fix typos in previous patch
 - DOC: remove the ultra-obsolete TODO file
 - DOC: update roadmap

@@ -12,7 +12,7 @@
 # Required-Stop: $local_fs $network $named $syslog
 # Should-Start: smtpdaemon httpd
 # Should-Stop: smtpdaemon httpd
-# Default-Start: 
+# Default-Start:
 # Default-Stop: 0 1 2 3 4 5 6
 # Short-Description: High Availability monitor built upon LVS and VRRP
 # Description:       Robust keepalive facility to the Linux Virtual Server
@@ -26,13 +26,14 @@ source /etc/init.d/kaosv
 ###############################################################################
 
 kv[prog_name]="keepalived"
-kv[search_pattern]="keepalived"
 
 kv.readSysconfig
 
 binary=${BINARY:-/usr/sbin/keepalived}
 options=${KEEPALIVED_OPTIONS:--D}
 config=${CONFIG:-/etc/keepalived/keepalived.conf}
+
+kv[search_pattern]="$binary $options -f $config"
 
 ###############################################################################
 
@@ -84,7 +85,7 @@ startServiceHandler() {
 
 stopServiceHandler() {
   kv.sendSignal "$SIGNAL_TERM"
-  
+
   kv.getStopStatus
 
   return $?

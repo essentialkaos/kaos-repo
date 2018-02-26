@@ -1,11 +1,11 @@
-###############################################################################
+################################################################################
 
 %define cpp_driver_name     cpp-driver
 %define cpp_driver_version  2.6.0
 
 %define short_name          erlcass
 
-###############################################################################
+################################################################################
 
 Summary:              An Erlang Cassandra driver
 Name:                 lib%{short_name}
@@ -33,19 +33,19 @@ BuildRequires:        devtoolset-2-gcc-c++
 Requires(post):       /sbin/ldconfig
 Requires(postun):     /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %description
-An Erlang Cassandra driver, based on DataStax C++ driver focused on 
+An Erlang Cassandra driver, based on DataStax C++ driver focused on
 performance.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{short_name}-%{version}
 
 mkdir -p _build/deps
-%{__tar} xvfz %{SOURCE1} -C _build/deps
+tar xvfz %{SOURCE1} -C _build/deps
 
 # Fix build error with non existent header file
 sed -i '/#include "external_types.hpp"/d' c_src/nif_cass_statement.cc
@@ -74,7 +74,7 @@ ln -s %{_libdir}/erlcass_nif.so %{buildroot}%{_libdir}/liberlcass_nif.so
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %post
 /sbin/ldconfig
@@ -82,14 +82,14 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
 %doc README.md
 %{_libdir}/*.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7-0

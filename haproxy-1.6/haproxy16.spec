@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -40,7 +40,7 @@
 %define __userdel         %{_sbindir}/userdel
 %define __getent          %{_bindir}/getent
 
-###############################################################################
+################################################################################
 
 %define hp_user           %{name}
 %define hp_user_id        188
@@ -52,16 +52,16 @@
 
 %define lua_ver           5.3.4
 %define pcre_ver          8.41
-%define boringssl_ver     664e99a6486c293728097c661332f92bf2d847c6
+%define libre_ver         2.5.0
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
-###############################################################################
+################################################################################
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.6.13
-Release:           3%{?dist}
+Version:           1.6.14
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -75,7 +75,7 @@ Source5:           %{name}.service
 
 Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source12:          https://boringssl.googlesource.com/boringssl/+archive/%{boringssl_ver}.tar.gz
+Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
@@ -106,7 +106,7 @@ Requires(postun):  initscripts
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 HAProxy is a free, fast and reliable solution offering high
@@ -118,18 +118,18 @@ modern hardware. Its mode of operation makes integration with existing
 architectures very easy and riskless, while still offering the
 possibility not to expose fragile web servers to the net.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 mkdir boringssl
 
-%{__tar} xzvf %{SOURCE10}
-%{__tar} xzvf %{SOURCE11}
-%{__tar} xzvf %{SOURCE12} -C boringssl
-%{__tar} xzvf %{SOURCE13}
-%{__tar} xzvf %{SOURCE14}
+tar xzvf %{SOURCE10}
+tar xzvf %{SOURCE11}
+tar xzvf %{SOURCE12}
+tar xzvf %{SOURCE13}
+tar xzvf %{SOURCE14}
 
 %build
 
@@ -142,21 +142,13 @@ export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-# Static BoringSSL build
-mkdir boringssl/build
-
-pushd boringssl/build &> /dev/null
-  cmake ../
+# Static LibreSSL build
+pushd libressl-%{libre_ver}
+  mkdir build
+  ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
+  %{__make} install
 popd
-
-mkdir -p "boringssl/.openssl/lib"
-
-pushd boringssl/.openssl &> /dev/null
-  ln -s ../include
-popd
-
-cp boringssl/build/crypto/libcrypto.a boringssl/build/ssl/libssl.a boringssl/.openssl/lib
 
 # Static NCurses build
 pushd ncurses-%{ncurses_ver}
@@ -282,7 +274,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -303,11 +295,71 @@ fi
 %{_mandir}/man1/%{name}.1.gz
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
 
-###############################################################################
+################################################################################
 
 %changelog
-* Thu Nov 30 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-3
-- Migrated from LibreSSL to BoringSSL
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.14-0
+- BUG/MINOR: Wrong peer task expiration handling during synchronization
+  processing.
+- BUG/MEDIUM: http: Drop the connection establishment when a redirect is
+  performed
+- BUG/MEDIUM: cfgparse: Check if tune.http.maxhdr is in the range 1..32767
+- BUG/MINOR: haproxy/cli : fix for solaris/illumos distros for CMSG* macros
+- BUG/MINOR: log: pin the front connection when front ip/ports are logged
+- BUG/MINOR: stream: flag TASK_WOKEN_RES not set if task in runqueue
+- BUG/MAJOR: map: fix segfault during 'show map/acl' on cli.
+- DOC: fix references to the section about time format.
+- BUG/MEDIUM: map/acl: fix unwanted flags inheritance.
+- BUG/MINOR: stream: Don't forget to remove CF_WAKE_ONCE flag on response
+  channel
+- BUG/MINOR: http: properly handle all 1xx informational responses
+- BUG/MINOR: peers: peer synchronization issue (with several peers sections).
+- BUG/MINOR: Fix the sending function in Lua's cosocket
+- BUG/MINOR: lua: In error case, the safe mode is not removed
+- BUG/MINOR: lua: executes the function destroying the Lua session in safe mode
+- BUG/MAJOR: lua/socket: resources not detroyed when the socket is aborted
+- BUG/MEDIUM: lua: bad memory access
+- DOC: update CONTRIBUTING regarding optional parts and message format
+- DOC: update the list of OpenSSL versions in the README
+- DOC: Updated 51Degrees git URL to point to a stable version.
+- BUG/MINOR: lua: always detach the tcp/http tasks before freeing them
+- BUG/MEDIUM: connection: remove useless flag CO_FL_DATA_RD_SH
+- BUG/MEDIUM: lua: HTTP services must take care of body-less status codes
+- BUG/MEDIUM: stream: properly set the required HTTP analysers on use-service
+- BUG/MEDIUM: epoll: ensure we always consider HUP and ERR
+- BUG/MINOR: Lua: The socket may be destroyed when we try to access.
+- BUG/MINOR: contrib/halog: fixing small memory leak
+- BUG/MEDIUM: tcp-check: properly indicate polling state before performing I/O
+- BUG/MINOR: tcp-check: don't quit with pending data in the send buffer
+- BUG/MEDIUM: tcp-check: don't call tcpcheck_main() from the I/O handlers!
+- BUG/MINOR: tcp-check: don't initialize then break a connection starting with
+  a comment
+- BUG/MEDIUM: http: Return an error when url_dec sample converter failed
+- BUG/MAJOR: stream-int: don't re-arm recv if send fails
+- DOC: fix some typos
+- BUG/MEDIUM: ssl: fix OCSP expiry calculation
+- MINOR: server: Handle weight increase in consistent hash.
+- BUG/MINOR: stats: Clear a bit more counters with in
+  cli_parse_clear_counters().
+- BUG/MINOR: ssl: ocsp response with 'revoked' status is correct
+- BUG/MINOR: ssl: OCSP_single_get0_status can return -1
+- BUG/MEDIUM: prevent buffers being overwritten during build_logline() execution
+- BUG/MINOR: mailers: Fix a memory leak when email alerts are released
+- BUG/MEDIUM: stream: don't ignore res.analyse_exp anymore
+- MEDIUM: http: always reject the "PRI" method
+- BUG/MAJOR: stream: ensure analysers are always called upon close
+- BUG/MEDIUM: deinit: correctly deinitialize the proxy and global listener tasks
+- BUG/MINOR: Use crt_base instead of ca_base when crt is parsed on a server line
+- BUG/MINOR: listener: Allow multiple "process" options on "bind" lines
+- DOC/MINOR: intro: typo, wording, formatting fixes
+- CONTRIB: halog: Add help text for -s switch in halog program
+- CONTRIB: iprange: Fix compiler warning in iprange.c
+- CONTRIB: halog: Fix compiler warnings in halog.c
+- BUG/MINOR: http: properly detect max-age=0 and s-maxage=0 in responses
+- BUG/MEDIUM: kqueue: Don't bother closing the kqueue after fork.
+- BUG/MEDIUM: peers: set NOLINGER on the outgoing stream interface
+- BUG/MEDIUM: lua: fix crash when using bogus mode in register_service()
+- BUG/MEDIUM: http: don't automatically forward request close
 
 * Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.13-2
 - Fixed systemd ExecReload handler
@@ -333,7 +385,8 @@ fi
 - DOC: errloc/errorloc302/errorloc303 missing status codes.
 - BUG/MEDIUM: lua: memory leak
 - MEDIUM: config: don't check config validity when there are fatal errors
-- BUG/MINOR: http: Fix conditions to clean up a txn and to handle the next request
+- BUG/MINOR: http: Fix conditions to clean up a txn and to handle the next
+  request
 - DOC: update RFC references
 - BUG/MINOR: checks: don't send proxy protocol with agent checks
 - BUG/MAJOR: dns: Broken kqueue events handling (BSD systems).
@@ -367,7 +420,7 @@ fi
 - BUG/MINOR: http: Return an error when a replace-header rule failed on
   the response
 - BUG/MINOR: sendmail: The return of vsnprintf is not cleanly tested
-- BUG/MAJOR: lua segmentation fault when the request is like 
+- BUG/MAJOR: lua segmentation fault when the request is like
   'GET ?arg=val HTTP/1.1'
 - BUG/MAJOR: connection: update CO_FL_CONNECTED before calling the data layer
 - BUG/MAJOR: stream-int: do not depend on connection flags to detect connection
@@ -383,7 +436,7 @@ fi
 - BUG/MINOR: cfgparse: loop in tracked servers lists not detected by
   check_config_validity().
 - BUG: payload: fix payload not retrieving arbitrary lengths
-- MINOR: server: irrelevant error message with 'default-server' config file 
+- MINOR: server: irrelevant error message with 'default-server' config file
   keyword.
 - MINOR: config: warn when some HTTP rules are used in a TCP proxy
 - MINOR: doc: 2.4. Examples should be 2.5. Examples
@@ -392,7 +445,8 @@ fi
 - DOC: Protocol doc: add SSL TLVs, rename CHECKSUM
 - DOC: Protocol doc: add noop TLV
 - MINOR: doc: fix use-server example (imap vs mail)
-- MINOR: dns: give ability to dns_init_resolvers() to close a socket when requested
+- MINOR: dns: give ability to dns_init_resolvers() to close a socket when
+  requested
 - BUG/MAJOR: dns: restart sockets after fork()
 - BUG/MEDIUM: peers: fix buffer overflow control in intdecode.
 - BUG/MEDIUM: buffers: Fix how input/output data are injected into buffers
@@ -411,7 +465,8 @@ fi
 - BUG/MAJOR: stream: fix session abort on resource shortage
 - BUG/MINOR: http: don't send an extra CRLF after a Set-Cookie in a redirect
 - BUG/MEDIUM: variables: some variable name can hide another ones
-- BUG/MINOR: cli: be sure to always warn the cli applet when input buffer is full
+- BUG/MINOR: cli: be sure to always warn the cli applet when input buffer is
+  full
 - MINOR: applet: Count number of (active) applets
 - MINOR: task: Rename run_queue and run_queue_cur counters
 - BUG/MEDIUM: stream: Save unprocessed events for a stream
@@ -446,7 +501,8 @@ fi
 - BUG/MEDIUM: lua: the function txn_done() from action wrapper can crash
 - BUG/MINOR: peers: Fix peers data decoding issue
 - DOC: lua: remove old functions
-- BUG/MEDIUM: lua: somme HTTP manipulation functions are called without valid requests
+- BUG/MEDIUM: lua: somme HTTP manipulation functions are called without valid
+  requests
 - BUG/MEDIUM: stream-int: completely detach connection on connect error
 - DOC: minor typo fixes to improve HTML parsing by haproxy-dconv
 - BUILD: make proto_tcp.c compatible with musl library
@@ -460,12 +516,14 @@ fi
 - MINOR: sample: use smp_make_rw() in upper/lower converters
 - BUG/MINOR: peers: some updates are pushed twice after a resync.
 - BUG/MINOR: peers: empty chunks after a resync.
-- BUG/MAJOR: stick-counters: possible crash when using sc_trackers with wrong table
+- BUG/MAJOR: stick-counters: possible crash when using sc_trackers with wrong
+  table
 
 * Fri Jul 15 2016 Gleb Goncharov <inbox@gongled.ru> - 1.6.7-0
 - MINOR: new function my_realloc2 = realloc + free upon failure
 - CLEANUP: fixed some usages of realloc leading to memory leak
-- Revert "BUG/MINOR: ssl: fix potential memory leak in ssl_sock_load_dh_params()"
+- Revert "BUG/MINOR: ssl: fix potential memory leak in
+  ssl_sock_load_dh_params()"
 - BUG/MEDIUM: dns: fix alignment issues in the DNS response parser
 - BUG/MINOR: Fix endiness issue in DNS header creation code
 
@@ -490,7 +548,7 @@ fi
 - DOC: http: add documentation for url32 and url32+src
 - BUG/MINOR: fix http-response set-log-level parsing error
 - MINOR: systemd: Use variable for config and pidfile paths
-- MINOR: systemd: Perform sanity check on config before reload (cherry picked from commit 68535bddf305fdd22f1449a039939b57245212e7)
+- MINOR: systemd: Perform sanity check on config before reload
 - BUG/MINOR: init: always ensure that global.rlimit_nofile matches actual limits
 - BUG/MINOR: init: ensure that FD limit is raised to the max allowed
 - BUG/MEDIUM: external-checks: close all FDs right after the fork()
@@ -520,10 +578,12 @@ fi
 - DOC: stick-table: amend paragraph blaming the loss of table upon reload
 - DOC: typo: ACL subdir match
 - DOC: typo: maxconn paragraph is wrong due to a wrong buffer size
-- DOC: regsub: parser limitation about the inability to use closing square brackets
+- DOC: regsub: parser limitation about the inability to use closing square
+  brackets
 - DOC: typo: req.uri is now replaced by capture.req.uri
 - DOC: name set-gpt0 mismatch with the expected keyword
-- BUG/MEDIUM: stick-tables: some sample-fetch doesn't work in the connection state.
+- BUG/MEDIUM: stick-tables: some sample-fetch doesn't work in the connection
+  state.
 - DOC: fix "needed" typo
 - BUG/MINOR: dns: inapropriate way out after a resolution timeout
 - BUG/MINOR: dns: trigger a DNS query type change on resolution timeout
@@ -544,10 +604,12 @@ fi
 - BUG/MEDIUM: channel: incorrect polling condition may delay event delivery
 - BUG/MEDIUM: channel: fix miscalculation of available buffer space (3rd try)
 - BUG/MEDIUM: log: fix risk of segfault when logging HTTP fields in TCP mode
-- BUG/MEDIUM: lua: protects the upper boundary of the argument list for converters/fetches.
+- BUG/MEDIUM: lua: protects the upper boundary of the argument list for
+  converters/fetches.
 - BUG/MINOR: log: fix a typo that would cause %%HP to log <BADREQ>
 - MINOR: channel: add new function channel_congested()
-- BUG/MEDIUM: http: fix risk of CPU spikes with pipelined requests from dead client
+- BUG/MEDIUM: http: fix risk of CPU spikes with pipelined requests from dead
+  client
 - BUG/MAJOR: channel: fix miscalculation of available buffer space (4th try)
 - BUG/MEDIUM: stream: ensure the SI_FL_DONT_WAKE flag is properly cleared
 - BUG/MEDIUM: channel: fix inconsistent handling of 4GB-1 transfers
@@ -557,7 +619,8 @@ fi
 - MINOR: stats: show stat resolvers missing in the help message
 - BUG/MINOR: dns: fix DNS header definition
 - BUG/MEDIUM: dns: fix alignment issue when building DNS queries
-- CLEANUP/MINOR: stats: fix accidental addition of member "env" in the applet ctx
+- CLEANUP/MINOR: stats: fix accidental addition of member "env" in the applet
+  ctx
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.4-0
 - BUG/MINOR: http: fix several off-by-one errors in the url_param parser
@@ -569,17 +632,22 @@ fi
 - MINOR: lru: new function to delete <nb> least recently used keys
 - DOC: add Ben Shillito as the maintainer of 51d
 - BUG/MINOR: 51d: Ensures a unique domain for each configuration
-- BUG/MINOR: 51d: Aligns Pattern cache implementation with HAProxy best practices.
+- BUG/MINOR: 51d: Aligns Pattern cache implementation with HAProxy best
+  practices.
 - BUG/MINOR: 51d: Releases workset back to pool.
 - BUG/MINOR: 51d: Aligned const pointers to changes in 51Degrees.
-- CLEANUP: 51d: Aligned if statements with HAProxy best practices and removed casts from malloc.
-- DOC: fix a few spelling mistakes (cherry picked from commit cc123c66c2075add8524a6a9925382927daa6ab0)
+- CLEANUP: 51d: Aligned if statements with HAProxy best practices and
+  removed casts from malloc.
+- DOC: fix a few spelling mistakes
 - DOC: fix "workaround" spelling
 - BUG/MINOR: examples: Fixing haproxy.spec to remove references to .cfg files
 - MINOR: fix the return type for dns_response_get_query_id() function
-- MINOR: server state: missing LF (\n) on error message printed when parsing server state file
-- BUG/MEDIUM: dns: no DNS resolution happens if no ports provided to the nameserver
-- BUG/MAJOR: servers state: server port is erased when dns resolution is enabled on a server
+- MINOR: server state: missing LF (\n) on error message printed when parsing
+  server state file
+- BUG/MEDIUM: dns: no DNS resolution happens if no ports provided to the
+  nameserver
+- BUG/MAJOR: servers state: server port is erased when dns resolution is
+  enabled on a server
 - BUG/MEDIUM: servers state: server port is used uninitialized
 - BUG/MEDIUM: config: Adding validation to stick-table expire value.
 - BUG/MEDIUM: sample: http_date() doesn't provide the right day of the week
@@ -603,13 +671,15 @@ fi
 - BUG/MEDIUM: ssl: fix off-by-one in ALPN list allocation
 - BUG/MEDIUM: ssl: fix off-by-one in NPN list allocation
 - DOC: LUA: fix some typos and syntax errors
-- MINOR: cfgparse: warn for incorrect 'timeout retry' keyword spelling in resolvers
+- MINOR: cfgparse: warn for incorrect 'timeout retry' keyword spelling in
+  resolvers
 - MINOR: mailers: increase default timeout to 10 seconds
 - MINOR: mailers: use <CRLF> for all line endings
 - BUG/MAJOR: lua: applets can't sleep.
 - BUG/MINOR: server: some prototypes are renamed
 - BUG/MINOR: lua: Useless copy
-- BUG/MEDIUM: stats: stats bind-process doesn't propagate the process mask correctly
+- BUG/MEDIUM: stats: stats bind-process doesn't propagate the process mask
+  correctly
 - BUG/MINOR: server: fix the format of the warning on address change
 - BUG/MEDIUM: chunks: always reject negative-length chunks
 - BUG/MINOR: systemd: ensure we don't miss signals
@@ -620,12 +690,14 @@ fi
 - CLEANUP: stats: Avoid computation with uninitialized bits.
 - CLEANUP: pattern: Ignore unknown samples in pat_match_ip().
 - CLEANUP: map: Avoid memory leak in out-of-memory condition.
-- BUG/MINOR: tcpcheck: fix incorrect list usage resulting in failure to load certain configs
+- BUG/MINOR: tcpcheck: fix incorrect list usage resulting in failure to load
+  certain configs
 - BUG/MAJOR: samples: check smp->strm before using it
 - MINOR: sample: add a new helper to initialize the owner of a sample
 - MINOR: sample: always set a new sample's owner before evaluating it
 - BUG/MAJOR: vars: always retrieve the stream and session from the sample
-- CLEANUP: payload: remove useless and confusing nullity checks for channel buffer
+- CLEANUP: payload: remove useless and confusing nullity checks for channel
+  buffer
 - BUG/MINOR: ssl: fix usage of the various sample fetch functions
 - MINOR: cfgparse: warn when uid parameter is not a number
 - MINOR: cfgparse: warn when gid parameter is not a number
@@ -656,21 +728,28 @@ fi
 - BUG/MEDIUM: sample: urlp can't match an empty valu
 - BUILD: dumpstats: silencing warning for printf format specifier / time_
 - CLEANUP: proxy: calloc call inverted argument
-- MINOR: da: silent logging by default and displaying DeviceAtlas support if built
-- BUG/MEDIUM: da: stop DeviceAtlas processing in the convertor if there is no input
+- MINOR: da: silent logging by default and displaying DeviceAtlas support if
+  built
+- BUG/MEDIUM: da: stop DeviceAtlas processing in the convertor if there is no
+  input
 - DOC: Edited 51Degrees section of READM
 - BUG/MEDIUM: checks: email-alert not working when declared in default
-- BUG/MINOR: checks: email-alert causes a segfault when an unknown mailers section is configure
+- BUG/MINOR: checks: email-alert causes a segfault when an unknown mailers
+  section is configure
 - BUG/MINOR: checks: typo in an email-alert error messag
-- BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and last rule is a CONNECT with no por
-- BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and first rule(s) is (are) COMMEN
+- BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and
+  last rule is a CONNECT with no por
+- BUG/MINOR: tcpcheck: conf parsing error when no port configured on server and
+  first rule(s) is (are) COMMEN
 - BUG/MEDIUM: http: fix http-reuse when frontend and backend diffe
 - DOC: prefer using http-request/response over reqXXX/rspXXX directive
 - BUG/MEDIUM: config: properly adjust maxconn with nbproc when memmax is force
-- BUG/MEDIUM: peers: table entries learned from a remote are pushed to others after a random delay
+- BUG/MEDIUM: peers: table entries learned from a remote are pushed to others
+  after a random delay
 - BUG/MEDIUM: peers: old stick table updates could be repushed
 - CLEANUP: haproxy: using _GNU_SOURCE instead of __USE_GNU macro
-- MINOR: lua: service/applet can have access to the HTTP headers when a POST is receive
+- MINOR: lua: service/applet can have access to the HTTP headers when a POST is
+  receive
 - REORG/MINOR: lua: convert boolean "int" to bitfiel
 - BUG/MEDIUM: lua: Lua applets must not fetch samples using http_tx
 - BUG/MINOR: lua: Lua applets must not use http_tx
@@ -689,14 +768,16 @@ fi
 - DOC: fix a typo for a "deviceatlas" keyword
 - FIX: small typo in an example using the "Referer" header
 - BUG/MEDIUM: config: count memory limits on 64 bits, not 32
-- BUG/MAJOR: dns: first DNS response packet not matching queried hostname may lead to a loop
+- BUG/MAJOR: dns: first DNS response packet not matching queried hostname may
+  lead to a loop
 - BUG/MINOR: dns: unable to parse CNAMEs response
 - BUG/MINOR: examples/haproxy.init: missing brace in quiet_check()
 - DOC: deviceatlas: more example use cases.
 - BUG/BUILD: replace haproxy-systemd-wrapper with $(EXTRA) in install-bin.
 - BUG/MAJOR: http: don't requeue an idle connection that is already queued
 - DOC: typo on capture.res.hdr and capture.req.hdr
-- BUG/MINOR: dns: check for duplicate nameserver id in a resolvers section was missing
+- BUG/MINOR: dns: check for duplicate nameserver id in a resolvers section was
+  missing
 - CLEANUP: use direction names in place of numeric values
 - BUG/MEDIUM: lua: sample fetches based on response doesn't work
 

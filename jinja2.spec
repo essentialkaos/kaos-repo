@@ -1,14 +1,14 @@
-########################################################################################
+################################################################################
 
 %define package_name      jinja
 
-########################################################################################
+################################################################################
 
 Summary:        Sandboxed template engine
 Name:           python-jinja
 Version:        2.8
 Release:        0%{?dist}
-License:        BSD 
+License:        BSD
 Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
 
@@ -22,7 +22,7 @@ BuildArch:      noarch
 
 Provides:       %{name} = %{verion}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Jinja is a sandboxed template engine written in pure Python. It
@@ -30,7 +30,7 @@ provides a Django-like non-XML syntax and compiles templates into
 executable python code. It's basically a combination of Django
 templates and python code.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{package_name}-%{version}
@@ -45,13 +45,13 @@ python setup.py build
 rm -rf %{buildroot}
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
 
-########################################################################################
+################################################################################
 
 %changelog
 * Wed Aug 12 2015 Anton Novojilov <andy@essentialkaos.com> - 2.8-0

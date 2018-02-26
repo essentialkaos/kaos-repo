@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -39,12 +39,12 @@
 
 %define _pyinclude        %{_includedir}/python2.6
 
-########################################################################################
+################################################################################
 
 Summary:           GDAL/OGR - a translator library for raster and vector geospatial data formats
 Name:              gdal
 Version:           1.11.5
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           MIT and BSD-3-Clause
 Group:             Development/Libraries
 URL:               http://www.gdal.org
@@ -69,7 +69,7 @@ Requires:          xerces-c
 
 Provides:          %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 GDAL is a translator library for raster geospatial data formats that
@@ -79,7 +79,7 @@ supported formats. The related OGR library (which lives within the
 GDAL source tree) provides a similar capability for simple features
 vector data.
 
-########################################################################################
+################################################################################
 
 %package devel
 Summary:           GDAL library header files
@@ -95,7 +95,7 @@ Requires:          giflib-devel freexl-devel
 %description devel
 Development Libraries for the GDAL file format library
 
-########################################################################################
+################################################################################
 
 %package perl
 Summary:           Perl bindings for GDAL
@@ -107,7 +107,7 @@ Requires:          perl perl-base perl-ExtUtils-MakeMaker
 %description perl
 Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
 
-########################################################################################
+################################################################################
 
 %package python
 Summary:           GDAL Python module
@@ -117,7 +117,7 @@ Requires:          %{name} = %{version}-%{release}
 %description python
 The GDAL python modules provide support to handle multiple GIS file formats.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -169,7 +169,7 @@ export CFLAGS="$RPM_OPT_FLAGS -fpic"
         --with-perl \
         --with-xerces=yes \
         --with-xerces-lib="-lxerces-c" \
-        --with-xerces-inc=/usr/include/xercesc \
+        --with-xerces-inc=%{_includedir}/xercesc \
         --without-pcraster \
         --with-jpeg12=no \
         --without-libgrass \
@@ -184,7 +184,9 @@ export CFLAGS="$RPM_OPT_FLAGS -fpic"
 %install
 rm -rf %{buildroot}
 
-%{__make} %{?_smp_mflags} install install-man DESTDIR=%{buildroot} INST_MAN=%{_mandir}
+%{make_install}
+
+%{__make} install-man DESTDIR=%{buildroot} INST_MAN=%{_mandir}
 
 rm -rf _html
 cp -a html _html
@@ -193,8 +195,9 @@ cp -a ogr/html _html/ogr
 # fix python installation path
 sed -i 's|setup.py install|setup.py install --prefix=%{_prefix} --root=%{buildroot}|' swig/python/GNUmakefile
 
-%{__make} DESTDIR=%{buildroot} install
-%{__make} DESTDIR=%{buildroot} INST_MAN=%{_mandir} install-man
+%{make_install}
+
+%{__make} install-man DESTDIR=%{buildroot} INST_MAN=%{_mandir}
 
 # cleanup junks
 rm -rf %{buildroot}%{_includedir}/%{name}/%{name}
@@ -241,7 +244,7 @@ chrpath --delete %{buildroot}%{_bindir}/testepsg
 cp %{buildroot}%{python_sitearch}/osgeo/gdalnumeric.py* %{buildroot}%{python_sitearch}/
 
 rm -f %{buildroot}%{_mandir}/man1/_*_BUILD_gdal*
-rm -f %{buildroot}/usr/man/man1/*.1.gz
+rm -f %{buildroot}%{_usr}/man/man1/*.1.gz
 
 %clean
 rm -rf %{buildroot}
@@ -252,7 +255,7 @@ rm -rf %{buildroot}
 %postun
 %{__ldconfig}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -391,9 +394,12 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{python_sitearch}/osgeo/_osr.so
 %{python_sitearch}/osgeo/*.py*
 
-########################################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-1
+- Rebuilt with latest version of netcdf
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0
 - Updated to latest release in 1.x
 

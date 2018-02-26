@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 Summary:         One-time passcode support using open standards
 Name:            google-authenticator
@@ -16,7 +16,7 @@ BuildRequires:   make gcc libtool m4 pam-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 The Google Authenticator package contains a pluggable authentication
@@ -31,7 +31,7 @@ These implementations support the HMAC-Based One-time Password (HOTP)
 algorithm specified in RFC 4226 and the Time-based One-time Password
 (TOTP) algorithm currently in draft.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -46,12 +46,12 @@ cd libpam
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
-install -dm 755 %{buildroot}/%{_lib}/security
+install -dm 755 %{buildroot}%{_lib}/security
 
 cd libpam
 
 install -pm 755 .libs/pam_google_authenticator.so \
-                %{buildroot}/%{_lib}/security/pam_google_authenticator.so
+                %{buildroot}%{_lib}/security/pam_google_authenticator.so
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 
@@ -64,7 +64,7 @@ install -pm 755 %{name} %{buildroot}%{_bindir}/
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -72,7 +72,7 @@ rm -rf %{buildroot}
 /%{_lib}/security/*.so
 %{_bindir}/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.02-0

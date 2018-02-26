@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.4
+Version:              3.4.6
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -83,9 +83,11 @@ BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
 BuildRequires:        pcre-devel
 
 %if 0%{?rhel} >= 7
-BuildRequires:        systemd libevent-devel < 2.1
+Requires:             libevent
+BuildRequires:        systemd libevent-devel
 %else
-BuildRequires:        libevent-devel
+Requires:             libevent2
+BuildRequires:        libevent2-devel
 %endif
 
 ################################################################################
@@ -102,7 +104,7 @@ Summary:              Zabbix Agent
 Group:                Applications/Internet
 
 Requires:             logrotate
-Requires(pre):        /usr/sbin/useradd
+Requires(pre):        %{_sbindir}/useradd
 %if 0%{?rhel} >= 7
 Requires(post):       systemd
 Requires(preun):      systemd
@@ -329,10 +331,9 @@ find frontends/php/locale -name '*.po' -delete
 find frontends/php/locale -name '*.sh' -delete
 
 # traceroute command path for global script
-%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
-%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/postgresql/data.sql
-%{__sed} -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/sqlite3/data.sql
-
+sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
+sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/postgresql/data.sql
+sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/sqlite3/data.sql
 
 %build
 
@@ -359,19 +360,19 @@ build_flags="
 "
 
 %configure $build_flags --with-mysql --enable-server --with-jabber
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_mysql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
 
 %configure $build_flags --with-postgresql --enable-server --with-jabber
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_pgsql
 
 %configure $build_flags --with-sqlite3
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 rm -f src/zabbix_server/zabbix_server
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_sqlite3
@@ -452,6 +453,7 @@ install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/httpd/conf.d/zabbix.conf
 %endif
 
 # generate config files
+# perfecto:absolve 6
 cat conf/zabbix_agentd.conf | sed \
         -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_agentd.pid' \
         -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_agentd.log|g' \
@@ -459,6 +461,7 @@ cat conf/zabbix_agentd.conf | sed \
         -e '/^# Include=$/a \\nInclude=%{_sysconfdir}/zabbix/zabbix_agentd.d/' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_agentd.conf
 
+# perfecto:absolve 12
 cat conf/zabbix_server.conf | sed \
         -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_server.pid' \
         -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_server.log|g' \
@@ -471,6 +474,7 @@ cat conf/zabbix_server.conf | sed \
         -e '/^# SocketDir=.*/a \\nSocketDir=/var/run/zabbix' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_server.conf
 
+# perfecto:absolve 10
 cat conf/zabbix_proxy.conf | sed \
         -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_proxy.pid' \
         -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_proxy.log|g' \
@@ -516,26 +520,26 @@ docdir=%{buildroot}%{_docdir}/zabbix-server-mysql-%{version}
 cat database/mysql/schema.sql > $docdir/create.sql
 cat database/mysql/images.sql >> $docdir/create.sql
 cat database/mysql/data.sql >> $docdir/create.sql
-%{__gzip} $docdir/create.sql
+gzip $docdir/create.sql
 
 docdir=%{buildroot}%{_docdir}/zabbix-server-pgsql-%{version}
 cat database/postgresql/schema.sql > $docdir/create.sql
 cat database/postgresql/images.sql >> $docdir/create.sql
 cat database/postgresql/data.sql >> $docdir/create.sql
-%{__gzip} $docdir/create.sql
+gzip $docdir/create.sql
 
 # copy sql files for proxies
 docdir=%{buildroot}%{_docdir}/zabbix-proxy-mysql-%{version}
 cp database/mysql/schema.sql $docdir/schema.sql
-%{__gzip} $docdir/schema.sql
+gzip $docdir/schema.sql
 
 docdir=%{buildroot}%{_docdir}/zabbix-proxy-pgsql-%{version}
 cp database/postgresql/schema.sql $docdir/schema.sql
-%{__gzip} $docdir/schema.sql
+gzip $docdir/schema.sql
 
 docdir=%{buildroot}%{_docdir}/zabbix-proxy-sqlite3-%{version}
 cp database/sqlite3/schema.sql $docdir/schema.sql
-%{__gzip} $docdir/schema.sql
+gzip $docdir/schema.sql
 
 
 %clean
@@ -1159,7 +1163,8 @@ fi
 - fixed requeueing of items from unreachable poller to normal poller
 - fixed sbox selection zone in monitoring web graphs
 - fixed crash when syncing actions without operations
-- removed usage of SVG viewBox attribute in IE and disabled map scaling in screens
+- removed usage of SVG viewBox attribute in IE and disabled map scaling in
+  screens
 - fixed wrong response and error message when invalid or unavailable dashboardid
   has been requested
 - fixed overlay window displaying on different browsers and removed horizontal
@@ -1191,11 +1196,11 @@ fi
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - improved bulk inserts for Oracle database backend
-- optimized trigger expression batch processing to avoid recalculation of 
+- optimized trigger expression batch processing to avoid recalculation of
   identical functions
 - added option to control amount of queued items
 - fixed wrong number round for cpu statistics
-- fixed wrong averages in web monitoring if a web server doesn't respond to 
+- fixed wrong averages in web monitoring if a web server doesn't respond to
   a request
 - fixed button and multiselect positioning in action operations edit form
 - fixed empty value handling in event correlation on oracle databases
@@ -1259,31 +1264,32 @@ fi
 - changed vmware.vm.cpu.ready item units and description
 
 * Tue Oct 04 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.2.1-0
-- improved concurrent VMware item polling speed, reduced size of cached VMware data
-- updated Chinese (China), French, Italian, Portuguese (Brazil) translations; 
+- improved concurrent VMware item polling speed, reduced size of cached VMware
+  data
+- updated Chinese (China), French, Italian, Portuguese (Brazil) translations;
   thanks to Zabbix translators
 - increased width of input fields
 - fixed link "Help" to a proper version of Zabbix manual
-- fixed parameter parsing in calculated items when it contains double quote 
+- fixed parameter parsing in calculated items when it contains double quote
   escaping
 - fixed trigger update after executing event correlation 'close new' operation
 - fixed possible delay when proxy sends cached history to server
 - fixed long SNMP OID not being accepted
-- fixed error when upgrading graph_theme table in proxy database 
+- fixed error when upgrading graph_theme table in proxy database
   from 1.8 to 2.0
 - fixed forms behaviour when enter key is pressed
-- fixed escaped double quote parsing in quoted parameters in array in item 
+- fixed escaped double quote parsing in quoted parameters in array in item
   key parameters
 - fixed compilation failure for OpenBSD 5.8, 5.9, 6.0
 - fixed validation of new host group when creating/updating template
 - changed translation string "Acknowledges" => "Acknowledgements"
-- implemented dynamic default sortorder for icon mappings, now default 
+- implemented dynamic default sortorder for icon mappings, now default
   sortorder increases by one with each entry of mapping
 - fixed timeline in Problem view which shows "Yesterday" instead of "Today"
-- fixed checkbox functionality and display of undefined indexes in trigger 
+- fixed checkbox functionality and display of undefined indexes in trigger
   expression and recovery expression constructor
 - added converting of SNMP lld rules in XML import
-- removed mistaken support of {ITEM.VALUE} and {ITEM.LASTVALUE} macros in 
+- removed mistaken support of {ITEM.VALUE} and {ITEM.LASTVALUE} macros in
   trigger URLs
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0

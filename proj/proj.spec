@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 Summary:            Cartographic projection software (PROJ.4)
 Name:               proj
@@ -61,14 +61,14 @@ Requires(postun):   %{__ldconfig}
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Proj and invproj perform respective forward and inverse transformation of
 cartographic data to or from cartesian data with a wide range of selectable
 projection functions.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for PROJ.4
@@ -79,7 +79,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 This package contains libproj and the appropriate header files and man pages.
 
-###############################################################################
+################################################################################
 
 %package static
 Summary:        Development files for PROJ.4
@@ -88,7 +88,7 @@ Group:          Development/Libraries
 %description static
 This package contains libproj static library.
 
-###############################################################################
+################################################################################
 
 %package nad
 Summary:        US and Canadian datum shift grids for PROJ.4
@@ -99,7 +99,7 @@ Requires:       %{name} = %{version}-%{release}
 %description nad
 This package contains additional US and Canadian datum shift grids.
 
-###############################################################################
+################################################################################
 
 %package epsg
 Summary:        EPSG dataset for PROJ.4
@@ -110,7 +110,7 @@ Requires:       %{name} = %{version}-%{release}
 %description epsg
 This package contains additional EPSG dataset.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -175,7 +175,7 @@ pushd nad
 popd
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 %{__ldconfig}
@@ -183,7 +183,7 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 %{__ldconfig}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -220,7 +220,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc nad/README
 %attr(0644,root,root) %{_datadir}/%{name}/epsg
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 4.9.3-0

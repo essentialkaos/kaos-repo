@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -34,18 +34,18 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __sysctl          %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %bcond_without snmp
 %bcond_without vrrp
 %bcond_with profile
 %bcond_with debug
 
-###############################################################################
+################################################################################
 
 Name:              keepalived
 Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           1.3.9
+Version:           1.4.1
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://www.keepalived.org
@@ -76,7 +76,7 @@ Requires(postun):  %{__service}
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Keepalived provides simple and robust facilities for load balancing
@@ -92,7 +92,7 @@ low-level and high-speed protocol interactions. Keepalived frameworks
 can be used independently or all together to provide resilient
 infrastructures.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -156,7 +156,7 @@ if [[ $1 -ge 1 ]] ; then
 %endif
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -182,9 +182,15 @@ fi
   %{_datadir}/snmp/mibs/KEEPALIVED-MIB.txt
 %endif
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.1-0
+- Updated to latest release
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Updated to latest release
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.9-0
 - Updated to latest release
 

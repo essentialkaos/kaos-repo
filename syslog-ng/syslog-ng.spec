@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
-%define python_version %(%{__python} -c "import sys; sys.stdout.write(sys.version[:3])")
+%define python_version %(python -c "import sys; sys.stdout.write(sys.version[:3])")
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -40,12 +40,12 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
 
-###############################################################################
+################################################################################
 
 %define service_user      syslog-ng
 %define service_group     syslog-ng
 
-###############################################################################
+################################################################################
 
 Summary:            Next generation logging application
 Name:               syslog-ng
@@ -70,15 +70,15 @@ BuildRequires:      libhiredis-devel json-c-devel chrpath
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-The syslog-ng application is a flexible and highly scalable system logging 
-tool. It is often used to manage log messages and implement centralized 
-logging, where the aim is to collect the log messages of several devices to a 
+The syslog-ng application is a flexible and highly scalable system logging
+tool. It is often used to manage log messages and implement centralized
+logging, where the aim is to collect the log messages of several devices to a
 single, central log server.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-%{version}
@@ -145,7 +145,7 @@ chrpath --delete %{buildroot}%{_loc_libdir}/%{name}/*.so \
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %pre
 getent group %{service_group} >/dev/null || groupadd -r %{service_group}
@@ -167,7 +167,7 @@ if [[ $1 -eq 0 ]] ; then
   %{__chkconfig} --del %{name} > /dev/null 2>&1
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -194,7 +194,7 @@ fi
 %{_includedir}/%{name}/*
 %{_datadir}/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.11.1-0

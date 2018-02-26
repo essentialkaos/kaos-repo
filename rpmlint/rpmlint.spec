@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Tool for checking common errors in RPM packages
 Name:               rpmlint
@@ -50,21 +50,21 @@ Requires:           desktop-file-utils gzip bzip2 xz
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 
-rpmlint is a tool for checking common errors in rpm packages. rpmlint can be 
-used to test individual packages before uploading or to check an entire 
-distribution. By default all applicable checks are performed but specific 
+rpmlint is a tool for checking common errors in rpm packages. rpmlint can be
+used to test individual packages before uploading or to check an entire
+distribution. By default all applicable checks are performed but specific
 checks can be performed by using command line parameters.
 
-rpmlint can check binary rpms (files and installed ones), source rpms, and 
-plain specfiles, but all checks do not apply to all argument types. For 
-best check coverage, run rpmlint on source rpms instead of plain specfiles, 
+rpmlint can check binary rpms (files and installed ones), source rpms, and
+plain specfiles, but all checks do not apply to all argument types. For
+best check coverage, run rpmlint on source rpms instead of plain specfiles,
 and installed binary rpms instead of uninstalled binary rpm files.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{name}-%{version}
@@ -80,18 +80,17 @@ install -pm 644 %{SOURCE2} RhelCheck.py
 %install
 rm -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot} \
-                  ETCDIR=%{_sysconfdir} \
-                  MANDIR=%{_mandir} \
-                  LIBDIR=%{_datadir}/rpmlint \
-                  BINDIR=%{_bindir}
+%{make_install} ETCDIR=%{_sysconfdir} \
+                MANDIR=%{_mandir} \
+                LIBDIR=%{_datadir}/rpmlint \
+                BINDIR=%{_bindir}
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_datadir}/rpmlint/config
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -104,7 +103,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/rpmlint.1*
 %{_mandir}/man1/rpmdiff.1*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.10-0

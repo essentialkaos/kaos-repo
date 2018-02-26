@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -31,11 +31,11 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define pkg_name          frei0r-plugins
 
-###############################################################################
+################################################################################
 
 Summary:            A minimalistic plugin API for video effects
 Name:               frei0r
@@ -54,7 +54,7 @@ BuildRequires:      autoconf opencv-devel >= 1.0.0 gavl-devel >= 0.2.3
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Frei0r is a minimalistic plugin API for video effects.
@@ -63,7 +63,7 @@ The main emphasis is on simplicity for an API that will round up the
 most common video effects into simple filters, sources and mixers that
 can be controlled by parameters.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -91,7 +91,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -101,17 +101,17 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}-1/*.so
 %{_pkgconfigdir}/%{name}.pc
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - Updated to latest stable release
 
 * Wed Apr 13 2016 Gleb Goncharov <yum@gongled.ru> - 1.5-0
-- Updated to latest version 
+- Updated to latest version
 
 * Mon Mar 17 2014 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.4-0
-- Updated to latest version 
+- Updated to latest version
 
 * Mon Mar 14 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.3-0
 - Initial build

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -30,7 +30,7 @@
 
 %define shortname         7za
 
-###############################################################################
+################################################################################
 
 Summary:           Very high compression ratio file archiver
 Name:              p7zip
@@ -56,13 +56,13 @@ BuildRequires:     yasm
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{shortname} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 p7zip is a port of 7za.exe for Unix. 7-Zip is a file archiver with a very high
 compression ratio. The original version can be found at http://www.7-zip.org.
 
-###############################################################################
+################################################################################
 
 %package plugins
 Summary:           Additional plugins for p7zip
@@ -72,7 +72,7 @@ Group:             Applications/Archiving
 Additional plugins that can be used with 7z to extend its abilities.
 This package contains also a virtual file system for Midnight Commander.
 
-###############################################################################
+################################################################################
 
 %prep
 
@@ -99,7 +99,7 @@ cp -f makefile.linux_amd64_asm makefile.machine
 cp -f makefile.linux_any_cpu_gcc_4.X makefile.machine
 %endif
 
-make %{?_smp_mflags} all2 \
+%{__make} %{?_smp_mflags} all2 \
     OPTFLAGS="%{optflags}" \
     DEST_HOME=%{_prefix} \
     DEST_BIN=%{_bindir} \
@@ -109,7 +109,7 @@ make %{?_smp_mflags} all2 \
 %install
 rm -rf %{buildroot}
 
-make install \
+%{__make} install \
     DEST_DIR=%{buildroot} \
     DEST_HOME=%{_prefix} \
     DEST_BIN=%{_bindir} \
@@ -119,7 +119,7 @@ make install \
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -140,7 +140,7 @@ rm -rf %{buildroot}
 %{_libexecdir}/%{name}/Codecs/*
 %{_mandir}/man1/7z.1*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Nov 22 2017 Anton Novojilov <andy@essentialkaos.com> - 16.02-1

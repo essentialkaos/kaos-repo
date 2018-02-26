@@ -1,4 +1,4 @@
-##########################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,11 +32,11 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###########################################################################
+################################################################################
 
-%define shortname       mtl
+%define shortname         mtl
 
-###########################################################################
+################################################################################
 
 Summary:          View one or multiple files like tail but with multiple windows
 Name:             multitail
@@ -64,7 +64,7 @@ faster recognition of what is important and what not. It can also filter
 lines (again with regular expressions). It has interactive menus for editing
 given regular expressions and deleting and adding windows.
 
-###########################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -80,7 +80,7 @@ install -dm 755 %{buildroot}%{_mandir}/man1/
 install -dm 755 %{buildroot}%{_sysconfdir}
 install -dm 755 %{buildroot}%{_loc_datarootdir}/%{name}
 
-%{__make} install DESTDIR="%{buildroot}"
+%{make_install}
 
 rm -f %{buildroot}%{_sysconfdir}/%{name}.conf.new
 rm -rf %{buildroot}%{_sysconfdir}/%{name}/
@@ -95,7 +95,7 @@ ln -sf %{_bindir}/%{name} %{buildroot}%{_bindir}/%{shortname}
 %clean
 rm -rf %{buildroot}
 
-###########################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -106,7 +106,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{shortname}
 %{_loc_datarootdir}/%{name}/*
 
-###########################################################################
+################################################################################
 
 %changelog
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.2-0

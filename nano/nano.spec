@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,12 +32,12 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define main_version 2.9
-%define patch        0
+%define patch        3
 
-###############################################################################
+################################################################################
 
 Summary:         A small text editor
 Name:            nano
@@ -47,7 +47,8 @@ License:         GPLv3+
 Group:           Applications/Editors
 URL:             http://www.nano-editor.org
 
-Source:          https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+Source0:         https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+Source1:         https://github.com/essentialkaos/blackhole-syntax-nano/archive/master.tar.gz
 
 Patch0:          %{name}-nanorc.patch
 
@@ -60,15 +61,17 @@ Requires(preun): /sbin/install-info
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 GNU nano is a small and friendly text editor.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
+
+tar xzvf %{SOURCE1}
 
 %patch0 -p1
 
@@ -92,6 +95,10 @@ cp %{buildroot}%{_sysconfdir}/nanorc %{buildroot}%{_root}/.nanorc
 sed -i 's/^set titlecolor brightwhite,blue/set titlecolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
 sed -i 's/^set statuscolor brightwhite,green/set statuscolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
 
+rm -f %{buildroot}%{_datadir}/%{name}/*.nanorc
+cp blackhole-syntax-nano-master/*.nanorc \
+   %{buildroot}%{_datadir}/%{name}/
+
 rm -f %{buildroot}%{_infodir}/dir
 
 %find_lang %{name}
@@ -111,7 +118,7 @@ if [[ $1 -eq 0 ]] ; then
   fi
 fi
 
-###############################################################################
+################################################################################
 
 %files -f %{name}.lang
 %defattr(-, root, root, -)
@@ -128,9 +135,12 @@ fi
 %{_datadir}/nano
 %{_defaultdocdir}/%{name}/*.html
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.3-0
+- Updated to latest stable release
+
 * Mon Nov 20 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.0-0
 - Updated to latest stable release
 

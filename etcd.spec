@@ -1,17 +1,17 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:gopack    github.com/coreos/etcd
-# rpmbuilder:tag       v3.2.9
+# rpmbuilder:tag       v3.3.0
 
-###############################################################################
+################################################################################
 
 %define  debug_package %{nil}
 
-###############################################################################
+################################################################################
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.2.9
+Version:         3.3.0
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
@@ -25,10 +25,10 @@ BuildRequires:   golang >= 1.9
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-etcd is a distributed, consistent key-value store for shared configuration 
+etcd is a distributed, consistent key-value store for shared configuration
 and service discovery, with a focus on being:
 
 - Simple: well-defined, user-facing API (gRPC)
@@ -36,10 +36,10 @@ and service discovery, with a focus on being:
 - Fast: benchmarked 1000s of writes/s per instance
 - Reliable: properly distributed using Raft
 
-etcd is written in Go and uses the Raft consensus algorithm to manage a 
+etcd is written in Go and uses the Raft consensus algorithm to manage a
 highly-available replicated log.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -76,7 +76,7 @@ install -pm 755 src/github.com/coreos/%{name}/bin/%{name}ctl \
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -84,9 +84,12 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_bindir}/%{name}ctl
 
-###############################################################################
+################################################################################
 
 %changelog
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.0-0
+- Updated to latest stable release
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.2.9-0
 - Updated to latest stable release
 

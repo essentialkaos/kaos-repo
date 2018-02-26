@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -38,7 +38,7 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __sysctl          %{_bindir}/systemctl
 
-########################################################################################
+################################################################################
 
 %define maj_ver           2.2
 %define pg_maj_ver        10
@@ -49,12 +49,14 @@
 %define username          postgres
 %define groupname         postgres
 
-########################################################################################
+%global __perl_requires   %{SOURCE2}
+
+################################################################################
 
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
 Version:           2.2.6
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Applications/Databases
 URL:               http://main.slony.info
@@ -78,22 +80,20 @@ Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.10
 Requires:          systemd
 %endif
 
-########################################################################################
+################################################################################
 
 %description
-Slony-I is a "master to multiple slaves" replication system for PostgreSQL with 
+Slony-I is a "master to multiple slaves" replication system for PostgreSQL with
 cascading and failover.
 
-The big picture for the development of Slony-I is to build a master-slave system that 
-includes all features and capabilities needed to replicate large databases to a
-reasonably limited number of slave systems.
+The big picture for the development of Slony-I is to build a master-slave system
+that includes all features and capabilities needed to replicate large databases
+to a reasonably limited number of slave systems.
 
-Slony-I is a system for data centers and backup sites, where the normal mode of 
+Slony-I is a system for data centers and backup sites, where the normal mode of
 operation is that all nodes are available.
 
-########################################################################################
-
-%global __perl_requires %{SOURCE2}
+################################################################################
 
 %prep
 %setup -qn %{realname}-%{version}
@@ -122,7 +122,7 @@ export LIBNAME=%{_lib}
 %install
 rm -rf %{buildroot}
 
-%{__make} %{?_smp_mflags} DESTDIR=%{buildroot} install
+%{make_install}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{realname}-%{pg_maj_ver}
 install -pm 644 share/slon.conf-sample %{buildroot}%{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon.conf
@@ -148,17 +148,18 @@ sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_unitdir}/%{realna
 sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 sed -i 's/{{PG_HIGH_VERSION}}/%{pg_high_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 
-cd tools
-%{__make} %{?_smp_mflags} DESTDIR=%{buildroot} install
+pushd tools
+  %{make_install}
 
-rm -f %{buildroot}%{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf-sample
-rm -f %{buildroot}%{_datadir}/pgsql/*.sql
-rm -f %{buildroot}%{_libdir}/%{realname}_funcs.so
+  rm -f %{buildroot}%{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf-sample
+  rm -f %{buildroot}%{_datadir}/pgsql/*.sql
+  rm -f %{buildroot}%{_libdir}/%{realname}_funcs.so
 
-chrpath --delete %{buildroot}%{pg_dir}/bin/slonik
-chrpath --delete %{buildroot}%{pg_dir}/bin/slon
-chrpath --delete %{buildroot}%{pg_dir}/bin/slony_logshipper
-chrpath --delete %{buildroot}%{pg_dir}/lib/slony1_funcs.%{version}.so
+  chrpath --delete %{buildroot}%{pg_dir}/bin/slonik
+  chrpath --delete %{buildroot}%{pg_dir}/bin/slon
+  chrpath --delete %{buildroot}%{pg_dir}/bin/slony_logshipper
+  chrpath --delete %{buildroot}%{pg_dir}/lib/slony1_funcs.%{version}.so
+popd
 
 %clean
 rm -rf %{buildroot}
@@ -190,7 +191,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -206,8 +207,11 @@ fi
 %attr(755,root,root) %{_unitdir}/%{realname}-%{pg_maj_ver}.service
 %endif
 
-########################################################################################
+################################################################################
 
 %changelog
+* Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-1
+- Improved spec
+
 * Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-0
 - Initial build

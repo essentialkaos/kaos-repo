@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -29,11 +29,11 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:         Lightweight library for embedding a webserver in applications
 Name:            libmicrohttpd
-Version:         0.9.55
+Version:         0.9.59
 Release:         0%{?dist}
 License:         GNU LGPL
 Group:           Development/Libraries
@@ -49,7 +49,7 @@ BuildRequires:   libcurl-devel graphviz doxygen
 Requires(post):  info
 Requires(preun): info
 
-###############################################################################
+################################################################################
 
 %description
 GNU libmicrohttpd is a small C library that is supposed to make it
@@ -65,7 +65,7 @@ Key features that distinguish libmicrohttpd from other projects are:
 * Creates binary of only 25k (for now)
 * Three different threading models
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:         Development files for libmicrohttpd
@@ -75,7 +75,7 @@ Requires:        %{name} = %{version}-%{release}
 %description devel
 Development files for libmicrohttpd
 
-###############################################################################
+################################################################################
 
 %package doc
 Summary:         Documentation for libmicrohttpd
@@ -85,7 +85,7 @@ Requires:        %{name} = %{version}-%{release}
 %description doc
 Doxygen documentation for libmicrohttpd and some example source code
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -122,11 +122,13 @@ rm -rf %{buildroot}
 
 %post doc
 %{_sbin}/install-info %{_infodir}/microhttpd.info.gz %{_infodir}/dir || :
+%{_sbin}/install-info %{_infodir}/libmicrohttpd_performance_data.png.gz %{_infodir}/dir || :
 %{_sbin}/install-info %{_infodir}/microhttpd-tutorial.info.gz %{_infodir}/dir || :
 
 %preun doc
 if [[ $1 -eq 0 ]] ; then
   %{_sbin}/install-info --delete %{_infodir}/microhttpd.info.gz %{_infodir}/dir || :
+  %{_sbin}/install-info --delete %{_infodir}/libmicrohttpd_performance_data.png.gz %{_infodir}/dir || :
   %{_sbin}/install-info --delete %{_infodir}/microhttpd-tutorial.info.gz %{_infodir}/dir || :
 fi
 
@@ -136,7 +138,7 @@ fi
 %postun
 %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -154,13 +156,26 @@ fi
 %{_mandir}/man3/%{name}.3.gz
 %{_infodir}/%{name}.info.gz
 %{_infodir}/%{name}-tutorial.info.gz
+%{_infodir}/libmicrohttpd_performance_data.png.gz
 %doc AUTHORS README ChangeLog
 %doc examples
 %doc html
 
-###############################################################################
+################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.59-0
+- Updated to latest release
+
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.58-0
+- Updated to latest release
+
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.57-0
+- Updated to latest release
+
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.56-0
+- Updated to latest release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.55-0
 - Updated to latest release
 
@@ -221,5 +236,5 @@ fi
 * Fri Jun 8 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.20-0
 - Updated to latest release
 
-* Thu Apr 12 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.19-0 
+* Thu Apr 12 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.19-0
 - Updated to latest release

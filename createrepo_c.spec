@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -40,7 +40,7 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
-###############################################################################
+################################################################################
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
@@ -57,14 +57,14 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel
-BuildRequires:      rpm-devel >= 4.8.0-28 
+BuildRequires:      rpm-devel >= 4.8.0-28
 
 Requires:           rpm >= 4.8.0-28
 Requires:           %{name}-libs =  %{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 C implementation of Createrepo.
@@ -72,7 +72,7 @@ A set of utilities (createrepo_c, mergerepo_c, modifyrepo_c)
 for generating a common metadata repository from a directory of
 rpm packages and maintaining it.
 
-###############################################################################
+################################################################################
 
 %package libs
 
@@ -83,7 +83,7 @@ Group:              Development/Libraries
 Libraries for applications using the createrepo_c library
 for easy manipulation with a repodata.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -97,7 +97,7 @@ Requires:           %{name}-libs =  %{version}-%{release}
 This package contains the createrepo_c C library and header files.
 These development files are for easy manipulation with a repodata.
 
-###############################################################################
+################################################################################
 
 %package -n python-%{name}
 
@@ -108,7 +108,7 @@ Requires:           %{name} = %{version}-%{release}
 %description -n python-%{name}
 Python bindings for the createrepo_c library.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -123,10 +123,10 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DBUILD_SHARED_LIBS:BOOL=ON .
 
 %{__make} %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
-%{__make} doc-c
+%{__make} %{?_smp_mflags} doc-c
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
@@ -137,9 +137,9 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 %{__ldconfig}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -167,7 +167,7 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 %defattr(-,root,root,-)
 %{python_sitearch}/createrepo_c/
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0-0

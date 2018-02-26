@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -36,14 +36,14 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __getent          %{_bindir}/getent
 
-###############################################################################
+################################################################################
 
 %define service_user         vsftp
 %define service_group        vsftp
 %define service_name         %{name}
 %define service_home         %{_localstatedir}/ftp
 
-###############################################################################
+################################################################################
 
 Summary:              Very Secure FTP Daemon
 Name:                 vsftpd
@@ -69,19 +69,19 @@ BuildRequires:        make gcc gcc-c++ openssl-devel libcap-devel grep
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-vsftpd is a Very Secure FTP daemon. It was written completely from 
+vsftpd is a Very Secure FTP daemon. It was written completely from
 scratch.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 %build
-make %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -119,7 +119,7 @@ install -pm 644 %{SOURCE5} \
 install -pm 644 %{SOURCE6} \
                 %{buildroot}%{_sysconfdir}/%{name}/%{name}.user_list
 
-###############################################################################
+################################################################################
 
 %pre
 getent group %{service_group} >/dev/null || groupadd -r %{service_group}
@@ -141,12 +141,12 @@ fi
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc FAQ INSTALL BUGS AUDIT Changelog LICENSE README README.security REWARD
-%doc SPEED TODO BENCHMARKS COPYING SECURITY/ EXAMPLE/ TUNING SIZE 
+%doc SPEED TODO BENCHMARKS COPYING SECURITY/ EXAMPLE/ TUNING SIZE
 %dir %{_sysconfdir}/%{name}
 %attr(600,root,root) %dir %{_logdir}/%{name}
 %attr(555,%{service_user},%{service_group}) %dir %{service_home}
@@ -159,7 +159,7 @@ rm -rf %{buildroot}
 %{_mandir}/man5/*
 %{_mandir}/man8/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Jul 01 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 3.0.3-1

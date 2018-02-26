@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              Abstract asynchronous event notification library
 Name:                 libevent
@@ -14,7 +14,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        gcc make automake libtool doxygen openssl-devel
 
-###############################################################################
+################################################################################
 
 %description
 The libevent API provides a mechanism to execute a callback function
@@ -24,7 +24,7 @@ loop found in event driven network servers. An application just needs
 to call event_dispatch() and can then add or remove events dynamically
 without having to change the event loop.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:              Header files, libraries and development documentation for %{name}
@@ -36,7 +36,7 @@ This package contains the header files, static libraries and development
 documentation for %{name}. If you like to develop programs using %{name},
 you will need to install %{name}-devel.
 
-###############################################################################
+################################################################################
 
 %package doc
 Summary:              Development documentation for %{name}
@@ -49,7 +49,7 @@ This package contains the development documentation for %{name}.
 If you like to develop programs using %{name}-devel, you will
 need to install %{name}-doc.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{name}-release-%{version}-stable
@@ -64,11 +64,11 @@ need to install %{name}-doc.
 %{__make} doxygen
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
-%{__rm} -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.la
 
 install -dm 755 %{buildroot}%{_docdir}/%{name}-devel-%{version}/html
 install -dm 755 %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample
@@ -76,16 +76,16 @@ install -dm 755 %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample
 chmod +x doxygen/html
 
 cp -r doxygen/html/* %{buildroot}%{_docdir}/%{name}-devel-%{version}/html/
-cp -r sample/*.c %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
-cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
+cp -r sample/*.c %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample/
+cp -r sample/Makefile* %{buildroot}%{_docdir}/%{name}-devel-%{version}/sample/
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,0755)
@@ -114,11 +114,11 @@ cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
 %{_docdir}/%{name}-devel-%{version}/html/*
 %{_docdir}/%{name}-devel-%{version}/sample/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.4.15-0
-- Avoid integer overflow bugs in evbuffer_add() and related functions. 
+- Avoid integer overflow bugs in evbuffer_add() and related functions.
   See CVE-2014-6272 advisory for more information.
 - Pass flags to fcntl(F_SETFL) as int, not long
 - Backport and tweak the LICENSE file for 1.4
@@ -133,7 +133,8 @@ cp -r sample/Makefile* %{buildroot}/%{_docdir}/%{name}-devel-%{version}/sample/
 - Check for POLLERR, POLLHUP and POLLNVAL for Solaris event ports
 - Fix a bug that could allow dns requests with duplicate tx ids
 - Avoid truncating huge values for content-length
-- Take generated files out of git; add correct m4 magic for libtool to auto* files
+- Take generated files out of git; add correct m4 magic for libtool to
+  auto* files
 - Prefer autoregen -ivf to manual autogen.sh
 
 * Tue Feb 11 2014 Anton Novojilov <andy@essentialkaos.com> - 1.4.14b-1

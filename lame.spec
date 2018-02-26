@@ -38,11 +38,11 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 %define lib_name          libmp3%{name}
 
-###############################################################################
+################################################################################
 
 Summary:            MP3 encoder and frame analyzer
 Name:               lame
@@ -69,7 +69,7 @@ BuildRequires:      ncurses-devel libsndfile-devel
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 LAME is an educational tool to be used for learning about MP3 encoding.
@@ -78,7 +78,7 @@ the psycho acoustics, noise shaping and speed of MP3. Another goal of
 the LAME project is to use these improvements for the basis of a patent
 free audio compression codec for the GNU project.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Libraries and headers for lame
@@ -87,10 +87,10 @@ Group:              Development/Libraries
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
-Libraries provide the functions necessary to convert raw PCM and WAV files to 
+Libraries provide the functions necessary to convert raw PCM and WAV files to
 MP3 files.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -126,7 +126,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -143,7 +143,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{lib_name}.so
 %{_libdir}/%{lib_name}.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.100-0

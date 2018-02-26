@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,12 +26,12 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.5.2
-Release:            1%{?dist}
+Version:            1.6.1
+Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                http://elixir-lang.org
@@ -48,14 +48,14 @@ Requires:           erlang >= 20
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Elixir is a programming language built on top of the Erlang VM.
 As Erlang, it is a functional language built to support distributed,
 fault-tolerant, non-stop applications with hot code swapping.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -74,12 +74,12 @@ install -dm 755 %{buildroot}%{_bindir}
 
 cp -ra bin lib %{buildroot}%{_datadir}/%{name}/%{version}/
 
-ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}/%{_bindir}/
+ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -90,9 +90,18 @@ rm -rf %{buildroot}
 %{_bindir}/mix
 %{_datadir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Updated to latest version
+
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
+- Updated to latest version
+
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
+- Updated to latest version
+
 * Wed Oct 25 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-1
 - Fixed Erlang OTP version dependency
 

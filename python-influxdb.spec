@@ -1,13 +1,13 @@
-########################################################################################
+################################################################################
 
 %define package_name      influxdb
 %define package_altname   influxdb-python
 
-########################################################################################
+################################################################################
 
 Summary:        InfluxDB-Python is a client for interacting with InfluxDB
 Name:           python-influxdb
-Version:        4.1.1
+Version:        5.0.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -25,13 +25,13 @@ BuildArch:      noarch
 
 Provides:       %{name} = %{verion}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
-%{name} is a client for interacting with InfluxDB - an open-source distributed time 
-series database.
+%{name} is a client for interacting with InfluxDB - an open-source distributed
+time series database.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -qn %{package_altname}-%{version}
@@ -46,15 +46,18 @@ python setup.py build
 rm -rf %{buildroot}
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{python_sitelib}/*
 
-########################################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
+- Updated to latest stable release
+
 * Fri Nov 17 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 4.4.1-0
 - Initial build
 

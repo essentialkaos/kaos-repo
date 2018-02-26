@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:         An audio codec for use in low-delay speech and audio communication
 Name:            opus
@@ -21,14 +21,14 @@ BuildRequires:   make gcc doxygen
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-The Opus codec is designed for interactive speech and audio transmission over 
-the Internet. It is designed by the IETF Codec Working Group and incorporates 
+The Opus codec is designed for interactive speech and audio transmission over
+the Internet. It is designed by the IETF Codec Working Group and incorporates
 technology from Skype's SILK codec and Xiph.Org's CELT codec.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -41,7 +41,7 @@ Requires:        opus = %{version}-%{release}
 %description devel
 Files for development with opus.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -76,7 +76,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -92,7 +92,7 @@ rm -rf %{buildroot}
 %{_datadir}/aclocal/opus.m4
 %{_datadir}/man/man3/opus_*.3.gz
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.5-0

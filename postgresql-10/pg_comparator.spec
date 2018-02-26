@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -41,14 +41,14 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %define pg_ver            10
 %define pg_maj_ver        10
 %define pg_dir            %{_prefix}/pgsql-10
 %define realname          pg_comparator
 
-###############################################################################
+################################################################################
 
 
 Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
@@ -75,14 +75,14 @@ Requires(post):    %{_sbindir}/update-alternatives
 
 Provides:          %{realname} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 pg_comparator is a tool to compare possibly very big tables in
 different locations and report differences, with a network and
 time-efficient approach.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{realname}-%{version}
@@ -90,14 +90,14 @@ time-efficient approach.
 %patch0 -p1
 
 %build
-%{__make} PG_CONFIG=%{pg_dir}/bin/pg_config
+%{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
 rm -rf %{buildroot}
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
-%{_sbindir}/update-alternatives --install /usr/bin/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_maj_ver}0
 
 %postun
 if [[ $1 -eq 0 ]] ; then
@@ -107,7 +107,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -118,7 +118,7 @@ rm -rf %{buildroot}
 %{pg_dir}/share/extension/*.sql
 %{pg_dir}/share/extension/pgcmp.control
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0

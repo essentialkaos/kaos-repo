@@ -1,12 +1,12 @@
-###############################################################################
+################################################################################
 
 %define  debug_package %{nil}
 
-###############################################################################
+################################################################################
 
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
-Version:         1.0.0
+Version:         1.0.3
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -20,13 +20,13 @@ BuildRequires:   golang >= 1.9
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-Consul is a tool for service discovery and configuration. Consul is 
+Consul is a tool for service discovery and configuration. Consul is
 distributed, highly available, and extremely scalable.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -45,7 +45,7 @@ export GIT_IMPORT="github.com/hashicorp/consul/version"
 export GOLDFLAGS="-X $GIT_IMPORT.GitDescribe=%{version}"
 
 pushd src/github.com/hashicorp/%{name}
-  %{__make} tools || :
+  %{__make} %{?_smp_mflags} tools || :
   $GOPATH/bin/gox -osarch="${XC_OS}/${XC_ARCH}" \
                   -ldflags "${GOLDFLAGS}" \
                   -tags="consul" \
@@ -61,15 +61,18 @@ install -pm 755 %{name} %{buildroot}%{_bindir}/
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.3-0
+- Updated to latest stable release
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
 - Updated to latest stable release
 

@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,10 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-########################################################################################
+################################################################################
+
+%{!?utils:%define utils 1}
+%{!?raster:%define raster 1}
 
 %define maj_ver           2.3
 %define pg_maj_ver        95
@@ -45,16 +48,15 @@
 %define pg_dir            %{_prefix}/pgsql-9.5
 %define realname          postgis
 
-%{!?utils:%define utils 1}
-%{!?raster:%define raster 1}
-
 %define _smp_mflags       -j1
 
-########################################################################################
+%define __perl_requires   filter-requires-perl-Pg.sh
+
+################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.5
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.3.3
+Version:           2.3.6
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -85,17 +87,17 @@ Conflicts:         %{realname}%{pg_maj_ver}
 
 Provides:          %{realname} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 PostGIS adds support for geographic objects to the PostgreSQL object-relational
 database. In effect, PostGIS "spatially enables" the PostgreSQL server,
 allowing it to be used as a backend spatial database for geographic information
-systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS 
-follows the OpenGIS "Simple Features Specification for SQL" and has been 
+systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS
+follows the OpenGIS "Simple Features Specification for SQL" and has been
 certified as compliant with the "Types and Functions" profile.
 
-########################################################################################
+################################################################################
 
 %package client
 Summary:           Client tools and their libraries of PostGIS
@@ -107,7 +109,7 @@ Provides:          %{realname}-client = %{version}-%{release}
 The postgis-client package contains the client tools and their libraries
 of PostGIS.
 
-########################################################################################
+################################################################################
 
 %package devel
 Summary:           Development headers and libraries for PostGIS
@@ -120,7 +122,7 @@ The postgis-devel package contains the header files and libraries
 needed to compile C or C++ applications which will directly interact
 with PostGIS.
 
-########################################################################################
+################################################################################
 
 %package docs
 Summary:           Extra documentation for PostGIS
@@ -129,7 +131,7 @@ Group:             Applications/Databases
 %description docs
 The postgis-docs package includes PDF documentation of PostGIS.
 
-########################################################################################
+################################################################################
 
 %if %utils
 %package utils
@@ -142,9 +144,7 @@ Provides:          %{realname}-utils = %{version}-%{release}
 The postgis-utils package provides the utilities for PostGIS.
 %endif
 
-########################################################################################
-
-%define __perl_requires %{SOURCE2}
+################################################################################
 
 %prep
 %setup -q -n %{realname}-%{version}
@@ -193,9 +193,9 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 %{__ldconfig}
 
-%{_sbindir}/update-alternatives --install /usr/bin/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install /usr/bin/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install /usr/bin/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{realname}-%{maj_ver}/raster2pgsql %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{realname}-%{maj_ver}/raster2pgsql %{pg_maj_ver}0
 
 %postun
 %{__ldconfig}
@@ -210,7 +210,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -262,9 +262,12 @@ rm -rf %{buildroot}
 %doc %{realname}-%{version}.pdf
 %doc %{pg_dir}/doc/extension/README.address_standardizer
 
-########################################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.6-0
+- Updated to latest stable release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
 - Updated to latest stable release
 

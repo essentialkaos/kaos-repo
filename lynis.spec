@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,11 +26,11 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+################################################################################
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            2.5.7
+Version:            2.6.2
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
@@ -43,23 +43,23 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           bash >= 4
 
-Provides:           %{name} = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-Lynis is a security auditing for Unix derivatives like Linux, BSD, and 
-Solaris. It performs an in-depth security scan on the system to detect 
-software and security issues. Besides information related to security, 
-it will also scan for general system information, vulnerable software 
+Lynis is a security auditing for Unix derivatives like Linux, BSD, and
+Solaris. It performs an in-depth security scan on the system to detect
+software and security issues. Besides information related to security,
+it will also scan for general system information, vulnerable software
 packages, and possible configuration issues.
 
-We believe software should be simple, updated on a regular basis and open. 
-You should be able to trust, understand, and even alter the software. 
-Many agree with us, as the software is being used by thousands every 
+We believe software should be simple, updated on a regular basis and open.
+You should be able to trust, understand, and even alter the software.
+Many agree with us, as the software is being used by thousands every
 day to protect their systems.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -82,7 +82,7 @@ cp -r db extras include plugins %{buildroot}%{_datadir}/%{name}/
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -92,9 +92,15 @@ rm -rf %{buildroot}
 %{_mandir}/man8/%{name}.*
 %{_datadir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
+* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.2-0
+- Updated to latest stable release
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
+- Updated to latest stable release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.7-0
 - Updated to latest stable release
 

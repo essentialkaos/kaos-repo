@@ -1,7 +1,7 @@
 ################################################################################
 
-%global pythonver %(%{__python} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
-%{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%global pythonver %(python -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 
 # Python3 introduced in Fedora 13
 %global with_python3 %([ 0%{?fedora} -gt 12 ] && echo 1 || echo 0)
@@ -81,7 +81,7 @@ Provides:         pycrypto = %{version}-%{release}
 ################################################################################
 
 %description
-PyCrypto is a collection of both secure hash functions (such as MD5 and 
+PyCrypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 ################################################################################
@@ -92,7 +92,7 @@ Summary:          Cryptography library for Python 3
 Group:            Development/Libraries
 
 %description -n python3-crypto
-PyCrypto is a collection of both secure hash functions (such as MD5 and 
+PyCrypto is a collection of both secure hash functions (such as MD5 and
 SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 This is the Python 3 build of the package.
@@ -112,7 +112,7 @@ cp -a . %{py3dir}
 %endif
 
 %build
-CFLAGS="%{optflags} -fno-strict-aliasing" %{__python} setup.py build
+CFLAGS="%{optflags} -fno-strict-aliasing" python setup.py build
 
 %if %{with_python3}
 pushd %{py3dir}
@@ -122,7 +122,7 @@ popd
 
 %install
 rm -rf %{buildroot}
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 # Remove group write permissions on shared objects
 find %{buildroot}%{python_sitearch} -name '*.so' -exec chmod -c g-w {} \;

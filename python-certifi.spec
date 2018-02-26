@@ -1,6 +1,6 @@
 ################################################################################
 
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 
 ################################################################################
 
@@ -43,7 +43,7 @@
 
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               python-%{pkgname}
-Version:            2017.11.05
+Version:            2018.01.18
 Release:            0%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
@@ -64,8 +64,8 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Certifi is a carefully curated collection of Root Certificates for 
-validating the trustworthiness of SSL certificates while verifying 
+Certifi is a carefully curated collection of Root Certificates for
+validating the trustworthiness of SSL certificates while verifying
 the identity of TLS hosts. It has been extracted from the Requests project.
 
 ################################################################################
@@ -76,12 +76,12 @@ the identity of TLS hosts. It has been extracted from the Requests project.
 rm -rf %{pkgname}.egg-info
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -96,6 +96,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.01.18-0
+- Updated to latest release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.11.05-0
 - Updated to latest release
 

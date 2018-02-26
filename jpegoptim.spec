@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:              Utility for optimizing/compressing JPEG files
 Name:                 jpegoptim
@@ -18,7 +18,7 @@ Requires:             libjpeg-turbo
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Jpegoptim can optimize/compress jpeg files. Program support
@@ -26,7 +26,7 @@ lossless optimization, which is based on optimizing the Huffman
 tables. So called, "lossy" optimization (compression) is done
 by re-encoding the image using user specified image quality factor.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-RELEASE.%{version}
@@ -43,7 +43,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -51,7 +51,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Dec 09 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 1.4.4-0

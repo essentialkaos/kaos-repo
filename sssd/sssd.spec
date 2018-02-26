@@ -1,7 +1,7 @@
-###############################################################################
+################################################################################
 
-%define rhel6_minor       %(%{__grep} -o "6.[0-9]*" /etc/redhat-release |%{__sed} -s 's/6.//')
-%define rhel7_minor       %(%{__grep} -o "7.[0-9]*" /etc/redhat-release |%{__sed} -s 's/7.//')
+%define rhel6_minor       %(grep -o "6.[0-9]*" /etc/redhat-release | sed -s 's/6.//')
+%define rhel7_minor       %(grep -o "7.[0-9]*" /etc/redhat-release | sed -s 's/7.//')
 
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?__python2: %define __python2 /usr/bin/python2}
@@ -61,7 +61,7 @@
 %define alt_add /usr/sbin/alternatives --install
 %define alt_rm  /usr/sbin/alternatives --remove
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -101,7 +101,7 @@
 %define __getent          %{_bindir}/getent
 %define __sysctl          %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %define service_user      root
 %define service_group     root
@@ -116,9 +116,9 @@
 %define pubconfpath       %{sssdstatedir}/pubconf
 %define gpocachepath      %{sssdstatedir}/gpo_cache
 
-###############################################################################
+################################################################################
 
-Summary:            System Security Services Daemon 
+Summary:            System Security Services Daemon
 Name:               sssd
 Version:            1.16.0
 Release:            0%{?dist}
@@ -187,7 +187,7 @@ BuildRequires:      nfs-utils-lib-devel
 BuildRequires:      python3-devel
 %endif
 
-###############################################################################
+################################################################################
 
 %description
 Provides a set of daemons to manage access to remote directories and
@@ -199,7 +199,7 @@ services for projects like FreeIPA.
 The sssd subpackage is a meta-package that contains the deamon as well as all
 the existing back ends.
 
-###############################################################################
+################################################################################
 
 %package common
 Summary:            Common files for the SSSD
@@ -231,28 +231,28 @@ Obsoletes:          libsss_sudo <= 1.9.93
 Obsoletes:          libsss_sudo-devel <= 1.9.93
 Obsoletes:          libsss_autofs <= 1.9.93
 
-###############################################################################
+################################################################################
 
 %description common
 Common files for the SSSD. The common package includes all the files needed
 to run a particular back end, however, the back ends are packaged in separate
 subpackages such as sssd-ldap.
 
-###############################################################################
+################################################################################
 
 %package client
 Summary:            SSSD Client libraries for NSS and PAM
 Group:              Applications/System
 License:            LGPLv3+
 
-Requires(post):     %{__ldconfig} 
+Requires(post):     %{__ldconfig}
 Requires(postun):   %{__ldconfig}
 
 %description client
 Provides the libraries needed by the PAM and NSS stacks to connect to the SSSD
 service.
 
-###############################################################################
+################################################################################
 
 %package tools
 Summary:            Userspace tools for use with the SSSD
@@ -278,7 +278,7 @@ Also provides several other administrative tools:
     * sss_seed which pre-creates a user entry for use in kickstarts
     * sss_obfuscate for generating an obfuscated LDAP password
 
-###############################################################################
+################################################################################
 
 %package -n python-sssdconfig
 Summary:            SSSD and IPA configuration file manipulation classes and functions
@@ -290,7 +290,7 @@ BuildArch:          noarch
 %description -n python-sssdconfig
 Provides python2 files for manipulation SSSD and IPA configuration files.
 
-###############################################################################
+################################################################################
 
 %if (0%{?with_python3} == 1)
 %package -n python3-sssdconfig
@@ -304,7 +304,7 @@ BuildArch:          noarch
 Provides python3 files for manipulation SSSD and IPA configuration files.
 %endif
 
-###############################################################################
+################################################################################
 
 %package -n python-sss
 Summary:            Python2 bindings for sssd
@@ -321,7 +321,7 @@ Also provides several other useful python2 bindings:
     * function for retrieving list of groups user belongs to.
     * class for obfuscation of passwords
 
-###############################################################################
+################################################################################
 
 %if (0%{?with_python3} == 1)
 %package -n python3-sss
@@ -340,7 +340,7 @@ Also provides several other useful python3 bindings:
     * class for obfuscation of passwords
 %endif
 
-###############################################################################
+################################################################################
 
 %package -n python-sss-murmur
 Summary:            Python2 bindings for murmur hash function
@@ -350,7 +350,7 @@ License:            LGPLv3+
 %description -n python-sss-murmur
 Provides python2 module for calculating the murmur hash version 3
 
-###############################################################################
+################################################################################
 
 %if (0%{?with_python3} == 1)
 %package -n python3-sss-murmur
@@ -362,7 +362,7 @@ License:            LGPLv3+
 Provides python3 module for calculating the murmur hash version 3
 %endif
 
-###############################################################################
+################################################################################
 
 %package ldap
 Summary:            The LDAP back end of the SSSD
@@ -378,7 +378,7 @@ Conflicts:          sssd < %{version}-%{release}
 Provides the LDAP back end that the SSSD can utilize to fetch identity data
 from and authenticate against an LDAP server.
 
-###############################################################################
+################################################################################
 
 %package krb5-common
 Summary:            SSSD helpers needed for Kerberos and GSSAPI authentication
@@ -394,7 +394,7 @@ Conflicts:          sssd < %{version}-%{release}
 Provides helper processes that the LDAP and Kerberos back ends can use for
 Kerberos user or host authentication.
 
-###############################################################################
+################################################################################
 
 %package krb5
 Summary:            The Kerberos authentication back end for the SSSD
@@ -410,7 +410,7 @@ Conflicts:          sssd < %{version}-%{release}
 Provides the Kerberos back end that the SSSD can utilize authenticate
 against a Kerberos server.
 
-###############################################################################
+################################################################################
 
 %package common-pac
 Summary:            Common files needed for supporting PAC processing
@@ -423,7 +423,7 @@ Requires:           sssd-common = %{version}-%{release}
 Provides common files needed by SSSD providers such as IPA and Active Directory
 for handling Kerberos PACs.
 
-###############################################################################
+################################################################################
 
 %package ipa
 Summary:            The IPA back end of the SSSD
@@ -442,7 +442,7 @@ Conflicts:          sssd < %{version}-%{release}
 Provides the IPA back end that the SSSD can utilize to fetch identity data
 from and authenticate against an IPA server.
 
-###############################################################################
+################################################################################
 
 %package ad
 Summary:            The AD back end of the SSSD
@@ -460,7 +460,7 @@ Conflicts: sssd < %{version}-%{release}
 Provides the Active Directory back end that the SSSD can utilize to fetch
 identity data from and authenticate against an Active Directory server.
 
-###############################################################################
+################################################################################
 
 %package proxy
 Summary:            The proxy back end of the SSSD
@@ -474,7 +474,7 @@ Requires:           sssd-common = %{version}-%{release}
 Provides the proxy back end which can be used to wrap an existing NSS and/or
 PAM modules to leverage SSSD caching.
 
-###############################################################################
+################################################################################
 
 %package -n libsss_idmap
 Summary:            FreeIPA Idmap library
@@ -487,7 +487,7 @@ Requires(postun):   %{__ldconfig}
 %description -n libsss_idmap
 Utility library to convert SIDs to Unix uids and gids
 
-###############################################################################
+################################################################################
 
 %package -n libsss_idmap-devel
 Summary:            FreeIPA Idmap library
@@ -499,7 +499,7 @@ Requires:           libsss_idmap = %{version}-%{release}
 %description -n libsss_idmap-devel
 Utility library to SIDs to Unix uids and gids
 
-###############################################################################
+################################################################################
 
 %package -n libipa_hbac
 Summary:            FreeIPA HBAC Evaluator library
@@ -512,19 +512,19 @@ Requires(postun):   %{__ldconfig}
 %description -n libipa_hbac
 Utility library to validate FreeIPA HBAC rules for authorization requests
 
-###############################################################################
+################################################################################
 
 %package -n libipa_hbac-devel
 Summary:            FreeIPA HBAC Evaluator library
 Group:              Development/Libraries
-License:            LGPLv3+ 
+License:            LGPLv3+
 
 Requires:           libipa_hbac = %{version}-%{release}
 
 %description -n libipa_hbac-devel
 Utility library to validate FreeIPA HBAC rules for authorization requests
 
-###############################################################################
+################################################################################
 
 %package -n python-libipa_hbac
 Summary:            Python2 bindings for the FreeIPA HBAC Evaluator library
@@ -540,7 +540,7 @@ Obsoletes:          libipa_hbac-python < 1.12.90
 The python-libipa_hbac contains the bindings so that libipa_hbac can be
 used by Python applications.
 
-###############################################################################
+################################################################################
 
 %if (0%{?with_python3} == 1)
 %package -n python3-libipa_hbac
@@ -555,7 +555,7 @@ The python3-libipa_hbac contains the bindings so that libipa_hbac can be
 used by Python applications.
 %endif
 
-###############################################################################
+################################################################################
 
 %package -n libsss_nss_idmap
 Summary:            Library for SID based lookups
@@ -568,7 +568,7 @@ Requires(postun):   %{__ldconfig}
 %description -n libsss_nss_idmap
 Utility library for SID based lookups
 
-###############################################################################
+################################################################################
 
 %package -n libsss_nss_idmap-devel
 Summary:            Library for SID based lookups
@@ -580,7 +580,7 @@ Requires:           libsss_nss_idmap = %{version}-%{release}
 %description -n libsss_nss_idmap-devel
 Utility library for SID based lookups
 
-###############################################################################
+################################################################################
 
 %package -n python-libsss_nss_idmap
 Summary:            Python2 bindings for libsss_nss_idmap
@@ -596,7 +596,7 @@ Obsoletes:          libsss_nss_idmap-python < 1.12.90
 The python-libsss_nss_idmap contains the bindings so that libsss_nss_idmap can
 be used by Python applications.
 
-###############################################################################
+################################################################################
 
 %if (0%{?with_python3} == 1)
 %package -n python3-libsss_nss_idmap
@@ -611,7 +611,7 @@ The python3-libsss_nss_idmap contains the bindings so that libsss_nss_idmap can
 be used by Python applications.
 %endif
 
-###############################################################################
+################################################################################
 
 %package dbus
 Summary:            The D-Bus responder of the SSSD
@@ -626,7 +626,7 @@ BuildRequires:      augeas-devel
 Provides the D-Bus responder of the SSSD, called the InfoPipe, that allows
 the information from the SSSD to be transmitted over the system bus.
 
-###############################################################################
+################################################################################
 
 %package -n libsss_simpleifp
 Summary:            The SSSD D-Bus responder helper library
@@ -642,7 +642,7 @@ Requires(postun):   %{__ldconfig}
 %description -n libsss_simpleifp
 Provides library that simplifies D-Bus API for the SSSD InfoPipe responder.
 
-###############################################################################
+################################################################################
 
 %package -n libsss_simpleifp-devel
 Summary:            The SSSD D-Bus responder helper library
@@ -655,7 +655,7 @@ Requires:           libsss_simpleifp = %{version}-%{release}
 %description -n libsss_simpleifp-devel
 Provides library that simplifies D-Bus API for the SSSD InfoPipe responder.
 
-###############################################################################
+################################################################################
 
 %package libwbclient
 Summary:            The SSSD libwbclient implementation
@@ -665,7 +665,7 @@ License:            GPLv3+ and LGPLv3+
 %description libwbclient
 The SSSD libwbclient implementation.
 
-###############################################################################
+################################################################################
 
 %package libwbclient-devel
 Summary:            Development libraries for the SSSD libwbclient implementation
@@ -675,7 +675,7 @@ License:            GPLv3+ and LGPLv3+
 %description libwbclient-devel
 Development libraries for the SSSD libwbclient implementation.
 
-###############################################################################
+################################################################################
 
 %package winbind-idmap
 Summary:            SSSD's idmap_sss Backend for Winbind
@@ -686,7 +686,7 @@ License:            GPLv3+ and LGPLv3+
 The idmap_sss module provides a way for Winbind to call SSSD to map UIDs/GIDs
 and SIDs.
 
-###############################################################################
+################################################################################
 
 %package kcm
 Summary:            SSSD Kerberos Cache Manager
@@ -697,7 +697,7 @@ License:            GPLv3+ and LGPLv3+
 The KCM server keeps track of each credential caches's owner and performs
 access check control based on the UID and GID of the KCM client.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -741,9 +741,9 @@ rm -rf %{buildroot}
 sed -i -e 's:/usr/bin/python:/usr/bin/python3:' src/tools/sss_obfuscate
 %endif
 
-%{make_install} DESTDIR=%{buildroot}
+%{make_install}
 
-/usr/lib/rpm/find-lang.sh %{buildroot} %{name}
+%{_libdir32}/rpm/find-lang.sh %{buildroot} %{name}
 
 install -dm 755 %{buildroot}%{_initrddir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
@@ -821,7 +821,7 @@ done
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %if (0%{?use_systemd} == 1)
 
@@ -861,7 +861,7 @@ fi
 %post client
 if [[ $1 -eq 1 ]] ; then
   %{__ldconfig}
-  
+
   %{alt_add} %{_sysconfdir}/cifs-utils/idmap-plugin \
              cifs-idmap-plugin \
              %{_libdir}/cifs-utils/cifs_idmap_sss.so 20
@@ -916,7 +916,7 @@ if [[ $1 -eq 1 ]] ; then
   %{__ldconfig}
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -1258,7 +1258,7 @@ fi
 %attr(4750,root,%{service_group}) %{_libexecdir}/%{name}/sssd_kcm
 %{_datadir}/sssd-kcm/kcm_default_ccache
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
@@ -1281,4 +1281,4 @@ fi
 - Updated to latest stable release
 
 * Tue Mar 22 2016 Gleb Goncharov <yum@gongled.ru> - 1.13.3-1
-- Initial build 
+- Initial build

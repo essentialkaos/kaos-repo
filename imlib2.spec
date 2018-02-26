@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,7 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 Summary:            Powerful image loading and rendering library
 Name:               imlib2
@@ -45,7 +45,7 @@ Version:            1.4.8
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
-URL:                https://docs.enlightenment.org/api/imlib2/html 
+URL:                https://docs.enlightenment.org/api/imlib2/html
 
 Source0:            http://prdownloads.sourceforge.net/enlightenment/%{name}-%{version}.tar.bz2
 
@@ -58,7 +58,7 @@ BuildRequires:      automake libtool libtool-ltdl-devel
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Imlib2 is an advanced replacement library for libraries like libXpm that
@@ -66,7 +66,7 @@ provides many more features with much greater flexibility and speed than
 standard libraries, including font rasterization, rotation, RGBA space
 rendering and blending, dynamic binary filters, scripting, and more.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Imlib2 headers, static libraries and documentation
@@ -77,7 +77,7 @@ Requires:           %{name} = %{version}
 %description devel
 Headers, static libraries and documentation for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package filters
 Summary:            Imlib2 basic plugin filters set
@@ -88,7 +88,7 @@ Requires:           %{name} = %{version}
 %description filters
 Basic set of plugin filters that come with Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_lbm
 Summary:            Imlib2 LBM loader
@@ -99,7 +99,7 @@ Requires:           %{name} = %{version}
 %description loader_lbm
 LBM image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_jpeg
 Summary:            Imlib2 JPEG loader
@@ -113,7 +113,7 @@ BuildRequires:      libjpeg-turbo-devel
 %description loader_jpeg
 JPEG image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_png
 Summary:            Imlib2 PNG loader
@@ -127,7 +127,7 @@ BuildRequires:      libpng-devel zlib-devel
 %description loader_png
 PNG image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_argb
 Summary:            Imlib2 ARGB loader
@@ -138,7 +138,7 @@ Requires:           %{name} = %{version}
 %description loader_argb
 ARGB image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_bmp
 Summary:            Imlib2 BMP loader
@@ -149,7 +149,7 @@ Requires:           %{name} = %{version}
 %description loader_bmp
 BMP image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_ff
 Summary:            Imlib2 Farbfeld loader
@@ -160,7 +160,7 @@ Requires:           %{name} = %{version}
 %description loader_ff
 Farbfeld image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_gif
 Summary:            Imlib2 GIF loader
@@ -174,7 +174,7 @@ BuildRequires:      giflib-devel
 %description loader_gif
 GIF image loader for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_pnm
 Summary:            Imlib2 PNM loader
@@ -185,7 +185,7 @@ Requires:           %{name} = %{version}
 %description loader_pnm
 PNM image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_tga
 Summary:            Imlib2 TGA loader
@@ -196,7 +196,7 @@ Requires:           %{name} = %{version}
 %description loader_tga
 TGA image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_tiff
 Summary:            Imlib2 TIFF loader
@@ -210,7 +210,7 @@ BuildRequires:      libtiff-devel
 %description loader_tiff
 TIFF image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_xpm
 Summary:            Imlib2 XPM loader
@@ -221,7 +221,7 @@ Requires:           %{name} = %{version}
 %description loader_xpm
 XPM image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_bz2
 Summary:            Imlib2 .bz2 loader
@@ -234,7 +234,7 @@ BuildRequires:      bzip2-devel
 %description loader_bz2
 Bzip2 compressed image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %package loader_gz
 Summary:            Imlib2 .gz loader
@@ -245,9 +245,9 @@ Requires:           %{name} = %{version}
 %description loader_gz
 gz compressed image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
-%package loader_id3 
+%package loader_id3
 Summary:            Imlib2 .id3 loader
 Group:              System Environment/Libraries
 
@@ -259,7 +259,7 @@ BuildRequires:      libid3tag-devel
 %description loader_id3
 id3 tag image loader/saver for Imlib2.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -294,7 +294,7 @@ rm -rf %{buildroot}
 
 %postun -p /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -320,49 +320,63 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{_libdir}/%{name}/filters/*.so
 
 %files loader_lbm
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/lbm.so
 
 %files loader_jpeg
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/jpeg.so
 
 %files loader_png
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/png.so
 
 %files loader_argb
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/argb.so
 
 %files loader_bmp
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/bmp.so
 
 %files loader_ff
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/ff.so
 
 %files loader_gif
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/gif.so
 
 %files loader_pnm
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/pnm.so
 
 %files loader_tga
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/tga.so
 
 %files loader_tiff
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/tiff.so
 
 %files loader_xpm
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/xpm.so
 
 %files loader_bz2
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/bz2.so
 
 %files loader_gz
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/zlib.so
 
 %files loader_id3
+%defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/id3.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Apr 12 2016 Gleb Goncharov <yum@gongled.ru> - 1.4.8-0
-- Initial build 
+- Initial build

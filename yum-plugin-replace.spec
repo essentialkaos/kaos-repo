@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -31,7 +31,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 Summary:           Package replacement plugin for Yum
 Name:              yum-plugin-replace
@@ -48,7 +48,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildArch:         noarch
 Requires:          yum
 
-###############################################################################
+################################################################################
 
 %description
 This plugin enables the ability to replace an installed package, with another
@@ -57,9 +57,9 @@ IUS Community Project whose packages have alternative names as to not
 automatically upgrade stock packages.  They also do not Obsolete the packages
 they provide, therefore making upgrading a little bit more tedious.  For
 example upgrading 'mysql' to 'mysql50' or 'mysql51' requires first
-uninstalling 'mysql' and then installing the alternate package name. 
+uninstalling 'mysql' and then installing the alternate package name.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -85,7 +85,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/yum/pluginconf.d/replace.conf
 %{_libdir32}/yum-plugins/replace.py*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Wed Sep 03 2014 Anton Novojilov <andy@essentialkaos.com> - 2.7.0-0

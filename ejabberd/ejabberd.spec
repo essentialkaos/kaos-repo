@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -32,7 +32,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-###############################################################################
+################################################################################
 
 %define __ln              %{_bin}/ln
 %define __touch           %{_bin}/touch
@@ -43,12 +43,12 @@
 %define __useradd         %{_sbindir}/useradd
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 %define user_name         ejabberd
 %define group_name        ejabberd
 
-###############################################################################
+################################################################################
 
 Summary:            Rock Solid, Massively Scalable, Infinitely Extensible XMPP Server
 Name:               ejabberd
@@ -79,30 +79,30 @@ Requires(postun):   systemd
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-ejabberd is an open source Jabber/XMPP server designed from the ground up to 
+ejabberd is an open source Jabber/XMPP server designed from the ground up to
 be the building bricks of highly critical messaging systems.
 
-Written in Erlang programming language, ejabberd is cross-platform, 
-fault-tolerant, clusterable, very modular and highly versatile. It can be 
+Written in Erlang programming language, ejabberd is cross-platform,
+fault-tolerant, clusterable, very modular and highly versatile. It can be
 extended in other programming languages, such as Elixir.
 
-Designed to be massively scalable, it is widely used to power web scale 
-deployments across many software industries: Mobile messaging, Social 
-Networks, Gaming, Internet of Things,
+Designed to be massively scalable, it is widely used to power web scale
+deployments across many software industries: Mobile messaging, Social
+Networks, Gaming, Internet of Things.
 
-ejabberd is taking great care of XMPP compliance, implementing most of the 
+ejabberd is taking great care of XMPP compliance, implementing most of the
 XMPP extensions published by the XMPP Standard Foundation.
 
-To innovate even further, the core development team is constantly working 
+To innovate even further, the core development team is constantly working
 with other open source communities to create bridges and elegant features.
 
-This ejabberd community site is a hub for all people that are interested in 
+This ejabberd community site is a hub for all people that are interested in
 ejabberd, Erlang, XMPP and messaging in general.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -184,7 +184,7 @@ if [[ $1 -ge 1 ]] ; then
 %endif
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -205,7 +205,7 @@ fi
 %{_libdir}/*
 %{_docdir}/%{name}/COPYING
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 17.08-0

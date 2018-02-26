@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -31,7 +31,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 Summary:           Timezone Updater Tool
 Name:              tzupdater
@@ -50,14 +50,14 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 Provides:          %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
-The TZUpdater tool is provided to allow you to update installed Java Development Kit 
-(JDK) and Java Runtime Environment (JRE) software with more recent timezone data, 
-to accommodate daylight saving time (DST) changes in different countries.
+The TZUpdater tool is provided to allow you to update installed Java Development
+Kit (JDK) and Java Runtime Environment (JRE) software with more recent timezone
+data, to accommodate daylight saving time (DST) changes in different countries.
 
-########################################################################################
+################################################################################
 
 %prep
 %build
@@ -77,7 +77,7 @@ cp %{SOURCE2} .
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -85,7 +85,7 @@ rm -rf %{buildroot}
 %{_loc_datarootdir}/%{name}/%{name}.jar
 %{_sbindir}/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:         C library for handling ESRI Shapefiles
 Name:            shapelib
@@ -16,7 +16,7 @@ BuildRequires:   gcc-c++ make proj-devel chrpath
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 The Shapefile C Library provides the ability to write
@@ -24,25 +24,27 @@ simple C programs for reading, writing and updating (to a
 limited extent) ESRI Shapefiles, and the associated
 attribute file (.dbf).
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:         Development files for shapelib
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 
 %description devel
 This package contains libshp and the appropriate header files.
 
-###############################################################################
+################################################################################
 
 %package tools
 Summary:         shapelib utility programs
+Group:           Development/Libraries
 Requires:        %{name} = %{version}-%{release}
 
 %description tools
 This package contains various utility programs distributed with shapelib.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -63,13 +65,13 @@ chrpath --delete %{buildroot}%{_libdir}/*.so*
 %clean
 rm -rf %{buildroot}
 
-%post 
+%post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -87,7 +89,7 @@ rm -rf %{buildroot}
 %doc contrib/doc/
 %{_bindir}/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.1-0

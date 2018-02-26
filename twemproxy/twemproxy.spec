@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 
 %define alias_name        nutcracker
 
-###############################################################################
+################################################################################
 
 Summary:           Fast and lightweight proxy for memcached and redis protocol
 Name:              twemproxy
@@ -55,14 +55,14 @@ BuildRequires:     make gcc autoconf m4 libtool libevent2-devel
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{alias_name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-twemproxy (pronounced "two-em-proxy"), aka nutcracker is a fast and 
-lightweight proxy for memcached and redis protocol. It was primarily built to 
+twemproxy (pronounced "two-em-proxy"), aka nutcracker is a fast and
+lightweight proxy for memcached and redis protocol. It was primarily built to
 reduce the connection count on the backend caching servers.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -74,10 +74,9 @@ autoreconf -fvi
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install} PREFIX=%{buildroot} mandir=%{_mandir}
-
 
 install -dm 755 %{buildroot}%{_initrddir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
@@ -104,9 +103,9 @@ if [[ $1 -eq 0 ]]; then
 fi
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -120,7 +119,7 @@ fi
 %{_sysconfdir}/%{name}/%{alias_name}.yml
 %config(noreplace)%{_sysconfdir}/%{name}/%{name}.yml
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Mar 28 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-1
@@ -130,28 +129,29 @@ fi
 - backend server hostnames are resolved lazily
 - redis_auth is only valid for a redis pool
 - getaddrinfo returns non-zero +ve value on error
-- fix-hang-when-command-only (charsyam)
-- fix bug crash when get command without key and whitespace (charsyam)
-- mark server as failed on protocol level transiet failures like -OOM, -LOADING, etc
+- fix-hang-when-command-only
+- fix bug crash when get command without key and whitespace
+- mark server as failed on protocol level transiet failures like -OOM,
+ -LOADING, etc
 - implemented support for parsing fine grained redis error response
-- remove redundant conditional judgement in rbtree deletion (leo ma)
-- fix bug mset has invalid pair (charsyam)
-- fix bug mset has invalid pair (charsyam)
-- temp fix a core on kqueue (idning)
-- support "touch" command for memcached (panmiaocai)
-- fix redis parse rsp bug (charsyam)
-- SORT command can take multiple arguments. So it should be part of redis_argn() 
+- remove redundant conditional judgement in rbtree deletion
+- fix bug mset has invalid pair
+- fix bug mset has invalid pair
+- temp fix a core on kqueue
+- support "touch" command for memcached
+- fix redis parse rsp bug
+- SORT command can take multiple arguments. So it should be part of redis_argn()
   and not redis_arg0()
-- remove incorrect assert because client could send data after sending a quit 
+- remove incorrect assert because client could send data after sending a quit
   request which must be discarded
-- allow file permissions to be set for UNIX domain listening socket (ori liveneh)
-- return error if formatted is greater than mbuf size by using nc_vsnprintf() 
+- allow file permissions to be set for UNIX domain listening socket
+- return error if formatted is greater than mbuf size by using nc_vsnprintf()
   in msg_prepend_format()
-- fix req_make_reply on msg_get, mark it as response (idning)
-- redis database select upon connect (arne claus)
-- redis_auth (charsyam)
-- allow null key(empty key) (idning)
-- fix core on invalid mset like "mset a a a" (idning)
+- fix req_make_reply on msg_get, mark it as response
+- redis database select upon connect
+- redis_auth
+- allow null key (empty key)
+- fix core on invalid mset like "mset a a a"
 
 * Sat Oct 18 2014 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
 - Init scripts migrated to kaosv

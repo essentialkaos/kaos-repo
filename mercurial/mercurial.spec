@@ -1,17 +1,17 @@
-###############################################################################
+################################################################################
 
 %define shortname      hg
 %define emacs_version  22.1
 
-###############################################################################
+################################################################################
 
 %define _emacs_bytecompile /usr/bin/emacs -batch --no-init-file --no-site-file --eval '(progn (setq load-path (cons "." load-path)))' -f batch-byte-compile
 
-###############################################################################
+################################################################################
 
 Summary:           Distributed source control management tool
 Name:              mercurial
-Version:           4.3.1
+Version:           4.4.2
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Development/Tools
@@ -32,14 +32,14 @@ Requires:          python
 Provides:          %{shortname} = %{version}-%{release}
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-Mercurial is a free, distributed source control management tool. It 
-efficiently handles projects of any size and offers an easy and intuitive 
+Mercurial is a free, distributed source control management tool. It
+efficiently handles projects of any size and offers an easy and intuitive
 interface.
 
-###############################################################################
+################################################################################
 
 %package -n emacs-mercurial
 Summary:           Mercurial version control system support for Emacs
@@ -52,10 +52,10 @@ BuildArch:         noarch
 
 %description -n emacs-mercurial
 Contains byte compiled elisp packages for mercurial.
-To get started: start emacs, load hg-mode with M-x hg-mode, and show 
+To get started: start emacs, load hg-mode with M-x hg-mode, and show
 help with C-c h h
 
-###############################################################################
+################################################################################
 
 %package -n emacs-mercurial-el
 Summary:           Elisp source files for mercurial under GNU Emacs
@@ -65,7 +65,7 @@ Requires:          emacs-mercurial = %{version}-%{release}
 %description -n emacs-mercurial-el
 This package contains the elisp source files for mercurial under GNU Emacs.
 
-###############################################################################
+################################################################################
 
 %package hgk
 Summary:           Hgk interface for mercurial
@@ -73,24 +73,24 @@ Group:             Development/Tools
 Requires:          %{shortname} = %{version}-%{release} tk
 
 %description hgk
-A Mercurial extension for displaying the change history graphically using 
-Tcl/Tk. Displays branches and merges in an easily understandable way and 
+A Mercurial extension for displaying the change history graphically using
+Tcl/Tk. Displays branches and merges in an easily understandable way and
 shows diffs for each revision. Based on gitk for the git SCM.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
 
 %build
-make %{?_smp_mflags} all
+%{__make} %{?_smp_mflags} all
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --root %{buildroot} --prefix %{_prefix} --record=%{name}.files
+python setup.py install -O1 --root %{buildroot} --prefix %{_prefix} --record=%{name}.files
 
-make install-doc DESTDIR=%{buildroot} MANDIR=%{_mandir}
+%{__make} install-doc DESTDIR=%{buildroot} MANDIR=%{_mandir}
 
 install -dm 755 %{buildroot}%{_libexecdir}/%{name}
 install -dm 755 %{buildroot}%{_sysconfdir}/bash_completion.d
@@ -131,7 +131,7 @@ grep -v locale %{name}-base.files > %{name}-base-filtered.files
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files -f %{name}-base-filtered.files -f %{shortname}.lang
 %defattr(-,root,root,-)
@@ -163,9 +163,12 @@ rm -rf %{buildroot}
 %{_libexecdir}/%{name}/
 %{_sysconfdir}/%{name}/hgrc.d/hgk.rc
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.4.2-0
+- Updated to latest stable release
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 4.3.1-0
 - Updated to latest stable release
 

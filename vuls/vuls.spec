@@ -1,13 +1,13 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:gopack    github.com/future-architect/vuls
-# rpmbuilder:tag       v0.4.1
+# rpmbuilder:tag       v0.4.2
 
-###############################################################################
+################################################################################
 
 %define  debug_package %{nil}
 
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -56,16 +56,16 @@
 %define goval_dir         %{_opt}/goval-dictionary
 %define cved_dir          %{_opt}/cve-dictionary
 
-%define goval_version     0.0.1
-%define gocve_version     0.1.1
+%define goval_version     0.0.2
+%define gocve_version     0.1.2
 
-###############################################################################
+################################################################################
 
 Summary:         VULnerability Scanner
 Name:            vuls
-Version:         0.4.1
+Version:         0.4.2
 Release:         0%{?dist}
-Group:           Development/Tools
+Group:           Applications/System
 License:         GPLv3
 URL:             https://github.com/future-architect/vuls
 
@@ -86,7 +86,7 @@ Source22:        cved-server.sysconfig
 Source23:        cve-dictionary-fetch.cron
 Source24:        cve-dictionary-fetch
 
-BuildRequires:   golang >= 1.8
+BuildRequires:   golang >= 1.9
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -94,18 +94,19 @@ Requires:        sqlite
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Vulnerability scanner for Linux/FreeBSD, agentless, written in golang.
 
-###############################################################################
+################################################################################
 
 %package -n cve-dictionary
 
 Summary:         CVE data fetcher and server for VULS
-Version:         0.1.1
+Version:         %{gocve_version}
 Release:         0%{?dist}
+Group:           Applications/System
 
 Requires:        kaosv sqlite
 
@@ -114,19 +115,20 @@ Requires:        systemd
 %endif
 
 %description -n cve-dictionary
-This is tool to build a local copy of the NVD (National Vulnerabilities 
-Database) and the Japanese JVN [2], which contain security vulnerabilities 
-according to their CVE identifiers [3] including exhaustive information and 
-a risk score. The local copy is generated in sqlite format, and the tool has a 
+This is tool to build a local copy of the NVD (National Vulnerabilities
+Database) and the Japanese JVN [2], which contain security vulnerabilities
+according to their CVE identifiers [3] including exhaustive information and
+a risk score. The local copy is generated in sqlite format, and the tool has a
 server mode for easy querying.
 
-###############################################################################
+################################################################################
 
 %package -n goval-dictionary
 
 Summary:         OVAL data fetcher and server for VULS
-Version:         0.0.1
+Version:         %{goval_version}
 Release:         0%{?dist}
+Group:           Applications/System
 
 Requires:        kaosv sqlite
 
@@ -135,16 +137,16 @@ Requires:        systemd
 %endif
 
 %description -n goval-dictionary
-This is tool to build a local copy of the OVAL. The local copy is generated 
+This is tool to build a local copy of the OVAL. The local copy is generated
 in sqlite format, and the tool has a server mode for easy querying.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
-%{__tar} xjfv %{SOURCE1}
-%{__tar} xjfv %{SOURCE2}
+tar xjfv %{SOURCE1}
+tar xjfv %{SOURCE2}
 
 rm -rf github.com/kotakanbe/goval-dictionary
 rm -rf github.com/kotakanbe/go-cve-dictionary
@@ -198,7 +200,7 @@ ln -sf %{_bindir}/go-cve-dictionary %{buildroot}%{_bindir}/cve-dictionary
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %pre -n goval-dictionary
 if [[ $1 -eq 1 ]] ; then
@@ -233,7 +235,7 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %preun -n goval-dictionary
-if [[ $1 -eq 0 ]] ; then 
+if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable goval-server.service &>/dev/null || :
   %{__systemctl} stop goval-server.service &>/dev/null || :
@@ -243,7 +245,7 @@ if [[ $1 -eq 0 ]] ; then
 fi
 
 %preun -n cve-dictionary
-if [[ $1 -eq 0 ]] ; then 
+if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable cved-server.service &>/dev/null || :
   %{__systemctl} stop cved-server.service &>/dev/null || :
@@ -253,7 +255,7 @@ if [[ $1 -eq 0 ]] ; then
 fi
 
 %postun -n goval-dictionary
-if [[ $1 -ge 1 ]] ; then 
+if [[ $1 -ge 1 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} try-restart goval-server.service &>/dev/null || :
 %else
@@ -262,7 +264,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 
 %postun -n cve-dictionary
-if [[ $1 -ge 1 ]] ; then 
+if [[ $1 -ge 1 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} try-restart cved-server.service &>/dev/null || :
 %else
@@ -270,7 +272,7 @@ if [[ $1 -ge 1 ]] ; then
 %endif
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -304,9 +306,12 @@ fi
 %{_bindir}/cve-dictionary
 %{_bindir}/cve-dictionary-fetch
 
-###############################################################################
+################################################################################
 
 %changelog
+* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.4.2-0
+- Updated to latest stable release
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
 - Updated to latest stable release
 

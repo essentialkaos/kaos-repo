@@ -1,6 +1,6 @@
 ################################################################################
 
-%global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")
+%global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")
 
 ################################################################################
 
@@ -51,7 +51,7 @@
 
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
-Version:            4.5.2
+Version:            4.5.3
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
@@ -64,7 +64,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      python-devel python-setuptools python-unittest2
 BuildRequires:      python-backports-ssl_match_hostname gcc python >= 2.7
 
-Requires:           python-backports-ssl_match_hostname 
+Requires:           python-backports-ssl_match_hostname
 Requires:           python-pycurl python-certifi python >= 2.7
 
 Provides:           %{name} = %{version}-%{release}
@@ -98,12 +98,12 @@ server and and tools. This package contains some example applications.
 %setup -qn %{pkgname}-%{version}
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -122,6 +122,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-0
+- Updated to latest version
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.2-0
 - Updated to latest version
 

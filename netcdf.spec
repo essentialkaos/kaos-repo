@@ -1,8 +1,23 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+# Do out of tree builds
+%global _configure ../configure
+
+# Common configure options
+%global configure_opts \\\
+           --enable-shared \\\
+           --enable-netcdf-4 \\\
+           --enable-dap \\\
+           --enable-extra-example-tests \\\
+           CPPFLAGS=-I%{_includedir}/hdf \\\
+           LIBS="-ldf -ljpeg" \\\
+           --enable-hdf4 \\\
+           --disable-dap-remote-tests \\\
+%{nil}
+
+################################################################################
 
 Summary:            Libraries for the Unidata network Common Data Form
 Name:               netcdf
@@ -23,19 +38,19 @@ Requires:           hdf5
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-NetCDF (network Common Data Form) is an interface for array-oriented 
-data access and a freely-distributed collection of software libraries 
-for C, Fortran, C++, and perl that provides an implementation of the 
-interface.  The NetCDF library also defines a machine-independent 
-format for representing scientific data.  Together, the interface, 
-library, and format support the creation, access, and sharing of 
-scientific data. The NetCDF software was developed at the Unidata 
+NetCDF (network Common Data Form) is an interface for array-oriented
+data access and a freely-distributed collection of software libraries
+for C, Fortran, C++, and perl that provides an implementation of the
+interface.  The NetCDF library also defines a machine-independent
+format for representing scientific data.  Together, the interface,
+library, and format support the creation, access, and sharing of
+scientific data. The NetCDF software was developed at the Unidata
 Program Center in Boulder, Colorado.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for netcdf
@@ -45,10 +60,10 @@ Requires:           %{name} = %{version}-%{release}
 Requires:           pkgconfig hdf5-devel libcurl-devel
 
 %description devel
-This package contains the netCDF C header files, shared devel libs, and 
+This package contains the netCDF C header files, shared devel libs, and
 man pages.
 
-###############################################################################
+################################################################################
 
 %package static
 Summary:            Static libs for netcdf
@@ -59,26 +74,12 @@ Requires:           %{name} = %{version}-%{release}
 %description static
 This package contains the netCDF C static libs.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 %build
-#Do out of tree builds
-%global _configure ../configure
-
-#Common configure options
-%global configure_opts \\\
-           --enable-shared \\\
-           --enable-netcdf-4 \\\
-           --enable-dap \\\
-           --enable-extra-example-tests \\\
-           CPPFLAGS=-I%{_includedir}/hdf \\\
-           LIBS="-ldf -ljpeg" \\\
-           --enable-hdf4 \\\
-           --disable-dap-remote-tests \\\
-%{nil}
 export LDFLAGS="-Wl,-z,relro -L%{_libdir}/hdf"
 
 # Serial build
@@ -92,7 +93,7 @@ popd
 %install
 rm -rf %{buildroot}
 
-%{__make} -C build install DESTDIR=%{buildroot}
+%{make_install} -C build
 
 chrpath --delete %{buildroot}%{_bindir}/nc{copy,dump,gen,gen3}
 chrpath --delete %{buildroot}%{_bindir}/ocprint
@@ -114,7 +115,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -141,7 +142,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_libdir}/*.a
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.0-0

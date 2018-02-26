@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 Summary:         Meta-package that only requires libnghttp2
 Name:            nghttp2
-Version:         1.27.0
+Version:         1.30.0
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
@@ -18,12 +18,12 @@ Requires:        libnghttp2%{?_isa} = %{version}-%{release}
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 This package installs no files. It only requires the libnghttp2 package.
 
-###############################################################################
+################################################################################
 
 %package -n libnghttp2
 
@@ -34,7 +34,7 @@ Group:           Development/Libraries
 libnghttp2 is a library implementing the Hypertext Transfer Protocol
 version 2 (HTTP/2) protocol in C.
 
-###############################################################################
+################################################################################
 
 %package -n libnghttp2-devel
 
@@ -48,7 +48,7 @@ Requires:        pkgconfig
 The libnghttp2-devel package includes libraries and header files needed
 for building applications with libnghttp2.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -91,24 +91,25 @@ rm -fr %{buildroot}%{_mandir}/man1
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
+%defattr(-,root,root,-)
 # No files for you!
 
 %files -n libnghttp2
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc COPYING AUTHORS
 %{_libdir}/libnghttp2.so.*
 
 %files -n libnghttp2-devel
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc README.rst
 %{_includedir}/nghttp2
 %{_libdir}/pkgconfig/libnghttp2.pc
 %{_libdir}/libnghttp2.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.27.0-0

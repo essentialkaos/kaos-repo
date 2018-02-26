@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:         Metalink library written in C
 Name:            libmetalink
@@ -16,13 +16,13 @@ BuildRequires:   make gcc expat-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 libmetalink is a Metalink C library. It adds Metalink functionality such as
 parsing Metalink XML files to programs written in C.
 
-###############################################################################
+################################################################################
 
 %package  devel
 
@@ -33,7 +33,7 @@ Requires:        %{name}%{?_isa} = %{version}-%{release}
 %description  devel
 Files needed for building applications with libmetalink.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -58,11 +58,11 @@ find %{buildroot} -name *.la -delete
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
-%doc COPYING README 
+%doc COPYING README
 %{_libdir}/libmetalink.so.*
 
 %files devel
@@ -77,7 +77,7 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/%{name}.pc
 %{_mandir}/man3/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-0

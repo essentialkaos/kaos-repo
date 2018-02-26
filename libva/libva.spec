@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -33,7 +33,7 @@
 
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
 Summary:            Video Acceleration (VA) API for Linux
 Name:               libva
@@ -61,14 +61,14 @@ Obsoletes:          libva-freeworld < %{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-Libva is open source library to provide hardware accelerated video 
-encoding and decoding. It supported by GStreamer, VLC media player, Mpv and 
+Libva is open source library to provide hardware accelerated video
+encoding and decoding. It supported by GStreamer, VLC media player, Mpv and
 MPlayer.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Libraries and headers for (VA) API
@@ -79,7 +79,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 Libva headers and libraries which provides the VA API video acceleration API.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -100,7 +100,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %post
 /sbin/ldconfig
@@ -108,7 +108,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -122,7 +122,7 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}*.so
 %{_libdir}/%{name}*.la
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Sep 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-1
@@ -133,7 +133,8 @@ rm -rf %{buildroot}
 
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 1.7.0-0
 - Updated to latest version
-  + Bump VA API version to 0.39
-  + Add support for VP9 10bit decode API
-  + Allow libva to load the vaapi driver provided by Mesa Gallium for nouveau and radeon
-  + Fix libva-glx against OpenGL 3.1 or above
+- Bump VA API version to 0.39
+- Add support for VP9 10bit decode API
+- Allow libva to load the vaapi driver provided by Mesa Gallium for nouveau
+  and radeon
+- Fix libva-glx against OpenGL 3.1 or above

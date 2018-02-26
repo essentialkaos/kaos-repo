@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -28,11 +28,11 @@
 
 %define shortname         node
 
-###############################################################################
+################################################################################
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            8.9.1
+Version:            8.9.4
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -47,20 +47,21 @@ Requires:           zlib
 BuildRequires:      make gcc clang python >= 2.6 openssl-devel zlib-devel
 BuildRequires:      gcc-c++ libstdc++-devel
 
-Provides:           %{name} = %{version}-%{release} 
-Provides:           %{shortname} = %{version}-%{release} 
-Provides:           npm = %{version}-%{release} 
+Provides:           %{name} = %{version}-%{release}
+Provides:           %{shortname} = %{version}-%{release}
+Provides:           %{name}(engine) = %{version}-%{release}
+Provides:           npm = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-Node.js is a platform built on Chromes JavaScript runtime for 
-easily building fast, scalable network applications. Node.js 
-uses an event-driven, non-blocking I/O model that makes it 
-lightweight and efficient, perfect for data-intensive 
+Node.js is a platform built on Chromes JavaScript runtime for
+easily building fast, scalable network applications. Node.js
+uses an event-driven, non-blocking I/O model that makes it
+lightweight and efficient, perfect for data-intensive
 real-time applications that run across distributed devices.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -73,7 +74,7 @@ BuildArch:          noarch
 %description devel
 This package provides the header files for nodejs.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q -n %{shortname}-v%{version}
@@ -89,14 +90,14 @@ export CXX=clang++
 %{__make} %{?_smp_mflags}
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 %{make_install}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -114,9 +115,14 @@ export CXX=clang++
 %defattr(-,root,root,-)
 %{_includedir}/%{shortname}/*
 
-###############################################################################
+################################################################################
 
 %changelog
-* Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
-- Initial build 
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.9.4-0
+- Updated to latest stable release
 
+* Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-1
+- Add nodejs(engine) provides tag
+
+* Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
+- Initial build for 8.x

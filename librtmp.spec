@@ -34,7 +34,7 @@
 
 %define pkg_name          rtmpdump
 
-###############################################################################
+################################################################################
 
 Summary:            RTMPDump Real-Time Messaging Protocol API
 Name:               librtmp
@@ -52,21 +52,21 @@ BuildRequires:      gcc gcc-c++ make zlib openssl-devel >= 0.9.8
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-The Real-Time Messaging Protocol (RTMP) is used for streaming multimedia 
-content across a TCP/IP network. This API provides most client functions and 
-a few server functions needed to support RTMP, RTMP tunneled in HTTP (RTMPT), 
-encrypted RTMP (RTMPE), RTMP over SSL/TLS (RTMPS) and tunneled variants of 
-these encrypted types (RTMPTE, RTMPTS). 
+The Real-Time Messaging Protocol (RTMP) is used for streaming multimedia
+content across a TCP/IP network. This API provides most client functions and
+a few server functions needed to support RTMP, RTMP tunneled in HTTP (RTMPT),
+encrypted RTMP (RTMPE), RTMP over SSL/TLS (RTMPS) and tunneled variants of
+these encrypted types (RTMPTE, RTMPTS).
 
-The basic RTMP specification has been published by Adobe but this API was 
-reverse-engineered without use of the Adobe specification. As such, it may 
-deviate from any published specifications but it usually duplicates the actual 
+The basic RTMP specification has been published by Adobe but this API was
+reverse-engineered without use of the Adobe specification. As such, it may
+deviate from any published specifications but it usually duplicates the actual
 behavior of the original Adobe clients.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:            Development files for librtmp
@@ -78,7 +78,7 @@ Requires:           %{name} = %{version}-%{release}
 %description devel
 This is the package containing the header files for librtmp library.
 
-###############################################################################
+################################################################################
 
 %package -n rtmpdump
 Summary:            A toolkit for RTMP streams
@@ -92,7 +92,7 @@ rtmpdump is a toolkit for RTMP streams. All forms of RTMP are
 supported, including rtmp://, rtmpt://, rtmpe://, rtmpte://, and
 rtmps://.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{pkg_name}-%{version}
@@ -108,16 +108,18 @@ rm -rf %{buildroot}
   sbindir=%{_sbindir} \
   mandir=%{_mandir} \
   incdir=%{_includedir}/librtmp \
-  libdir=%{_libdir} 
+  libdir=%{_libdir}
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -141,7 +143,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{pkg_name}.1*
 %{_mandir}/man8/rtmpgw.8*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 2.3-0

@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -41,7 +41,7 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-###############################################################################
+################################################################################
 
 Summary:              File change monitoring and synchronization daemon
 Name:                 lsyncd
@@ -72,7 +72,7 @@ Requires:             kaosv
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Lsyncd watches a local directory trees event monitor interface (inotify).
@@ -84,7 +84,7 @@ Lsyncd is thus a light-weight live mirror solution that is comparatively
 easy to install not requiring new file systems or block devices and does
 not hamper local file system performance.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-release-%{version}
@@ -93,7 +93,7 @@ not hamper local file system performance.
 mkdir build
 pushd build
   cmake ..
-  make
+  %{__make} %{?_smp_mflags}
 popd
 
 %install
@@ -131,17 +131,17 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %preun
-if [[ $1 -eq 0 ]] ; then 
+if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
 %else
   %{__service} stop %{name} &>/dev/null || :
 %endif
-fi 
+fi
 
 %postun
-if [[ $1 -ge 1 ]] ; then 
+if [[ $1 -ge 1 ]] ; then
 %if 0%{?rhel} >= 7
   %{__systemctl} try-restart %{name}.service &>/dev/null || :
 %else
@@ -149,7 +149,7 @@ if [[ $1 -ge 1 ]] ; then
 %endif
 fi
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-, root, root, -)
@@ -165,7 +165,7 @@ fi
 %{_initddir}/%{name}
 %endif
 
-###############################################################################
+################################################################################
 
 %changelog
 * Mon Aug 28 2017 Gleb Goncharov <inbox@gongled.ru> - 2.2.2-1
@@ -176,7 +176,7 @@ fi
 
 * Wed Feb 15 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-1
 - Fixed rsync version in dependencies
-- Init script migrated to kaosv 
+- Init script migrated to kaosv
 
 * Tue Jan 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
 - Initial build for kaos-repo

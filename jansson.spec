@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -26,7 +26,13 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-###############################################################################
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+%define __ldconfig        %{_sbin}/ldconfig
+
+################################################################################
 
 Summary:         Jansson JSON Library
 Name:            jansson
@@ -46,12 +52,12 @@ Requires:        pkgconfig
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Jansson is a C library for encoding, decoding and manipulating JSON data.
 
-###############################################################################
+################################################################################
 
 %package devel
 
@@ -62,13 +68,16 @@ Group:           Development/Libraries
 %description devel
 Header files for Jansson JSON Library
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -q
 
 %build
-%{_configure} --libdir=%{_libdir} --includedir=%{_includedir} --disable-static
+%{_configure} --libdir=%{_libdir} \
+              --includedir=%{_includedir} \
+              --disable-static
+
 %{__make} %{?_smp_mflags}
 
 %check
@@ -77,19 +86,20 @@ Header files for Jansson JSON Library
 %install
 rm -rf %{buildroot}
 
-%{__make} install INSTALL="install -p" DESTDIR="%{buildroot}"
-rm -f %{buildroot}/%{_libdir}/*.la
+%{make_install} INSTALL="install -p"
+
+rm -f %{buildroot}%{_libdir}/*.la
 
 %clean
 rm -rf %{buildroot}
 
-%post 
-/sbin/ldconfig
+%post
+%{__ldconfig}
 
-%postun 
-/sbin/ldconfig
+%postun
+%{__ldconfig}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -102,7 +112,7 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/%{name}.pc
 %{_includedir}/*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.10-0

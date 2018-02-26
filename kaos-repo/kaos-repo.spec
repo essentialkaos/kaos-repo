@@ -1,4 +1,4 @@
-##########################################################################
+################################################################################
 
 %define _root             /root
 %define _bin              /bin
@@ -21,11 +21,11 @@
 
 %define fmconfig          %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
 
-##########################################################################
+################################################################################
 
 Summary:         ESSENTIAL KAOS Public Repo
 Name:            kaos-repo
-Version:         8.0
+Version:         9.1
 Release:         0%{?dist}
 License:         EKOL
 Vendor:          ESSENTIALKAOS
@@ -41,13 +41,13 @@ Requires:        yum-plugin-priorities
 
 Provides:        %{name} = %{version}-%{release}
 
-##########################################################################
+################################################################################
 
 %description
-This package contains yum repo file for access to ESSENTIAL KAOS 
+This package contains yum configuration files for access to ESSENTIAL KAOS
 repository.
 
-##########################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -73,32 +73,38 @@ if [[ -f %{fmconfig} ]] ; then
   fi
 fi
 
-if [[ -e /etc/abrt/gpg_keys ]] ; then
-  if [[ ! $(grep 'ESSENTIALKAOS' /etc/abrt/gpg_keys) ]] ; then
-    echo "%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS" >> /etc/abrt/gpg_keys
+if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
+  if [[ ! $(grep 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys) ]] ; then
+    echo "%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS" >> %{_sysconfdir}/abrt/gpg_keys
   fi
 fi
 
 %postun
 if [[ $1 -eq 0 ]] ; then
-  if [[ -e /etc/abrt/gpg_keys ]] ; then
-    sed -i '/ESSENTIALKAOS/d' /etc/abrt/gpg_keys
+  if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
+    sed -i '/ESSENTIALKAOS/d' %{_sysconfdir}/abrt/gpg_keys
   fi
 fi
 
 %clean
 rm -rf %{buildroot}
 
-##########################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/yum.repos.d/*
 %{_sysconfdir}/pki/rpm-gpg/*
 
-##########################################################################
+################################################################################
 
 %changelog
+* Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 9.1-0
+- Added bugtracker URL
+
+* Thu Feb 01 2018 Anton Novojilov <andy@essentialkaos.com> - 9.0-0
+- Migrated from kaos.io to kaos.st
+
 * Thu Mar 23 2017 Anton Novojilov <andy@essentialkaos.com> - 8.0-0
 - Dropped support of x32 arch
 

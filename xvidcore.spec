@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:            Free reimplementation of the OpenDivX video codec
 Name:               xvidcore
@@ -18,14 +18,14 @@ Requires:           lib%{name} = %{version}
 
 Provides:           %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 Xvid is a high quality MPEG-4 ASP video codec. Xvid encoded MPEG-4 videos can i
-be played back by other MPEG-4 implementations decoders such as DivX, FFmpeg 
+be played back by other MPEG-4 implementations decoders such as DivX, FFmpeg
 MPEG-4 or standalone DVD players capable of MPEG-4 playback.
 
-###############################################################################
+################################################################################
 
 %package -n lib%{name}-devel
 Summary:            Development files of XviD video codec
@@ -40,7 +40,7 @@ Obsoletes:          xvid-devel < %{version}
 %description -n lib%{name}-devel
 Xvid is a high quality MPEG-4 ASP video codec. Development files of XviD.
 
-###############################################################################
+################################################################################
 
 %package -n lib%{name}
 Summary:            Shared library libxvidcore
@@ -49,7 +49,7 @@ Group:              Development/Libraries
 %description -n lib%{name}
 Xvid is a high quality MPEG-4 ASP video codec. Shared library of XviD.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}
@@ -76,7 +76,7 @@ rm -rf %{buildroot}
 %postun -n lib%{name}
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -93,7 +93,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_libdir}/lib%{name}.so.*
 
-###############################################################################
+################################################################################
 
 %changelog
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0

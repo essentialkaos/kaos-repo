@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -43,12 +43,12 @@
 %define username          %{name}
 %define groupname         %{name}
 
-###############################################################################
+################################################################################
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.7.2
-Release:           3%{?dist}
+Version:           1.8.1
+Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -63,21 +63,33 @@ Patch0:            %{name}-ini.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc libevent2-devel openssl-devel
+BuildRequires:     make gcc openssl-devel
 
-Requires:          libevent2 openssl kaosv >= 2.10
+Requires:          openssl kaosv >= 2.14
+
+%if 0%{?rhel} >= 7
+BuildRequires:     libevent-devel
+Requires:          libevent
+
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%else
+BuildRequires:     libevent2-devel
+Requires:          libevent2
 
 Requires(post):    chkconfig
 Requires(preun):   chkconfig initscripts
 Requires(postun):  initscripts
+%endif
 
-###############################################################################
+################################################################################
 
 %description
 pgbouncer is a lightweight connection pooler for PostgreSQL.
 pgbouncer uses libevent for low-level socket handling.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -90,14 +102,14 @@ sed -i.fedora \
  -e '/BININSTALL/s|-s||' \
  configure
 
-%configure --datadir=%{_datadir} 
+%configure --datadir=%{_datadir}
 
 %{__make} %{?_smp_mflags} V=1
 
 %install
 rm -rf %{buildroot}
 
-%{__make} install DESTDIR=%{buildroot}
+%{make_install}
 
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
@@ -124,7 +136,7 @@ rm -f %{buildroot}%{_docdir}/%{name}/userlist.txt
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %post
 if [[ $1 -eq 1 ]] ; then
@@ -135,7 +147,7 @@ if [[ $1 -eq 1 ]] ; then
 %endif
 fi
 
-chown -R %{username}:%{groupname} /etc/%{name}
+chown -R %{username}:%{groupname} %{_sysconfdir}/%{name}
 
 %pre
 %{__getent} group %{groupname} >/dev/null || %{__groupadd} -r %{groupname}
@@ -160,7 +172,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -178,9 +190,19 @@ fi
 %{_sysconfdir}/%{name}/mkauth.py*
 %{_docdir}/%{name}/*
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 14 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated to latest stable release
+
+* Mon Feb 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-5
+- Improved init script
+- Improved spec
+
+* Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.7.2-4
+- Fixed typo with systemd unit description
+
 * Thu Dec 07 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-3
 - Fixed bug with searching process pid in init script
 

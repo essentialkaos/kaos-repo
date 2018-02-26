@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 # rpmbuilder:qa-rpaths 0x0001,0x0002
 
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -43,17 +43,23 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
-########################################################################################
+################################################################################
+
+%ifarch %ix86
+  %define optflags -O2 -g -march=i686
+%endif
+
+################################################################################
 
 %define rules_dir         %{_sysconfdir}/%{name}/rules
 %define daemon_name       snortd
 %define usershell         /bin/false
 
-########################################################################################
+################################################################################
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
-Version:         2.9.11
+Version:         2.9.11.1
 Release:         0%{?dist}
 License:         GPL
 Group:           Applications/Internet
@@ -70,7 +76,7 @@ BuildRequires:   pcre-devel libpcap-devel libdnet-devel daq-devel
 
 Provides:        %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Snort is an open source network intrusion detection system, capable of
@@ -80,16 +86,12 @@ used to detect a variety of attacks and probes, such as buffer overflows,
 stealth port scans, CGI attacks, SMB probes, OS fingerprinting attempts,
 and much more.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
 
 %build
-
-%ifarch %ix86
-  %define optflags -O2 -g -march=i686
-%endif
 
 export AM_CFLAGS="%{optflags}"
 
@@ -139,10 +141,10 @@ ln -sf %{_libdir}/%{name}-%{version}_dynamicengine/libsf_engine.so \
 install -pm 755 src/dynamic-preprocessors/build%{_libdir}/snort_dynamicpreprocessor/*.so* \
                 %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor
 
-for file in %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor/*.so ; do  
+for file in %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor/*.so ; do
   preprocessor=`basename $file`
-  ln -sf %{_libdir}/%{name}-%{version}_dynamicpreprocessor/$preprocessor.0 $file     
-done  
+  ln -sf %{_libdir}/%{name}-%{version}_dynamicpreprocessor/$preprocessor.0 $file
+done
 
 install -pm 644 %{name}.8 %{buildroot}%{_mandir}/man8/
 install -pm 755 rpm/%{daemon_name} %{buildroot}%{_initrddir}
@@ -184,7 +186,7 @@ if [[ $1 -eq 0 ]] ; then
   %{__chkconfig} --del %{daemon_name}
 fi
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -213,9 +215,12 @@ fi
 
 %attr(0755,%{name},%{name}) %dir %{_var}/log/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.11.1-0
+- Updated to latest version
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.11-0
 - Updated to latest version
 

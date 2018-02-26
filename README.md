@@ -1,22 +1,22 @@
 ## ESSENTIAL KAOS Public YUM Repository
 
-This repository contains spec files and patches used for building RPM packages for [ESSENTIAL KAOS Public YUM Repository](https://yum.kaos.io).
+This repository contains spec files and patches used for building RPM packages for [ESSENTIAL KAOS Public YUM Repository](https://yum.kaos.st).
 
 ### Installation
 
 #### CentOS/RHEL 6.x
 
 ```
-[sudo] yum install -y https://yum.kaos.io/6/release/x86_64/kaos-repo-8.0-0.el6.noarch.rpm
+[sudo] yum install -y https://yum.kaos.st/6/release/x86_64/kaos-repo-9.1-0.el6.noarch.rpm
 ```
 
 #### CentOS/RHEL 7.x
 
 ```
-[sudo] yum install -y https://yum.kaos.io/7/release/x86_64/kaos-repo-8.0-0.el7.noarch.rpm
+[sudo] yum install -y https://yum.kaos.st/7/release/x86_64/kaos-repo-9.1-0.el7.noarch.rpm
 ```
 
-### RPMLint Status
+### [Perfecto](https://github.com/essentialkaos/perfecto) Check Status
 
 | Branch | Status |
 |------------|--------|
@@ -27,4 +27,4 @@ This repository contains spec files and patches used for building RPM packages f
 
 [EKOL](https://essentialkaos.com/ekol)
 
-<p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.io/ekgh.svg"/></a></p>
+<p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.st/ekgh.svg"/></a></p>

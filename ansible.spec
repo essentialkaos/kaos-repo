@@ -1,6 +1,6 @@
 ################################################################################
 
-%{!?python_sitelib: %global python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 %if 0%{?rhel} == 5
 %define __python /usr/bin/python26
@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.4.1.0
+Version:              2.4.3.0
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -75,13 +75,13 @@ are transferred to managed machines automatically.
 
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 
 %install
 rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --prefix=%{_prefix} --root=%{buildroot}
+python setup.py install -O1 --prefix=%{_prefix} --root=%{buildroot}
 
 if expr x'%{python_sitelib}' : 'x.*dist-packages/\?' ; then
     DEST_DIR='%{buildroot}%{python_sitelib}'
@@ -117,6 +117,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.3.0-0
+- Updated to latest version
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.4.1.0-0
 - Updated to latest version
 

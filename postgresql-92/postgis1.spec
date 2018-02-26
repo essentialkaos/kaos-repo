@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,7 +37,9 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-########################################################################################
+################################################################################
+
+%{!?utils:%define utils 1}
 
 %define maj_ver           1.5
 %define pg_maj_ver        92
@@ -45,11 +47,11 @@
 %define pg_dir            %{_prefix}/pgsql-9.2
 %define realname          postgis
 
-%{!?utils:%define utils 1}
-
 %define _smp_mflags       -j1
 
-########################################################################################
+%define __perl_requires   filter-requires-perl-Pg.sh
+
+################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.2
 Name:              %{realname}%{pg_maj_ver}
@@ -78,17 +80,17 @@ Requires(post):    %{_sbindir}/update-alternatives
 
 Provides:          %{realname} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 PostGIS adds support for geographic objects to the PostgreSQL object-relational
 database. In effect, PostGIS "spatially enables" the PostgreSQL server,
 allowing it to be used as a backend spatial database for geographic information
-systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS 
-follows the OpenGIS "Simple Features Specification for SQL" and has been 
+systems (GIS), much like ESRI's SDE or Oracle's Spatial extension. PostGIS
+follows the OpenGIS "Simple Features Specification for SQL" and has been
 certified as compliant with the "Types and Functions" profile.
 
-########################################################################################
+################################################################################
 
 %package client
 Summary:           Client tools and their libraries of PostGIS
@@ -100,7 +102,7 @@ Provides:          %{realname}-client = %{version}-%{release}
 The postgis-client package contains the client tools and their libraries
 of PostGIS.
 
-########################################################################################
+################################################################################
 
 %package docs
 Summary:           Extra documentation for PostGIS
@@ -109,7 +111,7 @@ Group:             Applications/Databases
 %description docs
 The postgis-docs package includes PDF documentation of PostGIS.
 
-########################################################################################
+################################################################################
 
 %if %utils
 %package utils
@@ -122,9 +124,7 @@ Provides:          %{realname}-utils = %{version}-%{release}
 The postgis-utils package provides the utilities for PostGIS.
 %endif
 
-########################################################################################
-
-%define __perl_requires %{SOURCE2}
+################################################################################
 
 %prep
 %setup -q -n %{realname}-%{version}
@@ -166,8 +166,8 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 %{__ldconfig}
 
-%{_sbindir}/update-alternatives --install /usr/bin/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install /usr/bin/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
 
 %postun
 %{__ldconfig}
@@ -181,7 +181,7 @@ fi
 %clean
 rm -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -207,7 +207,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc %{realname}-%{version}.pdf
 
-########################################################################################
+################################################################################
 
 %changelog
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-3

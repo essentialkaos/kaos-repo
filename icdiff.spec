@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 Summary:           Improved colored diff
 Name:              icdiff
@@ -19,29 +19,29 @@ BuildRequires:     python2-devel python-setuptools
 
 Provides:          %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 
 Improved colored diff.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-release-%{version}
 
 %build
-%{__python} setup.py build
+python setup.py build
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-%{__python} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -50,7 +50,7 @@ Improved colored diff.
 %{_bindir}/git-%{name}
 %{_bindir}/%{name}
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0

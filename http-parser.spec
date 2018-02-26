@@ -1,8 +1,8 @@
-###############################################################################
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
-###############################################################################
+################################################################################
 
 Summary:         HTTP request/response parser for C
 Name:            http-parser
@@ -20,7 +20,7 @@ BuildRequires:   make gcc cmake
 
 Provides:        %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
 This is a parser for HTTP messages written in C. It parses both requests and
@@ -30,16 +30,17 @@ be interrupted at anytime. Depending on your architecture, it only requires
 about 40 bytes of data per message stream (in a web server that is per
 connection).
 
-###############################################################################
+################################################################################
 
 %package devel
-Summary:          Development headers and libraries for http-parser
-Requires:         %{name} = %{version}-%{release}
+Summary:         Development headers and libraries for http-parser
+Group:           Development/Libraries
+Requires:        %{name} = %{version}-%{release}
 
 %description devel
 Development headers and libraries for http-parser.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -109,7 +110,7 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -123,7 +124,7 @@ rm -rf %{buildroot}
 %{_libdir}/libhttp_parser.so
 %{_libdir}/libhttp_parser_strict.so
 
-###############################################################################
+################################################################################
 
 %changelog
 * Thu Aug 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0

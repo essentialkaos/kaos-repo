@@ -1,4 +1,4 @@
-###############################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -37,11 +37,11 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-###############################################################################
+################################################################################
 
-Summary:              Cross-platform asychronous I/O 
+Summary:              Cross-platform asychronous I/O
 Name:                 libuv
-Version:              1.16.1
+Version:              1.19.1
 Release:              0%{?dist}
 License:              MIT, BSD and ISC
 Group:                Development/Tools
@@ -60,14 +60,14 @@ Requires(postun):     %{__ldconfig}
 
 Provides:             %{name} = %{version}-%{release}
 
-###############################################################################
+################################################################################
 
 %description
-A multi-platform support library with a focus on asynchronous I/O. 
-It was primarily developed for use by Node.js, but it’s also used by Luvit, 
+A multi-platform support library with a focus on asynchronous I/O.
+It was primarily developed for use by Node.js, but it’s also used by Luvit,
 Julia, pyuv, and others.
 
-###############################################################################
+################################################################################
 
 %package devel
 Summary:              Development libraries for libuv
@@ -82,7 +82,7 @@ Requires(postun):     %{__ldconfig}
 %description devel
 Development libraries for libuv.
 
-###############################################################################
+################################################################################
 
 %prep
 %setup -qn %{name}-%{version}
@@ -114,7 +114,7 @@ sed -e "s#@prefix@#%{_prefix}#g" \
 %clean
 rm -rf %{buildroot}
 
-###############################################################################
+################################################################################
 
 %post
 %{__ldconfig}
@@ -122,7 +122,7 @@ rm -rf %{buildroot}
 %postun
 %{__ldconfig}
 
-###############################################################################
+################################################################################
 
 %files
 %defattr(-,root,root)
@@ -138,9 +138,12 @@ rm -rf %{buildroot}
 %{_libdir}/*.la
 %{_libdir}/pkgconfig/*.pc
 
-###############################################################################
+################################################################################
 
 %changelog
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.19.1-0
+- Updated to latest stable release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.16.1-0
 - Updated to latest stable release
 
