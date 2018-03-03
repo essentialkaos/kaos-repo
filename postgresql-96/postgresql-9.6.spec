@@ -79,8 +79,8 @@
 %endif
 
 %define majorver        9.6
-%define minorver        6
-%define rel             1
+%define minorver        8
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          96
 %define realname        postgresql
@@ -1123,6 +1123,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.8-0
+- Updated to latest stable release
+
+* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.7-0
+- Updated to latest stable release
+
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.6-1
 - Improved spec
 
