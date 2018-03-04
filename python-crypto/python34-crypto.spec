@@ -1,7 +1,9 @@
 ################################################################################
 
-%global pythonver %(python -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
-%{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 
 ################################################################################
 
@@ -49,8 +51,8 @@
 
 ################################################################################
 
-Summary:          Cryptography library for Python
-Name:             python-crypto
+Summary:          Cryptography library for Python 3.4
+Name:             python34-crypto
 Version:          2.6.1
 Release:          1%{?dist}
 License:          Public Domain and Python
@@ -64,13 +66,13 @@ Patch1:           python-crypto-2.4-fix-pubkey-size-divisions.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    gcc python2-devel >= 2.2 gmp-devel >= 4.1
+BuildRequires:    gcc python34-devel gmp-devel >= 4.1
 
-%{?filter_provides_in: %filter_provides_in %{python_sitearch}/Crypto/.*\.so}
+%{?filter_provides_in: %filter_provides_in %{python3_sitearch}/Crypto/.*\.so}
 
 %{?filter_setup}
 
-Provides:         pycrypto = %{version}-%{release}
+Provides:         pycrypto34 = %{version}-%{release}
 
 ################################################################################
 
@@ -87,19 +89,15 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 %patch1 -p1
 
 %build
-CFLAGS="%{optflags} -fno-strict-aliasing" python setup.py build
+CFLAGS="%{optflags} -fno-strict-aliasing" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
-python setup.py install -O1 --skip-build --root %{buildroot}
+
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 # Remove group write permissions on shared objects
-find %{buildroot}%{python_sitearch} -name '*.so' -exec chmod -c g-w {} \;
-
-# See if there's any egg-info
-if [[ -f %{buildroot}%{python_sitearch}/pycrypto-%{version}-py%{pythonver}.egg-info ]] ; then
-  echo %{python_sitearch}/pycrypto-%{version}-py%{pythonver}.egg-info > egg-info
-fi
+find %{buildroot}%{python3_sitearch} -name '*.so' -exec chmod -c g-w {} \;
 
 find %{buildroot} -name '_fastmath.*' -exec rm -f {} \;
 
@@ -108,17 +106,14 @@ rm -rf %{buildroot}
 
 ################################################################################
 
-%files -f egg-info
+%files
 %defattr(-,root,root,-)
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
-%{python_sitearch}/Crypto/
+%{python3_sitearch}/Crypto/
+%{python3_sitearch}/pycrypto-*py3.*.egg-info
 
 ################################################################################
 
 %changelog
 * Mon Mar 05 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-1
-- Rebuilt without Python 3 support
-- Improved spec
-
-* Thu Oct 22 2015 Gleb Goncharov <inbox@gongled.ru> - 2.6.1-0
-- Initial build
+- Rebuilt for Python 3.4

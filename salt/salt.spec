@@ -60,7 +60,7 @@
 Summary:          A parallel remote execution system
 Name:             salt
 Version:          2017.7.3
-Release:          0%{?dist}
+Release:          1%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
