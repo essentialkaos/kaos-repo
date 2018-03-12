@@ -1,4 +1,4 @@
-########################################################################################
+################################################################################
 
 %define _posixroot        /
 %define _root             /root
@@ -35,7 +35,7 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-########################################################################################
+################################################################################
 
 %define __ln              %{_bin}/ln
 %define __touch           %{_bin}/touch
@@ -46,7 +46,7 @@
 %define __getent          %{_bindir}/getent
 %define __systemctl       %{_bindir}/systemctl
 
-########################################################################################
+################################################################################
 
 %define major_version     2.11
 %define user_name         kafka
@@ -54,7 +54,7 @@
 %define service_name      kafka
 %define home_dir          %{_opt}/%{name}
 
-########################################################################################
+################################################################################
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
@@ -91,7 +91,7 @@ Requires(pre):       %{__chkconfig} initscripts
 
 Provides:            %{name} = %{version}-%{release}
 
-########################################################################################
+################################################################################
 
 %description
 Apache Kafka is a distributed publish-subscribe messaging system. It
@@ -106,7 +106,7 @@ is designed to support the following:
   maintaining per-partition ordering semantics.
 * Support for parallel data load into Hadoop.
 
-########################################################################################
+################################################################################
 
 %package server
 Summary:             Kafka server
@@ -119,7 +119,7 @@ Requires:            kafka
 %description server
 Configuration and startup files for Apache Kafka broker.
 
-########################################################################################
+################################################################################
 
 %prep
 %setup -q
@@ -166,7 +166,7 @@ popd
 %clean
 %{__rm} -rf %{buildroot}
 
-########################################################################################
+################################################################################
 
 %pre server
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
@@ -200,7 +200,7 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
-########################################################################################
+################################################################################
 
 %files
 %defattr(-,root,root,-)
@@ -223,7 +223,7 @@ fi
 %config(noreplace) %{_logrotatedir}/%{name}
 %config(noreplace) %{_sysconfigdir}/%{name}
 
-########################################################################################
+################################################################################
 
 %changelog
 * Mon Mar 12 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.1-0
