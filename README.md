@@ -16,6 +16,12 @@ This repository contains spec files and patches used for building RPM packages f
 [sudo] yum install -y https://yum.kaos.st/7/release/x86_64/kaos-repo-9.1-0.el7.noarch.rpm
 ```
 
+For some packages may be required EPEL repository package. You could install this package by next command:
+
+```
+[sudo] yum install -y epel-release
+```
+
 ### [Perfecto](https://github.com/essentialkaos/perfecto) Check Status
 
 | Branch | Status |
