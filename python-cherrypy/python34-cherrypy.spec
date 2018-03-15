@@ -36,8 +36,8 @@ Provides:           %{name} = %{verion}-%{release}
 ################################################################################
 
 %description
-CherryPy allows developers to build web applications in much the same way 
-they would build any other object-oriented Python program. This usually 
+CherryPy allows developers to build web applications in much the same way
+they would build any other object-oriented Python program. This usually
 results in smaller source code developed in less time.
 
 This is a compat package for programs which still need the 2.x branch of
