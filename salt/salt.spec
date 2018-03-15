@@ -1,17 +1,10 @@
 ################################################################################
 
-%if ! (0%{?rhel} >= 6 || 0%{?fedora} > 12)
-%global with_python26 1
-%define pybasever 2.6
-%define __python_ver 26
-%define __python %{_bindir}/python%{?pybasever}
-%endif
+%global __python3 %{_bindir}/python3
 
-%global include_tests 1
-
-%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
-%{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
-%{!?pythonpath: %global pythonpath %(python -c "import os, sys; print(os.pathsep.join(x for x in sys.path if x))")}
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -84,67 +77,43 @@ Patch0:           %{name}-config.patch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-%ifarch %{ix86} x86_64
-Requires:         dmidecode
-%endif
 
-Requires:         pciutils which yum-utils
+BuildRequires:    python34-devel git
+BuildRequires:    python34-crypto python34-jinja2 python34-msgpack
+BuildRequires:    python34-pip python34-zmq python34-PyYAML python34-requests
+BuildRequires:    python34-mock python34-tornado python34-zmq
+BuildRequires:    python34-requests python34-six python34-backports_abc
+BuildRequires:    python34-backports-ssl_match_hostname
 
-%if 0%{?with_python26}
+Requires:         dmidecode pciutils which yum-utils
+Requires:         python34 python34-crypto python34-jinja2 python34-msgpack
+Requires:         python34-zmq python34-PyYAML python34-requests
+Requires:         python34-libcloud python34-six python34-tornado
+Requires:         python34-backports_abc python34-markupsafe
+Requires:         python34-backports-ssl_match_hostname
 
-BuildRequires:    python26-devel python26-tornado <= 4.4.2 python26-six
-Requires:         python26-crypto >= 2.6.1 python26-jinja2 python26-msgpack > 0.3
-Requires:         python26-PyYAML python26-requests >= 1.0.0 python26-tornado <= 4.4.2
-Requires:         python26-zmq python26-six python26-backports_abc
-Requires:         python26-singledispatch
-
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+Requires:         systemd
 %else
-
-%if ((0%{?rhel} >= 6 || 0%{?fedora} > 12) && 0%{?include_tests})
-BuildRequires:    python-crypto >= 2.6.1 python-jinja2 python-msgpack > 0.3
-BuildRequires:    python-pip python-zmq PyYAML python-requests python-unittest2
-BuildRequires:    python-mock git python-libcloud python-six
-
-%if ((0%{?rhel} == 6) && 0%{?include_tests})
-BuildRequires:    python-argparse python-tornado <= 4.4.2
-Requires:         kaosv >= 2.12.0 python-tornado <= 4.4.2
-%else
-BuildRequires:    python-tornado
-Requires:         python-tornado
-%endif
-
-%endif
-
-BuildRequires:    python-devel python-futures >= 2.0
-
-Requires:         python-crypto >= 2.6.1 python-jinja2 python-msgpack > 0.3
-Requires:         PyYAML python-requests >= 1.0.0 python-zmq python-markupsafe
-Requires:         python-futures >= 2.0 python-six python-backports_abc
-Requires:         python-singledispatch
-
+Requires:         kaosv >= 2.15
 %endif
 
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-
 Requires(post):   chkconfig
 Requires(preun):  chkconfig
 Requires(preun):  initscripts
 Requires(postun): initscripts
-
 %else
-
 %if 0%{?systemd_preun:1}
-
 Requires(post):   systemd-units
 Requires(preun):  systemd-units
 Requires(postun): systemd-units
-
 %endif
-
 BuildRequires:    systemd-units
 Requires:         systemd-python
-
 %endif
+
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -198,7 +167,7 @@ infrastructure.
 Summary:          REST API for Salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name}-master = %{version}-%{release}
-Requires:         python-cherrypy
+Requires:         python34-cherrypy
 
 %description api
 salt-api provides a REST interface to the Salt master.
@@ -209,7 +178,7 @@ salt-api provides a REST interface to the Salt master.
 Summary:          Cloud provisioner for Salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name}-master = %{version}-%{release}
-Requires:         python-libcloud
+Requires:         python34-libcloud
 
 %description cloud
 The salt-cloud tool provisions new cloud VMs, installs salt-minion on them, and
@@ -281,10 +250,8 @@ install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE9} %{buildroot}%{_unitdir}/
 %endif
 
-%if 0%{?rhel} == 6
-sed -i 's#/usr/bin/python#/usr/bin/python2.6#g' %{buildroot}%{_bindir}/salt*
-sed -i 's#/usr/bin/python#/usr/bin/python2.6#g' %{buildroot}%{_initrddir}/salt*
-%endif
+sed -i 's#/usr/bin/python#/usr/bin/python3#g' %{buildroot}%{_bindir}/salt*
+sed -i 's#/usr/bin/python#/usr/bin/python3#g' %{buildroot}%{_initrddir}/salt*
 
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/bash_completion.d
@@ -472,7 +439,7 @@ fi
 ################################################################################
 
 %changelog
-* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2017.7.3-0
+* Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2017.7.3-0
 - Updated to 2017.7.3
 
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.7.2-0
