@@ -1,6 +1,10 @@
 ################################################################################
 
-%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -43,7 +47,7 @@
 ################################################################################
 
 Summary:            Backport of recent additions to the 'collections.abc' module
-Name:               python-%{pkgname}
+Name:               python34-%{pkgname}
 Version:            0.5
 Release:            0%{?dist}
 License:            Python
@@ -56,7 +60,11 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildArch:          noarch
 
-BuildRequires:      python-setuptools
+BuildRequires:      python34-devel python34-setuptools
+
+Requires:           python34
+
+Provides:           %{name} = %{verion}-%{release}
 
 ################################################################################
 
@@ -66,15 +74,15 @@ A backport of recent additions to the 'collections.abc' module.
 ################################################################################
 
 %prep
-%setup -q -n %{pkgname}-%{version}
+%setup -qn %{pkgname}-%{version}
 
 %build
-python setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -83,8 +91,9 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{python_sitelib}/%{pkgname}.*
-%{python_sitelib}/%{pkgname}-*.egg-info*
+%{python3_sitelib}/%{pkgname}.*
+%{python3_sitelib}/%{pkgname}-*.egg-info*
+%exclude %{python3_sitelib}/__pycache__
 
 ################################################################################
 

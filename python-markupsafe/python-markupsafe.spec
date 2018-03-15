@@ -22,14 +22,9 @@ Source:         https://pypi.python.org/packages/%{pypi_path}/MarkupSafe-%{versi
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildArch:      noarch
+BuildRequires:  python-devel python-setuptools
 
-BuildRequires:  python-devel python-setuptools-devel
-
-%if 0%{?with_python3}
-BuildRequires:  python3-devel python3-setuptools
-BuildRequires:  python-tools
-%endif
+Requires:       python
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -51,7 +46,7 @@ rm -rf %{buildroot}
 
 python setup.py install -O1 --skip-build --root %{buildroot}
 
-rm -f %{buildroot}/%{python_sitearch}/markupsafe/*.c
+rm -f %{buildroot}%{python_sitearch}/markupsafe/*.c
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}

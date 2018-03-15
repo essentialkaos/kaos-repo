@@ -49,7 +49,9 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildArch:         noarch
 
-BuildRequires:     python python-setuptools python-nose
+BuildRequires:     python-devel python-setuptools python-nose
+
+Requires:          python
 
 Provides:          %{name} = %{version}-%{release}
 

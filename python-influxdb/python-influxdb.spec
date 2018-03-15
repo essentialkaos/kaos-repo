@@ -15,13 +15,13 @@ URL:            https://github.com/influxdata/influxdb-python
 
 Source:         https://github.com/influxdata/%{package_altname}/archive/v%{version}.tar.gz
 
-BuildRequires:  python-devel python-setuptools
-
-Requires:       python-dateutil pytz python-requests python-six
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildArch:      noarch
+
+BuildRequires:  python-devel python-setuptools
+
+Requires:       python-dateutil pytz python-requests python-six
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -36,15 +36,16 @@ time series database.
 %prep
 %setup -qn %{package_altname}-%{version}
 
-%clean
-rm -rf %{buildroot}
-
 %build
 python setup.py build
 
 %install
 rm -rf %{buildroot}
+
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 

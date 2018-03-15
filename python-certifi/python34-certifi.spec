@@ -39,70 +39,53 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
-%define __useradd         %{_sbindir}/useradd
+################################################################################
 
-%define pkgname           pycrypto
-%define pypi_subpath      60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163
+%global pkgname certifi
 
 ################################################################################
 
-Summary:          Cryptography library for Python 3.4
-Name:             python34-crypto
-Version:          2.6.1
-Release:          1%{?dist}
-License:          Public Domain and Python
-Group:            Development/Libraries
-URL:              http://www.pycrypto.org
+Summary:            Python package for providing Mozilla's CA Bundle
+Name:               python34-%{pkgname}
+Version:            2018.01.18
+Release:            0%{?dist}
+License:            MPLv2.0
+Group:              Development/Libraries
+URL:                https://github.com/certifi/python-certifi
 
-Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkgname}-%{version}.tar.gz
+Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
 
-Patch0:           python-crypto-2.4-optflags.patch
-Patch1:           python-crypto-2.4-fix-pubkey-size-divisions.patch
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:          noarch
 
-BuildRequires:    gcc python34-devel gmp-devel >= 4.1
+BuildRequires:      python34-devel python34-setuptools
 
-%{?filter_provides_in: %filter_provides_in %{python3_sitearch}/Crypto/.*\.so}
+Requires:           python34 ca-certificates
 
-%{?filter_setup}
-
-Requires:         python34
-
-Provides:         pycrypto34 = %{version}-%{release}
+Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-PyCrypto is a collection of both secure hash functions (such as MD5 and
-SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
+Certifi is a carefully curated collection of Root Certificates for
+validating the trustworthiness of SSL certificates while verifying
+the identity of TLS hosts. It has been extracted from the Requests project.
 
 ################################################################################
 
 %prep
-%setup -qn %{pkgname}-%{version}
+%setup -qn python-%{pkgname}-%{version}
 
-%patch0 -p1
-%patch1 -p1
+rm -rf %{pkgname}.egg-info
 
 %build
-CFLAGS="%{optflags} -fno-strict-aliasing" %{__python3} setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
 %{__python3} setup.py install -O1 --skip-build --root %{buildroot}
-
-# Remove group write permissions on shared objects
-find %{buildroot}%{python3_sitearch} -name '*.so' -exec chmod -c g-w {} \;
-
-find %{buildroot} -name '_fastmath.*' -exec rm -f {} \;
 
 %clean
 rm -rf %{buildroot}
@@ -111,12 +94,32 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
-%{python3_sitearch}/Crypto/
-%{python3_sitearch}/pycrypto-*py3.*.egg-info
+%doc LICENSE README.rst
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
-* Mon Mar 05 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-1
-- Rebuilt for Python 3.4
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.01.18-0
+- Updated to latest release
+
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.11.05-0
+- Updated to latest release
+
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.07.27.1-0
+- Updated to latest release
+
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.04.17-0
+- Updated to latest release
+
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.01.23-0
+- Updated to latest release
+
+* Tue Dec 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-1
+- Added certificates bundle to package
+
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-0
+- Updated to latest release
+
+* Sun Sep 11 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.8.31-0
+- Initial build for kaos repo

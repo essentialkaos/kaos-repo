@@ -1,7 +1,10 @@
 ################################################################################
 
-%global __python26 /usr/bin/python2.6
-%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 %global tarball_name apache-libcloud
 
@@ -41,8 +44,8 @@
 ################################################################################
 
 Summary:          A Python library to address multiple cloud provider APIs
-Name:             python-libcloud
-Version:          2.2.1
+Name:             python34-libcloud
+Version:          2.3.0
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            Development/Languages
@@ -53,7 +56,11 @@ Source0:          http://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name
 BuildArch:        noarch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    python-setuptools python-devel
+BuildRequires:    python34-setuptools python34-devel
+
+Requires:         python34
+
+Provides:         %{name} = %{verion}-%{release}
 
 ################################################################################
 
@@ -68,12 +75,12 @@ products that work between any of the services that it supports.
 %setup -qn %{tarball_name}-%{version}
 
 %build
-python setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -83,11 +90,14 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc LICENSE README.rst
-%{python_sitelib}/*
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
+* Wed Mar 14 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- Updated to latest version
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
 - Updated to latest version
 
