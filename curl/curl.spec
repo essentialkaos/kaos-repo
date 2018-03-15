@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.58.0
+Version:              7.59.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -239,7 +239,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc CHANGES README*
-%doc docs/BUGS docs/FAQ docs/FEATURES docs/SECURITY.md docs/TODO docs/HTTP2.md
+%doc docs/BUGS docs/FAQ docs/FEATURES docs/TODO docs/HTTP2.md
 %doc docs/SSL-PROBLEMS.md docs/THANKS docs/KNOWN_BUGS docs/FEATURES
 %doc docs/MANUAL docs/RESOURCES docs/TheArtOfHttpScripting
 %{_bindir}/%{name}
@@ -266,6 +266,92 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 7.59.0-0
+- curl: add --proxy-pinnedpubkey
+- added: CURLOPT_TIMEVALUE_LARGE and CURLINFO_FILETIME_T
+- CURLOPT_RESOLVE: Add support for multiple IP addresses per entry
+- Add option CURLOPT_HAPPY_EYEBALLS_TIMEOUT_MS
+- Add new tool option --happy-eyeballs-timeout-ms
+- Add CURLOPT_RESOLVER_START_FUNCTION and CURLOPT_RESOLVER_START_DATA
+- openldap: check ldap_get_attribute_ber() results for NULL before using
+- FTP: reject path components with control codes
+- readwrite: make sure excess reads don't go beyond buffer end
+- lib555: drop text conversion and encode data as ascii codes
+- lib517: make variable static to avoid compiler warning
+- lib544: sync ascii code data with textual data
+- GSKit: restore pinnedpubkey functionality
+- darwinssl: Don't import client certificates into Keychain on macOS
+- parsedate: fix date parsing for systems with 32 bit long
+- openssl: fix pinned public key build error in FIPS mode
+- SChannel/WinSSL: Implement public key pinning
+- cookies: remove verbose "cookie size:" output
+- progress-bar: don't use stderr explicitly, use bar->out
+- Fixes for MSDOS
+- build: open VC15 projects with VS 2017
+- curl_ctype: private is*() type macros and functions
+- configure: set PATH_SEPARATOR to colon for PATH w/o separator
+- winbuild: make linker generate proper PDB
+- curl_easy_reset: clear digest auth state
+- curl/curl.h: fix comment typo for CURLOPT_DNS_LOCAL_IP6
+- range: commonize FTP and FILE range handling
+- progress-bar docs: update to match implementation
+- fnmatch: do not match the empty string with a character set
+- fnmatch: accept an alphanum to be followed by a non-alphanum in char set
+- build: fix termios issue on android cross-compile
+- getdate: return -1 for out of range
+- formdata: use the mime-content type function
+- time-cond: fix reading the file modification time on Windows
+- build-openssl.bat: Extend VC15 support to include Enterprise and Professional
+- build-wolfssl.bat: Extend VC15 support to include Enterprise and Professional
+- openssl: Don't add verify locations when verifypeer==0
+- fnmatch: optimize processing of consecutive *s and ?s pattern characters
+- schannel: fix compiler warnings
+- content_encoding: Add "none" alias to "identity"
+- get_posix_time: only check for overflows if they can happen
+- http_chunks: don't write chunks twice with CURLOPT_HTTP_TRANSFER_DECODING
+- README: language fix
+- sha256: build with OpenSSL < 0.9.8
+- smtp: fix processing of initial dot in data
+- --tlsauthtype: works only if libcurl is built with TLS-SRP support
+- tests: new tests for http raw mode
+- libcurl-security.3: man page discussion security concerns when using libcurl
+- curl_gssapi: make sure this file too uses our *printf()
+- BINDINGS: fix curb link (and remove ruby-curl-multi)
+- nss: use PK11_CreateManagedGenericObject() if available
+- travis: add build with iconv enabled
+- ssh: add two missing state names
+- CURLOPT_HEADERFUNCTION.3: mention folded headers
+- http: fix the max header length detection logic
+- header callback: don't chop headers into smaller pieces
+- CURLOPT_HEADER.3: clarify problems with different data sizes
+- curl --version: show PSL if the run-time lib has it enabled
+- examples/sftpuploadresume: resume upload via CURLOPT_APPEND
+- Return error if called recursively from within callbacks
+- sasl: prefer PLAIN mechanism over LOGIN
+- winbuild: Use CALL to run batch scripts
+- curl_share_setopt.3: connection cache is shared within multi handles
+- winbuild: Use macros for the names of some build utilities
+- projects/README: remove reference to dead IDN link/package
+- lib655: silence compiler warning
+- configure: Fix version check for OpenSSL 1.1.1
+- docs/MANUAL: formfind.pl is not accessible on the site anymore
+- unit1309: fix warning on Windows x64
+- unit1307: proper cleanup on OOM to fix torture tests
+- curl_ctype: fix macro redefinition warnings
+- build: get CFLAGS (including -werror) used for examples and tests
+- NO_PROXY: fix for IPv6 numericals in the URL
+- krb5: use nondeprecated functions
+- winbuild: prefer documented zlib library names
+- http2: mark the connection for close on GOAWAY
+- limit-rate: kick in even before "limit" data has been received
+- HTTP: allow "header;" to replace an internal header with a blank one
+- http2: verbose output new MAX_CONCURRENT_STREAMS values
+- SECURITY: distros' max embargo time is 14 days
+- curl tool: accept --compressed also if Brotli is enabled and zlib is not
+- WolfSSL: adding TLSv1.3
+- checksrc.pl: add -i and -m options
+- CURLOPT_COOKIEFILE.3: "-" as file name means stdin
+
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 7.58.0-0
 - new libssh-powered SSH SCP/SFTP back-end
 - curl-config: add --ssl-backends
