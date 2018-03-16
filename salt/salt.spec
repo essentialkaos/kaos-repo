@@ -77,7 +77,6 @@ Patch0:           %{name}-config.patch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-
 BuildRequires:    python34-devel git
 BuildRequires:    python34-crypto python34-jinja2 python34-msgpack
 BuildRequires:    python34-pip python34-zmq python34-PyYAML python34-requests
@@ -219,7 +218,7 @@ other existing packaging systems including RPM, Yum, and Pacman.
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --root %{buildroot}
+%{__python3} setup.py install -O1 --root %{buildroot}
 
 # Add some directories
 install -dm 755 %{buildroot}%{_var}/cache/salt
@@ -251,7 +250,6 @@ install -pm 644 %{SOURCE9} %{buildroot}%{_unitdir}/
 %endif
 
 sed -i 's#/usr/bin/python#/usr/bin/python3#g' %{buildroot}%{_bindir}/salt*
-sed -i 's#/usr/bin/python#/usr/bin/python3#g' %{buildroot}%{_initrddir}/salt*
 
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/bash_completion.d
@@ -350,12 +348,11 @@ fi
 %defattr(-,root,root,-)
 %doc LICENSE
 %doc README.fedora
-%{python_sitelib}/%{name}/*
-%{python_sitelib}/%{name}-*-py?.?.egg-info
+%{python3_sitelib}/%{name}/*
+%{python3_sitelib}/%{name}-*-py?.?.egg-info
 %{_sysconfdir}/logrotate.d/salt
 %{_sysconfdir}/bash_completion.d/salt.bash
 %{_var}/cache/salt
-
 
 %files master
 %defattr(-,root,root)
@@ -439,8 +436,9 @@ fi
 ################################################################################
 
 %changelog
-* Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2017.7.3-0
+* Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2017.7.3-1
 - Updated to 2017.7.3
+- Rebuilt for Python 3.4 usage
 
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.7.2-0
 - Updated to 2017.7.2

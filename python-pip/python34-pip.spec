@@ -1,5 +1,13 @@
 ################################################################################
 
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -28,23 +36,29 @@
 
 ################################################################################
 
+%define pkgname     pip
+
+################################################################################
+
 Summary:            Tool for installing and managing Python packages
-Name:               pip
+Name:               python34-%{pkgname}
 Version:            9.0.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                https://github.com/pypa/pip
 
-Source0:            https://github.com/pypa/%{name}/archive/%{version}.tar.gz
+Source0:            https://github.com/pypa/%{pkgname}/archive/%{version}.tar.gz
 
 BuildArch:          noarch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           python-setuptools python-devel
-BuildRequires:      python-devel python-setuptools-devel
+BuildRequires:      python34-setuptools python34-devel
 
+Requires:           python34-setuptools python34-devel
+
+Provides:           pip3 = %{version}-%{release}
 Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
@@ -56,19 +70,19 @@ in the Python Package Index. It’s a replacement for easy_install.
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -qn %{pkgname}-%{version}
 
-sed -i '1d' %{name}/__init__.py
+sed -i '1d' %{pkgname}/__init__.py
 
 %build
-python setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
-rm -rf %{buildroot}%{_bindir}/%{name}-*
+rm -rf %{buildroot}%{_bindir}/%{pkgname}-*
 
 %clean
 rm -rf %{buildroot}
@@ -78,8 +92,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-, root, root, -)
 %doc docs AUTHORS.txt CHANGES.txt LICENSE.txt MANIFEST.in README.rst
-%attr(755, root, root) %{_bindir}/%{name}*
-%{python_sitelib}/%{name}*
+%attr(755, root, root) %{_bindir}/%{pkgname}*
+%{python3_sitelib}/%{pkgname}*
 
 ################################################################################
 
