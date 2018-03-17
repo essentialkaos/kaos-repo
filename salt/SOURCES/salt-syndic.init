@@ -48,9 +48,9 @@ kv.addHandler "stop"    "stopServiceHandler"
 startServiceHandler() {
 
   if [[ -n "$debug" ]] ; then
-    kv.run "python $binary -l debug -d $args &> /dev/null"
+    kv.run "python3 $binary -l debug -d $args &> /dev/null"
   else
-    kv.run "python $binary -d $args &> /dev/null"
+    kv.run "python3 $binary -d $args &> /dev/null"
   fi
 
   # https://github.com/saltstack/salt/issues/23026
