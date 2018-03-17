@@ -249,8 +249,6 @@ install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE9} %{buildroot}%{_unitdir}/
 %endif
 
-sed -i 's#/usr/bin/python#/usr/bin/python3#g' %{buildroot}%{_bindir}/salt*
-
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/bash_completion.d
 
