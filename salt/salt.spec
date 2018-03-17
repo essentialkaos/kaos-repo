@@ -92,9 +92,9 @@ Requires:         python34-backports_abc python34-markupsafe
 Requires:         python34-backports-ssl_match_hostname
 
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-Requires:         systemd
-%else
 Requires:         kaosv >= 2.15
+%else
+Requires:         systemd
 %endif
 
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
