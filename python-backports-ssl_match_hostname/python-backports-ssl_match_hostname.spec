@@ -6,7 +6,7 @@
 
 ################################################################################
 
-Summary:        A Python MessagePack (de)serializer
+Summary:        The ssl.match_hostname() function from Python 3
 Name:           python-%{pkgname}
 Version:        3.5.0.1
 Release:        0%{?dist}
