@@ -61,7 +61,7 @@
 Summary:           The Go Programming Language
 Name:              golang
 Version:           1.10
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Development/Languages
 URL:               http://golang.org
@@ -641,6 +641,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_386/addr2line
 %{goroot}/pkg/tool/linux_386/api
 %{goroot}/pkg/tool/linux_386/asm
+%{goroot}/pkg/tool/linux_386/buildid
 %{goroot}/pkg/tool/linux_386/compile
 %{goroot}/pkg/tool/linux_386/cover
 %{goroot}/pkg/tool/linux_386/dist
@@ -650,6 +651,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_386/objdump
 %{goroot}/pkg/tool/linux_386/pack
 %{goroot}/pkg/tool/linux_386/pprof
+%{goroot}/pkg/tool/linux_386/test2json
 %{goroot}/pkg/tool/linux_386/trace
 %{goroot}/pkg/tool/linux_386/vet
 %endif
@@ -667,6 +669,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_amd64/addr2line
 %{goroot}/pkg/tool/linux_amd64/api
 %{goroot}/pkg/tool/linux_amd64/asm
+%{goroot}/pkg/tool/linux_amd64/buildid
 %{goroot}/pkg/tool/linux_amd64/compile
 %{goroot}/pkg/tool/linux_amd64/cover
 %{goroot}/pkg/tool/linux_amd64/dist
@@ -676,6 +679,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_amd64/objdump
 %{goroot}/pkg/tool/linux_amd64/pack
 %{goroot}/pkg/tool/linux_amd64/pprof
+%{goroot}/pkg/tool/linux_amd64/test2json
 %{goroot}/pkg/tool/linux_amd64/trace
 %{goroot}/pkg/tool/linux_amd64/vet
 %endif
@@ -693,6 +697,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_arm/addr2line
 %{goroot}/pkg/tool/linux_arm/api
 %{goroot}/pkg/tool/linux_arm/asm
+%{goroot}/pkg/tool/linux_arm/buildid
 %{goroot}/pkg/tool/linux_arm/compile
 %{goroot}/pkg/tool/linux_arm/cover
 %{goroot}/pkg/tool/linux_arm/dist
@@ -702,6 +707,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_arm/objdump
 %{goroot}/pkg/tool/linux_arm/pack
 %{goroot}/pkg/tool/linux_arm/pprof
+%{goroot}/pkg/tool/linux_arm/test2json
 %{goroot}/pkg/tool/linux_arm/trace
 %{goroot}/pkg/tool/linux_arm/vet
 %endif
@@ -781,6 +787,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-1
+- Added missing tools (buildid, test2json)
+
 * Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
 - Updated to latest stable release
 
