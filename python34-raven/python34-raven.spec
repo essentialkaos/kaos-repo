@@ -82,9 +82,9 @@ application.
 %setup -q -n %{pkg_name}-%{version}
 %patch0 -p1
 
-%{__rm} -f %{short_name}/data/cacert.pem
-%{__rm} -fr %{short_name}/data
-%{__rm} -fr %{py3dir}
+rm -f %{short_name}/data/cacert.pem
+rm -fr %{short_name}/data
+rm -fr %{py3dir}
 cp -a . %{py3dir}
 
 %build
@@ -93,7 +93,7 @@ pushd %{py3dir}
 popd
 
 %install
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 pushd %{py3dir}
     %{__python3} setup.py install --skip-build --root=%{buildroot}
 popd
@@ -101,7 +101,7 @@ popd
 %check
 
 %clean
-%{__rm} -rf %{buildroot}
+rm -rf %{buildroot}
 
 ################################################################################
 
