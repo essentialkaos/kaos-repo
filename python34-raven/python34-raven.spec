@@ -106,6 +106,7 @@ popd
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
 %doc AUTHORS README.rst LICENSE
 %{_bindir}/%{short_name}
 %{python3_sitelib}/*
