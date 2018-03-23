@@ -42,7 +42,7 @@ Version:           1.0.2
 Release:           15%{?dist}
 License:           MPLv1.1
 Group:             System Environment/Libraries
-URL:               http://diracvideo.org
+URL:               http://dirac.sourceforge.net/overview.html
 
 Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 

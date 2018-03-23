@@ -51,8 +51,8 @@
 %define hp_datadir        %{_datadir}/%{name}
 
 %define lua_ver           5.3.4
-%define pcre_ver          8.41
-%define boringssl_ver     376f3f172732dbc258c6f3294401d64dec763668
+%define pcre_ver          8.42
+%define boringssl_ver     d61334d187a33336bc4cf4425d997e1ec8bcfa48
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.3
+Version:           1.8.4
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -89,7 +89,7 @@ BuildRequires:     gcc gcc-c++
 BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
 %endif
 
-Requires:          setup >= 2.8.14-14 kaosv >= 2.10
+Requires:          setup >= 2.8.14-14 kaosv >= 2.15
 
 %if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
@@ -311,6 +311,69 @@ fi
 ################################################################################
 
 %changelog
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.4-0
+- BoringSSL updated to latest version
+- PCRE updated to 8.42
+- BUG/MEDIUM: h2: properly handle the END_STREAM flag on empty DATA frames
+- BUILD: ssl: silence a warning when building without NPN nor ALPN support
+- BUG/MEDIUM: ssl: cache doesn't release shctx blocks
+- BUG/MINOR: lua: Fix default value for pattern in Socket.receive
+- DOC: lua: Fix typos in comments of hlua_socket_receive
+- BUG/MEDIUM: lua: Fix IPv6 with separate port support for Socket.connect
+- BUG/MINOR: lua: Fix return value of Socket.settimeout
+- MINOR: dns: Handle SRV record weight correctly.
+- BUG/MEDIUM: mworker: execvp failure depending on argv[0]
+- MINOR: hathreads: add support for gcc < 4.7
+- BUILD/MINOR: ancient gcc versions atomic fix
+- BUG/MEDIUM: stream: properly handle client aborts during redispatch
+- DOC: clarify the scope of ssl_fc_is_resumed
+- CONTRIB: debug: fix a few flags definitions
+- BUG/MINOR: poll: too large size allocation for FD events
+- BUG/MEDIUM: peers: fix expire date wasn't updated if entry is modified
+  remotely.
+- MINOR: servers: Don't report duplicate dyncookies for disabled servers.
+- MINOR: global/threads: move cpu_map at the end of the global struct
+- MINOR: threads: add a MAX_THREADS define instead of LONGBITS
+- MINOR: global: add some global activity counters to help debugging
+- MINOR: threads/fd: Use a bitfield to know if there are FDs for a thread in
+  the FD cache
+- BUG/MEDIUM: threads/polling: Use fd_cache_mask instead of fd_cache_num
+- BUG/MEDIUM: fd: maintain a per-thread update mask
+- MINOR: fd: add a bitmask to indicate that an FD is known by the poller
+- BUG/MEDIUM: epoll/threads: use one epoll_fd per thread
+- BUG/MEDIUM: kqueue/threads: use one kqueue_fd per thread
+- BUG/MEDIUM: threads/mworker: fix a race on startup
+- BUG/MINOR: mworker: only write to pidfile if it exists
+- MINOR: threads: Fix build when we're not compiling with threads.
+- BUG/MINOR: threads: always set an owner to the thread_sync pipe
+- BUG/MEDIUM: threads/server: Fix deadlock in
+  srv_set_stopping/srv_set_admin_flag
+- BUG/MEDIUM: checks: Don't try to release undefined conn_stream when a check
+  is freed
+- BUG/MINOR: kqueue/threads: Don't forget to close kqueue_fd[tid] on each thread
+- MINOR: threads: Use __decl_hathreads instead of #ifdef/#endif
+- BUILD: epoll/threads: Add test on MAX_THREADS to avoid warnings when complied
+  without threads
+- BUILD: kqueue/threads: Add test on MAX_THREADS to avoid warnings when complied
+  without threads
+- CLEANUP: sample: Fix comment encoding of sample.c
+- CLEANUP: sample: Fix outdated comment about sample casts functions
+- BUG/MINOR: sample: Fix output type of c_ipv62ip
+- CLEANUP: Fix typo in ARGT_MSK6 comment
+- BUG/MINOR: cli: use global.maxsock and not maxfd to list all FDs
+- BUG/MINOR: threads: Update labels array because of changes in lock_label enum
+- BUG/MINOR: epoll/threads: only call epoll_ctl(DEL) on polled FDs
+- BUG/MEDIUM: spoe: Always try to receive or send the frame to detect shutdowns
+- BUG/MEDIUM: spoe: Allow producer to read and to forward shutdown on request
+  side
+- BUG/MINOR: time/threads: ensure the adjusted time is always correct
+- BUG/MEDIUM: standard: Fix memory leak in str2ip2()
+- MINOR: init: emit warning when -sf/-sd cannot parse argument
+- DOC: Describe routing impact of using interface keyword on bind lines
+- DOC: Mention -Ws in the list of available options
+- BUG/MINOR: config: don't emit a warning when global stats is incompletely
+  configured
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
 - BUG/MEDIUM: h2: properly handle and report some stream errors
 - BUG/MEDIUM: h2: improve handling of frames received on closed streams

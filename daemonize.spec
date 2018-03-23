@@ -2,7 +2,7 @@
 
 Summary:         Run a command as a Unix daemon
 Name:            daemonize
-Version:         1.7.7
+Version:         1.7.8
 Release:         0%{?dist}
 Group:           Applications/System
 License:         BSD
@@ -44,7 +44,7 @@ true Unix daemon, you can use daemonize to force it to run as a true daemon.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-release-%{version}
+%setup -qn %{name}-release-%{version}
 
 %build
 %configure
@@ -69,6 +69,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.8-0
+- Fixed various compiler and cross-linking issues
+
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7.7-0
 - CFLAGS and LDFLAGS not passed through from configure to Makefile
 

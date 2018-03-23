@@ -41,7 +41,7 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           20
-%define ver_min           1
+%define ver_min           3
 %define realname          erlang
 
 %define libre_ver         2.6.4
@@ -51,7 +51,7 @@
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_min}
-Release:           1%{?dist}
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -1125,6 +1125,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-0
+- Updated to latest stable release
+- LibreSSL updatede to 2.7.0
+
 * Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 20.1-1
 - Rebuilt with EC support
 - Rebuilt with statically linked LibreSSL
