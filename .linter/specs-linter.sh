@@ -14,6 +14,8 @@ main() {
 
     if [[ $? -ne 0 ]] ; then
       has_errors=true
+      ./perfecto -c "$1" "$spec"
+      echo -e "\n"
     fi
   done
 
