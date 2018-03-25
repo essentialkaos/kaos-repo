@@ -94,7 +94,7 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 
+* Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 0.1.6-0
 - Lots of minor assorted crash/fuzz fixes, mostly for the decoder but also some
   for the encoder
 

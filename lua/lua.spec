@@ -99,9 +99,9 @@ This package contains the static version of liblua for %{name}.
 sed -i "s/{{MAJOR_VERSION}}/%{lua_major}/" src/Makefile
 sed -i "s/{{RELEASE}}/%{lua_release}/" src/Makefile
 
-make %{?_smp_mflags} LIBS="-lm -ldl -lreadline -lncurses" \
-                     luac_LDADD="liblua.la -lm -ldl -lreadline -lncurses" \
-                     linux
+%{__make} %{?_smp_mflags} LIBS="-lm -ldl -lreadline -lncurses" \
+                          luac_LDADD="liblua.la -lm -ldl -lreadline -lncurses" \
+                          linux
 
 %install
 rm -rf %{buildroot}
