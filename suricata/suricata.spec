@@ -43,7 +43,7 @@
 
 Summary:         Intrusion Detection System
 Name:            suricata
-Version:         4.0.3
+Version:         4.0.4
 Release:         0%{?dist}
 License:         GPLv2
 Group:           Applications/Internet
@@ -163,6 +163,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.4-0
+- Updated to latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.3-0
 - Updated to latest stable release
 

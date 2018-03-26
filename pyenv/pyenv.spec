@@ -35,7 +35,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.1
+Version:         1.2.2
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -132,6 +132,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
+- python-build: Add PyPy3 5.10.1
+- python-build: Add CPython 3.5.5
+- python-build: Add Anaconda[23]-5.1.0
+- python-build: Fix checksum issue for CPython 3.4.8
+- python-build: Prevent Anaconda from installing a clear shim
+
 * Tue Jan 23 2018 Gleb Goncharov <inbox@gongled.ru> - 1.2.1-0
 - Initial build
 

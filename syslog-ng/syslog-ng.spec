@@ -49,7 +49,7 @@
 
 Summary:            Next generation logging application
 Name:               syslog-ng
-Version:            3.11.1
+Version:            3.14.1
 Release:            0%{?dist}
 License:            GPL
 Group:              System Environment/Daemons
@@ -197,6 +197,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 3.14.1-0
+- Updated to latest stable release
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.11.1-0
 - Updated to latest stable release
 
