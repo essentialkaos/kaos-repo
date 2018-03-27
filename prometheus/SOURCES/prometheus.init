@@ -1,0 +1,109 @@
+#!/bin/bash
+
+###############################################################################
+
+# prometheus        Monitoring system and time series database 
+
+# chkconfig: - 85 15
+# processname: prometheus
+# config: /etc/sysconfig/prometheus
+# pidfile: /var/run/prometheus.pid
+# description: Monitoring system and time series database
+
+### BEGIN INIT INFO
+# Provides: prometheus
+# Required-Start: $local_fs $remote_fs $network
+# Required-Stop: $local_fs $remote_fs $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: start and stop prometheus
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="prometheus"
+
+kv.readSysconfig
+
+binary="${BINARY:-/usr/bin/prometheus}"
+user="${USER:-prometheus}"
+options="${PROMETHEUS_OPTS}"
+
+libraries_path="/usr/share/prometheus/console_libraries"
+templates_path="/usr/share/prometheus/consoles"
+
+kv[user]="$user"
+kv[pid_dir]="/var/run/prometheus"
+kv[search_pattern]="$binary"
+
+###############################################################################
+
+kv.addCommand "reload" "Reload configuration files" "reload"
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+kv.addHandler "start" "postStartServiceHandler" "post"
+
+###############################################################################
+
+reload() {
+  if ! kv.statusIs "$STATUS_WORKS" ; then
+    kv.show "You must start service before this command usage." $BROWN
+    return $ACTION_ERROR
+  fi
+
+  kv.showProcessMessage "Reloading config for ${kv[prog_name]}"
+
+  reloadConfigHandler
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  return $status
+}
+
+###############################################################################
+
+startServiceHandler() {
+  kv.daemonize "$binary" "--web.console.libraries=$libraries_path" "--web.console.templates=$templates_path" "$options"
+
+  [[ $? -ne 0 ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=`kv.getPid`
+
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    kv.killProcess "$pid"
+    [[ $? -eq 0 ]] && return $ACTION_FORCED
+  fi
+}
+
+postStartServiceHandler() {
+  if kv.statusIs "$STATUS_STOPPED" ; then
+    kv.checkSELinux
+    return $?
+  fi
+}
+
+reloadConfigHandler() {
+  kv.sendSignal $SIGNAL_HUP
+  return $ACTION_OK
+}
+
+###############################################################################
+
+kv.go $@
+
