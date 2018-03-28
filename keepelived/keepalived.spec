@@ -179,7 +179,7 @@ fi
 %endif
 
 %if %{with_snmp}
-  %{_datadir}/snmp/mibs/KEEPALIVED-MIB.txt
+%{_datadir}/snmp/mibs/KEEPALIVED-MIB.txt
 %endif
 
 ################################################################################

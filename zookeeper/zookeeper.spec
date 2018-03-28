@@ -169,8 +169,6 @@ popd
 
 ant jar
 
-%check
-
 %install
 rm -rf %{buildroot}
 
