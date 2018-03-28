@@ -42,8 +42,8 @@
 
 ################################################################################
 
-%define service_user   prometheus
-%define service_group  prometheus
+%define service_user   prometheus-pushgateway
+%define service_group  prometheus-pushgateway
 
 %define pkg_name       pushgateway
 
@@ -132,6 +132,7 @@ install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 0755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 0755 %{buildroot}%{_logdir}/%{name}
+install -dm 0755 %{buildroot}%{_rundir}/%{name}
 
 %if 0%{?rhel} >= 7
     install -dm 0755 %{buildroot}%{_unitdir}
@@ -157,7 +158,7 @@ rm -rf %{buildroot}
 %pre
 %{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
 %{__getent} passwd %{service_user} >/dev/null || %{__useradd} -r \
-    -g %{service_group} -d %{_sharedstatedir}/%{name} \
+    -g %{service_group} -d %{_rundir}/%{name} \
     -s /sbin/nologin %{service_user}
 
 %post
@@ -192,6 +193,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
+%dir %attr(755, %{service_user}, %{service_group}) %{_rundir}/%{name}
 %if 0%{?rhel} >= 7
     %{_unitdir}/%{name}.service
 %else
