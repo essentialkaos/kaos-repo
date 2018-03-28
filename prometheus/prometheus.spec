@@ -59,10 +59,13 @@ Source0:          https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz
 Source1:          %{name}.service
 Source2:          %{name}.init
 Source3:          %{name}.sysconfig
+Source4:          %{name}.logrotate
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:    golang >= 1.10
+
+Requires:         logrotate
 
 %if 0%{?rhel} >= 7
 Requires:         systemd
@@ -130,6 +133,7 @@ done
 
 install -pm 0644 documentation/examples/%{name}.yml %{buildroot}%{_sysconfdir}/%{name}/%{name}.yml
 install -pm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %if 0%{?rhel} >= 7
     install -pm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
@@ -181,6 +185,7 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %{_bindir}/promtool
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.yml
 %{_datarootdir}/%{name}
 %if 0%{?rhel} >= 7
