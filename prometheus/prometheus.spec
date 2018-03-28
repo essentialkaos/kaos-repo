@@ -189,9 +189,9 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.yml
 %{_datarootdir}/%{name}
 %if 0%{?rhel} >= 7
-    %{_unitdir}/%{name}.service
+%{_unitdir}/%{name}.service
 %else
-    %{_initrddir}/%{name}
+%{_initrddir}/%{name}
 %endif
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(755, %{service_user}, %{service_group}) %{_logdir}/%{name}
