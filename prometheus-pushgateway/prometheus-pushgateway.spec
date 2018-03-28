@@ -110,7 +110,7 @@ happen with some event-logging framework.
 ################################################################################
 
 %prep
-%setup -q -n %{pkg_name}-%{version}
+%setup -qn %{pkg_name}-%{version}
 
 mkdir -p .src/github.com/prometheus/%{pkg_name}
 mv * .src/github.com/prometheus/%{pkg_name}/
