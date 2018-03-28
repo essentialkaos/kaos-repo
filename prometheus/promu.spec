@@ -76,7 +76,6 @@ mv .src src
 
 %build
 export GOPATH=$(pwd)
-export CGO_ENABLED=0
 
 pushd src/github.com/prometheus/%{name}
     %{__make} %{?_smp_mflags} build
