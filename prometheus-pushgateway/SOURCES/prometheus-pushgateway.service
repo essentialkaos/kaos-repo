@@ -7,7 +7,7 @@ After=network.target
 
 [Service]
 EnvironmentFile=-/etc/sysconfig/prometheus-pushgateway
-User=prometheus-pushgateway
+User=pushgateway
 StandardOutput=/var/log/prometheus-pushgateway/prometheus-pushgateway.log
 StandardError=/var/log/prometheus-pushgateway/prometheus-pushgateway.log
 ExecStart=/usr/bin/prometheus-pushgateway \

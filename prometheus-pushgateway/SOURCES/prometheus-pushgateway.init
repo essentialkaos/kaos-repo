@@ -29,7 +29,7 @@ kv[prog_name]="prometheus-pushgateway"
 kv.readSysconfig
 
 binary="${BINARY:-/usr/bin/prometheus-pushgateway}"
-user="${USER:-prometheus-pushgateway}"
+user="${USER:-pushgateway}"
 options="${PUSHGATEWAY_OPTS}"
 
 kv[user]="$user"

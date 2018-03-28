@@ -42,8 +42,8 @@
 
 ################################################################################
 
-%define service_user   prometheus-pushgateway
-%define service_group  prometheus-pushgateway
+%define service_user   pushgateway
+%define service_group  pushgateway
 
 %define pkg_name       pushgateway
 
