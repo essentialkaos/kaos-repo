@@ -138,8 +138,6 @@ install -pm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
     install -pm 0755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 %endif
 
-%check
-
 %clean
 rm -rf %{buildroot}
 
