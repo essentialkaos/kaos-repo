@@ -111,6 +111,7 @@ rm -rf %{buildroot}
 install -dm 0755 %{buildroot}%{_bindir}
 install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
+install -dm 0755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 0755 %{buildroot}%{_datarootdir}/%{name}/consoles
 install -dm 0755 %{buildroot}%{_datarootdir}/%{name}/console_libraries
 install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}
