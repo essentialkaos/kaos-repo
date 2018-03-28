@@ -195,9 +195,9 @@ fi
 %{_bindir}/%{name}
 %dir %attr(755, %{service_user}, %{service_group}) %{_rundir}/%{name}
 %if 0%{?rhel} >= 7
-    %{_unitdir}/%{name}.service
+%{_unitdir}/%{name}.service
 %else
-    %{_initrddir}/%{name}
+%{_initrddir}/%{name}
 %endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
