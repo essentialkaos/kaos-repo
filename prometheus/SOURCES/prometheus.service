@@ -8,6 +8,8 @@ After=network.target
 [Service]
 EnvironmentFile=-/etc/sysconfig/prometheus
 User=prometheus
+StandardOutput=/var/log/prometheus/prometheus.log
+StandardError=/var/log/prometheus/prometheus.log
 ExecStart=/usr/bin/prometheus \
           --web.console.libraries=/usr/share/prometheus/console_libraries \
           --web.console.templates=/usr/share/prometheus/consoles \
