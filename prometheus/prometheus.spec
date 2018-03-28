@@ -80,9 +80,9 @@ Requires(preun):  %{__chkconfig} %{__service}
 Requires(postun): %{__service}
 %endif
 
-Conflicts:       prometheus < 2.0
+Conflicts:        prometheus < 2.0
 
-Provides:        %{name} = %{version}-%{release}
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
