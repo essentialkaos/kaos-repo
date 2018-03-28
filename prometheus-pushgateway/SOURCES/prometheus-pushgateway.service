@@ -1,0 +1,19 @@
+# -*- mode: conf -*-
+
+[Unit]
+Description=Prometheus Pushgateway
+Documentation=https://github.com/prometheus/pushgateway
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/prometheus-pushgateway
+User=prometheus
+StandardOutput=/var/log/prometheus-pushgateway/prometheus-pushgateway.log
+StandardError=/var/log/prometheus-pushgateway/prometheus-pushgateway.log
+ExecStart=/usr/bin/prometheus-pushgateway \
+          $PUSHGATEWAY_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

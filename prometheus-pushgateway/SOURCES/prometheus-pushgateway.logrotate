@@ -1,0 +1,9 @@
+/var/log/prometheus-pushgateway/*.log {
+    weekly
+    rotate 8
+    copytruncate
+    delaycompress
+    compress
+    notifempty
+    missingok
+}
