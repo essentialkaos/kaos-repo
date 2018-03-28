@@ -37,6 +37,7 @@ templates_path="/usr/share/prometheus/consoles"
 
 kv[user]="$user"
 kv[pid_dir]="/var/run/prometheus"
+kv[log]="/var/log/prometheus/prometheus.log"
 kv[search_pattern]="$binary"
 
 ###############################################################################

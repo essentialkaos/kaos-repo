@@ -112,6 +112,7 @@ install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 0755 %{buildroot}%{_datarootdir}/%{name}/consoles
 install -dm 0755 %{buildroot}%{_datarootdir}/%{name}/console_libraries
 install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}
+install -dm 0755 %{buildroot}%{_logdir}/%{name}
 
 %if 0%{?rhel} >= 7
     install -dm 0755 %{buildroot}%{_unitdir}
@@ -191,6 +192,7 @@ fi
     %{_initrddir}/%{name}
 %endif
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%attr(755, %{service_user}, %{service_group}) %{_logdir}/%{name}
 %attr(755, %{service_user}, %{service_group}) %{_sharedstatedir}/%{name}
 
 ################################################################################
