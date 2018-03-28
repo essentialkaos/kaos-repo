@@ -81,7 +81,7 @@ single, central log server.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 ./configure --bindir=%{_bindir} \

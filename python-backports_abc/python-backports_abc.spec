@@ -68,7 +68,7 @@ A backport of recent additions to the 'collections.abc' module.
 ################################################################################
 
 %prep
-%setup -q -n %{pkgname}-%{version}
+%setup -qn %{pkgname}-%{version}
 
 %build
 python setup.py build

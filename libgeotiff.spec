@@ -40,7 +40,7 @@ The GeoTIFF library provides support for development of geotiff image format.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 # disable -g flag removal

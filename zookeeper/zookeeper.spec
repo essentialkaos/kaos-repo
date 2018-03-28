@@ -148,7 +148,7 @@ developing with libzookeeper.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 ant compile_jute

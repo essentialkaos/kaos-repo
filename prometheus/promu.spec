@@ -67,7 +67,7 @@ reflexion about Prometheus Component Builds.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 mkdir -p .src/github.com/prometheus/%{name}
 mv * .src/github.com/prometheus/%{name}/

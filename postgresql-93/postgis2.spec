@@ -147,7 +147,7 @@ The postgis-utils package provides the utilities for PostGIS.
 ################################################################################
 
 %prep
-%setup -q -n %{realname}-%{version}
+%setup -qn %{realname}-%{version}
 # Copy .pdf file to top directory before installing.
 cp -p %{SOURCE1} .
 

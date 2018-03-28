@@ -77,7 +77,7 @@ This package provides the header files for nodejs.
 ################################################################################
 
 %prep
-%setup -q -n %{shortname}-v%{version}
+%setup -qn %{shortname}-v%{version}
 
 %build
 export CC=clang

@@ -75,7 +75,7 @@ quality polyphase filter.
 ################################################################################
 
 %prep
-%setup -q -n %{source_name}-%{version}
+%setup -qn %{source_name}-%{version}
 test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > version.h
 
 %build

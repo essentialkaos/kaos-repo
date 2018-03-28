@@ -385,7 +385,7 @@ system, including regression tests and benchmarks.
 
 %prep
 
-%setup -q -n %{realname}-%{version}
+%setup -qn %{realname}-%{version}
 
 %patch1 -p1
 %patch2 -p0

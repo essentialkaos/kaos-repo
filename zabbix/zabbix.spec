@@ -315,7 +315,7 @@ Zabbix web frontend for PostgreSQL
 ################################################################################
 
 %prep
-%setup -q -n zabbix-%{version}
+%setup -qn zabbix-%{version}
 
 %patch0 -p1
 %patch1 -p1
