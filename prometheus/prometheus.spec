@@ -62,7 +62,7 @@ Source3:          %{name}.sysconfig
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    golang >= 1.9
+BuildRequires:    golang >= 1.10
 
 %if 0%{?rhel} >= 7
 Requires:         systemd
