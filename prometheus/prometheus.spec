@@ -101,7 +101,7 @@ results, and can trigger alerts if some condition is observed to be true.
 
 %build
 export GOPATH=$(pwd)
-go get github.com/%{name}/%{name}/cmd/...
+go get -v github.com/%{name}/%{name}/cmd/...
 
 %{__make} %{?_smp_mflags} build
 
@@ -117,9 +117,9 @@ install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}
 install -dm 0755 %{buildroot}%{_logdir}/%{name}
 
 %if 0%{?rhel} >= 7
-    install -dm 0755 %{buildroot}%{_unitdir}
+  install -dm 0755 %{buildroot}%{_unitdir}
 %else
-    install -dm 0755 %{buildroot}%{_initrddir}
+  install -dm 0755 %{buildroot}%{_initrddir}
 %endif
 
 install -pm 755 prometheus %{buildroot}%{_bindir}/%{name}
@@ -136,9 +136,9 @@ install -pm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -pm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %if 0%{?rhel} >= 7
-    install -pm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
+  install -pm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 %else
-    install -pm 0755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
+  install -pm 0755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 %endif
 
 %clean
