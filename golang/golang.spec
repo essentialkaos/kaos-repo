@@ -60,8 +60,8 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.10
-Release:           1%{?dist}
+Version:           1.10.1
+Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
 URL:               http://golang.org
@@ -787,6 +787,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Fri Mar 30 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
+- Updated to latest stable release
+
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-1
 - Added missing tools (buildid, test2json)
 
