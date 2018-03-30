@@ -61,8 +61,6 @@ Patch0:           raven-use-system-cacert.patch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-Requires:         python-contextlib2
-
 BuildRequires:    python34-devel
 BuildRequires:    python34-setuptools
 
