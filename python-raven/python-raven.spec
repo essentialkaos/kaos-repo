@@ -84,7 +84,7 @@ application.
 ################################################################################
 
 %prep
-%setup -q -n %{pkg_name}-%{version}
+%setup -qn %{pkg_name}-%{version}
 %patch0 -p1
 %patch1 -p1
 
