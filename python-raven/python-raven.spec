@@ -105,7 +105,7 @@ rm -rf %{buildroot}
 
 pushd %{py3dir}
     %{__python3} setup.py install --skip-build --root=%{buildroot}
-    mv %{buildroot}/%{_bindir}/%{short_name} %{buildroot}/%{_bindir}/python34-%{short_name}
+    mv %{buildroot}%{_bindir}/%{short_name} %{buildroot}%{_bindir}/python34-%{short_name}
 popd
 
 %{__python2} setup.py install --skip-build --root=%{buildroot}
