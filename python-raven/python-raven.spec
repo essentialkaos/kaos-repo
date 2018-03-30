@@ -1,13 +1,5 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
-
-%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
-%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
-
-################################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -47,7 +39,7 @@
 ################################################################################
 
 Summary:          Python client for Sentry
-Name:             python34-raven
+Name:             python-raven
 Version:          6.6.0
 Release:          0%{?dist}
 License:          BSD
@@ -57,12 +49,13 @@ URL:              https://pypi.python.org/pypi/raven/
 Source0:          https://github.com/getsentry/%{pkg_name}/archive/%{version}.tar.gz
 
 Patch0:           raven-use-system-cacert.patch
+Patch1:           raven-setuptools.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-BuildRequires:    python34-devel
-BuildRequires:    python34-setuptools
+BuildRequires:    python-devel python-setuptools
+BuildRequires:    python34-devel python34-setuptools
 
 Provides:         %{name} = %{version}-%{release}
 
@@ -76,9 +69,24 @@ application.
 
 ################################################################################
 
+%package -n python34-raven
+Summary:          Python client for Sentry
+Group:            Development/Libraries
+
+Provides:         python34-raven = %{version}-%{release}
+
+%description -n python34-raven
+Raven is a Python client for Sentry <http://getsentry.com>. It provides full
+out-of-the-box support for many of the popular frameworks, including Django,
+and Flask. Raven also includes drop-in support for any WSGI-compatible web
+application.
+
+################################################################################
+
 %prep
 %setup -q -n %{pkg_name}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 rm -f %{short_name}/data/cacert.pem
 rm -fr %{short_name}/data
@@ -90,13 +98,17 @@ pushd %{py3dir}
     %{__python3} setup.py build
 popd
 
+%{__python2} setup.py build
+
 %install
 rm -rf %{buildroot}
+
 pushd %{py3dir}
     %{__python3} setup.py install --skip-build --root=%{buildroot}
+    mv %{buildroot}/%{_bindir}/%{short_name} %{buildroot}/%{_bindir}/python34-%{short_name}
 popd
 
-%check
+%{__python2} setup.py install --skip-build --root=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -107,6 +119,12 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc AUTHORS README.rst LICENSE
 %{_bindir}/%{short_name}
+%{python2_sitelib}/*
+
+%files -n python34-raven
+%defattr(-,root,root,-)
+%doc AUTHORS README.rst LICENSE
+%{_bindir}/python34-%{short_name}
 %{python3_sitelib}/*
 
 ################################################################################
