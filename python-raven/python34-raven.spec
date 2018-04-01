@@ -39,7 +39,7 @@
 ################################################################################
 
 Summary:          Python client for Sentry
-Name:             python-raven
+Name:             python34-raven
 Version:          6.6.0
 Release:          0%{?dist}
 License:          BSD
@@ -54,7 +54,7 @@ Patch1:           raven-setuptools.patch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-BuildRequires:    python-devel python-setuptools
+BuildRequires:    python34-devel python34-setuptools
 
 Provides:         %{name} = %{version}-%{release}
 
@@ -77,12 +77,12 @@ rm -f %{short_name}/data/cacert.pem
 rm -fr %{short_name}/data
 
 %build
-%{__python2} setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python2} setup.py install --skip-build --root=%{buildroot}
+%{__python3} setup.py install --skip-build --root=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -93,7 +93,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc AUTHORS README.rst LICENSE
 %{_bindir}/%{short_name}
-%{python2_sitelib}/*
+%{python3_sitelib}/*
 
 ################################################################################
 
