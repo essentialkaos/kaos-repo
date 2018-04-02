@@ -1,5 +1,10 @@
 ################################################################################
 
+%define __python3 %{_bindir}/python3
+%{!?python3_sitearch: %define python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin

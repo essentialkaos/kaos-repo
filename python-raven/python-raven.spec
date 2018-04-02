@@ -1,5 +1,10 @@
 ################################################################################
 
+%define __python2 %{_bindir}/python
+%{!?python2_sitelib: %define python2_sitelib %(%{__python2} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
