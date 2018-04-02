@@ -75,6 +75,7 @@ application.
 
 %prep
 %setup -qn %{pkg_name}-%{version}
+
 %patch0 -p1
 %patch1 -p1
 
@@ -104,5 +105,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Fri Mar 23 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.6.0-0
-- Initial build.
-
+- Initial build
