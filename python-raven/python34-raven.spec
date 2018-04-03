@@ -61,6 +61,8 @@ BuildArch:        noarch
 
 BuildRequires:    python34-devel python34-setuptools
 
+Requires:         python34-setuptools
+
 Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
@@ -106,4 +108,3 @@ rm -rf %{buildroot}
 %changelog
 * Fri Mar 23 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.6.0-0
 - Initial build
-
