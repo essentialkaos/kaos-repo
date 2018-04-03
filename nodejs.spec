@@ -33,7 +33,7 @@
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
 Version:            8.10.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                http://nodejs.org
@@ -44,8 +44,8 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           zlib
 
-BuildRequires:      make gcc clang python >= 2.6 openssl-devel zlib-devel
-BuildRequires:      gcc-c++ libstdc++-devel
+BuildRequires:      make python >= 2.6 openssl-devel zlib-devel
+BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{shortname} = %{version}-%{release}
@@ -80,8 +80,8 @@ This package provides the header files for nodejs.
 %setup -qn %{shortname}-v%{version}
 
 %build
-export CC=clang
-export CXX=clang++
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 %{_configure} --prefix=%{_prefix} \
               --shared-zlib \
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-1
+- Using GCC from devtoolset-3 for build
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-0
 - Updated to latest stable release
 

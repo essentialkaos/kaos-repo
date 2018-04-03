@@ -51,7 +51,7 @@
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_min}
-Release:           0%{?dist}
+Release:           1%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -68,11 +68,7 @@ BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 
-%if 0%{?rhel} >= 7
-BuildRequires:     gcc gcc-c++
-%else
-BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
-%endif
+BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
 Requires:          tk tcl
 
@@ -794,10 +790,8 @@ tar xzvf %{SOURCE10}
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 
-%if 0%{?rhel} < 7
-# Use gcc and gcc-c++ from devtoolset for build on CentOS6
-export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
-%endif
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
@@ -1125,9 +1119,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-1
+- Using GCC from devtoolset-3 for build
+
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-0
 - Updated to latest stable release
-- LibreSSL updatede to 2.7.0
+- LibreSSL updated to 2.7.0
 
 * Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 20.1-1
 - Rebuilt with EC support

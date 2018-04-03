@@ -61,7 +61,7 @@
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.7.10
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -82,14 +82,9 @@ Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make zlib-devel
+BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
-%if 0%{?rhel} >= 7
-BuildRequires:     gcc gcc-c++
-%else
-BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
-%endif
-
-Requires:          setup >= 2.8.14-14 kaosv >= 2.10
+Requires:          setup >= 2.8.14-14 kaosv >= 2.15
 
 %if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
@@ -123,8 +118,6 @@ possibility not to expose fragile web servers to the net.
 %prep
 %setup -q
 
-mkdir boringssl
-
 tar xzvf %{SOURCE10}
 tar xzvf %{SOURCE11}
 tar xzvf %{SOURCE12}
@@ -133,10 +126,8 @@ tar xzvf %{SOURCE14}
 
 %build
 
-%if 0%{?rhel} < 7
-# Use gcc and gcc-c++ from devtoolset for build on CentOS6
-export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
-%endif
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 ### DEPS BUILD START ###
 
@@ -298,6 +289,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.10-1
+- Using GCC from devtoolset-3 for build
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.10-0
 - BUG/MEDIUM: connection: remove useless flag CO_FL_DATA_RD_SH
 - BUG/MEDIUM: lua: HTTP services must take care of body-less status codes
