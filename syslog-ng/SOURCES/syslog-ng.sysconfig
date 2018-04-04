@@ -1,7 +1,0 @@
-USER=""
-BINARY=""
-CONF_FILE=""
-LOG_FILE=""
-PID_DIR="/var/run/syslog-ng"
-PERSIST_DIR="/var/lib/syslog-ng"
-OPTIONS=""
