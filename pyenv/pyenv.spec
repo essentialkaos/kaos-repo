@@ -108,10 +108,8 @@ install -pm 755 %{SOURCE1} %{buildroot}%{profile}
 ln -sf %{_loc_prefix}/%{name}/libexec/%{name} %{buildroot}%{_bindir}/%{name}
 
 pushd plugins/python-build
-  PREFIX=%{buildroot}%{_loc_prefix} ./install.sh
+  PREFIX=%{buildroot}%{_prefix} ./install.sh
 popd
-
-mv %{buildroot}%{_loc_bindir}/python-build %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
@@ -126,9 +124,9 @@ rm -rf %{buildroot}
 
 %files plugin-python-build
 %defattr(-,root,root,-)
-%{_loc_datarootdir}/python-build/
-%{_loc_bindir}/%{name}-install
-%{_loc_bindir}/%{name}-uninstall
+%{_datarootdir}/python-build/
+%{_bindir}/%{name}-install
+%{_bindir}/%{name}-uninstall
 %{_bindir}/python-build
 
 ################################################################################
