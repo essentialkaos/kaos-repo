@@ -185,7 +185,7 @@ fi
 %preun server
 if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} <= 6
-  %{__service} %{service_name} stop > /dev/null 2>&1
+  %{__service} %{service_name} stop &>/dev/null || :
   %{__chkconfig} --del %{service_name}
 %else
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :

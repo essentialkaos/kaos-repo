@@ -559,7 +559,7 @@ exit 0
 %if 0%{?rhel} >= 7
 %systemd_post zabbix-agent.service
 %else
-%{__chkconfig} --add zabbix-agent || exit 0
+%{__chkconfig} --add zabbix-agent &>/dev/null || :
 %endif
 
 
@@ -607,7 +607,7 @@ exit 0
 %if 0%{?rhel} >= 7
 %systemd_post zabbix-server.service
 %else
-%{__chkconfig} --add zabbix-server || exit 0
+%{__chkconfig} --add zabbix-server &>/dev/null || :
 %endif
 %{__updalternatives} --install %{_sbindir}/zabbix_server \
         zabbix-server %{_sbindir}/zabbix_server_mysql 10
@@ -618,7 +618,7 @@ exit 0
 %if 0%{?rhel} >= 7
 %systemd_post zabbix-server.service
 %else
-%{__chkconfig} --add zabbix-server || exit 0
+%{__chkconfig} --add zabbix-server &>/dev/null || :
 %endif
 %{__updalternatives} --install %{_sbindir}/zabbix_server \
         zabbix-server %{_sbindir}/zabbix_server_pgsql 10
@@ -663,7 +663,7 @@ if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
 %systemd_preun zabbix-agent.service
 %else
-%{__service} zabbix-agent stop >/dev/null 2>&1
+%{__service} zabbix-agent stop &>/dev/null || :
 %{__chkconfig} --del zabbix-agent
 %endif
 fi
@@ -675,7 +675,7 @@ if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
 %systemd_preun zabbix-server.service
 %else
-%{__service} zabbix-server stop >/dev/null 2>&1
+%{__service} zabbix-server stop &>/dev/null || :
 %{__chkconfig} --del zabbix-server
 %endif
 %{__updalternatives} --remove zabbix-server \
@@ -689,7 +689,7 @@ if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
 %systemd_preun zabbix-server.service
 %else
-%{__service} zabbix-server stop >/dev/null 2>&1
+%{__service} zabbix-server stop &>/dev/null || :
 %{__chkconfig} --del zabbix-server
 %endif
 %{__updalternatives} --remove zabbix-server \
@@ -703,7 +703,7 @@ if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
 %systemd_preun zabbix-proxy.service
 %else
-%{__service} zabbix-proxy stop >/dev/null 2>&1
+%{__service} zabbix-proxy stop &>/dev/null || :
 %{__chkconfig} --del zabbix-proxy
 %endif
 %{__updalternatives} --remove zabbix-proxy \
@@ -717,7 +717,7 @@ if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
 %systemd_preun zabbix-proxy.service
 %else
-%{__service} zabbix-proxy stop >/dev/null 2>&1
+%{__service} zabbix-proxy stop &>/dev/null || :
 %{__chkconfig} --del zabbix-proxy
 %endif
 %{__updalternatives} --remove zabbix-proxy \
@@ -731,7 +731,7 @@ if [[ $1 -eq 0 ]] ; then
 %if 0%{?rhel} >= 7
 %systemd_preun zabbix-proxy.service
 %else
-%{__service} zabbix-proxy stop >/dev/null 2>&1
+%{__service} zabbix-proxy stop &>/dev/null || :
 %{__chkconfig} --del zabbix-proxy
 %endif
 %{__updalternatives} --remove zabbix-proxy \
@@ -745,7 +745,7 @@ exit 0
 %systemd_postun_with_restart zabbix-agent.service
 %else
 if [[ $1 -ge 1 ]] ; then
-%{__service} zabbix-agent try-restart >/dev/null 2>&1 || exit 0
+%{__service} zabbix-agent try-restart &>/dev/null || :
 fi
 %endif
 
@@ -755,7 +755,7 @@ fi
 %systemd_postun_with_restart zabbix-server.service
 %else
 if [[ $1 -ge 1 ]] ; then
-%{__service} zabbix-server try-restart >/dev/null 2>&1 || exit 0
+%{__service} zabbix-server try-restart &>/dev/null || :
 fi
 %endif
 
@@ -765,7 +765,7 @@ fi
 %systemd_postun_with_restart zabbix-server.service
 %else
 if [[ $1 -ge 1 ]] ; then
-%{__service} zabbix-server try-restart >/dev/null 2>&1 || exit 0
+%{__service} zabbix-server try-restart &>/dev/null || :
 fi
 %endif
 
@@ -775,7 +775,7 @@ fi
 %systemd_postun_with_restart zabbix-proxy.service
 %else
 if [[ $1 -ge 1 ]] ; then
-%{__service} zabbix-proxy try-restart >/dev/null 2>&1 || exit 0
+%{__service} zabbix-proxy try-restart &>/dev/null || :
 fi
 %endif
 
@@ -785,7 +785,7 @@ fi
 %systemd_postun_with_restart zabbix-proxy.service
 %else
 if [[ $1 -ge 1 ]] ; then
-%{__service} zabbix-proxy try-restart >/dev/null 2>&1 || exit 0
+%{__service} zabbix-proxy try-restart &>/dev/null || :
 fi
 %endif
 
@@ -795,7 +795,7 @@ fi
 %systemd_postun_with_restart zabbix-proxy.service
 %else
 if [[ $1 -ge 1 ]] ; then
-%{__service} zabbix-proxy try-restart >/dev/null 2>&1 || exit 0
+%{__service} zabbix-proxy try-restart &>/dev/null || :
 fi
 %endif
 

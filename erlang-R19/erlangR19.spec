@@ -909,7 +909,7 @@ rm -rf %{buildroot}%{_mandir}/man3/crypto.3.*
 rm -rf %{buildroot}%{_mandir}/man3/zlib.3.*
 
 %post -n %{name}-base
-%{_libdir}/erlang/Install -minimal %{_libdir}/erlang >/dev/null 2>/dev/null
+%{_libdir}/erlang/Install -minimal %{_libdir}/erlang &>/dev/null || :
 
 %clean
 rm -rf %{buildroot}

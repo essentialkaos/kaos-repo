@@ -850,7 +850,7 @@ fi
 
 %preun common
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{service_name} stop 2>&1 > /dev/null
+  %{__service} %{service_name} stop &>/dev/null || :
   %{__chkconfig} --del %{service_name}
 fi
 
