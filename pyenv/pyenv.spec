@@ -35,7 +35,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.2
+Version:         1.2.3
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -108,8 +108,10 @@ install -pm 755 %{SOURCE1} %{buildroot}%{profile}
 ln -sf %{_loc_prefix}/%{name}/libexec/%{name} %{buildroot}%{_bindir}/%{name}
 
 pushd plugins/python-build
-PREFIX=%{buildroot}%{_loc_prefix} ./install.sh
+  PREFIX=%{buildroot}%{_loc_prefix} ./install.sh
 popd
+
+mv %{buildroot}%{_loc_bindir}/python-build %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
@@ -127,18 +129,25 @@ rm -rf %{buildroot}
 %{_loc_datarootdir}/python-build/
 %{_loc_bindir}/%{name}-install
 %{_loc_bindir}/%{name}-uninstall
-%{_loc_bindir}/python-build
+%{_bindir}/python-build
 
 ################################################################################
 
 %changelog
+* Wed Apr 04 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.3-0
+- python-build: Add CPython 3.6.5
+- python-build: Set openssl PKG_CONFIG_PATH for python 3.7
+- python-build: Add ActivePython versions 2.7.14, 3.5.4, 3.6.0
+- python-build: Unset PIP_VERSION before invoking get-pip.py as a workaround for
+  invalid truth value error
+
 * Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
 - python-build: Add PyPy3 5.10.1
 - python-build: Add CPython 3.5.5
 - python-build: Add Anaconda[23]-5.1.0
 - python-build: Fix checksum issue for CPython 3.4.8
 - python-build: Prevent Anaconda from installing a clear shim
+- Fixed python-build plugin installation
 
 * Tue Jan 23 2018 Gleb Goncharov <inbox@gongled.ru> - 1.2.1-0
 - Initial build
-
