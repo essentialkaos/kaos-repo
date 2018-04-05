@@ -36,7 +36,7 @@
 
 Summary:         Jansson JSON Library
 Name:            jansson
-Version:         2.10
+Version:         2.11
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -115,6 +115,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 2.11-0
+- Updated to latest stable release
+
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.10-0
 - Updated to latest stable release
 

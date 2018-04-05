@@ -52,7 +52,7 @@ need to install %{name}-doc.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-release-%{version}-stable
+%setup -qn %{name}-release-%{version}-stable
 
 %build
 ./autogen.sh

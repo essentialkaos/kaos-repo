@@ -50,9 +50,9 @@ kv.addHandler "stop"    "stopServiceHandler"
 startServiceHandler() {
 
   if [[ -n "$debug" ]] ; then
-    kv.run "python $binary -l debug -d $args &> /dev/null"
+    kv.run "python3 $binary -l debug -d $args &> /dev/null"
   else
-    kv.run "python $binary -d $args &> /dev/null"
+    kv.run "python3 $binary -d $args &> /dev/null"
   fi
 
   if kv.getStartStatus ; then
@@ -68,7 +68,7 @@ stopServiceHandler() {
   kv.sendSignal $SIGNAL_TERM
 
   if [[ -n "$revoke_on_stop" ]] ; then
-    kv.run "python $call_binary saltutil.revoke_auth &> /dev/null"
+    kv.run "python3 $call_binary saltutil.revoke_auth &> /dev/null"
   fi
 
   if kv.getStopStatus "$pid" ; then

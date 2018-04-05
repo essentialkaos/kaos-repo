@@ -3,9 +3,6 @@
 %global pythonver %(python -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python_sitearch: %global python_sitearch %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 
-# Python3 introduced in Fedora 13
-%global with_python3 %([ 0%{?fedora} -gt 12 ] && echo 1 || echo 0)
-
 ################################################################################
 
 %define _posixroot        /
@@ -47,33 +44,30 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
+%define pkgname           pycrypto
+%define pypi_subpath      60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163
+
 ################################################################################
 
 Summary:          Cryptography library for Python
 Name:             python-crypto
 Version:          2.6.1
-Release:          0%{?dist}
+Release:          1%{?dist}
 License:          Public Domain and Python
 Group:            Development/Libraries
 URL:              http://www.pycrypto.org
 
-Source0:          http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-%{version}.tar.gz
+Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkgname}-%{version}.tar.gz
 
 Patch0:           python-crypto-2.4-optflags.patch
 Patch1:           python-crypto-2.4-fix-pubkey-size-divisions.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    python2-devel >= 2.2 gmp-devel >= 4.1
-
-%if %{with_python3}
-BuildRequires:    python-tools python3-devel
-%endif
+BuildRequires:    gcc python2-devel >= 2.2 gmp-devel >= 4.1
 
 %{?filter_provides_in: %filter_provides_in %{python_sitearch}/Crypto/.*\.so}
-%if %{with_python3}
-%{?filter_provides_in: %filter_provides_in %{python3_sitearch}/Crypto/.*\.so}
-%endif
+
 %{?filter_setup}
 
 Provides:         pycrypto = %{version}-%{release}
@@ -86,39 +80,14 @@ SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 ################################################################################
 
-%if %{with_python3}
-%package -n python3-crypto
-Summary:          Cryptography library for Python 3
-Group:            Development/Libraries
-
-%description -n python3-crypto
-PyCrypto is a collection of both secure hash functions (such as MD5 and
-SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
-
-This is the Python 3 build of the package.
-%endif
-
-################################################################################
-
 %prep
-%setup -n pycrypto-%{version} -q
+%setup -qn %{pkgname}-%{version}
 
 %patch0 -p1
 %patch1 -p1
 
-%if %{with_python3}
-cp -a . %{py3dir}
-2to3 -wn %{py3dir}/pct-speedtest.py
-%endif
-
 %build
 CFLAGS="%{optflags} -fno-strict-aliasing" python setup.py build
-
-%if %{with_python3}
-pushd %{py3dir}
-CFLAGS="%{optflags} -fno-strict-aliasing" %{__python3} setup.py build
-popd
-%endif
 
 %install
 rm -rf %{buildroot}
@@ -126,13 +95,6 @@ python setup.py install -O1 --skip-build --root %{buildroot}
 
 # Remove group write permissions on shared objects
 find %{buildroot}%{python_sitearch} -name '*.so' -exec chmod -c g-w {} \;
-
-%if %{with_python3}
-pushd %{py3dir}
-%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
-popd
-find %{buildroot}%{python3_sitearch} -name '*.so' -exec chmod -c g-w {} \;
-%endif
 
 # See if there's any egg-info
 if [[ -f %{buildroot}%{python_sitearch}/pycrypto-%{version}-py%{pythonver}.egg-info ]] ; then
@@ -151,16 +113,12 @@ rm -rf %{buildroot}
 %doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
 %{python_sitearch}/Crypto/
 
-%if %{with_python3}
-%files -n python3-crypto
-%defattr(-,root,root,-)
-%doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
-%{python3_sitearch}/Crypto/
-%{python3_sitearch}/pycrypto-*py3.*.egg-info
-%endif
-
 ################################################################################
 
 %changelog
+* Mon Mar 05 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-1
+- Rebuilt without Python 3 support
+- Improved spec
+
 * Thu Oct 22 2015 Gleb Goncharov <inbox@gongled.ru> - 2.6.1-0
 - Initial build

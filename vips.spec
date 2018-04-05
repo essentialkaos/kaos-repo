@@ -37,16 +37,11 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-%define major_version     8
-%define minor_version     6
-%define patch_level       2
-
-
 ################################################################################
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           %{major_version}.%{minor_version}.%{patch_level}
+Version:           8.6.3
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
@@ -161,6 +156,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.3-0
+- the 8.6.3-1 windows builds fix a crash in libz configuation
+- use pkg-config to find libjpeg, if we can
+- better clean of output image in vips_image_write() fixes a crash writing
+  twice to memory
+- better rounding behaviour in convolution means we hit the vector path more
+  often
+- fix a crash if a delayed load failed [gsharpsh00ter]
+- icc_import attaches the fallback profile if it used it, making vipsthumbnail
+  behaviour with untagged CMYK images saner
+
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.2-0
 - vips_sink_screen() keeps a ref to the input image ... stops a rare race
 - fix a minor accidental ABI break in 8.6.0 -> 8.6.1

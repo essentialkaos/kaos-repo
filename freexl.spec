@@ -2,7 +2,7 @@
 
 Summary:            Library to extract data from within an Excel spreadsheet
 Name:               freexl
-Version:            1.0.4
+Version:            1.0.5
 Release:            0%{?dist}
 License:            MIT
 Group:              System Environment/Libraries
@@ -104,6 +104,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.5-0
+- Updated to latest stable release
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.4-0
 - Updated to latest stable release
 

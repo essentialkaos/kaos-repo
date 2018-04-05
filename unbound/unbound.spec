@@ -43,12 +43,11 @@
 %endif
 %endif
 
-
 ################################################################################
 
 Summary:            Validating, recursive, and caching DNS(SEC) resolver
 Name:               unbound
-Version:            1.6.8
+Version:            1.7.0
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Daemons
@@ -400,5 +399,8 @@ fi
 ################################################################################
 
 %changelog
+* Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
+- Updated to latest stable release
+
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.8-0
 - Initial build for kaos-repo

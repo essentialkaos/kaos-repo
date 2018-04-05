@@ -65,7 +65,7 @@ tradition of single-purpose tools that do one thing well.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -qn %{name}-%{version}
 
 %patch0 -p1
 %patch1 -p1

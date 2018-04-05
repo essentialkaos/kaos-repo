@@ -1,6 +1,17 @@
-/var/log/kafka/*.log {
-       weekly
-       rotate 10
+"/var/log/kafka/*.log.????-??-??-??" {
+       su kafka kafka
+       daily
+       rotate 90
+       compress
+       notifempty
+       missingok
+       nocreate
+}
+
+/var/log/kafka/*-gc.log {
+       su kafka kafka
+       daily
+       rotate 90
        copytruncate
        delaycompress
        compress

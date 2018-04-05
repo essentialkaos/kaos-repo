@@ -167,11 +167,11 @@ pushd nad
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH%{buildroot}%{_libdir}
 
   # Run tests for proj
-  ./test27      %{buildroot}%{_bindir}/%{name} || exit 0
-  ./test83      %{buildroot}%{_bindir}/%{name} || exit 0
-  ./testIGNF    %{buildroot}%{_bindir}/%{name} || exit 0
-  ./testntv2    %{buildroot}%{_bindir}/%{name} || exit 0
-  ./testvarious %{buildroot}%{_bindir}/%{name} || exit 0
+  ./test27      %{buildroot}%{_bindir}/%{name} || :
+  ./test83      %{buildroot}%{_bindir}/%{name} || :
+  ./testIGNF    %{buildroot}%{_bindir}/%{name} || :
+  ./testntv2    %{buildroot}%{_bindir}/%{name} || :
+  ./testvarious %{buildroot}%{_bindir}/%{name} || :
 popd
 
 %clean

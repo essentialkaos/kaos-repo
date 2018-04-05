@@ -67,7 +67,7 @@ asynchronously executing callables.
 ################################################################################
 
 %prep
-%setup -q -n %{pkgname}-%{version}
+%setup -qn %{pkgname}-%{version}
 
 %build
 python setup.py build

@@ -1,6 +1,6 @@
-diff -urN nano-2.9.3-orig/doc/sample.nanorc.in nano-2.9.3/doc/sample.nanorc.in
---- nano-2.9.3-orig/doc/sample.nanorc.in	2018-02-07 13:55:37.617535105 +0300
-+++ nano-2.9.3/doc/sample.nanorc.in	2018-02-07 13:58:31.000000000 +0300
+diff -urN nano-2.9.4-orig/doc/sample.nanorc.in nano-2.9.4/doc/sample.nanorc.in
+--- nano-2.9.4-orig/doc/sample.nanorc.in	2018-03-25 03:28:19.219012656 +0300
++++ nano-2.9.4/doc/sample.nanorc.in	2018-03-25 03:33:44.000000000 +0300
 @@ -58,7 +58,7 @@
  # set historylog
  
@@ -46,20 +46,20 @@ diff -urN nano-2.9.3-orig/doc/sample.nanorc.in nano-2.9.3/doc/sample.nanorc.in
  # set tabstospaces
 @@ -198,10 +198,10 @@
  
- ## Paint the interface elements of nano.
- ## These are examples; by default there are no colors.
+ ## Paint the interface elements of nano.  These are examples;
+ ## by default there are no colors, except for errorcolor.
 -# set titlecolor brightwhite,blue
 -# set statuscolor brightwhite,green
+-# set errorcolor brightwhite,red
 -# set selectedcolor brightwhite,magenta
--# set numbercolor cyan
 +set titlecolor brightwhite,blue
 +set statuscolor brightwhite,green
 +set selectedcolor brightwhite,magenta
 +set numbercolor brightblack
+ # set numbercolor cyan
  # set keycolor cyan
  # set functioncolor green
- ## In root's .nanorc you might want to use:
-@@ -255,7 +255,7 @@
+@@ -257,7 +257,7 @@
  ## them easier to remember and faster to type using nano's -Y option.
  ##
  ## To include all existing syntax definitions, you can do:

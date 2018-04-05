@@ -88,7 +88,7 @@ Headers and static lib for LuaJIT.
 ################################################################################
 
 %prep
-%setup -q -n LuaJIT-%{version}
+%setup -qn LuaJIT-%{version}
 
 %build
 export CFLAGS="$CFLAGS -fPIC"

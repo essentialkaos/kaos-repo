@@ -117,13 +117,13 @@ rm -rf %{buildroot}
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{name} stop > /dev/null 2>&1
+  %{__service} %{name} stop &>/dev/null || :
   %{__chkconfig} --del %{name}
 fi
 
 %postun
 if [[ $1 -ge 1 ]] ; then
-  %{__service} %{name} condrestart 2>&1 >/dev/null
+  %{__service} %{name} condrestart &>/dev/null || :
 fi
 
 ################################################################################

@@ -51,7 +51,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.4
+Version:                  1.5.6
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -67,7 +67,7 @@ BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__i
 BuildRequires:            gcc automake which
 
 %if 0%{?rhel} <= 6
-Requires:                 initscripts kaosv >= 2.12
+Requires:                 initscripts kaosv >= 2.15
 %endif
 
 %if 0%{?rhel} >= 7
@@ -227,6 +227,14 @@ fi
 ################################################################################
 
 %changelog
+* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.6-0
+- Improved systemd unit
+- disable UDP port by default
+- systemd instancing support & rpm build improvements
+- fix gcc warnings in beta GCC
+- fix build with clang
+- fix for dtrace compilation on freebsd
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.4-0
 - make -I argument less position dependent
 - external storage base commit

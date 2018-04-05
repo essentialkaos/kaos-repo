@@ -41,9 +41,10 @@
 %define __touch           %{_bin}/touch
 %define __service         %{_sbin}/service
 %define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
+%define __groupadd        %{_sbindir}/groupadd
+%define __getent          %{_bindir}/getent
+%define __systemctl       %{_bindir}/systemctl
 
 ################################################################################
 
@@ -57,7 +58,7 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             0.11.0.1
+Version:             1.0.1
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
@@ -65,19 +66,28 @@ URL:                 https://kafka.apache.org
 
 Source0:             https://github.com/apache/%{name}/archive/%{version}.tar.gz
 Source1:             %{name}.init
-Source2:             %{name}.conf
-Source3:             %{name}.logrotate
-Source4:             %{name}.sysconfig
+Source2:             %{name}.service
+Source3:             %{name}.conf
+Source4:             %{name}.logrotate
+Source5:             %{name}.sysconfig
 
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:           noarch
 
-Requires:            jre8 kaosv
+%if 0%{?rhel} <= 6
+Requires:            kaosv
+%else
+Requires:            systemd
+%endif
 
-BuildRequires:       jdk8 gradle
+BuildRequires:       java-devel gradle which
 
+%if 0%{?rhel} <= 6
 Requires(post):      %{__chkconfig} initscripts
 Requires(pre):       %{__chkconfig} initscripts
+%else
+%systemd_requires
+%endif
 
 Provides:            %{name} = %{version}-%{release}
 
@@ -95,6 +105,19 @@ is designed to support the following:
   distributing consumption over a cluster of consumer machines while
   maintaining per-partition ordering semantics.
 * Support for parallel data load into Hadoop.
+
+################################################################################
+
+%package server
+Summary:             Kafka server
+Group:               Applications/Databases
+
+BuildArch:           noarch
+
+Requires:            kafka
+
+%description server
+Configuration and startup files for Apache Kafka broker.
 
 ################################################################################
 
@@ -119,11 +142,20 @@ install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/%{name}
 install -dm 755 %{buildroot}%{_logrotatedir}
 install -dm 755 %{buildroot}%{_sysconfigdir}
+%if 0%{?rhel} <= 6
+install -dm 755 %{buildroot}%{_initrddir}/
+%else
+install -dm 755 %{buildroot}%{_unitdir}/
+%endif
 
-install -Dm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-install -Dm 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{name}
-install -pm 644 %{SOURCE3} %{buildroot}%{_logrotatedir}/%{name}
-install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfigdir}/%{name}
+%if 0%{?rhel} <= 6
+install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
+%else
+install -pm 755 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
+%endif
+install -pm 755 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}
+install -pm 644 %{SOURCE4} %{buildroot}%{_logrotatedir}/%{name}
+install -pm 644 %{SOURCE5} %{buildroot}%{_sysconfigdir}/%{name}
 
 pushd core/build/distributions/%{name}_%{major_version}-%{version}
   mv bin %{buildroot}%{_opt}/%{name}
@@ -134,41 +166,72 @@ popd
 %clean
 rm -rf %{buildroot}
 
-%pre
+################################################################################
+
+%pre server
 getent group %{group_name} >/dev/null || %{__groupadd} -r %{group_name}
 getent passwd %{user_name} >/dev/null || %{__useradd} -s /sbin/nologin -M -r -g %{group_name} -d %{home_dir} %{user_name}
 exit 0
 
-%post
+%post server
 if [[ $1 -eq 1 ]] ; then
+%if 0%{?rhel} <= 6
   %{__chkconfig} --add %{service_name}
+%else
+  %{__systemctl} enable %{name}.service &>/dev/null || :
+%endif
 fi
 
-%preun
+%preun server
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{service_name} stop > /dev/null 2>&1
+%if 0%{?rhel} <= 6
+  %{__service} %{service_name} stop &>/dev/null || :
   %{__chkconfig} --del %{service_name}
+%else
+  %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__systemctl} stop %{name}.service &>/dev/null || :
+%endif
 fi
+
+%postun server
+%if 0%{?rhel} >= 7
+if [[ $1 -ge 1 ]] ; then
+  %{__systemctl} daemon-reload &>/dev/null || :
+fi
+%endif
 
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
+%{home_dir}
+
+%files server
 %defattr(-,%{user_name},%{group_name},-)
 %dir %{_datadir}/%{name}
 %dir %{_logdir}/%{name}
 %dir %{_localstatedir}/%{name}
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/*.conf
-%{home_dir}
 
 %defattr(-,root,root,-)
+%if 0%{?rhel} <= 6
 %{_initrddir}/%{name}
+%else
+%{_unitdir}/%{name}.service
+%endif
 %config(noreplace) %{_logrotatedir}/%{name}
 %config(noreplace) %{_sysconfigdir}/%{name}
 
 ################################################################################
 
 %changelog
+* Mon Mar 12 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.1-0
+- Updated to latest release
+
+* Wed Nov 08 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.0-0
+- Updated to latest release
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.0.1-0
 - Updated to latest release
 

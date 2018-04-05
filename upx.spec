@@ -57,7 +57,7 @@ executables suffer no memory overhead or other drawbacks.
 ################################################################################
 
 %prep
-%setup -q -n %{name}-%{version}-src
+%setup -qn %{name}-%{version}-src
 
 sed -i -e 's/ -O2/ /' -e 's/ -Werror//' src/Makefile
 

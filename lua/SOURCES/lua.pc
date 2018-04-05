@@ -1,0 +1,13 @@
+V= {{MAJOR_VERSION}}
+R= {{FULL_VERSION}}
+prefix= /usr
+exec_prefix=${prefix}
+libdir= /usr/lib64
+includedir=${prefix}/include
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -llua -lm -ldl
+Cflags: -I${includedir}

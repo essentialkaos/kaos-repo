@@ -41,7 +41,7 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           20
-%define ver_min           1
+%define ver_min           3
 %define realname          erlang
 
 %define libre_ver         2.6.4
@@ -68,11 +68,7 @@ BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 
-%if 0%{?rhel} >= 7
-BuildRequires:     gcc gcc-c++
-%else
-BuildRequires:     devtoolset-2-gcc-c++ devtoolset-2-binutils
-%endif
+BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
 Requires:          tk tcl
 
@@ -794,10 +790,8 @@ tar xzvf %{SOURCE10}
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 
-%if 0%{?rhel} < 7
-# Use gcc and gcc-c++ from devtoolset for build on CentOS6
-export PATH="/opt/rh/devtoolset-2/root/usr/bin:$PATH"
-%endif
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
@@ -888,7 +882,7 @@ rm -rf %{buildroot}%{_mandir}/man3/crypto.3.*
 rm -rf %{buildroot}%{_mandir}/man3/zlib.3.*
 
 %post -n %{name}-base
-%{_libdir}/erlang/Install -minimal %{_libdir}/erlang >/dev/null 2>/dev/null
+%{_libdir}/erlang/Install -minimal %{_libdir}/erlang &>/dev/null || :
 
 %clean
 rm -rf %{buildroot}
@@ -1125,6 +1119,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-1
+- Using GCC from devtoolset-3 for build
+
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-0
+- Updated to latest stable release
+- LibreSSL updated to 2.7.0
+
 * Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 20.1-1
 - Rebuilt with EC support
 - Rebuilt with statically linked LibreSSL

@@ -73,8 +73,8 @@
 %endif
 
 %define majorver        9.5
-%define minorver        10
-%define rel             1
+%define minorver        12
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          95
 %define realname        postgresql
@@ -361,7 +361,7 @@ system, including regression tests and benchmarks.
 
 %prep
 
-%setup -q -n %{realname}-%{version}
+%setup -qn %{realname}-%{version}
 
 %patch1 -p1
 %patch2 -p1
@@ -1090,6 +1090,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.12-0
+- Updated to latest stable release
+
+* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.11-0
+- Updated to latest stable release
+
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.10-1
 - Updated spec
 

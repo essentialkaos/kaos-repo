@@ -120,7 +120,7 @@
 
 Summary:            System Security Services Daemon
 Name:               sssd
-Version:            1.16.0
+Version:            1.16.1
 Release:            0%{?dist}
 License:            GPLv3+
 Group:              Applications/System
@@ -139,7 +139,7 @@ Requires:           %{name}-ipa = %{version}-%{release}
 Requires:           %{name}-krb5 = %{version}-%{release}
 Requires:           %{name}-ldap = %{version}-%{release}
 Requires:           %{name}-proxy = %{version}-%{release}
-Requires:           kaosv >= 2.12
+Requires:           kaosv >= 2.15
 
 %if (0%{?with_python3} == 1)
 Requires:           python3-sssdconfig = %{version}-%{release}
@@ -850,7 +850,7 @@ fi
 
 %preun common
 if [[ $1 -eq 0 ]] ; then
-  %{__service} %{service_name} stop 2>&1 > /dev/null
+  %{__service} %{service_name} stop &>/dev/null || :
   %{__chkconfig} --del %{service_name}
 fi
 
@@ -1001,10 +1001,6 @@ fi
 %attr(700,%{service_user},%{service_group}) %dir %{pipepath}/private
 %attr(750,%{service_user},%{service_group}) %dir %{_logdir}/%{name}
 %attr(711,%{service_user},%{service_group}) %dir %{_sysconfdir}/%{name}
-%if (0%{?use_systemd} == 1)
-%attr(755,root,root) %dir %{_sysconfdir}/systemd/system/%{name}.service.d
-%config(noreplace) %{_sysconfdir}/systemd/system/%{name}.service.d/journal.conf
-%endif
 %attr(0600,%{service_user},%{service_group}) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/sssd
 %config(noreplace) %{_sysconfdir}/rwtab.d/sssd
@@ -1261,6 +1257,9 @@ fi
 ################################################################################
 
 %changelog
+* Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 1.16.1-0
+- Updated to latest stable release
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
 - Updated to latest stable release
 
