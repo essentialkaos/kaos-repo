@@ -57,6 +57,7 @@ BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
 BuildRequires:    python34-devel python34-setuptools libffi-devel augeas-libs
+BuildRequires:    gcc
 
 Requires:         augeas-libs
 

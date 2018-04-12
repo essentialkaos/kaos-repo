@@ -56,7 +56,7 @@ Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkg_name}-%
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-BuildRequires:    python-devel python-setuptools libffi-devel augeas-libs
+BuildRequires:    python-devel python-setuptools libffi-devel augeas-libs gcc
 
 Requires:         augeas-libs
 
