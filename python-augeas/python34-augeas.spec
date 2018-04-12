@@ -59,7 +59,7 @@ BuildArch:        noarch
 BuildRequires:    python34-devel python34-setuptools libffi-devel augeas-libs
 BuildRequires:    gcc
 
-Requires:         augeas-libs
+Requires:         augeas-libs python34-cffi
 
 Provides:         %{name} = %{version}-%{release}
 
