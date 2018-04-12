@@ -58,7 +58,7 @@ BuildArch:        noarch
 
 BuildRequires:    python-devel python-setuptools libffi-devel augeas-libs gcc
 
-Requires:         augeas-libs
+Requires:         augeas-libs python-cffi
 
 Provides:         %{name} = %{version}-%{release}
 
