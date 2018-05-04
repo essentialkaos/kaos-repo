@@ -12,11 +12,14 @@ Source0:            https://sourceforge.net/projects/%{name}/files/%{name}/%{ver
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc make autoconf automake
+BuildRequires:      gcc make autoconf automake libmad-devel
 BuildRequires:      libvorbis-devel alsa-lib-devel libtool-ltdl-devel
 BuildRequires:      libsamplerate-devel gsm-devel wavpack-devel ladspa-devel
 BuildRequires:      libpng-devel flac-devel libao-devel libsndfile-devel
 BuildRequires:      libid3tag-devel pulseaudio-libs-devel libtool lame-devel
+
+Requires:           lame gsm libmad libid3tag libpng libao libsndfile wavpack
+Requires:           ladspa libsamplerate libvorbis alsa-lib pulseaudio-libs
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -54,6 +57,7 @@ CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64"
            --with-caf=dyn \
            --with-fap=dyn \
            --with-lame=dyn \
+           --with-mad=dyn \
            --with-mat4=dyn \
            --with-mat5=dyn \
            --with-paf=dyn \
