@@ -44,7 +44,7 @@
 
 Summary:              A GNU general-purpose parser generator
 Name:                 bison
-Version:              3.0.4
+Version:              3.0.5
 Release:              0%{?dist}
 License:              GPLv3+
 Group:                Development/Tools
@@ -54,7 +54,7 @@ Source:               http://ftp.gnu.org/pub/gnu/bison/bison-%{version}.tar.xz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        autoconf m4 >= 1.4 make
+BuildRequires:        autoconf m4 >= 1.4 make gcc
 
 Requires:             m4 >= 1.4
 
@@ -163,5 +163,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
+- Updated to latest stable release
+
 * Wed Feb 24 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.4-0
 - Initial build

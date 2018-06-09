@@ -56,6 +56,7 @@ BuildRequires:      libdrm-devel >= 2.4.23 libpciaccess-devel mesa-libGL-devel
 BuildRequires:      libXext-devel libXfixes-devel
 
 Conflicts:          libdrm < 2.4.23
+Conflicts:          %{realname} < 2.0.0
 
 Provides:           libva-utils = %{version}-%{release}
 Provides:           libva-freeworld = %{version}-%{release}
@@ -129,6 +130,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed May 30 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-1
+- Added livba < 2 to conflicts
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
 - Updated to latest stable release
 

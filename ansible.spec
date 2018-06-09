@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.4.3.0
+Version:              2.5.4
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -107,7 +107,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README.md PKG-INFO COPYING
+%doc README.rst PKG-INFO COPYING
 %doc %{_mandir}/man1/%{name}*
 %config(noreplace) %{_sysconfdir}/%{name}
 %dir %{_datadir}/%{name}
@@ -117,6 +117,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 2.5.4-0
+- Updated to latest version
+
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.3.0-0
 - Updated to latest version
 

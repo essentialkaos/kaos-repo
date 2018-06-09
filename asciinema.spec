@@ -42,7 +42,7 @@
 
 Summary:            Terminal session recorder
 Name:               asciinema
-Version:            2.0.0
+Version:            2.0.1
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Applications/Internet
@@ -100,5 +100,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
+- Updated to latest stable release
+
 * Tue Mar 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
 - Initial build for kaos repository

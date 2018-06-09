@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.8
+Version:            4.0.9
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -260,6 +260,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jun 04 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.9-0
+- When AOF is enabled with the fsync policy set to "always", we have a
+  (rarely used) setup where Redis fsyncs every new write on disk. On this
+  setup Redis MUST reply to the client with an OK code to the write, only
+  after the write is already persisted on disk.
+- Latency monitor could report wrong latencies under certain conditions.
+- AOF rewriting could fail when a backgronud rewrite is triggered and
+  at the same time the AOF is switched on/off.
+- Redis Cluster crash-recovery safety improved
+- Other smaller fixes
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.8-0
 - Redis 4.0.8 fixes a single critical bug in the radix tree data structure
   used for Redis Cluster keys slot tracking.
