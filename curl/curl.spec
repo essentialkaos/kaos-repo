@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.59.0
+Version:              7.60.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,122 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.60.0-0
+- Add CURLOPT_HAPROXYPROTOCOL, support for the HAProxy PROXY protocol
+- Add --haproxy-protocol for the command line tool
+- Add CURLOPT_DNS_SHUFFLE_ADDRESSES, shuffle returned IP addresses
+- FTP: shutdown response buffer overflow CVE-2018-1000300
+- RTSP: bad headers buffer over-read CVE-2018-1000301
+- FTP: fix typo in recursive callback detection for seeking
+- test1208: marked flaky
+- HTTP: make header-less responses still count correct body size
+- user-agent.d:: mention --proxy-header as well
+- http2: fixes typo
+- cleanup: misc typos in strings and comments
+- rate-limit: use three second window to better handle high speeds
+- examples/hiperfifo.c: improved
+- pause: when changing pause state, update socket state
+- multi: improved pending transfers handling => improved performance
+- curl_version_info.3: fix ssl_version description
+- add_handle/easy_perform: clear errorbuffer on start if set
+- darwinssl: fix iOS build
+- cmake: add support for brotli
+- parsedate: support UT timezone
+- vauth/ntlm.h: fix the #ifdef header guard
+- lib/curl_path.h: added #ifdef header guard
+- vauth/cleartext: fix integer overflow check
+- CURLINFO_COOKIELIST.3: made the example not leak memory
+- cookie.d: mention that "-" as filename means stdin
+- CURLINFO_SSL_VERIFYRESULT.3: fixed the example
+- http2: read pending frames (including GOAWAY) in connection-check
+- timeval: remove compilation warning by casting
+- cmake: avoid warn-as-error during config checks
+- travis-ci: enable -Werror for CMake builds
+- openldap: fix for NULL return from ldap_get_attribute_ber()
+- threaded resolver: track resolver time and set suitable timeout values
+- cmake: Add advapi32 as explicit link library for win32
+- docs: fix CURLINFO_*_T examples use of CURL_FORMAT_CURL_OFF_T
+- test1148: set a fixed locale for the test
+- cookies: when reading from a file, only remove_expired once
+- cookie: store cookies per top-level-domain-specific hash table
+- openssl: fix build with LibreSSL 2.7
+- tls: fix mbedTLS 2.7.0 build + handle sha256 failures
+- openssl: RESTORED verify locations when verifypeer==0
+- file: restore old behavior for file:////foo/bar URLs
+- FTP: allow PASV on IPv6 connections when a proxy is being used
+- build-openssl.bat: allow custom paths for VS and perl
+- winbuild: make the clean target work without build-type
+- build-openssl.bat: Refer to VS2017 as VC14.1 instead of VC15
+- curl: retry on FTP 4xx, ignore other protocols
+- configure: detect (and use) sa_family_t
+- examples/sftpuploadresume: Fix Windows large file seek
+- build: cleanup to fix clang warnings/errors
+- winbuild: updated the documentation
+- lib: silence null-dereference warnings
+- travis: bump to clang 6 and gcc 7
+- travis: build libpsl and make builds use it
+- proxy: show getenv proxy use in verbose output
+- duphandle: make sure CURLOPT_RESOLVE is duplicated
+- all: Refactor malloc+memset to use calloc
+- checksrc: Fix typo
+- system.h: Add sparcv8plus to oracle/sunpro 32-bit detection
+- vauth: Fix typo
+- ssh: show libSSH2 error code when closing fails
+- test1148: tolerate progress updates better
+- urldata: make service names unconditional
+- configure: keep LD_LIBRARY_PATH changes local
+- ntlm_sspi: fix authentication using Credential Manager
+- schannel: add client certificate authentication
+- winbuild: Support custom devel paths for each dependency
+- schannel: add support for CURLOPT_CAINFO
+- http2: handle on_begin_headers() called more than once
+- openssl: support OpenSSL 1.1.1 verbose-mode trace messages
+- openssl: fix subjectAltName check on non-ASCII platforms
+- http2: avoid strstr() on data not zero terminated
+- http2: clear the "drain counter" when a stream is closed
+- http2: handle GOAWAY properly
+- tool_help: clarify --max-time unit of time is seconds
+- curl.1: clarify that options and URLs can be mixed
+- http2: convert an assert to run-time check
+- curl_global_sslset: always provide available backends
+- ftplistparser: keep state between invokes
+- Curl_memchr: zero length input can't match
+- examples/sftpuploadresume: typecast fseek argument to long
+- examples/http2-upload: expand buffer to avoid silly warning
+- ctype: restore character classification for non-ASCII platforms
+- mime: avoid NULL pointer dereference risk
+- cookies: ensure that we have cookies before writing jar
+- os400.c: fix checksrc warnings
+- configure: provide --with-wolfssl as an alias for --with-cyassl
+- cyassl: adapt to libraries without TLS 1.0 support built-in
+- http2: get rid of another strstr
+- checksrc: force indentation of lines after an else
+- cookies: remove unused macro
+- CURLINFO_PROTOCOL.3: mention the existing defined names
+- tests: provide 'manual' as a feature to optionally require
+- travis: enable libssh2 on both macos and Linux
+- CURLOPT_URL.3: added ENCODING section
+- wolfssl: Fix non-blocking connect
+- vtls: don't define MD5_DIGEST_LENGTH for wolfssl
+- docs: remove extraneous commas in man pages
+- URL: fix ASCII dependency in strcpy_url and strlen_url
+- ssh-libssh.c: fix left shift compiler warning
+- configure: only check for CA bundle for file-using SSL backends
+- travis: add an mbedtls build
+- http: don't set the "rewind" flag when not uploading anything
+- configure: put CURLDEBUG and DEBUGBUILD in lib/curl_config.h
+- transfer: don't unset writesockfd on setup of multiplexed conns
+- vtls: use unified "supports" bitfield member in backends
+- URLs: fix one more http url
+- travis: add a build using WolfSSL
+- openssl: change FILE ops to BIO ops
+- travis: add build using NSS
+- smb: reject negative file sizes
+- cookies: accept parameter names as cookie name
+- http2: getsock fix for uploads
+- all over: fixed format specifiers
+- http2: use the correct function pointer typedef
+
 * Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 7.59.0-0
 - curl: add --proxy-pinnedpubkey
 - added: CURLOPT_TIMEVALUE_LARGE and CURLINFO_FILETIME_T
