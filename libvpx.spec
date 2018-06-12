@@ -78,17 +78,6 @@ sed -i "s|-O3|%{optflags}|g" docs-%{vpxtarget}.mk
 
 %{__make} %{?_smp_mflags} verbose=true target=libs
 
-# Temporarily dance the static libs out of the way
-mv libvpx.a libNOTvpx.a
-mv libvpx_g.a libNOTvpx_g.a
-
-# We need to do this so the examples can link against it.
-ln -sf libvpx.so.%{soversion} libvpx.so
-
-# Put them back so the install doesn't fail
-mv libNOTvpx.a libvpx.a
-mv libNOTvpx_g.a libvpx_g.a
-
 %install
 rm -rf %{buildroot}
 

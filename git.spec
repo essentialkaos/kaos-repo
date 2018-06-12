@@ -7,7 +7,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.16.2
+Version:          2.17.1
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -196,7 +196,6 @@ find %{buildroot} -type f -name perllocal.pod -exec rm -f {} ';'
 
 (find %{buildroot}%{_bindir} -type f | grep -vE "archimport|svn|cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@) > bin-man-doc-files
 (find %{buildroot}%{_libexecdir}/git-core -type f | grep -vE "archimport|svn|cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@) >> bin-man-doc-files
-(find %{buildroot}%{perl_vendorlib} -type f | sed -e s@^%{buildroot}@@) >> perl-files
 (find %{buildroot}%{_mandir} %{buildroot}/Documentation -type f | grep -vE "archimport|svn|git-cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@ -e 's/$/*/' ) >> bin-man-doc-files
 
 rm -rf %{buildroot}%{_datadir}/locale
@@ -266,8 +265,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*gitweb*.1*
 %{_mandir}/man5/*gitweb*.5*
 
-%files -n perl-Git -f perl-files
+%files -n perl-Git
 %defattr(-,root,root)
+%{_datadir}/perl5/*
 
 %files all
 %defattr(-,root,root,-)
@@ -276,6 +276,48 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 2.17.1-0
+- This release contains the same fixes made in the v2.13.7 version of
+  Git, covering CVE-2018-11233 and 11235, and forward-ported to
+  v2.14.4, v2.15.2 and v2.16.4 releases.  See release notes to
+  v2.13.7 for details.
+- In addition to the above fixes, this release has support on the
+  server side to reject pushes to repositories that attempt to create
+  such problematic .gitmodules file etc. as tracked contents, to help
+  hosting sites protect their customers by preventing malicious
+  contents from spreading.
+
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 2.16.3-0
+- "git status" after moving a path in the working tree (hence making
+  it appear "removed") and then adding with the -N option (hence
+  making that appear "added") detected it as a rename, but did not
+  report the  old and new pathnames correctly.
+- "git commit --fixup" did not allow "-m<message>" option to be used
+  at the same time; allow it to annotate resulting commit with more
+  text.
+- When resetting the working tree files recursively, the working tree
+  of submodules are now also reset to match.
+- Fix for a commented-out code to adjust it to a rather old API change
+  around object ID.
+- When there are too many changed paths, "git diff" showed a warning
+  message but in the middle of a line.
+- The http tracing code, often used to debug connection issues,
+  learned to redact potentially sensitive information from its output
+  so that it can be more safely sharable.
+- Crash fix for a corner case where an error codepath tried to unlock
+  what it did not acquire lock on.
+- The split-index mode had a few corner case bugs fixed.
+- Assorted fixes to "git daemon".
+- Completion of "git merge -s<strategy>" (in contrib/) did not work
+  well in non-C locale.
+- Workaround for segfault with more recent versions of SVN.
+- Recently introduced leaks in fsck have been plugged.
+- Travis CI integration now builds the executable in 'script' phase
+  to follow the established practice, rather than during
+  'before_script' phase.  This allows the CI categorize the failures
+  better ('failed' is project's fault, 'errored' is build
+  environment's).
+
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 2.16.2-0
 - An old regression in "git describe --all $annotated_tag^0" has been
   fixed.
