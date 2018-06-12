@@ -36,19 +36,17 @@
 
 Summary:           ISO/MPEG 2/4 AAC Encoder library
 Name:              faac
-Version:           1.28
+Version:           1.29.9.2
 Release:           0%{?dist}
 License:           LGPL
 Group:             Applications/Multimedia
 URL:               http://www.audiocoding.com
 
-Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
-
-Patch0:            %{name}-%{version}-glibc_fixes-1.patch
+Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     autoconf automake make libtool gcc gcc-c++
+BuildRequires:     autoconf automake make libtool gcc gcc-c++ chrpath
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -77,14 +75,12 @@ to build programs that use it.
 
 %prep
 %setup -q
-%patch0 -p1 -b .glibc_fixes-1
 
 sed -e '/obj-type/d' \
     -e '/Long Term/d' \
     -i frontend/main.c
 
 %build
-./bootstrap
 
 %configure \
     --disable-static \
@@ -97,12 +93,16 @@ rm -rf %{buildroot}
 
 %{make_install}
 
+chrpath --delete %{buildroot}%{_bindir}/faac
+
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -122,5 +122,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.29.9.2-0
+- Updated to latest stable release
+
 * Sun Mar 01 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.28-0
 - Initial build

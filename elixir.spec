@@ -30,12 +30,11 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.6.1
+Version:            1.6.5
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                http://elixir-lang.org
-Vendor:             Plataformatec
 
 Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.tar.gz
 
@@ -93,6 +92,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.5-0
+- Updated to latest version
+
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.4-0
+- Updated to latest version
+
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - Updated to latest version
 
