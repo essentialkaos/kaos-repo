@@ -2,7 +2,7 @@
 
 Summary:              Interactive process viewer
 Name:                 htop
-Version:              2.1.0
+Version:              2.2.0
 Release:              0%{?dist}
 License:              GPL
 Group:                Applications/System
@@ -11,7 +11,10 @@ URL:                  http://hisham.hm/htop
 Source:               http://hisham.hm/htop/releases/%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildRequires:        gcc >= 3.0 ncurses-devel
+
+BuildRequires:        make gcc ncurses-devel
+
+Provides:             %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -25,6 +28,7 @@ htop is an interactive process viewer for Linux.
 
 %build
 %configure
+
 %{__make} %{?_smp_mflags}
 
 %install
@@ -48,6 +52,26 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- Solaris/Illumos/OpenIndiana support
+- -t/--tree flag for starting in tree-view mode
+- macOS: detects High Sierra version to avoid OS bug
+- OpenBSD: read battery data
+- Various automake and build improvements
+- Check for pkg-config when building with --enable-delayacct
+- Avoid some bashisms in configure script
+- Use CFLAGS from ncurses*-config if present
+- Header generator supports non-UTF-8 environments
+- Linux: changed detection of kernel threads
+- Collapse current subtree pressing Backspace
+- BUGFIX: fix behavior of SYSCR column
+- BUGFIX: obtain exit code of lsof correctly
+- BUGFIX: fix crash with particular keycodes
+- BUGFIX: fix issue with small terminals
+- BUGFIX: fix terminal color issues
+- BUGFIX: preserve LDFLAGS when building
+- BUGFIX: fixed overflow for systems with >= 100 signals
+
 * Wed Feb 07 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.1.0-0
 - Linux: Delay accounting metrics
 - DragonFly BSD support

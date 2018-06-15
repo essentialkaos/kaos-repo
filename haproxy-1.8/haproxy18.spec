@@ -52,7 +52,7 @@
 
 %define lua_ver           5.3.4
 %define pcre_ver          8.42
-%define boringssl_ver     d61334d187a33336bc4cf4425d997e1ec8bcfa48
+%define openssl_ver       1.1.0h
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -60,8 +60,8 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.4
-Release:           1%{?dist}
+Version:           1.8.9
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -73,15 +73,15 @@ Source3:           %{name}.logrotate
 Source4:           %{name}.sysconfig
 Source5:           %{name}.service
 
-Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
-Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source12:          https://boringssl.googlesource.com/boringssl/+archive/%{boringssl_ver}.tar.gz
+Source10:          https://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
+Source11:          https://ftp.pcre.org/pub/pcre/pcre-%{pcre_ver}.tar.gz
+Source12:          https://www.openssl.org/source/openssl-%{openssl_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make cmake golang zlib-devel openssl-devel
+BuildRequires:     make zlib-devel
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
 Requires:          setup >= 2.8.14-14 kaosv >= 2.15
@@ -118,11 +118,9 @@ possibility not to expose fragile web servers to the net.
 %prep
 %setup -q
 
-mkdir boringssl
-
 tar xzvf %{SOURCE10}
 tar xzvf %{SOURCE11}
-tar xzvf %{SOURCE12} -C boringssl
+tar xzvf %{SOURCE12}
 tar xzvf %{SOURCE13}
 tar xzvf %{SOURCE14}
 
@@ -135,23 +133,13 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-# Static BoringSSL build
-mkdir boringssl/build
-
-pushd boringssl/build &> /dev/null
-  cmake ../
-  %{__make} %{?_smp_mflags}
+# Static OpenSSL build
+pushd openssl-%{openssl_ver}
+  mkdir build
+  ./config --prefix=$(pwd)/build no-shared no-threads
+  %{__make} -j1
+  %{__make} -j1 install_sw
 popd
-
-mkdir -p "boringssl/.openssl/lib"
-
-pushd boringssl/.openssl &> /dev/null
-  ln -s ../include
-popd
-
-cp boringssl/build/crypto/libcrypto.a \
-   boringssl/build/ssl/libssl.a \
-   boringssl/.openssl/lib
 
 # Static NCurses build
 pushd ncurses-%{ncurses_ver}
@@ -196,10 +184,10 @@ use_regparm="USE_REGPARM=1"
 %endif
 
 %{__make} %{?_smp_mflags} CPU="generic" \
-                          TARGET="linux26" \
+                          TARGET="linux2628" \
                           USE_OPENSSL=1 \
-                          SSL_INC=boringssl/.openssl/include \
-                          SSL_LIB=boringssl/.openssl/lib \
+                          SSL_INC=openssl-%{openssl_ver}/build/include \
+                          SSL_LIB=openssl-%{openssl_ver}/build/lib \
                           USE_PCRE_JIT=1 \
                           USE_STATIC_PCRE=1 \
                           PCRE_INC=pcre-%{pcre_ver}/build/include \
@@ -304,6 +292,100 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jun 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.9-0
+- BUG/MINOR: pattern: Add a missing HA_SPIN_INIT() in pat_ref_newid()
+- BUG/MAJOR: channel: Fix crash when trying to read from a closed socket
+- BUG/MINOR: log: t_idle (%Ti) is not set for some requests
+- BUG/MEDIUM: lua: Fix segmentation fault if a Lua task exits
+- MINOR: h2: detect presence of CONNECT and/or content-length
+- BUG/MEDIUM: h2: implement missing support for chunked encoded uploads
+- BUG/MINOR: lua/threads: Make lua's tasks sticky to the current thread
+- BUG/MINOR: config: disable http-reuse on TCP proxies
+- BUG/MINOR: checks: Fix check->health computation for flapping servers
+- BUG/MEDIUM: threads: Fix the sync point for more than 32 threads
+- BUG/MINOR: lua: Put tasks to sleep when waiting for data
+- DOC/MINOR: clean up LUA documentation re: servers & array/table.
+- BUG/MINOR: map: correctly track reference to the last ref_elt being dumped
+- BUG/MEDIUM: task: Don't free a task that is about to be run.
+- BUG/MINOR: lua: schedule socket task upon lua connect()
+- BUG/MINOR: lua: ensure large proxy IDs can be represented
+- BUG/MEDIUM: http: don't always abort transfers on CF_SHUTR
+- BUG/MEDIUM: pollers: Use a global list for fd shared between threads.
+- BUG/MEDIUM: ssl: properly protect SSL cert generation
+- BUG/MINOR: spoe: Mistake in error message about SPOE configuration
+
+* Sat Jun 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.8-0
+- BUG/MEDIUM: threads: Fix the max/min calculation because of name clashes
+- BUG/MEDIUM: connection: Make sure we have a mux before calling detach().
+- BUG/MINOR: http: Return an error in proxy mode when url2sa fails
+- BUG/MEDIUM: kqueue: When adding new events, provide an output to get errors.
+- BUG/MINOR: cli: Guard against NULL messages when using CLI_ST_PRINT_FREE
+- MINOR: cli: Ensure the CLI always outputs an error when it should
+- DOC: lua: update the links to the config and Lua API
+- BUG/CRITICAL: h2: fix incorrect frame length check
+
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.5-0
+- BoringSSL replaced by OpenSSL (build fails with latest version of BoringSSL)
+- BUG/MINOR: threads: fix missing thread lock labels for 1.8
+- BUG/MEDIUM: ssl: Don't always treat SSL_ERROR_SYSCALL as unrecovarable.
+- BUG/MEDIUM: ssl: Shutdown the connection for reading on SSL_ERROR_SYSCALL
+- BUG/MINOR: init: Add missing brackets in the code parsing -sf/-st
+- BUG/MINOR: ssl/threads: Make management of the TLS ticket keys files
+  thread-safe
+- BUG/MEDIUM: http: Switch the HTTP response in tunnel mode as earlier as
+  possible
+- BUG/MEDIUM: ssl/sample: ssl_bc_* fetch keywords are broken.
+- DOC: lua: new prototype for function "register_action()"
+- DOC: cfgparse: Warn on option (tcp|http)log in backend
+- BUG/MINOR: debug/pools: properly handle out-of-memory when building with
+  DEBUG_UAF
+- MINOR: debug/pools: make DEBUG_UAF also detect underflows
+- BUG/MINOR: h2: Set the target of dbuf_wait to h2c
+- MINOR: stats: display the number of threads in the statistics.
+- BUG/MEDIUM: h2: always consume any trailing data after end of output buffers
+- BUG/MEDIUM: buffer: Fix the wrapping case in bo_putblk
+- BUG/MEDIUM: buffer: Fix the wrapping case in bi_putblk
+- Revert "BUG/MINOR: send-proxy-v2: string size must include ('\0')"
+- MINOR: systemd: Add section for SystemD sandboxing to unit file
+- MINOR: systemd: Add SystemD's Protect*= options to the unit file
+- MINOR: systemd: Add SystemD's SystemCallFilter option to the unit file
+- MINOR/BUILD: fix Lua build on Mac OS X
+- BUILD/MINOR: fix Lua build on Mac OS X (again)
+- BUG/MINOR: session: Fix tcp-request session failure if handshake.
+- CLEANUP: .gitignore: Ignore binaries from the contrib directory
+- BUG/MINOR: unix: Don't mess up when removing the socket from the
+  xfer_sock_list.
+- BUG/MEDIUM: h2: also arm the h2 timeout when sending
+- BUG/MINOR: cli: Fix a crash when passing a negative or too large value
+  to "show fd"
+- CLEANUP: ssl: Remove a duplicated #include
+- CLEANUP: cli: Remove a leftover debug message
+- BUG/MINOR: cli: Fix a typo in the 'set rate-limit' usage
+- BUG/MEDIUM: fix a 100% cpu usage with cpu-map and nbthread/nbproc
+- BUG/MINOR: force-persist and ignore-persist only apply to backends
+- BUG/MEDIUM: spoe: Remove idle applets from idle list when HAProxy is stopping
+- BUG/MEDIUM: threads/unix: Fix a deadlock when a listener is temporarily
+  disabled
+- BUG/MAJOR: threads/queue: Fix thread-safety issues on the queues management
+- BUG/MINOR: dns: don't downgrade DNS accepted payload size automatically
+- BUG/MINOR: seemless reload: Fix crash when an interface is specified.
+- BUG/MINOR: cli: Fix a crash when sending a command with too many arguments
+- BUILD: ssl: Fix build with OpenSSL without NPN capability
+- BUG/MINOR: spoa-example: unexpected behavior for more than 127 args
+- BUG/MINOR: lua: return bad error messages
+- BUG/MEDIUM: tcp-check: single connect rule can't detect DOWN servers
+- BUG/MINOR: tcp-check: use the server's service port as a fallback
+- BUG/MEDIUM: threads/queue: wake up other threads upon dequeue
+- MINOR: log: stop emitting alerts when it's not possible to write on the socket
+- BUILD/BUG: enable -fno-strict-overflow by default
+- DOC: log: more than 2 log servers are allowed
+- DOC: don't suggest using http-server-close
+- BUG/MEDIUM: h2: properly account for DATA padding in flow control
+- BUG/MINOR: h2: ensure we can never send an RST_STREAM in response to an
+  RST_STREAM
+- BUG/MINOR: listener: Don't decrease actconn twice when a new session is
+  rejected
+
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.4-1
 - Using GCC from devtoolset-3 for build
 

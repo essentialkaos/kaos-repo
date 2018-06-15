@@ -51,8 +51,8 @@
 %define hp_datadir        %{_datadir}/%{name}
 
 %define lua_ver           5.3.4
-%define pcre_ver          8.41
-%define libre_ver         2.5.0
+%define pcre_ver          8.42
+%define openssl_ver       1.1.0h
 %define ncurses_ver       6.0
 %define readline_ver      7.0
 
@@ -60,8 +60,8 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.7.10
-Release:           1%{?dist}
+Version:           1.7.11
+Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -73,9 +73,9 @@ Source3:           %{name}.logrotate
 Source4:           %{name}.sysconfig
 Source5:           %{name}.service
 
-Source10:          http://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
-Source11:          http://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-%{pcre_ver}.tar.gz
-Source12:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source10:          https://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
+Source11:          https://ftp.pcre.org/pub/pcre/pcre-%{pcre_ver}.tar.gz
+Source12:          https://www.openssl.org/source/openssl-%{openssl_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
@@ -133,12 +133,12 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-# Static LibreSSL build
-pushd libressl-%{libre_ver}
+# Static OpenSSL build
+pushd openssl-%{openssl_ver}
   mkdir build
-  ./configure --prefix=$(pwd)/build --enable-shared=no
-  %{__make} %{?_smp_mflags}
-  %{__make} install
+  ./config --prefix=$(pwd)/build no-shared no-threads
+  %{__make} -j1
+  %{__make} -j1 install_sw
 popd
 
 # Static NCurses build
@@ -181,10 +181,10 @@ use_regparm="USE_REGPARM=1"
 %endif
 
 %{__make} %{?_smp_mflags} CPU="generic" \
-                          TARGET="linux26" \
+                          TARGET="linux2628" \
                           USE_OPENSSL=1 \
-                          SSL_INC=libressl-%{libre_ver}/build/include \
-                          SSL_LIB=libressl-%{libre_ver}/build/lib \
+                          SSL_INC=openssl-%{openssl_ver}/build/include \
+                          SSL_LIB=openssl-%{openssl_ver}/build/lib \
                           USE_PCRE_JIT=1 \
                           USE_STATIC_PCRE=1 \
                           PCRE_INC=pcre-%{pcre_ver}/build/include \
@@ -289,6 +289,50 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.11-0
+- LibreSSL replaced by OpenSSL (build fails with latest version of LibreSSL)
+- BUG/MINOR: lua: Fix default value for pattern in Socket.receive
+- DOC: lua: Fix typos in comments of hlua_socket_receive
+- BUG/MINOR: lua: Fix return value of Socket.settimeout
+- BUG/MEDIUM: stream: properly handle client aborts during redispatch
+- BUG/MEDIUM: srv-state: always ensure there's a warmup task before manipulating
+  it
+- BUG/MEDIUM: stream-int: Don't loss write's notifs when a stream is woken up
+- DOC: clarify the scope of ssl_fc_is_resumed
+- BUG/MINOR: poll: too large size allocation for FD events
+- CLEANUP: sample: Fix comment encoding of sample.c
+- CLEANUP: sample: Fix outdated comment about sample casts functions
+- BUG/MINOR: sample: Fix output type of c_ipv62ip
+- CLEANUP: Fix typo in ARGT_MSK6 comment
+- BUG/MEDIUM: standard: Fix memory leak in str2ip2()
+- DOC: Describe routing impact of using interface keyword on bind lines
+- BUG/MINOR: config: don't emit a warning when global stats is incompletely
+  configured
+- BUG/MEDIUM: http: Switch the HTTP response in tunnel mode as earlier as
+  possible
+- BUG/MEDIUM: buffer: Fix the wrapping case in bo_putblk
+- MINOR/BUILD: fix Lua build on Mac OS X
+- BUILD/MINOR: fix Lua build on Mac OS X (again)
+- CLEANUP: ssl: Remove a duplicated #include
+- BUG/MINOR: cli: Fix a typo in the 'set rate-limit' usage
+- BUG/MINOR: force-persist and ignore-persist only apply to backends
+- BUG/MINOR: spoa-example: unexpected behavior for more than 127 args
+- BUG/MINOR: lua: return bad error messages
+- BUG/MEDIUM: tcp-check: single connect rule can't detect DOWN servers
+- BUG/MINOR: tcp-check: use the server's service port as a fallback
+- MINOR: log: stop emitting alerts when it's not possible to write on the socket
+- BUG/MINOR: lua: the function returns anything
+- BUG/MINOR: lua funtion hlua_socket_settimeout don't check negative values
+- BUG/MINOR: email-alert: Set the mailer port during alert initialization
+- BUG/MINOR: http: Return an error in proxy mode when url2sa fails
+- DOC: lua: update the links to the config and Lua API
+- BUG/MINOR: session: Fix tcp-request session failure if handshake.
+- BUILD/BUG: enable -fno-strict-overflow by default
+- DOC: log: more than 2 log servers are allowed
+- DOC: don't suggest using http-server-close
+- BUG/MAJOR: channel: Fix crash when trying to read from a closed socket
+- BUG/MINOR: config: disable http-reuse on TCP proxies
+
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.10-1
 - Using GCC from devtoolset-3 for build
 
