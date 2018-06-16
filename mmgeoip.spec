@@ -19,7 +19,7 @@
 Summary:           MaxMinds data for GeoIP
 Name:              MMGeoIP
 Version:           1.2
-Release:           16%{?dist}
+Release:           17%{?dist}
 License:           Copyright © 2010 Achillefs Charmpilas
 Group:             Applications/Databases
 URL:               http://www.maxmind.com
@@ -96,6 +96,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2-17
+- Data updated
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2-16
 - Data updated
 
@@ -110,40 +113,3 @@ rm -rf %{buildroot}
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-12
 - Data updated
-
-* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-11
-- Data updated
-
-* Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-10
-- Data updated
-
-* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.2-9
-- Data updated
-
-* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-8
-- Data updated
-
-* Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-7
-- Data updated
-
-* Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-6
-- Data updated
-
-* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-5
-- Data updated
-
-* Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2-4
-- Data updated
-
-* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.2-3
-- Data updated
-
-* Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 1.2-2
-- Data updated
-
-* Wed Apr 15 2015 Anton Novojilov <andy@essentialkaos.com> - 1.2-1
-- Data updated
-
-* Sat Dec 27 2014 Anton Novojilov <andy@essentialkaos.com> - 1.2-0
-- Data updated
-- New versioning scheme

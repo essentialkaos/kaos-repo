@@ -51,7 +51,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.6
+Version:                  1.5.8
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -227,6 +227,31 @@ fi
 ################################################################################
 
 %changelog
+* Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-0
+- fix sasl tests
+- fix flaky extstore tests
+- alignment and 32bit fixes for extstore
+- crc32c for aarch64 support
+- fix rare partial deadlock during hash table expansion
+- Add Dockerfile definitions
+- Fix lru-crawler behaviour for seccomp
+- Fail loudly if seccomp setup fails
+
+* Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.7-0
+- extstore: fix ref leak when using binary protocol with TOUCH,GAT,GATK
+- Drop supplementary groups in addition to setgid
+- Use HAVE_SASL_CB_GETCONFPATH
+- Fix SASL_CB_GETCONF(PATH) detection
+- Rewrite memchached-tool 'dump' method to use new lru_crawler interface.
+- Fixes decrement-before-check problem.
+- document in manpage that port 0 is off.
+- Fix SIGBUS from alignment issues on 64bit ARM
+- Update seccomp with syscalls found on Arch
+- Enforce seccomp policy (kill process)
+- Support seccomp on musl
+- update --help for UDP default
+- Fix sed options order in rpm specfile
+
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.6-0
 - Improved systemd unit
 - disable UDP port by default

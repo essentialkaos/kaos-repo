@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/xenolf/lego
-# rpmbuilder:tag       v0.4.1
+# rpmbuilder:tag       v1.0.1
 
 ################################################################################
 
@@ -45,7 +45,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         0.4.1
+Version:         1.0.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -100,6 +100,18 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
+- cli: Changed default server URL to new V2 endpoint
+- lib: Added missing processing status handling
+
+* Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
+- lib: ACME v2 Support.
+- dnsprovider: Renamed /providers/dns/googlecloud to /providers/dns/gcloud
+- dnsprovider: Modified Google Cloud provider
+  gcloud.NewDNSProviderServiceAccount function to extract the project id
+  directly from the service account file.
+- dnsprovider: Made errors more verbose for the Cloudflare provider.
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
 - lib: A new DNS provider for OTC.
 - lib: The AWS_HOSTED_ZONE_ID environment variable for the Route53 DNS
