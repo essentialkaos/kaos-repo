@@ -1,7 +1,10 @@
 ################################################################################
 
-%define __python3 %{_bindir}/python3
-%{!?python3_sitearch: %define python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -45,7 +48,7 @@
 
 Summary:          Python client for Sentry
 Name:             python34-raven
-Version:          6.6.0
+Version:          6.9.0
 Release:          0%{?dist}
 License:          BSD
 Group:            Development/Libraries
@@ -106,5 +109,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.9.0-0
+- [Core] Switched from culprit to transaction for automatic transaction
+  reporting
+- [CI] Removed py3.3 from build
+- [Django] resolved an issue where the log integration would override the user
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.8.0-0
+- [Core] Fixed DSNs without secrets not sending events
+- [Core] Added lazy import for pkg_resources
+- [Core] Added NamedTuple Serializer
+- [Sanic] Fixed sanic integration dependencies
+- [Django] Fixed sql hook bug
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.7.0-0
+- [Sanic] Added support for sanic
+- [Core] Disabled dill logger by default
+- [Core] Added SENTRY_NAME, SENTRY_ENVIRONMENT and SENTRY_RELEASE
+  environment variables
+- [Core] DSN secret is now optional
+- [Core] Added fix for cases with exceptions in repr
+- [core] Fixed bug with mutating record.data
+
 * Fri Mar 23 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.6.0-0
 - Initial build

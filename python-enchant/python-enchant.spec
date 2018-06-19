@@ -1,10 +1,6 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
-
-%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
-%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+%global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")
 
 ################################################################################
 
@@ -41,51 +37,47 @@
 
 ################################################################################
 
-%global pkgname certifi
+%global pkgname           enchant
+%define pypi_subpath      9e/54/04d88a59efa33fefb88133ceb638cdf754319030c28aadc5a379d82140ed
 
 ################################################################################
 
-Summary:            Python package for providing Mozilla's CA Bundle
-Name:               python34-%{pkgname}
-Version:            2018.04.16
+Summary:            Python bindings for Enchant spellchecking library
+Name:               python-%{pkgname}
+Version:            2.0.0
 Release:            0%{?dist}
-License:            MPLv2.0
-Group:              Development/Libraries
-URL:                https://github.com/certifi/python-certifi
+License:            LGPLv2+
+Group:              Development/Languages
+URL:                https://pypi.org/project/pyenchant/
 
-Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
+Source0:            https://pypi.python.org/packages/%{pypi_subpath}/py%{pkgname}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:          noarch
 
-BuildRequires:      python34-devel python34-setuptools
+BuildRequires:      python-setuptools python-devel enchant-devel
 
-Requires:           python34 ca-certificates
-
-Provides:           %{name} = %{version}-%{release}
+Provides:           PyEnchant = %{version}-%{release}
 
 ################################################################################
 
 %description
-Certifi is a carefully curated collection of Root Certificates for
-validating the trustworthiness of SSL certificates while verifying
-the identity of TLS hosts. It has been extracted from the Requests project.
+PyEnchant is a spellchecking library for Python, based on the Enchant
+library by Dom Lachowicz.
 
 ################################################################################
 
 %prep
-%setup -qn python-%{pkgname}-%{version}
-
-rm -rf %{pkgname}.egg-info
+%setup -qn pyenchant-%{version}
 
 %build
-%{__python3} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" python setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
+python setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
 
 %clean
 rm -rf %{buildroot}
@@ -94,35 +86,17 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE README.rst
-%{python3_sitelib}/*
+%doc LICENSE.txt README.txt TODO.txt
+%{python_sitelib}/*
 
 ################################################################################
 
 %changelog
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.04.16-0
-- Updated to latest release
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- Updated to latest stable release
 
-* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.01.18-0
-- Updated to latest release
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
+- Updated to latest stable release
 
-* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.11.05-0
-- Updated to latest release
-
-* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.07.27.1-0
-- Updated to latest release
-
-* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.04.17-0
-- Updated to latest release
-
-* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.01.23-0
-- Updated to latest release
-
-* Tue Dec 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-1
-- Added certificates bundle to package
-
-* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-0
-- Updated to latest release
-
-* Sun Sep 11 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.8.31-0
+* Tue Dec 13 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.8-0
 - Initial build for kaos repo

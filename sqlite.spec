@@ -1,12 +1,12 @@
 ################################################################################
 
-%define tarversion  3220000
+%define tarversion  3240000
 
 ################################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
-Version:            3.22.0
+Version:            3.24.0
 Release:            0%{?dist}
 License:            GPL
 Group:              Development/Tools
@@ -128,6 +128,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 3.24.0-0
+- Updated to latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.22.0-0
 - Updated to latest stable release
 

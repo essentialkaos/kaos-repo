@@ -1,6 +1,6 @@
 ################################################################################
 
-%global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 
 ################################################################################
 
@@ -52,7 +52,7 @@
 Summary:            Scalable, non-blocking web server and tools
 Name:               python-%{pkgname}
 Version:            4.5.3
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
 URL:                http://www.tornadoweb.org
@@ -61,11 +61,13 @@ Source0:            https://github.com/tornadoweb/%{pkgname}/archive/v%{version}
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      python-devel python-setuptools python-unittest2
+BuildRequires:      python-devel python-setuptools python-backports_abc
 BuildRequires:      python-backports-ssl_match_hostname gcc python >= 2.7
+BuildRequires:      python-singledispatch
 
-Requires:           python-backports-ssl_match_hostname
+Requires:           python-backports-ssl_match_hostname python-backports_abc
 Requires:           python-pycurl python-certifi python >= 2.7
+Requires:           python-singledispatch
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -113,7 +115,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc README.rst
-%{python_sitelib}/*
+%{python_sitearch}/*
 
 %files doc
 %defattr(-,root,root,-)
@@ -122,6 +124,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-1
+- Improved spec
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-0
 - Updated to latest version
 

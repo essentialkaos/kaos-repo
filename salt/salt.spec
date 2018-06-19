@@ -52,13 +52,13 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2017.7.3
-Release:          1%{?dist}
+Version:          2018.3.1
+Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
 
-Source0:          https://github.com/saltstack/%{name}/archive/v%{version}.tar.gz
+Source0:          https://github.com/saltstack/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source1:          %{name}.sysconfig
 Source2:          %{name}-master.init
 Source3:          %{name}-syndic.init
@@ -434,6 +434,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.1-0
+- Updated to 2018.3.1
+
 * Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2017.7.3-1
 - Updated to 2017.7.3
 - Rebuilt for Python 3.4 usage

@@ -34,7 +34,7 @@
 
 Summary:            Tool for installing and managing Python packages
 Name:               python-%{pkgname}
-Version:            9.0.1
+Version:            9.0.3
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -90,6 +90,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 9.0.3-0
+- Fix an error where the vendored requests was not correctly containing itself
+  to only the internal vendored prefix.
+- Restore compatibility with 2.6.
+
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 9.0.1-0
 - Correct the deprecation message when not specifying a --format so that it
   uses the correct setting name (format) rather than the incorrect one
@@ -114,21 +119,3 @@ rm -rf %{buildroot}
 * Sun Mar 20 2016 Gleb Goncharov <yum@gongled.ru> - 8.1.1-0
 - Fix regression with non-ascii requirement files on Python 2 and add support
   for encoding headers in requirement files.
-
-* Wed Jan 22 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
-- Updated to latest stable release
-
-* Tue Jan 14 2014 Anton Novojilov <andy@essentialkaos.com> - 1.5-0
-- Updated to latest stable release
-
-* Mon Nov 18 2013 Anton Novojilov <andy@essentialkaos.com> - 1.4.1-0
-- Updated to latest stable release
-
-* Thu Apr 11 2013 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
-- Updated to latest stable release
-
-* Thu Apr 11 2013 Anton Novojilov <andy@essentialkaos.com> - 1.3-0
-- Updated to latest stable release
-
-* Fri Jun 29 2012 Anton Novojilov <andy@essentialkaos.com> - 1.1-0
-- Updated to latest stable release

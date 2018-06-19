@@ -1,5 +1,9 @@
 ################################################################################
 
+%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+
+################################################################################
+
 %define package_name      elasticsearch
 %define source_name       %{package_name}-py
 
@@ -7,7 +11,7 @@
 
 Summary:        Python client for Elasticsearch 2.x
 Name:           python-%{package_name}
-Version:        6.1.1
+Version:        6.2.0
 Release:        0%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
@@ -54,6 +58,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.2.0-0
+- Updated to latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 6.1.1-0
 - Updated to latest stable release
 

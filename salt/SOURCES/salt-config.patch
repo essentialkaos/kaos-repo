@@ -1,6 +1,6 @@
-diff -urN salt-2017.7.1-orig/conf/cloud salt-2017.7.1/conf/cloud
---- salt-2017.7.1-orig/conf/cloud	2017-09-18 13:55:51.578449541 +0200
-+++ salt-2017.7.1/conf/cloud	2017-09-21 16:02:31.000000000 +0200
+diff -urN salt-2018.3.1-orig/conf/cloud salt-2018.3.1/conf/cloud
+--- salt-2018.3.1-orig/conf/cloud	2018-06-13 19:03:06.000000000 +0300
++++ salt-2018.3.1/conf/cloud	2018-06-19 15:53:59.000000000 +0300
 @@ -22,7 +22,7 @@
  
  # The location of the master log file
@@ -10,9 +10,9 @@ diff -urN salt-2017.7.1-orig/conf/cloud salt-2017.7.1/conf/cloud
  
  
  # The level of messages to send to the console.
-diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
---- salt-2017.7.1-orig/conf/master	2017-09-18 13:55:51.578449541 +0200
-+++ salt-2017.7.1/conf/master	2017-09-21 15:59:47.000000000 +0200
+diff -urN salt-2018.3.1-orig/conf/master salt-2018.3.1/conf/master
+--- salt-2018.3.1-orig/conf/master	2018-06-13 19:03:06.000000000 +0300
++++ salt-2018.3.1/conf/master	2018-06-19 15:57:13.000000000 +0300
 @@ -9,7 +9,7 @@
  # Per default, the master will automatically include all config files
  # from master.d/*.conf (master.d is a directory in the same directory
@@ -49,7 +49,7 @@ diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
  
  # Directory for custom modules. This directory can contain subdirectories for
  # each of Salt's module types such as "runners", "output", "wheel", "modules",
-@@ -121,7 +121,7 @@
+@@ -120,7 +120,7 @@
  #cli_summary: False
  
  # Set the directory used to hold unix sockets:
@@ -58,7 +58,7 @@ diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
  
  # The master can take a while to start up when lspci and/or dmidecode is used
  # to populate the grains for the master. Enable if you want to see GPU hardware
-@@ -474,7 +474,7 @@
+@@ -514,7 +514,7 @@
  #ssh_user: root
  
  # The log file of the salt-ssh command:
@@ -67,7 +67,7 @@ diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
  
  # Pass in minion option overrides that will be inserted into the SHIM for
  # salt-ssh calls. The local minion config is not used for salt-ssh. Can be
-@@ -640,7 +640,7 @@
+@@ -705,7 +705,7 @@
  #
  # Prior to changing this value, the master should be stopped and all Salt
  # caches should be cleared.
@@ -76,7 +76,7 @@ diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
  
  # The buffer size in the file server can be adjusted here:
  #file_buffer_size: 1048576
-@@ -981,10 +981,10 @@
+@@ -1061,10 +1061,10 @@
  #syndic_master_port: 4506
  
  # PID file of the syndic daemon:
@@ -89,7 +89,7 @@ diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
  
  # The behaviour of the multi-syndic when connection to a master of masters failed.
  # Can specify ``random`` (default) or ``ordered``. If set to ``random``, masters
-@@ -1069,8 +1069,8 @@
+@@ -1149,8 +1149,8 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  
@@ -100,9 +100,9 @@ diff -urN salt-2017.7.1-orig/conf/master salt-2017.7.1/conf/master
  
  # The level of messages to send to the console.
  # One of 'garbage', 'trace', 'debug', info', 'warning', 'error', 'critical'.
-diff -urN salt-2017.7.1-orig/conf/minion salt-2017.7.1/conf/minion
---- salt-2017.7.1-orig/conf/minion	2017-09-18 13:55:51.575449541 +0200
-+++ salt-2017.7.1/conf/minion	2017-09-21 16:00:18.000000000 +0200
+diff -urN salt-2018.3.1-orig/conf/minion salt-2018.3.1/conf/minion
+--- salt-2018.3.1-orig/conf/minion	2018-06-13 19:03:06.000000000 +0300
++++ salt-2018.3.1/conf/minion	2018-06-19 15:59:10.000000000 +0300
 @@ -9,7 +9,7 @@
  # Per default the minion will automatically include all config files
  # from minion.d/*.conf (minion.d is a directory in the same directory
@@ -157,7 +157,7 @@ diff -urN salt-2017.7.1-orig/conf/minion salt-2017.7.1/conf/minion
  
  # The Salt pillar is searched for locally if file_client is set to local. If
  # this is the case, and pillar data is defined, then the pillar_roots need to
-@@ -683,8 +683,8 @@
+@@ -716,8 +716,8 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #
@@ -168,10 +168,10 @@ diff -urN salt-2017.7.1-orig/conf/minion salt-2017.7.1/conf/minion
  
  # The level of messages to send to the console.
  # One of 'garbage', 'trace', 'debug', info', 'warning', 'error', 'critical'.
-diff -urN salt-2017.7.1-orig/conf/proxy salt-2017.7.1/conf/proxy
---- salt-2017.7.1-orig/conf/proxy	2017-09-18 13:55:51.576449541 +0200
-+++ salt-2017.7.1/conf/proxy	2017-09-21 16:03:06.000000000 +0200
-@@ -536,8 +536,8 @@
+diff -urN salt-2018.3.1-orig/conf/proxy salt-2018.3.1/conf/proxy
+--- salt-2018.3.1-orig/conf/proxy	2018-06-13 19:03:06.000000000 +0300
++++ salt-2018.3.1/conf/proxy	2018-06-19 15:59:45.000000000 +0300
+@@ -539,8 +539,8 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #

@@ -1,6 +1,10 @@
 ################################################################################
 
-%global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -38,17 +42,17 @@
 ################################################################################
 
 %global pkgname           enchant
-%define pypi_subpath      73/73/49f95fe636ab3deed0ef1e3b9087902413bcdf74ec00298c3059e660cfbb
+%define pypi_subpath      9e/54/04d88a59efa33fefb88133ceb638cdf754319030c28aadc5a379d82140ed
 
 ################################################################################
 
 Summary:            Python bindings for Enchant spellchecking library
-Name:               python-%{pkgname}
-Version:            1.6.8
+Name:               python34-%{pkgname}
+Version:            2.0.0
 Release:            0%{?dist}
 License:            LGPLv2+
 Group:              Development/Languages
-URL:                http://packages.python.org/pyenchant/
+URL:                https://pypi.org/project/pyenchant/
 
 Source0:            https://pypi.python.org/packages/%{pypi_subpath}/py%{pkgname}-%{version}.tar.gz
 
@@ -56,7 +60,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildArch:          noarch
 
-BuildRequires:      python-setuptools python-devel enchant-devel
+BuildRequires:      python34-setuptools python34-devel enchant-devel
 
 Provides:           PyEnchant = %{version}-%{release}
 
@@ -72,12 +76,12 @@ library by Dom Lachowicz.
 %setup -qn pyenchant-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" python setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
 
 %clean
 rm -rf %{buildroot}
@@ -87,10 +91,16 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc LICENSE.txt README.txt TODO.txt
-%{python_sitelib}/*
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- Updated to latest stable release
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
+- Updated to latest stable release
+
 * Tue Dec 13 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.8-0
 - Initial build for kaos repo

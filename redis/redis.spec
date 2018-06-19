@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.9
+Version:            4.0.10
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -260,6 +260,19 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.10-0
+- Important security issues related to the Lua scripting engine.
+- A bug with SCAN, SSCAN, HSCAN and ZSCAN, that may not return all the elements.
+  We also add a regression test that can trigger the issue often when present,
+  and may in theory be able to find unrelated regressions.
+- A PSYNC2 bug is fixed: Redis should not expire keys when saving RDB files
+  because otherwise it is no longer possible to use such RDB file as a base
+  for partial resynchronization. It no longer represents the right state.
+- Compatibility of AOF with RDB preamble when the RDB checksum is disabled.
+- Sentinel bug that in some cases prevented Sentinel to detect that the master
+  was down immediately. A delay was added to the detection.
+- Other minor issues.
+
 * Mon Jun 04 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.9-0
 - When AOF is enabled with the fsync policy set to "always", we have a
   (rarely used) setup where Redis fsyncs every new write on disk. On this

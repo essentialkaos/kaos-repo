@@ -1,6 +1,10 @@
 ################################################################################
 
-%global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -51,7 +55,7 @@
 
 Summary:            Scalable, non-blocking web server and tools
 Name:               python34-%{pkgname}
-Version:            4.5.3
+Version:            5.0.2
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Libraries
@@ -61,7 +65,7 @@ Source0:            https://github.com/tornadoweb/%{pkgname}/archive/v%{version}
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      python34-devel python-setuptools python34-unittest2
+BuildRequires:      python34-devel python-setuptools python34-backports_abc
 BuildRequires:      python34-backports-ssl_match_hostname python34 gcc
 
 Requires:           python34-backports-ssl_match_hostname
@@ -84,9 +88,9 @@ ideal for real-time web services.
 ################################################################################
 
 %package doc
-Summary:            Examples for python-tornado
+Summary:            Examples for python34-tornado
 Group:              Documentation
-Requires:           python-tornado = %{version}-%{release}
+Requires:           python34-tornado = %{version}-%{release}
 
 %description doc
 Tornado is an open source version of the scalable, non-blocking web
@@ -98,12 +102,12 @@ server and and tools. This package contains some example applications.
 %setup -qn %{pkgname}-%{version}
 
 %build
-python setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -113,7 +117,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc README.rst
-%{python_sitelib}/*
+%{python3_sitearch}/*
 
 %files doc
 %defattr(-,root,root,-)
@@ -122,5 +126,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
+- Updated to latest stable release
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
+- Updated to latest stable release
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
+- Updated to latest stable release
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-1
+- Improved spec
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-0
 - Rebuilt for Python 3.4
