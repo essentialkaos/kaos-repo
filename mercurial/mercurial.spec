@@ -11,7 +11,7 @@
 
 Summary:           Distributed source control management tool
 Name:              mercurial
-Version:           4.5.2
+Version:           4.6
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Development/Tools
@@ -24,7 +24,7 @@ Source3:           certs.rc
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     python python-devel python-docutils
+BuildRequires:     make gcc python python-devel python-docutils
 BuildRequires:     emacs-nox emacs-el pkgconfig gettext
 
 Requires:          python
@@ -166,6 +166,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.6-0
+- Updated to latest stable release
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.2-0
 - Updated to latest stable release
 

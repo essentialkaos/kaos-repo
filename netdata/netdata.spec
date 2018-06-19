@@ -54,7 +54,7 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.9.0
+Version:          1.10.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
@@ -185,6 +185,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
+- Updated to latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
 - Updated to latest stable release
 

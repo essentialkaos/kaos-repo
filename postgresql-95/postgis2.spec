@@ -42,7 +42,7 @@
 %{!?utils:%define utils 1}
 %{!?raster:%define raster 1}
 
-%define maj_ver           2.3
+%define maj_ver           2.4
 %define pg_maj_ver        95
 %define pg_low_fullver    9.5.0
 %define pg_dir            %{_prefix}/pgsql-9.5
@@ -56,7 +56,7 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL 9.5
 Name:              %{realname}2_%{pg_maj_ver}
-Version:           2.3.6
+Version:           2.4.4
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -265,6 +265,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.4-0
+- Updated to latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.6-0
 - Updated to latest stable release
 

@@ -35,7 +35,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.3
+Version:         1.2.4
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -45,8 +45,7 @@ Source0:         https://github.com/pyenv/%{name}/archive/v%{version}.tar.gz
 Source1:         %{name}.profile
 
 Patch0:          %{name}-default-root.patch
-Patch1:          %{name}-configure-sed.patch
-Patch2:          %{name}-hit-prefix-arrow.patch
+Patch1:          %{name}-hit-prefix-arrow.patch
 
 BuildRequires:   make gcc
 
@@ -82,7 +81,6 @@ from the source codes.
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 
@@ -132,6 +130,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.4-0
+- python-build: Add CPython 2.7.15
+- python-build: Add PyPy 6.0.0
+- python-build: Allow overriding HTTP client type based on environment variable
+  PYTHON_BUILD_HTTP_CLIENT
+- python-build: Use version-specific get-pip.py when installing 2.6 and 3.2
+- pyenv: Merge rbenv master
+- pyenv: Make pyenv-rehash safer for multiple processes
+
 * Wed Apr 04 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.3-0
 - python-build: Add CPython 3.6.5
 - python-build: Set openssl PKG_CONFIG_PATH for python 3.7

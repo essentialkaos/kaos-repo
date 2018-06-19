@@ -49,7 +49,7 @@
 
 Summary:          Monitoring system and time series database
 Name:             prometheus
-Version:          2.2.1
+Version:          2.3.0
 Release:          0%{?dist}
 Group:            Applications/Databases
 License:          ASL 2.0
@@ -201,6 +201,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- Updated to latest stable release
+
 * Tue Mar 27 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.2.1-0
 - Initial build
 
