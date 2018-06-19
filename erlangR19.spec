@@ -40,18 +40,18 @@
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           18
+%define ver_maj           19
 %define ver_min           3
 %define realname          erlang
 
-%define libre_ver         2.6.4
+%define libre_ver         2.7.4
 
 ################################################################################
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_min}
-Release:           2%{?dist}
+Release:           3%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -64,7 +64,7 @@ Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel zlib-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt zlib-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make
 
@@ -101,10 +101,8 @@ Requires:          %{name}-snmp = %{version}
 Requires:          %{name}-ssh = %{version}
 Requires:          %{name}-ssl = %{version}
 Requires:          %{name}-syntax_tools = %{version}
-Requires:          %{name}-test_server = %{version}
 Requires:          %{name}-tools = %{version}
 Requires:          %{name}-typer = %{version}
-Requires:          %{name}-webtool = %{version}
 Requires:          %{name}-xmerl = %{version}
 
 Provides:          %{name} = %{version}-%{release}
@@ -171,10 +169,8 @@ Requires: %{name}-snmp = %{version}
 Requires: %{name}-ssh = %{version}
 Requires: %{name}-ssl = %{version}
 Requires: %{name}-syntax_tools = %{version}
-Requires: %{name}-test_server = %{version}
 Requires: %{name}-tools = %{version}
 Requires: %{name}-typer = %{version}
-Requires: %{name}-webtool = %{version}
 Requires: %{name}-wx = %{version}
 Requires: %{name}-xmerl = %{version}
 
@@ -639,22 +635,6 @@ usage etc.
 
 ################################################################################
 
-%package -n %{name}-ose
-Summary:  A high-performance, POSIX compatible, multicore real-time operating system
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-ose
-A high-performance, POSIX compatible, multicore real-time operating system
-maximizing your hardware utilization.
-
-It is compact and robust, and powers embedded systems in wide-range of
-vertical markets from telecom to automotive to industrial automation and
-beyond.
-
-################################################################################
-
 %package -n %{name}-otp_mibs
 Summary:  Snmp management information base for Erlang
 License:  MPL
@@ -777,17 +757,6 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 
 ################################################################################
 
-%package -n %{name}-test_server
-Summary:  The OTP test sewrver for Erlang
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-test_server
-The OTP test sewrver for Erlang.
-
-################################################################################
-
 %package -n %{name}-tools
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
@@ -808,18 +777,6 @@ Requires: %{name}-base = %{version}-%{release}
 
 %description -n %{name}-typer
 A type annotator of Erlang code.
-
-################################################################################
-
-%package -n %{name}-webtool
-Summary:  Tool that simplifying the use of web based Erlang tools
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-webtool
-Erlang Module to configure,and start the webserver httpd and the various
-web based tools to Erlang/OTP.
 
 ################################################################################
 
@@ -944,7 +901,7 @@ popd
 # (tpg) remove not needed files
 rm -rf %{buildroot}%{_datadir}/COPYRIGHT
 rm -rf %{buildroot}%{_datadir}/PR.template
-rm -rf %{buildroot}%{_datadir}/README
+rm -rf %{buildroot}%{_datadir}/README.md
 
 # (tpg) remove this manpages as they conflicts with openssl
 rm -rf %{buildroot}%{_mandir}/man3/ssl.3.*
@@ -1138,10 +1095,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/os_mon-*
 
-%files -n %{name}-ose
-%defattr(-,root,root,-)
-%{elibdir}/ose-*
-
 %files -n %{name}-otp_mibs
 %defattr(-,root,root,-)
 %{elibdir}/otp_mibs-*
@@ -1182,10 +1135,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/syntax_tools-*
 
-%files -n %{name}-test_server
-%defattr(-,root,root,-)
-%{elibdir}/test_server-*
-
 %files -n %{name}-tools
 %defattr(-,root,root,-)
 %{elibdir}/tools-*
@@ -1194,10 +1143,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/typer-*
 %{_libdir}/%{realname}/bin/typer
-
-%files -n %{name}-webtool
-%defattr(-,root,root,-)
-%{elibdir}/webtool-*
 
 %files -n %{name}-wx
 %defattr(-,root,root,-)
@@ -1210,25 +1155,24 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 18.3-2
+* Wed Jun 20 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-3
+- LibreSSL updated to 2.7.4
+
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-2
 - Using GCC from devtoolset-3 for build
 
-* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 18.3-1
+* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-1
 - Rebuilt with EC support
 - Rebuilt with statically linked LibreSSL
 
-* Tue Mar 22 2016 Anton Novojilov <andy@essentialkaos.com> - 18.3-0
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.3-0
 - Updated to latest stable release
 
-* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 18.2.1-0
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.2-0
 - Updated to latest stable release
 
-* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 18.1-0
+* Fri Sep 23 2016 Anton Novojilov <andy@essentialkaos.com> - 19.1-0
 - Updated to latest stable release
 
-* Mon Jul 20 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0
-- Fixed bug with crypto module
-- Fixed wrong dependencies in stack package
-
-* Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 18-0
+* Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 19-0
 - Initial build
