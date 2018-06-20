@@ -38,7 +38,7 @@
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
-Version:           1.3.10.1
+Version:           1.3.12
 Release:           0%{?dist}
 License:           GPL+
 Group:             System Environment/Daemons
@@ -146,6 +146,20 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.12-0
+- TOS value to copy to the tunnel header
+- Fix for ENODEV (No such device) error with Linux kernel 4.15
+- Update xl2tpd.init
+- Fix version number and upload
+- Import wheezy changes
+
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.11-0
+- Build packages for Xenial by default
+- Bump d/compat to 9
+- Drop d/repack.sh script and refresh d/watch
+- Refresh d/control by partly sync'ing from Debian
+- Use HTTPS URL in d/copyright
+
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.10.1-0
 - Have max retries as a configuration
 - Add more into to "select timeout" debug message

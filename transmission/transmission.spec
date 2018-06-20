@@ -53,7 +53,7 @@
 
 Summary:            A lightweight GTK+ BitTorrent client
 Name:               transmission
-Version:            2.93
+Version:            2.94
 Release:            0%{?dist}
 License:            MIT and GPLv2
 Group:              Applications/Internet
@@ -275,5 +275,14 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 2.94-0
+- Fix building against LibreSSL
+- Fix building against mbedTLS
+- Fix torrents ETA calculation
+- Fix cross-compilation issues caused by miniupnpc configuration test
+- Fix bad downloaded percentage in DetailsDialog
+- Fix tracker error XSS in inspector
+- Fix torrent name HTML-escaping in trackers inspector tab
+
 * Sun Feb 11 2018 Gleb Goncharov <inbox@gongled.ru> - 2.93-0
 - Initial build

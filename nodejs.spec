@@ -32,8 +32,8 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            8.10.0
-Release:            1%{?dist}
+Version:            8.11.3
+Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                http://nodejs.org
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.11.3-0
+- Updated to latest stable release
+
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-1
 - Using GCC from devtoolset-3 for build
 

@@ -35,7 +35,7 @@
 
 Summary:           Timezone Updater Tool
 Name:              tzupdater
-Version:           2.1.1
+Version:           2.1.2
 Release:           0%{?dist}
 License:           http://www.oracle.com/technetwork/java/javasebusiness/downloads/tzupdater-lic-354297.txt
 Group:             Applications/Databases
@@ -88,14 +88,20 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.2-0
+- Updated the protocol used for connecting to IANA for downloading the latest
+  time-zone information to match recent changes in the IANA sites.
+- 'tzupdater.jar --version' fails to correctly display latest version
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
-- Updated to latest release
+- TZupdater failing with tzdata2016g release due to missing version information
 
 * Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
-- Updated to latest release
+- '-u' Option Removed. Use the '-l' option to update data.
+- The tzupdater.jar file is digitally signed.
 
 * Mon Mar 21 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.3-2015b
-- Updated to latest release
+- TZupdater not able to update with tzdata2016b release
 
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-2015a
 - Updated to latest release

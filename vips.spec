@@ -41,7 +41,7 @@
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           8.6.3
+Version:           8.6.4
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
@@ -156,6 +156,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.4-0
+- better fitting of fonts with overhanging edges
+- revise C++ example
+- strict round down on jpeg shrink on load
+- configure test for g++ 7.2 and composite.cpp
+- don't Ping in magickload, too unreliable
+- ensure WebP can add metadata when compiled with libwebpmux
+- improve accuracy of vector path convolution
+
 * Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.3-0
 - the 8.6.3-1 windows builds fix a crash in libz configuation
 - use pkg-config to find libjpeg, if we can

@@ -32,8 +32,8 @@
 
 ################################################################################
 
-%{?!with_python:      %global with_python      1}
-%{?!with_munin:       %global with_munin       1}
+%{?!with_python: %global with_python 1}
+%{?!with_munin: %global with_munin 1}
 
 %if 0%{with_python} == 1
 %if 0%{?rhel} <= 6
@@ -47,7 +47,7 @@
 
 Summary:            Validating, recursive, and caching DNS(SEC) resolver
 Name:               unbound
-Version:            1.7.0
+Version:            1.7.2
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Daemons
@@ -399,6 +399,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
+- Updated to latest stable release
+
 * Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Updated to latest stable release
 

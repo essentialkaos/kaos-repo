@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.6
+Version:              3.4.10
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -972,6 +972,272 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.10-0
+- fixed PHP 7.2 error message in the Monitoring->Latest data page
+- fixed "Undefined index: master_itemid" and SQL errors in item.update and
+  itemprototypr.update methods; fixed updating of discovered items
+- fixed displaying of not monitored triggers in maps
+- fixed "Automatic icon selection" checkbox not working and displaying two icons
+  at once in map constructor
+- fixed {ESC.HISTORY} and action log not to display colon without target host
+  when executed on Zabbix server
+- fixed error messages when configuring an existing item to have an update
+  interval
+- removed error message for when user has defined media but all of them are
+  disabled
+- fixed possible deadlock in history syncer when housekeeper is deleting events
+- fixed session expiration when changing default authentication method
+- fixed action not being cloned due to existing operation id being submitted
+- fixed map tree widget border color
+- fixed decoding of Unicode characters in JSON
+- fixed "undefined index: acknowledges" error on problems page
+- fixed subfilter entries with long names going off the screen
+- fixed filter being partially reset when using pagination in availability
+  report page
+- fixed in popup window being allowed to select applications from different
+  hosts when editing item mass update form
+- fixed host availability stuck in unknown state after proxy changes
+- fixed duplication of prefix "/" for second parameter "path" in items
+  "web.page.*"
+- fixed validation of "max_depth" in "vfs.dir.size" for agent
+
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.9-0
+- fixed trigger level correlation when multiple tags are set
+- fixed possible crash in the function "web.page.get" of Zabbix Agentd
+- fixed persistent xss in map navigation tree widget
+- fixed persistent xss vulnerability in services
+- fixed multiple javascript memory leaks
+- fixed proxy lastaccess update on 32-bit Zabbix server
+- fixed selection of web items in the "Plain text" screen element
+- fixed CRLF injection in Zabbix Agentd
+- fixed comparison of two large float numbers in expressions
+- fixed incorrect parsing of BITS data type in SNMP response
+- fixed potential shared memory leak when item is removed
+- fixed parsing of the operator "not" in trigger expression
+- fixed trigger recovery expression for 'High error rate' trigger
+- fixed trigger expression for 'Link down' trigger
+- increased command line limit for proc.num checks on hp-ux systems
+- fixed problem duration on trigger page being calculated incorrectly
+- fixed data types passed to is_ushort() for converting PID, port and process
+  number
+- fixed displaying of floating point values under the "Latest data" page
+- fixed unnecessary data getting when agent becomes available in the
+  non-collection data period
+- fixed maintenance entries displayed in list when filter is applied
+- improved configure script to check iconv library
+- added notification in zabbix server log about 'error' in elasticsearch json
+  response
+- fixed multiselect items not being sorted by name
+- fixed autoregistration, discovery and internal notifications not being sent
+  due to uninitialized severity
+- changed ping script to return success also for timeouts
+- fixed slide show refresh interval multiplier menu not working
+- added maximum record limit to old session removal in housekeeper
+- fixed undefined index in user edit form
+- fixed dynamic widget searching for item key in item prototypes
+- fixed fractional values in triggers being misinterpreted without a leading 0
+- fixed incorrectly displayed pie graph when first item has no data
+- fixed undefined index in pie charts
+- fixed checkbox selector in problems table
+- fixed crash when Zabbix process cannot connect to preprocessing service
+- fixed blinking in the problem widget
+- fixed acknowledge notifications being visible in the event popup
+- fixed missing graph after faulty graph edit form submission
+
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.8-0
+- implemented the widget configuration fields clearing when changing the type
+- implemented maximum size for graphs in widgets
+- enabled Hebrew translation to be displayed by default
+- updated Chinese (China), Czech, English (United States), French, German,
+  Hebrew, Japanese, Korean, Russian, Turkish, Ukrainian translations
+- fixed http steps on template not inheriting hosts application setting
+- fixed wrong variables order in translatable error message
+- fixed trigger based actions having a default "not in maintenance" condition
+- improved a history syncer when backend elasticsearch is not available
+- fixed agent crashes when using regex with 'Log' item for Mac OSX
+- fixed lld rules not always saving their state/error message changes
+- fixed regression that resulted in slow history data queries on partitioned
+  tables
+- added possibility to select web items as master items and improved copying of
+  dependent items to destination hosts and templates
+- fixed undefined index message changing Action "Acknowledgment operations"
+  from "Remote command" to "Notify all involved"
+- fixed undefined index in API call
+- removed "recovery" property from action.get API method response
+- fixed displaying of Problem/Recovery time
+- fixed server and proxy compilation problem for Solaris 10
+- fixed resolving of the macros in map labels for non-superadmin users
+- fixed widget placeholder jumping instead of resizing while dashboard edit
+- fixed potentially wrong rows deleting by housekeeper in PostgreSQL
+- fixed linked trigger is moved to sibling map element
+- fixed trigger-based event correlation - suspend creation of event if no
+  problems are recovered by it
+- improved deallocation of memory
+- fixed pie graphs displaying incorrect data
+- fixed JS error and wrong form behaviour when changing item type, type of
+  information, data type
+- fixed display of the latest item in Audit log
+- fixed trigger name readability on map in dark theme
+- fixed HTML5 placeholder color that previously appeared like actual input data
+- improved OpenSSL error messages
+- fixed inconsistent number on map navigation tree
+- fixed "Inaccessible user" in Dashboard System status widgets acknowledgement
+  popup
+- fixed description of "Server" and "ServerActive" configuration options
+- added frontend error message when templates cannot be linked to LLD host
+- fixed incorrect trigger dependencies being set after copying triggers to
+  multiple hosts; thanks to Kotaro Miyashita for the patch
+- fixed incorrect ordering the list of triggers after saving a map
+- fixed content does not fit dialog window
+- fixed successful items mass update with invalid update interval
+- fixed order by query in frontend Maintenance tab
+- fixed partial updating in maintenance.update
+- banned using of mutex in threads of metrics collection
+- fixed error message of function parameters parse
+- fixed configure script for Debian GNU/Linux "buster" and "sid" to work with
+  PostgreSQL
+- fixed long name of map outside go back button in map widget
+- fixed undefined index error in map import
+- fixed daily and yearly notification reports not including current day/last
+  day of leap-year
+- added optional MySQL upgrade patch for "problem" table to drop redundant index
+  after another index that can be used to enforce the foreign key constraint has
+  been created
+- fixed Elasticsearch history storage default value types
+- fixed checkbox overlay's position over the checkbox
+- fixed translations of Widget parameters window
+- fixed field trapper_hosts to optional for trapper item.create
+- fixed map scaling and position to the widget left side
+- fixed poor performance of changing an item on the template which linked with
+  many hosts
+- fixed invalid value for "Update interval" field in mass update form on submit
+  was redirecting to items list
+
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.7-0
+- allowed proxy to execute remote commands on agents using encrypted connection
+- fixed crashes in case of failures (e.g. timeouts) during VMware hypervisor
+  discovery
+- fixed performance of map.get API method and map-related views
+- fixed compilation failure in Alpine Linux due to missing res_ninit() function
+- fixed incorrect processing of zabbix[wcache,value,*] internal check
+- added limitation for meaningless server reconnection attempts to incorrectly
+  configured passive proxy
+- fixed vfs.dir.size with symbol links on Windows
+- improved error log message in case Zabbix server database cannot be used due
+  to empty "users" table
+- fixed memory leak which breaks vfs.fs.size, vfs.fs.inode and vfs.dir.size
+  items if compiled with LeakSanitizer
+- fixed truncated multiline text values from network discovery SNMP checks
+- fixed last trends update clock caching
+- fixed trend.get() method with Oracle backend
+- fixed graphs duplication in graph preview
+- fixed problems with DNS resolver interface on NetBSD
+- removed SID from URL in screen edit mode
+- added support of \0 matching group for regsub and iregsub methods
+- eliminated race condition that caused history collection for newly created
+  items to start before preprocecessing steps finished syncing
+- fixed Zabbix proxy not to generate high network traffic when server does not
+  accept data
+- fixed image ghosting for mass update of map elements
+- fixed processing of command line arguments which are longer than 2KB for
+  proc.num and proc.mem items on AIX
+
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.6-0
+- fixed compatibility issue with Elasticsearch versions starting from 6.0
+- fixed latest data host group filter
+- removed 'empty' button in trigger selection window for map constructor item
+  modal form
+- fixed Low-level discovery of dependent items not working after being edited
+  and resulting in undefined offset error or foreign key constraint violation
+- fixed 'skip' parameter behaviour for log[], log.count[], logrt[],
+  logrt.count[] items in case log files initially do not exist
+- fixed losing the 1st record by log[] and logrt[] items if 'skip' parameter
+  is used and log file initially is empty
+- fixed slow housekeeping of events on MySQL
+- fixed IP fragmentation handling in Zabbix server response to Zabbix proxy
+- fixed Java gateway compilation without libpcre
+- removed default values for "active_since" and "active_till" fields in
+  maintenance.create API method
+- fixed default selection of the required host permissions radio in the global
+  scripts form
+- fixed slow housekeeping of events due to missing index on foreign key
+- fixed color and label for event status on event details page
+- fixed spelling of Elasticsearch
+- fixed memory leak on Zabbix server when executing remote commands through
+  proxy
+- fixed ipc_path value in error message
+
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.5-0
+- fixed compilation problem with old curl version for Elasticsearch support
+- fixed problem when items might be synced without preprocessing steps if they
+  were created during configuration cache synchronization
+- fixed sort param logic for elasticseach
+- fixed possibility of endless loop during unrecoverable database error; fixed
+  incomplete handling of database error
+- fixed database configuration error reporting and message filtering when
+  messages are received from clear_messages function
+- fixed last item value retrieval errors in history manager
+- fixed empty host filter when adding dependent trigger in trigger edit form
+- fixed parsing "request" parameter for URLs without input parameters
+- fixed possibility that proxy last access updates are lost during cache reload
+- fixed possible crash in history syncer when processing deleted item
+- fixed cookie http-only attribute to prevent XSS attacks
+- fixed reflected XSS vulnerability in popup forms
+- fixed permissions check in script execution form
+- fixed check for permissions to enable/disable actions
+- performed network templates cleanup
+- fixed TLS connection to passive proxy error handling
+- fixed overflow property of svg
+- fixed logic of commit/rollback operations
+- fixed incomplete data in notification reports for yearly report types
+- fixed alert error message visibility to unrelated users
+- improved VMware event log data collection and processing
+- relieved windows agent of dependency on MFC
+- fixed missed url search part in request login parameter
+- added --with-libpcre-lib configure option
+- fixed undefined index when setting strict-transport-security http header
+- fixed error causing empty list in popup window when opened from page having
+  host group filter
+- fixed percentile visibility in dashboard graph widgets
+- added filter on event details page to show messages sent to users only from
+  same groups
+- fixed memory leak in preprocessing manager
+- fixed mysql m4 configuration script for mariadb C connector
+- fixed retaining the scrollbar position on page reload
+- fixed multiselect not showing results for read-only objects in screen
+  configuration
+- fixed warning message shown by deprecated PHP 7.2 function create_function()
+- fixed max length validation in textarea fields
+- fixed floating range validation during conversion from uint64 to float
+- fixed possibility of foreign key constraint failure due to events being
+  removed before trigger data storage period expires
+- fixed potentially incorrect delete procedure for problems and events
+- fixed zabbix[java,,ping] to stay supported when java gateway is down
+- improved performance of DB patch for updating data in the alerts table
+- fixed possibility of host availability being stuck in unknown state when
+  monitoring though proxy
+- fixed Zabbix proxy not to send same host availability more than once
+- fixed incorrect trigger dependency calculation when processing dependent
+  triggers in the same history syncer batch
+- fixed inheritance of template properties in web scenarios
+- fixed translation string on administration general housekeeping page
+- added missing key "vfs.dir.size" for active agent in item edit form
+- fixed wrong default value for host filter when adding dependent trigger in
+  trigger edit form
+- fixed possibility to select triggers with same name in multiselect
+- added missing fields to webscenario data handling
+- fixed displaying highest severity when dashboard filter options contain
+  unacknowledged only
+- fixed CPU guest time utilization accounting in Linux
+- improved performance of preprocessor manager, alert manager/worker, IPMI
+  manager/poller by reducing frequency of log rotation checks that handle
+  stdout/stderr
+- improved SQL performance by updating proxy last access in bulks
+- added check for collisions and unsupported characters in macro names in
+  jmx.discovery
+- fixed processing of alerts when related event is removed
+- fixed compilation warnings
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.4-0
 - added service sorting by name if multiple services has same 'sortorder' value
 - added Windows service configuration check to determine if service can be
