@@ -44,14 +44,14 @@
 %define ver_min           3
 %define realname          erlang
 
-%define libre_ver         2.7.4
+%define libre_ver         2.6.4
 
 ################################################################################
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_min}
-Release:           2%{?dist}
+Release:           1%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -1119,9 +1119,6 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Wed Jun 20 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-2
-- LibreSSL updated to 2.7.4
-
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-1
 - Using GCC from devtoolset-3 for build
 
