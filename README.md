@@ -1,4 +1,4 @@
-## ESSENTIAL KAOS Public YUM Repository
+<p align="center"><a href="#readme"><img src="https://gh.kaos.st/kaos-repo.svg"/></a></p>
 
 This repository contains spec files and patches used for building RPM packages for [ESSENTIAL KAOS Public YUM Repository](https://yum.kaos.st).
 
