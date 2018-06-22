@@ -1,0 +1,9 @@
+/var/log/prometheus-nodeexporter/*.log {
+    weekly
+    rotate 8
+    copytruncate
+    delaycompress
+    compress
+    notifempty
+    missingok
+}
