@@ -30,7 +30,7 @@ kv.readSysconfig
 
 binary="${BINARY:-/usr/bin/prometheus-nodeexporter}"
 user="${USER:-nodeexporter}"
-options="${NODEEXPORTER_OPTS}"
+options="${NODE_EXPORTER_OPTS}"
 
 kv[user]="$user"
 kv[pid_dir]="/var/run/prometheus-nodeexporter"
