@@ -187,7 +187,6 @@ fi
 %endif
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-%attr(755, %{service_user}, %{service_group}) %{_logdir}/%{name}
 
 ################################################################################
 
