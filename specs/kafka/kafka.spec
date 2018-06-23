@@ -163,6 +163,9 @@ pushd core/build/distributions/%{name}_%{major_version}-%{version}
   mv config %{buildroot}%{_opt}/%{name}
 popd
 
+# Remove Windows scripts
+rm -rf %{_opt}/%{name}/bin/windows
+
 %clean
 rm -rf %{buildroot}
 
