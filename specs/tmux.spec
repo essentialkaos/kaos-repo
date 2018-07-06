@@ -6,7 +6,7 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              2.6
+Version:              2.7
 Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
@@ -64,6 +64,39 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7-0
+- Remove EVENT_- variables from environment on platforms where tmux uses them
+  so they do not pass on to panes.
+- Fixes for hooks at server exit.
+- Remove SGR 10 (was equivalent to SGR 0 but no other terminal seems to do
+  this).
+- Expand formats in window and session names.
+- Add -Z flag to choose-tree, choose-client, choose-buffer to automatically
+  zoom the pane when the mode is entered and unzoom when it exits, assuming the
+  pane is not already zoomed. This is now part of the default key bindings.
+- Add C-g to exit modes with emacs keys.
+- Add exit-empty option to exit server if no sessions (defaults to on).
+- Show if a filter is present in choose modes.
+- Add pipe-pane -I to to connect stdin of the child process.
+- Performance improvements for reflow.
+- Use RGB terminfo(5) capability to detect RGB colour terminals (the existing
+  Tc extension remains unchanged).
+- Support for ISO colon-separated SGR sequences.
+- Add select-layout -E to spread panes out evenly (bound to E key).
+- Support wide characters properly when reflowing.
+- Pass PWD to new panes as a hint to shells, as well as calling chdir().
+- Performance improvements for the various choose modes.
+- Only show first member of session groups in tree mode (-G flag to choose-tree
+  to show all).
+- Support %%else in config files to match %%if.
+- Fix "kind" terminfo(5) capability to be S-Down not S-Up.
+- Add a box around the preview label in tree mode.
+- Show exit status and time in the remain-on-exit pane text.
+- Correctly use pane-base-index in tree mode.
+- Change the allow-rename option default to off.
+- Support for xterm(1) title stack escape sequences.
+- Correctly remove padding cells to fix a UTF-8 display problem
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6-0
 - Add select-pane -T to set pane title.
 - Fix memory leak when lines with BCE are removed from history.

@@ -35,7 +35,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.4
+Version:         1.2.5
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -130,6 +130,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.5-0
+- python-build: Add CPython 3.7.0
+- python-build: Add micropython 1.9.4
+- python-build: Add anaconda[23]-5.2.0
+- pyenv: Fix seq(1) is not available on OpenBSD
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.4-0
 - python-build: Add CPython 2.7.15
 - python-build: Add PyPy 6.0.0

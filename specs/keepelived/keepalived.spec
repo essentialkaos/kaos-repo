@@ -45,7 +45,7 @@
 
 Name:              keepalived
 Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           2.0.3
+Version:           2.0.5
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://www.keepalived.org
@@ -185,6 +185,71 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.5-0
+- Update config-test option so keepalived exits with status 1 on failure.
+- Fix config write of virtual server group ip addresses.
+- Document default and default6 for virtual/static route destinations.
+- Cancel read thread on send sockets when closing.
+  Commit 4297f0a - "Add options to set vrrp socket receive buffer sizes"
+  added reading on vrrp send sockets to stop receive queues building up
+  on some 3.x kernels. The commit didn't cancel the read thread on the
+  send sockets when the socket was closed, causing several thousand
+  log writes. This commit cancels the read thread.
+- Exit with status 1 if config check fails, and fix terminating when
+  reading send sockets.
+- Stop segfaulting when receive a packet (fixing commit 97aec76).
+  Commit 97aec76 - "Update config-test option so keepalived exits
+  with status 1 on failure" had a test for __test_bit(CONFIG_TEST_BIT)
+  the wrong way round. This commit fixes that.
+- Don't assume rpm is available.
+- Only allow vrrp_rx_bufs_policy NO_SEND_RX if have IP_MULTICAST_ALL.
+- Improve setting up virtual/real servers with virtual server groups.
+  When setting up virtual servers defined by virtual server groups,
+  keepalived was getting confused between fwmarks and ip addresses.
+  This still needs further work, but the setting up of virtual/real
+  servers now works.
+- Fix setting up and deletion of virtual servers with groups
+  Virtual server entries in virtual server groups can be used
+  by multiple virtual_server entries. This commit ensures that
+  virtual servers are not deleted until the last virtual_server
+  instance using the virtual server is removed.
+- Allocate vrrp send buffer during vrrp_complete_instance()
+  Issue #926 identified a segfault. The vrrp send buffer was not being
+  allocated early enough, and was being accessed before being allocated
+  if the checksum algorithm needed updating.
+- Fix vrrp v3 with unicast and IPv4.
+  The checksum calculations were happening in the wrong way, with the
+  wrong data. This commit sorts all that out.
+- Don't set effective priority to 254 when specify dont_track_primary.
+- Make csum_incremental_update16/32 inline.
+- Add --enable-optimise=LEVEL configure option.
+- Remove debug message left in configure.ac from adding --enable-optimise.
+- Fix compiling on CentOS 6.
+  Issue #932 identified that keepalived would not compile on CentOS 6.
+  The problem is that kernel header file linux/rtnetlink.h needs
+  sys/socket.h to be included before linux/rtnetlink.h when using old
+  (e.g. 2.6) kernel headers.
+- Another fix to listening on send socket.
+  Commit 4297f0a - "Add options to set vrrp socket receive buffer sizes"
+  added reading on vrrp send sockets to stop receive queues building up
+  on some 3.x kernels. The commit didn't save the new thread in
+  sock->thread_out when it was added for reading in vrrp_write_fd_read_thread.
+  It now does so.
+
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.4-0
+- Make vmac_xmit_base work for IPv6 instances.
+  Issue #917 identified that for IPv6 even when vmac_xmit_base was
+  configured, the adverts were being sent from the vmac interface.
+  This commit makes the packets be sent from the underlying interface
+  when vmac_xmit_base is configured.
+- Handle vmac_xmit_base when interfaces are recreated.
+- Add -t config-test option.
+  Issue #389 has received increasing support to add a configuration
+  validation option. This commit adds the -t/--commit-test option
+  to report any detected configururation errors and exit.
+  Errors are logged to the system log by default, but use of the -g
+  and -G options can make the errors be logged to files.
+
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.3-0
 - Fix building with --disables-routes configure option.
 - Fix some compiler warnings on Travis-CI.

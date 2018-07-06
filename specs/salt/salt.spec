@@ -52,7 +52,7 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2018.3.1
+Version:          2018.3.2
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -434,6 +434,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.2-0
+- Updated to 2018.3.2
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.1-0
 - Updated to 2018.3.1
 

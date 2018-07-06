@@ -2,15 +2,13 @@
 
 Summary:         A C library for parsing and emitting YAML
 Name:            libyaml
-Version:         0.1.7
+Version:         0.2.1
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
 URL:             http://pyyaml.org/wiki/LibYAML
 
 Source0:         http://pyyaml.org/download/%{name}/yaml-%{version}.tar.gz
-
-Patch0:          https://github.com/yaml/libyaml/commit/abaf719330e742d80c7295c6943fe14c31ec83bd.diff
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -41,8 +39,6 @@ developing applications that use LibYAML.
 
 %prep
 %setup -qn yaml-%{version}
-
-%patch0 -p1
 
 %build
 %configure
@@ -78,11 +74,14 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc doc/html
 %{_libdir}/%{name}*.so
-%{_libdir}/pkgconfig/yaml-0.1.pc
+%{_libdir}/pkgconfig/*.pc
 %{_includedir}/yaml.h
 
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 0.2.1-0
+- Updated to latest release
+
 * Tue Nov 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.7-0
 - Initial build for kaos repo
