@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.9
+Version:           1.8.12
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -292,6 +292,57 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.12-0
+- BUG/MAJOR: stick_table: Complete incomplete SEGV fix
+- MINOR: stick-tables: make stktable_release() do nothing on NULL
+
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.11-0
+- BUG/MAJOR: Stick-tables crash with segfault when the key is not in the
+  stick-table
+- BUG/BUILD: threads: unbreak build without threads
+
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.10-0
+- BUG/MINOR: lua: Socket.send threw runtime error: 'close' needs 1 arguments.
+- BUG/MEDIUM: spoe: Flags are not encoded in network order
+- BUG/MEDIUM: contrib/mod_defender: Use network order to encode/decode flags
+- BUG/MEDIUM: contrib/modsecurity: Use network order to encode/decode flags
+- BUG/MINOR: ssl/lua: prevent lua from affecting automatic maxconn computation
+- BUG/MEDIUM: cache: don't cache when an Authorization header is present
+- BUG/MEDIUM: dns: Delay the attempt to run a DNS resolution on check failure.
+- BUG/BUILD: threads: unbreak build without threads
+- BUG/BUILD: fd: fix typo causing a warning when threads are disabled
+- BUG/MEDIUM: fd: Only check update_mask against all_threads_mask.
+- BUG/MEDIUM: servers: Add srv_addr default placeholder to the state file
+- BUG/MEDIUM: lua/socket: Length required read doesn't work
+- BUG/MEDIUM: stick-tables: Decrement ref_cnt in table_* converters
+- BUG/MEDIUM: spoe: Return an error when the wrong ACK is received in sync mode
+- MINOR: task/notification: Is notifications registered ?
+- BUG/MEDIUM: lua/socket: wrong scheduling for sockets
+- BUG/MAJOR: lua: Dead lock with sockets
+- BUG/MEDIUM: lua/socket: Notification error
+- BUG/MEDIUM: lua/socket: Sheduling error on write: may dead-lock
+- BUG/MEDIUM: lua/socket: Buffer error, may segfault
+- MAJOR: spoe: upgrade the SPOP version to 2.0 and remove the support for 1.0
+- BUG/MINOR: contrib/spoa_example: Don't reset the status code during disconnect
+- BUG/MINOR: contrib/mod_defender: Don't reset the status code during disconnect
+- BUG/MINOR: contrib/modsecurity: Don't reset the status code during disconnect
+- BUG/MINOR: contrib/mod_defender: update pointer on the end of the frame
+- BUG/MINOR: contrib/modsecurity: update pointer on the end of the frame
+- DOC: SPOE.txt: fix a typo
+- DOC: contrib/modsecurity: few typo fixes
+- BUG/MINOR: unix: Make sure we can transfer abns sockets on seamless reload.
+- BUG/MEDIUM: threads: handle signal queue only in thread 0
+- BUG/MINOR: don't ignore SIG{BUS,FPE,ILL,SEGV} during signal processing
+- BUG/MINOR: signals: ha_sigmask macro for multithreading
+- MINOR: lua: Increase debug information
+- BUG/MAJOR: map: fix a segfault when using http-request set-map
+- BUG/MINOR: lua: Segfaults with wrong usage of types.
+- BUG/MAJOR: ssl: Random crash with cipherlist capture
+- BUG/MAJOR: ssl: OpenSSL context is stored in non-reserved memory slot
+- BUG/MEDIUM: fd: Don't modify the update_mask in fd_dodelete().
+- BUG/MEDIUM: threads: Use the sync point to check active jobs and exit
+- MINOR: threads: Be sure to remove threads from all_threads_mask on exit
+
 * Sat Jun 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.9-0
 - BUG/MINOR: pattern: Add a missing HA_SPIN_INIT() in pat_ref_newid()
 - BUG/MAJOR: channel: Fix crash when trying to read from a closed socket

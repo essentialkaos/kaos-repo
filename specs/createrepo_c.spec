@@ -44,7 +44,7 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.10.0
+Version:            0.11.0
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
@@ -170,6 +170,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.0-0
+- Updated to 0.11.0
+
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0-0
 - Updated to 0.10.0
 

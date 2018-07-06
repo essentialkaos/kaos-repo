@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.5.4
+Version:              2.6.1
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -117,6 +117,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
+- Updated to latest version
+
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 2.5.4-0
 - Updated to latest version
 
