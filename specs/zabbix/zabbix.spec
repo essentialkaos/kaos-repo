@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.10
+Version:              3.4.11
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -972,6 +972,26 @@ fi
 ################################################################################
 
 %changelog
+* Sun Jul 08 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.11-0
+- added and enabled Norwegian translation to be displayed by default
+- updated English (United States), French, Hebrew, Japanese,
+  Portuguese (Brazil), Russian, Ukrainian translations; thanks to Zabbix
+  translators
+- fixed the functions 'net.if.*' for Solaris with empty 64 bits counters
+- fixed media type a required password field successfully passing validation
+  while being empty and prevented auto-filling stored passwords by browser
+- improved "Server" parameter description in Zabbix agent configuration file
+- reverted ZBX-13788 fix because of broken server-proxy compatibility between
+  minor versions
+- fixed logrt[] item to analyze log file from start if no log files match and
+  no log files were seen before
+- fixed discovered host status update if it was down and a service was
+  discovered on that host
+- fixed "proc.num" and "proc.mem" items calculation of values when zabbix_agentd
+  called in test mode
+- fixed use of initialized variable during application discovery
+- improved "vmware.hv.datastore.size" through usage the performance counters
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.10-0
 - fixed PHP 7.2 error message in the Monitoring->Latest data page
 - fixed "Undefined index: master_itemid" and SQL errors in item.update and
