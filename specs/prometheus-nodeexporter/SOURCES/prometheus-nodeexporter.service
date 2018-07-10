@@ -1,0 +1,20 @@
+# -*- mode: conf -*-
+
+[Unit]
+Description=Prometheus Node Exporter
+Documentation=https://github.com/prometheus/node_exporter
+After=network.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/prometheus-nodeexporter
+User=nodeexporter
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=prometheus-nodeexporter
+ExecStart=/usr/bin/prometheus-nodeexporter \
+          $NODE_EXPORTER_OPTS
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

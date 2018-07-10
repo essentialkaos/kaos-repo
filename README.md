@@ -1,4 +1,4 @@
-## ESSENTIAL KAOS Public YUM Repository
+<p align="center"><a href="#readme"><img src="https://gh.kaos.st/kaos-repo.svg"/></a></p>
 
 This repository contains spec files and patches used for building RPM packages for [ESSENTIAL KAOS Public YUM Repository](https://yum.kaos.st).
 
@@ -22,12 +22,12 @@ For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) an
 [sudo] yum install -y epel-release centos-release-scl
 ```
 
-### [Perfecto](https://github.com/essentialkaos/perfecto) Check Status
+### [_perfecto_](https://github.com/essentialkaos/perfecto) Check Status
 
-| Branch | Status |
-|------------|--------|
-| `master` | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=master)](https://travis-ci.org/essentialkaos/kaos-repo) |
-| `develop` | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=develop)](https://travis-ci.org/essentialkaos/kaos-repo) |
+| Branch                 | Status |
+|------------------------|--------|
+| `master` (_Stable_)    | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=master)](https://travis-ci.org/essentialkaos/kaos-repo) |
+| `develop` (_Unstable_) | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=develop)](https://travis-ci.org/essentialkaos/kaos-repo) |
 
 ### License
 

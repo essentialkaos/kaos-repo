@@ -9,7 +9,7 @@ main() {
 
   local has_errors
 
-  for spec in $(find . -name '*.spec' | sort) ; do
+  for spec in $(find specs -name '*.spec' | sort) ; do
     ./perfecto -f tiny -c "$1" "$spec"
 
     if [[ $? -ne 0 ]] ; then
