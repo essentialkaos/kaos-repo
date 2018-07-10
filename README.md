@@ -22,12 +22,12 @@ For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) an
 [sudo] yum install -y epel-release centos-release-scl
 ```
 
-### [Perfecto](https://github.com/essentialkaos/perfecto) Check Status
+### [_perfecto_](https://github.com/essentialkaos/perfecto) Check Status
 
-| Branch | Status |
-|------------|--------|
-| `master` | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=master)](https://travis-ci.org/essentialkaos/kaos-repo) |
-| `develop` | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=develop)](https://travis-ci.org/essentialkaos/kaos-repo) |
+| Branch                 | Status |
+|------------------------|--------|
+| `master` (_Stable_)    | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=master)](https://travis-ci.org/essentialkaos/kaos-repo) |
+| `develop` (_Unstable_) | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=develop)](https://travis-ci.org/essentialkaos/kaos-repo) |
 
 ### License
 
