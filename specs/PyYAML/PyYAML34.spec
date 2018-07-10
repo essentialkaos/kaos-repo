@@ -13,7 +13,7 @@
 Summary:         YAML parser and emitter for Python
 Name:            python34-PyYAML
 Version:         3.12
-Release:         0%{?dist}
+Release:         1%{?dist}
 Group:           Development/Libraries
 License:         MIT
 URL:             http://pyyaml.org/wiki/PyYAML
@@ -22,7 +22,8 @@ Source0:         http://pyyaml.org/download/pyyaml/%{pkgname}-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc python34-devel python34-setuptools libyaml-devel
+BuildRequires:   gcc python34-devel python34-setuptools
+BuildRequires:   libyaml-devel >= 0.2.1
 
 Requires:        python34
 
@@ -70,5 +71,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jul 10 2018 Anton Novojilov <andy@essentialkaos.com> - 3.12-1
+- Rebuilt with libyaml 0.2.1
+
 * Tue Nov 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.12-0
 - Initial build for kaos repo
