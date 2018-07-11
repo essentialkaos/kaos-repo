@@ -53,7 +53,7 @@
 Summary:          A parallel remote execution system
 Name:             salt
 Version:          2018.3.2
-Release:          0%{?dist}
+Release:          1%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
@@ -80,16 +80,18 @@ BuildArch:        noarch
 BuildRequires:    python34-devel git
 BuildRequires:    python34-crypto python34-jinja2 python34-msgpack
 BuildRequires:    python34-pip python34-zmq python34-PyYAML python34-requests
-BuildRequires:    python34-mock python34-tornado python34-zmq
+BuildRequires:    python34-mock python34-zmq
 BuildRequires:    python34-requests python34-six python34-backports_abc
 BuildRequires:    python34-backports-ssl_match_hostname
+BuildRequires:    python34-tornado < 5.0
 
 Requires:         dmidecode pciutils which yum-utils
 Requires:         python34 python34-crypto python34-jinja2 python34-msgpack
 Requires:         python34-zmq python34-PyYAML python34-requests
-Requires:         python34-libcloud python34-six python34-tornado
+Requires:         python34-libcloud python34-six
 Requires:         python34-backports_abc python34-markupsafe
 Requires:         python34-backports-ssl_match_hostname
+Requires:         python34-tornado < 5.0
 
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 Requires:         kaosv >= 2.15
@@ -434,6 +436,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jul 11 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.2-1
+- Fixed supported versions of python-tornado
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.2-0
 - Updated to 2018.3.2
 
