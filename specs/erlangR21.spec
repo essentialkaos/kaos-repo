@@ -43,8 +43,8 @@
 %define ver_maj           21
 %define ver_min           0
 %define ver_patch         4
-%define ver_suffix        0.4
-%define ver_string        21.%{ver_suffix}
+%define ver_suffix        %{ver_min}.%{ver_patch}
+%define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
 %define libre_ver         2.7.4

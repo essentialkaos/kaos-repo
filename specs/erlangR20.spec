@@ -43,8 +43,8 @@
 %define ver_maj           20
 %define ver_min           3
 %define ver_patch         8.3
-%define ver_suffix        3.8.3
-%define ver_string        20.%{ver_suffix}
+%define ver_suffix        %{ver_min}.%{ver_patch}
+%define ver_string        %{ver_maj}.%{ver_suffix}
 
 %define realname          erlang
 
