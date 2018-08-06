@@ -84,7 +84,7 @@ echo %{version} > .dist-version
 %build
 
 ./autogen
-%configure
+%configure --disable-static
 %{__make} CFLAGS="%{optflags}" %{?_smp_mflags} \
      libdir=%{_libdir} \
      usrlibdir=%{_libdir} \
@@ -97,6 +97,9 @@ rm -rf %{buildroot}
      usrlibdir=%{_libdir} \
      exec_prefix=%{_prefix} \
      DESTDIR=%{buildroot}
+
+find %{buildroot}%{_libdir} -name '*.a' -delete
+find %{buildroot}%{_libdir} -name '*.la' -delete
 
 %clean
 rm -rf %{buildroot}
@@ -112,15 +115,13 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README COPYING TODO
+%{_libdir}/%{name}.so
 %{_libdir}/%{name}.so.0*
 
 %files devel
 %defattr(-,root,root)
 %doc README COPYING TODO
 %{_includedir}/*
-%{_libdir}/%{name}.a
-%{_libdir}/%{name}-ctor.a
-%{_libdir}/%{name}.la
 %{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/pkgconfig/%{name}-*.pc
 %{_mandir}/man3/*.gz
