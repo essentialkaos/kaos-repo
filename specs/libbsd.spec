@@ -69,11 +69,11 @@ code over and over again on each project.
 
 %package devel
 Requires:       %{name} = %{version}
-Summary:        Header files and static libraries for libbsd package
+Summary:        Header files and shared libraries for libbsd package
 Group:          Development/Libraries
 
 %description devel
-Header files and static libraries for libbsd package.
+Header files and shared libraries for libbsd package.
 
 ################################################################################
 
