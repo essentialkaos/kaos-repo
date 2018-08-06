@@ -118,7 +118,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc README COPYING TODO
 %{_includedir}/*
-%{_libdir}/%{name}.so
 %{_libdir}/%{name}.a
 %{_libdir}/%{name}-ctor.a
 %{_libdir}/%{name}.la
