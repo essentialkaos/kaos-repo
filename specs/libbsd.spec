@@ -124,8 +124,8 @@ rm -rf %{buildroot}
 %{_includedir}/*
 %{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/pkgconfig/%{name}-*.pc
-%{_mandir}/man3/*.gz
-%{_mandir}/man7/*.gz
+%{_mandir}/man3/*
+%{_mandir}/man7/*
 
 ################################################################################
 
