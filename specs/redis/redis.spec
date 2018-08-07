@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.10
+Version:            4.0.11
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -260,6 +260,19 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.11-0
+- The disconnection time between the master and slave was reset in an
+  incorrect place, sometimes a good slave will not be able to failover
+  because it claims it was disconnected for too much time from the master.
+- A replication bug, rare to trigger but non impossible, is in Redis for
+  years. It was lately discovered at Redis Labs and fixed by Oran Agra.
+  It may cause disconnections, desynchronizations and other issues.
+- RANDOMKEY may go in infinite loop on rare situations. Now fixed.
+- EXISTS now works in a more consistent way on slaves.
+- Sentinel: backport of an option to deny a potential security problem
+  when the SENTINEL command is used to configure an arbitrary script
+  to execute.
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.10-0
 - Important security issues related to the Lua scripting engine.
 - A bug with SCAN, SSCAN, HSCAN and ZSCAN, that may not return all the elements.

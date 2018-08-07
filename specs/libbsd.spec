@@ -53,7 +53,7 @@ Source0:         https://gitlab.freedesktop.org/%{name}/%{name}/-/archive/%{vers
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc gcc-c++ automake libtool autoconf
+BuildRequires:   make gcc gcc-c++ automake libtool autoconf >= 2.67
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -82,7 +82,6 @@ Header files for libbsd package.
 echo %{version} > .dist-version
 
 %build
-
 ./autogen
 %configure --disable-static
 %{__make} CFLAGS="%{optflags}" %{?_smp_mflags} \
