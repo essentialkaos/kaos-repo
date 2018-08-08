@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.60.0
+Version:              7.61.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,103 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.61.0-0
+- getinfo: add microsecond precise timers for seven intervals
+- curl: show headers in bold, switch off with --no-styled-output
+- httpauth: add support for Bearer tokens
+- Add CURLOPT_TLS13_CIPHERS and CURLOPT_PROXY_TLS13_CIPHERS
+- curl: --tls13-ciphers and --proxy-tls13-ciphers
+- Add CURLOPT_DISALLOW_USERNAME_IN_URL
+- curl: --disallow-username-in-url
+- CVE-2018-0500: smtp: fix SMTP send buffer overflow
+- schannel: disable client cert option if APIs not available
+- schannel: disable manual verify if APIs not available
+- tests/libtest/Makefile: Do not unconditionally add gcc-specific flags
+- openssl: acknowledge --tls-max for default version too
+- stub_gssapi: fix 'unused parameter' warnings
+- examples/progressfunc: make it build on both new and old libcurls
+- docs: mention it is HA Proxy protocol "version 1"
+- curl_fnmatch: only allow two asterisks for matching
+- docs: clarify CURLOPT_HTTPGET
+- configure: replace a AC_TRY_RUN with CURL_RUN_IFELSE
+- configure: do compile-time SIZEOF checks instead of run-time
+- checksrc: make sure sizeof() is used *with* parentheses
+- CURLOPT_ACCEPT_ENCODING.3: add brotli and clarify a bit
+- schannel: make CAinfo parsing resilient to CR/LF
+- tftp: make sure error is zero terminated before printfing it
+- http resume: skip body if http code 416 (range error) is ignored
+- configure: add basic test of --with-ssl prefix
+- cmake: set -d postfix for debug builds
+- multi: provide a socket to wait for in Curl_protocol_getsock
+- content_encoding: handle zlib versions too old for Z_BLOCK
+- winbuild: only delete OUTFILE if it exists
+- winbuild: In MakefileBuild.vc fix typo DISTDIR->DIRDIST
+- schannel: add failf calls for client certificate failures
+- cmake: Fix the test for fsetxattr and strerror_r
+- curl.1: Fix cmdline-opts reference errors
+- cmdline-opts/gen.pl: warn if mutexes: or see-also: list non-existing options
+- cmake: check for getpwuid_r
+- configure: fix ssh2 linking when built with a static mbedtls
+- psl: use latest psl and refresh it periodically
+- fnmatch: insist on escaped bracket to match
+- KNOWN_BUGS: restore text regarding #2101
+- INSTALL: LDFLAGS=-Wl,-R/usr/local/ssl/lib
+- configure: override AR_FLAGS to silence warning
+- os400: implement mime api EBCDIC wrappers
+- curl.rc: embed manifest for correct Windows version detection
+- strictness: correct {infof, failf} format specifiers
+- tests: update .gitignore for libtests
+- configure: check for declaration of getpwuid_r
+- fnmatch: use the system one if available
+- CURLOPT_RESOLVE: always purge old entry first
+- multi: remove a potentially bad DEBUGF()
+- curl_addrinfo: use same #ifdef conditions in source as header
+- build: remove the Borland specific makefiles
+- axTLS: not considered fit for use
+- cmdline-opts/cert-type.d: mention "p12" as a recognized type
+- system.h: add support for IBM xlc C compiler
+- tests/libtest: Add lib1521 to nodist_SOURCES
+- mk-ca-bundle.pl: leave certificate name untouched
+- boringssl + schannel: undef X509_NAME in lib/schannel.h
+- openssl: assume engine support in 1.0.1 or later
+- cppcheck: fix warnings
+- test 46: make test pass after year 2025
+- schannel: support selecting ciphers
+- Curl_debug: remove dead printhost code
+- test 1455: unflakified
+- Curl_init_do: handle NULL connection pointer passed in
+- progress: remove a set of unused defines
+- mk-ca-bundle.pl: make -u delete certdata.txt if found not changed
+- GOVERNANCE.md: explains how this project is run
+- configure: use pkg-config for c-ares detection
+- configure: enhance ability to build with static openssl
+- maketgz: fix sed issues on OSX
+- multi: fix memory leak when stopped during name resolve
+- CURLOPT_INTERFACE.3: interface names not supported on Windows
+- url: fix dangling conn->data pointer
+- cmake: allow multiple SSL backends
+- system.h: fix for gcc on 32 bit OpenServer
+- ConnectionExists: make sure conn->data is set when "taking" a connection
+- multi: fix crash due to dangling entry in connect-pending list
+- CURLOPT_SSL_VERIFYPEER.3: Add performance note
+- netrc: use a larger buffer to support longer passwords
+- url: check Curl_conncache_add_conn return code
+- configure: Add dependent libraries after crypto
+- easy_perform: faster local name resolves by using *multi_timeout()
+- getnameinfo: not used, removed all configure checks
+- travis: add a build using the synchronous name resolver
+- CURLINFO_TLS_SSL_PTR.3: improve the example
+- openssl: allow TLS 1.3 by default
+- openssl: make the requested TLS version the *minimum* wanted
+- openssl: Remove some dead code
+- telnet: fix clang warnings
+- DEPRECATE: new doc describing planned item removals
+- example/crawler.c: simple crawler based on libxml2
+- libssh: goto DISCONNECT state on error, not SESSION_FREE
+- CMake: Remove unused functions
+- darwinssl: allow High Sierra users to build the code using GCC
+- scripts: include _curl as part of CLEANFILES
+
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.60.0-0
 - Add CURLOPT_HAPROXYPROTOCOL, support for the HAProxy PROXY protocol
 - Add --haproxy-protocol for the command line tool
