@@ -26,11 +26,13 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.7.2
+Version:            1.7.3
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -63,7 +65,9 @@ fault-tolerant, non-stop applications with hot code swapping.
 LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags}
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 LC_ALL="en_US.UTF-8" %{__make} test
+%endif
 
 %install
 rm -rf %{buildroot}
@@ -92,7 +96,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Aug 27 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
+- Updated to latest version
+
 * Wed Aug 22 2018 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.7.2-0
+- Updated to latest version
+
+* Wed Aug 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
+- Updated to latest version
+
+* Wed Aug 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Updated to latest version
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.6-0
