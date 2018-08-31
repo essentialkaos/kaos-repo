@@ -54,13 +54,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.10
+%global go_api 1.11
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.10.3
+Version:           1.11
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages

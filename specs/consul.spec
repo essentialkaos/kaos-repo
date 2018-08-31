@@ -6,7 +6,7 @@
 
 Summary:         Tool for service discovery, monitoring and configuration
 Name:            consul
-Version:         1.2.0
+Version:         1.2.2
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MPLv2
@@ -70,6 +70,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
+- Updated to latest stable release
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
 - Updated to latest stable release
 

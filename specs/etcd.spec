@@ -11,7 +11,7 @@
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.3.8
+Version:         3.3.9
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
@@ -87,6 +87,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.9-0
+- Updated to latest stable release
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.8-0
 - Updated to latest stable release
 

@@ -1,5 +1,13 @@
 ################################################################################
 
+%global __python3 %{_bindir}/python3
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -44,11 +52,11 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.11.0
+Version:            0.11.1
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
-URL:                https://github.com/Tojaj/createrepo_c
+URL:                https://github.com/rpm-software-management/createrepo_c
 
 Source0:            https://github.com/rpm-software-management/%{name}/archive/%{version}.tar.gz
 
@@ -57,7 +65,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel
-BuildRequires:      rpm-devel >= 4.8.0-28
+BuildRequires:      rpm-devel >= 4.8.0-28 python34-devel python34-libs
 
 Requires:           rpm >= 4.8.0-28
 Requires:           %{name}-libs =  %{version}-%{release}
@@ -99,13 +107,16 @@ These development files are for easy manipulation with a repodata.
 
 ################################################################################
 
-%package -n python-%{name}
+%package -n python34-%{name}
 
 Summary:            Python bindings for the createrepo_c library
 Group:              Development/Languages
+
+Requires:           python34
+
 Requires:           %{name} = %{version}-%{release}
 
-%description -n python-%{name}
+%description -n python34-%{name}
 Python bindings for the createrepo_c library.
 
 ################################################################################
@@ -144,12 +155,12 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc README.md COPYING AUTHORS
-%config %{_sysconfdir}/bash_completion.d/createrepo_c.bash
 %{_mandir}/man8/*.8.*
 %{_bindir}/createrepo_c
 %{_bindir}/mergerepo_c
 %{_bindir}/modifyrepo_c
 %{_bindir}/sqliterepo_c
+%{_datadir}/bash-completion/completions/*
 
 %files libs
 %defattr(-,root,root,-)
@@ -163,13 +174,16 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/createrepo_c.pc
 %{_includedir}/createrepo_c/*
 
-%files -n python-%{name}
+%files -n python34-%{name}
 %defattr(-,root,root,-)
-%{python_sitearch}/createrepo_c/
+%{python3_sitearch}/createrepo_c/
 
 ################################################################################
 
 %changelog
+* Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.1-0
+- Updated to 0.11.1
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.0-0
 - Updated to 0.11.0
 
