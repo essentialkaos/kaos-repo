@@ -2,7 +2,7 @@
 
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.9.1
+Version:           1.9.3
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
@@ -53,6 +53,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
+- Add --exclude-lines (-E) which can exclude comments
+- Add --color-map so you can choose which colors to use for what
+- Allow highlighted characters to be bold
+- Support configuring git-icdiff with gitconfig
+- Don't choke on bad terminal sizes
+- Print proper error messages instead of raising exceptions
+- Allow the line numbers to be colorized
+- Add a LICENSE file
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
 - Handle files with CR characters better and add --strip-trailing-cr
 
