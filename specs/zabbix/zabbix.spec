@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.12
+Version:              3.4.13
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -972,6 +972,27 @@ fi
 ################################################################################
 
 %changelog
+* Thu Sep 13 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.13-0
+- replaced pcreposix library with pcre, lowered backtracking limit, fixed
+  libevent build issues
+- fixed vmware incorrect memory release
+- fixed vmware performance counter retrieval on installations with large
+  number of datastores
+- fixed memory leak in alert manager when connection to database was lost
+- renamed trigger functions by adding function name at the beginning and
+  removing the operator and "N" and placing operator in a separate field
+  allowing two new operators "<=" and ">=" for selection
+- fixed incorrect behavior of zbxregexp library when reusing latest regular
+  expression
+- fixed error message for invalid vmware endpoint
+- fixed trigger dependency link to the template instead of the host during the
+  discovery action
+- added "zone" parameter to proc.num[] item for Solaris
+- fixed typo in string: ouf, not out
+- fixed output of information about the error for expressions with functions of
+  triggers or calculated items
+- fixed several problems in displaying of X axis on the graphs
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.12-0
 - fixed the disk usage counters reading for ESX/ESXi hosts
 - fixed timeselector period used to select 'all' values of particular item
