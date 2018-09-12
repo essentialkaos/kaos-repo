@@ -41,7 +41,7 @@
 
 Summary:            Video Acceleration (VA) API for Linux
 Name:               %{realname}2
-Version:            2.1.0
+Version:            2.2.0
 Release:            0%{?dist}
 Group:              System Environment/Libraries
 License:            MIT
@@ -130,6 +130,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- Updated to latest stable release
+
 * Wed May 30 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-1
 - Added livba < 2 to conflicts
 

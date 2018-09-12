@@ -45,7 +45,7 @@
 
 Name:              keepalived
 Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           2.0.5
+Version:           2.0.7
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://www.keepalived.org
@@ -185,6 +185,342 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.7-0
+- Fix buffer overflow in extract_status_code().
+  Issue #960 identified that the buffer allocated for copying the
+  HTTP status code could overflow if the http response was corrupted.
+  This commit changes the way the status code is read, avoids copying
+  data, and also ensures that the status code is three digits long,
+  is non-negative and occurs on the first line of the response.
+- Some fixes for config-test.
+- Change ka_config_error() to report_config_error().
+- Read interface addresses when doing config-test.
+- Update documentation re garp_lower_prio_repeat.
+- Add comment re tracking routes with nexthops doesn't work.
+- Fix handling of default_interface
+  Issue #963 identified that default_interface wasn't being set
+  correctly. The problem was that the configuration was read by the
+  parent process, but the parent process doesn't know about the
+  system interfaces.
+  Fix commit makes the vrrp process set the default interface when
+  it starts.
+- Fix a segfault in checker process on reload
+  Issue #955 identified a segfault when keepalived reloads. This
+  was caused by attempting to set the receive buffer size on a
+  netlink socket that was not open. It now only attempts to set
+  buffer sizes on the netlink sockets that are open.
+- Use report_config_error() in check_parser.c.
+- Don't run a sublevel close handler on a skipped configuration block
+  If a configuration block was skipped due to an error, the configuration
+  read won't be valid and may not even exist, so make sure the sublevel
+  end handler isn't run.
+  An example is if a virtual_server block is skipped, then the sublevel
+  end handler would have run against the previous (if any) virtual_server,
+  and if there hadn't been a previous virtual_server block it could
+  segfault.
+- Tidy up use of inet_stosockaddr.
+- Add more error checking to read_timer() and its uses.
+- Add validation of lvs_sched.
+- Use report_config_error() in checker parsers
+  Thwese should have been included in commit ead70947 -
+  "Update config-test".
+- Add stronger validation of numeric fields
+  Issue #955 identified that invalid parameters in advert_int, delay_loop,
+  lb_algo/lvs_sched, lb_kind/lvs_method, quorum, ip_family, virtual_server
+  and real_server ports, weights and connect_timeout were not being reported.
+  This commit will now report any errors in those fields, and a number of
+  other fields.
+- Improve parsing of virtual_router_id.
+- Allow virtual server ports not to be specified
+  If the service is persistent, a "wild-card" port can be used.
+- Prepend WARNING to read_int/unsigned/double messages if not rejecting
+  read_int()/read_unsigned()/read_double() can output log messages if
+  the syntax is invalid but the configuration is being accepted, e.g.
+  parsing 12zyx will return 12 if _STRICT_CONFIG_ is not defined. In
+  this case we want to indicate that the entry is not valid, but we
+  are still processing it, so prepend the error message with WARNING.
+- Improve parsing of virtual server group address ranges
+  An address range of 10.9.8.7-10.9.8.15 was parsed as 10.9.8.7-10
+  and no error was reported, although someone might have expected
+  that this would mean 10.9.8.7-15.
+  keepalived will now report a configuration warning, and if
+  keepalived is configured with --enable-strict-config-checks the
+  configuration will be rejected.
+- Restore original string in inet_stosockaddr()
+  If there was a '-' or a '/' after the address, the string was modified
+  to terminate at that point. This commit now restores the original string.
+- Allow keepalived to run with --config-test when live instance running.
+- Report errors for invalid smtp_server.
+- Remove inet_stom() - it was not used
+  inet_stom used atoi which is unsafe. Since the function was not used,
+  it has been simply removed.
+- Rename read_(int|unsigned|double) read_(int|unsigned|double)_strvec
+  Want to be able to have equivalent functions just being passed a string,
+  so rename the functions using strvec to be explicit about that.
+- Fix config dump for vrrp_garp_lower_prio_delay.
+- Fix config dump of vrrp garp_refresh.
+- Make config dump write fraction part of vrrp preempt delay.
+- Simplify config dump of garp/gna_interval.
+- dd config dump for VRRP/checker/BFD realtime_priority/limit.
+- Ensure structure fully initialised for sched_setscheduler.
+- Make set_process_dont_swap() and set_process_priority() static functions.
+- Minimise time when keepalived runs with realtime priority
+  keepalived shouldn't use realtime priority when it is loading or
+  reloading configurations, so delay setting realtime priorities, and
+  revert to stardard scheduling when terminating or reloading.
+- Report user/system CPU time used when exit with detailed logging.
+- Make default rlimit_rtime 10000 microseconds
+  The previous default of 1000 microseconds was insufficient
+- Stop using atoi for readong configuration weight.
+- Make read_unsigned, read_int, read_double for parsing strings
+  These functions are analogous to read_unsigned_strvec, read_int_strvec
+  and read_double_strvec, but take strings as the parameter rather than
+  a strvec.
+- Stop using atoi for parsing mask of ip addresses.
+- Stop using atoi for reading VRID in Dbus code.
+- Stop using atoi for reading vrrp debug level, and add to conf dump.
+- Stop using atoi for parsing garp_refresh.
+- Stop using atoi for parsing preempt_delay.
+- Stop using atoi for parsing garp_lower_prio_repeat.
+- Stop using atoi for parsing vrrp script rise.
+- Stop using atoi for parsing vrrp script fall.
+- Stop using atoi for parsing garp_interval/gna_interval
+- Stop using atoi for parsing smtp status code
+- Stop using atoi for parsing realtime scheduling priority
+- Stop using atoi for parsing process priorities
+- Stop using atoi for parsing global garp/gna_interval
+- top using atoi for parsing genhash port number
+- Stop using atoi for parsing tcp_server port number
+- Stop using atoi for parsing command line log facility.
+- update documentation to show range of bfd weights
+- Ensure read_unsigned() detects negative numbers.
+- Stop using atoi to parse HTTP_GET status code.
+- Stop using atoi to parse checker port numbers.
+- Use read_unsigned() for domain/inet_stosockaddr port.
+- Make read_unsigned_strvec() recognise minus sign after spaces
+  It is possible have a word read from the configuration start with
+  spaces it is is enclosed in quotes, which are then removed, but
+  the leading spaces aren't removed.
+- Make get_u8()/get_u16()/get_u32() use read_unsigned().
+- Make get_u64() properly detect -ve numbers.
+- Make get_time_rtt() properly detect -ve numbers.
+- Make get_addr64() handle whitespace properly and disallow '-' signs
+  Skip leading whitespace, don't allow embedded whitespace, and don't
+  allow minus signs.
+- Make get_addr64() and parse_mpls_address handle whitespace
+- Change more log_message() to report_config_error() in vrrp_iproute.c.
+- Improve use of strtoul() in rttables.c.
+- Implement get_u64() in same way as get_u8() etc.
+- Fix print format specifier in read_unsigned_base
+- Correct error message for garp_master_refresh
+- Remove \n from error message.
+- Allow round trip time to be UINT32_MAX
+- Change mix_rx to min_rx for bfd_instance in documentation.
+- Make bfd_parser use read_unsigned_strvec() etc rather than strtoul().
+- Fix config dump for BFD instance timers.
+- Fix handling of ip rule ipproto option.
+- Add read_unsigned_base_strvec() to allow number base to be specified
+  This requires renaming static functions read_int_int() etc to
+  read_int_base() etc.
+- Minimise and improve use of strtoul() etc in parsing ip rules.
+- Use read_int_strvec() for vrrp_version.
+- Use read_int_strvec() instead of strtol() in vrrp_parser.c.
+- Use read_int_strvec() instead of strtol() etc in check_parser.c.
+- Use read_int_strvec() instead of strtol() etc in check_data.c.
+- Improve strtoul handling for '--log_facility' command line option.
+- Add documentation for lvs_timeouts config option.
+- Allow vrrp garp_delay to be 0 in accordance with documentation.
+- Use read_int_strvec() instead of strtol() etc in global_parser.c.
+- Corret end of line detection in genhash.
+- Improve genhash command line parsing use of strtoul.
+- Replace CHECKER_VALUE_INT with read_unsigned_strvec due to use of strtoul.
+- Remove CHECKER_VALUE_UINT definition since no longer used.
+- Add conditional compilation around variable not always used.
+- Only read interfaces in VRRP process.
+- Enable --config-test to work with BFD configuration.
+- Only add garp_delay_t's to interfaces used by VRRP instances
+  There is no point allocating a garp_delay_t to an interface that
+  isn't used by a VRRP instance, so this commit make keepalived only
+  allocate garp_delay_t scructures to the used interfaces.
+  In addition, when the configuration is dumped, list the interfaces
+  relevant to each garp_delay_t.
+- Add logging command line options if keepalived segfaults.
+- Don't free tcp checker data field on exit, since not used.
+- Report configuration file line numbers when errors
+  Following the recent series of commits for better validation of
+  the configuration, and the move to reporting all configuration
+  errors through report_config_error(), it is now feasible to report
+  the configuration file line number on when the error occurs.
+- Rationalise error messages when reading configuration
+  Now that configuration file line numbers are reported, the error
+  messages can be simplified since the context doesn't need to be
+  given in the detail as before.
+- Return NULL rather than false as a pointer in parser.c
+- Fix an infinite loop when parsing certain parameter substitutions
+  If a multiline definition had text after the '=' sign, keepalived
+  would loop.
+- Fix a multiline parameter substitution having a replacement on 1st line
+  If a multiline parameter definition had a replaceable parameter or a
+  definition on the first non-blank line, it wasn't being handled. This commit
+  ensures that replaceable parameters/definitions on the first line are
+  handled correctly.
+- Add logging command line options when keepalived starts.
+- Change some log_message() to report_config_error() in vrrp_sync.c.
+- Improve handling of select() returning an error
+  If select returned an error, the code was processing the returned
+  timeout and fds as though they were valid. This commits logs an
+  error the first time, sleeps for 1 second if it is a programming
+  error, and then sets up the select call again.
+- Remove DBG() statement left over in previous commit.
+- improve doc spelling.
+- Add mh scheduler for LVS
+  This is similar to the sh scheduler. Options are the same but we
+  duplicate everything. An alternative would have been to reuse the
+  names for the sh scheduler.
+  The mh scheduler is supported starting from Linux 4.18. It's a
+  consistent hash scheduler.
+- manpage update and re-visited.
+  keepalived.conf.5 be considered as THE exhaustive source of information
+  in order to configure Keepalived. This documenation is supported and
+  maintained by Keepalived Core-Team.
+- Fix errors in KEEPALIVED-MIB.txt
+  Commit 181858d - "Add mh scheduler for LVS" introduced a couple
+  of formatting errors, and didn't update the revision date.
+- Some SNMP library handling improvements.
+- Stop bfd -> vrrp pipe read timing out
+  There is no need for a timeout on reading the pipe, so set the
+  timeout to TIMER_NEVER.
+- manpage updates
+  Update manpage to make html convertion easy. This manpage is now
+  sitting in documentation tab of Keepalived website.
+- Update libnl_link.c
+  SegFault when launch with dynamic LIBNL because of loading symbol
+  from wrong library.
+- Fix building rpm package and instructions
+  Issue #977 identified that the instructions in the INSTALL file
+  were incorrect.
+- Adds regex pattern matching for HTTP_GET and SSL_GET.
+- Remove pcre build tests from Travis-CI
+  Travis-CI environments are too old to support libpcre2, so we have
+  to remove it.
+- Fix #980: coredump on start when logfile cannot be accessed.
+- Don't loop forever if configuration has unknown replaceable parameter.
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.6-0
+- Fix genhash digest calculation. The bracketting in HASH_UPDATE was wrong.
+- Bring keepalived(8) man page up to date.
+- Fix segfault when IPVS_DEST_ATTR_ADDR_FAMILY not defined.
+  Issue #938 identified a segfault on the checker process when using
+  CentOS/RHEL 6. It turned out that conditional compilation check
+  for IPVS_DEST_ATTR_ADDR_FAMILY was not being handled correctly.
+- Don't create a link-local address for vmac when vmac_xmit_base is set
+  Since commit 18ec95add483 ("Make vmac_xmit_base work for IPv6
+  instances") VRRP advertisements are sent from the base interface and not
+  from the vmac interface when vmac_xmit_base is set.
+  Therefore, there is no need to configure a link-local address on the
+  vmac interface. This also means that we don't need to regenerate a
+  link-local address for the vmac if the link-local address was removed
+  from the base interface, or inherit a link-local address in case one was
+  configured on the base interface.
+- Fix setting i/f params on a bridge underlying i/f of a VMAC
+  Issue #944 identified that when the underlying interface of a VMAC
+  interface was a bridge, keepalived was failing to set arp_ignore and
+  arp_filter in the underlying bridge interface. The problem appears to
+  lie in the libnl3 library. The description of the problem given in the
+  issue report was:
+    Problem is that ifi_family is set to AF_BRIDGE, whereas it should be set
+    to AF_UNSPEC. The kernel function that handles RTM_SETLINK messages for
+  AF_BRIDGE doesn't know how to process the IFLA_AF_SPEC attribute.
+  This commit stops using libnl3 for setting/clearing arp_ignore and
+  arp_filter, and directly constructs the netlink messages in keepalived.
+- Use RTM_NEWLINK rather than RTM_SETLINK for setting i/f options
+  libnl3 uses RTM_NEWLINK rather than RTM_SETLINK for setting
+  interface options when ifi_family is AF_UNSPEC, so update commit
+  9b2b2c9 - "Fix setting i/f params on a bridge underlying i/f of
+  a VMAC" to do likewise.
+- Fix creating VMACs on 2.6.32 and earlier kernels
+  RTM_NEWLINK didn't support specifying interface by name until
+  Linux 2.6.33, and if using an earlier kernel, the netlink call
+  failed. This meant that the VMAC was not enabled.
+- Fix setting arp_ignore and arp_filter on bridge interfaces.
+- Add diagnostic message if vrrp script time out and kill fails.
+- Fix compile errors and warnings when building with --enable-debug.
+- Don't do md5 check unless configured.
+- In http_handle_response() combine fetched_url and url
+  fetched_url and url always pointed to the same url, so only use
+  one variable.
+- Store and handle HTTP_GET digest in binary form
+  Configured digests were being stored in character string form, and
+  the calculated digests were converted to strings. This commit now
+  handles digests as fixed length binary data, and validates the
+  configured digests to make sure they are valid hex strings with
+  the correct length.
+- Add support for quote and escape handling of notify and other scripts.
+  Notify and other scripts need to be able to be configured with embedded
+  spaces, quotes and special characters for the command and the parameters.
+  This commit adds that ability.
+- When checking script file path, only replace name part if same file.
+  Some executables are in the filesystem as symbolic links, and alter
+  their functionality based on the file part of the name. This was being
+  incorrectly handled by keepalived, which now checks whether a file exists
+  using the original name, and it it does whether it is the same file.
+- Remove cmd_str from notify_script_t
+  The cmd_str string (sort of) duplicated what was in the args array
+  of a notify_script_t, but was not always accurate. With the removal
+  of cmd_str, whenever it needs to be output, the string is now
+  generated from the args array, so accurately reflects what is
+  actually executed.
+- Add quoting and escaping for script configuration, and other minor changes.
+- Use vsyslog() if available instead of syslog().
+- Report virtual server as well as real server when config dump checker.
+- Only report IP_MULTICAST_ALL unset for IPv4 sockets
+  Commit 6fb5980 - "Stop receive message queues not being read on send
+  sockets" added a warning if data was received on vrrp send sockets, since
+  setting IP_MULTICAST_ALL should stop packets being received, but older
+  kernels still queued packets.
+  It has now been discovered the IP_MULTICAST_ALL (of course) only applies
+  to IPv4 and so the warning only makes sense for IPv4 sockets.
+  I haven't been able to find a way to stop IPv6 multicast packets being
+  received on the send socket. It appears that if any socket adds an IPv6
+  multicast group on an interface, then any raw socket using that interface
+  will recieve all enabled multicast packets, and the receive socket has to
+  add the multicast group.
+- Properly stop packets being queued on vrrp send sockets
+  Commit 6fb5980 - "Stop receive message queues not being read on
+  send sockets" did stop messages building up on the receive queue
+  of vrrp send sockets, but it wasn't an ideal solution, and it also
+  made the assumption that the problem was only occurring due to
+  multicast packets not being filtered when IP_MULTICAST_ALL was set,
+  which appears not to work properly between at least Linux 3.6.11 and
+  3.16. In fact the problem also occurred when using IPv4 unicast and
+  IPv6 in any form, and so has been a long term issue in keepalived.
+  The original solution was to listen on the send socket and discard any
+  packets that were received. This commit takes a completely different
+  solution (many thanks to Simon Kirby for the suggestion) and sets a
+  BPF filter on send sockets that filter out all received packets on the
+  sockets.
+  This commit effectively reverts commit 6fb5980, and the subsequent
+  commits 88c698d8 - "Cancel read thread on send sockets when closing",
+  f981b55d - "Only allow vrrp_rx_bufs_policy NO_SEND_RX if have
+  IP_MULTICAST_ALL", 7ff7ea1f - "Another fix to listening on send socket",
+  and 77d947f7 - "Only report IP_MULTICAST_ALL unset for IPv4 sockets"
+  and partially reverts 4297f0a - "Add options to set vrrp socket receive
+  buffer sizes".
+  This commit removes the configuration option NO_SEND_RX from
+  vrrp_tx_bufs_policy introduced in commit 4297f0a since it is now
+  no longer relevant, because no packets are queued to the send socket.
+- Add newlines to the keepalived.stats output for better readability.
+- Add notify_master_rx_lower_pri script option and FIFO output.
+  If a lower priority router has transitioned to master, there has presumably
+  been an intermittent communications break between the master and backup. It
+  appears that servers in an Amazon AWS environment can experience this.
+  The problem then occurs if a notify_master script is executed on the backup
+  that has just transitioned to master and the script executes something like
+  a `aws ec2 assign-private-ip-addresses` command, thereby removing the address
+  from the 'proper' master. Executing notify_master_rx_lower_pri notification
+  allows the 'proper' master to recover the secondary addresses.
+- Fix malloc'd memory length in open_log_file().
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.5-0
 - Update config-test option so keepalived exits with status 1 on failure.
 - Fix config write of virtual server group ip addresses.

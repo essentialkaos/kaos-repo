@@ -2,8 +2,8 @@
 
 Summary:         YAML parser and emitter for Python
 Name:            PyYAML
-Version:         3.12
-Release:         1%{?dist}
+Version:         3.13
+Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
 URL:             http://pyyaml.org/wiki/PyYAML
@@ -62,6 +62,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.13-0
+- Updated to latest stable release
+
 * Tue Jul 10 2018 Anton Novojilov <andy@essentialkaos.com> - 3.12-1
 - Rebuilt with libyaml 0.2.1
 
