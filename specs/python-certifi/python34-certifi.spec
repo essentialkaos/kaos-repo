@@ -47,13 +47,13 @@
 
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               python34-%{pkgname}
-Version:            2018.04.16
+Version:            2018.08.24
 Release:            0%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
 URL:                https://github.com/certifi/python-certifi
 
-Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
+Source0:            https://github.com/certifi/python-%{pkgname}/archive/%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -100,6 +100,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.08.24-0
+- Updated to latest release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.04.16-0
 - Updated to latest release
 

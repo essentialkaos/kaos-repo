@@ -42,7 +42,7 @@
 
 Summary:            Tool for installing and managing Python packages
 Name:               python34-%{pkgname}
-Version:            10.0.1
+Version:            18.0
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -96,6 +96,44 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 18.0-0
+- Remove the legacy format from pip list.
+- Dropped support for Python 3.3.
+- Remove support for cleaning up #egg fragment postfixes.
+- Remove the shim for the old get-pip.py location.
+- Introduce a new --prefer-binary flag, to prefer older wheels over newer
+  source packages.
+- Improve autocompletion function on file name completion after options which
+  have <file>, <dir> or <path> as metavar.
+- Add support for installing PEP 518 build dependencies from source.
+- Improve status message when upgrade is skipped due to only-if-needed
+  strategy.
+- Update pip's self-check logic to not use a virtualenv specific file and honor
+  cache-dir.
+- Remove compiled pyo files for wheel packages.
+- Speed up printing of newly installed package versions.
+- Restrict install time dependency warnings to directly-dependant packages.
+- Warning about the entire package set has resulted in users getting confused
+  as to why pip is printing these warnings.
+- Improve handling of PEP 518 build requirements: support environment markers
+  and extras.
+- Remove username/password from log message when using index with basic auth.
+- Remove trailing os.sep from PATH directories to avoid false negatives.
+- Fix "pip wheel pip" being blocked by the "don't use pip to modify itself"
+  check.
+- Disable pip's version check (and upgrade message) when installed by
+  a different package manager.
+- Check for file existence and unlink first when clobbering existing files
+  during a wheel install.
+- Improve error message to be more specific when no files are found as listed
+  in as listed in PKG-INFO.
+- Always read pyproject.toml as UTF-8. This fixes Unicode handling on Windows
+  and Python 2.
+- Fix a crash that occurs when PATH not set, while generating script location
+  warning.
+- Disallow packages with pyproject.toml files that have an empty build-system
+  table.
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 10.0.1-0
 - Fix a bug that made get-pip.py unusable on Windows without renaming.
 - Fix a TypeError when loading the cache on older versions of Python 2.7.

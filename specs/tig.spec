@@ -32,7 +32,7 @@
 
 Summary:            Tig is an ncurses-based text-mode interface for git
 Name:               tig
-Version:            2.3.3
+Version:            2.4.1
 Release:            0%{?dist}
 License:            GPL
 Group:              Development/Tools
@@ -104,6 +104,39 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.1-0
+- Add CURSES_CFLAGS to CPPFLAGS.
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- Add 'send-child-enter' option to control interaction with child views.
+- Update make config defaults for Cygwin to ncurses6.
+- Build against netbsd-curses.
+- Change the blame view to render more like git-blame(1).
+- Improve worktree and submodule support.
+- Support running Tig via a Git alias.
+- Use ISO-8601 letters for short relative dates.
+- Change date formatting to show time zones by default.
+- Use utf8proc to handle Unicode characters.
+- Fix file(1) argument on Linux used for resolving encodings.
+- Fix underflow in the file search.
+- Fix line numbers in grep view when scrolled.
+- Pass command line args through to the stage view.
+- Fix resource leak.
+- Fix various compiler warnings and pointer arithmetic.
+- Workaround potential null pointer dereferences.
+- Bind to single and double quotes by using the and key mappings.
+- Make Tig the process-group leader and clean child processes.
+- Fix sh compatibility in contrib/tig-pick.
+- Fix incorrect behaviour of up and down keys in diff view when opened from diff
+  preview.
+- Open the stage view when maximizing a split diff view of (un)staged changes.
+- Use fully qualified reference name for tags when conflicting with branch name.
+- Fix resize not working after entering command.
+- Use stack allocated memory to handle TIG_LS_REMOTE.
+- Fix deleted file mode line remains highlighted after hovering in diff or stage
+  view.
+- Fix TIG_LS_REMOTE not working with git-ls-remote(1).
+
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
 - Revert "Handle \n like \r (#758)".
 - Fix by catching SIGHUP.

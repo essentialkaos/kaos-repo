@@ -11,7 +11,7 @@
 
 Summary:        Python client for Elasticsearch 2.x
 Name:           python-%{package_name}
-Version:        6.2.0
+Version:        6.3.1
 Release:        0%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
@@ -58,6 +58,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-0
+- Updated to latest stable release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.2.0-0
 - Updated to latest stable release
 

@@ -41,7 +41,7 @@
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           8.6.4
+Version:           8.6.5
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
@@ -156,6 +156,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.5-0
+- fix a buffer overflow in the tiff reader
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.4-0
 - better fitting of fonts with overhanging edges
 - revise C++ example
