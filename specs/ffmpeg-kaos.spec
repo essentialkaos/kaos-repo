@@ -35,7 +35,7 @@
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
 Version:           4.0.2
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               http://ffmpeg.org
@@ -149,6 +149,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 14 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-1
+- Rebuilt with the latest versions of dependencies
+
 * Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
 - Updated to version 4.0.2
 
