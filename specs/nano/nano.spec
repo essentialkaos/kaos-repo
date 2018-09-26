@@ -34,14 +34,9 @@
 
 ################################################################################
 
-%define main_version 3.0
-%define patch        0
-
-################################################################################
-
 Summary:         A small text editor
 Name:            nano
-Version:         %{main_version}
+Version:         3.1
 Release:         0%{?dist}
 License:         GPLv3+
 Group:           Applications/Editors
@@ -138,6 +133,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
+- Updated to latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.0-0
 - Updated to latest stable release
 
