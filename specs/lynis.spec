@@ -30,7 +30,7 @@
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            2.6.8
+Version:            2.6.9
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
@@ -95,6 +95,18 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.9-0
+- Man page has been updated
+- Command 'lynis show options' provides up-to-date list
+- Option '--dump-options' is deprecated
+- Several options and commands have been extended with more examples
+- OS detection now supports openSUSE specific distribution names
+- Changed command output when using 'lynis audit system remote'
+- DBS-1882 - added /usr/local/redis/etc path and QNAP support
+- PKGS-7322 - updated solution text
+- KRNL-5788 - ignore exception when no vmlinuz file was discovered
+- TIME-3104 - extended logging for test
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.8-0
 - BOOT-5104 - improved parsing of boot parameters to init process
 - PHP-2372 - test all PHP files for expose_php and improved logging
