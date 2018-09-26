@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define patchlevel        11
+%define patchlevel        12
 
 ################################################################################
 
@@ -379,5 +379,8 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-12
+- Updated to latest release
+
 * Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-11
 - Initial build for kaos repository
