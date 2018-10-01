@@ -1,7 +1,7 @@
-diff -urN nano-2.9.8-orig/doc/sample.nanorc.in nano-2.9.8/doc/sample.nanorc.in
---- nano-2.9.8-orig/doc/sample.nanorc.in	2018-06-02 11:20:07.000000000 +0300
-+++ nano-2.9.8/doc/sample.nanorc.in	2018-06-19 01:58:12.000000000 +0300
-@@ -62,7 +62,7 @@
+diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
+--- nano-3.0-orig/doc/sample.nanorc.in	2018-09-09 12:39:27.000000000 +0300
++++ nano-3.0/doc/sample.nanorc.in	2018-09-12 02:18:20.000000000 +0300
+@@ -60,7 +60,7 @@
  # set historylog
  
  ## Display line numbers to the left of the text.
@@ -10,19 +10,19 @@ diff -urN nano-2.9.8-orig/doc/sample.nanorc.in nano-2.9.8/doc/sample.nanorc.in
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -101,7 +101,7 @@
+@@ -99,7 +99,7 @@
  # set nopauses
  
- ## Don't wrap text at all.
+ ## Do not automatically hard-wrap text.
 -# set nowrap
 +set nowrap
  
  ## Set operating directory.  nano will not read or write files outside
  ## this directory and its subdirectories.  Also, the current directory
-@@ -150,20 +150,20 @@
+@@ -148,20 +148,20 @@
  # set smarthome
  
- ## Use smooth scrolling as the default.
+ ## Use line-by-line scrolling instead of chunk-by-chunk.
 -# set smooth
 +set smooth
  
@@ -44,7 +44,7 @@ diff -urN nano-2.9.8-orig/doc/sample.nanorc.in nano-2.9.8/doc/sample.nanorc.in
  
  ## Convert typed tabs to spaces.
  # set tabstospaces
-@@ -198,11 +198,11 @@
+@@ -196,11 +196,11 @@
  
  ## Paint the interface elements of nano.  These are examples;
  ## by default there are no colors, except for errorcolor.
@@ -61,9 +61,9 @@ diff -urN nano-2.9.8-orig/doc/sample.nanorc.in nano-2.9.8/doc/sample.nanorc.in
  # set keycolor cyan
  # set functioncolor green
  ## In root's .nanorc you might want to use:
-@@ -257,7 +257,7 @@
+@@ -255,7 +255,7 @@
  ## them easier to remember and faster to type using nano's -Y option.
- ##
+ 
  ## To include all existing syntax definitions, you can do:
 -# include "@PKGDATADIR@/*.nanorc"
 +include "/usr/share/nano/*.nanorc"

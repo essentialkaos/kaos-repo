@@ -47,7 +47,7 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.8.1
+Version:           1.9.0
 Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
@@ -193,8 +193,30 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
+- RECONNECT command
+- WAIT_CLOSE command
+- Fast close - Disconnect a server in session pool mode immediately if it is
+  in "close_needed" (reconnect) mode.
+- Add close_needed column to SHOW SERVERS
+- Avoid double-free in parse_filename
+- Avoid NULL pointer deref in parse_line
+- Port mkauth.py to Python 3
+- Improve signals documentation
+- Improve quick start documentation
+- Document SET command
+- Correct list of required software
+- Fix -Wimplicit-fallthrough warnings
+- Add missing documentation for various SHOW fields
+- Document reconnect behavior on reload and DNS change
+- Document that KILL requires RESUME afterwards
+- Clarify documentation of server_lifetime
+- Typos and capitalization fixes in messages and docs
+- Fix psql invocation in tests
+- Various other test setup improvements
+
 * Wed Feb 14 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
-- Updated to latest stable release
+- Include file include/pam.h into distribution tarball
 
 * Mon Feb 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-5
 - Improved init script
@@ -213,7 +235,16 @@ fi
 - Added systemd support
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
-- Updated to latest stable release
+- Fix crash on stale pidfile removal. Problem introduced in 1.7.1.
+- Disable cleanup - it breaks takeover and is not useful for production loads.
+  Problem introduced in 1.7.1.
+- After takeover, wait until pidfile is gone before booting. Slow shutdown due
+  to memory cleanup exposed existing race.
+- Make build reproducible by dropping DBGVER handling.
+- Antimake: Sort file list from $(wildcard), newer gmake does not sort it
+  anymore.
+- Show libssl version in log.
+- deb: Turn on full hardening.
 
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 1.7-0
 - Updated to latest stable release

@@ -30,7 +30,7 @@
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            2.6.6
+Version:            2.6.9
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
@@ -95,35 +95,114 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.9-0
+- Man page has been updated
+- Command 'lynis show options' provides up-to-date list
+- Option '--dump-options' is deprecated
+- Several options and commands have been extended with more examples
+- OS detection now supports openSUSE specific distribution names
+- Changed command output when using 'lynis audit system remote'
+- DBS-1882 - added /usr/local/redis/etc path and QNAP support
+- PKGS-7322 - updated solution text
+- KRNL-5788 - ignore exception when no vmlinuz file was discovered
+- TIME-3104 - extended logging for test
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.8-0
+- BOOT-5104 - improved parsing of boot parameters to init process
+- PHP-2372 - test all PHP files for expose_php and improved logging
+- Alpine Linux detection for Docker audit
+- Docker check now tests also for CMD, ENTRYPOINT, and USER configuration
+- Improved display in Docker output for showing which keys are used for signing
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.7-0
+- BOOT-5104 - Added busybox as a service manager
+- KRNL-5677 - Limit PAE and no-execute test to AMD64 hardware only
+- LOGG-2190 - Ignore /dev/zero and /dev/[aio] as deleted files
+- SSH-7408 - Changed classification of SSH root login with keys
+- Docker scan uses new format for maintainer value
+- New URL structure on CISOfy website implemented for Lynis controls
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.6-0
-- Updated to latest stable release
+- New format of changelog (https://keepachangelog.com/en/1.0.0/)
+- KRNL-5830 - improved log text about running kernel version
+- Under some condition no hostid2 value was reported
+- Solved 'extra operand' issue with tr command
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.5-0
-- Updated to latest stable release
+- [MAIL-8804] - Exim configuration test
+- [NETW-2704] - Use FQDN to test status of a nameserver instead of own IP
+  address
+- [SSH-7402] - Improved test to allow configurations with a Match block
 
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.4-0
-- Updated to latest stable release
+- Several contributions merged, including grammar improvements
+- Initial support for Ubuntu 18.04 LTS
+- Small enhancements for usage
+- [AUTH-9308] - Made 'sulogin' more generic for systemd rescue shell
+- [DNS-1600] - Initial work on DNSSEC validation testing
+- [NETW-2704] - Added support for local resolver 127.0.0.53
+- [PHP-2379] - Suhosin test disbled
+- [SSH-7408] - Removed 'DELAYED' from OpenSSH Compression setting
+- [TIME-3160] - Improvements to detect step-tickers file and entries
 
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.3-0
-- Updated to latest stable release
+- Change in routine for host identifiers
+- [CRYP-7902] - Do prevalidation for certificates before testing them
+- [HRDN-7222] - Enhanced compiler permission test
+- [NAME-4402] - Improved test to filter out empty lines
+- [PKGS-7384] - Changes to detect yum-utils package and related tooling
+- [PLGN-2680] - cron file permissions
 
 * Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.2-0
-- Updated to latest stable release
+- Bugfix for Arch Linux (binary detection)
+- Textual changes for several tests
+- Update of tests database
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
-- Updated to latest stable release
+- Tests can have more than 1 required OS (e.g. Linux OR NetBSD)
+- Added 'system-groups' option to profile (Enterprise users)
+- Overhaul of default profile and migrate to new style (setting=value)
+- Show warning if old profile options are used
+- Improved detection of binaries
+- New group 'usb' for tests related to USB devices
+- [FILE-6363] - New test for /var/tmp (sticky bit)
+- [MAIL-8802] - Added exim4 process name to improve detection of Exim
+- [NETW-3030] - Changed name of dhcp client name process and added udhcpc
+- [SSH-7408] - Restored UsePrivilegeSeparation
+- [TIME-3170] - Added chrony configuration file for NetBSD
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.7-0
-- Updated to latest stable release
+- Update of Portuguese translation
+- Added --silent as alias for --quiet
+- Reduced screen output when running non-privileged
+- IsRunning function now allows full name process match
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.5-0
-- Updated to latest stable release
+- Minor release to solve errors on screen
+- CRYP-7902 - certificate validation changed
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.1-0
-- Updated to latest stable release
+- Hebrew translation by Dolev Farhi
+- Improved detection of SSL certificate files
+- Minor changes to improve logging and results
+- BOOT-5104 - Added support for macOS
+- FIRE-4524 - Determine if CSF is in testing mode
+- HTTP-6716 - Improved log message
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
-- Updated to latest stable release
+- Use ROOTDIR variable instead of fixed paths
+- Introduction of IsEmpty and HasData functions for readability of code
+- Renamed some variables to better indicate their purpose (counting, data type)
+- Removal of unused code and comments
+- Deleted unused tests from database file
+- Correct levels of identation
+- Support for older mac OS X versions (Lion and Mountain Lion)
+- Initialized variables for more binaries
+- Additional sysctls are tested
+- MALW-3280 - Extended test with Symantec components
+- PKGS-7332 - Detection of macOS ports tool and installed packages
+- TOOL-5120 - Snort detection
+- TOOL-5122 - Snort configuration file
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.4.6-0
 - Updated to latest stable release

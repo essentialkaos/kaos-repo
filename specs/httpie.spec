@@ -32,7 +32,7 @@
 
 Summary:           A Curl-like tool for humans
 Name:              httpie
-Version:           0.9.8
+Version:           0.9.9
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Internet
@@ -86,12 +86,15 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc LICENSE README.rst
 %{python_sitelib}/%{name}/
-%{python_sitelib}/%{name}-%{version}*
+%{python_sitelib}/%{name}*
 %{_bindir}/http
 
 ################################################################################
 
 %changelog
+* Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.9-0
+- Fixed README
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.8-0
 - Extended auth plugin API
 - Added exit status code 7 for plugin errors

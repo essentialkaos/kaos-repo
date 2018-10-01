@@ -2,7 +2,7 @@
 
 Summary:              Network traffic recorder
 Name:                 tcpflow
-Version:              1.4.5
+Version:              1.5.0
 Release:              0%{?dist}
 License:              GPLv3
 Group:                Development/Tools
@@ -50,12 +50,15 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS COPYING ChangeLog NEWS README
+%doc AUTHORS COPYING ChangeLog NEWS
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.gz
 
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Updated to latest stable release
+
 * Wed Dec 07 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.4.5-0
 - Initial build

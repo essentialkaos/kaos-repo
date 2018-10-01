@@ -51,7 +51,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.8
+Version:                  1.5.10
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -227,6 +227,23 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.10-0
+- fix alignment issues on some ARM platforms for chunked items
+- add missing va_end() call to logger_log()
+- basic extstore JBOD support (noted in Overview)
+- split storage writer into its own thread
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.9-0
+- fix ASCII get error handling (+ extstore leak)
+- drop_privileges is no longer default if available.
+- remove bad assert from crawler
+- Mark seccomp experimental
+- Include keys with non-[\w.~-] bytes in memcached-tool dump
+- whitelist clock_gettime in seccomp rules
+- Fix segfault: Prevent calling sasl_server_step before sasl_server_start
+- fix flaky lru-maintainer test (OS X)
+- support transparent hugepages on Linux (-L option)
+
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.8-0
 - fix sasl tests
 - fix flaky extstore tests

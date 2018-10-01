@@ -35,7 +35,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.5
+Version:         1.2.7
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -130,6 +130,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.7-0
+- python-build: Add CPython 3.5.6
+- python-build: Add CPython 3.4.9
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.6-0
+- python-build: Added CPython 3.6.6
+- python-build: Check wget version iff wget is going to be used
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.5-0
 - python-build: Add CPython 3.7.0
 - python-build: Add micropython 1.9.4

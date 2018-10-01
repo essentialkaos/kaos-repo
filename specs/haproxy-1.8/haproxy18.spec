@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.12
+Version:           1.8.14
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -292,6 +292,90 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.14-0
+- BUG/MEDIUM: servers: check the queues once enabling a server
+- BUG/MEDIUM: queue: prevent a backup server from draining the proxy's
+  connections
+- MINOR: dns: fix wrong score computation in dns_get_ip_from_response
+- MINOR: dns: new DNS options to allow/prevent IP address duplication
+- BUG/MEDIUM: lua: possible CLOSE-WAIT state with '\n' headers
+- MINOR: threads: Introduce double-width CAS on x86_64 and arm.
+- BUG/MEDIUM: threads: fix the double CAS implementation for ARMv7
+- MINOR: threads: add more consistency between certain variables in no-thread
+  case
+- BUG/MEDIUM: threads: fix the no-thread case after the change to the sync point
+- MEDIUM: hathreads: implement a more flexible rendez-vous point
+- BUG/MEDIUM: cli: make "show fd" thread-safe
+- BUG/MINOR: ssl: empty connections reported as errors.
+- BUG/MEDIUM: ssl: fix missing error loading a keytype cert from a bundle.
+- BUG/MEDIUM: ssl: loading dh param from certifile causes unpredictable error.
+- BUG/MINOR: map: fix map_regm with backref
+- DOC: dns: explain set server ... fqdn requires resolver
+- DOC: ssl: Use consistent naming for TLS protocols
+- BUG/MEDIUM: lua: socket timeouts are not applied
+- BUG/MEDIUM: cli/threads: protect all "proxy" commands against concurrent
+  updates
+- BUG/MEDIUM: cli/threads: protect some server commands against concurrent
+  operations
+- DOC: Fix spelling error in configuration doc
+- BUG/MEDIUM: unix: provide a ->drain() function
+- BUG/MINOR: lua: Bad HTTP client request duration.
+- BUG/MEDIUM: mux_pt: dereference the connection with care in mux_pt_wake()
+- BUG/MEDIUM: lua: reset lua transaction between http requests
+- BUG/MEDIUM: hlua: Make sure we drain the output buffer when done.
+- BUG/MAJOR: thread: lua: Wrong SSL context initialization.
+- BUG/MEDIUM: hlua: Don't call RESET_SAFE_LJMP if SET_SAFE_LJMP returns 0.
+- BUG/MEDIUM: dns/server: fix incomatibility between SRV resolution and server
+  state file
+- BUG/MEDIUM: ECC cert should work with TLS < v1.2 and openssl >= 1.1.1
+- MINOR: thread: implement HA_ATOMIC_XADD()
+- BUG/MINOR: stream: use atomic increments for the request counter
+- BUG/MEDIUM: session: fix reporting of handshake processing time in the logs
+- BUG/MEDIUM: h2: fix risk of memory leak on malformated wrapped frames
+- BUG/MINOR: dns: check and link servers' resolvers right after config parsing
+- BUG/MINOR: http/threads: atomically increment the error snapshot ID
+- BUG/MEDIUM: snapshot: take the proxy's lock while dumping errors
+- BUG/MAJOR: kqueue: Don't reset the changes number by accident.
+- BUG/MINOR: server: Crash when setting FQDN via CLI.
+- DOC: Fix typos in lua documentation
+- BUG/MEDIUM: patterns: fix possible double free when reloading a pattern list
+- BUG/MINOR: tools: fix set_net_port() / set_host_port() on IPv4
+- BUG/MINOR: cli: make sure the "getsock" command is only called on connections
+- BUG/CRITICAL: hpack: fix improper sign check on the header index value
+
+* Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.13-0
+- MINOR: systemd: consider exit status 143 as successful
+- BUG/MINOR: ssl: properly ref-count the tls_keys entries
+- MINOR: mux: add a "show_fd" function to dump debugging information for
+  "show fd"
+- MINOR: h2: implement a basic "show_fd" function
+- BUG/MINOR: h2: remove accidental debug code introduced with show_fd function
+- MINOR: h2: keep a count of the number of conn_streams attached to the mux
+- MINOR: h2: add the mux and demux buffer lengths on "show fd"
+- BUG/MEDIUM: h2: don't accept new streams if conn_streams are still in excess
+- BUG/MEDIUM: h2: never leave pending data in the output buffer on close
+- BUG/MEDIUM: h2: make sure the last stream closes the connection after a
+  timeout
+- BUG/MINOR: http: Set brackets for the unlikely macro at the right place
+- BUILD: Generate sha256 checksums in publish-release
+- MINOR: debug: Add check for CO_FL_WILL_UPDATE
+- MINOR: debug: Add checks for conn_stream flags
+- BUG/MEDIUM: threads: Fix the exit condition of the thread barrier
+- MINOR: h2: add the error code and the max/last stream IDs to "show fd"
+- BUG/MEDIUM: stream-int: don't immediately enable reading when the buffer was
+  reportedly full
+- BUG/MEDIUM: stats: don't ask for more data as long as we're responding
+- BUG/MINOR: servers: Don't make "server" in a frontend fatal.
+- BUG/MEDIUM: threads/sync: use sched_yield when available
+- BUG/MEDIUM: h2: prevent orphaned streams from blocking a connection forever
+- BUG/MINOR: config: stick-table is not supported in defaults section
+- BUG/MINOR: threads: Handle nbthread == MAX_THREADS.
+- BUG/MEDIUM: threads: properly fix nbthreads == MAX_THREADS
+- MINOR: threads: move "nbthread" parsing to hathreads.c
+- BUG/MEDIUM: threads: unbreak "bind" referencing an incorrect thread number
+- MEDIUM: proxy_protocol: Convert IPs to v6 when protocols are mixed
+- SCRIPTS: git-show-backports: add missing quotes to "echo"
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.12-0
 - BUG/MAJOR: stick_table: Complete incomplete SEGV fix
 - MINOR: stick-tables: make stktable_release() do nothing on NULL

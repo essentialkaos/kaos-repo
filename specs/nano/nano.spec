@@ -34,20 +34,15 @@
 
 ################################################################################
 
-%define main_version 2.9
-%define patch        8
-
-################################################################################
-
 Summary:         A small text editor
 Name:            nano
-Version:         %{main_version}.%{patch}
+Version:         3.1
 Release:         0%{?dist}
 License:         GPLv3+
 Group:           Applications/Editors
 URL:             http://www.nano-editor.org
 
-Source0:         https://www.nano-editor.org/dist/v%{main_version}/%{name}-%{version}.tar.gz
+Source0:         https://www.nano-editor.org/dist/v3/%{name}-%{version}.tar.gz
 Source1:         https://github.com/essentialkaos/blackhole-syntax-nano/archive/master.tar.gz
 
 Patch0:          %{name}-nanorc.patch
@@ -138,6 +133,12 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
+- Updated to latest stable release
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.0-0
+- Updated to latest stable release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.8-0
 - Updated to latest stable release
 

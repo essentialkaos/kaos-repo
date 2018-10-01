@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.11
+Version:              3.4.13
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -972,6 +972,50 @@ fi
 ################################################################################
 
 %changelog
+* Thu Sep 13 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.13-0
+- replaced pcreposix library with pcre, lowered backtracking limit, fixed
+  libevent build issues
+- fixed vmware incorrect memory release
+- fixed vmware performance counter retrieval on installations with large
+  number of datastores
+- fixed memory leak in alert manager when connection to database was lost
+- renamed trigger functions by adding function name at the beginning and
+  removing the operator and "N" and placing operator in a separate field
+  allowing two new operators "<=" and ">=" for selection
+- fixed incorrect behavior of zbxregexp library when reusing latest regular
+  expression
+- fixed error message for invalid vmware endpoint
+- fixed trigger dependency link to the template instead of the host during the
+  discovery action
+- added "zone" parameter to proc.num[] item for Solaris
+- fixed typo in string: ouf, not out
+- fixed output of information about the error for expressions with functions of
+  triggers or calculated items
+- fixed several problems in displaying of X axis on the graphs
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.12-0
+- fixed the disk usage counters reading for ESX/ESXi hosts
+- fixed timeselector period used to select 'all' values of particular item
+- fixed agent compilation error on AlphaServer Tru64 5.1B
+- fixed Y-axis small value gradation issue in graphs
+- fixed Norwegian locale key for windows
+- fixed possible data loss due to MariaDB server restart
+- fixed crash of poller processes in ODBC checks, simplified code
+- fixed deleting of files after compiling a program (make clean) for Solaris
+- fixed displaying timeline points of days in Problems widget
+- fixed link "show value mappings", which leads to no permission page
+- improved function parameter parsing for trigger functions
+- disabled preprocessing update for discovered items
+- fixed status change for linked template items through parent template if host
+  assigned
+- removed redundant code and improved performance in event details screen
+- improved error message handling in zbx_function_find()
+- fixed crash when reporting unknown triggers and using $1-$9 macros at the same
+  time
+- added limit ZBX_HISTORY_PERIOD for {ITEM.VALUE} macro resolving in trigger
+  name
+- fixed internal item parameter that does not match documentation
+
 * Sun Jul 08 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.11-0
 - added and enabled Norwegian translation to be displayed by default
 - updated English (United States), French, Hebrew, Japanese,

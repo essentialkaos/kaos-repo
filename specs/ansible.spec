@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.6.1
+Version:              2.6.4
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -73,10 +73,8 @@ are transferred to managed machines automatically.
 %prep
 %setup -q
 
-
 %build
 python setup.py build
-
 
 %install
 rm -rf %{buildroot}
@@ -99,7 +97,6 @@ cp examples/hosts %{buildroot}%{_sysconfdir}/%{name}/
 cp examples/ansible.cfg %{buildroot}%{_sysconfdir}/%{name}/
 cp -v docs/man/man1/*.1 %{buildroot}%{_mandir}/man1/
 
-
 %clean
 rm -rf %{buildroot}
 
@@ -117,6 +114,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.4-0
+- Updated to latest version
+
+* Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.3-0
+- Updated to latest version
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
 - Updated to latest version
 

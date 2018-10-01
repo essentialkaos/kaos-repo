@@ -41,13 +41,13 @@
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           8.6.4
+Version:           8.7.0
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
-URL:               http://www.vips.ecs.soton.ac.uk
+URL:               https://libvips.github.io/libvips/
 
-Source:            https://github.com/jcupitt/libvips/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source:            https://github.com/libvips/libvips/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -156,6 +156,48 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 8.7.0-0
+- add magicksave, save image with libMagick [dlemstra]
+- remove jpeg thumbnail from EXIF if "jpeg-thumbnail-data" has been removed
+  by user
+- hough_line scales width to 0 - 180, not 0 - 360
+- hough_line is 4x faster
+- hough_circle is 2x faster
+- add vips_sobel() and vips_canny() edge detectors
+- add vips_rotate() ... a convenience method for vips_similarity()
+- svgload was missing is_a [lovell]
+- better header sniffing for small files
+- drop incompatible ICC profiles before save
+- better hasalpha rules
+- create funcs always make MULTIBAND (ie. no alpha)
+- use O_TMPFILE, if available [Alexander--]
+- set "interlaced=1" for interlaced JPG and PNG images
+- add PDFium PDF loader
+- jpegload adds a jpeg-chroma-subsample field with eg. 4:4:4 for no
+- chrominance subsampling.
+- tiffload, pdfload, magickload set VIPS_META_N_PAGES "n-pages" metadata item
+- add fontfile option to vips_text() [fangqiao]
+- add vips_transpose3d() -- swap major dimensions in a volumetric image
+- remove vips7 stuff from default API ... you must now #include it explicitly
+- added vips_argument_get_id() to fix derived classes on win32 [angelmixu]
+- fix compile with MSVC 2017 [angelmixu]
+- pdfload has a option for background
+- vips7 C++ interface defaults off
+- make members, getters and operators "const" in cpp API
+- composite has params for x/y position of sub-images [medakk]
+- add Mitchell kernel
+- pyramid builders have a choice of 2x2 shrinkers [harukizaemon]
+- add palette option to pngsave [felixbuenemann]
+- add basic nifti load/save support
+- support writing string-valued fields via libexif
+- paste in the test suite from pyvips
+- get EXIF tag names from tag plus ifd [@Nan619]
+- escape ASCII control characters in XML
+- magickload now sniffs some file types itself
+
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.5-0
+- fix a buffer overflow in the tiff reader
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.6.4-0
 - better fitting of fonts with overhanging edges
 - revise C++ example

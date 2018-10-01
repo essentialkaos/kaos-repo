@@ -42,6 +42,10 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           19
 %define ver_min           3
+%define ver_patch         6.9
+%define ver_suffix        %{ver_min}.%{ver_patch}
+%define ver_string        %{ver_maj}.%{ver_suffix}
+
 %define realname          erlang
 
 %define libre_ver         2.6.4
@@ -50,13 +54,13 @@
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
-Version:           %{ver_min}
-Release:           2%{?dist}
+Version:           %{ver_suffix}
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
 
-Source0:           http://www.erlang.org/download/otp_src_%{ver_maj}.%{ver_min}.tar.gz
+Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
 Source1:           http://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
 Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
@@ -106,7 +110,7 @@ Requires:          %{name}-typer = %{version}
 Requires:          %{name}-xmerl = %{version}
 
 Provides:          %{name} = %{version}-%{release}
-Provides:          %{realname} = %{ver_maj}.%{ver_min}-%{release}
+Provides:          %{realname} = %{ver_string}-%{release}
 
 Conflicts:         erlang erlangR15 erlangR16 erlang18
 
@@ -808,7 +812,7 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
-%setup -qn otp_src_%{ver_maj}.%{ver_min}
+%setup -qn otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
 
@@ -836,6 +840,8 @@ popd
 export CFLAGS="%{optflags} -fno-strict-aliasing"
 export CXXLAGS=$CFLAGS
 ERL_TOP=`pwd`; export ERL_TOP
+
+./otp_build autoconf
 
 %configure \
   --prefix=%{_prefix} \
@@ -1155,6 +1161,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Jul 29 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.9-0
+- Updated to latest release
+
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-2
 - Using GCC from devtoolset-3 for build
 

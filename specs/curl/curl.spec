@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.60.0
+Version:              7.61.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,208 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 7.61.1-0
+- security advisory (CVE-2018-14618): NTLM password overflow via integer
+  overflow
+- CURLINFO_SIZE_UPLOAD: fix missing counter update
+- CURLOPT_ACCEPT_ENCODING.3: list them comma-separated
+- CURLOPT_SSL_CTX_FUNCTION.3: might cause accidental connection reuse
+- Curl_getoff_all_pipelines: improved for multiplexed
+- DEPRECATE: remove release date from 7.62.0
+- HTTP: Don't attempt to needlessly decompress redirect body
+- INTERNALS: require GnuTLS >= 2.11.3
+- README.md: add LGTM.com code quality grade for C/C++
+- SSLCERTS: improve the openssl command line
+- Silence GCC 8 cast-function-type warnings
+- ares: check for NULL in completed-callback
+- asyn-thread: Remove unused macro
+- auth: only pick CURLAUTH_BEARER if we *have* a Bearer token
+- auth: pick Bearer authentication whenever a token is available
+- cmake: CMake config files are defining CURL_STATICLIB for static builds
+- cmake: Respect BUILD_SHARED_LIBS
+- cmake: Update scripts to use consistent style
+- cmake: bumped minimum version to 3.4
+- cmake: link curl to the OpenSSL targets instead of lib absolute paths
+- configure: conditionally enable pedantic-errors
+- configure: fix for -lpthread detection with OpenSSL and pkg-config
+- conn: remove the boolean 'inuse' field
+- content_encoding: accept up to 4 unknown trailer bytes after raw deflate data
+- cookie tests: treat files as text
+- cookies: support creation-time attribute for cookies
+- curl: Fix segfault when -H @headerfile is empty
+- curl: add http code 408 to transient list for --retry
+- curl: fix time-of-check, time-of-use race in dir creation
+- curl: use Content-Disposition before the "URL end" for -OJ
+- curl: warn the user if a given file name looks like an option
+- curl_threads: silence bad-function-cast warning
+- darwinssl: add support for ALPN negotiation
+- docs/CURLOPT_URL: fix indentation
+- docs/CURLOPT_WRITEFUNCTION: size is always 1
+- docs/SECURITY-PROCESS: mention bounty, drop pre-notify
+- docs/examples: add hiperfifo example using linux epoll/timerfd
+- docs: add disallow-username-in-url.d and haproxy-protocol.d to dist
+- docs: clarify NO_PROXY env variable functionality
+- docs: improved the manual pages of some callbacks
+- docs: mention NULL is fine input to several functions
+- formdata: Remove unused macro HTTPPOST_CONTENTTYPE_DEFAULT
+- gopher: Do not translate `?' to `%09'
+- header output: switch off all styles, not just unbold
+- hostip: fix unused variable warning
+- http2: Use correct format identifier for stream_id
+- http2: abort the send_callback if not setup yet
+- http2: avoid set_stream_user_data() before stream is assigned
+- http2: check nghttp2_session_set_stream_user_data return code
+- http2: clear the drain counter in Curl_http2_done
+- http2: make sure to send after RST_STREAM
+- http2: separate easy handle from connections better
+- http: fix for tiny "HTTP/0.9" response
+- http_proxy: Remove unused macro SELECT_TIMEOUT
+- lib/Makefile: only do symbol hiding if told to
+- lib1502: fix memory leak in torture test
+- lib1522: fix curl_easy_setopt argument type
+- libcurl-thread.3: expand somewhat on the NO_SIGNAL motivation
+- mime: check Curl_rand_hex's return code
+- multi: always do the COMPLETED procedure/state
+- openssl: assume engine support in 1.0.0 or later
+- openssl: fix debug messages
+- projects: Improve Windows perl detection in batch scripts
+- retry: return error if rewind was necessary but didn't happen
+- reuse_conn(): memory leak - free old_conn->options
+- schannel: client certificate store opening fix
+- schannel: enable CALG_TLS1PRF for w32api >= 5.1
+- schannel: fix MinGW compile break
+- sftp: don't send post-qoute sequence when retrying a connection
+- smb: fix memory leak on early failure
+- smb: fix memory-leak in URL parse error path
+- smb_getsock: always wait for write socket too
+- ssh-libssh: fix infinite connect loop on invalid private key
+- ssh-libssh: reduce excessive verbose output about pubkey auth
+- ssh-libssh: use FALLTHROUGH to silence gcc8
+- ssl: set engine implicitly when a PKCS#11 URI is provided
+- sws: handle EINTR when calling select()
+- system_win32: fix version checking
+- telnet: Remove unused macros TELOPTS and TELCMDS
+- test1143: disable MSYS2's POSIX path conversion
+- test1148: disable if decimal separator is not point
+- test1307: (fnmatch testing) disabled
+- test1422: add required file feature
+- test1531: Add timeout
+- test1540: Remove unused macro TEST_HANG_TIMEOUT
+- test214: disable MSYS2's POSIX path conversion for URL
+- test320: treat curl320.out file as binary
+- tests/http_pipe.py: Use /usr/bin/env to find python
+- tests: Don't use Windows path %%PWD for SSH tests
+- tests: fixes for Windows line endlings
+- tool_operate: Fix setting proxy TLS 1.3 ciphers
+- travis: build darwinssl on macos 10.12 to fix linker errors
+- travis: execute "set -eo pipefail" for coverage build
+- travis: run a 'make checksrc' too
+- travis: update to GCC-8
+- travis: verify that man pages can be regenerated
+- upload: allocate upload buffer on-demand
+- upload: change default UPLOAD_BUFSIZE to 64KB
+- urldata: remove unused pipe_broke struct field
+- vtls: reinstantiate engine on duplicated handles
+- windows: implement send buffer tuning
+- wolfSSL/CyaSSL: Fix memory leak in Curl_cyassl_random
+
+* Thu Aug 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.61.0-0
+- getinfo: add microsecond precise timers for seven intervals
+- curl: show headers in bold, switch off with --no-styled-output
+- httpauth: add support for Bearer tokens
+- Add CURLOPT_TLS13_CIPHERS and CURLOPT_PROXY_TLS13_CIPHERS
+- curl: --tls13-ciphers and --proxy-tls13-ciphers
+- Add CURLOPT_DISALLOW_USERNAME_IN_URL
+- curl: --disallow-username-in-url
+- CVE-2018-0500: smtp: fix SMTP send buffer overflow
+- schannel: disable client cert option if APIs not available
+- schannel: disable manual verify if APIs not available
+- tests/libtest/Makefile: Do not unconditionally add gcc-specific flags
+- openssl: acknowledge --tls-max for default version too
+- stub_gssapi: fix 'unused parameter' warnings
+- examples/progressfunc: make it build on both new and old libcurls
+- docs: mention it is HA Proxy protocol "version 1"
+- curl_fnmatch: only allow two asterisks for matching
+- docs: clarify CURLOPT_HTTPGET
+- configure: replace a AC_TRY_RUN with CURL_RUN_IFELSE
+- configure: do compile-time SIZEOF checks instead of run-time
+- checksrc: make sure sizeof() is used *with* parentheses
+- CURLOPT_ACCEPT_ENCODING.3: add brotli and clarify a bit
+- schannel: make CAinfo parsing resilient to CR/LF
+- tftp: make sure error is zero terminated before printfing it
+- http resume: skip body if http code 416 (range error) is ignored
+- configure: add basic test of --with-ssl prefix
+- cmake: set -d postfix for debug builds
+- multi: provide a socket to wait for in Curl_protocol_getsock
+- content_encoding: handle zlib versions too old for Z_BLOCK
+- winbuild: only delete OUTFILE if it exists
+- winbuild: In MakefileBuild.vc fix typo DISTDIR->DIRDIST
+- schannel: add failf calls for client certificate failures
+- cmake: Fix the test for fsetxattr and strerror_r
+- curl.1: Fix cmdline-opts reference errors
+- cmdline-opts/gen.pl: warn if mutexes: or see-also: list non-existing options
+- cmake: check for getpwuid_r
+- configure: fix ssh2 linking when built with a static mbedtls
+- psl: use latest psl and refresh it periodically
+- fnmatch: insist on escaped bracket to match
+- KNOWN_BUGS: restore text regarding #2101
+- INSTALL: LDFLAGS=-Wl,-R/usr/local/ssl/lib
+- configure: override AR_FLAGS to silence warning
+- os400: implement mime api EBCDIC wrappers
+- curl.rc: embed manifest for correct Windows version detection
+- strictness: correct {infof, failf} format specifiers
+- tests: update .gitignore for libtests
+- configure: check for declaration of getpwuid_r
+- fnmatch: use the system one if available
+- CURLOPT_RESOLVE: always purge old entry first
+- multi: remove a potentially bad DEBUGF()
+- curl_addrinfo: use same #ifdef conditions in source as header
+- build: remove the Borland specific makefiles
+- axTLS: not considered fit for use
+- cmdline-opts/cert-type.d: mention "p12" as a recognized type
+- system.h: add support for IBM xlc C compiler
+- tests/libtest: Add lib1521 to nodist_SOURCES
+- mk-ca-bundle.pl: leave certificate name untouched
+- boringssl + schannel: undef X509_NAME in lib/schannel.h
+- openssl: assume engine support in 1.0.1 or later
+- cppcheck: fix warnings
+- test 46: make test pass after year 2025
+- schannel: support selecting ciphers
+- Curl_debug: remove dead printhost code
+- test 1455: unflakified
+- Curl_init_do: handle NULL connection pointer passed in
+- progress: remove a set of unused defines
+- mk-ca-bundle.pl: make -u delete certdata.txt if found not changed
+- GOVERNANCE.md: explains how this project is run
+- configure: use pkg-config for c-ares detection
+- configure: enhance ability to build with static openssl
+- maketgz: fix sed issues on OSX
+- multi: fix memory leak when stopped during name resolve
+- CURLOPT_INTERFACE.3: interface names not supported on Windows
+- url: fix dangling conn->data pointer
+- cmake: allow multiple SSL backends
+- system.h: fix for gcc on 32 bit OpenServer
+- ConnectionExists: make sure conn->data is set when "taking" a connection
+- multi: fix crash due to dangling entry in connect-pending list
+- CURLOPT_SSL_VERIFYPEER.3: Add performance note
+- netrc: use a larger buffer to support longer passwords
+- url: check Curl_conncache_add_conn return code
+- configure: Add dependent libraries after crypto
+- easy_perform: faster local name resolves by using *multi_timeout()
+- getnameinfo: not used, removed all configure checks
+- travis: add a build using the synchronous name resolver
+- CURLINFO_TLS_SSL_PTR.3: improve the example
+- openssl: allow TLS 1.3 by default
+- openssl: make the requested TLS version the *minimum* wanted
+- openssl: Remove some dead code
+- telnet: fix clang warnings
+- DEPRECATE: new doc describing planned item removals
+- example/crawler.c: simple crawler based on libxml2
+- libssh: goto DISCONNECT state on error, not SESSION_FREE
+- CMake: Remove unused functions
+- darwinssl: allow High Sierra users to build the code using GCC
+- scripts: include _curl as part of CLEANFILES
+
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.60.0-0
 - Add CURLOPT_HAPROXYPROTOCOL, support for the HAProxy PROXY protocol
 - Add --haproxy-protocol for the command line tool

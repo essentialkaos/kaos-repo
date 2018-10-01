@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            8.11.3
+Version:            8.12.0
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 8.12.0-0
+- Updated to latest stable release
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.11.3-0
 - Updated to latest stable release
 

@@ -19,7 +19,7 @@
 Summary:           MaxMinds data for GeoIP
 Name:              MMGeoIP
 Version:           1.2
-Release:           17%{?dist}
+Release:           18%{?dist}
 License:           Copyright © 2010 Achillefs Charmpilas
 Group:             Applications/Databases
 URL:               http://www.maxmind.com
@@ -96,6 +96,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2-18
+- Data updated
+
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2-17
 - Data updated
 

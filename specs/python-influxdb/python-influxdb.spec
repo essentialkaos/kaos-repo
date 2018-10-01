@@ -7,7 +7,7 @@
 
 Summary:        InfluxDB-Python is a client for interacting with InfluxDB
 Name:           python-influxdb
-Version:        5.0.0
+Version:        5.2.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -56,6 +56,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 5.2.0-0
+- Updated to latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
 - Updated to latest stable release
 
