@@ -573,7 +573,7 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
     rm -f GNUmakefile Makefile *.o
     chmod 0755 pg_regress regress.so
   popd
-  cp %{SOURCE4} %{buildroot}%{install_dir}/lib/test/regress/Makefile
+  cp %{SOURCE2} %{buildroot}%{install_dir}/lib/test/regress/Makefile
   chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
 
