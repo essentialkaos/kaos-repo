@@ -30,17 +30,17 @@
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
-Version:            0.4.0
+Version:            0.5.0
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
 URL:                https://github.com/lesovsky/pgcenter
 
-Source0:            https://github.com/lesovsky/%{name}/archive/%{version}.tar.gz
+Source0:            https://github.com/lesovsky/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc postgresql94-devel ncurses-devel
+BuildRequires:      make golang >= 1.11
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -64,20 +64,36 @@ operations, pgcenter can start psql session for this purposes.
 %prep
 %setup -qn %{name}-%{version}
 
+mkdir -p .src/github.com/lesovsky/%{name}
+mv * .src/github.com/lesovsky/%{name}/
+mv .src src
+
+mv src/github.com/lesovsky/%{name}/COPYRIGHT \
+   src/github.com/lesovsky/%{name}/README.md \
+   .
+
 %build
-%{__make} %{?_smp_mflags} PGCONFIG=%{_prefix}/pgsql-9.4/bin/pg_config
+export GOPATH=$(pwd)
+export GO111MODULE=on
+
+pushd src/github.com/lesovsky/%{name}
+
+go mod download
+go build -ldflags "-X main.COMMIT=000000 -X main.BRANCH=master" \
+         -o "$GOPATH/%{name}" %{name}.go
+popd
 
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
-install -dm 755 %{buildroot}%{_mandir}/man1
-
-%{make_install}
-
-%{__make} install-man PREFIX=%{buildroot}%{_prefix}
+install -pm 755 %{name} %{buildroot}%{_bindir}/
 
 %clean
+# Fix permissions for files and directories in modules dir
+find pkg -type d -exec chmod 0755 {} \;
+find pkg -type f -exec chmod 0644 {} \;
+
 rm -rf %{buildroot}
 
 ################################################################################
@@ -86,12 +102,25 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc COPYRIGHT README.md
 %{_bindir}/%{name}
-%{_datadir}/%{name}/*.sql
-%{_mandir}/man1/%{name}.1.*
 
 ################################################################################
 
 %changelog
+* Wed Oct 03 2018 Anton Novojilov <andy@essentialkaos.com> - 0.5.0-0
+- pgcenter rewritten on Go from scratch
+- pgcenter functionality divided into sub-commands (git/perf-style)
+- added new functionality: record/report statistics (worked as additional
+  sub-commands)
+- a lot of hotkeys are changed in 'top' sub-command (see builtin help)
+- removed tabs support
+- removed pgcenterrc support
+- show activity statistics by default
+- activity shows background processes
+- hide/show idle activity (hidden by default)
+- show recovery status in postgres summary
+- tables and tables IO stats merged into one single view
+- filtering supports regexps now
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.0-0
 - PostgreSQL 10 support
 - Extended general overview
