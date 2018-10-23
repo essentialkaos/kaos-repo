@@ -1,0 +1,2 @@
+# Path to configuration file
+CONF_FILE="/etc/consul/server/config.json"
