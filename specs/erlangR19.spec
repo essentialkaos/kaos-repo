@@ -42,13 +42,13 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           19
 %define ver_min           3
-%define ver_patch         6.9
+%define ver_patch         6.12
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
 %define realname          erlang
 
-%define libre_ver         2.6.4
+%define libre_ver         2.8.2
 
 ################################################################################
 
@@ -863,7 +863,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
   --with-ssl-rpath=no
 
-%{__make} -j1
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -1161,8 +1161,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
+- Updated to the latest release
+- LibreSSL updated to 2.8.2
+
 * Sun Jul 29 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.9-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-2
 - Using GCC from devtoolset-3 for build

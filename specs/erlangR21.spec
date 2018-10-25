@@ -41,13 +41,13 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
-%define ver_min           0
-%define ver_patch         4
+%define ver_min           1
+%define ver_patch         1
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define libre_ver         2.7.4
+%define libre_ver         2.8.2
 
 ################################################################################
 
@@ -745,7 +745,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
   --with-ssl-rpath=no
 
-%{__make} -j1
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -1006,8 +1006,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 21.1.1-0
+- Updated to the latest release
+- LibreSSL updated to 2.8.2
+
 * Sat Jul 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 21.0.4-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Jun 20 2018 Anton Novojilov <andy@essentialkaos.com> - 21.0-0
 - Initial build
