@@ -83,7 +83,7 @@
 %define minorver        5
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
-%define pkgver          100
+%define pkgver          10
 %define realname        postgresql
 %define shortname       pgsql
 %define tinyname        pg
@@ -802,35 +802,35 @@ chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null 
 
 # Create alternatives entries for common binaries and man files
 %post
-%{__updalt} --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}0
-%{__updalt} --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}0
-%{__updalt} --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}0
-%{__updalt} --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}0
-%{__updalt} --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}0
-%{__updalt} --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_dump       %{shortname}-pg_dump       %{install_dir}/bin/pg_dump       %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_dumpall    %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall    %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_restore    %{shortname}-pg_restore    %{install_dir}/bin/pg_restore    %{pkgver}0
-%{__updalt} --install %{_bindir}/reindexdb     %{shortname}-reindexdb     %{install_dir}/bin/reindexdb     %{pkgver}0
-%{__updalt} --install %{_bindir}/vacuumdb      %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb      %{pkgver}0
+%{__updalt} --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}00
+%{__updalt} --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}00
+%{__updalt} --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}00
+%{__updalt} --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}00
+%{__updalt} --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}00
+%{__updalt} --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_dump       %{shortname}-pg_dump       %{install_dir}/bin/pg_dump       %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_dumpall    %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall    %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_restore    %{shortname}-pg_restore    %{install_dir}/bin/pg_restore    %{pkgver}00
+%{__updalt} --install %{_bindir}/reindexdb     %{shortname}-reindexdb     %{install_dir}/bin/reindexdb     %{pkgver}00
+%{__updalt} --install %{_bindir}/vacuumdb      %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb      %{pkgver}00
 
-%{__updalt} --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_dumpall.1    %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1    %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_restore.1    %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1    %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/psql.1          %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1          %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/reindexdb.1     %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1     %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}0
+%{__updalt} --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_dumpall.1    %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1    %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_restore.1    %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1    %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/psql.1          %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1          %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/reindexdb.1     %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1     %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}00
 
 %post libs
-%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}0
+%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}00
 %{__ldconfig}
 
 # Drop alternatives entries for common binaries and man files
@@ -1179,6 +1179,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 26 2018 Anton Novojilov <andy@essentialkaos.com> - 10.5-1
+- Fixed minor bug using pkgver macro in description's
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 10.5-0
 - Updated to latest stable release
 
