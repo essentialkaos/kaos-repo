@@ -176,6 +176,8 @@ install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/server
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/client
+install -dm 755 %{buildroot}%{_rundir}/%{name}-client
+install -dm 755 %{buildroot}%{_rundir}/%{name}-server
 install -dm 755 %{buildroot}%{service_home}
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 install -dm 755 %{buildroot}%{_initrddir}
@@ -280,6 +282,7 @@ fi
 %files client
 %defattr(-,root,root,-)
 %{_sysconfdir}/sysconfig/%{name}-client
+%attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-client
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 %{_initrddir}/%{name}-client
 %else
@@ -291,6 +294,7 @@ fi
 %files server
 %defattr(-,root,root,-)
 %{_sysconfdir}/sysconfig/%{name}-server
+%attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-server
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 %{_initrddir}/%{name}-server
 %else

@@ -18,7 +18,7 @@ kv.readSysconfig
 binary=${BINARY:-/usr/bin/consul}
 conf_file=${CONF_FILE:-/etc/consul/client/config.json}
 
-kv[pid_file]="/var/run/consul-server.pid"
+kv[pid_file]="/var/run/consul-server/consul-server.pid"
 
 kv[user]="${USER:-consul}"
 kv[delay_start]=${DELAY_START:-15}
