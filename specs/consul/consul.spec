@@ -55,7 +55,7 @@ Summary:           Tool for service discovery, monitoring and configuration
 Name:              consul
 Version:           1.3.0
 Release:           0%{?dist}
-Group:             Applications/Internet
+Group:             Applications/Communications
 License:           MPLv2
 URL:               http://www.consul.io
 
@@ -85,7 +85,7 @@ distributed, highly available, and extremely scalable.
 
 %package client
 Summary:            Consul Client
-Group:              Application/Internet
+Group:              Applications/Communications
 
 Requires:           %{name} = %{version}-%{release}
 
@@ -116,7 +116,7 @@ only a small amount of network bandwidth.
 
 %package server
 Summary:            Consul Server
-Group:              Application/Internet
+Group:              Applications/Communications
 
 Requires:           %{name} = %{version}-%{release}
 
