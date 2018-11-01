@@ -45,29 +45,35 @@
 
 %define  debug_package %{nil}
 
+%define  service_user  %{name}
+%define  service_group %{name}
+%define  service_home  %{_sharedstatedir}/%{name}
+
 ################################################################################
 
-Summary:         Tool for service discovery, monitoring and configuration
-Name:            consul
-Version:         1.3.0
-Release:         0%{?dist}
-Group:           Applications/Internet
-License:         MPLv2
-URL:             http://www.consul.io
+Summary:           Tool for service discovery, monitoring and configuration
+Name:              consul
+Version:           1.3.0
+Release:           0%{?dist}
+Group:             Applications/Internet
+License:           MPLv2
+URL:               http://www.consul.io
 
-Source0:         https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
-Source1:         %{name}-client.sysconfig
-Source2:         %{name}-server.sysconfig
-Source3:         %{name}-client.service
-Source4:         %{name}-server.service
-Source5:         %{name}-client.conf
-Source6:         %{name}-server.conf
+Source0:           https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
+Source1:           %{name}-client.sysconfig
+Source2:           %{name}-server.sysconfig
+Source3:           %{name}-client.init
+Source4:           %{name}-server.init
+Source5:           %{name}-client.service
+Source6:           %{name}-server.service
+Source7:           %{name}-client.conf
+Source8:           %{name}-server.conf
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.10
+BuildRequires:     golang >= 1.10
 
-Provides:        %{name} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -78,10 +84,27 @@ distributed, highly available, and extremely scalable.
 ################################################################################
 
 %package client
-Summary:        Consul Client
-Group:          Application/Internet
+Summary:            Consul Client
+Group:              Application/Internet
 
-Requires:       %{name} = %{version}-%{release}
+Requires:           %{name} = %{version}-%{release}
+
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+Requires:           kaosv
+
+Requires(pre):      shadow-utils
+Requires(post):     chkconfig
+Requires(preun):    chkconfig
+Requires(preun):    initscripts
+Requires(postun):   initscripts
+%else
+Requires:           systemd
+
+BuildRequires:      systemd
+Requires(post):     systemd
+Requires(preun):    systemd
+Requires(postun):   systemd
+%endif
 
 %description client
 A client is an agent that forwards all RPCs to a server. The client is
@@ -92,10 +115,27 @@ only a small amount of network bandwidth.
 ################################################################################
 
 %package server
-Summary:        Consul Server
-Group:          Application/Internet
+Summary:            Consul Server
+Group:              Application/Internet
 
-Requires:       %{name} = %{version}-%{release}
+Requires:           %{name} = %{version}-%{release}
+
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+Requires:           kaosv
+
+Requires(pre):      shadow-utils
+Requires(post):     chkconfig
+Requires(preun):    chkconfig
+Requires(preun):    initscripts
+Requires(postun):   initscripts
+%else
+Requires:           systemd
+
+BuildRequires:      systemd
+Requires(post):     systemd
+Requires(preun):    systemd
+Requires(postun):   systemd
+%endif
 
 %description server
 A server is an agent with an expanded set of responsibilities including
@@ -136,18 +176,27 @@ install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/server
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/client
-install -dm 755 %{buildroot}%{_sharedstatedir}/%{name}
+install -dm 755 %{buildroot}%{service_home}
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+install -dm 755 %{buildroot}%{_initrddir}
+%else
 install -dm 755 %{buildroot}%{_unitdir}
+%endif
 install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}-server
 install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}-client
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/sysconfig/%{name}-client
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}-server
-install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/
-install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/
-install -pm 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/%{name}/client/config.json
-install -pm 644 %{SOURCE6} %{buildroot}%{_sysconfdir}/%{name}/server/config.json
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{name}-client
+install -pm 755 %{SOURCE4} %{buildroot}%{_initrddir}/%{name}-server
+%else
+install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
+install -pm 644 %{SOURCE6} %{buildroot}%{_unitdir}/
+%endif
+install -pm 644 %{SOURCE7} %{buildroot}%{_sysconfdir}/%{name}/client/config.json
+install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/%{name}/server/config.json
 
 %clean
 rm -rf %{buildroot}
@@ -155,11 +204,37 @@ rm -rf %{buildroot}
 ################################################################################
 
 %pre
-getent group %{name} >/dev/null || groupadd -r %{name}
-getent passwd %{name} >/dev/null || \
-    useradd -r -M -g %{name} -d %{_sharedstatedir}/%{name} \
-            -s /sbin/nologin %{name}
+getent group %{service_group} >/dev/null || groupadd -r %{service_group}
+getent passwd %{service_user} >/dev/null || \
+    useradd -r -M -g %{service_group} -d %{service_home} \
+            -s /sbin/nologin %{service_user}
 exit 0
+
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+
+%post client
+if [[ $1 -eq 1 ]] ; then
+    %{__chkconfig} --add %{name}-client
+fi
+
+%preun client
+if [[ $1 -eq 0 ]] ; then
+    %{__service} %{name}-client stop &>/dev/null || :
+    %{__chkconfig} --del %{name}-client
+fi
+
+%post server
+if [[ $1 -eq 1 ]] ; then
+    %{__chkconfig} --add %{name}-server
+fi
+
+%preun server
+if [[ $1 -eq 0 ]] ; then
+    %{__service} %{name}-server stop &>/dev/null || :
+    %{__chkconfig} --del %{name}-server
+fi
+
+%else
 
 %post client
 if [[ $1 -eq 1 ]] ; then
@@ -193,25 +268,35 @@ if [[ $1 -ge 1 ]] ; then
     %{__systemctl} daemon-reload &>/dev/null || :
 fi
 
+%endif
+
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
-%attr(0755,%{name},%{name}) %{_sharedstatedir}/%{name}
+%attr(0755,%{service_user},%{service_group}) %{service_home}
 
 %files client
 %defattr(-,root,root,-)
 %{_sysconfdir}/sysconfig/%{name}-client
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+%{_initrddir}/%{name}-client
+%else
 %{_unitdir}/%{name}-client.service
-%attr(-,%{name},%{name}) %dir %{_localstatedir}/log/%{name}-client/
+%endif
+%attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}-client/
 %config(noreplace) %{_sysconfdir}/%{name}/client/config.json
 
 %files server
 %defattr(-,root,root,-)
 %{_sysconfdir}/sysconfig/%{name}-server
+%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
+%{_initrddir}/%{name}-server
+%else
 %{_unitdir}/%{name}-server.service
-%attr(-,%{name},%{name}) %dir %{_localstatedir}/log/%{name}-server/
+%endif
+%attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}-server/
 %config(noreplace) %{_sysconfdir}/%{name}/server/config.json
 
 ################################################################################
