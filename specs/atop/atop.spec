@@ -54,7 +54,7 @@
 Summary:         Advanced System and Process Monitor
 Name:            atop
 Version:         2.3.0
-Release:         3%{?dist}
+Release:         4%{?dist}
 License:         GPL
 Group:           Development/System
 URL:             http://www.atoptool.nl
@@ -232,6 +232,9 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 ################################################################################
 
 %changelog
+* Wed Nov 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-4
+- Fixed path in cron config and systemd unit
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-3
 - Improved atop configuration through sysconfig file
 
