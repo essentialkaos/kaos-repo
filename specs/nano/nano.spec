@@ -43,7 +43,7 @@ Group:           Applications/Editors
 URL:             http://www.nano-editor.org
 
 Source0:         https://www.nano-editor.org/dist/v3/%{name}-%{version}.tar.gz
-Source1:         https://github.com/essentialkaos/blackhole-syntax-nano/archive/master.tar.gz
+Source1:         https://github.com/essentialkaos/blackhole-theme-nano/archive/master.tar.gz
 
 Patch0:          %{name}-nanorc.patch
 
