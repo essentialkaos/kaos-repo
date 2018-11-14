@@ -42,13 +42,13 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           18
 %define ver_min           3
-%define ver_patch         4.9
+%define ver_patch         4.11
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
 %define realname          erlang
 
-%define libre_ver         2.6.4
+%define libre_ver         2.8.2
 
 ################################################################################
 
@@ -114,7 +114,7 @@ Requires:          %{name}-xmerl = %{version}
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang18
+Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang19 erlang20 erlang21
 
 ################################################################################
 
@@ -1216,8 +1216,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 18.3.4.11-0
+- Updated to the latest release
+
 * Sun Jul 29 2018 Anton Novojilov <andy@essentialkaos.com> - 18.3.4.9-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 18.3-2
 - Using GCC from devtoolset-3 for build

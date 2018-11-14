@@ -44,7 +44,7 @@
 
 Summary:              A GNU general-purpose parser generator
 Name:                 bison
-Version:              3.0.5
+Version:              3.2.1
 Release:              0%{?dist}
 License:              GPLv3+
 Group:                Development/Tools
@@ -72,7 +72,7 @@ parse that grammar. Bison can be used to develop a wide range of
 language parsers, from ones used in simple desk calculators to complex
 programming languages. Bison is upwardly compatible with Yacc, so any
 correctly written Yacc grammar should work with Bison without any
-changes. If you know Yacc, you shouldn't have any trouble using
+changes. If you know Yacc, you should not have any trouble using
 Bison. You do need to be very proficient in C programming to be able
 to use Bison. Bison is only needed on systems that are used for
 development.
@@ -115,11 +115,9 @@ Bison manual section for more information.
 %prep
 %setup -q
 
-
 %build
 %configure
 %{__make} %{?_smp_mflags}
-
 
 %install
 rm -rf %{buildroot}
@@ -163,6 +161,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-0
+- Updated to latest stable release
+
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
+- Updated to latest stable release
+
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
 - Updated to latest stable release
 

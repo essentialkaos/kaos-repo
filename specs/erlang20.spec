@@ -40,23 +40,27 @@
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           17
-%define ver_min           5
+%define ver_maj           20
+%define ver_min           3
+%define ver_patch         8.13
+%define ver_suffix        %{ver_min}.%{ver_patch}
+%define ver_string        %{ver_maj}.%{ver_suffix}
+
 %define realname          erlang
 
-%define libre_ver         2.6.4
+%define libre_ver         2.8.2
 
 ################################################################################
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
-Version:           %{ver_min}
-Release:           3%{?dist}
+Version:           %{ver_suffix}
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
 
-Source0:           http://www.erlang.org/download/otp_src_%{ver_maj}.%{ver_min}.tar.gz
+Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
 Source1:           http://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
 Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
@@ -64,9 +68,9 @@ Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel zlib-devel
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
-BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
+BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
@@ -93,7 +97,6 @@ Requires:          %{name}-observer = %{version}
 Requires:          %{name}-os_mon = %{version}
 Requires:          %{name}-otp_mibs = %{version}
 Requires:          %{name}-parsetools = %{version}
-Requires:          %{name}-percept = %{version}
 Requires:          %{name}-public_key = %{version}
 Requires:          %{name}-reltool = %{version}
 Requires:          %{name}-runtime_tools = %{version}
@@ -101,16 +104,14 @@ Requires:          %{name}-snmp = %{version}
 Requires:          %{name}-ssh = %{version}
 Requires:          %{name}-ssl = %{version}
 Requires:          %{name}-syntax_tools = %{version}
-Requires:          %{name}-test_server = %{version}
 Requires:          %{name}-tools = %{version}
 Requires:          %{name}-typer = %{version}
-Requires:          %{name}-webtool = %{version}
 Requires:          %{name}-xmerl = %{version}
 
 Provides:          %{name} = %{version}-%{release}
-Provides:          %{realname} = %{ver_maj}.%{ver_min}-%{release}
+Provides:          %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang18
+Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang19 erlang21
 
 ################################################################################
 
@@ -150,7 +151,6 @@ Requires: %{name}-erl_docgen = %{version}
 Requires: %{name}-erl_interface = %{version}
 Requires: %{name}-et = %{version}
 Requires: %{name}-eunit = %{version}
-Requires: %{name}-gs = %{version}
 Requires: %{name}-hipe = %{version}
 Requires: %{name}-ic = %{version}
 Requires: %{name}-inets = %{version}
@@ -163,7 +163,6 @@ Requires: %{name}-orber = %{version}
 Requires: %{name}-os_mon = %{version}
 Requires: %{name}-otp_mibs = %{version}
 Requires: %{name}-parsetools = %{version}
-Requires: %{name}-percept = %{version}
 Requires: %{name}-public_key = %{version}
 Requires: %{name}-reltool = %{version}
 Requires: %{name}-runtime_tools = %{version}
@@ -171,10 +170,8 @@ Requires: %{name}-snmp = %{version}
 Requires: %{name}-ssh = %{version}
 Requires: %{name}-ssl = %{version}
 Requires: %{name}-syntax_tools = %{version}
-Requires: %{name}-test_server = %{version}
 Requires: %{name}-tools = %{version}
 Requires: %{name}-typer = %{version}
-Requires: %{name}-webtool = %{version}
 Requires: %{name}-wx = %{version}
 Requires: %{name}-xmerl = %{version}
 
@@ -234,8 +231,8 @@ Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
 
 %description -n %{name}-manpages
-Documentation for the Erlang programming language in `man' format. This
-documentation can be read using the command `erl -man mod', where `mod' is
+Documentation for the Erlang programming language in `man` format. This
+documentation can be read using the command `erl -man mod`, where 'mod' is
 the name of the module you want documentation on.
 
 ################################################################################
@@ -506,19 +503,6 @@ Erlang support for unit testing.
 
 ################################################################################
 
-%package -n %{name}-gs
-Summary:  Graphics System used to write platform independent user interfaces
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}, tk, tcl
-Group:    Development/Tools
-
-%description -n %{name}-gs
-The Graphics System application, GS, is a library of routines for writing
-graphical user interfaces. Programs written using GS work on all Erlang
-platforms and do not depend upon the underlying windowing system.
-
-################################################################################
-
 %package -n %{name}-hipe
 Summary:  High performance erlang
 License:  MPL
@@ -639,22 +623,6 @@ usage etc.
 
 ################################################################################
 
-%package -n %{name}-ose
-Summary:  A high-performance, POSIX compatible, multicore real-time operating system
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-ose
-A high-performance, POSIX compatible, multicore real-time operating system
-maximizing your hardware utilization.
-
-It is compact and robust, and powers embedded systems in wide-range of
-vertical markets from telecom to automotive to industrial automation and
-beyond.
-
-################################################################################
-
 %package -n %{name}-otp_mibs
 Summary:  Snmp management information base for Erlang
 License:  MPL
@@ -678,17 +646,6 @@ The Parsetools application contains utilities for parsing, e.g. the yecc
 module. Yecc is an LALR-1 parser generator for Erlang, similar to yacc.
 Yecc takes a BNF grammar definition as input, and produces Erlang code for
 a parser as output.
-
-################################################################################
-
-%package -n %{name}-percept
-Summary:  Concurrency profiler tool for Erlang
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-percept
-A concurrency profiler tool for Erlang.
 
 ################################################################################
 
@@ -777,17 +734,6 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 
 ################################################################################
 
-%package -n %{name}-test_server
-Summary:  The OTP test sewrver for Erlang
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-test_server
-The OTP test sewrver for Erlang.
-
-################################################################################
-
 %package -n %{name}-tools
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
@@ -808,18 +754,6 @@ Requires: %{name}-base = %{version}-%{release}
 
 %description -n %{name}-typer
 A type annotator of Erlang code.
-
-################################################################################
-
-%package -n %{name}-webtool
-Summary:  Tool that simplifying the use of web based Erlang tools
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-webtool
-Erlang Module to configure,and start the webserver httpd and the various
-web based tools to Erlang/OTP.
 
 ################################################################################
 
@@ -851,7 +785,7 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
-%setup -qn otp_src_%{ver_maj}.%{ver_min}
+%setup -qn otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
 
@@ -869,6 +803,7 @@ export BUILDDIR=$(pwd)
 
 pushd libressl-%{libre_ver}
   mkdir build
+  # perfecto:absolve 2
   ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
   %{__make} install
@@ -879,6 +814,8 @@ popd
 export CFLAGS="%{optflags} -fno-strict-aliasing"
 export CXXLAGS=$CFLAGS
 ERL_TOP=`pwd`; export ERL_TOP
+
+./otp_build autoconf
 
 %configure \
   --prefix=%{_prefix} \
@@ -900,7 +837,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
   --with-ssl-rpath=no
 
-%{__make} -j1
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -944,7 +881,7 @@ popd
 # (tpg) remove not needed files
 rm -rf %{buildroot}%{_datadir}/COPYRIGHT
 rm -rf %{buildroot}%{_datadir}/PR.template
-rm -rf %{buildroot}%{_datadir}/README
+rm -rf %{buildroot}%{_datadir}/README.md
 
 # (tpg) remove this manpages as they conflicts with openssl
 rm -rf %{buildroot}%{_mandir}/man3/ssl.3.*
@@ -965,7 +902,7 @@ rm -rf %{buildroot}
 
 %files -n %{name}-stack
 %defattr(-,root,root,-)
-%doc EPLICENCE
+%doc LICENSE.txt
 
 %files -n %{name}-base
 %defattr(-,root,root,-)
@@ -1090,10 +1027,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/eunit-*
 
-%files -n %{name}-gs
-%defattr(-,root,root,-)
-%{elibdir}/gs-*
-
 %files -n %{name}-hipe
 %defattr(-,root,root,-)
 %{elibdir}/hipe-*
@@ -1138,10 +1071,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/os_mon-*
 
-%files -n %{name}-ose
-%defattr(-,root,root,-)
-%{elibdir}/ose-*
-
 %files -n %{name}-otp_mibs
 %defattr(-,root,root,-)
 %{elibdir}/otp_mibs-*
@@ -1149,10 +1078,6 @@ rm -rf %{buildroot}
 %files -n %{name}-parsetools
 %defattr(-,root,root,-)
 %{elibdir}/parsetools-*
-
-%files -n %{name}-percept
-%defattr(-,root,root,-)
-%{elibdir}/percept-*
 
 %files -n %{name}-public_key
 %defattr(-,root,root,-)
@@ -1182,22 +1107,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/syntax_tools-*
 
-%files -n %{name}-test_server
-%defattr(-,root,root,-)
-%{elibdir}/test_server-*
-
 %files -n %{name}-tools
 %defattr(-,root,root,-)
 %{elibdir}/tools-*
 
 %files -n %{name}-typer
 %defattr(-,root,root,-)
-%{elibdir}/typer-*
 %{_libdir}/%{realname}/bin/typer
-
-%files -n %{name}-webtool
-%defattr(-,root,root,-)
-%{elibdir}/webtool-*
 
 %files -n %{name}-wx
 %defattr(-,root,root,-)
@@ -1210,25 +1126,29 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 17.5-3
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.13-0
+- Updated to the latest release
+
+* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.10-0
+- Updated to the latest release
+- LibreSSL updated to 2.8.2
+
+* Sat Jul 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 20.3.8.3-0
+- Updated to the latest release
+
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-1
 - Using GCC from devtoolset-3 for build
 
-* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 17.5-2
+* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-0
+- Updated to latest stable release
+- LibreSSL updated to 2.7.0
+
+* Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 20.1-1
 - Rebuilt with EC support
 - Rebuilt with statically linked LibreSSL
 
-* Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 17.5-1
-- Fixed bug with crypto module
-- Fixed wrong dependencies in stack package
+* Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 20.1-0
+- Updated to latest stable release
 
-* Wed Apr 01 2015 Anton Novojilov <andy@essentialkaos.com> - 17.5-0
-- Updated to 17.5
-
-* Thu Dec 11 2014 Anton Novojilov <andy@essentialkaos.com> - 17.4-0
-- Updated to 17.4
-
-* Mon Oct 13 2014 Anton Novojilov <andy@essentialkaos.com> - 17.3-0
-- Updated to 17.3
-
-* Wed Sep 03 2014 Anton Novojilov <andy@essentialkaos.com> - 17.1-0
+* Thu Jun 22 2017 Anton Novojilov <andy@essentialkaos.com> - 20.0-0
 - Initial build

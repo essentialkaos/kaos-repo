@@ -40,9 +40,9 @@
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           20
+%define ver_maj           19
 %define ver_min           3
-%define ver_patch         8.10
+%define ver_patch         6.12
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
@@ -68,9 +68,9 @@ Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
-BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt zlib-devel
+BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make
 
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
@@ -97,6 +97,7 @@ Requires:          %{name}-observer = %{version}
 Requires:          %{name}-os_mon = %{version}
 Requires:          %{name}-otp_mibs = %{version}
 Requires:          %{name}-parsetools = %{version}
+Requires:          %{name}-percept = %{version}
 Requires:          %{name}-public_key = %{version}
 Requires:          %{name}-reltool = %{version}
 Requires:          %{name}-runtime_tools = %{version}
@@ -111,7 +112,7 @@ Requires:          %{name}-xmerl = %{version}
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang18 erlang19
+Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang20 erlang21
 
 ################################################################################
 
@@ -151,6 +152,7 @@ Requires: %{name}-erl_docgen = %{version}
 Requires: %{name}-erl_interface = %{version}
 Requires: %{name}-et = %{version}
 Requires: %{name}-eunit = %{version}
+Requires: %{name}-gs = %{version}
 Requires: %{name}-hipe = %{version}
 Requires: %{name}-ic = %{version}
 Requires: %{name}-inets = %{version}
@@ -163,6 +165,7 @@ Requires: %{name}-orber = %{version}
 Requires: %{name}-os_mon = %{version}
 Requires: %{name}-otp_mibs = %{version}
 Requires: %{name}-parsetools = %{version}
+Requires: %{name}-percept = %{version}
 Requires: %{name}-public_key = %{version}
 Requires: %{name}-reltool = %{version}
 Requires: %{name}-runtime_tools = %{version}
@@ -231,8 +234,8 @@ Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
 
 %description -n %{name}-manpages
-Documentation for the Erlang programming language in `man` format. This
-documentation can be read using the command `erl -man mod`, where 'mod' is
+Documentation for the Erlang programming language in `man' format. This
+documentation can be read using the command `erl -man mod', where `mod' is
 the name of the module you want documentation on.
 
 ################################################################################
@@ -503,6 +506,19 @@ Erlang support for unit testing.
 
 ################################################################################
 
+%package -n %{name}-gs
+Summary:  Graphics System used to write platform independent user interfaces
+License:  MPL
+Requires: %{name}-base = %{version}-%{release}, tk, tcl
+Group:    Development/Tools
+
+%description -n %{name}-gs
+The Graphics System application, GS, is a library of routines for writing
+graphical user interfaces. Programs written using GS work on all Erlang
+platforms and do not depend upon the underlying windowing system.
+
+################################################################################
+
 %package -n %{name}-hipe
 Summary:  High performance erlang
 License:  MPL
@@ -646,6 +662,17 @@ The Parsetools application contains utilities for parsing, e.g. the yecc
 module. Yecc is an LALR-1 parser generator for Erlang, similar to yacc.
 Yecc takes a BNF grammar definition as input, and produces Erlang code for
 a parser as output.
+
+################################################################################
+
+%package -n %{name}-percept
+Summary:  Concurrency profiler tool for Erlang
+License:  MPL
+Requires: %{name}-base = %{version}-%{release}
+Group:    Development/Tools
+
+%description -n %{name}-percept
+A concurrency profiler tool for Erlang.
 
 ################################################################################
 
@@ -803,7 +830,6 @@ export BUILDDIR=$(pwd)
 
 pushd libressl-%{libre_ver}
   mkdir build
-  # perfecto:absolve 2
   ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
   %{__make} install
@@ -1027,6 +1053,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/eunit-*
 
+%files -n %{name}-gs
+%defattr(-,root,root,-)
+%{elibdir}/gs-*
+
 %files -n %{name}-hipe
 %defattr(-,root,root,-)
 %{elibdir}/hipe-*
@@ -1079,6 +1109,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/parsetools-*
 
+%files -n %{name}-percept
+%defattr(-,root,root,-)
+%{elibdir}/percept-*
+
 %files -n %{name}-public_key
 %defattr(-,root,root,-)
 %{elibdir}/public_key-*
@@ -1113,6 +1147,7 @@ rm -rf %{buildroot}
 
 %files -n %{name}-typer
 %defattr(-,root,root,-)
+%{elibdir}/typer-*
 %{_libdir}/%{realname}/bin/typer
 
 %files -n %{name}-wx
@@ -1126,26 +1161,31 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.10-0
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
+- Updated to the latest release
+
+* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
 - Updated to the latest release
 - LibreSSL updated to 2.8.2
 
-* Sat Jul 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 20.3.8.3-0
+* Sun Jul 29 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.9-0
 - Updated to the latest release
 
-* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-1
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-2
 - Using GCC from devtoolset-3 for build
 
-* Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-0
-- Updated to latest stable release
-- LibreSSL updated to 2.7.0
-
-* Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 20.1-1
+* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-1
 - Rebuilt with EC support
 - Rebuilt with statically linked LibreSSL
 
-* Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 20.1-0
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.3-0
 - Updated to latest stable release
 
-* Thu Jun 22 2017 Anton Novojilov <andy@essentialkaos.com> - 20.0-0
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.2-0
+- Updated to latest stable release
+
+* Fri Sep 23 2016 Anton Novojilov <andy@essentialkaos.com> - 19.1-0
+- Updated to latest stable release
+
+* Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 19-0
 - Initial build

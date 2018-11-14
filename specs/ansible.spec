@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.6.4
+Version:              2.6.7
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -89,9 +89,9 @@ if expr x'%{python_sitelib}' : 'x.*dist-packages/\?' ; then
     fi
 fi
 
-%{__mkdir_p} %{buildroot}%{_sysconfdir}/%{name}/
-%{__mkdir_p} %{buildroot}%{_mandir}/man1/
-%{__mkdir_p} %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}/
+mkdir -p %{buildroot}%{_mandir}/man1/
+mkdir -p %{buildroot}%{_datadir}/%{name}
 
 cp examples/hosts %{buildroot}%{_sysconfdir}/%{name}/
 cp examples/ansible.cfg %{buildroot}%{_sysconfdir}/%{name}/
@@ -114,6 +114,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.7-0
+- Updated to latest version
+
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.4-0
 - Updated to latest version
 
