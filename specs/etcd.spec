@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/coreos/etcd
-# rpmbuilder:tag       v3.3.10
+# rpmbuilder:tag       v3.3.9
 
 ################################################################################
 
@@ -11,7 +11,7 @@
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.3.10
+Version:         3.3.9
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
@@ -21,7 +21,7 @@ Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.11
+BuildRequires:   golang >= 1.10
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -87,9 +87,6 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.10-0
-- Updated to the latest stable release
-
 * Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.9-0
 - Updated to the latest stable release
 
