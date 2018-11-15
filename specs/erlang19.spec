@@ -1161,9 +1161,6 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
-- Updated to the latest release
-
 * Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
 - Updated to the latest release
 - LibreSSL updated to 2.8.2
