@@ -7,7 +7,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.19.0
+Version:          2.19.1
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -276,6 +276,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 2.19.1-0
+- This release merges up the fixes that appear in v2.14.5 and in
+  v2.17.2 to address the recently reported CVE-2018-17456
+
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.19.0-0
 - "git diff" compares the index and the working tree.  For paths
   added with intent-to-add bit, the command shows the full contents
