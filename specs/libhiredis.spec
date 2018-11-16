@@ -29,8 +29,8 @@
 ################################################################################
 
 %define realname       hiredis
-%define minor_ver      13
-%define rel            3
+%define minor_ver      14
+%define rel            0
 
 ################################################################################
 
@@ -105,6 +105,45 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 0.14.0-0
+- Make string2ll static to fix conflict with Redis
+- Use -dynamiclib instead of -shared for OSX
+- Use string2ll from Redis w/added tests
+- Makefile - OSX compilation fixes
+- Remove redundant NULL checks
+- Fix bulk and multi-bulk length truncation
+- Fix SIGSEGV in OpenBSD by checking for NULL before calling freeaddrinfo
+- Several POSIX compatibility fixes
+- Makefile - Compatibility fixes
+- Makefile - Fix make install on FreeBSD
+- Makefile - don't assume $(INSTALL) is cp
+- Separate side-effect causing function from assert and small cleanup
+- Don't send negative values to __redisAsyncCommand
+- Fix leak if setsockopt fails
+- Fix libevent leak
+- Clean up GCC warning
+- Keep track of errno in __redisSetErrorFromErrno() as snprintf may use it
+- Solaris compilation fix
+- Reorder linker arguments when building examples
+- Keep track of subscriptions in case of rapid subscribe/unsubscribe
+- libuv use after free fix
+- Properly close socket fd on reconnect attempt
+- Skip valgrind in OSX tests
+- Various updates for Travis testing OSX
+- Update libevent
+- Change sds.h for building in C++ projects
+- Use proper format specifier in redisFormatSdsCommandArgv
+- Better handling of NULL reply in example code
+- Prevent overflow when formatting an error
+- Compatibility fix for strerror_r
+- Properly detect integer parse/overflow errors
+- Adds CI for Windows and cygwin fixes
+- Catch a buffer overflow when formatting the error message
+- Import latest upstream sds. This breaks applications that are linked against
+  the old hiredis v0.13
+- Fix warnings, when compiled with -Wshadow
+- Make hiredis compile in Cygwin on Windows, now CI-tested
+
 * Thu Sep 17 2015 Anton Novojilov <andy@essentialkaos.com> - 0.13.3-0
 - Revert "Clear REDIS_CONNECTED flag when connection is closed".
 - Make tests pass on FreeBSD (Thanks, Giacomo Olgeni)

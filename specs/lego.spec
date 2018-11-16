@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/xenolf/lego
-# rpmbuilder:tag       v1.0.1
+# rpmbuilder:tag       v1.1.0
 
 ################################################################################
 
@@ -45,7 +45,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         1.0.1
+Version:         1.2.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -53,7 +53,7 @@ URL:             https://github.com/xenolf/lego
 
 Source0:         %{name}-%{version}.tar.bz2
 
-BuildRequires:   golang >= 1.9
+BuildRequires:   golang >= 1.11
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -100,6 +100,48 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
+- fix: Docker image
+
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- [dnsprovider] Add DNS Provider for ConoHa DNS
+- [dnsprovider] Add DNS Provider for MyDNS.jp
+- [dnsprovider] Add DNS Provider for Selectel
+- [dnsprovider] netcup: make unmarshalling of api-responses more lenient.
+- [dnsprovider] aurora: change DNS client
+- [dnsprovider] azure: update auth to support instance metadata service
+- [dnsprovider] dnsmadeeasy: log response body on error
+- [lib] TLS-ALPN-01: Update idPeAcmeIdentifierV1, draft refs.
+- [lib] Do not send a JWS body when POSTing challenges.
+- [lib] Support POST-as-GET.
+
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- [lib] TLS-ALPN-01 Challenge
+- [cli] Add filename parameter
+- [dnsprovider] Allow to configure TTL, interval and timeout
+- [dnsprovider] Add support for reading DNS provider setup from files
+- [dnsprovider] Add DNS Provider for ACME-DNS
+- [dnsprovider] Add DNS Provider for ALIYUN DNS
+- [dnsprovider] Add DNS Provider for DreamHost
+- [dnsprovider] Add DNS provider for hosting.de
+- [dnsprovider] Add DNS Provider for IIJ
+- [dnsprovider] Add DNS Provider for netcup
+- [dnsprovider] Add DNS Provider for NIFCLOUD DNS
+- [dnsprovider] Add DNS Provider for SAKURA Cloud
+- [dnsprovider] Add DNS Provider for Stackpath
+- [dnsprovider] Add DNS Provider for VegaDNS
+- [dnsprovider] exec: add EXEC_MODE=RAW support.
+- [dnsprovider] cloudflare: support for CF_API_KEY and CF_API_EMAIL
+- [lib] Don't trust identifiers order.
+- [lib] Fix missing issuer certificates from Let's Encrypt
+- [dnsprovider] duckdns: fix TXT record update url
+- [dnsprovider] duckdns: fix subsubdomain
+- [dnsprovider] gcloud: update findTxtRecords to use Name=fqdn and Type=TXT
+- [dnsprovider] lightsail: Fix Domain does not exist error
+- [dnsprovider] ns1: use the authoritative zone and not the domain name
+- [dnsprovider] ovh: check error to avoid panic due to nil client
+- [lib] Submit all dns records up front, then validate serially
+
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
 - cli: Changed default server URL to new V2 endpoint
 - lib: Added missing processing status handling

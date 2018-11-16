@@ -11,7 +11,7 @@
 
 Summary:           Distributed source control management tool
 Name:              mercurial
-Version:           4.7
+Version:           4.7.2
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Development/Tools
@@ -166,83 +166,86 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 4.7.2-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 4.7-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 4.6.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.4.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 4.3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 4.2.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 4.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 4.1.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 4.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 3.9.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 3.9-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 3.7.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 3.7.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 3.6.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 3.6.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 05 2015 Anton Novojilov <andy@essentialkaos.com> - 3.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Apr 15 2015 Anton Novojilov <andy@essentialkaos.com> - 3.3.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 3.3.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 17 2015 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Dec 20 2014 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Dec 10 2014 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
 - Initial build

@@ -33,7 +33,7 @@
 
 Summary:         Lightweight library for embedding a webserver in applications
 Name:            libmicrohttpd
-Version:         0.9.59
+Version:         0.9.60
 Release:         0%{?dist}
 License:         GNU LGPL
 Group:           Development/Libraries
@@ -164,77 +164,80 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.60-0
+- Updated to the latest release
+
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.59-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.58-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.57-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.9.56-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.55-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.54-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.52-0
-- Updated to latest release
+- Updated to the latest release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.51-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.49-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.48-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.46-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.43-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Jul 02 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.42-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Apr 15 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.40-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Jan 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.39-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 08 2014 Anton Novojilov <andy@essentialkaos.com> - 0.9.38-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 08 2014 Anton Novojilov <andy@essentialkaos.com> - 0.9.37-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 08 2014 Anton Novojilov <andy@essentialkaos.com> - 0.9.36-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 08 2014 Anton Novojilov <andy@essentialkaos.com> - 0.9.35-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Mar 06 2014 Anton Novojilov <andy@essentialkaos.com> - 0.9.34-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Nov 20 2013 Anton Novojilov <andy@essentialkaos.com> - 0.9.31-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sun Jul 28 2013 Anton Novojilov <andy@essentialkaos.com> - 0.9.28-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Apr 11 2013 Anton Novojilov <andy@essentialkaos.com> - 0.9.26-0
-- Updated to latest release
+- Updated to the latest release
 
 * Fri Jun 8 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.20-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Apr 12 2012 Anton Novojilov <andy@essentialkaos.com> - 0.9.19-0
-- Updated to latest release
+- Updated to the latest release
