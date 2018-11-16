@@ -17,6 +17,8 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     gcc
 
+Provides:          %{name} = %{version}-%{release}
+
 ################################################################################
 
 %description

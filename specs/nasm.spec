@@ -30,18 +30,18 @@
 
 Summary:            A portable x86 assembler which uses Intel-like syntax
 Name:               nasm
-Version:            2.13.03
+Version:            2.14
 Release:            0%{?dist}
 License:            BSD
 Group:              Development/Languages
 URL:                http://www.nasm.us
 
-Source0:            http://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
-Source1:            http://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
+Source0:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
+Source1:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc perl(Env) autoconf asciidoc xmlto
+BuildRequires:      make gcc perl(Env) autoconf >= 2.69 asciidoc xmlto
 
 Requires(post):     /sbin/install-info
 Requires(preun):    /sbin/install-info
@@ -85,7 +85,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_mandir}/man1
 
-%{__make} INSTALLROOT=%{buildroot} install install_rdf
+%{make_install} install_rdf
 
 %clean
 rm -rf %{buildroot}
@@ -127,5 +127,44 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2.14-0
+- Changed -I option semantics by adding a trailing path separator
+  unconditionally.
+- Fixed null dereference in corrupted invalid single line macros.
+- Fixed division by zero which may happen if source code is malformed.
+- Fixed out of bound access in processing of malformed segment override.
+- Fixed out of bound access in certain EQU parsing.
+- Fixed buffer underflow in float parsing.
+- Added SGX (Intel Software Guard Extensions) instructions.
+- Added +n syntax for multiple contiguous registers.
+- Fixed subsections_via_symbols for macho object format.
+- Added the --gprefix, --gpostfix, --lprefix, and --lpostfix command line
+  options, to allow command line base symbol renaming.
+- Allow label renaming to be specified by %%pragma in addition to from the
+  command line.
+- Supported generic %%pragma namespaces, output and debug.
+- Added the --pragma command line option to inject a %%pragma directive.
+- Added the --before command line option to accept preprocess statement before
+  input.
+- Added AVX512 VBMI2 (Additional Bit Manipulation), VNNI (Vector Neural
+  Network), BITALG (Bit Algorithm), and GFNI (Galois Field New Instruction)
+  instructions.
+- Added the STATIC directive for local symbols that should be renamed using
+  global-symbol rules.
+- Allow a symbol to be defined as EXTERN and then later overridden as GLOBAL
+  or COMMON. Furthermore, a symbol declared EXTERN and then defined will
+  be treated as GLOBAL.
+- The GLOBAL directive no longer is required to precede the definition of
+  the symbol.
+- Support private_extern as macho specific extension to the GLOBAL directive.
+- Updated UD0 encoding to match with the specification
+- Added the --limit-X command line option to set execution limits.
+- Updated the Codeview version number to be aligned with MASM.
+- Added the --keep-all command line option to preserve output files.
+- Added the --include command line option, an alias to -P.
+- Added the --help command line option as an alias to -h.
+- Added -W, -D, and -Q suffix aliases for RET instructions so the operand
+  sizes of these instructions can be encoded without using o16, o32 or o64.
+
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 2.13.03-0
 - Initial build for kaos-repo

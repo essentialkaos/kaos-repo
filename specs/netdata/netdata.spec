@@ -54,13 +54,13 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.10.0
+Version:          1.11.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
 URL:              http://netdata.firehol.org
 
-Source0:          https://github.com/firehol/netdata/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Source0:          https://github.com/netdata/netdata/releases/download/v%{version}/%{name}-v%{version}.tar.gz
 Source1:          %{name}.sysconfig
 Source2:          %{name}.init
 
@@ -92,7 +92,7 @@ Real-time performance monitoring, in the greatest possible detail!
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -qn %{name}-%{version}_rolling
 
 %build
 %configure \
@@ -110,7 +110,7 @@ rm -rf %{buildroot}
 
 find %{buildroot} -name .keep -exec rm -f {} \;
 
-install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
+install -dm 755 %{buildroot}%{_sysconfdir}
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sharedstatedir}/%{name}
 
@@ -166,13 +166,14 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc ChangeLog LICENSE.md README.md
+%doc LICENSE README.md
 %config(noreplace) %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(-, %{service_user}, %{service_group}) %dir %{_localstatedir}/cache/%{name}/
 %attr(-, %{service_user}, %{service_group}) %dir %{_localstatedir}/log/%{name}/
 %attr(-, %{service_user}, %{service_group}) %{_sharedstatedir}/%{name}/
 %attr(-, root, %{service_group}) %{_datadir}/%{name}/
+%{_libdir}/%{name}
 %{_libexecdir}/%{name}/
 %{_sbindir}/%{name}
 
@@ -185,26 +186,29 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
+- Updated to the latest stable release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Apr 10 2016 Gleb Goncharov <yum@gongled.me> - 1.0.0-0
 - Initial build
