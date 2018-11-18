@@ -73,7 +73,7 @@
 %endif
 
 %define majorver        9.3
-%define minorver        24
+%define minorver        25
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
@@ -108,7 +108,7 @@ Source3:           pg_config.h
 Source4:           README.rpm-dist
 Source5:           ecpg_config.h
 Source6:           %{realname}-%{majorver}-libs.conf
-Source7:           http://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
+Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
@@ -1073,42 +1073,45 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.25-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.24-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.23-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.22-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.21-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 9.3.20-1
 - Improved spec
 
 * Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.20-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Oct 10 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.19-1
 - Improved init script
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.19-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 16 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.17-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 9.3.16-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.15-0
-- Updated to latest stable release
+- Updated to the latest stable release
 - Added systemd support
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.14-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Jun 27 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.13-2
 - Added installing pg_config link using update-alternatives
@@ -1119,28 +1122,28 @@ rm -rf %{buildroot}
 - Fixed reading locale bug on CentOS7+
 
 * Mon May 16 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.13-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Apr 07 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.12-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 9.3.11-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Oct 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.3.10-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.3.9-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 16 2015 Anton Novojilov <andy@essentialkaos.com> - 9.3.8-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat May 23 2015 Anton Novojilov <andy@essentialkaos.com> - 9.3.7-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Feb 09 2015 Anton Novojilov <andy@essentialkaos.com> - 9.3.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Dec 31 2014 Anton Novojilov <andy@essentialkaos.com> - 9.3.5-8
 - Init script updated to kaosv 2.4 with oom killer disable feature

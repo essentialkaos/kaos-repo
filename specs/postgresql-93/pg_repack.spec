@@ -49,7 +49,7 @@
 
 Summary:           Reorganize tables in PostgreSQL databases without any locks
 Name:              %{realname}%{pg_maj_ver}
-Version:           1.4.3
+Version:           1.4.4
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -108,8 +108,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
+- Updated to the latest stable release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Nov 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
 - Initial build for kaos repo

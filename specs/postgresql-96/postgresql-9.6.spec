@@ -79,7 +79,7 @@
 %endif
 
 %define majorver        9.6
-%define minorver        10
+%define minorver        11
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          96
@@ -114,7 +114,7 @@ Source3:           pg_config.h
 Source4:           README.rpm-dist
 Source5:           ecpg_config.h
 Source6:           %{realname}-%{majorver}-libs.conf
-Source7:           http://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
+Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
@@ -1123,41 +1123,44 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.11-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.10-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.9-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.8-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.7-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 9.6.6-1
 - Improved spec
 
 * Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Oct 10 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.5-1
 - Improved init script
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 16 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jan 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.6.1-1
 - Improved init script
 
 * Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.6.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 - Added systemd support
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 9.6.0-0

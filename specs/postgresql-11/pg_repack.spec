@@ -39,9 +39,9 @@
 
 ################################################################################
 
-%define pg_maj_ver        92
-%define pg_low_fullver    9.2.0
-%define pg_dir            %{_prefix}/pgsql-9.2
+%define pg_maj_ver        11
+%define pg_low_fullver    11.0
+%define pg_dir            %{_prefix}/pgsql-11
 
 %define realname          pg_repack
 
@@ -104,15 +104,12 @@ rm -rf %{buildroot}
 %attr (755,root,root) %{pg_dir}/lib/pg_repack.so
 %{pg_dir}/share/extension/%{realname}--%{version}.sql
 %{pg_dir}/share/extension/%{realname}.control
+%if 0%{?rhel} >= 7
+%{pg_dir}/lib/bitcode/*
+%endif
 
 ################################################################################
 
 %changelog
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
-- Updated to the latest stable release
-
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
-- Updated to the latest stable release
-
-* Tue Nov 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Initial build for kaos repo
+- Initial build

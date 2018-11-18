@@ -2,7 +2,7 @@
 
 Summary:         Meta-package that only requires libnghttp2
 Name:            nghttp2
-Version:         1.33.0
+Version:         1.34.0
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
@@ -112,35 +112,38 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.34.0-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.33.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.32.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Apr 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.31.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.27.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.24.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.22.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.20.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.19.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.18.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
 - Initial build for kaos repository

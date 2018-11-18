@@ -6,14 +6,14 @@
 
 Summary:         An audio codec for use in low-delay speech and audio communication
 Name:            opus
-Version:         1.2.1
+Version:         1.3
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
 URL:             http://www.opus-codec.org
 
 Source0:         https://archive.mozilla.org/pub/%{name}/%{name}-%{version}.tar.gz
-Source1:         http://tools.ietf.org/rfc/rfc6716.txt
+Source1:         https://tools.ietf.org/rfc/rfc6716.txt
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -95,5 +95,37 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- Improvements to the VAD and speech/music classification using an RNN
+- Support for ambisonics coding using channel mapping families 2 and 3
+- Improvements to stereo speech coding at low bitrate
+- Using wideband encoding down to 9 kb/s
+- Making it possible to use SILK down to bitrates around 5 kb/s
+- Minor quality improvement on tones
+- Enabling the spec fixes in RFC 8251 by default
+- Security/hardening improvements
+- Fixes to the CELT PLC
+- Bandwidth detection fixes
+
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
+- This minor release fixes a relatively rare issue where the 1.2 encoder would
+  wrongly assume a signal to be bandlimited to 12 kHz and not encode frequencies
+  between 12 and 20 kHz.
+
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Speech quality improvements especially in the 12-20 kbit/s range
+- Improved VBR encoding for hybrid mode
+- More aggressive use of wider speech bandwidth, including fullband speech
+  starting at 14 kbit/s
+- Music quality improvements in the 32-48 kb/s range
+- Generic and SSE CELT optimizations
+- Support for directly encoding packets up to 120 ms
+- DTX support for CELT mode
+- SILK CBR improvements
+- Support for all of the fixes in draft-ietf-codec-opus-update-06 (the mono
+  downmix and the folding fixes need --enable-update-draft)
+- Many bug fixes, including integer wrap-arounds discovered through fuzzing
+  (no security implications)
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.5-0
 - Initial build for kaos repository

@@ -31,53 +31,63 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
+%define __service         %{_sbin}/service
+%define __touch           %{_bin}/touch
+%define __chkconfig       %{_sbin}/chkconfig
+%define __updalt          %{_sbindir}/update-alternatives
+%define __useradd         %{_sbindir}/useradd
+%define __groupadd        %{_sbindir}/groupadd
+%define __getent          %{_bindir}/getent
+%define __systemctl       %{_bindir}/systemctl
 
 ################################################################################
 
-%define pg_maj_ver        92
-%define pg_low_fullver    9.2.0
-%define pg_dir            %{_prefix}/pgsql-9.2
-
-%define realname          pg_repack
+%define pg_ver            11
+%define pg_maj_ver        11
+%define pg_dir            %{_prefix}/pgsql-11
+%define realname          pg_comparator
 
 ################################################################################
 
-Summary:           Reorganize tables in PostgreSQL databases without any locks
+
+Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
 Name:              %{realname}%{pg_maj_ver}
-Version:           1.4.4
+Version:           2.3.1
 Release:           0%{?dist}
 License:           BSD
-Group:             Applications/Databases
-URL:               http://pgxn.org/dist/pg_repack/
+Group:             Development/Tools
+URL:               https://www.cri.ensmp.fr/people/coelho/pg_comparator
 
-Source0:           http://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source:            https://www.cri.ensmp.fr/people/coelho/pg_comparator/%{realname}-%{version}.tgz
+
+Patch0:            %{realname}-Makefile.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc openssl-devel readline-devel
-BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+BuildRequires:     make gcc
+BuildRequires:     postgresql%{pg_maj_ver}-devel
 
+Requires:          perl(Getopt::Long), perl(Time::HiRes)
 Requires:          postgresql%{pg_maj_ver}
+
+Requires(post):    %{_sbindir}/update-alternatives
 
 Provides:          %{realname} = %{version}-%{release}
 
 ################################################################################
 
 %description
-pg_repack can re-organize tables on a postgres database without any locks so
-that you can retrieve or update rows in tables being reorganized.
-The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
+pg_comparator is a tool to compare possibly very big tables in
+different locations and report differences, with a network and
+time-efficient approach.
 
 ################################################################################
 
 %prep
 %setup -qn %{realname}-%{version}
+
+%patch0 -p1
 
 %build
 %{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
@@ -87,10 +97,12 @@ rm -rf %{buildroot}
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
-%{__ldconfig}
+%{_sbindir}/update-alternatives --install %{_bindir}/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_maj_ver}0
 
 %postun
-%{__ldconfig}
+if [[ $1 -eq 0 ]] ; then
+  %{_sbindir}/update-alternatives --remove pgcomparator %{pg_dir}/bin/pg_comparator
+fi
 
 %clean
 rm -rf %{buildroot}
@@ -98,21 +110,19 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
-%defattr(-,root,root)
-%doc COPYRIGHT doc/pg_repack.rst
-%attr (755,root,root) %{pg_dir}/bin/pg_repack
-%attr (755,root,root) %{pg_dir}/lib/pg_repack.so
-%{pg_dir}/share/extension/%{realname}--%{version}.sql
-%{pg_dir}/share/extension/%{realname}.control
+%defattr(-,root,root,-)
+%doc LICENSE
+%doc %{pg_dir}/doc/extension/README.pg_comparator
+%{pg_dir}/bin/pg_comparator
+%{pg_dir}/lib/pgcmp.so
+%{pg_dir}/share/extension/*.sql
+%{pg_dir}/share/extension/pgcmp.control
+%if 0%{?rhel} >= 7
+%{pg_dir}/lib/bitcode/*
+%endif
 
 ################################################################################
 
 %changelog
-* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
-- Updated to the latest stable release
-
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
-- Updated to the latest stable release
-
-* Tue Nov 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Initial build for kaos repo
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
+- Initial build

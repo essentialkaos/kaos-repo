@@ -67,24 +67,26 @@
 %{!?systemd_enabled:%global systemd_enabled 0}
 %{!?sdt:%global sdt 0}
 %{!?selinux:%global selinux 0}
+%{!?llvm:%global llvm 0}
 %else
 %{!?systemd_enabled:%global systemd_enabled 1}
+%{!?llvm:%global llvm 1}
 %{!?sdt:%global sdt 1}
 %{!?selinux:%global selinux 1}
 %endif
 
-%define majorver        10
-%define minorver        6
+%define majorver        11
+%define minorver        1
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
-%define pkgver          10
+%define pkgver          11
 %define realname        postgresql
 %define shortname       pgsql
 %define tinyname        pg
 %define service_name    %{realname}-%{majorver}
 %define install_dir     %{_usr}/%{shortname}-%{majorver}
 
-%define prev_version    9.6
+%define prev_version    10
 
 %define username        postgres
 %define groupname       postgres
@@ -122,8 +124,12 @@ Patch4:            %{realname}-var-run-socket.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc perl glibc-devel bison flex
+BuildRequires:     make gcc gcc-c++ perl glibc-devel bison flex >= 2.5.31
 BuildRequires:     readline-devel zlib-devel >= 1.0.4
+
+%if 0%{?rhel} > 7
+BuildRequires:     perl-generators
+%endif
 
 %if %plperl
 BuildRequires:     perl-ExtUtils-Embed perl-ExtUtils-MakeMaker
@@ -168,6 +174,12 @@ BuildRequires:     libuuid-devel
 
 %if %ldap
 BuildRequires:     openldap-devel
+%endif
+
+%if %llvm
+%if 0%{?rhel} == 7
+BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+%endif
 %endif
 
 Requires:          %{__ldconfig} initscripts
@@ -234,7 +246,7 @@ Group:             Applications/Databases
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version}-%{release}
 Requires:          %{name}-libs = %{version}-%{release}
-Requires:          glibc kaosv >= 2.13 numactl
+Requires:          glibc kaosv >= 2.15 numactl
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -298,6 +310,28 @@ needed to compile C or C++ applications which will directly interact
 with a PostgreSQL database management server and the ecpg Embedded C
 Postgres preprocessor. You need to install this package if you want to
 develop applications which will interact with a PostgreSQL server.
+
+################################################################################
+
+%if %llvm
+%package llvmjit
+Summary:           Just-in-time compilation support for PostgreSQL
+Group:             Applications/Databases
+
+Requires:          %{name}-server%{?_isa} = %{version}-%{release}
+
+%if 0%{?rhel} && 0%{?rhel} == 7
+Requires:          llvm5.0 >= 5.0
+%endif
+
+Provides:          %{realname}-llvmjit = %{version}
+
+%description llvmjit
+The postgresql%{pkgver}-llvmjit package contains support for
+just-in-time compiling parts of PostgreSQL queries. Using LLVM it
+compiles e.g. expressions and tuple deforming into native code, with the
+goal of accelerating analytics queries.
+%endif
 
 ################################################################################
 
@@ -381,7 +415,7 @@ system, including regression tests and benchmarks.
 
 %setup -qn %{realname}-%{version}
 
-%patch1 -p1
+%patch1 -p0
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
@@ -418,6 +452,14 @@ CFLAGS="$CFLAGS -DLINUX_OOM_SCORE_ADJ=0"
 export CFLAGS
 export LIBNAME=%{_lib}
 
+%if %llvm
+%if 0%{?rhel} && 0%{?rhel} == 7
+# perfecto:absolve
+export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
+export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
+%endif
+%endif
+
 %{_configure} --disable-rpath \
   --prefix=%{install_dir} \
   --includedir=%{install_dir}/include \
@@ -429,6 +471,11 @@ export LIBNAME=%{_lib}
 %endif
 %if %icu
   --with-icu \
+%endif
+%if %llvm
+%if 0%{?rhel} && 0%{?rhel} == 7
+  --with-llvm \
+%endif
 %endif
 %if %plperl
   --with-perl \
@@ -528,6 +575,10 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{install_dir}/share/extensions/
 %{make_install} -C contrib
 
+%if %uuid
+%{make_install} -C contrib/uuid-ossp
+%endif
+
 # multilib header hack; note pg_config.h is installed in two places!
 # we only apply this to known Red Hat multilib arches, per bug #177564
 case `uname -i` in
@@ -614,6 +665,8 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
   chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
 
+rm -rf %{buildroot}%{install_dir}/share/extension/jsonb_plpython3u*
+
 # Fix some more documentation
 # gzip doc/internals.ps
 cp %{SOURCE4} README.rpm-dist
@@ -650,6 +703,7 @@ cp /dev/null plpython.lst
   %find_lang pg_upgrade-%{majorver}
   %find_lang pg_waldump-%{majorver}
   %find_lang pgscripts-%{majorver}
+  %find_lang pg_verify_checksums-%{majorver}
 
   %if %plperl
     %find_lang plperl-%{majorver}
@@ -689,7 +743,8 @@ cat initdb-%{majorver}.lang \
     pg_test_fsync-%{majorver}.lang \
     pg_archivecleanup-%{majorver}.lang \
     pg_waldump-%{majorver}.lang \
-    pgscripts-%{majorver}.lang > pg_main.lst
+    pgscripts-%{majorver}.lang \
+    pg_verify_checksums-%{majorver}.lang > pg_main.lst
 
 cat postgres-%{majorver}.lang \
     pg_resetwal-%{majorver}.lang \
@@ -888,6 +943,7 @@ rm -rf %{buildroot}
 %{install_dir}/bin/psql
 %{install_dir}/bin/reindexdb
 %{install_dir}/bin/vacuumdb
+%{install_dir}/share/errcodes.txt
 %{install_dir}/share/man/man1/clusterdb.*
 %{install_dir}/share/man/man1/createdb.*
 %{install_dir}/share/man/man1/createuser.*
@@ -932,7 +988,6 @@ rm -rf %{buildroot}
 %{install_dir}/lib/bloom.so
 %{install_dir}/lib/btree_gin.so
 %{install_dir}/lib/btree_gist.so
-%{install_dir}/lib/chkpass.so
 %{install_dir}/lib/citext.so
 %{install_dir}/lib/cube.so
 %{install_dir}/lib/dblink.so
@@ -944,9 +999,15 @@ rm -rf %{buildroot}
 %{install_dir}/lib/hstore.so
 %if %plperl
 %{install_dir}/lib/hstore_plperl.so
+%{install_dir}/lib/jsonb_plperl.so
+%{install_dir}/share/extension/jsonb_plperl*.sql
+%{install_dir}/share/extension/jsonb_plperl*.control
 %endif
 %if %plpython
 %{install_dir}/lib/hstore_plpython2.so
+%{install_dir}/lib/jsonb_plpython2.so
+%{install_dir}/share/extension/*_plpythonu*
+%{install_dir}/share/extension/*_plpython2u*
 %endif
 %{install_dir}/lib/passwordcheck.so
 %{install_dir}/lib/pg_freespacemap.so
@@ -988,7 +1049,6 @@ rm -rf %{buildroot}
 %{install_dir}/share/extension/bloom*
 %{install_dir}/share/extension/btree_gin*
 %{install_dir}/share/extension/btree_gist*
-%{install_dir}/share/extension/chkpass*
 %{install_dir}/share/extension/citext*
 %{install_dir}/share/extension/cube*
 %{install_dir}/share/extension/dblink*
@@ -1063,12 +1123,14 @@ rm -rf %{buildroot}
 %{install_dir}/bin/pg_controldata
 %{install_dir}/bin/pg_ctl
 %{install_dir}/bin/pg_resetwal
+%{install_dir}/bin/pg_verify_checksums
 %{install_dir}/bin/postgres
 %{install_dir}/bin/postmaster
 %{install_dir}/share/man/man1/initdb.*
 %{install_dir}/share/man/man1/pg_controldata.*
 %{install_dir}/share/man/man1/pg_ctl.*
 %{install_dir}/share/man/man1/pg_resetwal.*
+%{install_dir}/share/man/man1/pg_verify_checksums.*
 %{install_dir}/share/man/man1/postgres.*
 %{install_dir}/share/man/man1/postmaster.*
 %{install_dir}/share/postgres.bki
@@ -1122,6 +1184,14 @@ rm -rf %{buildroot}
 %{install_dir}/lib/pkgconfig/*
 %{install_dir}/share/man/man1/ecpg.*
 
+%if %llvm
+%files llvmjit
+%defattr(-,root,root)
+%{install_dir}/lib/bitcode/*
+%{install_dir}/lib/llvmjit.so
+%{install_dir}/lib/llvmjit_types.bc
+%endif
+
 %if %plperl
 %files plperl -f pg_plperl.lst
 %defattr(-,root,root)
@@ -1157,29 +1227,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 10.6-0
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 11.1-0
 - Updated to the latest stable release
 
-* Fri Oct 26 2018 Anton Novojilov <andy@essentialkaos.com> - 10.5-1
-- Fixed minor bug using pkgver macro in description's
-
-* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 10.5-0
-- Updated to the latest stable release
-
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 10.4-0
-- Updated to the latest stable release
-
-* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 10.3-0
-- Updated to the latest stable release
-
-* Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 10.2-0
-- Updated to the latest stable release
-
-* Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 10.1-1
-- Improved spec
-
-* Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.1-0
-- Updated to the latest stable release
-
-* Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 11.0-0
 - Initial build
