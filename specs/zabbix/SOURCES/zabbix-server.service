@@ -13,6 +13,7 @@ KillMode=control-group
 ExecStart=/usr/sbin/zabbix_server -c $CONFFILE
 ExecStop=/bin/kill -SIGTERM $MAINPID
 RestartSec=10s
+TimeoutSec=0
 
 [Install]
 WantedBy=multi-user.target

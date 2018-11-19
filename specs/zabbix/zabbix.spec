@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.13
+Version:              4.0.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -80,7 +80,7 @@ BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
 BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
-BuildRequires:        pcre-devel
+BuildRequires:        pcre-devel zlib-devel
 
 %if 0%{?rhel} >= 7
 Requires:             libevent
@@ -972,6 +972,78 @@ fi
 ################################################################################
 
 %changelog
+* Mon Nov 19 2018 Andrey Kulikov <avk@brewkeeper.net> - 4.0.1-0
+- added filter fields to select templates and hosts by directly linked
+  templates; made proxy filter field visible in configuration hosts field
+- added 'fullscreen' and 'kiosk' URL arguments to allow to set layout mode
+  via link
+- improve out of memory error message by adding statistics and
+  backtrace;
+- improve something impossible has just happened error message by adding
+  backtrace
+- improved escalator performance by using nextcheck index instead of reading
+  whole table
+- fixed possible PHP errors in "Problem hosts" widget
+- fixed possible crash when syncing host groups
+- fixed selection box for graphs on monitoring screens
+- extended support of system.stat[ent], system.stat[cpu,pc],
+  system.stat[cpu,ec] on IBM AIX to LPAR type 'dedicated'
+- fixed the host visible name in the event details/messages from server
+  when using long utf8 text
+- fixed max count of records in the single json that proxy can send
+  to the server
+- fixed the case where data from non-monitored VMware services are not removed
+  from vmware cache
+- added support for OpenSSL 1.1.1
+- added note on runtime control with PID numbers larger than 65535 to server,
+  proxy and agentd help messages and man pages
+- fixed the verification of the assignment of two web checks with the same name
+  from different templates to one host
+- fixed cloning inherited host prototype on host
+- fixed calculation of Y zero position in graph
+- fixed "Field "parent_itemid" cannot be set to NULL" error message
+  while importing multiple templates
+- added support of user language specific url link in support icon,
+  supported languages: english as default, japanese, russian
+- improved preprocessor worker performance
+- fixed incorrect zero rounding in date and time fields
+- fixed sql error in escalator when working with Oracle,
+  PostgreSQL (less than v9.4) databases
+- fixed incorrect translation string in en_US locale
+- fixed fields becoming writable upon form refresh in host prototype form
+- fixed 'follow redirects' checkbox in web scenario step's dialog
+- fixed color of the host name in the title of the Screens
+- fixed sorting when changing status of media type
+- fixed triggers in trigger overview being filtered by trigger severity and
+  trigger status change time instead of problem severity
+  and problem creation time
+- fixed updating of the Graph list of host when selecting a group of hosts
+- removed links to templates with no permissions for templated triggers,
+  trigger prototypes, graphs, graph prototypes, host prototypes
+  and web scenarios
+- fixed trigger evaluation result not visible in test dialogue when expression
+  is too long
+- fixed zoom button for time selector in IE browser
+- fixed table markup on overview and system info pages
+- fixed plain text Latest data when selecting more than 1 item
+- fixed host prototype status checkbox resets after adding template
+- fixed minor typos in comments and tests
+- fixed icon misplacement in problem view
+- fixed incorrect profile update causing page filter to sometimes show
+  duplicate values
+- fixed validation of double/Numeric(float) values
+- fixed selection of data for trigger overview and graphs if first drop down
+  entry is "none"
+- fixed Java gateway not to mark host unreachable in case of invalid username
+  and password
+- fixed JMX endpoint not being included in error message in case of connection
+  errors
+- fixed web.page.regexp item parameters description
+- fixed crash that could occur when OpenIPMI pollers are configured
+- fixed crash in vmware collector when receiving invalid xml
+- fixed crash when processing internal trigger events and deleting triggers
+  at the same time
+
 * Thu Sep 13 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.13-0
 - replaced pcreposix library with pcre, lowered backtracking limit, fixed
   libevent build issues
