@@ -28,6 +28,7 @@ BuildRequires:   libyaml-devel >= 0.2.1
 Requires:        python34
 
 Provides:        %{name} = %{version}-%{release}
+Provides:        python34-yaml = %{version}-%{release}
 
 ################################################################################
 
@@ -71,6 +72,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Nov 19 2018 Andrey Kulikov <avk@brewkeeper.net> - 3.13-1
+- Added python34-yaml to Provides
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.13-0
 - Updated to latest stable release
 

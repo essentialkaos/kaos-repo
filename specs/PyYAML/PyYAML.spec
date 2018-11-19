@@ -19,6 +19,7 @@ Requires:        python
 
 Provides:        python-%{name} = %{version}-%{release}
 Provides:        %{name} = %{version}-%{release}
+Provides:        python-yaml = %{version}-%{release}
 
 ################################################################################
 
@@ -62,6 +63,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Nov 19 2018 Andrey Kulikov <avk@brewkeeper.net> - 3.13-1
+- Added python-yaml to Provides
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.13-0
 - Updated to latest stable release
 
