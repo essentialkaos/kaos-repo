@@ -45,8 +45,9 @@
 %define maj_ver           2.5
 %define pg_maj_ver        11
 %define pg_low_fullver    11.0
-%define pg_dir            %{_prefix}/pgsql-11
+%define pg_dir            %{_prefix}/pgsql-%{pg_maj_ver}
 %define realname          postgis
+%define fullname          %{realname}25
 
 %define _smp_mflags       -j1
 
@@ -66,7 +67,7 @@ Source0:           http://download.osgeo.org/%{realname}/source/%{realname}-%{ve
 Source1:           http://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
 Source2:           filter-requires-perl-Pg.sh
 
-Patch0:            %{realname}25-gdalfpic.patch
+Patch0:            %{fullname}-gdalfpic.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -86,11 +87,12 @@ BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 
 Requires:          postgresql%{pg_maj_ver} geos >= 3.6 proj hdf5 json-c pcre
-Requires:          %{realname}-client = %{version}-%{release}
+Requires:          %{fullname}_%{pg_maj_ver}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
 
-Conflicts:         %{realname}%{pg_maj_ver}
+Conflicts:         %{realname}24
+Conflicts:         %{realname}2
 
 Provides:          %{realname} = %{version}-%{release}
 
@@ -110,7 +112,6 @@ certified as compliant with the "Types and Functions" profile.
 Summary:           Client tools and their libraries of PostGIS
 Group:             Applications/Databases
 Requires:          %{name} = %{version}-%{release}
-Provides:          %{realname}-client = %{version}-%{release}
 
 %description client
 The postgis-client package contains the client tools and their libraries
@@ -122,7 +123,6 @@ of PostGIS.
 Summary:           Development headers and libraries for PostGIS
 Group:             Development/Libraries
 Requires:          %{name} = %{version}-%{release}
-Provides:          %{realname}-devel = %{version}-%{release}
 
 %description devel
 The postgis-devel package contains the header files and libraries
@@ -145,7 +145,6 @@ The postgis-docs package includes PDF documentation of PostGIS.
 Summary:           The utils for PostGIS
 Group:             Applications/Databases
 Requires:          %{name} = %{version}-%{release} perl-DBD-Pg
-Provides:          %{realname}-utils = %{version}-%{release}
 
 %description utils
 The postgis-utils package provides the utilities for PostGIS.
@@ -181,7 +180,7 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
            --disable-rpath \
            --libdir=%{pg_dir}/lib
 
-%{__make} %{?_smp_mflags} LPATH=`%{pg_dir}/bin/pg_config --pkglibdir` shlib="%{name}.so"
+%{__make} %{?_smp_mflags} LPATH=$(%{pg_dir}/bin/pg_config --pkglibdir) shlib="%{name}.so"
 %{__make} -C extensions
 
 %if %utils
@@ -190,6 +189,7 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 %install
 rm -rf %{buildroot}
+
 %{make_install}
 %{make_install} -C extensions
 
