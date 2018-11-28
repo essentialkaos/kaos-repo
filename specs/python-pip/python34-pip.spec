@@ -42,7 +42,7 @@
 
 Summary:            Tool for installing and managing Python packages
 Name:               python34-%{pkgname}
-Version:            18.0
+Version:            18.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -96,6 +96,30 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 18.1-0
+- Allow PEP 508 URL requirements to be used as dependencies.
+- As a security measure, pip will raise an exception when installing packages
+  from PyPI if those packages depend on packages not also hosted on PyPI. In
+  the future, PyPI will block uploading packages with such external URL
+  dependencies directly.
+- Upgrade pyparsing to 2.2.1.
+- Allows dist options (–abi, –python-version, –platform, –implementation)
+  when installing with –target
+- Support passing svn+ssh URLs with a username to pip install -e.
+- pip now ensures that the RECORD file is sorted when installing from a wheel
+  file.
+- Add support for Python 3.7.
+- Checkout the correct branch when doing an editable Git install.
+- Run self-version-check only on commands that may access the index, instead
+  of trying on every run and failing to do so due to missing options.
+- Allow a Git ref to be installed over an existing installation.
+- Show a better error message when a configuration option has an invalid value.
+- Always revalidate cached simple API pages instead of blindly caching
+  them for up to 10 minutes.
+- Avoid caching self-version-check information when cache is disabled.
+- Avoid traceback printing on autocomplete after flags in the CLI.
+- Fix incorrect parsing of egg names if pip needs to guess the package name.
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 18.0-0
 - Remove the legacy format from pip list.
 - Dropped support for Python 3.3.

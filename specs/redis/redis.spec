@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            4.0.11
+Version:            5.0.2
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -70,7 +70,7 @@ BuildRequires:      make gcc tcl
 Requires:           %{name}-cli >= %{version}
 Requires:           logrotate
 %if 0%{?rhel} <= 6
-Requires:           kaosv >= 2.13
+Requires:           kaosv >= 2.15
 %endif
 
 %if 0%{?rhel} >= 7
@@ -260,6 +260,62 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
+- Release fixes two issues with Streams consumer
+  groups, where items could be returned duplicated by XREADGROUP when accessing
+  the history, and another bug where XREADGROUP can report some history even
+  if the comsumer pending list is empty.
+
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
+- Sentinel now supports authentication! Check the Sentinel official doc
+  for more info.
+- Redis-cli cluster "fix" is now able to fix a big number of clusters put
+  in a bad condition. Previously many corner cases were not covered.
+- Fix RESTORE mismatch reply when certain keys already expired.
+- Fix an XCLAIM non trivial issue: sometimes the command returned a wrong
+  entry or desynchronized the protocol.
+- Stack trace generation on the Raspberry PI (and 32bit ARM) fixed.
+- Don't evict expired keys when the KEYS command is called, in order to
+  avoid a mass deletion event. However expired keys are not displayed
+  by KEYS as usually.
+- Improvements in the computation of the memory used, when estimating
+  the AOF buffers.
+- XRANGE COUNT of 0 fixed.
+- "key misses" stats accounting fixed. Many cache misses were not counted.
+- When in MULTI state, return OOM while accumulating commands and there
+  is no longer memory available.
+- Fix build on FreeBSD and possibly others.
+- Fix a crash in Redis modules, thread safe context reply accumulation.
+- Fix a race condition when producing the RDB file for full SYNC.
+- Disable protected mode in Sentinel.
+- More commands now have the HELP subcommand.
+- Fixed an issue about adaptive server HZ timer.
+- Fix cluster-replica-no-failover option name.
+
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
+- The new Stream data type. https://redis.io/topics/streams-intro
+- New Redis modules APIs: Timers, Cluster and Dictionary APIs.
+- RDB now store LFU and LRU information.
+- The cluster manager was ported from Ruby (redis-trib.rb) to C code
+  inside redis-cli. Check `redis-cli --cluster help` for more info.
+- New sorted set commands: ZPOPMIN/MAX and blocking variants.
+- Active defragmentation version 2.
+- Improvemenets in HyperLogLog implementations.
+- Better memory reporting capabilities.
+- Many commands with sub-commands now have an HELP subcommand.
+- Better performances when clients connect and disconnect often.
+- Many bug fixes and other random improvements.
+- Jemalloc was upgraded to version 5.1
+- CLIENT UNBLOCK and CLIENT ID.
+- The LOLWUT command was added. http://antirez.com/news/123
+- We no longer use the "slave" word if not for API backward compatibility.
+- Differnet optimizations in the networking layer.
+- Lua improvements:
+  Better propagation of Lua scripts to slaves / AOF.
+  Lua scripts can now timeout and get in -BUSY state in the slave as well.
+- Dynamic HZ to balance idle CPU usage with responsiveness.
+- The Redis core was refactored and improved in many ways.
+
 * Tue Aug 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.11-0
 - The disconnection time between the master and slave was reset in an
   incorrect place, sometimes a good slave will not be able to failover

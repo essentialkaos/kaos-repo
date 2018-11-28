@@ -48,7 +48,7 @@
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
 Version:           1.9.0
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -65,7 +65,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc openssl-devel
 
-Requires:          openssl kaosv >= 2.14
+Requires:          openssl kaosv >= 2.15
 
 %if 0%{?rhel} >= 7
 BuildRequires:     libevent-devel
@@ -193,6 +193,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-1
+- Fixed restart logic in init script
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
 - RECONNECT command
 - WAIT_CLOSE command

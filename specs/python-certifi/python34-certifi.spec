@@ -47,7 +47,7 @@
 
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               python34-%{pkgname}
-Version:            2018.08.24
+Version:            2018.10.15
 Release:            0%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
@@ -100,32 +100,35 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.10.15-0
+- Updated to the latest release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.08.24-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.04.16-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.01.18-0
-- Updated to latest release
+- Updated to the latest release
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.11.05-0
-- Updated to latest release
+- Updated to the latest release
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.07.27.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.04.17-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.01.23-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Dec 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-1
 - Added certificates bundle to package
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sun Sep 11 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.8.31-0
 - Initial build for kaos repo

@@ -59,7 +59,7 @@
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
-Version:         2.9.11.1
+Version:         2.9.12
 Release:         0%{?dist}
 License:         GPL
 Group:           Applications/Internet
@@ -69,10 +69,11 @@ Source0:         https://www.snort.org/downloads/%{name}/%{name}-%{version}.tar.
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:        libdnet libpcap pcre daq
-
 BuildRequires:   autoconf automake make gcc libtool zlib-devel flex bison
-BuildRequires:   pcre-devel libpcap-devel libdnet-devel daq-devel
+BuildRequires:   pcre-devel libpcap-devel libdnet-devel daq-devel libluajit-devel
+BuildRequires:   libnghttp2-devel
+
+Requires:        libdnet libpcap pcre daq libluajit libnghttp2
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -218,32 +219,35 @@ fi
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.12-0
+- Updated to the latest version
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.11.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.11-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon Jan 23 2017 Anton Novojilov <andy@essentialkaos.com> - 2.9.9.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 2.9.8.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 2.9.8.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 2.9.7.6-0
-- Updated to latest version
+- Updated to the latest version
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.9.7.5-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 2.9.7.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Dec 17 2014 Anton Novojilov <andy@essentialkaos.com> - 2.9.7.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Oct 03 2014 Anton Novojilov <andy@essentialkaos.com> - 2.9.6.2-0
 - Initial build

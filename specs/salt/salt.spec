@@ -52,8 +52,8 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2018.3.2
-Release:          1%{?dist}
+Version:          2018.3.3
+Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
@@ -436,6 +436,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.3-0
+- Updated to 2018.3.3
+
 * Wed Jul 11 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.2-1
 - Fixed supported versions of python34-tornado
 
