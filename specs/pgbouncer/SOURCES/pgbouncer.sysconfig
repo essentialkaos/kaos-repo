@@ -11,3 +11,6 @@ CONF_FILE=""
 
 # Path to the log file
 LOG_DIR=""
+
+# Max wait delay for restart
+MAX_WAIT=""
