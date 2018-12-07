@@ -30,7 +30,7 @@
 
 Summary:            Portable file system cache diagnostics and control
 Name:               vmtouch
-Version:            1.3.0
+Version:            1.3.1
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -65,8 +65,8 @@ rm -rf %{buildroot}
 
 %{make_install} \
         PREFIX="%{buildroot}" \
-        BINDIR="%{buildroot}%{_sbindir}" \
-        MANDIR="%{buildroot}%{_mandir}/man8"
+        BINDIR="%{_sbindir}" \
+        MANDIR="%{_mandir}/man8"
 
 %clean
 rm -rf %{buildroot}
@@ -82,6 +82,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
+- New switch: "-P <pidfile>". When combined with -l or -L, the
+  PID of the daemon process will be written to this file.
+- In Makefile, support staged installs using DESTDIR
+- Create snapcraft.yaml to enable snap creation
+- Fix compilation for pre-C99 compilers
+- Documentation improvements
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
 - New switch: "-b <file>". This enables "batch mode" where the
   list of files to crawl is read from the specified file

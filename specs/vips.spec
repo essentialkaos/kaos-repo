@@ -41,7 +41,7 @@
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           8.7.0
+Version:           8.7.2
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
@@ -156,6 +156,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.7.2-0
+- more info output for temp files to help diagnose problems
+- vips_text() could set the wrong DPI in autofit mode
+- vips_text() leaked in autofit mode
+
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.7.1-0
+- update function list in docs
+- test for g_str_to_ascii()
+- fix temp file open on Windows and fallback on linux
+
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 8.7.0-0
 - add magicksave, save image with libMagick [dlemstra]
 - remove jpeg thumbnail from EXIF if "jpeg-thumbnail-data" has been removed
