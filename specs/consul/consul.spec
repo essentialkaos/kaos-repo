@@ -53,7 +53,7 @@
 
 Summary:           Tool for service discovery, monitoring and configuration
 Name:              consul
-Version:           1.3.1
+Version:           1.4.0
 Release:           0%{?dist}
 Group:             Applications/Communications
 License:           MPLv2
@@ -306,50 +306,53 @@ fi
 ################################################################################
 
 %changelog
+* Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Updated to the latest stable release
+
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Oct 23 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.3.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 0.8.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.8.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.7.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Mar 22 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Mar 10 2016 Anton Novojilov <andy@essentialkaos.com> - 0.6.3-0
 - Initial build

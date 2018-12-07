@@ -38,7 +38,7 @@
 
 Summary:           Layer 2 Tunnelling Protocol Daemon (RFC 2661)
 Name:              xl2tpd
-Version:           1.3.12
+Version:           1.3.13
 Release:           0%{?dist}
 License:           GPL+
 Group:             System Environment/Daemons
@@ -146,6 +146,19 @@ fi
 ################################################################################
 
 %changelog
+* Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.13-0
+- Specify email address for reporting security vulnerabilities
+- Fix compile warning with USE_KERNEL in xl2tpd.c
+- Applying patch that reduces compile warnings and fixes warnings from gcc
+  and clang
+- Fix compiler warnings in network.c
+- Add a make command for packaging's prep work
+- Add Makefile directive for getting version
+- Add a preproc for Watchguard firewall (Github issue #136)
+- Convert from ISO-8859 to UTF-8
+- Update README to provide latest info on xl2tpd + Linux kernel 4.15+
+- Use dh_auto_build in order to allow cross compiles
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.12-0
 - TOS value to copy to the tunnel header
 - Fix for ENODEV (No such device) error with Linux kernel 4.15
