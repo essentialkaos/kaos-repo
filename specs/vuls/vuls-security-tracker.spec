@@ -1,7 +1,6 @@
 ################################################################################
 
-# rpmbuilder:gopack    github.com/future-architect/vuls
-# rpmbuilder:tag       v0.6.1
+# rpmbuilder:gopack    github.com/knqyf263/gost
 
 ################################################################################
 
@@ -56,37 +55,40 @@
 %define username          vuls
 %define groupname         vuls
 
-%define service_name      vuls-server
-%define service_logdir    %{_logdir}/vuls
+%define service_name      sectd-server
+%define short_name        security-tracker
+%define service_logdir    %{_logdir}/vuls/%{short_name}
+%define install_dir       %{_opt}/vuls/%{short_name}
 
 ################################################################################
 
-Summary:         VULnerability Scanner
-Name:            vuls
-Version:         0.6.1
+Summary:         Security Tracker data fetcher and server for VULS
+Name:            vuls-%{short_name}
+Version:         0.1.0
 Release:         0%{?dist}
 Group:           Applications/System
-License:         GPLv3
-URL:             https://github.com/future-architect/vuls
+License:         MIT
+URL:             https://github.com/knqyf263/gost
 
 Source0:         %{name}-%{version}.tar.bz2
-Source1:         %{name}.toml
-Source2:         %{service_name}.init
-Source3:         %{service_name}.sysconfig
-Source4:         %{service_name}.service
+Source1:         %{service_name}.init
+Source2:         %{service_name}.sysconfig
+Source3:         %{service_name}.service
+Source4:         %{short_name}-fetch
+Source5:         %{short_name}-fetch.cron
 
 BuildRequires:   golang >= 1.11
 
-Requires:        sqlite kaosv >= 2.15
-
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Requires:        sqlite kaosv >= 2.15
 
 Provides:        %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-Vulnerability scanner for Linux/FreeBSD, agentless, written in golang.
+This tool builds a local copy of Security Tracker(Redhat/Debian/Microsoft).
 
 ################################################################################
 
@@ -97,26 +99,31 @@ mkdir -p .src ; cp -r * .src/ ; rm -rf * ; mv .src src
 
 %build
 export GOPATH=$(pwd)
+export LD_FLAGS="-X main.version=%{version} -X main.revision=000000"
 
-export LD_FLAGS="-X github.com/future-architect/vuls/config.Version=%{version} -X github.com/future-architect/vuls/config.Revision=000000"
+sed -i "s#/var/log/gost#%{service_logdir}#" \
+       src/github.com/knqyf263/gost/util/util.go
 
-go build -ldflags "$LD_FLAGS" -o %{name} src/github.com/future-architect/vuls/main.go
+go build -ldflags "$LD_FLAGS" -o %{short_name} src/github.com/knqyf263/gost/main.go
 
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
+install -dm 755 %{buildroot}%{install_dir}
 install -dm 755 %{buildroot}%{service_logdir}
 
-install -pm 755 %{name} %{buildroot}%{_bindir}/
+install -pm 755 %{short_name} %{buildroot}%{_bindir}/
+install -pm 755 %{SOURCE4} %{buildroot}%{_bindir}/
 
-install -pDm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}.toml
-install -pDm 755 %{SOURCE2} %{buildroot}%{_initddir}/%{service_name}
-install -pDm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
+install -pDm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/%{service_name}
+install -pDm 755 %{SOURCE1} %{buildroot}%{_initddir}/%{service_name}
 
 %if 0%{?rhel} >= 7
-install -pDm 644 %{SOURCE4} %{buildroot}%{_unitdir}/%{service_name}.service
+install -pDm 644 %{SOURCE3} %{buildroot}%{_unitdir}/%{service_name}.service
 %endif
+
+install -pDm 644 %{SOURCE5} %{buildroot}%{_crondir}/%{short_name}-fetch
 
 %clean
 rm -rf %{buildroot}
@@ -154,16 +161,18 @@ fi
 %files
 %defattr(-,root,root,-)
 %attr(0755,%{username},%{groupname}) %dir %{service_logdir}
-%config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
-%config(noreplace) %{_sysconfdir}/%{name}.toml
-%{_bindir}/%{name}
+%attr(0755,%{username},%{groupname}) %{install_dir}
+%config(noreplace) %{_sysconfdir}/%{service_name}
+%config(noreplace) %{_crondir}/%{short_name}-fetch
 %{_initddir}/%{service_name}
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{service_name}.service
 %endif
+%{_bindir}/%{short_name}
+%{_bindir}/%{short_name}-fetch
 
 ################################################################################
 
 %changelog
-* Tue Dec 11 2018 Anton Novojilov <andy@essentialkaos.com> - 0.6.1-0
+* Wed Dec 12 2018 Anton Novojilov <andy@essentialkaos.com> - 0.1.0-0
 - Initial build for kaos repository

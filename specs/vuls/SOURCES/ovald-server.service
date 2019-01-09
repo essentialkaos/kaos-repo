@@ -4,9 +4,9 @@ Before=httpd.service
 After=network.target
 
 [Service]
-PIDFile=/var/run/goval-server.pid
-ExecStart=/etc/init.d/goval-server start
-ExecStop=/etc/init.d/goval-server stop
+PIDFile=/var/run/ovald-server.pid
+ExecStart=/etc/init.d/ovald-server start
+ExecStop=/etc/init.d/ovald-server stop
 
 [Install]
 WantedBy=multi-user.target

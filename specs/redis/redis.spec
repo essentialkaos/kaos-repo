@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            5.0.2
+Version:            5.0.3
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -260,6 +260,31 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.3-0
+- Redis no longer panics when you send data to a replica-mode connection that
+  is in MONITOR or SYNC mode.
+- Fixes to certain sorted set edge cases. You are unlikely to ever notice those
+  issues, but now it is more correct.
+- Certain BSD variants now are better supported: build & register logging
+  on crash.
+- The networking core now recovers if an IPv6 address is listed in bind but
+  is actually not able to work because there is no such protocol in the
+  system.
+- redis-cli cluster mode improved in many ways. Especially the fix subcommand
+  work was enhanced to cover other edge cases that were still not covered
+  after the work done for Redis 5.
+- MEMORY USAGE is now more accurate.
+- DEBUG DIGEST-VALUE added in case you want to make sure a given set of keys
+  (and not the whole DB) are excatly the same between two instances.
+- Fix a potential crash in the networking code related to recent changes
+  to the way the reply is consumed.
+- Reject EXEC containing write commands against an instance that changed role
+  from master to replica during our transaction.
+- Fix a crash in KEYS and other commands using pattern matching, in an edge
+  case where the pattern contains a zero byte.
+- Fix eviction during AOF loading due to maxmemory triggered by commands
+  executed in loading state.
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
 - Release fixes two issues with Streams consumer
   groups, where items could be returned duplicated by XREADGROUP when accessing

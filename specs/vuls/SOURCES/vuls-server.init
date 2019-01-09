@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# cved-server  init file for starting up the cve-dictionary server
+# ovald-server  init file for starting up the VULS server
 #
 # chkconfig:   - 20 80
-# description: Starts and stops the cve-dictionary server
+# description: Starts and stops the VULS server
 
 ###############################################################################
 
@@ -11,21 +11,22 @@ source /etc/init.d/kaosv
 
 ###############################################################################
 
-kv[prog_name]="cved-server"
+kv[prog_name]="vuls-server"
 
 kv.readSysconfig
 
-binary="/usr/bin/cve-dictionary"
-data_dir="${DATA_DIR:-/opt/vuls/cve-dictionary}"
+binary="/usr/bin/vuls"
 ip="${IP:-127.0.0.1}"
-port="${PORT:-1321}"
-log_dir="${LOG_DIR:-/var/log/vuls/cve-dictionary}"
-
-db_path="${data_dir}/cve.sqlite3"
+port="${PORT:-5515}"
+config="${CONFIG:-/etc/vuls.toml}"
+log_dir="${LOG_DIR:-/var/log/vuls}"
+proxy_url="$PROXY_URL"
+cvss_over="$CVSS_OVER"
+debug="$DEBUG"
 
 kv[user]="${USER:-vuls}"
 
-kv[search_pattern]="$binary server -dbpath"
+kv[search_pattern]="$binary server"
 
 ###############################################################################
 
@@ -38,20 +39,16 @@ kv.disableOutputRedirect "start" "pre"
 ###############################################################################
 
 preStartServiceHandler() {
-  mkdir -p "${log_dir}" &>/dev/null
-
-  chown "${kv[user]}:" "${log_dir}"
-  chown "${kv[user]}:" "${data_dir}"
-
-  if [[ ! -e "$db_path" ]] ; then
-    kv.error "DB file $db_path doesn't exist"
-    kv.exit $ACTION_ERROR
+  if [[ ! -e "${log_dir}" ]] ; then
+    mkdir -p "${log_dir}" &>/dev/null
   fi
+
+  chown "${kv[user]}:" "${kv[log]}"
 
   local has_errors=""
 
-  [[ ! -e "$binary" ]] && has_errors=true && kv.error "cve-dictionary binary is not found"
-  [[ ! -x "$binary" ]] && has_errors=true && kv.error "cve-dictionary must be executable file"
+  [[ ! -e "$binary" ]] && has_errors=true && kv.error "vuls binary is not found"
+  [[ ! -x "$binary" ]] && has_errors=true && kv.error "vuls must be executable file"
 
   [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
 
@@ -59,7 +56,21 @@ preStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "server" "-dbpath=${db_path}" "-bind=${ip}" "-port=${port}" "-log-dir=${log_dir}"
+  local opts="-config=${config} -listen=${ip}:${port} -log-dir=${log_dir}"
+
+  if [[ -n "$cvss_over" ]] ; then
+    opts="$opts -cvss-over=${cvss_over}"
+  fi
+
+  if [[ -n "$proxy_url" ]] ; then
+    opts="$opts -http-proxy=${proxy_url}"
+  fi
+
+  if [[ -n "$debug" ]] ; then
+    opts="$opts -debug"
+  fi
+
+  kv.daemonize "$binary" "server" $opts
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
 

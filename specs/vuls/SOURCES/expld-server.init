@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# cved-server  init file for starting up the cve-dictionary server
+# expld-server  init file for starting up the exploitdb server
 #
 # chkconfig:   - 20 80
-# description: Starts and stops the cve-dictionary server
+# description: Starts and stops the exploitdb server
 
 ###############################################################################
 
@@ -11,17 +11,17 @@ source /etc/init.d/kaosv
 
 ###############################################################################
 
-kv[prog_name]="cved-server"
+kv[prog_name]="expld-server"
 
 kv.readSysconfig
 
-binary="/usr/bin/cve-dictionary"
-data_dir="${DATA_DIR:-/opt/vuls/cve-dictionary}"
+binary="/usr/bin/exploitdb"
+data_dir="${DATA_DIR:-/opt/vuls/exploitdb}"
 ip="${IP:-127.0.0.1}"
-port="${PORT:-1321}"
-log_dir="${LOG_DIR:-/var/log/vuls/cve-dictionary}"
+port="${PORT:-1325}"
+log_dir="${LOG_DIR:-/var/log/vuls/exploitdb}"
 
-db_path="${data_dir}/cve.sqlite3"
+db_path="${data_dir}/exploitdb.sqlite3"
 
 kv[user]="${USER:-vuls}"
 
@@ -50,8 +50,8 @@ preStartServiceHandler() {
 
   local has_errors=""
 
-  [[ ! -e "$binary" ]] && has_errors=true && kv.error "cve-dictionary binary is not found"
-  [[ ! -x "$binary" ]] && has_errors=true && kv.error "cve-dictionary must be executable file"
+  [[ ! -e "$binary" ]] && has_errors=true && kv.error "exploitdb binary is not found"
+  [[ ! -x "$binary" ]] && has_errors=true && kv.error "exploitdb must be executable file"
 
   [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
 

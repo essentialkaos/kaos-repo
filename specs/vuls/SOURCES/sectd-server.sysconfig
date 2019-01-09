@@ -1,4 +1,4 @@
-# Sysconfig file for goval-dictionary server
+# Sysconfig file for security-tracker server
 
 DATA_DIR=""
 IP=""

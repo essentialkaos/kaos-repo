@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+################################################################################
+
+main() {
+  if [[ $# -ne 2 ]] ; then
+    echo "Usage: security-tracker-fetch {data-dir} {provider}"
+    echo ""
+    echo "Available providers:"
+    echo ""
+    echo "  debian"
+    echo "  redhat"
+    echo "  all"
+    echo ""
+    exit 0
+  fi
+
+  local dir="$1"
+  local provider="$2"
+
+  if [[ ! -e "$dir" || ! -d "$dir" ]] ; then
+    echo "Wrong path to data directory"
+    exit 1
+  fi
+
+  if [[ "$provider" == "all" ]] ; then
+    fetchAll "$dir"
+  else
+    fetch "$dir" "$provider"
+  fi
+}
+
+fetchAll() {
+  local dir="$1"
+  
+  fetch "$dir" redhat
+  fetch "$dir" debian
+}
+
+fetch() {
+  local dir="$1"
+  local provider="$2"
+
+  security-tracker fetch "$provider" --dbpath "$dir/security-tracker.sqlite3"
+
+  [[ $? -ne 0 ]] && exit 1
+}
+
+################################################################################
+
+main "$@"

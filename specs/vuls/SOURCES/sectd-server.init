@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# cved-server  init file for starting up the cve-dictionary server
+# sectd-server init file for starting up the security-tracker server
 #
 # chkconfig:   - 20 80
-# description: Starts and stops the cve-dictionary server
+# description: Starts and stops the security-tracker server
 
 ###############################################################################
 
@@ -11,17 +11,17 @@ source /etc/init.d/kaosv
 
 ###############################################################################
 
-kv[prog_name]="cved-server"
+kv[prog_name]="sectd-server"
 
 kv.readSysconfig
 
-binary="/usr/bin/cve-dictionary"
-data_dir="${DATA_DIR:-/opt/vuls/cve-dictionary}"
+binary="/usr/bin/security-tracker"
+data_dir="${DATA_DIR:-/opt/vuls/security-tracker}"
 ip="${IP:-127.0.0.1}"
-port="${PORT:-1321}"
-log_dir="${LOG_DIR:-/var/log/vuls/cve-dictionary}"
+port="${PORT:-1326}"
+log_dir="${LOG_DIR:-/var/log/vuls/security-tracker}"
 
-db_path="${data_dir}/cve.sqlite3"
+db_path="${data_dir}/security-tracker.sqlite3"
 
 kv[user]="${USER:-vuls}"
 
@@ -50,8 +50,8 @@ preStartServiceHandler() {
 
   local has_errors=""
 
-  [[ ! -e "$binary" ]] && has_errors=true && kv.error "cve-dictionary binary is not found"
-  [[ ! -x "$binary" ]] && has_errors=true && kv.error "cve-dictionary must be executable file"
+  [[ ! -e "$binary" ]] && has_errors=true && kv.error "security-tracker binary is not found"
+  [[ ! -x "$binary" ]] && has_errors=true && kv.error "security-tracker must be executable file"
 
   [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
 
@@ -59,7 +59,7 @@ preStartServiceHandler() {
 }
 
 startServiceHandler() {
-  kv.daemonize "$binary" "server" "-dbpath=${db_path}" "-bind=${ip}" "-port=${port}" "-log-dir=${log_dir}"
+  kv.daemonize "$binary" "server" "--dbpath=${db_path}" "--bind=${ip}" "--port=${port}" "--log-dir=${log_dir}"
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
 
