@@ -42,13 +42,13 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           20
 %define ver_min           3
-%define ver_patch         8.13
+%define ver_patch         8.17
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
 %define realname          erlang
 
-%define libre_ver         2.8.2
+%define libre_ver         2.9.0
 
 ################################################################################
 
@@ -61,10 +61,10 @@ License:           MPL
 URL:               http://www.erlang.org
 
 Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
-Source1:           http://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
-Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
+Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
+Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
-Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -1126,6 +1126,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.17-0
+- Updated to the latest release
+- LibreSSL updated to 2.9.0
+
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.13-0
 - Updated to the latest release
 

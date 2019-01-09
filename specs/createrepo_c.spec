@@ -52,7 +52,7 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.11.1
+Version:            0.12.0
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
@@ -65,10 +65,16 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel
-BuildRequires:      rpm-devel >= 4.8.0-28 python34-devel python34-libs
+BuildRequires:      rpm-devel >= 4.8.0-28 zchunk pkgconfig(zck) >= 0.9.11
 
+%if 0%{?rhel} == 6
 Requires:           rpm >= 4.8.0-28
-Requires:           %{name}-libs =  %{version}-%{release}
+%else
+BuildRequires:      bash-completion
+Requires:           rpm >= 4.9.0
+%endif
+
+Requires:           %{name}-libs = %{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -111,6 +117,8 @@ These development files are for easy manipulation with a repodata.
 
 Summary:            Python bindings for the createrepo_c library
 Group:              Development/Languages
+
+BuildRequires:      python34-devel python34-libs python34-nose
 
 Requires:           python34
 
@@ -181,6 +189,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-0
+- Updated to 0.12.0
+
 * Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.1-0
 - Updated to 0.11.1
 

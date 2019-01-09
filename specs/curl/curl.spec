@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.62.0
+Version:              7.63.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,90 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 7.63.0-0
+- curl: add %%{stderr} and %%{stdout} for --write-out
+- curl: add undocumented option --dump-module-paths for win32
+- setopt: add CURLOPT_CURLU
+- (lib)curl.rc: fixup for minor bugs
+- CURLINFO_REDIRECT_URL: extract the Location: header field unvalidated
+- CURLOPT_HEADERFUNCTION.3: match 'nitems' name in synopsis and description
+- CURLOPT_WRITEFUNCTION.3: spell out that it gets called many times
+- Curl_follow: accept non-supported schemes for "fake" redirects
+- KNOWN_BUGS: add --proxy-any connection issue
+- NTLM: Remove redundant ifdef USE_OPENSSL
+- NTLM: force the connection to HTTP/1.1
+- OS400: add URL API ccsid wrappers and sync ILE/RPG bindings
+- SECURITY-PROCESS: bountygraph shuts down again
+- TODO: Have the URL API offer IDN decoding
+- ares: remove fd from multi fd set when ares is about to close the fd
+- axtls: removed
+- checksrc: add COPYRIGHTYEAR check
+- cmake: fix MIT/Heimdal Kerberos detection
+- configure: include all libraries in ssl-libs fetch
+- configure: show CFLAGS, LDFLAGS etc in summary
+- connect: fix building for recent versions of Minix
+- cookies: create the cookiejar even if no cookies to save
+- cookies: expire "Max-Age=0" immediately
+- curl: --local-port range was not "including"
+- curl: fix --local-port integer overflow
+- curl: fix memory leak reading --writeout from file
+- curl: fixed UTF-8 in current console code page (Windows)
+- curl_easy_perform: fix timeout handling
+- curl_global_sslset(): id == -1 is not necessarily an error
+- curl_multibyte: fix a malloc overcalculation
+- curle: move deprecated error code to ifndef block
+- docs: curl_formadd field and file names are now escaped
+- docs: escape "\n" codes
+- doh: fix memory leak in OOM situation
+- doh: make it work for h2-disabled builds too
+- examples/ephiperfifo: report error when epoll_ctl fails
+- ftp: avoid two unsigned int overflows in FTP listing parser
+- host names: allow trailing dot in name resolve, then strip it
+- http2: Upon HTTP_1_1_REQUIRED, retry the request with HTTP/1.1
+- http: don't set CURLINFO_CONDITION_UNMET for http status code 204
+- http: fix HTTP Digest auth to include query in URI
+- http_negotiate: do not close connection until negotiation is completed
+- impacket: add LICENSE
+- infof: clearly indicate truncation
+- ldap: fix LDAP URL parsing regressions
+- libcurl: stop reading from paused transfers
+- mprintf: avoid unsigned integer overflow warning
+- netrc: don't ignore the login name specified with "--user"
+- nss: Fall back to latest supported SSL version
+- nss: Fix compatibility with nss versions 3.14 to 3.15
+- nss: fix fallthrough comment to fix picky compiler warning
+- nss: remove version selecting dead code
+- nss: set default max-tls to 1.3/1.2
+- openssl: Remove SSLEAY leftovers
+- openssl: do not log excess "TLS app data" lines for TLS 1.3
+- openssl: do not use file BIOs if not requested
+- openssl: fix unused variable compiler warning with old openssl
+- openssl: support session resume with TLS 1.3
+- openvms: fix example name
+- os400: Add curl_easy_conn_upkeep() to ILE/RPG binding
+- os400: add CURLOPT_CURLU to ILE/RPG binding
+- os400: fix return type of curl_easy_pause() in ILE/RPG binding
+- packages: remove old leftover files and dirs
+- pop3: only do APOP with a valid timestamp
+- runtests: use the local curl for verifying
+- schannel: be consistent in Schannel capitalization
+- schannel: better CURLOPT_CERTINFO support
+- schannel: use Curl_ prefix for global private symbols
+- snprintf: renamed and we now only use msnprintf()
+- ssl: fix compilation with OpenSSL 0.9.7
+- ssl: replace all internal uses of CURLE_SSL_CACERT
+- symbols-in-versions: add missing CURLU_ symbols
+- test328: verify Content-Encoding: none
+- tests: disable SO_EXCLUSIVEADDRUSE for stunnel on Windows
+- tests: drop http_pipe.py script no longer used
+- tool_cb_wrt: Silence function cast compiler warning
+- tool_doswin: Fix uninitialized field warning
+- travis: build with clang sanitizers
+- travis: remove curl before a normal build
+- url: a short host name + port is not a scheme
+- url: fix IPv6 numeral address parser
+- urlapi: only skip encoding the first '=' with APPENDQUERY set
+
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 7.62.0-0
 - multiplex: enable by default
 - url: default to CURL_HTTP_VERSION_2TLS if built h2-enabled

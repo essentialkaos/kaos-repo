@@ -44,7 +44,7 @@
 
 Summary:              A GNU general-purpose parser generator
 Name:                 bison
-Version:              3.2.2
+Version:              3.2.4
 Release:              0%{?dist}
 License:              GPLv3+
 Group:                Development/Tools
@@ -161,6 +161,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
+- Updated to latest stable release
+
+* Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
+- Updated to latest stable release
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
 - Updated to latest stable release
 
