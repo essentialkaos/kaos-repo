@@ -2,7 +2,7 @@
 
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.9.3
+Version:           1.9.4
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
@@ -53,6 +53,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Jan 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
+- Allow {path} and {basename} in --label
+- Properly implement git difftool protocol
+
 * Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
 - Add --exclude-lines (-E) which can exclude comments
 - Add --color-map so you can choose which colors to use for what
