@@ -26,19 +26,19 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define patchlevel        14
+%define patch_level       23
 
 ################################################################################
 
 Summary:            Use ImageMagick to create, edit, compose, or convert bitmap images
 Name:               ImageMagick
 Version:            6.9.10
-Release:            %{patchlevel}%{?dist}
+Release:            %{patch_level}%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Applications/Multimedia
 URL:                https://www.imagemagick.org
 
-Source0:            https://www.imagemagick.org/download/%{name}-%{version}-%{patchlevel}.tar.bz2
+Source0:            https://www.imagemagick.org/download/%{name}-%{version}-%{patch_level}.tar.bz2
 Source1:            policy.xml
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -190,7 +190,7 @@ however.
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{version}-%{patchlevel}
+%setup -qn %{name}-%{version}-%{patch_level}
 
 # for %%doc
 mkdir Magick++/examples
@@ -379,6 +379,9 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 ################################################################################
 
 %changelog
+* Sat Jan 12 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-23
+- Updated to the latest release
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-14
 - Updated to the latest release
 
