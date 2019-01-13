@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# vault-agent        init file for starting up the vault-agent daemon
+#
+# chkconfig:   - 20 80
+# description: Starts and stops the vault-agent daemon
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="vault-agent"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/bin/vault}
+conf_file=${CONF_FILE:-/etc/vault/agent/config.json}
+
+kv[pid_file]="/var/run/vault-agent/vault-agent.pid"
+
+kv[user]="${USER:-root}"
+kv[delay_start]=${DELAY_START:-15}
+kv[delay_stop]=${DELAY_STOP:-120}
+
+###############################################################################
+
+kv.addCommandVars "stop" "force"
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+
+###############################################################################
+
+prepare() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist"
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable"
+
+  [[ -z ${kv[user]} ]] && has_errors=true && kv.error "User value can't be empty"
+
+  if ! kv.hasUser "${kv[user]}" ; then
+    has_errors=true && kv.error "User <${kv[user]}> not found in /etc/passwd file"
+  fi
+
+  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+}
+
+startServiceHandler() {
+  kv.daemonize "$binary" "agent" "-config=$conf_file"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=$(kv.getPid)
+
+  kv.sendSignal "$SIGNAL_INT"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess $pid
+    fi
+
+    return $ACTION_ERROR
+  fi
+}
+
+###############################################################################
+
+prepare
+
+kv.go $@
