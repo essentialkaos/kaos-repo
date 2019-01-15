@@ -191,7 +191,7 @@ install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 755 %{buildroot}%{_datadir}/%{name}/bin
 install -dm 755 %{buildroot}%{_datadir}/%{name}/headers
 install -dm 700 %{buildroot}%{service_data_dir}
-install -dm 755 %{buildroot}%{service_log_dir}
+install -dm 775 %{buildroot}%{service_log_dir}
 
 # Client
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}-client
@@ -300,7 +300,7 @@ fi
 %{_bindir}/%{name}-report
 %{_bindir}/%{name}-server
 %attr(0700, %{service_user}, %{service_group}) %dir %{service_data_dir}
-%attr(0755, root, %{service_group}) %dir %{service_log_dir}
+%attr(0775, root, %{service_group}) %dir %{service_log_dir}
 
 %files server-common
 %defattr(-, root, root, -)
