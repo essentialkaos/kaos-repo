@@ -20,7 +20,7 @@ conf_file=${CONF_FILE:-/etc/vault/agent/config.json}
 
 kv[pid_file]="/var/run/vault-agent/vault-agent.pid"
 
-kv[user]="${USER:-root}"
+kv[user]="${USER:-vault}"
 kv[delay_start]=${DELAY_START:-15}
 kv[delay_stop]=${DELAY_STOP:-120}
 
