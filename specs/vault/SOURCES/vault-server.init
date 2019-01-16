@@ -52,6 +52,12 @@ prepare() {
 }
 
 startServiceHandler() {
+  setcap 'cap_ipc_lock=+ep' "$binary" &>/dev/null
+
+  if [[ $? -ne 0 ]] ; then
+    kv.log "Can't set cap_ipc_lock capability for $binary"
+  fi
+
   kv.daemonize "$binary" "server" "-config=$conf_file"
 
   [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
