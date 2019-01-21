@@ -3,7 +3,7 @@
 ################################################################################
 
 TYPE_ADD="A"
-TYPE_MOD="(A|R)"
+TYPE_MOD="(A|R|M)"
 TYPE_DEL="D"
 
 ################################################################################
@@ -13,6 +13,9 @@ changes_cache=""
 ################################################################################
 
 main() {
+
+  git checkout -B master origin/master &>/dev/null
+  git checkout - &>/dev/null
   
   createChangesCache
   listAdditions
@@ -63,13 +66,16 @@ listModifications() {
    
     # shellcheck disable=SC2206
     spec_info=($line)
-    spec="${spec_info[2]}"
+
+    if [[ "${spec_info[0]:0:1}" == "R" ]] ; then
+      spec="${spec_info[2]}"
+    else
+      spec="${spec_info[1]}"
+    fi
+
     spec_name=$(basename "$spec")
 
     if [[ "${spec_info[0]}" == "A" ]] ; then
-      spec="${spec_info[1]}"
-      spec_name=$(basename "$spec")
-
       if ! isSpecMoved "$spec_name" ; then
         continue
       fi
