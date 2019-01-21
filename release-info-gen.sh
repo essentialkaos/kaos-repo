@@ -15,7 +15,7 @@ changes_cache=""
 main() {
 
   git checkout -B master origin/master &>/dev/null
-  git checkout - &>/dev/null
+  git checkout develop &>/dev/null
   
   createChangesCache
   listAdditions
@@ -40,7 +40,7 @@ listAdditions() {
     fi
 
     if [[ -z "$header_shown" ]] ; then
-      echo "### New packages"
+      echo -e "### New packages\n"
       header_shown=true
     fi
 
@@ -60,7 +60,7 @@ listModifications() {
   while read -r line ; do
 
     if [[ -z "$header_shown" ]] ; then
-      echo "### Updates"
+      echo -e "### Updates\n"
       header_shown=true
     fi
    
@@ -106,7 +106,7 @@ listDeletions() {
     fi
 
     if [[ -z "$header_shown" ]] ; then
-      echo "### Deletions"
+      echo -e "### Deletions\n"
       header_shown=true
     fi
 
