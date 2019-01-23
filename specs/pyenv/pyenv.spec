@@ -35,7 +35,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.8
+Version:         1.2.9
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -130,6 +130,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.9-0
+- python-build: Add CPython 3.7.2 and CPython 3.6.8
+- python-build: Add anaconda[23]-5.3.1
+- python-build: Add Anaconda 2018.12
+- python-build: Fix ironpython-dev git repo url
+- python-build: Add OPENSSL_NO_SSL3 patch for CPython 3.3.7
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.8-0
 - python-build: Add CPython 3.7.1
 - python-build: Add CPython 3.6.7

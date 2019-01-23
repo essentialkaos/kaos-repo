@@ -51,7 +51,7 @@
 
 Summary:          Prometheus exporter for machine metrics
 Name:             prometheus-nodeexporter
-Version:          0.16.0
+Version:          0.17.0
 Release:          0%{?dist}
 Group:            Applications/Databases
 License:          ASL 2.0
@@ -191,6 +191,8 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0
+- Updated to the latest release
+
 * Fri Jun 22 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.16.0-0
 - Initial build
-

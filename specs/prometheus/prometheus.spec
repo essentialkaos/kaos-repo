@@ -1,6 +1,11 @@
 ################################################################################
 
-%define debug_package  %{nil}
+# rpmbuilder:gopack       github.com/prometheus/prometheus
+# rpmbuilder:tag          v2.6.1
+
+################################################################################
+
+%define debug_package     %{nil}
 
 ################################################################################
 
@@ -49,13 +54,13 @@
 
 Summary:          Monitoring system and time series database
 Name:             prometheus
-Version:          2.5.0
+Version:          2.6.1
 Release:          0%{?dist}
 Group:            Applications/Databases
 License:          ASL 2.0
 URL:              https://prometheus.io
 
-Source0:          https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz
+Source0:          %{name}-%{version}.tar.gz
 Source1:          %{name}.service
 Source2:          %{name}.init
 Source3:          %{name}.sysconfig
@@ -63,7 +68,7 @@ Source4:          %{name}.logrotate
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    golang >= 1.10
+BuildRequires:    golang >= 1.11 bzr
 
 Requires:         logrotate
 
@@ -99,11 +104,14 @@ results, and can trigger alerts if some condition is observed to be true.
 %prep
 %setup -qn %{name}-%{version}
 
+mkdir -p .src ; mv * .src ; mv .src src
+
 %build
 export GOPATH=$(pwd)
-go get -v github.com/%{name}/%{name}/cmd/...
 
-%{__make} %{?_smp_mflags} build
+pushd src/github.com/%{name}/%{name}
+  %{__make} %{?_smp_mflags} build
+popd
 
 %install
 rm -rf %{buildroot}
@@ -123,6 +131,8 @@ install -dm 0755 %{buildroot}%{_logdir}/%{name}
   install -dm 0755 %{buildroot}%{_initrddir}
 %endif
 
+pushd src/github.com/%{name}/%{name}
+
 install -pm 755 prometheus %{buildroot}%{_bindir}/%{name}
 install -pm 755 promtool %{buildroot}%{_bindir}/promtool
 
@@ -141,6 +151,8 @@ install -pm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 %else
   install -pm 0755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
 %endif
+
+popd
 
 %clean
 rm -rf %{buildroot}
@@ -200,6 +212,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
+- Updated to the latest stable release
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
 - Updated to the latest stable release
 

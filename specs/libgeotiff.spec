@@ -2,7 +2,7 @@
 
 Summary:              GeoTIFF format library
 Name:                 libgeotiff
-Version:              1.4.2
+Version:              1.4.3
 Release:              0%{?dist}
 License:              MIT
 Group:                System Environment/Libraries
@@ -134,5 +134,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
+- Updated to the latest stable release
+
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Initial build for kaos repository
+- Initial build for EK repository

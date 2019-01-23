@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/xenolf/lego
-# rpmbuilder:tag       v1.1.0
+# rpmbuilder:tag       v2.0.1
 
 ################################################################################
 
@@ -45,7 +45,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         1.2.1
+Version:         2.0.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -75,8 +75,12 @@ export GOPATH=$(pwd)
 # Move all sources to src directory
 mkdir -p .src ; mv * .src ; mv .src src
 
+go get -v github.com/golang/dep/...
+export PATH="$GOPATH/bin:$PATH"
+
 pushd src/github.com/xenolf/%{name}
-  go build
+  %{__make} dependencies
+  %{__make} build
 popd
 
 %install
@@ -85,7 +89,8 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 
-install -pm 755 src/github.com/xenolf/%{name}/%{name} %{buildroot}%{_bindir}/
+install -pm 755 src/github.com/xenolf/%{name}/dist/%{name} \
+                %{buildroot}%{_bindir}/
 
 %clean
 rm -rf %{buildroot}
@@ -100,6 +105,47 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
+- [cli,lib] Option to disable the complete propagation Requirement
+- [lib,cli] Support non-ascii domain name (punnycode)
+- [cli,lib] Add configurable timeout when obtaining certificates
+- [cli] Archive revoked certificates
+- [cli] Add command to list certificates.
+- [cli] support for renew with CSR
+- [cli] add SAN on renew
+- [lib] Adds Remove for challenges
+- [lib] Add version to xenolf-acme in User-Agent.
+- [dnsprovider] The ability for a DNS provider to solve the challenge
+  sequentially
+- [dnsprovider] Add DNS provider for "HTTP request".
+- [dnsprovider] Add DNS Provider for Vscale
+- [dnsprovider] Add DNS Provider for TransIP
+- [dnsprovider] Add DNS Provider for inwx
+- [dnsprovider] alidns: add support to handle more than 20 domains
+- [lib] Check all challenges in a predictable order
+- [lib] Poll authz URL instead of challenge URL
+- [lib] Check all nameservers in a predictable order
+- [lib] Logs every iteration of waiting for the propagation
+- [cli] --http: enable HTTP challenge important
+- [cli] --http.port: previously named --http
+- [cli] --http.webroot: previously named --webroot
+- [cli] --http.memcached-host: previously named --memcached-host
+- [cli] --tls: enable TLS challenge important
+- [cli] --tls.port: previously named --tls
+- [cli] --dns.resolvers: previously named --dns-resolvers
+- [dnsprovider] gcloud: Use GCE_PROJECT for project always, if specified
+- [cli] the option --days of the command renew has default value (15)
+- [lib] Remove SetHTTP01Address
+- [lib] Remove SetTLSALPN01Address
+- [lib] Remove Exclude
+- [cli] Remove --exclude, -x
+- [lib] Fixes revocation for subdomains and non-ascii domains
+- [lib] Disable pending authorizations
+- [dnsprovider] transip: concurrent access to the API.
+- [dnsprovider] gcloud: fix for wildcard
+- [dnsprovider] Azure: Do not overwrite existing TXT records
+- [dnsprovider] fix: Cloudflare error.
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
 - fix: Docker image
 

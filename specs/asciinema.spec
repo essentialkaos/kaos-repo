@@ -42,7 +42,7 @@
 
 Summary:            Terminal session recorder
 Name:               asciinema
-Version:            2.0.1
+Version:            2.0.2
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Applications/Internet
@@ -91,17 +91,29 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGELOG.md README.md LICENSE
 %{_bindir}/%{name}
 %{python3_sitelib}/%{name}/*
 %{python3_sitelib}/*.egg-info
 %{_mandir}/man1/%{name}.1*
+%{_defaultdocdir}/*
 
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-0
+- Official support for Python 3.7
+- Recording is now possible on US-ASCII locale
+- Improved Android support
+- Possibility of programatic recording with asciinema.record_asciicast function
+- Uses new JSON response format added recently to asciinema-server
+- Tweaked message about how to stop recording
+- Added proper description and other metadata to Python package
+
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
-- Updated to latest stable release
+- Fixed example in asciicast v2 format doc
+- Replaced deprecated encodestring (since Python 3.1) with encodebytes
+- Fixed location of config dir (you can mv ~/.asciinema ~/.config/asciinema)
+- Internal refactorings
 
 * Tue Mar 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
-- Initial build for kaos repository
+- Initial build for EK repository

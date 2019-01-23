@@ -32,7 +32,7 @@
 
 Summary:           Fraunhofer FDK AAC codec library
 Name:              libfdk-aac
-Version:           0.1.6
+Version:           2.0.0
 Release:           0%{?dist}
 License:           Copyright Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
 Group:             System Environment/Libraries
@@ -94,6 +94,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- Major update in the upstream source base, with support for new
+  profiles and features, and numerous crash/fuzz fixes
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 0.1.6-0
 - Lots of minor assorted crash/fuzz fixes, mostly for the decoder but also some
   for the encoder

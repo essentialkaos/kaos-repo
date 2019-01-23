@@ -11,7 +11,7 @@
 
 Summary:           Distributed source control management tool
 Name:              mercurial
-Version:           4.7.2
+Version:           4.8.2
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Development/Tools
@@ -166,6 +166,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.8.2-0
+- Updated to the latest stable release
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 4.7.2-0
 - Updated to the latest stable release
 

@@ -51,7 +51,7 @@
 
 Summary:          Prometheus push acceptor for ephemeral and batch jobs
 Name:             prometheus-pushgateway
-Version:          0.6.0
+Version:          0.7.0
 Release:          0%{?dist}
 Group:            Applications/Databases
 License:          ASL 2.0
@@ -205,6 +205,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 0.7.0-0
+- Updated to the latest stable release
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 0.6.0-0
 - Updated to the latest stable release
 
@@ -213,4 +216,3 @@ fi
 
 * Wed Mar 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.4.0-0
 - Initial build
-

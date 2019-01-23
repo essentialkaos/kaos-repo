@@ -26,7 +26,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define patch_level       23
+%define patch_level       24
 
 ################################################################################
 
@@ -379,6 +379,9 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-24
+- Updated to the latest release
+
 * Sat Jan 12 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-23
 - Updated to the latest release
 

@@ -30,7 +30,7 @@
 
 Summary:            A portable x86 assembler which uses Intel-like syntax
 Name:               nasm
-Version:            2.14
+Version:            2.14.02
 Release:            0%{?dist}
 License:            BSD
 Group:              Development/Languages
@@ -127,6 +127,28 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-0
+- Fix crash due to multiple errors or warnings during the code generation pass
+  if a list file is specified
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.01-0
+- Create all system-defined macros defore processing command-line given
+  preprocessing directives (-p, -d, -u, --pragma, --before).
+- If debugging is enabled, define a __DEBUG_FORMAT__ predefined macro.
+- Fix an assert for the case in the obj format when a SEG operator refers to an
+  EXTERN symbol declared further down in the code.
+- Fix a corner case in the floating-point code where a binary, octal or
+  hexadecimal floating-point having at least 32, 11, or 8 mantissa digits could
+  produce slightly incorrect results under very specific conditions.
+- Support -MD without a filename, for gcc compatibility. -MF can be used to set
+  the dependencies output filename.
+- Fix -E in combination with -MD.
+- Fix missing errors on redefined labels; would cause convergence failure
+  instead which is very slow and not easy to debug.
+- Duplicate definitions of the same label with the same value is now explicitly
+  permitted (2.14 would allow it in some circumstances.)
+- Add the option --no-line to ignore %%line directives in the source.
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2.14-0
 - Changed -I option semantics by adding a trailing path separator
   unconditionally.
