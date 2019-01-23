@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              4.0.1
+Version:              4.0.3
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -972,6 +972,139 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.0.3-0
+- added column "Latest values" in Monitoring->Problems and Dashboard
+- implemented widget pausing methods in dashboard; made graph widget paused
+  when using selection box or opening a tooltip
+- fixed zoomout on doubleclick in graph widget
+- fixed display parent host groups without hosts in multiselect
+- fixed deprecated net-snmp attribute
+- fixed configuration sync of interfaces without hosts
+- fixed updating nextcheck time in discovery rules to avoid overlaps between
+  discovery executions
+- fixed regexp validation when pattern contain slash character
+- fixed incorrect keycode handling in multiselect input fields
+- fixed trigger overview behavior when show "any"
+- fixed performance with deletion of item in template linked to many hosts
+- added new LLD macros for vmware HV low-level discovery
+- fixed colorpicker tooltip update
+- fixed "check now" being executed for active items and templates
+- fixed custom interval validation; fixed parsing of custom intervals when user
+  macros context contains forward slash
+- fixed community default value in edit scenario
+- fixed memory of performance counters consumed during vmware update
+- updated Tomcat template for compatibility with recent Tomcat versions
+- fixed API authentication for ldap users having gui access disabled
+- fixed misleading ldap authentication error messages
+- fixed style of disabled action on high contrast theme
+- removed strict-transport-security header from frontend
+- fixed negative time selector offset when selecting time range in graph
+- fixed creation of unneeded database record if host prototype inventory mode
+  is disabled; fixed validation for host and host prototype inventory mode
+- fixed SQL error occurred when too long IP address is attempted to be written
+  in database
+- fixed web scenario item selection in SVG graph widget
+- fixed error handling in logrt[] items if regular expression for file name
+  is not valid
+- fixed resolving of functional macros in graph widget name
+- fixed host, trigger and item count calculation; fixed required performance
+  calculation
+- fixed graph name for cache usage in proxy and server templates
+- fixed wrong behaviour when referencing unexisting capture groups in item
+  regexp preprocessing, general pcre code improvements
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
+- added validation of update interval, custom interval, history storage period
+  and trend storage period in low-level discovery
+- removed hardcoded locations for iconv.h and pthread.h; thanks to Helmut Grohne
+  for the patch
+- fixed compilation errors on Windows platform with static OpenSSL libraries
+- added license information and OpenSSL linking exception to README file, show
+  crypto library version when started with '-V'
+- fixed crash in ODBC when creating JSON from null db values, fixed memory leak
+- fixed a case where a disable multiselect looks like a similar to enabled text
+  field
+- fixed filter by host group without real hosts in triggers top 100, dashboard
+  widgets, screens
+- fixed duplication of file system type in global regular expression for file
+  systems discovery
+- added system.cpu.util[,guest], system.cpu.util[,guest_nice] to OS Linux
+  template
+- improved error messages for item preprocessing, general pcre code improvements
+- fixed curl error handling for elasticsearch history backend
+- added optional upgrade patches to rename TRIGGER.NAME macros to EVENT.NAME
+  in action operation messages and custom scripts
+- fixed processing of unlimited vmware maxQueryMetrics value
+- fixed rare LLD failures when moving host between groups
+- fixed loss of calc_fnc index in graph edit form
+- improved escalator performance during maintenance by checking paused
+  escalations less frequently
+- fixed focus styles on read-only textarea fields
+- fixed percentage calculation on availability reports list page
+- fixed error message when receiving compressed data over maximum size
+- fixed time period parameters in data overview context menu links
+- fixed javascript error when zooming classic graph in edit mode
+- fixed dashboard initialization in edit mode
+- fixed timetamp position in map
+- fixed zoom-out and select box for graphs in kiosk mode
+- improved source code comments
+- fixed wrong media type status upon creation, if chosen status disabled
+- fixed wrong net.tcp.listen values on obsolete Linux systems
+- fixed issue with autoreconf/automake for source tarball
+- fixed time format for vmware performance counters query
+- fixed regexp compilation error for patterns with referenced subpatterns
+- fixed breadcrumb jumping in IE browser
+- fixed API so that macros {TRIGGER.ID} works in map element URLs
+- fixed possible crash when communication problem occurred in the middle of
+  vmware update
+- fixed excessive memory usage during template full clone
+- clarified process type names for log level increase/decrease in help messages
+  and man pages
+- fixed selectHosts option in dservice.get API method to return the list of
+  hosts by IP and proxy
+- fixed binary heap trying to reallocate slots on every insert
+- fixed unauthorized request error when resetting filter after
+  enabling/disabling elements
+- fixed translations from en_US to en_GB
+- fixed encoding for cookie names and values
+- fixed possible crash in web monitoring due to posts not being reset between
+  steps
+- fixed faulty behaviour of mandatory fields in Trigger expression form
+- added support of host macros to trapper, HTTP agent item allowed hosts field
+- fixed shared memory leak during configuration cache synchronization
+- fixed email alerts being sent twice to one recipient
+- fixed possibility to link map widget to itself as filter widget
+- fixed undefined offset error in Problems by severity widget
+- fixed memory leak when validating regular expression preprocessing step
+  parameters during LLD
+- changed SNMP OID default value to be displayed as placeholder instead of text
+- fixed compiler warning about incompatible pointer type on 32-bit platform
+- fixed error suppression during php ldap module initialization
+- fixed link coloring in map when related trigger is not monitored
+- fixed sBox position in screen's graph item when dynamic item is enabled
+- fixed not closed connection with vmware at the end of update session via a
+  call to Logout()
+- fixed current map refresh in map widget right after update widget
+  configuration
+- added missing http agent statistic row in queue screen
+- fixed missing focus from problem name when opening description editing popup
+  in monitoring problems section
+- fixed configuration update in administration authentication section
+- fixed memory leak in case duplication name of the vmware performance counters
+- made widget specific javascript files to be loaded with jsLoader
+- fixed the potential crash during vmware update
+- removed the notes about sqlite from zabbix_server.conf
+- fixed discovery and auto registration escalations being kept for one hour
+  instead of deleted immediately
+- fixed SQL queries being logged when accessing API, even if debug mode is
+  disabled
+- fixed error reporting for XML import of hosts and templates
+- fixed action popup being unclosable after widget refresh, fixed debug element
+  being hidden on widget refresh
+- changed focus style for radio buttons
+- fixed startup failures due to orphaned or zombie processes remaining when
+  zabbix daemon is terminated during startup
+
 * Mon Nov 19 2018 Andrey Kulikov <avk@brewkeeper.net> - 4.0.1-0
 - added filter fields to select templates and hosts by directly linked
   templates; made proxy filter field visible in configuration hosts field

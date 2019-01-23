@@ -41,7 +41,7 @@
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           8.7.2
+Version:           8.7.4
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
@@ -156,6 +156,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 8.7.4-0
+- zero memory on allocate to prevent write of uninitialized memory under some
+  error conditions
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 8.7.3-0
+- fix infinite loop for autofit with non-scaleable font
+- mapim was not offsetting by window offset
+- better rounding for scale
+- fix a memleak in magick6load
+
 * Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.7.2-0
 - more info output for temp files to help diagnose problems
 - vips_text() could set the wrong DPI in autofit mode

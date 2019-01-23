@@ -45,7 +45,7 @@
 
 Summary:         Intrusion Detection System
 Name:            suricata
-Version:         4.1.0
+Version:         4.1.2
 Release:         0%{?dist}
 License:         GPLv2
 Group:           Applications/Internet
@@ -132,6 +132,8 @@ rm -f  %{buildroot}%{_libdir}/libhtp.a
 rm -f  %{buildroot}%{_libdir}/libhtp.so
 rm -rf %{buildroot}%{_libdir}/pkgconfig
 
+rm -f %{buildroot}%{_bindir}/%{name}-update
+
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
@@ -155,7 +157,6 @@ rm -rf %{buildroot}
 %{_sbindir}/%{name}
 %{_bindir}/%{name}sc
 %{_bindir}/%{name}ctl
-%{_bindir}/%{name}-update
 %{_libdir}/libhtp*
 %{_datadir}/%{name}/rules/*.rules
 %{python_sitelib}/%{name}
@@ -176,6 +177,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.1.2-0
+- Updated to the latest stable release
+
 * Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
 - Updated to the latest stable release
 
