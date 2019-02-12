@@ -1,0 +1,11 @@
+# Bibop recipe for FFmpeg
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app ffmpeg
+
+command "ffmpeg -i" "Check basic info"
+  expect "ffmpeg version"
+  exit 1

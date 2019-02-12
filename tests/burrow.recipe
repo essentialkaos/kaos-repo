@@ -11,5 +11,5 @@ command "burrow"
   exit 1
 
 command "burrow -h"
-  expect "sage of burrow:"
+  expect "Usage of burrow:"
   exit 2

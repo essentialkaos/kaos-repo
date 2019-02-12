@@ -1,0 +1,23 @@
+# Bibop recipe for Elixir
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+var version 1.8.0
+
+command "-" "Check environment"
+  app elixir
+  app mix
+  app iex
+
+command "elixir --version" "Check Elixir version info"
+  expect "Elixir {version} (compiled with Erlang/OTP 20)"
+  exit 0
+
+command "mix --version" "Check Mix version info"
+  expect "Mix {version} (compiled with Erlang/OTP 20)"
+  exit 0
+
+command "iex --version" "Check IEx version info"
+  expect "IEx {version} (compiled with Erlang/OTP 20)"
+  exit 0

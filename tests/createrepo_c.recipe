@@ -1,0 +1,18 @@
+# Bibop recipe for createrepo_c
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app createrepo_c
+
+command "-" "Check libs"
+  lib-loaded libcreaterepo_c.so
+
+command "createrepo_c --version" "Check version info"
+  expect "Version: 0.12.0"
+  exit 0
+
+command "createrepo_c --help" "Check help info"
+  expect "Help Options:"
+  exit 0

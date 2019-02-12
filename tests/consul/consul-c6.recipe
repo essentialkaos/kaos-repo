@@ -1,0 +1,44 @@
+# Bibop recipe for consul (CentOS 6)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+
+var service_user consul
+var service_server consul-server
+var service_client consul-client
+var delay 5
+
+command "-" "Check environment"
+  app consul
+  service-present {service_server}
+  service-present {service_client}
+  exist /etc/consul/client/config.json
+  exist /etc/consul/server/config.json
+  exist /var/log/{service_server}
+  exist /var/log/{service_client}
+  owner /var/log/{service_server} {service_user}
+  owner /var/log/{service_client} {service_user}
+  exist /var/run/{service_server}
+  exist /var/run/{service_client}
+
+command "service {service_server} start" "Starting server daemon"
+  wait {delay}
+  service-works {service_server}
+  connect tcp :8300
+
+command "service {service_server} stop" "Stopping server daemon"
+  wait {delay}
+  !service-works {service_server}
+  !connect tcp :8300
+
+command "service {service_client} start" "Starting client daemon"
+  wait {delay}
+  service-works {service_client}
+  connect tcp :8500
+  connect tcp :8600
+
+command "service {service_client} stop" "Stopping client daemon"
+  wait {delay}
+  !service-works {service_client}
+  !connect tcp :8500
+  !connect tcp :8600

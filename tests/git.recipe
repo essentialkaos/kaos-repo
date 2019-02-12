@@ -1,0 +1,11 @@
+# Bibop recipe for git
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app git
+
+command "git --version" "Check version info"
+  expect "git version"
+  exit 0
