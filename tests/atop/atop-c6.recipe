@@ -1,0 +1,19 @@
+# Bibop recipe for atop
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+
+var service_name atop
+
+command "-" "Check environment"
+  app atop
+  exist /etc/cron.d/atop
+  service-present {service_name}
+
+command "systemctl {service_name} start" "Starting service"
+  wait-pid /var/run/atop.pid
+  service-works {service_name}
+
+command "systemctl {service_name} stop" "Stopping service"
+  wait 3
+  !service-works {service_name}

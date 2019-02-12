@@ -1,0 +1,13 @@
+# Bibop recipe for Ansible
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app ansible
+  exist /etc/ansible/ansible.cfg
+  perms /etc/ansible/ansible.cfg 644
+
+command "ansible --version" "Check basic ansible info"
+  expect "executable location = /usr/bin/ansible"
+  exit 0

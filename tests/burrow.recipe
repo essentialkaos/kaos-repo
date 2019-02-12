@@ -1,0 +1,15 @@
+# Bibop recipe for Burrow
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app burrow
+
+command "burrow"
+  expect "Reading configuration from"
+  exit 1
+
+command "burrow -h"
+  expect "sage of burrow:"
+  exit 2
