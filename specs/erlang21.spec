@@ -42,7 +42,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           2
-%define ver_patch         3
+%define ver_patch         5
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -60,10 +60,10 @@ License:           MPL
 URL:               http://www.erlang.org
 
 Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
-Source1:           http://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
-Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
+Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
+Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
-Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -1006,6 +1006,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 13 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.5-0
+- Updated to the latest release
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.3-0
 - Updated to the latest release
 
