@@ -1,4 +1,4 @@
-# Bibop recipe for atop
+# Bibop recipe for atop (CentOS 7)
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes
@@ -10,10 +10,14 @@ command "-" "Check environment"
   exist /etc/cron.d/atop
   service-present {service_name}
 
-command "systemctl start {service_name}.service" "Starting service"
+command "systemctl start {service_name}.service" "Start daemon"
   wait-pid /var/run/atop.pid
   service-works {service_name}
 
-command "systemctl stop {service_name}.service" "Stopping service"
+command "systemctl status {service_name}.service" "Check daemon status"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl stop {service_name}.service" "Stop daemon"
   wait 3
   !service-works {service_name}

@@ -1,0 +1,32 @@
+# Bibop recipe for Icecast (CentOS 6)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+
+var service_user icecast
+var service_name icecast
+var delay 3
+
+command "-" "Check environment"
+  app icecast
+  service-present {service_name}
+  user-exist {service_user}
+  exist /etc/{service_name}.xml
+  perms /etc/{service_name}.xml 640
+  exist /var/log/{service_name}
+  owner /var/log/{service_name} {service_user}
+
+command "systemctl start {service_name}" "Start Icecast daemon"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :8000
+  http-status GET "http://127.0.0.1:8000" 200
+
+command "systemctl status {service_name}" "Check status of Icecast daemon"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl stop {service_name}" "Stop Icecast daemon"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :8000

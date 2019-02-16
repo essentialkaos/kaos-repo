@@ -29,3 +29,4 @@ command "-" "Cleanup"
   exist {WORKDIR}/7zcat
   remove {WORKDIR}/7zcat
   !exist {WORKDIR}/7zcat
+  

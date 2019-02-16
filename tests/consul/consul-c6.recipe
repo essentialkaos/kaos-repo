@@ -21,23 +21,29 @@ command "-" "Check environment"
   exist /var/run/{service_server}
   exist /var/run/{service_client}
 
-command "service {service_server} start" "Starting server daemon"
+command "service {service_server} start" "Start server daemon"
   wait {delay}
   service-works {service_server}
   connect tcp :8300
 
-command "service {service_server} stop" "Stopping server daemon"
+command "service {service_server} status" "Check server daemon status"
+  exit 0
+
+command "service {service_server} stop" "Stop server daemon"
   wait {delay}
   !service-works {service_server}
   !connect tcp :8300
 
-command "service {service_client} start" "Starting client daemon"
+command "service {service_client} start" "Start client daemon"
   wait {delay}
   service-works {service_client}
   connect tcp :8500
   connect tcp :8600
 
-command "service {service_client} stop" "Stopping client daemon"
+command "service {service_client} status" "Check client daemon status"
+  exit 0
+
+command "service {service_client} stop" "Stop client daemon"
   wait {delay}
   !service-works {service_client}
   !connect tcp :8500

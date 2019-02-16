@@ -21,23 +21,31 @@ command "-" "Check environment"
   !exist /var/run/{service_server}
   !exist /var/run/{service_client}
 
-command "systemctl start {service_server}" "Starting server daemon"
+command "systemctl start {service_server}" "Start server daemon"
   wait {delay}
   service-works {service_server}
   connect tcp :8300
 
-command "systemctl stop {service_server}" "Stopping server daemon"
+command "systemctl status {service_server}" "Check server daemon status"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl stop {service_server}" "Stopp server daemon"
   wait {delay}
   !service-works {service_server}
   !connect tcp :8300
 
-command "systemctl start {service_client}" "Starting client daemon"
+command "systemctl start {service_client}" "Start client daemon"
   wait {delay}
   service-works {service_client}
   connect tcp :8500
   connect tcp :8600
 
-command "systemctl stop {service_client}" "Stopping client daemon"
+command "systemctl status {service_client}" "Check client daemon status"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl stop {service_client}" "Stopp client daemon"
   wait {delay}
   !service-works {service_client}
   !connect tcp :8500
