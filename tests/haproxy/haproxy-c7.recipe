@@ -1,0 +1,27 @@
+# Bibop recipe for HAProxy (CentOS 7)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+
+var service_user haproxy
+var service_name haproxy
+var delay 3
+
+command "-" "Check environment"
+  app haproxy
+  service-present {service_name}
+  user-exist {service_user}
+  exist /etc/haproxy/haproxy.cfg
+  perms /etc/haproxy/haproxy.cfg 644
+
+command "systemctl start {service_name}" "Start HAProxy daemon"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl status {service_name}" "Check status of HAProxy daemon"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl stop {service_name}" "Stop HAProxy daemon"
+  wait {delay}
+  !service-works {service_name}

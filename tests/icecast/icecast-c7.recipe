@@ -1,4 +1,4 @@
-# Bibop recipe for Icecast (CentOS 6)
+# Bibop recipe for Icecast (CentOS 7)
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes
@@ -25,6 +25,7 @@ command "systemctl start {service_name}" "Start Icecast daemon"
 command "systemctl status {service_name}" "Check status of Icecast daemon"
   exit 0
   output-contains "active (running)"
+  service-works {service_name}
 
 command "systemctl stop {service_name}" "Stop Icecast daemon"
   wait {delay}
