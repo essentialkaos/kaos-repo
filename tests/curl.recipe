@@ -7,7 +7,7 @@ command "-" "Check environment"
   app curl
 
 command "-" "Check lib"
-  lib-loaded "libcurl.so"
+  lib-loaded libcurl.so.*
 
 command "curl -Is https://www.google.com" "Check basic HTTP request"
   expect "HTTP/2 200"

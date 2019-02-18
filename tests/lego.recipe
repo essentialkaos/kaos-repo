@@ -1,0 +1,11 @@
+# Bibop recipe for lego
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app lego
+
+command "lego --version" "Check version info"
+  exit 0
+  output-contains "lego version "
