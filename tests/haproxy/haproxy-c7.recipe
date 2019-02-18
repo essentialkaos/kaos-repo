@@ -2,6 +2,7 @@
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes
+unsafe-actions yes
 
 var service_user haproxy
 var service_name haproxy
@@ -14,6 +15,10 @@ command "-" "Check environment"
   exist /etc/haproxy/haproxy.cfg
   perms /etc/haproxy/haproxy.cfg 644
 
+command "-" "Place test config"
+  backup /etc/haproxy/haproxy.cfg
+  copy haproxy.cfg /etc/haproxy/haproxy.cfg
+
 command "systemctl start {service_name}" "Start HAProxy daemon"
   wait {delay}
   service-works {service_name}
@@ -25,3 +30,6 @@ command "systemctl status {service_name}" "Check status of HAProxy daemon"
 command "systemctl stop {service_name}" "Stop HAProxy daemon"
   wait {delay}
   !service-works {service_name}
+
+command "-" "Restore original config"
+  backup-restore /etc/haproxy/haproxy.cfg

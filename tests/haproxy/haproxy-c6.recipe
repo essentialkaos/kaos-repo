@@ -14,6 +14,10 @@ command "-" "Check environment"
   exist /etc/haproxy/haproxy.cfg
   perms /etc/haproxy/haproxy.cfg 644
 
+command "-" "Place test config"
+  backup /etc/haproxy/haproxy.cfg
+  copy haproxy.cfg /etc/haproxy/haproxy.cfg
+
 command "service {service_name} start" "Start HAProxy daemon"
   wait {delay}
   service-works {service_name}
@@ -24,3 +28,6 @@ command "service {service_name} status" "Check status of HAProxy daemon"
 command "service {service_name} stop" "Stop HAProxy daemon"
   wait {delay}
   !service-works {service_name}
+
+command "-" "Restore original config"
+  backup-restore /etc/haproxy/haproxy.cfg
