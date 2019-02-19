@@ -8,6 +8,6 @@ command "-" "Check environment"
   app npm
   app npx
 
-command "node script.js" "Execute basic script"
+command "node test.js" "Execute basic script"
   exit 0
   output-contains "NODE WORKS"
