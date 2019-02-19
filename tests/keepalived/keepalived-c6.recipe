@@ -4,7 +4,6 @@
 require-root yes
 
 var service_name keepalived
-var delay 3
 
 command "-" "Check environment"
   app keepalived
@@ -15,12 +14,12 @@ command "-" "Check environment"
   perms /etc/keepalived/keepalived.conf 644
 
 command "service {service_name} start" "Start keepalived daemon"
-  wait {delay}
+  exit 0
   service-works {service_name}
 
 command "service {service_name} status" "Check status of keepalived daemon"
   exit 0
 
 command "service {service_name} stop" "Stop keepalived daemon"
-  wait {delay}
+  exit 0
   !service-works {service_name}

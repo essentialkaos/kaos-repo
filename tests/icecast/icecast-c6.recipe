@@ -5,7 +5,6 @@ require-root yes
 
 var service_user icecast
 var service_name icecast
-var delay 3
 
 command "-" "Check environment"
   app icecast
@@ -17,7 +16,7 @@ command "-" "Check environment"
   owner /var/log/{service_name} {service_user}
 
 command "service {service_name} start" "Start Icecast daemon"
-  wait {delay}
+  exit 0
   service-works {service_name}
   connect tcp :8000
   http-status GET "http://127.0.0.1:8000" 200
@@ -26,6 +25,6 @@ command "service {service_name} status" "Check status of Icecast daemon"
   exit 0
 
 command "service {service_name} stop" "Stop Icecast daemon"
-  wait {delay}
+  exit 0
   !service-works {service_name}
   !connect tcp :8000

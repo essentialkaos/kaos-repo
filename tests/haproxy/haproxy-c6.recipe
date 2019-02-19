@@ -5,7 +5,6 @@ require-root yes
 
 var service_user haproxy
 var service_name haproxy
-var delay 3
 
 command "-" "Check environment"
   app haproxy
@@ -19,14 +18,14 @@ command "-" "Place test config"
   copy haproxy.cfg /etc/haproxy/haproxy.cfg
 
 command "service {service_name} start" "Start HAProxy daemon"
-  wait {delay}
+  exit 0
   service-works {service_name}
 
 command "service {service_name} status" "Check status of HAProxy daemon"
   exit 0
 
 command "service {service_name} stop" "Stop HAProxy daemon"
-  wait {delay}
+  exit 0
   !service-works {service_name}
 
 command "-" "Restore original config"

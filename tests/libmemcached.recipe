@@ -1,0 +1,19 @@
+# Bibop recipe for libmemcached
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check shared libs"
+  lib-loaded libhashkit.so.2
+  lib-loaded libmemcached.so.11
+  lib-loaded libmemcachedprotocol.so.0
+  lib-loaded libmemcachedutil.so.2
+
+command "-" "Check headers"
+  lib-header libmemcached-1.0
+  lib-header libhashkit-1.0
+  lib-header libmemcachedprotocol-0.0
+  lib-header libmemcachedutil-1.0
+
+command "-" "Check pkg-config"
+  lib-config libmemcached

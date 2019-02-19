@@ -1,0 +1,21 @@
+# Bibop recipe for MMGeoIP
+# See more: https://github.com/essentialkaos/bibop
+
+command "-" "Check IPv4 data"
+  exist /usr/local/share/GeoIP/GeoIP.dat
+  exist /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat
+  exist /usr/local/share/GeoIP/GeoLiteCity-Location.dat
+  !empty /usr/local/share/GeoIP/GeoIP.dat
+  !empty /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat
+  !empty /usr/local/share/GeoIP/GeoLiteCity-Location.dat
+  perms /usr/local/share/GeoIP/GeoIP.dat 644
+  perms /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat 644
+  perms /usr/local/share/GeoIP/GeoLiteCity-Location.dat 644
+
+command "-" "Check IPv6 data"
+  exist /usr/local/share/GeoIP/GeoIPV6.dat
+  exist /usr/local/share/GeoIP/GeoLiteCityV6.dat
+  !empty /usr/local/share/GeoIP/GeoIPV6.dat
+  !empty /usr/local/share/GeoIP/GeoLiteCityV6.dat
+  perms /usr/local/share/GeoIP/GeoIPV6.dat 644
+  perms /usr/local/share/GeoIP/GeoLiteCityV6.dat 644

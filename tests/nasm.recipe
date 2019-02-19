@@ -1,0 +1,25 @@
+# Bibop recipe for nasm
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check binaries"
+  app nasm
+  app ndisasm
+  app ldrdf
+  app rdf2bin
+  app rdf2ihx
+  app rdf2com
+  app rdfdump
+  app rdflib
+  app rdx
+  app rdf2ith
+  app rdf2srec
+
+command "nasm --version" "Check NASM version info"
+  exit 0
+  output-contains "NASM version "
+
+command "ndisasm -v" "Check NDISASM version info"
+  exit 0
+  output-contains "NDISASM version "

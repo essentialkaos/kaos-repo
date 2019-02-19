@@ -1,0 +1,34 @@
+# Bibop recipe for NetData (CentOS 6)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+
+var service_user  netdata
+var service_group netdata
+var service_name  netdata
+
+command "-" "Check environment"
+  app netdata
+  service-present {service_name}
+  user-exist {service_user}
+  group-exist {service_group}
+
+command "service {service_name} start" "Start NetData service"
+  exit 0
+  service-works {service_name}
+  connect tcp :19999
+  http-status "http://127.0.0.1:19999/" 200
+
+command "service {service_name} status" "Check status of NetData service"
+  exit 0
+
+command "service {service_name} restart" "Restart NetData service"
+  exit 0
+  service-works {service_name}
+  connect tcp :19999
+  http-status "http://127.0.0.1:19999/" 200
+
+command "service {service_name} stop" "Stop NetData service"
+  exit 0
+  !service-works {service_name}
+  !connect tcp :19999

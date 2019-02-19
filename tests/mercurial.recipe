@@ -1,0 +1,12 @@
+# Bibop recipe for Mercurial
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check environment"
+  app hg
+  app hg-ssh
+
+command "hg --version" "Check version info"
+  exit 0
+  output-contains "Mercurial Distributed SCM "
