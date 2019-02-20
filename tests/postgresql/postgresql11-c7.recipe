@@ -101,6 +101,10 @@ command "systemctl start {service_name}" "Start PostgreSQL server"
 command "systemctl status {service_name}" "Check status of PostgreSQL server"
   expect "active (running)"
 
+command "postgres:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
+  exit 0
+  output-contains "PostgreSQL {verison}"
+
 command "systemctl restart {service_name}" "Restart PostgreSQL server"
   wait {delay}
   service-works {service_name}

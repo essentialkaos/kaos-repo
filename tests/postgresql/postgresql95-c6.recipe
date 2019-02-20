@@ -99,6 +99,10 @@ command "service {service_name} start" "Start PostgreSQL server"
 command "service {service_name} status" "Check status of PostgreSQL server"
   exit 0
 
+command "postgres:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
+  exit 0
+  output-contains "PostgreSQL {verison}"
+
 command "service {service_name} restart" "Restart PostgreSQL server"
   exit 0
   service-works {service_name}
