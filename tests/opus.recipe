@@ -1,0 +1,13 @@
+# Bibop recipe for Opus
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check shared libs"
+  lib-loaded libopus.so.*
+
+command "-" "Check headers"
+  lib-header opus
+
+command "-" "Check pkg-config"
+  lib-config opus
