@@ -1,0 +1,17 @@
+# Bibop recipe for x264
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check binary"
+  app x264
+
+command "-" "Check shared libs"
+  lib-loaded libx264.so.*
+
+command "-" "Check headers"
+  lib-header x264
+  lib-header x264_config
+
+command "-" "Check pkg-config"
+  lib-config x264

@@ -1,0 +1,57 @@
+# Bibop recipe for Redis (CentOS 7)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+unsafe-actions yes
+
+var service_user  redis
+var service_group redis
+var service_name  redis
+
+var service_config /etc/redis.conf
+
+command "-" "Check environment"
+  app redis-server
+  app redis-sentinel
+  app redis-benchmark
+  app redis-check-aof
+  app redis-check-rdb
+  app redis-cli
+
+  service-present redis
+  service-present sentinel
+  
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist /var/log/{service_name}
+  owner /var/log/{service_name} {service_user}
+
+command "-" "Replace configuration file"
+  backup {service_config}
+  copy redis.conf {service_config}
+
+command "service {service_name} start" "Start Redis service"
+  exit 0
+  service-works {service_name}
+  connect tcp :6379
+
+command "service {service_name} status" "Check status of Redis service"
+  exit 0
+
+command "service {service_name} restart" "Restart Redis service"
+  exit 0
+  service-works {service_name}
+  connect tcp :6379
+
+command "redis-cli CONFIG GET logfile" "Check Redis Client"
+  exit 0
+  output-contains "/var/log/redis/redis.log"
+
+command "service {service_name} stop" "Stop Redis service"
+  exit 0
+  !service-works {service_name}
+  !connect tcp :6379
+
+command "-" "Configuration file restore"
+  backup-restore {service_config}

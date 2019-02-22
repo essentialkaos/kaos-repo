@@ -1,0 +1,17 @@
+# Bibop recipe for SQLite
+# See more: https://github.com/essentialkaos/bibop
+
+fast-finish yes
+
+command "-" "Check binary"
+  app sqlite3
+
+command "-" "Check shared libs"
+  lib-loaded libsqlite3.so.*
+
+command "-" "Check headers"
+  lib-header sqlite3
+  lib-header sqlite3ext
+
+command "-" "Check pkg-config"
+  lib-config sqlite3
