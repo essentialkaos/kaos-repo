@@ -85,6 +85,9 @@ preStartServiceHandler() {
 startServiceHandler() {
   kv[log]="$pg_log"
 
+  export PG_OOM_ADJUST_FILE=/proc/self/oom_score_adj
+  export PG_OOM_ADJUST_VALUE=0
+
   if [[ -n "$disable_auto_numa" || $(getNumaNodesCount) == "1" ]] ; then
     kv.run "$pg_ctl" start -D "$pg_data" -s -w -t "$timeout"
   else
