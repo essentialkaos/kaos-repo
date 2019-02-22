@@ -80,11 +80,11 @@ command "service {service_name} initdb" "Database initialization"
   exist {data_dir}/data/pg_hba.conf
   exist {data_dir}/data/pg_ident.conf
   exist {data_dir}/data/postgresql.conf
-  exist {data_dir}/data/pg_xlog
+  exist {data_dir}/data/pg_wal
   perms {data_dir}/data/pg_hba.conf 600
   perms {data_dir}/data/pg_ident.conf 600
   perms {data_dir}/data/postgresql.conf 600
-  perms {data_dir}/data/pg_xlog 700
+  perms {data_dir}/data/pg_wal 700
   !empty {data_dir}/data/pg_hba.conf
   !empty {data_dir}/data/pg_ident.conf
   !empty {data_dir}/data/postgresql.conf
