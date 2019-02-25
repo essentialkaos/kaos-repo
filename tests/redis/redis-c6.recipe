@@ -1,4 +1,4 @@
-# Bibop recipe for Redis (CentOS 6)
+# Bibop recipe for Redis (CentOS 7)
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes
@@ -8,7 +8,10 @@ var service_user  redis
 var service_group redis
 var service_name  redis
 
-var service_config /etc/redis.conf
+var redis_config /etc/redis.conf
+var sentinel_config /etc/sentinel.conf
+var redis_logrotate /etc/logrotate.d/redis
+var sentinel_logrotate /etc/logrotate.d/sentinel
 
 command "-" "Check environment"
   app redis-server
@@ -23,6 +26,16 @@ command "-" "Check environment"
   
   user-exist {service_user}
   group-exist {service_group}
+
+  exist {redis_config}
+  perms {redis_config} 640
+  exist {sentinel_config}
+  perms {sentinel_config} 640
+
+  exist {redis_logrotate}
+  perms {redis_logrotate} 644
+  exist {sentinel_logrotate}
+  perms {sentinel_logrotate} 644
 
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}

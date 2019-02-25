@@ -8,7 +8,10 @@ var service_user  redis
 var service_group redis
 var service_name  redis
 
-var service_config /etc/redis.conf
+var redis_config /etc/redis.conf
+var sentinel_config /etc/sentinel.conf
+var redis_logrotate /etc/logrotate.d/redis
+var sentinel_logrotate /etc/logrotate.d/sentinel
 
 var delay 3
 
@@ -26,12 +29,22 @@ command "-" "Check environment"
   user-exist {service_user}
   group-exist {service_group}
 
+  exist {redis_config}
+  perms {redis_config} 640
+  exist {sentinel_config}
+  perms {sentinel_config} 640
+
+  exist {redis_logrotate}
+  perms {redis_logrotate} 644
+  exist {sentinel_logrotate}
+  perms {sentinel_logrotate} 644
+
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}
 
 command "-" "Replace configuration file"
-  backup {service_config}
-  copy redis.conf {service_config}
+  backup {redis_config}
+  copy redis.conf {redis_config}
 
 command "systemctl start {service_name}" "Start Redis service"
   wait {delay}
@@ -57,4 +70,4 @@ command "systemctl stop {service_name}" "Stop Redis service"
   !connect tcp :6379
 
 command "-" "Configuration file restore"
-  backup-restore {service_config}
+  backup-restore {redis_config}

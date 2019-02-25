@@ -6,13 +6,18 @@ require-root yes
 var service_name pgbouncer
 var service_user pgbouncer
 var service_config /etc/pgbouncer/pgbouncer.ini
+var logrotate_config /etc/logrotate.d/pgbouncer
 
 command "-" "Check environment"
   app pgbouncer
   service-present {service_name}
+  
   exist {service_config}
   owner {service_config} {service_user}
   perms {service_config} 644
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
 
 command "service {service_name} start" "Start pgbouncer daemon"
   exit 0

@@ -5,17 +5,24 @@ require-root yes
 
 var service_user haproxy
 var service_name haproxy
+var service_config /etc/haproxy/haproxy.cfg
+var logrotate_config /etc/logrotate.d/haproxy
 
 command "-" "Check environment"
   app haproxy
+  
   service-present {service_name}
+  
   user-exist {service_user}
-  exist /etc/haproxy/haproxy.cfg
-  perms /etc/haproxy/haproxy.cfg 644
+
+  exist {service_config}
+  perms {service_config} 644
+  exist {logrotate_config}
+  perms {logrotate_config} 644
 
 command "-" "Place test config"
-  backup /etc/haproxy/haproxy.cfg
-  copy haproxy.cfg /etc/haproxy/haproxy.cfg
+  backup {service_config}
+  copy haproxy.cfg {service_config}
 
 command "service {service_name} start" "Start HAProxy daemon"
   exit 0
@@ -29,4 +36,4 @@ command "service {service_name} stop" "Stop HAProxy daemon"
   !service-works {service_name}
 
 command "-" "Restore original config"
-  backup-restore /etc/haproxy/haproxy.cfg
+  backup-restore {service_config}

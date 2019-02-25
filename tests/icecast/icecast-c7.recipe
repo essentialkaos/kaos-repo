@@ -5,14 +5,23 @@ require-root yes
 
 var service_user icecast
 var service_name icecast
+var service_config /etc/icecast.xml
+var logrotate_config /etc/logrotate.d/icecast
+
 var delay 3
 
 command "-" "Check environment"
   app icecast
+  
   service-present {service_name}
+  
   user-exist {service_user}
-  exist /etc/{service_name}.xml
-  perms /etc/{service_name}.xml 640
+  
+  exist {service_config}
+  perms {service_config} 640
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+  
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}
 
