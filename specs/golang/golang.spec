@@ -54,13 +54,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.11
+%global go_api 1.12
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.11.5
+Version:           1.12
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -787,6 +787,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Tue Feb 26 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12-0
+- Updated to the latest stable release
+
 * Thu Jan 24 2019 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0
 - Updated to the latest stable release
 
