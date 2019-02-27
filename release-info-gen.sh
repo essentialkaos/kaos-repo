@@ -149,7 +149,7 @@ getNameFromSpec() {
 
 createChangesCache() {
   changes_cache=$(mktemp "/tmp/release-XXXXXXXXX.tmp")
-  git diff --name-status master | tr '\t' ' ' | grep -Ev '^R100' | grep '\.spec' | sort -k 2 -t ' ' > "$changes_cache"
+  git diff --name-status master | tr '\t' ' ' | grep -v ' tests/' | grep -Ev '^R100' | grep '\.spec' | sort -k 2 -t ' ' > "$changes_cache"
 }
 
 clearChangesCache() {
