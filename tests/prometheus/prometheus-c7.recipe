@@ -1,0 +1,61 @@
+# Bibop recipe for Redis (CentOS 7)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+unsafe-actions yes
+
+var service_user  prometheus
+var service_group prometheus
+var service_name  prometheus
+
+var service_config /etc/prometheus/prometheus.yml
+var logrotate_config /etc/logrotate.d/prometheus
+var sysconfig /etc/sysconfig/prometheus
+
+var delay 3
+
+command "-" "Check environment"
+  app prometheus
+  app promtool
+
+  service-present {service_name}
+
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist {service_config}
+  perms {service_config} 644
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  exist {sysconfig}
+  perms {sysconfig} 644
+
+  exist /usr/share/{service_name}
+  dir /usr/share/{service_name}
+  perms /usr/share/{service_name} 755
+
+  exist /var/lib/{service_name}
+  dir /var/lib/{service_name}
+  perms /var/lib/{service_name} 755
+  owner /var/lib/{service_name} {service_user}
+
+command "systemctl start {service_name}" "Start Prometheus service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :9090
+
+command "systemctl status {service_name}" "Check status of Prometheus service"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl restart {service_name}" "Restart Prometheus service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :9090
+
+command "systemctl stop {service_name}" "Stop Prometheus service"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :9090
