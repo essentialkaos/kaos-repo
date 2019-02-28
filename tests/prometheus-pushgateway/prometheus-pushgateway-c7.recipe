@@ -1,0 +1,44 @@
+# Bibop recipe for Prometheus Pushgateway (CentOS 7)
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+unsafe-actions yes
+
+var service_user  pushgateway
+var service_group pushgateway
+var service_name  prometheus-pushgateway
+
+var logrotate_config /etc/logrotate.d/prometheus-pushgateway
+var sysconfig /etc/sysconfig/prometheus-pushgateway
+
+var delay 3
+
+command "-" "Check environment"
+  app prometheus-pushgateway
+
+  service-present {service_name}
+
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  exist {sysconfig}
+  perms {sysconfig} 644
+
+command "systemctl start {service_name}" "Start Pushgateway service"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl status {service_name}" "Check status of Pushgateway service"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl restart {service_name}" "Restart Pushgateway service"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl stop {service_name}" "Stop Pushgateway service"
+  wait {delay}
+  !service-works {service_name}

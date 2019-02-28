@@ -1,4 +1,4 @@
-# Bibop recipe for Redis (CentOS 6)
+# Bibop recipe for Prometheus (CentOS 6)
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes
