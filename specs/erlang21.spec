@@ -42,7 +42,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           2
-%define ver_patch         5
+%define ver_patch         7
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -1006,6 +1006,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Mar 12 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.7-0
+- Updated to the latest release
+
 * Wed Feb 13 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.5-0
 - Updated to the latest release
 
