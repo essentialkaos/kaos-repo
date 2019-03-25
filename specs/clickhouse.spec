@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v18.16.1-stable
+# rpmbuilder:tag          v19.4.1.3-stable
 
 ################################################################################
 
@@ -57,7 +57,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           18.16.1
+Version:           19.4.1.3
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -319,5 +319,8 @@ fi
 ################################################################################
 
 %changelog
+* Mon Mar 25 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.4.1.3-0
+- Updated to the latest release
+
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 18.16.1-0
 - Initial build for kaos repository
