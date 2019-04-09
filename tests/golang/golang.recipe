@@ -13,3 +13,7 @@ command "go version" "Check version info"
 command "go run test.go" "Execute basic script"
   exit 0
   output-contains "GOLANG WORKS"
+
+command "go run test-cgo.go" "Execute basic script with cgo"
+  exit 0
+  output-contains "42"
