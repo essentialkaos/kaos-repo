@@ -57,7 +57,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.4.1.3
+Version:           19.4.3.11
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -160,7 +160,7 @@ This package contains test suite for ClickHouse DBMS.
 export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 %if 0%{?rhel} == 6
-export CMAKE_OPTIONS="$CMAKE_OPTIONS -DENABLE_JEMALLOC=0"
+export CMAKE_OPTIONS="$CMAKE_OPTIONS -DENABLE_JEMALLOC=0 -DENABLE_RDKAFKA=0"
 %endif
 
 mkdir -p build
@@ -319,6 +319,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 19.4.3.11-0
+- Updated to the latest release
+
 * Mon Mar 25 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.4.1.3-0
 - Updated to the latest release
 
