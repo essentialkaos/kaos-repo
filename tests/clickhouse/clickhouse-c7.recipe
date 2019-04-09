@@ -1,0 +1,80 @@
+# Bibop recipe for ClickHouse
+# See more: https://github.com/essentialkaos/bibop
+
+var user  clickhouse
+var group clickhouse
+
+var cron_config /etc/cron.d/clickhouse-server
+
+var client_config   /etc/clickhouse-client/config.xml
+var client_conf_dir /etc/clickhouse-client/conf.d
+
+var data_dir /var/lib/clickhouse
+var log_dir /var/log/clickhouse-server
+
+var service_name clickhouse-server
+
+var delay 3
+
+command "-" "Check client environment"
+  app clickhouse-benchmark
+  app clickhouse-client
+  app clickhouse-compressor
+  app clickhouse-extract-from-config
+  app clickhouse-local
+
+  exist {client_config}
+  perms {client_config} 644
+  owner {client_config} root:root
+
+  exist {client_conf_dir}
+  dir {client_conf_dir}
+  perms {client_conf_dir} 755
+
+  owner {client_conf_dir} {user}:{group}
+
+command "-" "Check server environment"
+  app clickhouse-clang
+  app clickhouse-copier
+  app clickhouse-format
+  app clickhouse-lld
+  app clickhouse-obfuscator
+  app clickhouse-odbc-bridge
+  app clickhouse-report
+  app clickhouse-server
+
+  service-present clickhouse-server
+
+  exist {cron_config}
+  perms {cron_config} 644
+
+  exist {data_dir}
+  dir {data_dir}
+  perms {data_dir} 700
+  owner {data_dir} {user}:{group}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 775
+  owner {log_dir} root:{group}
+
+command "systemctl start {service_name}" "Start ClickHouse daemon"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :8123
+  connect tcp :9000
+
+command "clickhouse-client -q 'SELECT 42'" "Check basic query execution"
+  exit 0
+  output-contains "42"
+
+command "systemctl status {service_name}" "Check status of ClickHouse daemon"
+  exit 0
+  output-contains "active (running)"
+  service-works {service_name}
+
+command "systemctl stop {service_name}" "Stop ClickHouse daemon"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :8123
+  !connect tcp :9000
