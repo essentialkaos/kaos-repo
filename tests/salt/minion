@@ -1,0 +1,9 @@
+master: 127.0.0.1
+default_include: minion.d/*.conf
+pidfile: /var/run/salt-minion.pid
+pki_dir: /etc/salt/pki/minion
+cachedir: /var/cache/salt/minion
+sock_dir: /var/run/salt/minion
+hash_type: sha256
+log_file: /var/log/salt/minion.log
+key_logfile: /var/log/salt/key.log

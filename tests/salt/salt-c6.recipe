@@ -1,0 +1,82 @@
+# Bibop recipe for Salt
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+unsafe-actions yes
+
+var master_service salt-master
+var minion_service salt-minion
+
+var master_config /etc/salt/master
+var minion_config /etc/salt/minion
+
+var cache_dir /var/cache/salt
+
+var logrotate_config /etc/logrotate.d/salt
+
+command "-" "Check environment"
+  app salt
+  app salt-call
+  app salt-cp
+  app salt-key
+  app salt-master
+  app salt-minion
+  app salt-proxy
+  app salt-run
+  app salt-syndic
+  app salt-unity
+
+  exist {PYTHON3_SITELIB}/salt
+
+  service-present salt-master
+  service-present salt-minion
+  service-present salt-syndic
+
+  exist {master_config}
+  perms {master_config} 640
+  owner {master_config} root:root
+
+  exist {minion_config}
+  perms {minion_config} 640
+  owner {minion_config} root:root
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  file-contains {logrotate_config} "create 640 root root"
+
+  exist {cache_dir}
+
+command "-" "Replace configuration files"
+  backup {master_config}
+  backup {minion_config}
+  copy master {master_config}
+  copy minion {minion_config}
+
+command "service {master_service} start" "Start Salt Master service"
+  exit 0
+  service-works {master_service}
+  connect tcp :4506
+
+command "service {minion_service} start" "Start Salt Minion service"
+  exit 0
+  service-works {minion_service}
+
+command "service {master_service} status" "Check status of Salt Master service"
+  exit 0
+
+command "service {minion_service} status" "Check status of Salt Minion service"
+  exit 0
+
+command "service {minion_service} stop" "Stop Salt Minion service"
+  exit 0
+  !service-works {minion_service}
+
+command "service {master_service} stop" "Stop Salt Master service"
+  exit 0
+  !service-works {master_service}
+  !connect tcp :4506
+
+command "-" "Configuration files restore"
+  backup-restore {master_config}
+  backup-restore {minion_config}
