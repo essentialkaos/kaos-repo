@@ -1,7 +1,16 @@
 ################################################################################
 
-%define __python3 %{_bindir}/python3
-%{!?python3_sitearch: %define python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
+
+%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -38,49 +47,47 @@
 
 ################################################################################
 
-%define pkg_name          python-augeas
-%define pypi_subpath      b4/d7/62d335d9df28e2f78207dcd12bbbcee89a7b5ba6d247feaddc9d04f27e1e
+%global pkgname           enchant
+%define pypi_subpath      9e/54/04d88a59efa33fefb88133ceb638cdf754319030c28aadc5a379d82140ed
 
 ################################################################################
 
-Summary:          Python bindings for Augeas
-Name:             python34-augeas
-Version:          1.0.3
-Release:          0%{?dist}
-License:          LGPL-2.1
-Group:            Development/Languages
-URL:              http://augeas.net
+Summary:            Python bindings for Enchant spellchecking library
+Name:               %{python_base}-%{pkgname}
+Version:            2.0.0
+Release:            1%{?dist}
+License:            LGPLv2+
+Group:              Development/Languages
+URL:                https://pypi.org/project/pyenchant/
 
-Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkg_name}-%{version}.tar.gz
+Source0:            https://pypi.python.org/packages/%{pypi_subpath}/py%{pkgname}-%{version}.tar.gz
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:        noarch
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    python34-devel python34-setuptools libffi-devel augeas-libs
-BuildRequires:    gcc
+BuildArch:          noarch
 
-Requires:         augeas-libs python34-cffi
+BuildRequires:      %{python_base}-setuptools %{python_base}-devel enchant-devel
 
-Provides:         %{name} = %{version}-%{release}
+Provides:           PyEnchant = %{version}-%{release}
 
 ################################################################################
 
 %description
-Pure python bindings for augeas http://augeas.net
+PyEnchant is a spellchecking library for Python, based on the Enchant
+library by Dom Lachowicz.
 
 ################################################################################
 
 %prep
-%setup -qn %{pkg_name}-%{version}
+%setup -qn pyenchant-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build_ext -i
 CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot} --single-version-externally-managed
 
 %clean
 rm -rf %{buildroot}
@@ -89,11 +96,20 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS README.txt COPYING
+%doc LICENSE.txt README.txt TODO.txt
 %{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
-* Wed Apr 11 2018 Andrey Kulikov <avk@brewkeeper.net> - 1.0.3-0
-- Initial build
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-1
+- Updated for compatibility with Python 3.6
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- Updated to latest stable release
+
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.11-0
+- Updated to latest stable release
+
+* Tue Dec 13 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.8-0
+- Initial build for kaos repo

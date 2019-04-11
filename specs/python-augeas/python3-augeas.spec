@@ -1,12 +1,16 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
-
-%global tarball_name apache-libcloud
 
 ################################################################################
 
@@ -43,44 +47,51 @@
 
 ################################################################################
 
-Summary:          A Python library to address multiple cloud provider APIs
-Name:             python34-libcloud
-Version:          2.3.0
-Release:          0%{?dist}
-License:          ASL 2.0
+%define pkg_name          python-augeas
+%define pypi_subpath      b4/d7/62d335d9df28e2f78207dcd12bbbcee89a7b5ba6d247feaddc9d04f27e1e
+
+################################################################################
+
+Summary:          Python bindings for Augeas
+Name:             %{python_base}-augeas
+Version:          1.0.3
+Release:          1%{?dist}
+License:          LGPL-2.1
 Group:            Development/Languages
-URL:              http://libcloud.apache.org
+URL:              http://augeas.net
 
-Source0:          http://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name}-%{version}.tar.bz2
+Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkg_name}-%{version}.tar.gz
 
-BuildArch:        noarch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:        noarch
 
-BuildRequires:    python34-setuptools python34-devel
+BuildRequires:    %{python_base}-devel %{python_base}-setuptools
+BuildRequires:    libffi-devel augeas-libs
 
-Requires:         python34
+BuildRequires:    gcc
 
-Provides:         %{name} = %{verion}-%{release}
+Requires:         augeas-libs %{python_base}-cffi
+
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-libcloud is a client library for interacting with many of the popular cloud
-server providers.  It was created to make it easy for developers to build
-products that work between any of the services that it supports.
+Pure python bindings for augeas http://augeas.net
 
 ################################################################################
 
 %prep
-%setup -qn %{tarball_name}-%{version}
+%setup -qn %{pkg_name}-%{version}
 
 %build
-%{__python3} setup.py build
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build_ext -i
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root=%{buildroot}
 
 %clean
 rm -rf %{buildroot}
@@ -89,32 +100,14 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE README.rst
+%doc AUTHORS README.txt COPYING
 %{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
-* Wed Mar 14 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
-- Updated to latest version
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 1.0.3-1
+- Updated for compatibility with Python 3.6
 
-* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
-- Updated to latest version
-
-* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
-- Updated to latest version
-
-* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
-- Updated to latest version
-
-* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- Updated to latest version
-
-* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
-- Updated to latest version
-
-* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
-- Updated to latest version
-
-* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
+* Wed Apr 11 2018 Andrey Kulikov <avk@brewkeeper.net> - 1.0.3-0
 - Initial build

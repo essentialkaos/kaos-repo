@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -41,9 +47,9 @@
 ################################################################################
 
 Summary:            Tool for installing and managing Python packages
-Name:               python34-%{pkgname}
+Name:               %{python_base}-%{pkgname}
 Version:            18.1
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                https://github.com/pypa/pip
@@ -54,9 +60,9 @@ BuildArch:          noarch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      python34-setuptools python34-devel
+BuildRequires:      %{python_base}-setuptools %{python_base}-devel
 
-Requires:           python34-setuptools python34-devel
+Requires:           %{python_base}-setuptools %{python_base}-devel
 
 Provides:           pip3 = %{version}-%{release}
 Provides:           %{name} = %{version}-%{release}
@@ -96,6 +102,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 18.1-1
+- Updated for compatibility with Python 3.6
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 18.1-0
 - Allow PEP 508 URL requirements to be used as dependencies.
 - As a security measure, pip will raise an exception when installing packages

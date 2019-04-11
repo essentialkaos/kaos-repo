@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -16,9 +22,9 @@
 ################################################################################
 
 Summary:        Sandboxed template engine
-Name:           python34-jinja2
+Name:           %{python_base}-jinja2
 Version:        2.10
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
@@ -29,9 +35,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildArch:      noarch
 
-BuildRequires:  python34-devel python34-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
-Requires:       python34
+Requires:       %{python_base}
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -68,6 +74,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-1
+- Updated for compatibility with Python 3.6
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.10-0
 - Updated to latest stable release
 

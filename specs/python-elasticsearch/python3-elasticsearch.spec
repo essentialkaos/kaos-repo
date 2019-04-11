@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -14,9 +20,9 @@
 ################################################################################
 
 Summary:        Python client for Elasticsearch 2.x
-Name:           python34-%{package_name}
+Name:           %{python_base}-%{package_name}
 Version:        6.3.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
 URL:            https://github.com/elastic/elasticsearch-py
@@ -27,7 +33,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
-BuildRequires:  python34-devel python34-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -62,6 +68,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-1
+- Updated for compatibility with Python 3.6
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-0
 - Updated to latest stable release
 

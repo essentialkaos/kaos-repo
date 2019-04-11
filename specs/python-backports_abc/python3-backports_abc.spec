@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -39,70 +45,50 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
-%define __useradd         %{_sbindir}/useradd
+################################################################################
 
-%define pkgname           pycrypto
-%define pypi_subpath      60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163
+%global pkgname           backports_abc
+%define pypi_path         68/3c/1317a9113c377d1e33711ca8de1e80afbaf4a3c950dd0edfaf61f9bfe6d8
 
 ################################################################################
 
-Summary:          Cryptography library for Python 3.4
-Name:             python34-crypto
-Version:          2.6.1
-Release:          1%{?dist}
-License:          Public Domain and Python
-Group:            Development/Libraries
-URL:              http://www.pycrypto.org
+Summary:            Backport of recent additions to the 'collections.abc' module
+Name:               %{python_base}-%{pkgname}
+Version:            0.5
+Release:            1%{?dist}
+License:            Python
+Group:              Development/Libraries
+URL:                https://pypi.python.org/pypi/backports_abc
 
-Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkgname}-%{version}.tar.gz
+Source0:            https://pypi.python.org/packages/%{pypi_path}/backports_abc-%{version}.tar.gz
 
-Patch0:           python-crypto-2.4-optflags.patch
-Patch1:           python-crypto-2.4-fix-pubkey-size-divisions.patch
+BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:          noarch
 
-BuildRequires:    gcc python34-devel gmp-devel >= 4.1
+BuildRequires:      %{python_base}-devel %{python_base}-setuptools
 
-%{?filter_provides_in: %filter_provides_in %{python3_sitearch}/Crypto/.*\.so}
+Requires:           %{python_base}
 
-%{?filter_setup}
-
-Requires:         python34
-
-Provides:         pycrypto34 = %{version}-%{release}
+Provides:           %{name} = %{verion}-%{release}
 
 ################################################################################
 
 %description
-PyCrypto is a collection of both secure hash functions (such as MD5 and
-SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
+A backport of recent additions to the 'collections.abc' module.
 
 ################################################################################
 
 %prep
 %setup -qn %{pkgname}-%{version}
 
-%patch0 -p1
-%patch1 -p1
-
 %build
-CFLAGS="%{optflags} -fno-strict-aliasing" %{__python3} setup.py build
+%{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
 %{__python3} setup.py install -O1 --skip-build --root %{buildroot}
-
-# Remove group write permissions on shared objects
-find %{buildroot}%{python3_sitearch} -name '*.so' -exec chmod -c g-w {} \;
-
-find %{buildroot} -name '_fastmath.*' -exec rm -f {} \;
 
 %clean
 rm -rf %{buildroot}
@@ -111,12 +97,18 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
-%{python3_sitearch}/Crypto/
-%{python3_sitearch}/pycrypto-*py3.*.egg-info
+%{python3_sitelib}/%{pkgname}.*
+%{python3_sitelib}/%{pkgname}-*.egg-info*
+%exclude %{python3_sitelib}/__pycache__
 
 ################################################################################
 
 %changelog
-* Mon Mar 05 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-1
-- Rebuilt for Python 3.4
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 0.5-1
+- Updated for compatibility with Python 3.6
+
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.5-0
+- Updated to latest stable release
+
+* Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.4-0
+- Initial build

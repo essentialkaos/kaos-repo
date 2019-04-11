@@ -1,19 +1,27 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+
+################################################################################
 
 %define pkgname  PyYAML
 
 ################################################################################
 
 Summary:         YAML parser and emitter for Python
-Name:            python34-PyYAML
+Name:            %{python_base}-PyYAML
 Version:         3.13
-Release:         0%{?dist}
+Release:         2%{?dist}
 Group:           Development/Libraries
 License:         MIT
 URL:             http://pyyaml.org/wiki/PyYAML
@@ -22,13 +30,13 @@ Source0:         http://pyyaml.org/download/pyyaml/%{pkgname}-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc python34-devel python34-setuptools
+BuildRequires:   gcc %{python_base}-devel %{python_base}-setuptools
 BuildRequires:   libyaml-devel >= 0.2.1
 
-Requires:        python34
+Requires:        %{python_base}
 
 Provides:        %{name} = %{version}-%{release}
-Provides:        python34-yaml = %{version}-%{release}
+Provides:        %{python_base}-yaml = %{version}-%{release}
 
 ################################################################################
 
@@ -72,6 +80,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 3.13-2
+- Updated for compatibility with Python 3.6
+
 * Mon Nov 19 2018 Andrey Kulikov <avk@brewkeeper.net> - 3.13-1
 - Added python34-yaml to Provides
 

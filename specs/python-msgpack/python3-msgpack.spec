@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -14,9 +20,9 @@
 ################################################################################
 
 Summary:        A Python MessagePack (de)serializer
-Name:           python34-%{pkgname}
+Name:           %{python_base}-%{pkgname}
 Version:        0.5.6
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        ASL 2.0
 Group:          Development/Languages
 URL:            https://pypi.python.org/pypi/msgpack-python/
@@ -25,9 +31,9 @@ Source:         https://pypi.python.org/packages/%{pypi_path}/%{pkgname}-python-
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python34-devel python34-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
-Requires:       python34
+Requires:       %{python_base}
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -65,5 +71,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 0.5.6-1
+- Updated for compatibility with Python 3.6
+
 * Sat Mar 17 2018 Anton Novojilov <andy@essentialkaos.com> - 0.5.6-0
 - Initial build for kaos repository

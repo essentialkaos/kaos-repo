@@ -1,10 +1,20 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+
+################################################################################
+
+%global tarball_name apache-libcloud
 
 ################################################################################
 
@@ -41,40 +51,36 @@
 
 ################################################################################
 
-%global pkgname           backports_abc
-%define pypi_path         68/3c/1317a9113c377d1e33711ca8de1e80afbaf4a3c950dd0edfaf61f9bfe6d8
+Summary:          A Python library to address multiple cloud provider APIs
+Name:             %{python_base}-libcloud
+Version:          2.3.0
+Release:          1%{?dist}
+License:          ASL 2.0
+Group:            Development/Languages
+URL:              http://libcloud.apache.org
 
-################################################################################
+Source0:          http://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name}-%{version}.tar.bz2
 
-Summary:            Backport of recent additions to the 'collections.abc' module
-Name:               python34-%{pkgname}
-Version:            0.5
-Release:            0%{?dist}
-License:            Python
-Group:              Development/Libraries
-URL:                https://pypi.python.org/pypi/backports_abc
+BuildArch:        noarch
+BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source0:            https://pypi.python.org/packages/%{pypi_path}/backports_abc-%{version}.tar.gz
+BuildRequires:    %{python_base}-setuptools %{python_base}-devel
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires:         %{python_base}
 
-BuildArch:          noarch
-
-BuildRequires:      python34-devel python34-setuptools
-
-Requires:           python34
-
-Provides:           %{name} = %{verion}-%{release}
+Provides:         %{name} = %{verion}-%{release}
 
 ################################################################################
 
 %description
-A backport of recent additions to the 'collections.abc' module.
+libcloud is a client library for interacting with many of the popular cloud
+server providers.  It was created to make it easy for developers to build
+products that work between any of the services that it supports.
 
 ################################################################################
 
 %prep
-%setup -qn %{pkgname}-%{version}
+%setup -qn %{tarball_name}-%{version}
 
 %build
 %{__python3} setup.py build
@@ -91,15 +97,35 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{python3_sitelib}/%{pkgname}.*
-%{python3_sitelib}/%{pkgname}-*.egg-info*
-%exclude %{python3_sitelib}/__pycache__
+%doc LICENSE README.rst
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
-* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.5-0
-- Updated to latest stable release
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-1
+- Updated for compatibility with Python 3.6
 
-* Sat Apr 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.4-0
+* Wed Mar 14 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- Updated to latest version
+
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
+- Updated to latest version
+
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- Updated to latest version
+
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Updated to latest version
+
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- Updated to latest version
+
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- Updated to latest version
+
+* Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
+- Updated to latest version
+
+* Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
 - Initial build

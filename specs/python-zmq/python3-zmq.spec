@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -14,9 +20,9 @@
 ################################################################################
 
 Summary:        Software library for fast, message-based applications
-Name:           python34-zmq
+Name:           %{python_base}-zmq
 Version:        15.4.0
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        LGPLv3+ and ASL 2.0 and BSD
 Group:          Development/Libraries
 URL:            http://zeromq.org/bindings:python
@@ -25,10 +31,10 @@ Source:         https://pypi.python.org/packages/%{pypi_path}/%{srcname}-%{versi
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
-BuildRequires:  python34-devel python34-setuptools
-BuildRequires:  chrpath python34-Cython zeromq3-devel
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools
+BuildRequires:  chrpath %{python_base}-Cython zeromq3-devel
 
-Requires:       python34
+Requires:       %{python_base}
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -83,5 +89,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 15.4.0-1
+- Updated for compatibility with Python 3.6
+
 * Wed Mar 14 2018 Anton Novojilov <andy@essentialkaos.com> - 15.4.0-0
 - Initial build for kaos repository

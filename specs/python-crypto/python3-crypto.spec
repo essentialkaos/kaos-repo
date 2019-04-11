@@ -1,6 +1,14 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global pyver       36
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global pyver       34
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -39,61 +47,71 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
+%define __ln              %{_bin}/ln
+%define __touch           %{_bin}/touch
+%define __service         %{_sbin}/service
+%define __chkconfig       %{_sbin}/chkconfig
+%define __ldconfig        %{_sbin}/ldconfig
+%define __groupadd        %{_sbindir}/groupadd
+%define __useradd         %{_sbindir}/useradd
+
+%define pkgname           pycrypto
+%define pypi_subpath      60/db/645aa9af249f059cc3a368b118de33889219e0362141e75d4eaf6f80f163
+
 ################################################################################
 
-%define short_name        raven
-%define pkg_name          raven-python
-
-################################################################################
-
-Summary:          Python client for Sentry
-Name:             python34-raven
-Version:          6.9.0
-Release:          0%{?dist}
-License:          BSD
+Summary:          Cryptography library for Python 3
+Name:             %{python_base}-crypto
+Version:          2.6.1
+Release:          2%{?dist}
+License:          Public Domain and Python
 Group:            Development/Libraries
-URL:              https://pypi.python.org/pypi/raven/
+URL:              http://www.pycrypto.org
 
-Source0:          https://github.com/getsentry/%{pkg_name}/archive/%{version}.tar.gz
+Source0:          https://pypi.python.org/packages/%{pypi_subpath}/%{pkgname}-%{version}.tar.gz
 
-Patch0:           raven-use-system-cacert.patch
-Patch1:           raven-setuptools.patch
+Patch0:           python-crypto-2.4-optflags.patch
+Patch1:           python-crypto-2.4-fix-pubkey-size-divisions.patch
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:        noarch
 
-BuildRequires:    python34-devel python34-setuptools
+BuildRequires:    %{python_base} %{python_base}-devel
+BuildRequires:    gcc gmp-devel >= 4.1
 
-Requires:         python34-setuptools
+%{?filter_provides_in: %filter_provides_in %{python3_sitearch}/Crypto/.*\.so}
 
-Provides:         %{name} = %{version}-%{release}
+%{?filter_setup}
+
+Requires:         %{python_base}
+
+Provides:         pycrypto%{pyver} = %{version}-%{release}
 
 ################################################################################
 
 %description
-Raven is a Python client for Sentry <http://getsentry.com>. It provides full
-out-of-the-box support for many of the popular frameworks, including Django,
-and Flask. Raven also includes drop-in support for any WSGI-compatible web
-application.
+PyCrypto is a collection of both secure hash functions (such as MD5 and
+SHA), and various encryption algorithms (AES, DES, RSA, ElGamal, etc.).
 
 ################################################################################
 
 %prep
-%setup -qn %{pkg_name}-%{version}
+%setup -qn %{pkgname}-%{version}
 
 %patch0 -p1
 %patch1 -p1
 
-rm -f %{short_name}/data/cacert.pem
-rm -fr %{short_name}/data
-
 %build
-%{__python3} setup.py build
+CFLAGS="%{optflags} -fno-strict-aliasing" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}
 
-%{__python3} setup.py install --skip-build --root=%{buildroot}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
+
+# Remove group write permissions on shared objects
+find %{buildroot}%{python3_sitearch} -name '*.so' -exec chmod -c g-w {} \;
+
+find %{buildroot} -name '_fastmath.*' -exec rm -f {} \;
 
 %clean
 rm -rf %{buildroot}
@@ -102,34 +120,15 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS README.rst LICENSE
-%{_bindir}/%{short_name}
-%{python3_sitelib}/*
+%doc README TODO ACKS ChangeLog LEGAL/ COPYRIGHT Doc/
+%{python3_sitearch}/Crypto/
+%{python3_sitearch}/pycrypto-*py3.*.egg-info
 
 ################################################################################
 
 %changelog
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.9.0-0
-- [Core] Switched from culprit to transaction for automatic transaction
-  reporting
-- [CI] Removed py3.3 from build
-- [Django] resolved an issue where the log integration would override the user
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-2
+- Updated for compatibility with Python 3.6
 
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.8.0-0
-- [Core] Fixed DSNs without secrets not sending events
-- [Core] Added lazy import for pkg_resources
-- [Core] Added NamedTuple Serializer
-- [Sanic] Fixed sanic integration dependencies
-- [Django] Fixed sql hook bug
-
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.7.0-0
-- [Sanic] Added support for sanic
-- [Core] Disabled dill logger by default
-- [Core] Added SENTRY_NAME, SENTRY_ENVIRONMENT and SENTRY_RELEASE
-  environment variables
-- [Core] DSN secret is now optional
-- [Core] Added fix for cases with exceptions in repr
-- [core] Fixed bug with mutating record.data
-
-* Fri Mar 23 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.6.0-0
-- Initial build
+* Mon Mar 05 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-1
+- Rebuilt for Python 3.4

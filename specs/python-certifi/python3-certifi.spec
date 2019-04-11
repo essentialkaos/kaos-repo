@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -39,67 +45,45 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
-%define __useradd         %{_sbindir}/useradd
+################################################################################
+
+%global pkgname certifi
 
 ################################################################################
 
-%global pkgname tornado
-
-################################################################################
-
-Summary:            Scalable, non-blocking web server and tools
-Name:               python34-%{pkgname}
-Version:            5.0.2
-Release:            0%{?dist}
-License:            ASL 2.0
+Summary:            Python package for providing Mozilla's CA Bundle
+Name:               %{python_base}-%{pkgname}
+Version:            2018.11.29
+Release:            1%{?dist}
+License:            MPLv2.0
 Group:              Development/Libraries
-URL:                http://www.tornadoweb.org
+URL:                https://github.com/certifi/python-certifi
 
-Source0:            https://github.com/tornadoweb/%{pkgname}/archive/v%{version}.tar.gz
+Source0:            https://github.com/certifi/python-%{pkgname}/archive/%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      python34-devel python-setuptools python34-backports_abc
-BuildRequires:      python34-backports-ssl_match_hostname python34 gcc
+BuildArch:          noarch
 
-Requires:           python34-backports-ssl_match_hostname
-Requires:           python34-pycurl python34-certifi python34
+BuildRequires:      %{python_base}-devel %{python_base}-setuptools
+
+Requires:           %{python_base} ca-certificates
 
 Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-Tornado is an open source version of the scalable, non-blocking web
-server and tools.
-
-The framework is distinct from most mainstream web server frameworks
-(and certainly most Python frameworks) because it is non-blocking and
-reasonably fast. Because it is non-blocking and uses epoll, it can
-handle thousands of simultaneous standing connections, which means it is
-ideal for real-time web services.
-
-################################################################################
-
-%package doc
-Summary:            Examples for python34-tornado
-Group:              Documentation
-Requires:           python34-tornado = %{version}-%{release}
-
-%description doc
-Tornado is an open source version of the scalable, non-blocking web
-server and and tools. This package contains some example applications.
+Certifi is a carefully curated collection of Root Certificates for
+validating the trustworthiness of SSL certificates while verifying
+the identity of TLS hosts. It has been extracted from the Requests project.
 
 ################################################################################
 
 %prep
-%setup -qn %{pkgname}-%{version}
+%setup -qn python-%{pkgname}-%{version}
+
+rm -rf %{pkgname}.egg-info
 
 %build
 %{__python3} setup.py build
@@ -116,27 +100,47 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README.rst
-%{python3_sitearch}/*
-
-%files doc
-%defattr(-,root,root,-)
-%doc demos docs
+%doc LICENSE README.rst
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
-- Updated to latest stable release
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.11.29-1
+- Updated for compatibility with Python 3.6
 
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
-- Updated to latest stable release
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.11.29-0
+- Updated to the latest release
 
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
-- Updated to latest stable release
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.10.15-0
+- Updated to the latest release
 
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-1
-- Improved spec
+* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.08.24-0
+- Updated to the latest release
 
-* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.5.3-0
-- Rebuilt for Python 3.4
+* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.04.16-0
+- Updated to the latest release
+
+* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.01.18-0
+- Updated to the latest release
+
+* Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.11.05-0
+- Updated to the latest release
+
+* Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.07.27.1-0
+- Updated to the latest release
+
+* Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.04.17-0
+- Updated to the latest release
+
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2017.01.23-0
+- Updated to the latest release
+
+* Tue Dec 27 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-1
+- Added certificates bundle to package
+
+* Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.09.26-0
+- Updated to the latest release
+
+* Sun Sep 11 2016 Anton Novojilov <andy@essentialkaos.com> - 2016.8.31-0
+- Initial build for kaos repo
