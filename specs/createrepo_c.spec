@@ -1,10 +1,17 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
-%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+%{!?python3_lib: %global python3_lib %(%{__python3} -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))" 2>/dev/null)}
+%{!?python3_inc: %global python3_inc %(%{__python3} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())" 2>/dev/null)}
 
 ################################################################################
 
@@ -53,7 +60,7 @@
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
 Version:            0.12.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            GPLv2
 Group:              Development/Tools
 URL:                https://github.com/rpm-software-management/createrepo_c
@@ -62,15 +69,15 @@ Source0:            https://github.com/rpm-software-management/%{name}/archive/%
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      cmake doxygen bzip2-devel expat-devel file-devel
+BuildRequires:      gcc cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel
-BuildRequires:      rpm-devel >= 4.8.0-28 zchunk pkgconfig(zck) >= 0.9.11
+BuildRequires:      rpm-devel >= 4.8.0-28
 
 %if 0%{?rhel} == 6
 Requires:           rpm >= 4.8.0-28
 %else
-BuildRequires:      bash-completion
+BuildRequires:      bash-completion zchunk pkgconfig(zck) >= 0.9.11
 Requires:           rpm >= 4.9.0
 %endif
 
@@ -113,18 +120,18 @@ These development files are for easy manipulation with a repodata.
 
 ################################################################################
 
-%package -n python34-%{name}
+%package -n %{python_base}-%{name}
 
 Summary:            Python bindings for the createrepo_c library
 Group:              Development/Languages
 
-BuildRequires:      python34-devel python34-libs python34-nose
+BuildRequires:      %{python_base}-devel %{python_base}-libs %{python_base}-nose
 
-Requires:           python34
+Requires:           %{python_base}
 
 Requires:           %{name} = %{version}-%{release}
 
-%description -n python34-%{name}
+%description -n %{python_base}-%{name}
 Python bindings for the createrepo_c library.
 
 ################################################################################
@@ -133,12 +140,23 @@ Python bindings for the createrepo_c library.
 %setup -q
 
 %build
+
+sed -i '/unset(PYTHON_LIBRARY/d' src/python/CMakeLists.txt
+sed -i '/unset(PYTHON_INCLUDE_DIR/d' src/python/CMakeLists.txt
+
 cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir} \
       -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \
       -DLIB_INSTALL_DIR:PATH=%{_libdir} \
       -DSYSCONF_INSTALL_DIR:PATH=%{_sysconfdir} \
       -DSHARE_INSTALL_PREFIX:PATH=%{_datadir} \
+      -DPYTHON_LIBRARY:PATH=%{python3_lib} \
+      -DPYTHON_INCLUDE_DIR:PATH=%{python3_inc} \
+%if 0%{?rhel} >= 7
+      -DWITH_ZCHUNK:BOOL=ON \
+%else
+      -DWITH_ZCHUNK:BOOL=OFF \
+%endif
       -DBUILD_SHARED_LIBS:BOOL=ON .
 
 %{__make} %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
@@ -168,7 +186,9 @@ rm -rf %{buildroot}
 %{_bindir}/mergerepo_c
 %{_bindir}/modifyrepo_c
 %{_bindir}/sqliterepo_c
+%if 0%{?rhel} >= 7
 %{_datadir}/bash-completion/completions/*
+%endif
 
 %files libs
 %defattr(-,root,root,-)
@@ -182,13 +202,16 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/createrepo_c.pc
 %{_includedir}/createrepo_c/*
 
-%files -n python34-%{name}
+%files -n %{python_base}-%{name}
 %defattr(-,root,root,-)
 %{python3_sitearch}/createrepo_c/
 
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-1
+- Updated for compatibility with Python 3.6
+
 * Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-0
 - Updated to 0.12.0
 
