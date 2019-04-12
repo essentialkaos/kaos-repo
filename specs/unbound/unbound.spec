@@ -194,6 +194,7 @@ pushd %{name}-%{version}
            --enable-sha2 \
            --disable-gost \
            --enable-ecdsa \
+           --enable-ipsecmod \
 %if %{with_python}
            --with-pythonmodule \
            --with-pyunbound PYTHON=%{__python2} \
@@ -401,6 +402,7 @@ fi
 %changelog
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
 - Updated to the latest stable release
+- Added ipsecmod support
 
 * Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
 - Updated to the latest stable release

@@ -67,11 +67,13 @@ URL:             http://www.snort.org
 
 Source0:         https://www.snort.org/downloads/%{name}/%{name}-%{version}.tar.gz
 
+Patch0:          snort-config.patch
+
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   autoconf automake make gcc libtool zlib-devel flex bison
 BuildRequires:   pcre-devel libpcap-devel libdnet-devel daq-devel libluajit-devel
-BuildRequires:   libnghttp2-devel
+BuildRequires:   libnghttp2-devel openssl-devel
 
 Requires:        libdnet libpcap pcre daq libluajit libnghttp2
 
@@ -92,6 +94,8 @@ and much more.
 %prep
 %setup -q
 
+%patch0 -p1
+
 %build
 
 export AM_CFLAGS="%{optflags}"
@@ -111,9 +115,10 @@ rm -rf %{buildroot}
 
 find . -type 'd' -name "CVS" -print | xargs rm -rf
 
-sed -i 's;var RULE_PATH ../rules;var RULE_PATH %{rules_dir};' etc/%{name}.conf
-sed -i 's;dynamicpreprocessor directory \/usr\/local/lib\/snort_dynamicpreprocessor;dynamicpreprocessor directory %{_libdir}\/%{name}-%{version}_dynamicpreprocessor;' etc/%{name}.conf
-sed -i 's;dynamicengine \/usr\/local/lib\/snort_dynamicengine;dynamicengine %{_libdir}\/%{name}-%{version}_dynamicengine;' etc/%{name}.conf
+sed -i 's;var RULE_PATH ../rules;var RULE_PATH rules;' etc/%{name}.conf
+sed -i 's#dynamicpreprocessor directory /usr/local/lib/snort_dynamicpreprocessor#dynamicpreprocessor directory %{_libdir}/%{name}-%{version}_dynamicpreprocessor#' etc/%{name}.conf
+sed -i 's#dynamicengine /usr/local/lib/snort_dynamicengine#dynamicengine %{_libdir}/%{name}-%{version}_dynamicengine#' etc/%{name}.conf
+sed -i 's#dynamicdetection directory /usr/local/lib/snort_dynamicrules#dynamicdetection directory %{_libdir}/%{name}-%{version}_dynamicrules#' etc/%{name}.conf
 
 install -dm 755 %{buildroot}%{_sbindir}
 install -dm 755 %{buildroot}%{_bindir}
@@ -127,6 +132,7 @@ install -dm 755 %{buildroot}%{_mandir}/man8
 install -dm 755 %{buildroot}%{_docdir}/%{name}-%{version}
 install -dm 755 %{buildroot}%{_libdir}/%{name}-%{version}_dynamicengine
 install -dm 755 %{buildroot}%{_libdir}/%{name}-%{version}_dynamicpreprocessor
+install -dm 755 %{buildroot}%{_libdir}/%{name}-%{version}_dynamicrules
 
 install -pm 755 src/%{name} %{buildroot}%{_sbindir}/%{name}-plain
 install -pm 755 tools/control/%{name}_control %{buildroot}%{_bindir}/%{name}_control
@@ -212,8 +218,8 @@ fi
 %{_libdir}/%{name}-%{version}_dynamicengine/libsf_engine.*
 %dir %{_libdir}/%{name}-%{version}_dynamicpreprocessor
 %{_libdir}/%{name}-%{version}_dynamicpreprocessor/libsf_*_preproc.*
+%dir %{_libdir}/%{name}-%{version}_dynamicrules
 %dir %{_docdir}/%{name}-%{version}
-
 %attr(0755,%{name},%{name}) %dir %{_var}/log/%{name}
 
 ################################################################################

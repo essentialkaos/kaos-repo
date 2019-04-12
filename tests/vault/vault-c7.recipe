@@ -1,6 +1,8 @@
 # Bibop recipe for Vault
 # See more: https://github.com/essentialkaos/bibop
 
+require-root yes
+
 var service_user  vault
 var service_group vault
 
