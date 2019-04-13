@@ -1,4 +1,4 @@
-# Bibop recipe for PostgreSQL 10 (CentOS 6)
+# Bibop recipe for PostgreSQL 10
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

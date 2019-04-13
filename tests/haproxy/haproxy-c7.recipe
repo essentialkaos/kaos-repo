@@ -1,4 +1,4 @@
-# Bibop recipe for HAProxy (CentOS 7)
+# Bibop recipe for HAProxy
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

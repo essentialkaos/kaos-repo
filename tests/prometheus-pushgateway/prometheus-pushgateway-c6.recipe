@@ -1,4 +1,4 @@
-# Bibop recipe for Prometheus Pushgateway (CentOS 6)
+# Bibop recipe for Prometheus Pushgateway
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

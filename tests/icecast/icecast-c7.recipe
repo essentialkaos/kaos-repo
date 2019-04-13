@@ -1,4 +1,4 @@
-# Bibop recipe for Icecast (CentOS 7)
+# Bibop recipe for Icecast
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

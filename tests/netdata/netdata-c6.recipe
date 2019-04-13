@@ -1,4 +1,4 @@
-# Bibop recipe for NetData (CentOS 6)
+# Bibop recipe for NetData
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

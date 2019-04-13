@@ -1,4 +1,4 @@
-# Bibop recipe for rpmlint (CentOS 6)
+# Bibop recipe for rpmlint
 # See more: https://github.com/essentialkaos/bibop
 
 fast-finish yes

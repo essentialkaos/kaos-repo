@@ -1,4 +1,4 @@
-# Bibop recipe for consul (CentOS 6)
+# Bibop recipe for consul
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

@@ -1,4 +1,4 @@
-# Bibop recipe for pgbouncer (CentOS 7)
+# Bibop recipe for pgbouncer
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

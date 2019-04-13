@@ -1,4 +1,4 @@
-# Bibop recipe for Prometheus Node Exporter (CentOS 7)
+# Bibop recipe for Prometheus Node Exporter
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

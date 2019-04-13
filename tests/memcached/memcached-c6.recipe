@@ -1,4 +1,4 @@
-# Bibop recipe for Memcached (CentOS 6)
+# Bibop recipe for Memcached
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

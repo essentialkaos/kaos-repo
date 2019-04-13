@@ -1,0 +1,91 @@
+# Bibop recipe for Zabbix
+# See more: https://github.com/essentialkaos/bibop
+
+require-root yes
+
+var service_user   zabbix
+var service_group  zabbix
+
+var agent_service  zabbix-agent
+var server_service zabbix-server
+
+var service_user zabbix
+
+var config_dir    /etc/zabbix
+var log_dir       /var/log/zabbix
+var logrotate_dir /etc/logrotate.d
+var tmpconf_dir   /usr/lib/tmpfiles.d
+
+var delay 3
+
+command "-" "Check agent environment"
+  app zabbix_agentd
+
+  service-present {agent_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  dir {config_dir}/zabbix_agentd.d
+  perms {config_dir}/zabbix_agentd.d 755
+  
+  exist {config_dir}/zabbix_agentd.conf
+  perms {config_dir}/zabbix_agentd.conf 644
+
+  dir {config_dir}/alertscripts
+  dir {config_dir}/externalscripts
+
+  exist {tmpconf_dir}/{agent_service}.conf
+  perms {tmpconf_dir}/{agent_service}.conf 644
+
+  exist {logrotate_dir}/{agent_service}
+  perms {logrotate_dir}/{agent_service} 644
+
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "-" "Check server environment"
+  app zabbix_server_pgsql
+
+  service-present {server_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  exist {config_dir}/zabbix_server.conf
+  perms {config_dir}/zabbix_server.conf 640
+
+  exist {tmpconf_dir}/{server_service}.conf
+  perms {tmpconf_dir}/{server_service}.conf 644
+
+  exist {logrotate_dir}/{server_service}
+  perms {logrotate_dir}/{server_service} 644
+
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "systemctl start {server_service}" "Start Zabbix Server daemon"
+  wait {delay}
+  service-works {server_service}
+
+command "systemctl start {agent_service}" "Start Zabbix Agent daemon"
+  wait {delay}
+  service-works {agent_service}
+
+command "systemctl status {agent_service}" "Check status of Zabbix Agent daemon"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl status {server_service}" "Check status of Zabbix Server daemon"
+  exit 0
+  output-contains "active (running)"
+
+command "systemctl stop {agent_service}" "Stop Zabbix Agent daemon"
+  wait {delay}
+  !service-works {agent_service}
+
+command "systemctl stop {server_service}" "Stop Zabbix Server daemon"
+  wait {delay}
+  !service-works {server_service}

@@ -1,4 +1,4 @@
-# Bibop recipe for PostgreSQL 9.5 (CentOS 7)
+# Bibop recipe for PostgreSQL 9.5
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes

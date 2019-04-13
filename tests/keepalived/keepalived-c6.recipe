@@ -1,4 +1,4 @@
-# Bibop recipe for keepalived (CentOS 6)
+# Bibop recipe for keepalived
 # See more: https://github.com/essentialkaos/bibop
 
 require-root yes
