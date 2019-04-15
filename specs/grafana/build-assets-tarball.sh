@@ -204,7 +204,7 @@ setup() {
 # Echo: No
 teardown() {
   show "Cleaning up buildroot" $BOLD
-  rm -rf "${BUILDROOT}/"
+  rm -rf "${BUILDROOT}"
 }
 
 ################################################################################
