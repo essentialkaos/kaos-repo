@@ -193,7 +193,7 @@ fi
 %defattr(-,root,root,0755)
 %doc CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md NOTICE.md
 %doc PLUGIN_DEV.md README.md ROADMAP.md UPGRADING_DEPENDENCIES.md
-%license LICENSE.md
+%doc LICENSE.md
 
 %{_sbindir}/%{name}-server
 %{_sbindir}/%{name}-cli
