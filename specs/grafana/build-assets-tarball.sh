@@ -53,14 +53,19 @@ CL_BG_GREY="\033[${GREY};7m"
 
 ################################################################################
 
+# Grafana version
 VERSION="$1"
 
+# Path to temporary directory with build data
 BUILDROOT=$(mktemp -d /tmp/XXXXXXXX)
 
+# URL to remote repository (HTTP/HTTPS)
 REPO_URL="https://github.com/grafana/grafana"
 
-RELEASE_DIR="$(pwd)/SOURCES/"
+# Path to directory to save release tarball
+RELEASE_DIR="$(pwd)/SOURCES"
 
+# Path to release tarball
 RELEASE_PATH="${RELEASE_DIR}/grafana-assets-${VERSION}.tar.gz"
 
 ################################################################################
@@ -179,11 +184,7 @@ createRelease() {
 
   path="$1"
 
-  [[ ! -d "$path" ]]
-
-  tar czf "$path" \
-    "public/build" \
-    "public/views"
+  tar czf "$path" "public/build" "public/views"
 }
 
 # Prepare environment for building
@@ -192,7 +193,7 @@ createRelease() {
 # Echo: No
 setup() {
   show "Checking dependencies" "$BOLD"
-  checkDeps node npm wget git
+  checkDeps node npm git
 
   show "Creating release directory" "$BOLD"
   mkdir -p "${RELEASE_DIR}/"
@@ -215,12 +216,12 @@ main() {
 
   setup
 
+  cd "${BUILDROOT}" || exit
+
   show "Fetching source code (v${VERSION})" "$BOLD"
   cloneRepo "${REPO_URL}" "v${VERSION}"
 
-  cd "${BUILDROOT}/" >/dev/null || exit
-
-  show "Populating NodeJS modules" "$BOLD"
+  show "Installing NodeJS modules" "$BOLD"
   installModules
 
   show "Building assets" "$BOLD"
@@ -229,9 +230,13 @@ main() {
   show "Creating release tarball" "$BOLD"
   createRelease "${RELEASE_PATH}"
 
-  cd .. || exit
+  cd "${OLDPWD}" || exit
 
   teardown
+
+  show "Result saved to ${CL_BOLD}${RELEASE_PATH}${CL_NORM}"
+
+  show "Complete" "$GREEN"
 }
 
 ################################################################################
