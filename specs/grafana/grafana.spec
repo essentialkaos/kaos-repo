@@ -56,12 +56,22 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 Patch0:               000-%{name}-fhs-fix.patch
 Patch1:               001-%{name}-clickhouse-alerting.patch
 
+%if 0%{?rhel} >= 7
 Requires(post):       systemd
 Requires(preun):      systemd
 Requires(postun):     systemd
 Requires(pre):        shadow-utils
+%else
+Requires(pre):        shadow-utils
+Requires(post):       chkconfig
+Requires(preun):      chkconfig
+Requires(preun):      initscripts
+Requires(postun):     initscripts
+%endif
 
+%if 0%{?rhel} >= 7
 BuildRequires:        systemd
+%endif
 BuildRequires:        gcc golang
 
 Provides:             %{name} = %{version}-%{release}
