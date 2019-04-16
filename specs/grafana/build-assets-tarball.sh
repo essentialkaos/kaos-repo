@@ -70,7 +70,7 @@ RELEASE_PATH="${RELEASE_DIR}/grafana-assets-${VERSION}.tar.gz"
 
 ################################################################################
 
-export PATH=${BUILDROOT}/node_modules/yarn/bin:${BUILDROOT}/node_modules/grunt/bin:${PATH}
+export PATH=${BUILDROOT}/node_modules/yarn/bin:${PATH}
 
 ################################################################################
 # Print coloured message to terminal
@@ -137,6 +137,10 @@ checkDeps() {
 # Code: Yes
 # Echo: Yes
 checkArgs() {
+  if uname -s | grep -q -v Linux >/dev/null ; then
+    printErrorAndExit "Linux OS required"
+  fi
+
   [[ -z "$VERSION" ]] && usage && exit
 }
 
@@ -156,6 +160,19 @@ cloneRepo() {
   git clone --depth=1 -b "$tag" "$repo" "${BUILDROOT}"
 }
 
+# Patch source code
+#
+# Code: Yes
+# Echo: No
+patchSources() {
+  # Exclude phantomjs-prebuilt binary module from the webpack
+  sed -i '/phantomjs-prebuilt/d' package.json
+
+  # Remove phantomjs from Grunt
+  rm -f scripts/grunt/options/phantomjs.js
+  sed -i '/phantomjs/d' scripts/grunt/*.js
+}
+
 # Install NodeJS modules using YARN
 #
 # Code: Yes
@@ -170,7 +187,7 @@ installModules() {
 # Code: Yes
 # Echo: Yes
 buildAssets() {
-  grunt --no-color
+  yarn run dev --no-color --force
 }
 
 # Create tar.gz archive with prebuilt assets
@@ -220,6 +237,9 @@ main() {
 
   show "Fetching source code (v${VERSION})" "$BOLD"
   cloneRepo "${REPO_URL}" "v${VERSION}"
+
+  show "Patching files" "$BOLD"
+  patchSources
 
   show "Installing NodeJS modules" "$BOLD"
   installModules
