@@ -66,6 +66,8 @@ BuildRequires:        gcc unixODBC-devel
 BuildRequires:        libtool make automake autoconf postgresql10-devel
 BuildRequires:        openssl-devel krb5-devel pam-devel zlib-devel readline-devel
 
+Requires:             unixODBC postgresql10 krb5-libs openssl pam zlib readline
+
 ################################################################################
 
 %description
