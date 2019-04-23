@@ -47,11 +47,6 @@ Group:                Applications/Databases
 URL:                  https://odbc.postgresql.org
 
 Source0:              http://ftp.postgresql.org/pub/odbc/versions/src/%{short_name}-%{version}.tar.gz
-
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Provides:             %{name} = %{version}-%{release}
-
 # CAUTION: acinclude.m4 has to be kept in sync with package's aclocal.m4.
 # This is a kluge that ought to go away, but upstream currently isn't
 # shipping their custom macros anywhere except in aclocal.m4.  (The macros
@@ -62,6 +57,10 @@ Provides:             %{name} = %{version}-%{release}
 # BUT: as of 09.01.0200, configure.ac hasn't been updated to use latest
 # PG macros, so keep using the previous version of acinclude.m4.
 Source1:              acinclude.m4
+
+BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+Provides:             %{name} = %{version}-%{release}
 
 BuildRequires:        gcc unixODBC-devel
 BuildRequires:        libtool automake autoconf postgresql10-devel
