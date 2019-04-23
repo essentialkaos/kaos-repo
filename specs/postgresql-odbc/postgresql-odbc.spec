@@ -63,7 +63,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 Provides:             %{name} = %{version}-%{release}
 
 BuildRequires:        gcc unixODBC-devel
-BuildRequires:        libtool automake autoconf postgresql10-devel
+BuildRequires:        libtool make automake autoconf postgresql10-devel
 BuildRequires:        openssl-devel krb5-devel pam-devel zlib-devel readline-devel
 
 ################################################################################
