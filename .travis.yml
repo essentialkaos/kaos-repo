@@ -13,4 +13,4 @@ before_install:
   - chmod +x perfecto-docker
 
 script:
-  - ./perfecto-docker $(find -name '*.spec' | sort | tr '\n' ' ')
+  - ./perfecto-docker $(find specs -name '*.spec' | sort | tr '\n' ' ')
