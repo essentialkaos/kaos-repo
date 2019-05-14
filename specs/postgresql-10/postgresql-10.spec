@@ -74,7 +74,7 @@
 %endif
 
 %define majorver        10
-%define minorver        7
+%define minorver        8
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          10
@@ -1157,6 +1157,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue May 14 2019 Anton Novojilov <andy@essentialkaos.com> - 10.8-0
+- Updated to the latest stable release
+
 * Tue Feb 26 2019 Anton Novojilov <andy@essentialkaos.com> - 10.7-0
 - Updated to the latest stable release
 
