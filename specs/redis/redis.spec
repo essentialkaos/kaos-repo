@@ -42,7 +42,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            5.0.3
+Version:            5.0.5
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -260,6 +260,31 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu May 16 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.5-0
+- Streams: a bug in the iterator could prevent certain items to be returned in
+  range queries under specific conditions.
+- Memleak in bitfieldCommand fixed.
+- Modules API: Preserve client->id for blocked clients.
+- Fix memory leak when rewriting config file in case of write errors.
+- New modules API: RedisModule_GetKeyNameFromIO().
+- Fix non critical bugs in diskless replication.
+- New mdouels API: command filtering. See RedisModule_RegisterCommandFilter();
+- Tests improved to be more deterministic.
+- Fix a Redis Cluster bug, manual failover may abort because of the master
+  sending PINGs to the replicas.
+
+* Thu May 16 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.4-0
+- Hyperloglog different coding errors leading to potential crashes were fixed.
+- A replication bug leading to a potential crash in case of plain misuse of
+  handshake commands was fixed.
+- XCLAIM command incrementing of number of deliveries was fixed.
+- LFU field management in objects was improved.
+- A potential overflow in the redis-check-aof was fixed.
+- A memory leak in case of API misuse was fixed.
+- ZPOP* behavior when count is 0 is fixed.
+- A few redis-cli --cluster bugs were fixed, plus a few improvements.
+- Many other smaller bugs.
+
 * Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.3-0
 - Redis no longer panics when you send data to a replica-mode connection that
   is in MONITOR or SYNC mode.
