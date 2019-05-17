@@ -1,6 +1,8 @@
 # Bibop recipe for PyYAML
 # See more: https://github.com/essentialkaos/bibop
 
+pkg python34-PyYAML
+
 fast-finish yes
 
 command "-" "Check Python 2 installation"

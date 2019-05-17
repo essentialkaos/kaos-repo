@@ -1,6 +1,8 @@
 # Bibop recipe for Unbound
 # See more: https://github.com/essentialkaos/bibop
 
+pkg unbound unbound-libs unbound-devel
+
 require-root yes
 
 var config_dir /etc/unbound

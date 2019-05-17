@@ -1,6 +1,8 @@
 # Bibop recipe for createrepo_c
 # See more: https://github.com/essentialkaos/bibop
 
+pkg createrepo_c createrepo_c-devel createrepo_c-libs
+
 fast-finish yes
 
 command "-" "Check environment"

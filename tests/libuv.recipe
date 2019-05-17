@@ -1,6 +1,8 @@
 # Bibop recipe for libuv
 # See more: https://github.com/essentialkaos/bibop
 
+pkg libuv libuv-devel
+
 fast-finish yes
 
 var lib_name libuv

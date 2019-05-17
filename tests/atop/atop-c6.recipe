@@ -1,6 +1,8 @@
 # Bibop recipe for atop
 # See more: https://github.com/essentialkaos/bibop
 
+pkg atop
+
 require-root yes
 
 var service_name atop

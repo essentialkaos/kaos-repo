@@ -1,6 +1,8 @@
 # Bibop recipe for cURL
 # See more: https://github.com/essentialkaos/bibop
 
+pkg curl libcurl libcurl-devel
+
 fast-finish yes
 
 command "-" "Check environment"

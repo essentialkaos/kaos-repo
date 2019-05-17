@@ -1,6 +1,8 @@
 # Bibop recipe for HTTP Parser
 # See more: https://github.com/essentialkaos/bibop
 
+pkg http-parser http-parser-devel
+
 fast-finish yes
 
 command "-" "Check shared libs"

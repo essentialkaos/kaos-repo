@@ -1,6 +1,8 @@
 # Bibop recipe for Hiredis
 # See more: https://github.com/essentialkaos/bibop
 
+pkg libhiredis libhiredis-devel
+
 fast-finish yes
 
 command "-" "Check shared libs"

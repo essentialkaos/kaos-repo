@@ -1,6 +1,8 @@
 # Bibop recipe for x264
 # See more: https://github.com/essentialkaos/bibop
 
+pkg x264 x264-devel
+
 fast-finish yes
 
 command "-" "Check binary"

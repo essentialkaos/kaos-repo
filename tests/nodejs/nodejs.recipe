@@ -1,6 +1,8 @@
 # Bibop recipe for NodeJS
 # See more: https://github.com/essentialkaos/bibop
 
+pkg nodejs nodejs-devel
+
 fast-finish yes
 
 command "-" "Check environment"

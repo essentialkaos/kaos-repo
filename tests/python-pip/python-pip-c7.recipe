@@ -1,6 +1,8 @@
 # Bibop recipe for PIP
 # See more: https://github.com/essentialkaos/bibop
 
+pkg python36-pip
+
 require-root yes
 
 command "-" "Check environment"

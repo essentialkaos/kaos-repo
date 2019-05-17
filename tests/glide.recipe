@@ -1,6 +1,8 @@
 # Bibop recipe for glide
 # See more: https://github.com/essentialkaos/bibop
 
+pkg glide
+
 fast-finish yes
 
 command "-" "Check environment"

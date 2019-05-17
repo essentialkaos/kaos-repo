@@ -1,6 +1,8 @@
 # Bibop recipe for MMGeoIP
 # See more: https://github.com/essentialkaos/bibop
 
+pkg MMGeoIP MMGeoIP-IPV6
+
 command "-" "Check IPv4 data"
   exist /usr/local/share/GeoIP/GeoIP.dat
   exist /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat

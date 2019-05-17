@@ -1,0 +1,14 @@
+# Bibop recipe for python-certify
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python34-certifi
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/certifi/cacert.pem
+  perms {PYTHON2_SITELIB}/certifi/cacert.pem 644
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/certifi/cacert.pem
+  perms {PYTHON3_SITELIB}/certifi/cacert.pem 644

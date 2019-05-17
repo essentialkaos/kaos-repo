@@ -1,6 +1,8 @@
 # Bibop recipe for Prometheus
 # See more: https://github.com/essentialkaos/bibop
 
+pkg prometheus
+
 require-root yes
 unsafe-actions yes
 

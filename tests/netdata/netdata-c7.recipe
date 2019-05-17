@@ -1,6 +1,8 @@
 # Bibop recipe for NetData
 # See more: https://github.com/essentialkaos/bibop
 
+pkg netdata
+
 require-root yes
 
 var service_user  netdata

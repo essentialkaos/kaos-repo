@@ -1,6 +1,8 @@
 # Bibop recipe for Prometheus Pushgateway
 # See more: https://github.com/essentialkaos/bibop
 
+pkg prometheus-pushgateway
+
 require-root yes
 unsafe-actions yes
 

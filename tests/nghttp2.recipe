@@ -1,6 +1,8 @@
 # Bibop recipe for nghttp2
 # See more: https://github.com/essentialkaos/bibop
 
+pkg nghttp2 libnghttp2 libnghttp2-devel
+
 fast-finish yes
 
 command "-" "Check shared libs"

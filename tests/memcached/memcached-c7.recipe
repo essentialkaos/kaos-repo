@@ -1,6 +1,8 @@
 # Bibop recipe for Memcached
 # See more: https://github.com/essentialkaos/bibop
 
+pkg memcached memcached-devel
+
 require-root yes
 
 var service_user  memcached

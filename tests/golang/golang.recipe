@@ -1,6 +1,8 @@
 # Bibop recipe for Golang
 # See more: https://github.com/essentialkaos/bibop
 
+pkg golang
+
 fast-finish yes
 
 command "-" "Check environment"

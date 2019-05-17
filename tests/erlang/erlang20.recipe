@@ -1,6 +1,8 @@
 # Bibop recipe for Erlang
 # See more: https://github.com/essentialkaos/bibop
 
+pkg erlang20
+
 command "-" "Check environment"
   app epmd
   app erl

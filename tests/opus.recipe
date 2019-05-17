@@ -1,6 +1,8 @@
 # Bibop recipe for Opus
 # See more: https://github.com/essentialkaos/bibop
 
+pkg opus opus-devel
+
 fast-finish yes
 
 command "-" "Check shared libs"

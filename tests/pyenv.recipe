@@ -1,6 +1,8 @@
 # Bibop recipe for pyenv
 # See more: https://github.com/essentialkaos/bibop
 
+pkg pyenv
+
 fast-finish yes
 
 command "-" "Check environment"

@@ -1,6 +1,8 @@
 # Bibop recipe for icdiff
 # See more: https://github.com/essentialkaos/bibop
 
+pkg icdiff
+
 fast-finish yes
 
 command "-" "Check environment"

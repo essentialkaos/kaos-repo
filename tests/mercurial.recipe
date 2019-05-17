@@ -1,6 +1,8 @@
 # Bibop recipe for Mercurial
 # See more: https://github.com/essentialkaos/bibop
 
+pkg mercurial
+
 fast-finish yes
 
 command "-" "Check environment"

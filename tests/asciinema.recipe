@@ -1,6 +1,8 @@
 # Bibop recipe for asciinema
 # See more: https://github.com/essentialkaos/bibop
 
+pkg asciinema
+
 fast-finish yes
 
 var version 2.0.2

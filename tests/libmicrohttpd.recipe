@@ -1,6 +1,8 @@
 # Bibop recipe for libmicrohttpd
 # See more: https://github.com/essentialkaos/bibop
 
+pkg libmicrohttpd libmicrohttpd-devel
+
 fast-finish yes
 
 command "-" "Check shared libs"

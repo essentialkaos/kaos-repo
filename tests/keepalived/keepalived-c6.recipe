@@ -1,6 +1,8 @@
 # Bibop recipe for keepalived
 # See more: https://github.com/essentialkaos/bibop
 
+pkg keepalived
+
 require-root yes
 
 var service_name keepalived
