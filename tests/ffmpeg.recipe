@@ -1,6 +1,8 @@
 # Bibop recipe for FFmpeg
 # See more: https://github.com/essentialkaos/bibop
 
+pkg ffmpeg-kaos
+
 fast-finish yes
 
 command "-" "Check environment"

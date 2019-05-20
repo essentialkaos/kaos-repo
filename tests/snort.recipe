@@ -1,6 +1,8 @@
 # Bibop recipe for Snort
 # See more: https://github.com/essentialkaos/bibop
 
+pkg snort daq
+
 require-root yes
 
 var version 2.9.12

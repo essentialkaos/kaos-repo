@@ -1,6 +1,8 @@
 # Bibop recipe for PostgreSQL 11
 # See more: https://github.com/essentialkaos/bibop
 
+pkg postgresql11-server postgresql11-libs postgresql11-devel
+
 require-root yes
 
 var verison       11

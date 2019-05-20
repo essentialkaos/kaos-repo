@@ -1,6 +1,8 @@
 # Bibop recipe for rpmlint
 # See more: https://github.com/essentialkaos/bibop
 
+pkg rpmlint
+
 fast-finish yes
 
 command "-" "Check environment"

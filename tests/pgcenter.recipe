@@ -1,6 +1,8 @@
 # Bibop recipe for asciinema
 # See more: https://github.com/essentialkaos/bibop
 
+pkg pgcenter
+
 command "-" "Check environment"
   app pgcenter
 

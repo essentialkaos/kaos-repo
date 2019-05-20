@@ -1,6 +1,8 @@
 # Bibop recipe for ClickHouse
 # See more: https://github.com/essentialkaos/bibop
 
+pkg clickhouse-client clickhouse-server
+
 var user  clickhouse
 var group clickhouse
 

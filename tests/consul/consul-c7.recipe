@@ -1,6 +1,8 @@
 # Bibop recipe for consul
 # See more: https://github.com/essentialkaos/bibop
 
+pkg consul-client consul-server
+
 require-root yes
 
 var service_user consul

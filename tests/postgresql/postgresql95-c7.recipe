@@ -1,6 +1,8 @@
 # Bibop recipe for PostgreSQL 9.5
 # See more: https://github.com/essentialkaos/bibop
 
+pkg postgresql95-server postgresql95-libs postgresql95-devel
+
 require-root yes
 
 var verison       9.5

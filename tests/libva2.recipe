@@ -1,6 +1,8 @@
 # Bibop recipe for Libva 2
 # See more: https://github.com/essentialkaos/bibop
 
+pkg libva2 libva2-devel
+
 fast-finish yes
 
 var lib_name libva

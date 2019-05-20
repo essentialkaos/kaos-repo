@@ -1,6 +1,8 @@
 # Bibop recipe for Prometheus Node Exporter
 # See more: https://github.com/essentialkaos/bibop
 
+pkg prometheus-nodeexporter
+
 require-root yes
 unsafe-actions yes
 

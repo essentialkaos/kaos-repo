@@ -1,6 +1,8 @@
 # Bibop recipe for Elixir
 # See more: https://github.com/essentialkaos/bibop
 
+pkg elixir
+
 fast-finish yes
 
 command "-" "Check environment"

@@ -1,6 +1,8 @@
 # Bibop recipe for libfdk-aac
 # See more: https://github.com/essentialkaos/bibop
 
+pkg libfdk-aac
+
 fast-finish yes
 
 command "-" "Check shared libs"

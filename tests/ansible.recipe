@@ -1,6 +1,8 @@
 # Bibop recipe for Ansible
 # See more: https://github.com/essentialkaos/bibop
 
+pkg ansible
+
 fast-finish yes
 
 command "-" "Check environment"

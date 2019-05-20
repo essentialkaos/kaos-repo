@@ -1,6 +1,8 @@
 # Bibop recipe for Icecast
 # See more: https://github.com/essentialkaos/bibop
 
+pkg icecast
+
 require-root yes
 
 var service_user icecast

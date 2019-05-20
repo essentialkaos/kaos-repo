@@ -1,6 +1,8 @@
 # Bibop recipe for nasm
 # See more: https://github.com/essentialkaos/bibop
 
+pkg nasm
+
 fast-finish yes
 
 command "-" "Check binaries"

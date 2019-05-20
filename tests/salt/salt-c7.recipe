@@ -1,6 +1,8 @@
 # Bibop recipe for Salt
 # See more: https://github.com/essentialkaos/bibop
 
+pkg salt-master salt-minion salt-syndic
+
 require-root yes
 unsafe-actions yes
 

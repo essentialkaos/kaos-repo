@@ -1,6 +1,8 @@
 # Bibop recipe for PostgreSQL 10
 # See more: https://github.com/essentialkaos/bibop
 
+pkg postgresql10-server postgresql10-libs postgresql10-devel
+
 require-root yes
 
 var verison       10

@@ -1,6 +1,8 @@
 # Bibop recipe for etcd
 # See more: https://github.com/essentialkaos/bibop
 
+pkg etcd
+
 fast-finish yes
 
 command "-" "Check environment"

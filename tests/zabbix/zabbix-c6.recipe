@@ -1,6 +1,8 @@
 # Bibop recipe for Zabbix
 # See more: https://github.com/essentialkaos/bibop
 
+pkg zabbix-agent zabbix-server
+
 require-root yes
 
 var service_user   zabbix

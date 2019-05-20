@@ -1,6 +1,8 @@
 # Bibop recipe for git
 # See more: https://github.com/essentialkaos/bibop
 
+pkg git
+
 lock-workdir no
 
 var repo https://github.com/essentialkaos/7zcat.git

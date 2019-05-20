@@ -1,6 +1,8 @@
 # Bibop recipe for HAProxy
 # See more: https://github.com/essentialkaos/bibop
 
+pkg haproxy
+
 require-root yes
 
 var service_user haproxy

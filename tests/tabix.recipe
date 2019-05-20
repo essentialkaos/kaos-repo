@@ -1,6 +1,8 @@
 # Bibop recipe for tabix
 # See more: https://github.com/essentialkaos/bibop
 
+pkg tabix
+
 fast-finish yes
 
 var data_dir /opt/tabix
