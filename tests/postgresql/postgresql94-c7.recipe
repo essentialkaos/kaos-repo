@@ -1,6 +1,8 @@
 # Bibop recipe for PostgreSQL 9.4
 # See more: https://github.com/essentialkaos/bibop
 
+pkg postgresql94-server postgresql94-libs postgresql94-devel
+
 require-root yes
 
 var verison       9.4
