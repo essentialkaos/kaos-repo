@@ -12,4 +12,4 @@ command "lynis --version" "Check version"
   exit 0
 
 command "lynis audit system -Q" "Run basic check"
-  exit 0
+  exit 0 180

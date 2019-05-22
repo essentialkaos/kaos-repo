@@ -1,7 +1,7 @@
 # Bibop recipe for pyenv
 # See more: https://github.com/essentialkaos/bibop
 
-pkg pyenv
+pkg pyenv pyenv-plugin-python-build
 
 fast-finish yes
 

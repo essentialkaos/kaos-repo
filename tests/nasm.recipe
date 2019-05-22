@@ -1,7 +1,7 @@
 # Bibop recipe for nasm
 # See more: https://github.com/essentialkaos/bibop
 
-pkg nasm
+pkg nasm nasm-rdoff
 
 fast-finish yes
 

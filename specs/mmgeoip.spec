@@ -71,11 +71,11 @@ mv GeoLiteCity_*/GeoLiteCity-Location.csv GeoLiteCity-Location.dat
 
 install -dm 755 %{buildroot}%{_loc_datarootdir}/GeoIP
 
-install -pm 755 GeoLiteCity-Blocks.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoLiteCity-Location.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoIP.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoLiteCityV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoIPV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 644 GeoLiteCity-Blocks.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 644 GeoLiteCity-Location.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 644 GeoIP.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 644 GeoLiteCityV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+install -pm 644 GeoIPV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
 
 %clean
 rm -rf %{buildroot}

@@ -1,7 +1,7 @@
 # Bibop recipe for python-certify
 # See more: https://github.com/essentialkaos/bibop
 
-pkg python36-certifi
+pkg python-certifi python36-certifi
 
 fast-finish yes
 

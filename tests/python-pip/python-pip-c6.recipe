@@ -1,7 +1,7 @@
 # Bibop recipe for PIP
 # See more: https://github.com/essentialkaos/bibop
 
-pkg python34-pip
+pkg python34 python34-pip
 
 require-root yes
 
