@@ -121,7 +121,7 @@ install -pm 700 etc/mkauth.py %{buildroot}%{_sysconfdir}/%{name}/
 
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
-install -pm 755 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
