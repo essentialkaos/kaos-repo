@@ -71,7 +71,7 @@ command "service {minion_service} status" "Check status of Salt Minion service"
   exit 0
 
 command "service {minion_service} stop" "Stop Salt Minion service"
-  wait 5
+  wait 20
   !service-works {minion_service}
 
 command "service {master_service} stop" "Stop Salt Master service"

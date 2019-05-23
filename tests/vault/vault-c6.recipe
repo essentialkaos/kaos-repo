@@ -17,6 +17,8 @@ var server_config  /etc/vault/server/config.hcl
 var agent_log_dir /var/log/vault-agent
 var agent_config  /etc/vault/agent/config.hcl
 
+var delay 3
+
 command "-" "Check environment"
   app vault
 

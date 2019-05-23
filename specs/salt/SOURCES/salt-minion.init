@@ -63,7 +63,7 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  local pid=`kv.getPid`
+  local pid=$(kv.getPid)
 
   kv.sendSignal $SIGNAL_TERM
 
@@ -75,6 +75,7 @@ stopServiceHandler() {
     return $ACTION_OK
   else
     kv.killProcess $pid
+    rm -f ${kv[pid_file]} &> /dev/null
     return $ACTION_FORCED
   fi
 }
