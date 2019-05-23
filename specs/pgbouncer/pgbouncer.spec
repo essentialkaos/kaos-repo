@@ -48,7 +48,7 @@
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
 Version:           1.9.0
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -193,6 +193,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu May 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-2
+- Fixed permissions for logrotate config
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-1
 - Fixed restart logic in init script
 

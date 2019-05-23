@@ -10,5 +10,7 @@ command "-" "Check environment"
   app pyenv-install
   app pyenv-uninstall
   app python-build
+
+command:env "-" "Check environment variables"
   env PYENV_ROOT /usr/local/pyenv
   env PYENV_SHELL bash

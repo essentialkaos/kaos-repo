@@ -4,6 +4,7 @@
 pkg haproxy
 
 require-root yes
+unsafe-actions yes
 
 var service_user haproxy
 var service_name haproxy

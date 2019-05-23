@@ -6,6 +6,7 @@ pkg atop
 require-root yes
 
 var service_name atop
+var pid_file /var/run/atop.pid
 
 command "-" "Check environment"
   app atop
@@ -13,12 +14,12 @@ command "-" "Check environment"
   service-present {service_name}
 
 command "service {service_name} start" "Start daemon"
-  wait-pid /var/run/atop.pid
-  service-works {service_name}
+  wait-pid {pid_file}
+  process-works {pid_file}
 
-command "systemctl {service_name} status" "Check daemon status"
+command "service {service_name} status" "Check daemon status"
   exit 0
 
 command "service {service_name} stop" "Stop daemon"
   wait 3
-  !service-works {service_name}
+  !exist {pid_file}
