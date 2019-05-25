@@ -208,6 +208,7 @@ fi
 %endif
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %attr(755, %{service_user}, %{service_group}) %{_sharedstatedir}/%{name}
+%attr(755, %{service_user}, %{service_group}) %{_logdir}/%{name}
 
 ################################################################################
 
