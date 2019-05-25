@@ -8,6 +8,7 @@ require-root yes
 var service_user consul
 var service_server consul-server
 var service_client consul-client
+var delay 5
 
 command "-" "Check environment"
   app consul
