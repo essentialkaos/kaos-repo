@@ -58,6 +58,7 @@ command "-" "Replace configuration files"
 command "service {master_service} start" "Start Salt Master service"
   exit 0
   service-works {master_service}
+  wait 3
   connect tcp :4506
 
 command "service {minion_service} start" "Start Salt Minion service"
