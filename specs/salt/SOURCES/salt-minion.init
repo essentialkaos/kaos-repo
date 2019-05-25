@@ -37,7 +37,6 @@ revoke_on_stop=${MINION_REVOKE_KEY_ON_STOP}
 
 kv[file_limit]="8192:8192"
 
-kv[search_pattern]="$binary -d"
 kv[pid_file]=$(kv.readProperty "/etc/salt/minion" "pidfile" ":")
 
 ###############################################################################
@@ -75,7 +74,6 @@ stopServiceHandler() {
     return $ACTION_OK
   else
     kv.killProcess $pid
-    rm -f ${kv[pid_file]} &> /dev/null
     return $ACTION_FORCED
   fi
 }

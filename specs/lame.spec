@@ -47,7 +47,7 @@
 Summary:            MP3 encoder and frame analyzer
 Name:               lame
 Version:            3.100
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            LGPLv2+
 Group:              Applications/Multimedia
 URL:                http://lame.sourceforge.net
@@ -122,9 +122,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+%{__ldconfig}
 
-%postun -p /sbin/ldconfig
+%postun
+%{__ldconfig}
 
 ################################################################################
 
@@ -146,6 +148,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat May 25 2019 Anton Novojilov <andy@essentialkaos.com> - 3.100-1
+- Minor spec fix
+
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.100-0
 - Improved detection of MPEG audio data in RIFF WAVE files
 - Fix possible race condition causing build failures in libmp3lame

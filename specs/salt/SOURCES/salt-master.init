@@ -34,7 +34,6 @@ debug=${MASTER_DEBUG}
 
 kv[file_limit]="16384:16384"
 
-kv[search_pattern]="$binary -d"
 kv[pid_file]=$(kv.readProperty "/etc/salt/master" "pidfile" ":")
 
 ###############################################################################
@@ -68,7 +67,6 @@ stopServiceHandler() {
     return $ACTION_OK
   else
     kv.killProcess $pid
-    rm -f ${kv[pid_file]} &> /dev/null
     return $ACTION_FORCED
   fi
 }
