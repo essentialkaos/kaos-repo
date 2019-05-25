@@ -180,6 +180,7 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %dir %attr(755, %{service_user}, %{service_group}) %{_rundir}/%{name}
+%dir %attr(755, %{service_user}, %{service_group}) %{_logdir}/%{name}
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %else
