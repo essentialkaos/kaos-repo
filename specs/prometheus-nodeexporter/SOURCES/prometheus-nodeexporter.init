@@ -50,7 +50,7 @@ kv.addHandler "start" "postStartServiceHandler" "post"
 
 reload() {
   if ! kv.statusIs "$STATUS_WORKS" ; then
-    kv.warn "You must start service before this command usage" $YELLOW
+    kv.warn "You must start service before this command usage"
     return $ACTION_ERROR
   fi
 
