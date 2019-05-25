@@ -16,7 +16,6 @@ var service_user zabbix
 var config_dir    /etc/zabbix
 var log_dir       /var/log/zabbix
 var logrotate_dir /etc/logrotate.d
-var tmpconf_dir   /usr/lib/tmpfiles.d
 
 command "-" "Check agent environment"
   app zabbix_agentd
@@ -35,9 +34,6 @@ command "-" "Check agent environment"
   dir {config_dir}/alertscripts
   dir {config_dir}/externalscripts
 
-  exist {tmpconf_dir}/{agent_service}.conf
-  perms {tmpconf_dir}/{agent_service}.conf 644
-
   exist {logrotate_dir}/{agent_service}
   perms {logrotate_dir}/{agent_service} 644
 
@@ -55,9 +51,6 @@ command "-" "Check server environment"
 
   exist {config_dir}/zabbix_server.conf
   perms {config_dir}/zabbix_server.conf 640
-
-  exist {tmpconf_dir}/{server_service}.conf
-  perms {tmpconf_dir}/{server_service}.conf 644
 
   exist {logrotate_dir}/{server_service}
   perms {logrotate_dir}/{server_service} 644
