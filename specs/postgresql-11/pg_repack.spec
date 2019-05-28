@@ -63,6 +63,10 @@ BuildRequires:     make gcc openssl-devel readline-devel
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
+%if 0%{?rhel} == 7
+BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+%endif
+
 Requires:          postgresql%{pg_maj_ver}
 
 Provides:          %{realname} = %{version}-%{release}
@@ -87,10 +91,12 @@ rm -rf %{buildroot}
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
-%{__ldconfig}
+%{_sbindir}/update-alternatives --install %{_bindir}/pg_repack pgrepack %{pg_dir}/bin/pg_repack %{pg_maj_ver}0
 
 %postun
-%{__ldconfig}
+if [[ $1 -eq 0 ]] ; then
+  %{_sbindir}/update-alternatives --remove pgrepack %{pg_dir}/bin/pg_repack
+fi
 
 %clean
 rm -rf %{buildroot}
