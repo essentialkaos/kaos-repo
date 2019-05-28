@@ -1,0 +1,25 @@
+# Bibop recipe for pg_repack for PostgreSQL 10
+# See more: https://github.com/essentialkaos/bibop
+
+pkg pg_repack10
+
+fast-finish yes
+
+var repack_version   1.4.4
+var postgres_version 10
+
+var data_dir /usr/pgsql-{postgres_version}/share
+var lib_dir  /usr/pgsql-{postgres_version}/lib
+
+var extension_dir {data_dir}/extension
+
+command "-" "Check library"
+  exist {lib_dir}/pg_repack.so
+  perms {lib_dir}/pg_repack.so 755
+
+command "-" "Check binary"
+  app pg_repack
+
+command "-" "Check SQL files"
+  exist {extension_dir}/pg_repack--{repack_version}.sql
+  exist {extension_dir}/pg_repack.control
