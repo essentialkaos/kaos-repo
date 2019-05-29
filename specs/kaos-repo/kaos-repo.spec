@@ -19,13 +19,14 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define fmconfig          %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
+%define fm_config         %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
+%define pr_config         %{_sysconfdir}/yum/pluginconf.d/priorities.conf
 
 ################################################################################
 
 Summary:         ESSENTIAL KAOS Public Repo
 Name:            kaos-repo
-Version:         9.1
+Version:         9.2
 Release:         0%{?dist}
 License:         EKOL
 Vendor:          ESSENTIALKAOS
@@ -66,10 +67,16 @@ install -pm 644 RPM-GPG-KEY-ESSENTIALKAOS \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
 
 %post
-if [[ -f %{fmconfig} ]] ; then
-  if [[ -z `grep 'kaos' %{fmconfig}` ]] ; then
-    sed -i 's/^exclude.*/\0, kaos/g' %{fmconfig}
-    sed -i 's/^#exclude.*/exclude=kaos/g' %{fmconfig}
+if [[ -f %{fm_config} ]] ; then
+  if ! grep -q 'kaos' %{fm_config} ; then
+    sed -i 's/^exclude.*/\0, kaos/g' %{fm_config}
+    sed -i 's/^#exclude.*/exclude=kaos/g' %{fm_config}
+  fi
+fi
+
+if [[ -f %{pr_config} ]] ; then
+  if ! grep -q 'check_obsoletes=1' ; then
+    echo 'check_obsoletes=1' >> %{pr_config}
   fi
 fi
 
@@ -99,6 +106,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed May 29 2019 Anton Novojilov <andy@essentialkaos.com> - 9.2-0
+- Added obsoletes check in priorities plugin
+
 * Fri Feb 16 2018 Anton Novojilov <andy@essentialkaos.com> - 9.1-0
 - Added bugtracker URL
 

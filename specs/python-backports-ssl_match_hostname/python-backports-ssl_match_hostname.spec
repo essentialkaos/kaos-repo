@@ -25,6 +25,7 @@ BuildRequires:  python-devel python-setuptools
 Requires:       python
 
 Provides:       %{name} = %{verion}-%{release}
+Provides:       python2-%{pkgname} = %{verion}-%{release}
 
 ################################################################################
 

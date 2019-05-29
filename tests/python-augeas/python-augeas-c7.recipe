@@ -1,0 +1,20 @@
+# Bibop recipe for python-augeas for CentOS 7
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-augeas python36-augeas
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/augeas
+  dir {PYTHON2_SITELIB}/augeas
+
+  exist {PYTHON2_SITELIB}/augeas.py
+  exist {PYTHON2_SITELIB}/augeas/ffi.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/augeas
+  dir {PYTHON3_SITELIB}/augeas
+
+  exist {PYTHON3_SITELIB}/augeas.py
+  exist {PYTHON3_SITELIB}/augeas/ffi.py

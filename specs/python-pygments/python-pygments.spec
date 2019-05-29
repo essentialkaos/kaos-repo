@@ -54,6 +54,7 @@ BuildRequires:     python-devel python-setuptools python-nose
 Requires:          python
 
 Provides:          %{name} = %{version}-%{release}
+Provides:          python2-pygments = %{version}-%{release}
 
 ################################################################################
 

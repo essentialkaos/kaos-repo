@@ -57,6 +57,7 @@ BuildRequires:    python-setuptools python-devel
 Requires:         python
 
 Provides:         %{name} = %{verion}-%{release}
+Provides:         python2-libcloud = %{verion}-%{release}
 
 ################################################################################
 

@@ -52,6 +52,7 @@ Requires:           python-setuptools python-devel
 
 Provides:           pip = %{version}-%{release}
 Provides:           %{name} = %{version}-%{release}
+Provides:           python2-%{pkgname} = %{version}-%{release}
 
 ################################################################################
 

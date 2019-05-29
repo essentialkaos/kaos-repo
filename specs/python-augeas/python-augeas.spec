@@ -61,6 +61,7 @@ BuildRequires:    python-devel python-setuptools libffi-devel augeas-libs gcc
 Requires:         augeas-libs python-cffi
 
 Provides:         %{name} = %{version}-%{release}
+Provides:         python2-augeas = %{version}-%{release}
 
 ################################################################################
 

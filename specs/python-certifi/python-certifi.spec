@@ -60,6 +60,7 @@ BuildRequires:      python-setuptools
 Requires:           ca-certificates
 
 Provides:           %{name} = %{version}-%{release}
+Provides:           python2-%{pkgname} = %{version}-%{release}
 
 ################################################################################
 

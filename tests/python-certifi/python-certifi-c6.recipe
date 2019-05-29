@@ -1,4 +1,4 @@
-# Bibop recipe for python-certify
+# Bibop recipe for python-certify for CentOS 6
 # See more: https://github.com/essentialkaos/bibop
 
 pkg python-certifi python34-certifi

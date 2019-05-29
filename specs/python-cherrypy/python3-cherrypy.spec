@@ -62,6 +62,8 @@ rm -rf %{buildroot}
 
 %{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
+mv %{buildroot}%{_bindir}/cherryd %{buildroot}%{_bindir}/cherryd3
+
 find %{buildroot}%{python3_sitelib}/ -type f -exec chmod -x \{\} \;
 
 %clean
@@ -71,7 +73,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/cherryd
+%{_bindir}/cherryd3
 %{python3_sitelib}/*
 
 ################################################################################
