@@ -18,7 +18,6 @@ PG_HIGH_VERSION="{{PG_HIGH_VERSION}}"
 ###############################################################################
 
 kv[prog_name]="slony1"
-kv[search_pattern]="slony1"
 
 kv.readSysconfig "${kv[prog_name]}-${PG_MAJOR_VERSION}"
 
@@ -31,7 +30,7 @@ user=${USER:-postgres}
 conninfo="${SLONCONNINFO}"
 clustername="${SLONCLUSTERNAME:-sloncluster}"
 
-[[ -z $conninfo ]] && conninfo="host=/tmp port=5432 user=slony"
+[[ -z "$conninfo" ]] && conninfo="host=/tmp port=5432 user=slony"
 
 kv[user]="$user"
 kv[pid_file]="$pid_dir/slon_${PG_MAJOR_VERSION}.pid"
@@ -39,25 +38,28 @@ kv[log]="$log_dir/slonystartup.log"
 
 ###############################################################################
 
+kv.addHandler "start" "preStartServiceHandler" "pre"
 kv.addHandler "start" "startServiceHandler"
 kv.addHandler "stop"  "stopServiceHandler"
 
+kv.disableOutputRedirect "start" "pre"
+
 ###############################################################################
 
-prepare() {
+preStartServiceHandler() {
   local has_errors=""
 
-  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist."
-  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable."
+  [[ ! -f $binary ]] && has_errors=true && kv.error "File <$binary> does not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "File <$binary> is not executable"
 
-  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! Configuration file <$conf_file> is not exist."
-  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! Configuration file <$conf_file> is not readable."
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Configuration file <$conf_file> does not exist."
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Configuration file <$conf_file> is not readable."
 
   if ! kv.hasUser "$user" ; then
-    has_errors=true && kv.error "User <$user> not found in /etc/passwd file."
+    has_errors=true && kv.error "User <$user> not found"
   fi
 
-  [[ $has_errors ]] && kv.exit $ACTION_ERROR
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
 
   if kv.isRoot ; then
     if [[ ! -d $log_dir ]] ; then
@@ -65,6 +67,8 @@ prepare() {
       chown $user: $log_dir
     fi
   fi
+
+  return $ACTION_OK
 }
 
 startServiceHandler() {
@@ -86,7 +90,5 @@ stopServiceHandler() {
 }
 
 ###############################################################################
-
-prepare
 
 kv.go $@

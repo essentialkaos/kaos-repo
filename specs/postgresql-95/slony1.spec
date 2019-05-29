@@ -56,7 +56,7 @@
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
 Version:           2.2.6
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           BSD
 Group:             Applications/Databases
 URL:               http://main.slony.info
@@ -210,6 +210,10 @@ fi
 ################################################################################
 
 %changelog
+* Wed May 29 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-2
+- Improved init script
+- Improved systemd unit
+
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-1
 - Improved spec
 
