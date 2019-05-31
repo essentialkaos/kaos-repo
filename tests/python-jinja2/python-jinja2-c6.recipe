@@ -1,0 +1,18 @@
+# Bibop recipe for python-jinja2 for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-jinja2 python34-jinja2
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/jinja2
+  dir {PYTHON2_SITELIB}/jinja2
+
+  exist {PYTHON3_SITELIB}/jinja2/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/jinja2
+  dir {PYTHON3_SITELIB}/jinja2
+
+  exist {PYTHON3_SITELIB}/jinja2/__init__.py

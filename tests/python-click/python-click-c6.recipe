@@ -1,16 +1,18 @@
-# Bibop recipe for python-cherrypy for CentOS 6
+# Bibop recipe for python-click for CentOS 6
 # See more: https://github.com/essentialkaos/bibop
 
-pkg python-cherrypy python34-cherrypy
+pkg python-click python34-click
 
 fast-finish yes
 
 command "-" "Check Python 2 installation"
-  app cherryd
-  exist {PYTHON2_SITELIB}/cherrypy
-  dir {PYTHON2_SITELIB}/cherrypy
+  exist {PYTHON2_SITELIB}/click
+  dir {PYTHON2_SITELIB}/click
+
+  exist {PYTHON3_SITELIB}/click/__init__.py
 
 command "-" "Check Python 3 installation"
-  app cherryd3
-  exist {PYTHON3_SITELIB}/cherrypy
-  dir {PYTHON3_SITELIB}/cherrypy
+  exist {PYTHON3_SITELIB}/click
+  dir {PYTHON3_SITELIB}/click
+
+  exist {PYTHON3_SITELIB}/click/__init__.py
