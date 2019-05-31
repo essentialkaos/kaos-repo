@@ -1,0 +1,18 @@
+# Bibop recipe for python-markupsafe for CentOS 7
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-markupsafe python36-markupsafe
+
+fast-finish no
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/markupsafe
+  dir {PYTHON2_SITEARCH}/markupsafe
+
+  exist {PYTHON2_SITEARCH}/markupsafe/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITEARCH}/markupsafe
+  dir {PYTHON3_SITEARCH}/markupsafe
+
+  exist {PYTHON3_SITEARCH}/markupsafe/__init__.py

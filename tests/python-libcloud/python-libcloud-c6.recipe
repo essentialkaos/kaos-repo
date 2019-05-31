@@ -1,0 +1,56 @@
+# Bibop recipe for python-libcloud for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-libcloud python34-libcloud
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/libcloud
+  exist {PYTHON2_SITELIB}/libcloud/backup
+  exist {PYTHON2_SITELIB}/libcloud/common
+  exist {PYTHON2_SITELIB}/libcloud/compute
+  exist {PYTHON2_SITELIB}/libcloud/container
+  exist {PYTHON2_SITELIB}/libcloud/data
+  exist {PYTHON2_SITELIB}/libcloud/dns
+  exist {PYTHON2_SITELIB}/libcloud/loadbalancer
+  exist {PYTHON2_SITELIB}/libcloud/storage
+  exist {PYTHON2_SITELIB}/libcloud/utils
+
+  dir {PYTHON2_SITELIB}/libcloud
+  dir {PYTHON2_SITELIB}/libcloud/backup
+  dir {PYTHON2_SITELIB}/libcloud/common
+  dir {PYTHON2_SITELIB}/libcloud/compute
+  dir {PYTHON2_SITELIB}/libcloud/container
+  dir {PYTHON2_SITELIB}/libcloud/data
+  dir {PYTHON2_SITELIB}/libcloud/dns
+  dir {PYTHON2_SITELIB}/libcloud/loadbalancer
+  dir {PYTHON2_SITELIB}/libcloud/storage
+  dir {PYTHON2_SITELIB}/libcloud/utils
+
+  exist {PYTHON2_SITELIB}/libcloud/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/libcloud
+  exist {PYTHON3_SITELIB}/libcloud/backup
+  exist {PYTHON3_SITELIB}/libcloud/common
+  exist {PYTHON3_SITELIB}/libcloud/compute
+  exist {PYTHON3_SITELIB}/libcloud/container
+  exist {PYTHON3_SITELIB}/libcloud/data
+  exist {PYTHON3_SITELIB}/libcloud/dns
+  exist {PYTHON3_SITELIB}/libcloud/loadbalancer
+  exist {PYTHON3_SITELIB}/libcloud/storage
+  exist {PYTHON3_SITELIB}/libcloud/utils
+
+  dir {PYTHON3_SITELIB}/libcloud
+  dir {PYTHON3_SITELIB}/libcloud/backup
+  dir {PYTHON3_SITELIB}/libcloud/common
+  dir {PYTHON3_SITELIB}/libcloud/compute
+  dir {PYTHON3_SITELIB}/libcloud/container
+  dir {PYTHON3_SITELIB}/libcloud/data
+  dir {PYTHON3_SITELIB}/libcloud/dns
+  dir {PYTHON3_SITELIB}/libcloud/loadbalancer
+  dir {PYTHON3_SITELIB}/libcloud/storage
+  dir {PYTHON3_SITELIB}/libcloud/utils
+
+  exist {PYTHON3_SITELIB}/libcloud/__init__.py
