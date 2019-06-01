@@ -46,14 +46,3 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/raven/utils
 
   exist {PYTHON3_SITELIB}/raven/__init__.py
-
-
-
-
-
-
-
-
-
-
-
