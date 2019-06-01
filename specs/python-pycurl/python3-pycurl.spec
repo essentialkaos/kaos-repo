@@ -34,7 +34,7 @@ BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 BuildRequires:  %{python_base}-bottle %{python_base}-nose
 BuildRequires:  gcc openssl-devel curl-devel
 
-Requires:       %{python_base} libcurl
+Requires:       %{python_base} %{python_base}-libs libcurl
 
 Provides:       %{name} = %{verion}-%{release}
 
