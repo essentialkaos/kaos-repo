@@ -1,0 +1,14 @@
+# Bibop recipe for python-pycurl for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python34-pycurl
+
+fast-finish yes
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITEARCH}/curl
+  dir {PYTHON3_SITEARCH}/curl
+
+  exist {PYTHON3_SITEARCH}/curl/__init__.py
+
+  exist {PYTHON3_SITEARCH}/pycurl.cpython-34m.so
