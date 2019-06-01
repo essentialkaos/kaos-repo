@@ -34,8 +34,7 @@ command "systemctl restart {service_name}" "Restart pgbouncer daemon"
   connect tcp :6432
 
 command "systemctl status {service_name}" "Check status of pgbouncer daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop keepalived daemon"
   wait {delay}

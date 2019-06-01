@@ -117,8 +117,7 @@ command "systemctl start {service_name}" "Start Slony1 daemon"
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of Slony1 daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop Slony1 daemon"
   wait {delay}

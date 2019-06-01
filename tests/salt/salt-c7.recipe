@@ -67,12 +67,10 @@ command "systemctl start {minion_service}" "Start Salt Minion service"
   service-works {minion_service}
 
 command "systemctl status {master_service}" "Check status of Salt Master service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl status {minion_service}" "Check status of Salt Minion service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {minion_service}" "Stop Salt Minion service"
   wait {delay}

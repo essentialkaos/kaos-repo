@@ -53,9 +53,7 @@ command "vault status" "Check Vault status"
   expect "Sealed             true"
 
 command "systemctl status {server_service}" "Check status of Vault daemon"
-  exit 0
-  output-contains "active (running)"
-  service-works {server_service}
+  expect "active (running)"
 
 command "systemctl stop {server_service}" "Stop Vault daemon"
   wait {delay}

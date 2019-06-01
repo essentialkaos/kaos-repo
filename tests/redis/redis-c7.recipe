@@ -54,8 +54,7 @@ command "systemctl start {service_name}" "Start Redis service"
   connect tcp :6379
 
 command "systemctl status {service_name}" "Check status of Redis service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Redis service"
   wait {delay}

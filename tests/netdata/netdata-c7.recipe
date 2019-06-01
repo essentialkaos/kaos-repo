@@ -23,8 +23,7 @@ command "systemctl start {service_name}" "Start NetData service"
   http-status GET "http://127.0.0.1:19999/" 200
 
 command "systemctl status {service_name}" "Check status of NetData service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart NetData service"
   wait {delay}

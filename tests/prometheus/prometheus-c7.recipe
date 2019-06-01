@@ -58,8 +58,7 @@ command "systemctl start {service_name}" "Start Prometheus service"
   connect tcp :9090
 
 command "systemctl status {service_name}" "Check status of Prometheus service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Prometheus service"
   wait {delay}

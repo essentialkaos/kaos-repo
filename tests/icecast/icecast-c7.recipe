@@ -34,9 +34,7 @@ command "systemctl start {service_name}" "Start Icecast daemon"
   http-status GET "http://127.0.0.1:8000" 200
 
 command "systemctl status {service_name}" "Check status of Icecast daemon"
-  exit 0
-  output-contains "active (running)"
-  service-works {service_name}
+  expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop Icecast daemon"
   wait {delay}

@@ -77,12 +77,10 @@ command "systemctl start {agent_service}" "Start Zabbix Agent daemon"
   service-works {agent_service}
 
 command "systemctl status {agent_service}" "Check status of Zabbix Agent daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl status {server_service}" "Check status of Zabbix Server daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {agent_service}" "Stop Zabbix Agent daemon"
   wait {delay}

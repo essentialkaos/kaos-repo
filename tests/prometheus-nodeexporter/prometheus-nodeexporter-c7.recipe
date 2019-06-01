@@ -47,8 +47,7 @@ command "systemctl start {service_name}" "Start Node exporter service"
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of Node exporter service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Node exporter service"
   wait {delay}

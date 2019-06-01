@@ -47,8 +47,7 @@ command "systemctl start {service_name}" "Start Pushgateway service"
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of Pushgateway service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Pushgateway service"
   wait {delay}
