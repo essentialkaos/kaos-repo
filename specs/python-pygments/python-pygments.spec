@@ -38,7 +38,7 @@
 Summary:           Syntax highlighting engine written in Python
 Name:              python-pygments
 Version:           2.2.0
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           BSD
 Group:             Development/Libraries
 URL:               http://pygments.org
@@ -51,7 +51,7 @@ BuildArch:         noarch
 
 BuildRequires:     python-devel python-setuptools python-nose
 
-Requires:          python
+Requires:          python python-libs
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          python2-pygments = %{version}-%{release}
@@ -105,6 +105,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 01 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-1
+- Fixed dependencies
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
 - Updated to latest version
 
