@@ -1,0 +1,59 @@
+# Bibop recipe for cronie for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg cronie cronie-anacron
+
+require-root yes
+
+var service_name crond
+
+command "-" "Check environment
+  app crond
+  app crontab
+  app crond
+  app anacron
+
+  exist /etc/cron.d
+  dir /etc/cron.d
+
+  exist /etc/cron.deny
+  exist /etc/cron.d/0hourly
+
+  exist /etc/rc.d/init.d/crond
+  perms /etc/rc.d/init.d/crond 755
+
+  exist /etc/sysconfig/crond
+  perms /etc/sysconfig/crond 644
+
+  exist /etc/pam.d/crond
+  perms /etc/pam.d/crond 644
+
+  exist /etc/anacrontab
+  perms /etc/anacrontab 644
+
+  exist /var/spool/cron
+  dir /var/spool/cron
+  perms /var/spool/cron 700
+
+  exist /var/spool/anacron
+  dir /var/spool/anacron
+  perms /var/spool/anacron 755
+
+  exist /var/spool/anacron/cron.daily
+  exist /var/spool/anacron/cron.weekly
+  exist /var/spool/anacron/cron.monthly
+
+  perms /var/spool/anacron/cron.daily 600
+  perms /var/spool/anacron/cron.weekly 600
+  perms /var/spool/anacron/cron.monthly 600
+
+command "service {service_name} start" "Start crond service"
+  exit 0
+  service-works {service_name}
+
+command "service {service_name} status" "Check status of crond service"
+  exit 0
+
+command "service {service_name} stop" "Stop crond service"
+  exit 0
+  !service-works {service_name}
