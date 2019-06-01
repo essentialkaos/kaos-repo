@@ -32,11 +32,9 @@ URL:            http://pypi.python.org/pypi/MarkupSafe
 
 Source:         https://pypi.python.org/packages/%{pypi_path}/MarkupSafe-%{version}.tar.gz
 
-BuildArch:      noarch
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  %{python_base}-devel %{python_base}-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools gcc
 
 Requires:       %{python_base}
 

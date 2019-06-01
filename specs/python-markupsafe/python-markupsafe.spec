@@ -13,18 +13,16 @@
 Summary:        Implements a XML/HTML/XHTML Markup safe string for Python
 Name:           python-markupsafe
 Version:        1.0
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        BSD
 Group:          Development/Languages
 URL:            http://pypi.python.org/pypi/MarkupSafe
 
 Source:         https://pypi.python.org/packages/%{pypi_path}/MarkupSafe-%{version}.tar.gz
 
-BuildArch:      noarch
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python-devel python-setuptools
+BuildRequires:  python-devel python-setuptools gcc
 
 Requires:       python
 

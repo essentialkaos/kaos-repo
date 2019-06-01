@@ -9,7 +9,7 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/click
   dir {PYTHON2_SITELIB}/click
 
-  exist {PYTHON3_SITELIB}/click/__init__.py
+  exist {PYTHON2_SITELIB}/click/__init__.py
 
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/click

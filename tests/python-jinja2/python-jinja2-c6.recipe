@@ -9,7 +9,7 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/jinja2
   dir {PYTHON2_SITELIB}/jinja2
 
-  exist {PYTHON3_SITELIB}/jinja2/__init__.py
+  exist {PYTHON2_SITELIB}/jinja2/__init__.py
 
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/jinja2
