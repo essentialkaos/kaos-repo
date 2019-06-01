@@ -71,8 +71,7 @@ command "clickhouse-client -q 'SELECT 42'" "Check basic query execution"
   output-contains "42"
 
 command "systemctl status {service_name}" "Check status of ClickHouse daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
   service-works {service_name}
 
 command "systemctl stop {service_name}" "Stop ClickHouse daemon"

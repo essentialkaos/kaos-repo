@@ -17,8 +17,7 @@ command "systemctl start {service_name}.service" "Start daemon"
   service-works {service_name}
 
 command "systemctl status {service_name}.service" "Check daemon status"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_name}.service" "Stop daemon"
   wait 3

@@ -34,8 +34,7 @@ command "systemctl start {service_name}" "Start HAProxy daemon"
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of HAProxy daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop HAProxy daemon"
   wait {delay}

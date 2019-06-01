@@ -54,8 +54,7 @@ command "systemctl start {service_name}" "Start crond service"
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of crond service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop crond service"
   wait {delay}

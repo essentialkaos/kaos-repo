@@ -29,8 +29,7 @@ command "systemctl start {service_server}" "Start server daemon"
   connect tcp :8300
 
 command "systemctl status {service_server}" "Check server daemon status"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_server}" "Stop server daemon"
   wait {delay}
