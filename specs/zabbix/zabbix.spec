@@ -1054,7 +1054,7 @@ fi
 - Removed unnecessary request for non-existing map background and fixed
   undefined index when creating default image
 - Added missing keys "zabbix.stats[<ip>,<port>]",
-  "zabbix.stats[<ip>,<port>,queue,<from>,<to>]" and 
+  "zabbix.stats[<ip>,<port>,queue,<from>,<to>]" and
   "zabbix[stats,<ip>,<port>,queue,<from>,<to>]" in item key helper
 - Fixed positioning of the overlay dialogue window in map constructor
 - Added missing optional parameter "<regex_excl_dir>" for "vfs.dir.count" and
