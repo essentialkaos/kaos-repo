@@ -35,18 +35,29 @@
 ################################################################################
 
 %define short_name    psqlodbc
+%define pg_comb_ver   96
+%define pg_ver        9.6
+
+%define maj_ver       11
+%define min_ver       01
+%define patch         0000
+
+%define pkg_ver       %{maj_ver}.%{min_ver}.%{patch}
+
+%define pg_dir        %{_prefix}/pgsql-%{pg_ver}
 
 ################################################################################
 
-Summary:              PostgreSQL ODBC driver
-Name:                 postgresql-odbc
-Version:              10.03.0000
+Summary:              PostgreSQL %{pg_ver} ODBC driver
+Name:                 postgresql%{pg_comb_ver}-odbc
+Version:              %{pkg_ver}
 Release:              0%{?dist}
 License:              LGPLv2+
 Group:                Applications/Databases
 URL:                  https://odbc.postgresql.org
 
-Source0:              http://ftp.postgresql.org/pub/odbc/versions/src/%{short_name}-%{version}.tar.gz
+Source0:              https://ftp.postgresql.org/pub/odbc/versions/src/%{short_name}-%{version}.tar.gz
+
 # CAUTION: acinclude.m4 has to be kept in sync with package's aclocal.m4.
 # This is a kluge that ought to go away, but upstream currently isn't
 # shipping their custom macros anywhere except in aclocal.m4.  (The macros
@@ -60,13 +71,14 @@ Source1:              acinclude.m4
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Provides:             %{name} = %{version}-%{release}
-
-BuildRequires:        gcc unixODBC-devel
-BuildRequires:        libtool make automake autoconf postgresql10-devel
+BuildRequires:        postgresql%{maj_ver}-libs
+BuildRequires:        postgresql%{maj_ver}-devel
+BuildRequires:        gcc make unixODBC-devel libtool automake autoconf
 BuildRequires:        openssl-devel krb5-devel pam-devel zlib-devel readline-devel
 
-Requires:             unixODBC postgresql10 krb5-libs openssl pam zlib readline
+Requires:             postgresql%{pg_comb_ver}-libs unixODBC
+
+Provides:             %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -89,9 +101,10 @@ autoconf
 autoheader
 
 %build
-%configure --with-unixodbc \
-           --disable-dependency-tracking \
-           --disable-static
+./configure --with-unixodbc \
+            --disable-dependency-tracking \
+            --disable-static \
+            --libdir=%{_libdir}
 
 %{__make} %{?_smp_mflags} V=1
 
@@ -100,9 +113,13 @@ rm -rf %{buildroot}
 
 %{make_install} INSTALL="install -p" DESTDIR=%{buildroot}
 
-pushd %{buildroot}%{_libdir}
-    ln -s psqlodbcw.so psqlodbc.so
-    rm -f *.la
+install -dm 755 %{buildroot}%{pg_dir}/lib
+
+mv %{buildroot}%{_libdir}/psqlodbc* %{buildroot}%{pg_dir}/lib/
+
+pushd %{buildroot}%{pg_dir}/lib
+  ln -s psqlodbcw.so psqlodbc.so
+  rm -f *.la
 popd
 
 %clean
@@ -113,21 +130,31 @@ rm -rf %{buildroot}
 %post
 /sbin/ldconfig
 
+%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbcw.so psqlodbcw  %{pg_dir}/lib/psqlodbcw.so %{pg_comb_ver}
+%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbca.so psqlodbca  %{pg_dir}/lib/psqlodbca.so %{pg_comb_ver}
+%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbc.so  psqlodbc   %{pg_dir}/lib/psqlodbc.so  %{pg_comb_ver}
+
 %postun
 /sbin/ldconfig
+
+if [[ $1 -eq 0 ]] ; then
+  # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
+  %{_sbindir}/update-alternatives --remove psqlodbcw  %{pg_dir}/lib/psqlodbcw.s
+  %{_sbindir}/update-alternatives --remove psqlodbca  %{pg_dir}/lib/psqlodbca.so
+  %{_sbindir}/update-alternatives --remove psqlodbc   %{pg_dir}/lib/psqlodbc.so
+fi
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc license.txt readme.txt docs/*
-%attr(755,root,root) %{_libdir}/psqlodbcw.so
-%attr(755,root,root) %{_libdir}/psqlodbca.so
-%{_libdir}/psqlodbc.so
+%attr(755,root,root) %{pg_dir}/lib/psqlodbcw.so
+%attr(755,root,root) %{pg_dir}/lib/psqlodbca.so
+%{pg_dir}/lib/psqlodbc.so
 
 ################################################################################
 
 %changelog
-* Tue Apr 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 10.03.0000-0
+* Tue Jun 04 2019 Anton Novojilov <andy@essentialkaos.com> - 11.01.0000-0
 - Initial build
-
