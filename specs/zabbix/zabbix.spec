@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              4.0.3
+Version:              4.2.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -972,6 +972,115 @@ fi
 ################################################################################
 
 %changelog
+* Mon Apr 22 2019 Andrey Kulikov <avk@brewkeeper.net> - 4.2.1-0
+- Increased socket response size limit
+- Fixed host.conn, host.ip, ipaddress and host.dns macros expansion in global
+  scripts
+- Fixed uncontrolled memory allocation in regex preprocessing steps
+- Fixed guest sign in visibility for disabled guest user group in login page
+- Fixed validation of host interface when multiple interfaces set as main
+  interface
+- Fixed security vulnerability - accepting connections from not allowed
+  addresses
+- Fixed when long snmp oid expands screen dimensions
+- Fixed error message for image uploads
+- Fixed not encoded ampersand for in url parameter
+- Fixed possible crash of the windows agent when used "net.dns" item key
+- Fixed map status to be displayed ok if there are no problem in submaps
+- Fixed invalid update intervals being reported on zabbix server when monitored
+  through zabbix proxy
+- Fixed invalid to valid numbers conversion by del_zeros
+- Fixed trimming allowed characters from numeric values
+- Improved zabbix java gateway error logging usability by adding item key to
+  error message
+- Fixed inability to start zabbix server if alert manager process is late after
+  alerters; thanks to mikhail makurov for the patch
+- Implemented a better network discovery filter
+- Fixed top right global search field autocomplete not showing results when host
+  name is being typed not first character and technical name when it differs
+  from visible name
+- Changed user name and password fields from being mandatory to optional in web
+  scenarios and http agent type items
+- Improved logging performance when high debuglevel is used
+- Fixed api returns "countoutput", "select*": "count" results and "suppressed"
+  property as integer
+- Fixed bigint limit in the user group updating forms
+- Fixed sorting of items, item prototypes, lld rules and screens to avoid
+  deadlocks in database between server and frontend
+- Fixed line length above widgets on global search page
+- Fixed password being passed in plain text in media type edit form
+- Fixed dashboard widgets incorrect placement while dragged
+- Fixed svg graph metric generation in situation when metric have big values
+- Fixed element removing from list in different tabs or browsers
+- Fixed loss of host name in tooltip on trigger overview page
+- Fixed compilation warning regarding too large integer constant
+- Fixed item/trigger/graph copy form provides read-only host groups in target
+  list; replaced form elements with multiselect
+- Fixed last problem name being displayed on map instead of most critical
+- Fixed escalation operation not being send multiple times
+- Fixed escaping of control characters in json encoder
+- Fixed link to pie graph after selecting a time interval on classic graph
+- Fixed multiselect does not support case sensitive auto-complete
+- Changed placeholder for http proxy input fields
+- Fixed map on screen is not centered
+- Fixed sending first value of the log as separate message
+- Fixed cookie presentation in http header
+- Fixed trapper process title to not update time in case of interruption
+- Fixed function names that are written to the log file when using
+  log_level_debug
+- Fixed update intervals of items in vmware templates
+- Fixed showing wrench icon for hosts that are in maintenance, but
+  maintenance is inaccessible due to insufficient permissions
+- Fixed trigger wizard form re-submit
+- Fixed problems by severity filter ignoring host group filter
+- Fixed empty parent group not listed in the latest data filter
+- Moved preprocessing steps into separate tab in items and item prototype
+  massupdate form
+- Added "unknown command error" to mysql recoverable error list
+- Fixed redundant jsloader loading in login page
+- Fixed item filtering by application name; added 'select' button for dashboard
+  widget and screen item application fields
+- Fixed lld item displaying in queue details view
+- Fixed labels overlapping on classic graph x axis
+- Fixed database monitoring 'dns' item key expressing it as mandatory
+- Fixed map.create could attach elements only for first map in request when
+  multiple maps are created with one request
+- Fixed new widget placeholder being shown outside maximum allowed dashboard
+  height area
+- Fixed browser build in autofill for passwords field on media type form on
+  authentication ldap form and on user edit form
+- Fixed application filter persistence when navigating from maps page to
+  triggers views page or latest data page
+- Removed unnecessary request for non-existing map background and fixed
+  undefined index when creating default image
+- Added missing keys "zabbix.stats[<ip>,<port>]",
+  "zabbix.stats[<ip>,<port>,queue,<from>,<to>]" and 
+  "zabbix[stats,<ip>,<port>,queue,<from>,<to>]" in item key helper
+- Fixed positioning of the overlay dialogue window in map constructor
+- Added missing optional parameter "<regex_excl_dir>" for "vfs.dir.count" and
+  "vfs.dir.size" item keys in item helper
+- Fixed action condition type and operator integrity
+- Fixed possible crash when sending custom alerts
+- Fixed possible deadlock on host table when processing auto registration
+  contents from zabbix proxy
+- Added blocking of sigint and sigterm signals on each step of automatic upgrade
+  to avoid interruption of statements that cannot be rolled back
+- Fixed global regular expression testing not matching actual behavior of zabbix
+  components due to missing multiline flag
+- Fixed possible crash in history syncer process when processing discovered item
+  value
+- Fixed slow request of vmware configuration update
+- Fixed nodata() function triggering after maintenances with no data collection
+  without waiting for the nodata period
+- Fixed item prototype update intervals to eliminate trigger status flapping
+- Fixed changing process user owner on startup in foreground when allowroot
+  disabled
+- Optimized unsupported macros parsing
+- Fixed network discovery is not reacting to the changes in agent configuration
+  if uniqueness criteria is value
+- Fixed database monitor item does not use stored credentials; thanks to jose
+  deniz for the patch
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.0.3-0
 - added column "Latest values" in Monitoring->Problems and Dashboard
 - implemented widget pausing methods in dashboard; made graph widget paused
