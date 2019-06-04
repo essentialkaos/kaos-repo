@@ -130,15 +130,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %post
-/sbin/ldconfig
-
 %{_sbindir}/update-alternatives --install %{_libdir}/psqlodbcw.so psqlodbcw  %{pg_dir}/lib/psqlodbcw.so %{pg_comb_ver}0
 %{_sbindir}/update-alternatives --install %{_libdir}/psqlodbca.so psqlodbca  %{pg_dir}/lib/psqlodbca.so %{pg_comb_ver}0
 %{_sbindir}/update-alternatives --install %{_libdir}/psqlodbc.so  psqlodbc   %{pg_dir}/lib/psqlodbc.so  %{pg_comb_ver}0
 
 %postun
-/sbin/ldconfig
-
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
   %{_sbindir}/update-alternatives --remove psqlodbcw  %{pg_dir}/lib/psqlodbcw.s
@@ -158,5 +154,5 @@ fi
 ################################################################################
 
 %changelog
-* Tue Jun 04 2019 Anton Novojilov <andy@essentialkaos.com> - 10.03.0000-0
+* Tue Jun 04 2019 Anton Novojilov <andy@essentialkaos.com> - 11.01.0000-0
 - Initial build

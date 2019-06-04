@@ -128,15 +128,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %post
-/sbin/ldconfig
-
 %{_sbindir}/update-alternatives --install %{_libdir}/psqlodbcw.so psqlodbcw  %{pg_dir}/lib/psqlodbcw.so %{pg_comb_ver}
 %{_sbindir}/update-alternatives --install %{_libdir}/psqlodbca.so psqlodbca  %{pg_dir}/lib/psqlodbca.so %{pg_comb_ver}
 %{_sbindir}/update-alternatives --install %{_libdir}/psqlodbc.so  psqlodbc   %{pg_dir}/lib/psqlodbc.so  %{pg_comb_ver}
 
 %postun
-/sbin/ldconfig
-
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
   %{_sbindir}/update-alternatives --remove psqlodbcw  %{pg_dir}/lib/psqlodbcw.s
