@@ -66,7 +66,7 @@ REPO_URL="https://github.com/grafana/grafana"
 RELEASE_DIR="$(pwd)/SOURCES"
 
 # Path to release tarball
-RELEASE_PATH="${RELEASE_DIR}/grafana-assets-${VERSION}.tar.gz"
+RELEASE_PATH="${RELEASE_DIR}/grafana-assets-${VERSION}.tar.bz2"
 
 ################################################################################
 
@@ -190,7 +190,7 @@ buildAssets() {
   yarn run dev --no-color --force
 }
 
-# Create tar.gz archive with prebuilt assets
+# Create tar.bz2 archive with prebuilt assets
 #
 # 1: Path to archive (String)
 #
@@ -201,7 +201,7 @@ createRelease() {
 
   path="$1"
 
-  tar czf "$path" "public/build" "public/views"
+  tar cjf "$path" "public/build" "public/views"
 }
 
 # Prepare environment for building
@@ -265,4 +265,3 @@ trap teardown SIGTERM
 trap teardown SIGINT
 
 main "$@"
-

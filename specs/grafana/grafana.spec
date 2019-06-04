@@ -51,7 +51,7 @@ Group:                Applications/System
 URL:                  https://grafana.org
 
 Source0:              https://github.com/%{name}/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
-Source1:              %{name}-assets-%{version}.tar.gz
+Source1:              %{name}-assets-%{version}.tar.bz2
 
 Source10:             %{name}-tmpfiles.conf
 
@@ -76,7 +76,8 @@ Requires(postun):     initscripts
 %if 0%{?rhel} >= 7
 BuildRequires:        systemd
 %endif
-BuildRequires:        gcc golang
+
+BuildRequires:        gcc golang >= 1.11
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -122,12 +123,11 @@ rm -rf %{buildroot}
 [[ ! -d bin/aarch64 ]] && ln -sf linux-aarch64 bin/aarch64
 
 install -dm 0755 %{buildroot}%{_sbindir}
-install -dm 0755 %{buildroot}%{_datadir}/%{name}
+install -dm 0755 %{buildroot}%{service_home}
 install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}
-install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}/data
-install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}/data/plugins
+install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}/plugins
 install -dm 0755 %{buildroot}%{_mandir}/man1
 install -dm 0755 %{buildroot}%{_localstatedir}/log/%{name}
 %if 0%{?rhel} >= 7
@@ -137,13 +137,13 @@ install -dm 0755 %{buildroot}%{_tmpfilesdir}
 install -dm 0755 %{buildroot}%{_initrddir}
 %endif
 
-cp -a conf public %{buildroot}%{_datadir}/%{name}
+cp -a conf public %{buildroot}%{service_home}
 
 install -pm 0755 bin/%{_arch}/%{name}-cli %{buildroot}%{_sbindir}
 install -pm 0755 bin/%{_arch}/%{name}-server %{buildroot}%{_sbindir}
 install -pm 0644 docs/man/man1/* %{buildroot}%{_mandir}/man1
 install -pm 0644 conf/distro-defaults.ini %{buildroot}%{_sysconfdir}/%{name}/%{name}.ini
-install -pm 0644 conf/distro-defaults.ini %{buildroot}%{_datadir}/%{name}/conf/defaults.ini
+install -pm 0644 conf/distro-defaults.ini %{buildroot}%{service_home}/conf/defaults.ini
 install -pm 0644 conf/ldap.toml %{buildroot}%{_sysconfdir}/%{name}/ldap.toml
 install -pm 0644 packaging/rpm/sysconfig/%{name}-server %{buildroot}%{_sysconfdir}/sysconfig/%{name}-server
 %if 0%{?rhel} >= 7
@@ -198,29 +198,25 @@ fi
 %doc CHANGELOG.md CODE_OF_CONDUCT.md CONTRIBUTING.md NOTICE.md
 %doc PLUGIN_DEV.md README.md ROADMAP.md UPGRADING_DEPENDENCIES.md
 %doc LICENSE
-
 %{_sbindir}/%{name}-server
 %{_sbindir}/%{name}-cli
-
 %dir %{_sysconfdir}/%{name}
 %dir %{_sharedstatedir}/%{name}
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/conf
+%dir %{service_home}
+%dir %{service_home}/conf
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}
-
 %config(noreplace) %attr(0640,root,%{service_group}) %{_sysconfdir}/%{name}/%{name}.ini
 %config(noreplace) %attr(0640,root,%{service_group}) %{_sysconfdir}/%{name}/ldap.toml
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}-server
-
 %if 0%{?rhel} >= 7
 %{_tmpfilesdir}/%{name}.conf
 %{_unitdir}/%{name}-server.service
 %else
 %{_initrddir}/%{name}-server
 %endif
-%{_datadir}/%{name}/public
-%attr(-,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}/data
-%attr(-,root,%{service_group}) %{_datadir}/%{name}/conf/*
+%{service_home}/public
+%attr(-,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}
+%attr(-,root,%{service_group}) %{service_home}/conf/*
 %{_mandir}/man1/%{name}-server.1*
 %{_mandir}/man1/%{name}-cli.1*
 
@@ -228,8 +224,7 @@ fi
 
 %changelog
 * Tue Apr 16 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.1.3-0
-- Updated to the latest release.
+- Updated to the latest release
 
 * Mon Apr 15 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.0.2-0
-- Initial build.
-
+- Initial build
