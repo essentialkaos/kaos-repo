@@ -96,8 +96,10 @@ if [[ -e %{_infodir}/nasm.info.gz ]] ; then
 fi
 
 %preun
-if [[ $1 = 0 -a -e %{_infodir}/nasm.info.gz ]] ; then
-  /sbin/install-info --delete %{_infodir}/nasm.info.gz %{_infodir}/dir || :
+if [[ $1 -eq 0 ]] ; then
+  if [[ -e %{_infodir}/nasm.info.gz ]] ; then
+    /sbin/install-info --delete %{_infodir}/nasm.info.gz %{_infodir}/dir || :
+  fi
 fi
 
 ################################################################################
@@ -127,6 +129,9 @@ fi
 ################################################################################
 
 %changelog
+* Sat May 25 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-1
+- Fixed bug in postun scriptlet
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-0
 - Fix crash due to multiple errors or warnings during the code generation pass
   if a list file is specified

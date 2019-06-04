@@ -21,8 +21,7 @@ command "systemctl start {service_name}" "Start keepalived daemon"
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of keepalived daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop keepalived daemon"
   wait {delay}

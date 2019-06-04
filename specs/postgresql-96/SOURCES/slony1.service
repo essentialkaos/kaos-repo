@@ -3,7 +3,7 @@ Description=Slony-I
 After=syslog.target network.target
 
 [Service]
-PIDFile=/var/run/slon.pid
+PIDFile=/var/run/slony1-{{PG_MAJOR_VERSION}}/slon_{{PG_MAJOR_VERSION}}.pid
 ExecStart=/etc/init.d/slony1-{{PG_MAJOR_VERSION}} start
 ExecStop=/etc/init.d/slony1-{{PG_MAJOR_VERSION}} stop
 

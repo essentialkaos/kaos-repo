@@ -1,0 +1,36 @@
+# Bibop recipe for python-elasticsearch for CentOS 7
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-elasticsearch python36-elasticsearch
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/elasticsearch
+  dir {PYTHON2_SITELIB}/elasticsearch
+
+  exist {PYTHON2_SITELIB}/elasticsearch/client
+  dir {PYTHON2_SITELIB}/elasticsearch/client
+
+  exist {PYTHON2_SITELIB}/elasticsearch/connection
+  dir {PYTHON2_SITELIB}/elasticsearch/connection
+
+  exist {PYTHON2_SITELIB}/elasticsearch/helpers
+  dir {PYTHON2_SITELIB}/elasticsearch/helpers
+
+  exist {PYTHON2_SITELIB}/elasticsearch/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/elasticsearch
+  dir {PYTHON3_SITELIB}/elasticsearch
+
+  exist {PYTHON3_SITELIB}/elasticsearch/client
+  dir {PYTHON3_SITELIB}/elasticsearch/client
+
+  exist {PYTHON3_SITELIB}/elasticsearch/connection
+  dir {PYTHON3_SITELIB}/elasticsearch/connection
+
+  exist {PYTHON3_SITELIB}/elasticsearch/helpers
+  dir {PYTHON3_SITELIB}/elasticsearch/helpers
+
+  exist {PYTHON3_SITELIB}/elasticsearch/__init__.py

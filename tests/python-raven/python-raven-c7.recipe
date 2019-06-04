@@ -1,0 +1,48 @@
+# Bibop recipe for python-raven for CentOS 7
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-raven python36-raven
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  app raven
+
+  exist {PYTHON2_SITELIB}/raven
+  exist {PYTHON2_SITELIB}/raven/conf
+  exist {PYTHON2_SITELIB}/raven/contrib
+  exist {PYTHON2_SITELIB}/raven/handlers
+  exist {PYTHON2_SITELIB}/raven/scripts
+  exist {PYTHON2_SITELIB}/raven/transport
+  exist {PYTHON2_SITELIB}/raven/utils
+  
+  dir {PYTHON2_SITELIB}/raven
+  dir {PYTHON2_SITELIB}/raven/conf
+  dir {PYTHON2_SITELIB}/raven/contrib
+  dir {PYTHON2_SITELIB}/raven/handlers
+  dir {PYTHON2_SITELIB}/raven/scripts
+  dir {PYTHON2_SITELIB}/raven/transport
+  dir {PYTHON2_SITELIB}/raven/utils
+
+  exist {PYTHON2_SITELIB}/raven/__init__.py
+
+command "-" "Check Python 3 installation"
+  app raven3
+
+  exist {PYTHON3_SITELIB}/raven
+  exist {PYTHON3_SITELIB}/raven/conf
+  exist {PYTHON3_SITELIB}/raven/contrib
+  exist {PYTHON3_SITELIB}/raven/handlers
+  exist {PYTHON3_SITELIB}/raven/scripts
+  exist {PYTHON3_SITELIB}/raven/transport
+  exist {PYTHON3_SITELIB}/raven/utils
+  
+  dir {PYTHON3_SITELIB}/raven
+  dir {PYTHON3_SITELIB}/raven/conf
+  dir {PYTHON3_SITELIB}/raven/contrib
+  dir {PYTHON3_SITELIB}/raven/handlers
+  dir {PYTHON3_SITELIB}/raven/scripts
+  dir {PYTHON3_SITELIB}/raven/transport
+  dir {PYTHON3_SITELIB}/raven/utils
+
+  exist {PYTHON3_SITELIB}/raven/__init__.py

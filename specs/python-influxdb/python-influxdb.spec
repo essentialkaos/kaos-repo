@@ -24,6 +24,7 @@ BuildRequires:  python-devel python-setuptools
 Requires:       python-dateutil pytz python-requests python-six
 
 Provides:       %{name} = %{verion}-%{release}
+Provides:       python2-influxdb = %{verion}-%{release}
 
 ################################################################################
 

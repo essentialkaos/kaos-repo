@@ -45,8 +45,8 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      python rpm-python sed
 
-Requires:           python rpm-python python-magic python-enchant cpio binutils
-Requires:           desktop-file-utils gzip bzip2 xz
+Requires:           python rpm-python python-magic >= 5.05 python-enchant cpio
+Requires:           binutils desktop-file-utils gzip bzip2 xz
 
 Provides:           %{name} = %{version}-%{release}
 

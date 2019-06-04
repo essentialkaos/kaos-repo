@@ -35,8 +35,6 @@ debug=${API_DEBUG}
 
 kv[file_limit]="8192:8192"
 
-kv[search_pattern]="$binary -d"
-
 ###############################################################################
 
 kv.addHandler "start"   "startServiceHandler"
@@ -60,7 +58,7 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  local pid=`kv.getPid`
+  local pid=$(kv.getPid)
 
   kv.sendSignal $SIGNAL_TERM
 

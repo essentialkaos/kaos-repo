@@ -14,6 +14,10 @@ var service_config /etc/prometheus/prometheus.yml
 var logrotate_config /etc/logrotate.d/prometheus
 var sysconfig /etc/sysconfig/prometheus
 
+var state_dir /usr/share/prometheus
+var lib_dir /var/lib/prometheus
+var log_dir /var/log/prometheus
+
 var delay 3
 
 command "-" "Check environment"
@@ -34,14 +38,19 @@ command "-" "Check environment"
   exist {sysconfig}
   perms {sysconfig} 644
 
-  exist /usr/share/{service_name}
-  dir /usr/share/{service_name}
-  perms /usr/share/{service_name} 755
+  exist {state_dir}
+  dir {state_dir}
+  perms {state_dir} 755
 
-  exist /var/lib/{service_name}
-  dir /var/lib/{service_name}
-  perms /var/lib/{service_name} 755
-  owner /var/lib/{service_name} {service_user}
+  exist {lib_dir}
+  dir {lib_dir}
+  perms {lib_dir} 755
+  owner {lib_dir} {service_user}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}
 
 command "systemctl start {service_name}" "Start Prometheus service"
   wait {delay}
@@ -49,8 +58,7 @@ command "systemctl start {service_name}" "Start Prometheus service"
   connect tcp :9090
 
 command "systemctl status {service_name}" "Check status of Prometheus service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Prometheus service"
   wait {delay}

@@ -65,7 +65,7 @@ BuildArch:         noarch
 
 BuildRequires:     %{python_base}-setuptools %{python_base}-devel %{python_base}-nose
 
-Requires:          %{python_base}
+Requires:          %{python_base} %{python_base}-libs
 
 Provides:          %{name} = %{version}-%{release}
 

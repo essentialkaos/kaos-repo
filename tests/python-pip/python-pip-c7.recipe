@@ -1,7 +1,7 @@
-# Bibop recipe for PIP
+# Bibop recipe for PIP for CentOS 7
 # See more: https://github.com/essentialkaos/bibop
 
-pkg python36-pip
+pkg python36 python36-pip
 
 require-root yes
 
@@ -22,11 +22,11 @@ command "pip --version" "Check version"
 command "pip install youtube-dl" "Install youtube-dl"
   exit 0
   app youtube-dl
-  exist {PYTHON3_SITELIB}/youtube_dl
-  dir {PYTHON3_SITELIB}/youtube_dl
-  !empty-dir {PYTHON3_SITELIB}/youtube_dl
+  exist {PYTHON3_SITELIB_LOCAL}/youtube_dl
+  dir {PYTHON3_SITELIB_LOCAL}/youtube_dl
+  !empty-dir {PYTHON3_SITELIB_LOCAL}/youtube_dl
 
 command "pip uninstall -y youtube-dl" "Unistall youtube-dl"
   exit 0
   !app youtube-dl
-  !exist {PYTHON3_SITELIB}/youtube_dl
+  !exist {PYTHON3_SITELIB_LOCAL}/youtube_dl

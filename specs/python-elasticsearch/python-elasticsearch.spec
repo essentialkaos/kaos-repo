@@ -26,6 +26,7 @@ BuildArch:      noarch
 BuildRequires:  python-devel python-setuptools
 
 Provides:       %{name} = %{verion}-%{release}
+Provides:       python2-%{package_name} = %{verion}-%{release}
 
 ################################################################################
 

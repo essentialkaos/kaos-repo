@@ -1,7 +1,7 @@
 # Bibop recipe for pyenv
 # See more: https://github.com/essentialkaos/bibop
 
-pkg pyenv
+pkg pyenv pyenv-plugin-python-build
 
 fast-finish yes
 
@@ -10,5 +10,7 @@ command "-" "Check environment"
   app pyenv-install
   app pyenv-uninstall
   app python-build
+
+command:env "-" "Check environment variables"
   env PYENV_ROOT /usr/local/pyenv
   env PYENV_SHELL bash

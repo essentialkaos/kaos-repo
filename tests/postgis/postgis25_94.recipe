@@ -1,0 +1,96 @@
+# Bibop recipe for PostGIS 2.5 for PostgreSQL 9.4
+# See more: https://github.com/essentialkaos/bibop
+
+pkg postgresql94-server postgis25_94 postgis25_94-client postgis25_94-devel postgis25_94-utils
+
+fast-finish yes
+
+var postgis_major_version 2.5
+var postgis_version       2.5.0
+var postgres_version      9.4
+var pkg_ver               25_94
+
+var data_dir /usr/pgsql-{postgres_version}/share
+var lib_dir  /usr/pgsql-{postgres_version}/lib
+var bin_dir  /usr/pgsql-{postgres_version}/bin
+
+var utils_dir /usr/share/postgis{pkg_ver}
+
+var contrib_dir   {data_dir}/contrib/postgis-{postgis_major_version}
+var extension_dir {data_dir}/extension
+
+command "-" "Check libraries"
+  lib-loaded liblwgeom-{postgis_major_version}.so.*
+
+  exist {lib_dir}/address_standardizer.so
+  exist {lib_dir}/postgis-{postgis_major_version}.so
+  exist {lib_dir}/postgis_topology-{postgis_major_version}.so
+  exist {lib_dir}/rtpostgis-{postgis_major_version}.so
+
+  perms {lib_dir}/address_standardizer.so 755
+  perms {lib_dir}/postgis-{postgis_major_version}.so 755
+  perms {lib_dir}/postgis_topology-{postgis_major_version}.so 755
+  perms {lib_dir}/rtpostgis-{postgis_major_version}.so 755
+
+  exist {lib_dir}/liblwgeom.a
+  exist {lib_dir}/liblwgeom.la
+
+  lib-header liblwgeom
+  lib-header liblwgeom_topo
+
+command "-" "Check data directories"
+  exist {contrib_dir}
+  dir {contrib_dir}
+  perms {contrib_dir} 755
+
+  exist {extension_dir}
+  dir {extension_dir}
+  perms {extension_dir} 755
+
+command "-" "Check SQL files"
+  exist {contrib_dir}/postgis.sql
+  exist {contrib_dir}/rtpostgis.sql
+  exist {contrib_dir}/topology.sql
+  exist {contrib_dir}/uninstall_legacy.sql
+  exist {contrib_dir}/uninstall_postgis.sql
+  exist {contrib_dir}/uninstall_rtpostgis.sql
+  exist {contrib_dir}/uninstall_topology.sql
+
+  exist {extension_dir}/address_standardizer.sql
+  exist {extension_dir}/postgis--{postgis_version}.sql
+  exist {extension_dir}/postgis_tiger_geocoder--{postgis_version}.sql
+  exist {extension_dir}/postgis_topology--{postgis_version}.sql
+
+command "-" "Check client binaries"
+  app pgsql2shp
+  app raster2pgsql
+  app shp2pgsql
+
+command "-" "Check utilities"
+  exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
+  exist {utils_dir}/create_undef.pl
+  exist {utils_dir}/create_unpackaged.pl
+  exist {utils_dir}/postgis_proc_set_search_path.pl
+  exist {utils_dir}/postgis_proc_upgrade.pl
+  exist {utils_dir}/postgis_restore.pl
+  exist {utils_dir}/profile_intersects.pl
+  exist {utils_dir}/read_scripts_version.pl
+  exist {utils_dir}/svn_repo_revision.pl
+  exist {utils_dir}/test_estimation.pl
+  exist {utils_dir}/test_geography_estimation.pl
+  exist {utils_dir}/test_geography_joinestimation.pl
+  exist {utils_dir}/test_joinestimation.pl
+
+  perms {utils_dir}/create_spatial_ref_sys_config_dump.pl 755
+  perms {utils_dir}/create_undef.pl 755
+  perms {utils_dir}/create_unpackaged.pl 755
+  perms {utils_dir}/postgis_proc_set_search_path.pl 755
+  perms {utils_dir}/postgis_proc_upgrade.pl 755
+  perms {utils_dir}/postgis_restore.pl 755
+  perms {utils_dir}/profile_intersects.pl 755
+  perms {utils_dir}/read_scripts_version.pl 755
+  perms {utils_dir}/svn_repo_revision.pl 755
+  perms {utils_dir}/test_estimation.pl 755
+  perms {utils_dir}/test_geography_estimation.pl 755
+  perms {utils_dir}/test_geography_joinestimation.pl 755
+  perms {utils_dir}/test_joinestimation.pl 755

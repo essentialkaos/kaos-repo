@@ -87,10 +87,12 @@ rm -rf %{buildroot}
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
-%{__ldconfig}
+%{_sbindir}/update-alternatives --install %{_bindir}/pg_repack pgrepack %{pg_dir}/bin/pg_repack %{pg_maj_ver}0
 
 %postun
-%{__ldconfig}
+if [[ $1 -eq 0 ]] ; then
+  %{_sbindir}/update-alternatives --remove pgrepack %{pg_dir}/bin/pg_repack
+fi
 
 %clean
 rm -rf %{buildroot}

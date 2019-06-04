@@ -19,7 +19,7 @@ command "service {service_name} start" "Start NetData service"
   exit 0
   service-works {service_name}
   connect tcp :19999
-  http-status "http://127.0.0.1:19999/" 200
+  http-status GET "http://127.0.0.1:19999/" 200
 
 command "service {service_name} status" "Check status of NetData service"
   exit 0
@@ -28,7 +28,7 @@ command "service {service_name} restart" "Restart NetData service"
   exit 0
   service-works {service_name}
   connect tcp :19999
-  http-status "http://127.0.0.1:19999/" 200
+  http-status GET "http://127.0.0.1:19999/" 200
 
 command "service {service_name} stop" "Stop NetData service"
   exit 0

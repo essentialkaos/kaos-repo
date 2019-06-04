@@ -59,6 +59,7 @@ BuildArch:          noarch
 BuildRequires:      python-setuptools python-devel enchant-devel
 
 Provides:           PyEnchant = %{version}-%{release}
+Provides:           python2-%{pkgname} = %{version}-%{release}
 
 ################################################################################
 

@@ -8,7 +8,7 @@
 Summary:        A Python MessagePack (de)serializer
 Name:           python-%{pkgname}
 Version:        0.5.6
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        ASL 2.0
 Group:          Development/Languages
 URL:            https://pypi.python.org/pypi/msgpack-python/
@@ -17,11 +17,12 @@ Source:         https://pypi.python.org/packages/%{pypi_path}/%{pkgname}-python-
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python-devel python-setuptools
+BuildRequires:  python-devel python-setuptools gcc gcc-c++
 
 Requires:       python
 
 Provides:       %{name} = %{verion}-%{release}
+Provides:       python2-%{pkgname} = %{verion}-%{release}
 
 ################################################################################
 

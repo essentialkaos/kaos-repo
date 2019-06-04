@@ -64,6 +64,7 @@ BuildRequires:    python-devel python-setuptools
 Requires:         python-setuptools python-contextlib2
 
 Provides:         %{name} = %{version}-%{release}
+Provides:         python2-raven = %{version}-%{release}
 
 ################################################################################
 

@@ -24,6 +24,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 BuildArch:      noarch
 
 Provides:       %{name} = %{verion}-%{release}
+Provides:       python2-jinja2 = %{verion}-%{release}
 
 ################################################################################
 

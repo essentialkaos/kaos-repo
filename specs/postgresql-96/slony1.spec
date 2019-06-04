@@ -56,7 +56,7 @@
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
 Version:           2.2.6
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           BSD
 Group:             Applications/Databases
 URL:               http://main.slony.info
@@ -161,6 +161,8 @@ pushd tools
   chrpath --delete %{buildroot}%{pg_dir}/lib/slony1_funcs.%{version}.so
 popd
 
+install -dm 755 %{buildroot}%{_logdir}/%{realname}-%{pg_maj_ver}
+
 %clean
 rm -rf %{buildroot}
 
@@ -199,6 +201,7 @@ fi
 %{pg_dir}/bin/slon*
 %{pg_dir}/lib/slon*
 %{pg_dir}/share/slon*
+%dir %{_logdir}/%{realname}-%{pg_maj_ver}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{realname}-%{pg_maj_ver}
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon.conf
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf
@@ -210,6 +213,10 @@ fi
 ################################################################################
 
 %changelog
+* Wed May 29 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-2
+- Improved init script
+- Improved systemd unit
+
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-1
 - Improved spec
 

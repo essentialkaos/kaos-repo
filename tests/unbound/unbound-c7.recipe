@@ -46,8 +46,7 @@ command "systemctl start unbound" "Start Unbound daemon"
   service-works unbound
 
 command "systemctl status unbound" "Check status of Unbound daemon"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl stop unbound" "Stop Unbound daemon"
   wait {delay}

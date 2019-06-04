@@ -13,6 +13,9 @@ var service_name  prometheus-nodeexporter
 var logrotate_config /etc/logrotate.d/prometheus-nodeexporter
 var sysconfig /etc/sysconfig/prometheus-nodeexporter
 
+var run_dir /var/run/prometheus-nodeexporter
+var log_dir /var/log/prometheus-nodeexporter
+
 var delay 3
 
 command "-" "Check environment"
@@ -29,13 +32,22 @@ command "-" "Check environment"
   exist {sysconfig}
   perms {sysconfig} 644
 
+  exist {run_dir}
+  dir {run_dir}
+  perms {run_dir} 755
+  owner {run_dir} {service_user}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}
+
 command "systemctl start {service_name}" "Start Node exporter service"
   wait {delay}
   service-works {service_name}
 
 command "systemctl status {service_name}" "Check status of Node exporter service"
-  exit 0
-  output-contains "active (running)"
+  expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Node exporter service"
   wait {delay}

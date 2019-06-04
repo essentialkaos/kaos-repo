@@ -16,18 +16,16 @@
 
 ################################################################################
 
-Summary:           MaxMinds data for GeoIP
+Summary:           GeoLite2 Country and City Databases
 Name:              MMGeoIP
-Version:           1.2
-Release:           19%{?dist}
-License:           Copyright © 2018 Achillefs Charmpilas
+Version:           2.0
+Release:           0%{?dist}
+License:           CC BY-SA 4.0
 Group:             Applications/Databases
-URL:               http://www.maxmind.com
+URL:               https://www.maxmind.com
 
-Source0:           http://geolite.maxmind.com/download/geoip/database/GeoLiteCity_CSV/GeoLiteCity-latest.zip
-Source1:           http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip
-Source2:           http://geolite.maxmind.com/download/geoip/database/GeoIPv6.csv.gz
-Source3:           http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.csv.gz
+Source0:           https://geolite.maxmind.com/download/geoip/database/GeoLite2-City-CSV.zip
+Source1:           https://geolite.maxmind.com/download/geoip/database/GeoLite2-Country-CSV.zip
 
 BuildArch:         noarch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -35,22 +33,13 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 Requires:          GeoIP
 
 Provides:          %{name} = %{version}-%{release}
+Provides:          GeoLite2 = %{version}-%{release}
 
 ################################################################################
 
 %description
-MaxMinds data for GeoIP
-
-################################################################################
-
-%package IPV6
-
-Summary:           MaxMinds data for GeoIP (IPV6)
-Group:             Applications/Databases
-Requires:          GeoIP
-
-%description IPV6
-MaxMinds IPV6 data for GeoIP
+GeoLite2 databases are free IP geolocation databases comparable to, but less
+accurate than, MaxMind’s GeoIP2 databases.
 
 ################################################################################
 
@@ -62,20 +51,19 @@ rm -rf %{buildroot}
 
 unzip -o %{SOURCE0}
 unzip -o %{SOURCE1}
-gzip -dc %{SOURCE2} > GeoIPV6.dat
-gzip -dc %{SOURCE3} > GeoLiteCityV6.dat
-
-mv GeoIPCountryWhois.csv GeoIP.dat
-mv GeoLiteCity_*/GeoLiteCity-Blocks.csv GeoLiteCity-Blocks.dat
-mv GeoLiteCity_*/GeoLiteCity-Location.csv GeoLiteCity-Location.dat
 
 install -dm 755 %{buildroot}%{_loc_datarootdir}/GeoIP
 
-install -pm 755 GeoLiteCity-Blocks.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoLiteCity-Location.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoIP.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoLiteCityV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
-install -pm 755 GeoIPV6.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
+mv GeoLite2-City-*/*.csv .
+mv GeoLite2-Country-*/*.csv .
+mv GeoLite2-City-*/*.txt .
+
+find . -name '*.csv' -exec rename .csv .dat {} +
+
+chmod 644 *.dat
+chmod 644 *.txt
+
+cp -rp *.dat %{buildroot}%{_loc_datarootdir}/GeoIP/
 
 %clean
 rm -rf %{buildroot}
@@ -84,18 +72,16 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
-%{_loc_datarootdir}/GeoIP/GeoLiteCity-Blocks.dat
-%{_loc_datarootdir}/GeoIP/GeoLiteCity-Location.dat
-%{_loc_datarootdir}/GeoIP/GeoIP.dat
-
-%files IPV6
-%defattr(-, root, root, -)
-%{_loc_datarootdir}/GeoIP/GeoLiteCityV6.dat
-%{_loc_datarootdir}/GeoIP/GeoIPV6.dat
+%doc COPYRIGHT.txt LICENSE.txt README.txt
+%{_loc_datarootdir}/GeoIP/GeoLite2-Country-*.dat
+%{_loc_datarootdir}/GeoIP/GeoLite2-City-*.dat
 
 ################################################################################
 
 %changelog
+* Thu May 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0-0
+- Switched to GeoLite2 data source
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.2-19
 - Data updated
 

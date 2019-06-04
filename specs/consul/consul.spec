@@ -282,9 +282,9 @@ fi
 %files client
 %defattr(-,root,root,-)
 %{_sysconfdir}/sysconfig/%{name}-client
-%attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-client
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 %{_initrddir}/%{name}-client
+%attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-client
 %else
 %{_unitdir}/%{name}-client.service
 %endif
@@ -294,9 +294,9 @@ fi
 %files server
 %defattr(-,root,root,-)
 %{_sysconfdir}/sysconfig/%{name}-server
-%attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-server
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 %{_initrddir}/%{name}-server
+%attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-server
 %else
 %{_unitdir}/%{name}-server.service
 %endif

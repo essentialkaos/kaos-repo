@@ -9,7 +9,9 @@ command "-" "Check environment"
   app createrepo_c
 
 command "-" "Check libs"
-  lib-loaded libcreaterepo_c.so
+  lib-loaded libcreaterepo_c.so.*
+  lib-config createrepo_c
+  lib-header createrepo_c
 
 command "createrepo_c --version" "Check version info"
   expect "Version: 0.12.0"

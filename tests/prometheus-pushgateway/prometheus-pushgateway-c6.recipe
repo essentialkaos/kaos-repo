@@ -13,6 +13,9 @@ var service_name  prometheus-pushgateway
 var logrotate_config /etc/logrotate.d/prometheus-pushgateway
 var sysconfig /etc/sysconfig/prometheus-pushgateway
 
+var run_dir /var/run/prometheus-pushgateway
+var log_dir /var/log/prometheus-pushgateway
+
 command "-" "Check environment"
   app prometheus-pushgateway
 
@@ -26,6 +29,16 @@ command "-" "Check environment"
 
   exist {sysconfig}
   perms {sysconfig} 644
+
+  exist {run_dir}
+  dir {run_dir}
+  perms {run_dir} 755
+  owner {run_dir} {service_user}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}
 
 command "service {service_name} start" "Start Pushgateway service"
   exit 0

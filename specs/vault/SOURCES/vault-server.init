@@ -31,7 +31,7 @@ kv.addCommandVars "stop" "force"
 kv.addHandler "start" "startServiceHandler"
 kv.addHandler "stop"  "stopServiceHandler"
 
-kv.addHandler "start" "preStartHandler"  "pre"
+kv.addHandler "start" "preStartHandler" "pre"
 
 kv.disableOutputRedirect "start" "pre"
 
@@ -52,7 +52,9 @@ preStartHandler() {
     has_errors=true && kv.error "User ${kv[user]} not found in /etc/passwd file"
   fi
 
-  [[ -n $has_errors ]] && kv.exit $ACTION_ERROR
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
+
+  return $ACTION_OK
 }
 
 startServiceHandler() {

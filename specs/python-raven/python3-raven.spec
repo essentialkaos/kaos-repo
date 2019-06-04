@@ -101,6 +101,8 @@ rm -rf %{buildroot}
 
 %{__python3} setup.py install --skip-build --root=%{buildroot}
 
+mv %{buildroot}%{_bindir}/%{short_name} %{buildroot}%{_bindir}/%{short_name}3
+
 %clean
 rm -rf %{buildroot}
 
@@ -109,7 +111,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS README.rst LICENSE
-%{_bindir}/%{short_name}
+%{_bindir}/%{short_name}3
 %{python3_sitelib}/*
 
 ################################################################################

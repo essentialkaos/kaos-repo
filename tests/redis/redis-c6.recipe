@@ -43,8 +43,8 @@ command "-" "Check environment"
   owner /var/log/{service_name} {service_user}
 
 command "-" "Replace configuration file"
-  backup {service_config}
-  copy redis.conf {service_config}
+  backup {redis_config}
+  copy redis.conf {redis_config}
 
 command "service {service_name} start" "Start Redis service"
   exit 0
@@ -69,4 +69,4 @@ command "service {service_name} stop" "Stop Redis service"
   !connect tcp :6379
 
 command "-" "Configuration file restore"
-  backup-restore {service_config}
+  backup-restore {redis_config}

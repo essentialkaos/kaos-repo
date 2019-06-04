@@ -1,23 +1,32 @@
 # Bibop recipe for MMGeoIP
 # See more: https://github.com/essentialkaos/bibop
 
-pkg MMGeoIP MMGeoIP-IPV6
+pkg MMGeoIP
 
-command "-" "Check IPv4 data"
-  exist /usr/local/share/GeoIP/GeoIP.dat
-  exist /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat
-  exist /usr/local/share/GeoIP/GeoLiteCity-Location.dat
-  !empty /usr/local/share/GeoIP/GeoIP.dat
-  !empty /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat
-  !empty /usr/local/share/GeoIP/GeoLiteCity-Location.dat
-  perms /usr/local/share/GeoIP/GeoIP.dat 644
-  perms /usr/local/share/GeoIP/GeoLiteCity-Blocks.dat 644
-  perms /usr/local/share/GeoIP/GeoLiteCity-Location.dat 644
+command "-" "Check data"
+  exist /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv4.dat
+  exist /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv6.dat
+  exist /usr/local/share/GeoIP/GeoLite2-Country-Locations-en.dat
+  exist /usr/local/share/GeoIP/GeoLite2-Country-Locations-ru.dat
+  exist /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv4.dat
+  exist /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv6.dat
+  exist /usr/local/share/GeoIP/GeoLite2-City-Locations-en.dat
+  exist /usr/local/share/GeoIP/GeoLite2-City-Locations-ru.dat
 
-command "-" "Check IPv6 data"
-  exist /usr/local/share/GeoIP/GeoIPV6.dat
-  exist /usr/local/share/GeoIP/GeoLiteCityV6.dat
-  !empty /usr/local/share/GeoIP/GeoIPV6.dat
-  !empty /usr/local/share/GeoIP/GeoLiteCityV6.dat
-  perms /usr/local/share/GeoIP/GeoIPV6.dat 644
-  perms /usr/local/share/GeoIP/GeoLiteCityV6.dat 644
+  !empty /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv4.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv6.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-Country-Locations-en.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-Country-Locations-ru.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv4.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv6.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-City-Locations-en.dat
+  !empty /usr/local/share/GeoIP/GeoLite2-City-Locations-ru.dat
+
+  perms /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv4.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv6.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-Country-Locations-en.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-Country-Locations-ru.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv4.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv6.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-City-Locations-en.dat 644
+  perms /usr/local/share/GeoIP/GeoLite2-City-Locations-ru.dat 644

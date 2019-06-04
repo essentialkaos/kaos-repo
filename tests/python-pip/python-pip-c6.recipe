@@ -1,7 +1,7 @@
-# Bibop recipe for PIP
+# Bibop recipe for PIP for CentOS 6
 # See more: https://github.com/essentialkaos/bibop
 
-pkg python34-pip
+pkg python34 python34-pip
 
 require-root yes
 
