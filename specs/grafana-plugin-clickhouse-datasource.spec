@@ -1,10 +1,3 @@
-################################################################################
-
-# rpmbuilder:github       Vertamedia/clickhouse-grafana
-# rpmbuilder:tag          1.8.1
-
-################################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -39,7 +32,7 @@
 
 %define short_name    clickhouse-grafana
 %define plugin_name   vertamedia-clickhouse-datasource
-%define plugins_dir   %{_sharedstatedir}/grafana/data/plugins
+%define plugins_dir   %{_sharedstatedir}/grafana/plugins
 
 ################################################################################
 
@@ -51,13 +44,13 @@ License:              MIT
 Group:                Applications/System
 URL:                  https://github.com/Vertamedia/clickhouse-grafana
 
-Source0:              %{name}-%{version}.tar.gz
+Source0:              https://github.com/Vertamedia/%{short_name}/archive/%{version}.tar.gz
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:             grafana
 
-BuildRequires:        nodejs
+BuildRequires:        git nodejs zlib >= 1.2.11
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -70,7 +63,7 @@ database.
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -qn %{short_name}-%{version}
 
 # Enable alerting support
 sed -i 's/\"alerting\": false/\"alerting\": true/g' src/plugin.json
@@ -101,5 +94,4 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Apr 17 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.8.1-0
-- Initial build.
-
+- Initial build
