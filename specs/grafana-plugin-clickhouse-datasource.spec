@@ -80,6 +80,7 @@ rm -rf %{buildroot}
 install -dm 0755 %{buildroot}%{plugins_dir}/%{plugin_name}
 
 cp -a . %{buildroot}%{plugins_dir}/%{plugin_name}
+rm -f %{buildroot}%{plugins_dir}/%{plugin_name}/.gitignore
 
 %clean
 rm -rf %{buildroot}
