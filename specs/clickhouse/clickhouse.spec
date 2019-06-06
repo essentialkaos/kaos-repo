@@ -327,7 +327,7 @@ fi
 ################################################################################
 
 %changelog
-* Wed Jun 05 2019 Sergey Nikiforov <s.nikiforov@fun-box.ru> - 19.7.3.9-0
+* Wed Jun 05 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.7.3.9-0
 - Updated to the latest release
 - Added logrotate configuration
 
