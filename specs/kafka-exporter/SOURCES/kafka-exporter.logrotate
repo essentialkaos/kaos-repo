@@ -1,0 +1,9 @@
+/var/log/kafka-exporter/*.log {
+    weekly
+    rotate 7
+    copytruncate
+    delaycompress
+    compress
+    notifempty
+    missingok
+}
