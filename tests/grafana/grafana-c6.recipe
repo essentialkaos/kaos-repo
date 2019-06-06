@@ -3,13 +3,14 @@
 
 pkg grafana
 
-var man1_dir   /usr/share/man/man1
-var assets_dir /usr/share/grafana
-var data_dir   /var/lib/grafana
-var log_dir    /var/log/grafana
-var conf_dir   /etc/grafana
-var sysconfig  /etc/sysconfig/grafana-server
-var db_file    {data_dir}/grafana.db
+var man1_dir    /usr/share/man/man1
+var assets_dir  /usr/share/grafana
+var data_dir    /var/lib/grafana
+var log_dir     /var/log/grafana
+var conf_dir    /etc/grafana
+var sysconfig   /etc/sysconfig/grafana-server
+var db_file     {data_dir}/grafana.db
+var init_script /etc/init.d/grafana-server
 
 var service_user  grafana
 var service_group grafana
@@ -23,7 +24,7 @@ command "-" "Check binaries and service"
 
   service-present {service_name}
 
-command "-" "Check configuration files"
+command "-" "Check configuration files and scripts"
   exist {conf_dir}
   dir {conf_dir}
   perms {conf_dir} 755
@@ -40,6 +41,9 @@ command "-" "Check configuration files"
   exist {sysconfig}
   perms {sysconfig} 644
   owner {sysconfig} root:root
+
+  exist {init_script}
+  perms {init_script} 755
 
 command "-" "Check data directory"
   exist {data_dir}
