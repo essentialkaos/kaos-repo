@@ -1,1 +1,0 @@
-KAFKA_EXPORTER_OPTS='--kafka.server=localhost:9092'
