@@ -10,7 +10,13 @@ env:
 before_install:
   - docker pull "$IMAGE"
   - wget https://kaos.sh/perfecto/perfecto-docker
+  - wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
+  - wget https://kaos.sh/bibop/bibop-massive
   - chmod +x perfecto-docker
+  - chmod +x bibop
+  - chmod +x bibop-massive
+  - export PATH="$(pwd):$PATH"
 
 script:
-  - ./perfecto-docker $(find specs -name '*.spec' | sort | tr '\n' ' ')
+  - perfecto-docker $(find specs -name '*.spec' | sort | tr '\n' ' ')
+  - bibop-massive -V tests
