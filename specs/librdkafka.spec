@@ -63,6 +63,8 @@ BuildRequires:       make gcc gcc-c++ zlib-devel
 
 Requires:            zlib
 
+Provides:            %{name} = %{version}-%{release}
+
 ################################################################################
 
 %description
