@@ -331,7 +331,7 @@ fi
 - Updated to the latest release
 - Added logrotate configuration
 
-* Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 19.7.3.9-0
+* Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 19.4.3.11-0
 - Updated to the latest release
 
 * Mon Mar 25 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.4.1.3-0
