@@ -1,0 +1,2 @@
+# Download data every day at 7:00
+# 0 7 * * * vuls /usr/bin/security-tracker-fetch /opt/vuls/security-tracker all &> /dev/null || :

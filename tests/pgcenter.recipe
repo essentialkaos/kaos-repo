@@ -1,0 +1,11 @@
+# Bibop recipe for asciinema
+# See more: https://github.com/essentialkaos/bibop
+
+pkg pgcenter
+
+command "-" "Check environment"
+  app pgcenter
+
+command "pgcenter --help" "Check help info"
+  exit 0
+  output-contains "pgCenter is a command line admin tool for PostgreSQL."

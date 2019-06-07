@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# sectd-server init file for starting up the security-tracker server
+#
+# chkconfig:   - 20 80
+# description: Starts and stops the security-tracker server
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="sectd-server"
+
+kv.readSysconfig
+
+binary="/usr/bin/security-tracker"
+data_dir="${DATA_DIR:-/opt/vuls/security-tracker}"
+ip="${IP:-127.0.0.1}"
+port="${PORT:-1326}"
+log_dir="${LOG_DIR:-/var/log/vuls/security-tracker}"
+
+db_path="${data_dir}/security-tracker.sqlite3"
+
+kv[user]="${USER:-vuls}"
+
+kv[search_pattern]="$binary server -dbpath"
+
+###############################################################################
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "start" "preStartServiceHandler" "pre"
+kv.addHandler "stop"  "stopServiceHandler"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+preStartServiceHandler() {
+  mkdir -p "${log_dir}" &>/dev/null
+
+  chown "${kv[user]}:" "${log_dir}"
+  chown "${kv[user]}:" "${data_dir}"
+
+  if [[ ! -e "$db_path" ]] ; then
+    kv.error "DB file $db_path doesn't exist"
+    kv.exit $ACTION_ERROR
+  fi
+
+  local has_errors=""
+
+  [[ ! -e "$binary" ]] && has_errors=true && kv.error "security-tracker binary is not found"
+  [[ ! -x "$binary" ]] && has_errors=true && kv.error "security-tracker must be executable file"
+
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
+
+  return $ACTION_OK
+}
+
+startServiceHandler() {
+  kv.daemonize "$binary" "server" "--dbpath=${db_path}" "--bind=${ip}" "--port=${port}" "--log-dir=${log_dir}"
+
+  [[ $? -ne 0 ]] && return $ACTION_ERROR
+
+  if kv.getStartStatus ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
+}
+
+stopServiceHandler() {
+  kv.sendSignal "$SIGNAL_TERM"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
+}
+
+###############################################################################
+
+kv.go "$@"

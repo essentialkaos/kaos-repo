@@ -1,0 +1,14 @@
+# Bibop recipe for FFmpeg
+# See more: https://github.com/essentialkaos/bibop
+
+pkg ffmpeg-kaos
+
+fast-finish yes
+
+command "-" "Check environment"
+  app ffmpeg
+
+command "ffmpeg -i" "Check basic info"
+  expect "ffmpeg version"
+  output-contains "--enable-libfdk_aac"
+  output-contains "--enable-libvo-amrwbenc"

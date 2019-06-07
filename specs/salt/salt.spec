@@ -1,6 +1,12 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
@@ -52,7 +58,7 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2018.3.2
+Version:          2018.3.3
 Release:          1%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -77,21 +83,23 @@ Patch0:           %{name}-config.patch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:        noarch
 
-BuildRequires:    python34-devel git
-BuildRequires:    python34-crypto python34-jinja2 python34-mock python34-zmq
-BuildRequires:    python34-pip python34-zmq python34-PyYAML python34-requests
-BuildRequires:    python34-requests python34-six python34-backports_abc
-BuildRequires:    python34-backports-ssl_match_hostname
-BuildRequires:    python34-tornado < 5.0
-Requires:         python34-msgpack >= 0.5
+BuildRequires:    %{python_base}-devel git
+BuildRequires:    %{python_base}-crypto %{python_base}-jinja2 %{python_base}-mock
+BuildRequires:    %{python_base}-zmq %{python_base}-pip %{python_base}-zmq
+BuildRequires:    %{python_base}-PyYAML %{python_base}-requests
+BuildRequires:    %{python_base}-requests %{python_base}-six %{python_base}-backports_abc
+BuildRequires:    %{python_base}-backports-ssl_match_hostname
+BuildRequires:    %{python_base}-tornado < 5.0
+Requires:         %{python_base}-msgpack >= 0.5
 
 Requires:         dmidecode pciutils which yum-utils
-Requires:         python34 python34-crypto python34-jinja2 python34-libcloud
-Requires:         python34-zmq python34-PyYAML python34-requests python34-six
-Requires:         python34-backports_abc python34-markupsafe
-Requires:         python34-backports-ssl_match_hostname
-Requires:         python34-tornado < 5.0
-Requires:         python34-msgpack >= 0.5
+Requires:         %{python_base} %{python_base}-crypto %{python_base}-jinja2
+Requires:         %{python_base}-libcloud %{python_base}-zmq %{python_base}-PyYAML
+Requires:         %{python_base}-requests %{python_base}-six
+Requires:         %{python_base}-backports_abc %{python_base}-markupsafe
+Requires:         %{python_base}-backports-ssl_match_hostname
+Requires:         %{python_base}-tornado < 5.0
+Requires:         %{python_base}-msgpack >= 0.5
 
 %if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
 Requires:         kaosv >= 2.15
@@ -168,7 +176,7 @@ infrastructure.
 Summary:          REST API for Salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name}-master = %{version}-%{release}
-Requires:         python34-cherrypy
+Requires:         %{python_base}-cherrypy
 
 %description api
 salt-api provides a REST interface to the Salt master.
@@ -179,7 +187,7 @@ salt-api provides a REST interface to the Salt master.
 Summary:          Cloud provisioner for Salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name}-master = %{version}-%{release}
-Requires:         python34-libcloud
+Requires:         %{python_base}-libcloud
 
 %description cloud
 The salt-cloud tool provisions new cloud VMs, installs salt-minion on them, and
@@ -436,6 +444,12 @@ fi
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.3.3-1
+- Updated for compatibility with Python 3.6
+
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.3-0
+- Updated to 2018.3.3
+
 * Wed Jul 11 2018 Anton Novojilov <andy@essentialkaos.com> - 2018.3.2-1
 - Fixed supported versions of python34-tornado
 

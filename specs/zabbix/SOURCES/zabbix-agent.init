@@ -29,7 +29,7 @@ fi
 
 prog=${exec##*/}
 conf=/etc/zabbix/zabbix_agentd.conf
-pidfile=$(grep -e "^PidFile=.*$" $conf | cut -d= -f2)
+pidfile=$(grep -e "^PidFile=.*$" $conf | cut -d= -f2 | tr -d '\r')
 timeout=10
 
 if [ -f /etc/sysconfig/zabbix-agent ]; then

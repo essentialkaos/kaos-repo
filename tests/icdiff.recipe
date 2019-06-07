@@ -1,0 +1,14 @@
+# Bibop recipe for icdiff
+# See more: https://github.com/essentialkaos/bibop
+
+pkg icdiff
+
+fast-finish yes
+
+command "-" "Check environment"
+  app icdiff
+  app git-icdiff
+
+command "icdiff --version" "Check version info"
+  exit 0
+  output-contains "icdiff version "

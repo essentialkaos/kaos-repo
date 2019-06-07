@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              3.4.13
+Version:              4.2.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -80,7 +80,7 @@ BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
 BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
-BuildRequires:        pcre-devel
+BuildRequires:        pcre-devel zlib-devel
 
 %if 0%{?rhel} >= 7
 Requires:             libevent
@@ -972,6 +972,320 @@ fi
 ################################################################################
 
 %changelog
+* Mon Apr 22 2019 Andrey Kulikov <avk@brewkeeper.net> - 4.2.1-0
+- Increased socket response size limit
+- Fixed host.conn, host.ip, ipaddress and host.dns macros expansion in global
+  scripts
+- Fixed uncontrolled memory allocation in regex preprocessing steps
+- Fixed guest sign in visibility for disabled guest user group in login page
+- Fixed validation of host interface when multiple interfaces set as main
+  interface
+- Fixed security vulnerability - accepting connections from not allowed
+  addresses
+- Fixed when long snmp oid expands screen dimensions
+- Fixed error message for image uploads
+- Fixed not encoded ampersand for in url parameter
+- Fixed possible crash of the windows agent when used "net.dns" item key
+- Fixed map status to be displayed ok if there are no problem in submaps
+- Fixed invalid update intervals being reported on zabbix server when monitored
+  through zabbix proxy
+- Fixed invalid to valid numbers conversion by del_zeros
+- Fixed trimming allowed characters from numeric values
+- Improved zabbix java gateway error logging usability by adding item key to
+  error message
+- Fixed inability to start zabbix server if alert manager process is late after
+  alerters; thanks to mikhail makurov for the patch
+- Implemented a better network discovery filter
+- Fixed top right global search field autocomplete not showing results when host
+  name is being typed not first character and technical name when it differs
+  from visible name
+- Changed user name and password fields from being mandatory to optional in web
+  scenarios and http agent type items
+- Improved logging performance when high debuglevel is used
+- Fixed api returns "countoutput", "select*": "count" results and "suppressed"
+  property as integer
+- Fixed bigint limit in the user group updating forms
+- Fixed sorting of items, item prototypes, lld rules and screens to avoid
+  deadlocks in database between server and frontend
+- Fixed line length above widgets on global search page
+- Fixed password being passed in plain text in media type edit form
+- Fixed dashboard widgets incorrect placement while dragged
+- Fixed svg graph metric generation in situation when metric have big values
+- Fixed element removing from list in different tabs or browsers
+- Fixed loss of host name in tooltip on trigger overview page
+- Fixed compilation warning regarding too large integer constant
+- Fixed item/trigger/graph copy form provides read-only host groups in target
+  list; replaced form elements with multiselect
+- Fixed last problem name being displayed on map instead of most critical
+- Fixed escalation operation not being send multiple times
+- Fixed escaping of control characters in json encoder
+- Fixed link to pie graph after selecting a time interval on classic graph
+- Fixed multiselect does not support case sensitive auto-complete
+- Changed placeholder for http proxy input fields
+- Fixed map on screen is not centered
+- Fixed sending first value of the log as separate message
+- Fixed cookie presentation in http header
+- Fixed trapper process title to not update time in case of interruption
+- Fixed function names that are written to the log file when using
+  log_level_debug
+- Fixed update intervals of items in vmware templates
+- Fixed showing wrench icon for hosts that are in maintenance, but
+  maintenance is inaccessible due to insufficient permissions
+- Fixed trigger wizard form re-submit
+- Fixed problems by severity filter ignoring host group filter
+- Fixed empty parent group not listed in the latest data filter
+- Moved preprocessing steps into separate tab in items and item prototype
+  massupdate form
+- Added "unknown command error" to mysql recoverable error list
+- Fixed redundant jsloader loading in login page
+- Fixed item filtering by application name; added 'select' button for dashboard
+  widget and screen item application fields
+- Fixed lld item displaying in queue details view
+- Fixed labels overlapping on classic graph x axis
+- Fixed database monitoring 'dns' item key expressing it as mandatory
+- Fixed map.create could attach elements only for first map in request when
+  multiple maps are created with one request
+- Fixed new widget placeholder being shown outside maximum allowed dashboard
+  height area
+- Fixed browser build in autofill for passwords field on media type form on
+  authentication ldap form and on user edit form
+- Fixed application filter persistence when navigating from maps page to
+  triggers views page or latest data page
+- Removed unnecessary request for non-existing map background and fixed
+  undefined index when creating default image
+- Added missing keys "zabbix.stats[<ip>,<port>]",
+  "zabbix.stats[<ip>,<port>,queue,<from>,<to>]" and
+  "zabbix[stats,<ip>,<port>,queue,<from>,<to>]" in item key helper
+- Fixed positioning of the overlay dialogue window in map constructor
+- Added missing optional parameter "<regex_excl_dir>" for "vfs.dir.count" and
+  "vfs.dir.size" item keys in item helper
+- Fixed action condition type and operator integrity
+- Fixed possible crash when sending custom alerts
+- Fixed possible deadlock on host table when processing auto registration
+  contents from zabbix proxy
+- Added blocking of sigint and sigterm signals on each step of automatic upgrade
+  to avoid interruption of statements that cannot be rolled back
+- Fixed global regular expression testing not matching actual behavior of zabbix
+  components due to missing multiline flag
+- Fixed possible crash in history syncer process when processing discovered item
+  value
+- Fixed slow request of vmware configuration update
+- Fixed nodata() function triggering after maintenances with no data collection
+  without waiting for the nodata period
+- Fixed item prototype update intervals to eliminate trigger status flapping
+- Fixed changing process user owner on startup in foreground when allowroot
+  disabled
+- Optimized unsupported macros parsing
+- Fixed network discovery is not reacting to the changes in agent configuration
+  if uniqueness criteria is value
+- Fixed database monitor item does not use stored credentials; thanks to jose
+  deniz for the patch
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.0.3-0
+- added column "Latest values" in Monitoring->Problems and Dashboard
+- implemented widget pausing methods in dashboard; made graph widget paused
+  when using selection box or opening a tooltip
+- fixed zoomout on doubleclick in graph widget
+- fixed display parent host groups without hosts in multiselect
+- fixed deprecated net-snmp attribute
+- fixed configuration sync of interfaces without hosts
+- fixed updating nextcheck time in discovery rules to avoid overlaps between
+  discovery executions
+- fixed regexp validation when pattern contain slash character
+- fixed incorrect keycode handling in multiselect input fields
+- fixed trigger overview behavior when show "any"
+- fixed performance with deletion of item in template linked to many hosts
+- added new LLD macros for vmware HV low-level discovery
+- fixed colorpicker tooltip update
+- fixed "check now" being executed for active items and templates
+- fixed custom interval validation; fixed parsing of custom intervals when user
+  macros context contains forward slash
+- fixed community default value in edit scenario
+- fixed memory of performance counters consumed during vmware update
+- updated Tomcat template for compatibility with recent Tomcat versions
+- fixed API authentication for ldap users having gui access disabled
+- fixed misleading ldap authentication error messages
+- fixed style of disabled action on high contrast theme
+- removed strict-transport-security header from frontend
+- fixed negative time selector offset when selecting time range in graph
+- fixed creation of unneeded database record if host prototype inventory mode
+  is disabled; fixed validation for host and host prototype inventory mode
+- fixed SQL error occurred when too long IP address is attempted to be written
+  in database
+- fixed web scenario item selection in SVG graph widget
+- fixed error handling in logrt[] items if regular expression for file name
+  is not valid
+- fixed resolving of functional macros in graph widget name
+- fixed host, trigger and item count calculation; fixed required performance
+  calculation
+- fixed graph name for cache usage in proxy and server templates
+- fixed wrong behaviour when referencing unexisting capture groups in item
+  regexp preprocessing, general pcre code improvements
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
+- added validation of update interval, custom interval, history storage period
+  and trend storage period in low-level discovery
+- removed hardcoded locations for iconv.h and pthread.h; thanks to Helmut Grohne
+  for the patch
+- fixed compilation errors on Windows platform with static OpenSSL libraries
+- added license information and OpenSSL linking exception to README file, show
+  crypto library version when started with '-V'
+- fixed crash in ODBC when creating JSON from null db values, fixed memory leak
+- fixed a case where a disable multiselect looks like a similar to enabled text
+  field
+- fixed filter by host group without real hosts in triggers top 100, dashboard
+  widgets, screens
+- fixed duplication of file system type in global regular expression for file
+  systems discovery
+- added system.cpu.util[,guest], system.cpu.util[,guest_nice] to OS Linux
+  template
+- improved error messages for item preprocessing, general pcre code improvements
+- fixed curl error handling for elasticsearch history backend
+- added optional upgrade patches to rename TRIGGER.NAME macros to EVENT.NAME
+  in action operation messages and custom scripts
+- fixed processing of unlimited vmware maxQueryMetrics value
+- fixed rare LLD failures when moving host between groups
+- fixed loss of calc_fnc index in graph edit form
+- improved escalator performance during maintenance by checking paused
+  escalations less frequently
+- fixed focus styles on read-only textarea fields
+- fixed percentage calculation on availability reports list page
+- fixed error message when receiving compressed data over maximum size
+- fixed time period parameters in data overview context menu links
+- fixed javascript error when zooming classic graph in edit mode
+- fixed dashboard initialization in edit mode
+- fixed timetamp position in map
+- fixed zoom-out and select box for graphs in kiosk mode
+- improved source code comments
+- fixed wrong media type status upon creation, if chosen status disabled
+- fixed wrong net.tcp.listen values on obsolete Linux systems
+- fixed issue with autoreconf/automake for source tarball
+- fixed time format for vmware performance counters query
+- fixed regexp compilation error for patterns with referenced subpatterns
+- fixed breadcrumb jumping in IE browser
+- fixed API so that macros {TRIGGER.ID} works in map element URLs
+- fixed possible crash when communication problem occurred in the middle of
+  vmware update
+- fixed excessive memory usage during template full clone
+- clarified process type names for log level increase/decrease in help messages
+  and man pages
+- fixed selectHosts option in dservice.get API method to return the list of
+  hosts by IP and proxy
+- fixed binary heap trying to reallocate slots on every insert
+- fixed unauthorized request error when resetting filter after
+  enabling/disabling elements
+- fixed translations from en_US to en_GB
+- fixed encoding for cookie names and values
+- fixed possible crash in web monitoring due to posts not being reset between
+  steps
+- fixed faulty behaviour of mandatory fields in Trigger expression form
+- added support of host macros to trapper, HTTP agent item allowed hosts field
+- fixed shared memory leak during configuration cache synchronization
+- fixed email alerts being sent twice to one recipient
+- fixed possibility to link map widget to itself as filter widget
+- fixed undefined offset error in Problems by severity widget
+- fixed memory leak when validating regular expression preprocessing step
+  parameters during LLD
+- changed SNMP OID default value to be displayed as placeholder instead of text
+- fixed compiler warning about incompatible pointer type on 32-bit platform
+- fixed error suppression during php ldap module initialization
+- fixed link coloring in map when related trigger is not monitored
+- fixed sBox position in screen's graph item when dynamic item is enabled
+- fixed not closed connection with vmware at the end of update session via a
+  call to Logout()
+- fixed current map refresh in map widget right after update widget
+  configuration
+- added missing http agent statistic row in queue screen
+- fixed missing focus from problem name when opening description editing popup
+  in monitoring problems section
+- fixed configuration update in administration authentication section
+- fixed memory leak in case duplication name of the vmware performance counters
+- made widget specific javascript files to be loaded with jsLoader
+- fixed the potential crash during vmware update
+- removed the notes about sqlite from zabbix_server.conf
+- fixed discovery and auto registration escalations being kept for one hour
+  instead of deleted immediately
+- fixed SQL queries being logged when accessing API, even if debug mode is
+  disabled
+- fixed error reporting for XML import of hosts and templates
+- fixed action popup being unclosable after widget refresh, fixed debug element
+  being hidden on widget refresh
+- changed focus style for radio buttons
+- fixed startup failures due to orphaned or zombie processes remaining when
+  zabbix daemon is terminated during startup
+
+* Mon Nov 19 2018 Andrey Kulikov <avk@brewkeeper.net> - 4.0.1-0
+- added filter fields to select templates and hosts by directly linked
+  templates; made proxy filter field visible in configuration hosts field
+- added 'fullscreen' and 'kiosk' URL arguments to allow to set layout mode
+  via link
+- improve out of memory error message by adding statistics and
+  backtrace;
+- improve something impossible has just happened error message by adding
+  backtrace
+- improved escalator performance by using nextcheck index instead of reading
+  whole table
+- fixed possible PHP errors in "Problem hosts" widget
+- fixed possible crash when syncing host groups
+- fixed selection box for graphs on monitoring screens
+- extended support of system.stat[ent], system.stat[cpu,pc],
+  system.stat[cpu,ec] on IBM AIX to LPAR type 'dedicated'
+- fixed the host visible name in the event details/messages from server
+  when using long utf8 text
+- fixed max count of records in the single json that proxy can send
+  to the server
+- fixed the case where data from non-monitored VMware services are not removed
+  from vmware cache
+- added support for OpenSSL 1.1.1
+- added note on runtime control with PID numbers larger than 65535 to server,
+  proxy and agentd help messages and man pages
+- fixed the verification of the assignment of two web checks with the same name
+  from different templates to one host
+- fixed cloning inherited host prototype on host
+- fixed calculation of Y zero position in graph
+- fixed "Field "parent_itemid" cannot be set to NULL" error message
+  while importing multiple templates
+- added support of user language specific url link in support icon,
+  supported languages: english as default, japanese, russian
+- improved preprocessor worker performance
+- fixed incorrect zero rounding in date and time fields
+- fixed sql error in escalator when working with Oracle,
+  PostgreSQL (less than v9.4) databases
+- fixed incorrect translation string in en_US locale
+- fixed fields becoming writable upon form refresh in host prototype form
+- fixed 'follow redirects' checkbox in web scenario step's dialog
+- fixed color of the host name in the title of the Screens
+- fixed sorting when changing status of media type
+- fixed triggers in trigger overview being filtered by trigger severity and
+  trigger status change time instead of problem severity
+  and problem creation time
+- fixed updating of the Graph list of host when selecting a group of hosts
+- removed links to templates with no permissions for templated triggers,
+  trigger prototypes, graphs, graph prototypes, host prototypes
+  and web scenarios
+- fixed trigger evaluation result not visible in test dialogue when expression
+  is too long
+- fixed zoom button for time selector in IE browser
+- fixed table markup on overview and system info pages
+- fixed plain text Latest data when selecting more than 1 item
+- fixed host prototype status checkbox resets after adding template
+- fixed minor typos in comments and tests
+- fixed icon misplacement in problem view
+- fixed incorrect profile update causing page filter to sometimes show
+  duplicate values
+- fixed validation of double/Numeric(float) values
+- fixed selection of data for trigger overview and graphs if first drop down
+  entry is "none"
+- fixed Java gateway not to mark host unreachable in case of invalid username
+  and password
+- fixed JMX endpoint not being included in error message in case of connection
+  errors
+- fixed web.page.regexp item parameters description
+- fixed crash that could occur when OpenIPMI pollers are configured
+- fixed crash in vmware collector when receiving invalid xml
+- fixed crash when processing internal trigger events and deleting triggers
+  at the same time
+
 * Thu Sep 13 2018 Anton Novojilov <andy@essentialkaos.com> - 3.4.13-0
 - replaced pcreposix library with pcre, lowered backtracking limit, fixed
   libevent build issues

@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.61.1
+Version:              7.63.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -266,6 +266,220 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 7.63.0-0
+- curl: add %%{stderr} and %%{stdout} for --write-out
+- curl: add undocumented option --dump-module-paths for win32
+- setopt: add CURLOPT_CURLU
+- (lib)curl.rc: fixup for minor bugs
+- CURLINFO_REDIRECT_URL: extract the Location: header field unvalidated
+- CURLOPT_HEADERFUNCTION.3: match 'nitems' name in synopsis and description
+- CURLOPT_WRITEFUNCTION.3: spell out that it gets called many times
+- Curl_follow: accept non-supported schemes for "fake" redirects
+- KNOWN_BUGS: add --proxy-any connection issue
+- NTLM: Remove redundant ifdef USE_OPENSSL
+- NTLM: force the connection to HTTP/1.1
+- OS400: add URL API ccsid wrappers and sync ILE/RPG bindings
+- SECURITY-PROCESS: bountygraph shuts down again
+- TODO: Have the URL API offer IDN decoding
+- ares: remove fd from multi fd set when ares is about to close the fd
+- axtls: removed
+- checksrc: add COPYRIGHTYEAR check
+- cmake: fix MIT/Heimdal Kerberos detection
+- configure: include all libraries in ssl-libs fetch
+- configure: show CFLAGS, LDFLAGS etc in summary
+- connect: fix building for recent versions of Minix
+- cookies: create the cookiejar even if no cookies to save
+- cookies: expire "Max-Age=0" immediately
+- curl: --local-port range was not "including"
+- curl: fix --local-port integer overflow
+- curl: fix memory leak reading --writeout from file
+- curl: fixed UTF-8 in current console code page (Windows)
+- curl_easy_perform: fix timeout handling
+- curl_global_sslset(): id == -1 is not necessarily an error
+- curl_multibyte: fix a malloc overcalculation
+- curle: move deprecated error code to ifndef block
+- docs: curl_formadd field and file names are now escaped
+- docs: escape "\n" codes
+- doh: fix memory leak in OOM situation
+- doh: make it work for h2-disabled builds too
+- examples/ephiperfifo: report error when epoll_ctl fails
+- ftp: avoid two unsigned int overflows in FTP listing parser
+- host names: allow trailing dot in name resolve, then strip it
+- http2: Upon HTTP_1_1_REQUIRED, retry the request with HTTP/1.1
+- http: don't set CURLINFO_CONDITION_UNMET for http status code 204
+- http: fix HTTP Digest auth to include query in URI
+- http_negotiate: do not close connection until negotiation is completed
+- impacket: add LICENSE
+- infof: clearly indicate truncation
+- ldap: fix LDAP URL parsing regressions
+- libcurl: stop reading from paused transfers
+- mprintf: avoid unsigned integer overflow warning
+- netrc: don't ignore the login name specified with "--user"
+- nss: Fall back to latest supported SSL version
+- nss: Fix compatibility with nss versions 3.14 to 3.15
+- nss: fix fallthrough comment to fix picky compiler warning
+- nss: remove version selecting dead code
+- nss: set default max-tls to 1.3/1.2
+- openssl: Remove SSLEAY leftovers
+- openssl: do not log excess "TLS app data" lines for TLS 1.3
+- openssl: do not use file BIOs if not requested
+- openssl: fix unused variable compiler warning with old openssl
+- openssl: support session resume with TLS 1.3
+- openvms: fix example name
+- os400: Add curl_easy_conn_upkeep() to ILE/RPG binding
+- os400: add CURLOPT_CURLU to ILE/RPG binding
+- os400: fix return type of curl_easy_pause() in ILE/RPG binding
+- packages: remove old leftover files and dirs
+- pop3: only do APOP with a valid timestamp
+- runtests: use the local curl for verifying
+- schannel: be consistent in Schannel capitalization
+- schannel: better CURLOPT_CERTINFO support
+- schannel: use Curl_ prefix for global private symbols
+- snprintf: renamed and we now only use msnprintf()
+- ssl: fix compilation with OpenSSL 0.9.7
+- ssl: replace all internal uses of CURLE_SSL_CACERT
+- symbols-in-versions: add missing CURLU_ symbols
+- test328: verify Content-Encoding: none
+- tests: disable SO_EXCLUSIVEADDRUSE for stunnel on Windows
+- tests: drop http_pipe.py script no longer used
+- tool_cb_wrt: Silence function cast compiler warning
+- tool_doswin: Fix uninitialized field warning
+- travis: build with clang sanitizers
+- travis: remove curl before a normal build
+- url: a short host name + port is not a scheme
+- url: fix IPv6 numeral address parser
+- urlapi: only skip encoding the first '=' with APPENDQUERY set
+
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 7.62.0-0
+- multiplex: enable by default
+- url: default to CURL_HTTP_VERSION_2TLS if built h2-enabled
+- setopt: add CURLOPT_DOH_URL
+- curl: --doh-url added
+- setopt: add CURLOPT_UPLOAD_BUFFERSIZE: set upload buffer size
+- imap: change from "FETCH" to "UID FETCH"
+- configure: add option to disable automatic OpenSSL config loading
+- upkeep: add a connection upkeep API: curl_easy_upkeep()
+- URL-API: added five new functions
+- vtls: MesaLink is a new TLS backend
+- CVE-2018-16839: SASL password overflow via integer overflow
+- CVE-2018-16840: use-after-free in handle close
+- CVE-2018-16842: warning message out-of-buffer read
+- CURLOPT_DNS_USE_GLOBAL_CACHE: deprecated
+- Curl_dedotdotify(): always nul terminate returned string
+- Curl_follow: Always free the passed new URL
+- Curl_http2_done: fix memleak in error path
+- Curl_retry_request: fix memory leak
+- Curl_saferealloc: Fixed typo in docblock
+- FILE: fix CURLOPT_NOBODY and CURLOPT_HEADER output
+- GnutTLS: TLS 1.3 support
+- SECURITY-PROCESS: mention the bountygraph program
+- VS projects: add USE_IPV6:
+- Windows: fixes for MinGW targeting Windows Vista
+- anyauthput: fix compiler warning on 64-bit Windows
+- appveyor: add WinSSL builds
+- appveyor: run test suite (on Windows!)
+- certs: generate tests certs with sha256 digest algorithm
+- checksrc: enable strict mode and warnings
+- checksrc: handle zero scoped ignore commands
+- cmake: Backport to work with CMake 3.0 again
+- cmake: Improve config installation
+- cmake: add support for transitive ZLIB target
+- cmake: disable -Wpedantic-ms-format
+- cmake: don't require OpenSSL if USE_OPENSSL=OFF
+- cmake: fixed path used in generation of docs/tests
+- cmake: remove unused *SOCKLEN_T variables
+- cmake: suppress MSVC warning C4127 for libtest
+- cmake: test and set missed defines during configuration
+- comment: Fix multiple typos in function parameters
+- config: Remove unused SIZEOF_VOIDP
+- config_win32: enable LDAPS
+- configure: force-use -lpthreads on HPUX
+- configure: remove CURL_CONFIGURE_CURL_SOCKLEN_T
+- configure: s/AC_RUN_IFELSE/CURL_RUN_IFELSE
+- cookies: Remove redundant expired check
+- cookies: fix leak when writing cookies to file
+- curl-config.in: remove dependency on bc
+- curl.1: --ipv6 mutexes ipv4 (fixed typo)
+- curl: enabled Windows VT Support and UTF-8 output
+- curl: update the documentation of --tlsv1.0
+- curl_multi_wait: call getsock before figuring out timeout
+- curl_ntlm_wb: check aprintf() return codes
+- curl_threads: fix classic MinGW compile break
+- darwinssl: Fix realloc memleak
+- darwinssl: more specific and unified error codes
+- data-binary.d: clarify default content-type is x-www-form-urlencoded
+- docs/BUG-BOUNTY: explain the bounty program
+- docs/CIPHERS: Mention the options used to set TLS 1.3 ciphers
+- docs/CIPHERS: fix the TLS 1.3 cipher names
+- docs/CIPHERS: mention the colon separation for OpenSSL
+- docs/examples: URL updates
+- docs: add "see also" links for SSL options
+- example/asiohiper: insert warning comment about its status
+- example/htmltidy: fix include paths of tidy libraries
+- examples/Makefile.m32: sync with core
+- examples/http2-pushinmemory: receive HTTP/2 pushed files in memory
+- examples/parseurl.c: show off the URL API
+- examples: Fix memory leaks from realloc errors
+- examples: do not wait when no transfers are running
+- ftp: include command in Curl_ftpsend sendbuffer
+- gskit: make sure to terminate version string
+- gtls: Values stored to but never read
+- hostip: fix check on Curl_shuffle_addr return value
+- http2: fix memory leaks on error-path
+- http: fix memleak in rewind error path
+- krb5: fix memory leak in krb_auth
+- ldap: show precise LDAP call in error message on Windows
+- lib: fix gcc8 warning on Windows
+- memory: add missing curl_printf header
+- memory: ensure to check allocation results
+- multi: Fix error handling in the SENDPROTOCONNECT state
+- multi: fix memory leak in content encoding related error path
+- multi: make the closure handle "inherit" CURLOPT_NOSIGNAL
+- netrc: free temporary strings if memory allocation fails
+- nss: fix nssckbi module loading on Windows
+- nss: try to connect even if libnssckbi.so fails to load
+- ntlm_wb: Fix memory leaks in ntlm_wb_response
+- ntlm_wb: bail out if the response gets overly large
+- openssl: assume engine support in 0.9.8 or later
+- openssl: enable TLS 1.3 post-handshake auth
+- openssl: fix gcc8 warning
+- openssl: load built-in engines too
+- openssl: make 'done' a proper boolean
+- openssl: output the correct cipher list on TLS 1.3 error
+- openssl: return CURLE_PEER_FAILED_VERIFICATION on failure to parse issuer
+- openssl: show "proper" version number for libressl builds
+- pipelining: deprecated
+- rand: add comment to skip a clang-tidy false positive
+- rtmp: fix for compiling with lwIP
+- runtests: ignore disabled even when ranges are given
+- runtests: skip ld_preload tests on macOS
+- runtests: use Windows paths for Windows curl
+- schannel: unified error code handling
+- sendf: Fix whitespace in infof/failf concatenation
+- ssh: free the session on init failures
+- ssl: deprecate CURLE_SSL_CACERT in favour of a unified error code
+- system.h: use proper setting with Sun C++ as well
+- test1299: use single quotes around asterisk
+- test1452: mark as flaky
+- test1651: unit test Curl_extract_certinfo()
+- test320: strip out more HTML when comparing
+- tests/negtelnetserver.py: fix Python2-ism in neg TELNET server
+- tests: add unit tests for url.c
+- timeval: fix use of weak symbol clock_gettime() on Apple platforms
+- tool_cb_hdr: handle failure of rename()
+- travis: add a "make tidy" build that runs clang-tidy
+- travis: add build for "configure --disable-verbose"
+- travis: bump the Secure Transport build to use xcode
+- travis: make distcheck scan for BOM markers
+- unit1300: fix stack-use-after-scope AddressSanitizer warning
+- urldata: Fix "connecting" comment
+- urlglob: improve error message on bad globs
+- vtls: fix ssl version "or later" behavior change for many backends
+- x509asn1: Fix SAN IP address verification
+- x509asn1: always check return code from getASN1Element()
+- x509asn1: return CURLE_PEER_FAILED_VERIFICATION on failure to parse cert
+- x509asn1: suppress left shift on signed value
+
 * Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 7.61.1-0
 - security advisory (CVE-2018-14618): NTLM password overflow via integer
   overflow

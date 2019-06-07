@@ -1,12 +1,12 @@
 ################################################################################
 
-%define tarversion  3250200
+%define tarversion  3260000
 
 ################################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
-Version:            3.25.2
+Version:            3.26.0
 Release:            0%{?dist}
 License:            GPL
 Group:              Development/Tools
@@ -128,20 +128,23 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.26.0-0
+- Updated to the latest stable release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 3.24.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.22.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.20.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.19.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.18.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Mar 23 2017 Anton Novojilov <andy@essentialkaos.com> - 3.17.0-0
 - Initial build for kaos repository

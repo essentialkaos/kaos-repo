@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack github.com/linkedin/Burrow
-# rpmbuilder:tag v1.1.0
+# rpmbuilder:tag    v1.2.2
 
 ################################################################################
 
@@ -11,7 +11,7 @@
 
 Summary:         Kafka Consumer Lag Checking
 Name:            Burrow
-Version:         1.1.0
+Version:         1.2.2
 Release:         0%{?dist}
 Group:           Applications/Databases
 License:         ASL 2.0
@@ -82,5 +82,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue May 21 2019 Andrey Kulikov <avk@brewkeeper.net> - 1.2.2-0
+- More fixes to binary release process
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Add support for Kafka up to version 2.1.0
+- Update sarama to version 1.20.1 with support for zstd compression
+- Support linux/arm64
+- Add blacklist for memory store
+
 * Mon Jul 23 2018 Andrey Kulikov <avk@brewkeeper.net> - 1.1.0-0
-- Initial build
+- Initial build for EK repository

@@ -47,7 +47,7 @@
 
 Summary:            Validating, recursive, and caching DNS(SEC) resolver
 Name:               unbound
-Version:            1.8.0
+Version:            1.8.3
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Daemons
@@ -194,6 +194,7 @@ pushd %{name}-%{version}
            --enable-sha2 \
            --disable-gost \
            --enable-ecdsa \
+           --enable-ipsecmod \
 %if %{with_python}
            --with-pythonmodule \
            --with-pyunbound PYTHON=%{__python2} \
@@ -399,14 +400,21 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
+- Updated to the latest stable release
+- Added ipsecmod support
+
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.8-0
 - Initial build for kaos-repo

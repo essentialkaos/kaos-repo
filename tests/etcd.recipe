@@ -1,0 +1,18 @@
+# Bibop recipe for etcd
+# See more: https://github.com/essentialkaos/bibop
+
+pkg etcd
+
+fast-finish yes
+
+command "-" "Check environment"
+  app etcd
+  app etcdctl
+
+command "etcd --version" "Check etcd version info"
+  expect "etcd Version:"
+  exit 0
+
+command "etcdctl --version" "Check etcdctl version info"
+  expect "etcdctl version:"
+  exit 0

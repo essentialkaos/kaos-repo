@@ -1,0 +1,82 @@
+# Bibop recipe for Zabbix
+# See more: https://github.com/essentialkaos/bibop
+
+pkg zabbix-agent zabbix-server-pgsql
+
+require-root yes
+
+var service_user   zabbix
+var service_group  zabbix
+
+var agent_service  zabbix-agent
+var server_service zabbix-server
+
+var service_user zabbix
+
+var config_dir    /etc/zabbix
+var log_dir       /var/log/zabbix
+var logrotate_dir /etc/logrotate.d
+
+command "-" "Check agent environment"
+  app zabbix_agentd
+
+  service-present {agent_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  dir {config_dir}/zabbix_agentd.d
+  perms {config_dir}/zabbix_agentd.d 755
+  
+  exist {config_dir}/zabbix_agentd.conf
+  perms {config_dir}/zabbix_agentd.conf 644
+
+  dir {config_dir}/alertscripts
+  dir {config_dir}/externalscripts
+
+  exist {logrotate_dir}/{agent_service}
+  perms {logrotate_dir}/{agent_service} 644
+
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "-" "Check server environment"
+  app zabbix_server_pgsql
+
+  service-present {server_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  exist {config_dir}/zabbix_server.conf
+  perms {config_dir}/zabbix_server.conf 640
+
+  exist {logrotate_dir}/{server_service}
+  perms {logrotate_dir}/{server_service} 644
+
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "service {server_service} start" "Start Zabbix Server daemon"
+  exit 0
+  service-works {server_service}
+
+command "service {agent_service} start" "Start Zabbix Agent daemon"
+  exit 0
+  service-works {agent_service}
+
+command "service {agent_service} status" "Check status of Zabbix Agent daemon"
+  exit 0
+
+command "service {server_service} status" "Check status of Zabbix Server daemon"
+  exit 0
+
+command "service {agent_service} stop" "Stop Zabbix Agent daemon"
+  exit 0
+  !service-works {agent_service}
+
+command "service {server_service} stop" "Stop Zabbix Server daemon"
+  exit 0
+  !service-works {server_service}

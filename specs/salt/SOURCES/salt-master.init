@@ -34,8 +34,9 @@ debug=${MASTER_DEBUG}
 
 kv[file_limit]="16384:16384"
 
-kv[search_pattern]="$binary -d"
-kv[pid_file]=$(kv.readProperty "/etc/salt/master" "pidfile" ":")
+pid_file=$(kv.readProperty "/etc/salt/master" "pidfile" ":")
+
+kv[pid_file]=${pid_file:-/var/run/salt-master.pid}
 
 ###############################################################################
 
@@ -60,16 +61,17 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  local pid=`kv.getPid`
+  local pid=$(kv.getPid)
 
   kv.sendSignal $SIGNAL_TERM
 
   if kv.getStopStatus "$pid" ; then
     return $ACTION_OK
   else
-    kv.killProcess $pid   
+    kv.killProcess $pid
+    rm -f /var/run/salt/master/*.ipc &> /dev/null
     return $ACTION_FORCED
-  fi 
+  fi
 }
 
 ###############################################################################

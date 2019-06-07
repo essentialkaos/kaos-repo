@@ -35,8 +35,9 @@ debug=${SYNDIC_DEBUG}
 
 kv[file_limit]="8192:8192"
 
-kv[search_pattern]="$binary -d"
-kv[pid_file]=$(kv.readProperty "/etc/salt/master" "syndic_pidfile" ":")
+pid_file=$(kv.readProperty "/etc/salt/master" "syndic_pidfile" ":")
+
+kv[pid_file]=${pid_file:-/var/run/salt-syndic.pid}
 
 ###############################################################################
 
@@ -55,6 +56,7 @@ startServiceHandler() {
 
   # https://github.com/saltstack/salt/issues/23026
   sleep 3
+  
   pid=$(kv.findPid)
 
   if [[ -n "$pid" ]] ; then
@@ -66,16 +68,16 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  local pid=`kv.getPid`
+  local pid=$(kv.getPid)
 
   kv.sendSignal $SIGNAL_TERM
 
   if kv.getStopStatus "$pid" ; then
     return $ACTION_OK
   else
-    kv.killProcess $pid   
+    kv.killProcess $pid
     return $ACTION_FORCED
-  fi 
+  fi
 }
 
 ###############################################################################

@@ -1,8 +1,0 @@
-# Sysconfig file for goval-dictionary server
-
-DATA_DIR=""
-IP=""
-PORT=""
-USER=""
-LOG_DIR=""
-LOG=""

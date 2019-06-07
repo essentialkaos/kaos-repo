@@ -44,7 +44,7 @@
 
 Summary:          Prometheus Utility Tool
 Name:             promu
-Version:          0.1.0
+Version:          0.2.0
 Release:          0%{?dist}
 Group:            Development/Tools
 License:          ASL 2.0
@@ -101,6 +101,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 0.2.0-0
+- Updated to the latest stable release
+
 * Wed Mar 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.1.0-0
 - Initial build
 

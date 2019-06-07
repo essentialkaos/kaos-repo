@@ -51,7 +51,7 @@
 
 Summary:          Prometheus push acceptor for ephemeral and batch jobs
 Name:             prometheus-pushgateway
-Version:          0.5.2
+Version:          0.7.0
 Release:          0%{?dist}
 Group:            Applications/Databases
 License:          ASL 2.0
@@ -194,6 +194,7 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/%{name}
 %dir %attr(755, %{service_user}, %{service_group}) %{_rundir}/%{name}
+%dir %attr(755, %{service_user}, %{service_group}) %{_logdir}/%{name}
 %if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %else
@@ -205,9 +206,14 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 0.7.0-0
+- Updated to the latest stable release
+
+* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 0.6.0-0
+- Updated to the latest stable release
+
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 0.5.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.4.0-0
 - Initial build
-

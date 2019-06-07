@@ -1,0 +1,13 @@
+# Bibop recipe for HTTP Parser
+# See more: https://github.com/essentialkaos/bibop
+
+pkg http-parser http-parser-devel
+
+fast-finish yes
+
+command "-" "Check shared libs"
+  lib-loaded libhttp_parser.so.*
+  lib-loaded libhttp_parser_strict.so.*
+
+command "-" "Check headers"
+  lib-header http_parser

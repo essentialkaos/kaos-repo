@@ -1,10 +1,5 @@
 ################################################################################
 
-# rpmbuilder:svn          http://svn.code.sf.net/p/xavs/code/trunk
-# rpmbuilder:revision     r46
-
-################################################################################
-
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -47,7 +42,7 @@
 Summary:            Audio Video Standard of China
 Name:               xavs
 Version:            0.1.51
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            GPL
 Group:              System Environment/Libraries
 URL:                http://xavs.sourceforge.net
@@ -103,9 +98,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+%{__ldconfig}
 
-%postun -p /sbin/ldconfig
+%postun
+%{__ldconfig}
 
 ################################################################################
 
@@ -125,5 +122,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat May 25 2019 Anton Novojilov <andy@essentialkaos.com> - 0.1.51-1
+- Minor spec fix
+
 * Sun Apr 24 2016 Gleb Goncharov <yum@gongled.ru> - 0.1.51-0
 - Initial build

@@ -39,11 +39,13 @@
 %define __groupadd        %{_sbindir}/groupadd
 %define __useradd         %{_sbindir}/useradd
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:         Intrusion Detection System
 Name:            suricata
-Version:         4.0.4
+Version:         4.1.2
 Release:         0%{?dist}
 License:         GPLv2
 Group:           Applications/Internet
@@ -56,14 +58,20 @@ Source3:         %{name}.logrotate
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:        kaosv
-
-BuildRequires:   make gcc gcc-c++ autoconf automake libtool
+BuildRequires:   make gcc gcc-c++ autoconf automake libtool lz4-devel
 BuildRequires:   libyaml-devel libnfnetlink-devel libnetfilter_queue-devel
 BuildRequires:   libnet-devel zlib-devel libpcap-devel pcre-devel
 BuildRequires:   libcap-ng-devel nspr-devel nss-devel nss-softokn-devel
 BuildRequires:   file-devel jansson-devel GeoIP-devel python-devel
 BuildRequires:   lua-devel libluajit-devel
+
+%if 0%{?rhel} >= 7
+BuildRequires:   cargo
+%endif
+
+%if 0%{?rhel} <= 6
+Requires:        initscripts kaosv >= 2.15
+%endif
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -124,8 +132,12 @@ rm -f  %{buildroot}%{_libdir}/libhtp.a
 rm -f  %{buildroot}%{_libdir}/libhtp.so
 rm -rf %{buildroot}%{_libdir}/pkgconfig
 
+rm -f %{buildroot}%{_bindir}/%{name}-update
+
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -144,9 +156,12 @@ rm -rf %{buildroot}
 %doc doc/Setting_up_IPSinline_for_Linux.txt
 %{_sbindir}/%{name}
 %{_bindir}/%{name}sc
+%{_bindir}/%{name}ctl
 %{_libdir}/libhtp*
-%{python_sitelib}/%{name}sc*.egg-info
-%{python_sitelib}/%{name}sc/*
+%{_datadir}/%{name}/rules/*.rules
+%{python_sitelib}/%{name}
+%{python_sitelib}/%{name}sc
+%{python_sitelib}/suricata*.egg-info
 %{_defaultdocdir}/%{name}/*
 %{_mandir}/man1/%{name}.1*
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.yaml
@@ -157,20 +172,25 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{_initddir}/%{name}
 %attr(750,root,root) %dir %{_logdir}/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}/%{name}
-%attr(750,root,root) %dir %{_sysconfdir}/%{name}/rules
 %dir %{_rundir}/%{name}
 
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 4.1.2-0
+- Updated to the latest stable release
+
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
+- Updated to the latest stable release
+
 * Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 4.0.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Sep 21 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
 - Initial build

@@ -24,6 +24,8 @@ source /etc/init.d/kaosv
 
 ###############################################################################
 
+kv.require "2.15"
+
 kv[prog_name]="prometheus-pushgateway"
 
 kv.readSysconfig
@@ -35,7 +37,6 @@ options="${PUSHGATEWAY_OPTS}"
 kv[user]="$user"
 kv[pid_dir]="/var/run/prometheus-pushgateway"
 kv[log]="/var/log/prometheus-pushgateway/prometheus-pushgateway.log"
-kv[search_pattern]="$binary"
 
 ###############################################################################
 
@@ -49,7 +50,7 @@ kv.addHandler "start" "postStartServiceHandler" "post"
 
 reload() {
   if ! kv.statusIs "$STATUS_WORKS" ; then
-    kv.show "You must start service before this command usage." $BROWN
+    kv.warn "You must start service before this command usage"
     return $ACTION_ERROR
   fi
 
@@ -77,7 +78,7 @@ startServiceHandler() {
 }
 
 stopServiceHandler() {
-  local pid=`kv.getPid`
+  local pid=$(kv.getPid)
 
   kv.sendSignal "$SIGNAL_TERM"
 
@@ -103,5 +104,4 @@ reloadConfigHandler() {
 
 ###############################################################################
 
-kv.go $@
-
+kv.go "$@"

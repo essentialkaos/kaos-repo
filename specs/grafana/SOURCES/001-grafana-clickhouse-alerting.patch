@@ -1,0 +1,165 @@
+diff -urN grafana-6.0.2-orig/pkg/cmd/grafana-server/main.go grafana-6.0.2/pkg/cmd/grafana-server/main.go
+--- grafana-6.0.2-orig/pkg/cmd/grafana-server/main.go	2019-03-19 13:06:06.000000000 +0000
++++ grafana-6.0.2/pkg/cmd/grafana-server/main.go	2019-04-15 19:43:29.052643000 +0000
+@@ -21,6 +21,7 @@
+ 	"github.com/grafana/grafana/pkg/setting"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/azuremonitor"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/cloudwatch"
++	_ "github.com/grafana/grafana/pkg/tsdb/clickhouse"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/elasticsearch"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/graphite"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/influxdb"
+diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg/tsdb/clickhouse/clickhouse.go
+--- grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go	1970-01-01 00:00:00.000000000 +0000
++++ grafana-6.0.2/pkg/tsdb/clickhouse/clickhouse.go	2019-04-15 19:44:23.494985000 +0000
+@@ -0,0 +1,150 @@
++package clickhouse
++
++import (
++	"context"
++	"encoding/json"
++	"fmt"
++	"github.com/grafana/grafana/pkg/components/null"
++	"github.com/grafana/grafana/pkg/log"
++	"github.com/grafana/grafana/pkg/models"
++	"github.com/grafana/grafana/pkg/tsdb"
++	"github.com/pkg/errors"
++	"io/ioutil"
++	"net/http"
++	"net/url"
++	"strconv"
++)
++
++type Clickhouse struct {
++	*models.DataSource
++	log log.Logger
++}
++
++type clickhouseResponse struct {
++	Meta []struct {
++		Name string `json:"name"`
++		Type string `json:"type"`
++	} `json:"meta"`
++	Data []map[string]string `json:"data"`
++	Rows int64               `json:"rows"`
++}
++
++func NewClickhouseExecutor(dsInfo *models.DataSource) (tsdb.TsdbQueryEndpoint, error) {
++	return &Clickhouse{
++		DataSource: dsInfo,
++		log:        log.New("tsdb.clickhouse"),
++	}, nil
++}
++
++func init() {
++	tsdb.RegisterTsdbQueryEndpoint("vertamedia-clickhouse-datasource", NewClickhouseExecutor)
++}
++
++func (e *Clickhouse) Query(ctx context.Context, dsInfo *models.DataSource, tsdbQuery *tsdb.TsdbQuery) (*tsdb.Response, error) {
++	result := &tsdb.Response{}
++	result.Results = make(map[string]*tsdb.QueryResult)
++
++	for _, query := range tsdbQuery.Queries {
++		result.Results[query.RefId] = e.executeQuery(query, tsdbQuery.TimeRange)
++	}
++
++	return result, nil
++}
++
++func (e *Clickhouse) executeQuery(query *tsdb.Query, timeRange *tsdb.TimeRange) *tsdb.QueryResult {
++	queryResult := tsdb.NewQueryResult()
++
++	queryString, err := query.Model.Get("rawQuery").String()
++	if err != nil {
++		queryResult.Error = errors.Wrap(err, "Cannot get raw query")
++		return queryResult
++	}
++	params := url.Values{}
++	params.Add("query", fmt.Sprintf("%s FORMAT JSON", queryString))
++
++	if e.DataSource.BasicAuth {
++		params.Add("user", e.DataSource.BasicAuthUser)
++		params.Add("password", e.DataSource.BasicAuthPassword)
++	}
++
++	response, err := http.Get(fmt.Sprintf("%s?%s", e.DataSource.Url, params.Encode()))
++	if err != nil {
++		queryResult.Error = errors.Wrap(err, "Request is failed")
++		return queryResult
++	}
++
++	responseBody, err := ioutil.ReadAll(response.Body)
++	if err != nil {
++		queryResult.Error = errors.Wrap(err, "Cannot read response body")
++		return queryResult
++	}
++
++	clickhouseResponse := &clickhouseResponse{}
++	err = json.Unmarshal(responseBody, clickhouseResponse)
++	if err != nil {
++		queryResult.Error = errors.Wrapf(err, "Cannot parse the response: %s", responseBody)
++		return queryResult
++	}
++	dateTimeColumnName, err := query.Model.Get("dateTimeColDataType").String()
++	if err != nil {
++		queryResult.Error = err
++		return queryResult
++	}
++
++	format := query.Model.Get("format").MustString("time_series")
++
++	switch format {
++	case "time_series":
++		series, err := e.buildSeries(clickhouseResponse, dateTimeColumnName, timeRange)
++		if err != nil {
++			queryResult.Error = err
++			return queryResult
++		}
++		queryResult.Series = series
++	default:
++		queryResult.Error = errors.Errorf("%s format does not support", format)
++	}
++
++	return queryResult
++}
++
++func (e *Clickhouse) buildSeries(responseJson *clickhouseResponse, timeColumnName string, timeRange *tsdb.TimeRange) ([]*tsdb.TimeSeries, error) {
++	series := make([]*tsdb.TimeSeries, 0)
++	for _, row := range responseJson.Data {
++		timeString, ok := row[timeColumnName]
++		if !ok {
++			return nil, errors.New("Cannot find time column")
++		}
++
++		time, err := strconv.ParseFloat(timeString, 64)
++		if err != nil {
++			return nil, errors.New(fmt.Sprintf("Cannot parse float %s", timeString))
++		}
++
++		if timeRange != nil && (float64(timeRange.GetFromAsMsEpoch()) > time || float64(timeRange.GetToAsMsEpoch()) < time) {
++			continue
++		}
++
++		i := 0
++		for columnName, columnValue := range row {
++			if columnName == timeColumnName {
++				continue
++			}
++			value, err := strconv.ParseFloat(columnValue, 64)
++			if err != nil {
++				return nil, errors.New(fmt.Sprintf("Cannot parse float %s", columnValue))
++			}
++
++			point := tsdb.TimePoint{null.FloatFrom(value), null.FloatFrom(time)}
++
++			// Append a new series if it's the first point
++			if len(series) <= i {
++				series = append(series, tsdb.NewTimeSeries(columnName, tsdb.TimeSeriesPoints{}))
++			}
++
++			series[i].Points = append(series[i].Points, point)
++			i += 1
++		}
++	}
++	return series, nil
++}

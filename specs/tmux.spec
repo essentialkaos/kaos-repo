@@ -6,7 +6,7 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              2.7
+Version:              2.8
 Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
@@ -57,13 +57,34 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES TODO
+%doc README README.ja CHANGES TODO
 %{_bindir}/tmux
 %{_mandir}/man1/tmux.1.*
 
 ################################################################################
 
 %changelog
+* Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
+- Make display-panes block the client until a pane is chosen or it
+  times out.
+- Clear history on RIS like most other terminals do.
+- Add an "Any" key to run a command if a key is pressed that is not
+  bound in the current key table.
+- Expand formats in load-buffer and save-buffer.
+- Add a rectangle_toggle format.
+- Add set-hook -R to run a hook immediately.
+- Add README.ja.
+- Add pane focus hooks.
+- Allow any punctuation as separator for s/x/y not only /.
+- Improve resizing with the mouse (fix resizing the wrong pane in some
+  layouts, and allow resizing multiple panes at the same time).
+- Allow , and } to be escaped in formats as #, and #}.
+- Add KRB5CCNAME to update-environment.
+- Change meaning of -c to display-message so the client is used if it
+  matches the session given to -t.
+- Fixes to : form of SGR.
+- Add x and X to choose-tree to kill sessions, windows or panes.
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7-0
 - Remove EVENT_- variables from environment on platforms where tmux uses them
   so they do not pass on to panes.

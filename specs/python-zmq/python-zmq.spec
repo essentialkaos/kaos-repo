@@ -23,6 +23,7 @@ BuildRequires:  chrpath Cython zeromq3-devel
 Requires:       python
 
 Provides:       %{name} = %{verion}-%{release}
+Provides:       python2-zmq = %{verion}-%{release}
 
 ################################################################################
 

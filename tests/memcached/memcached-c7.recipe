@@ -1,0 +1,41 @@
+# Bibop recipe for Memcached
+# See more: https://github.com/essentialkaos/bibop
+
+pkg memcached memcached-devel
+
+require-root yes
+
+var service_user  memcached
+var service_group memcached
+var service_name  memcached
+var delay 3
+
+command "-" "Check environment"
+  app memcached
+  app memcached-tool
+  service-present {service_name}
+  user-exist {service_user}
+  group-exist {service_group}
+  exist /var/log/{service_name}
+  owner /var/log/{service_name} {service_user}
+
+command "systemctl start {service_name}" "Start Memcached service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :11211
+
+command "systemctl status {service_name}" "Check status of Memcached service"
+  expect "active (running)"
+
+command "systemctl restart {service_name}" "Restart Memcached service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :11211
+
+command "systemctl stop {service_name}" "Stop Memcached service"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :11211
+
+command "-" "Check headers"
+  lib-header memcached

@@ -1,0 +1,23 @@
+# Bibop recipe for cURL
+# See more: https://github.com/essentialkaos/bibop
+
+pkg curl libcurl libcurl-devel
+
+fast-finish yes
+
+command "-" "Check environment"
+  app curl
+
+command "-" "Check lib"
+  lib-loaded libcurl.so.*
+
+command "curl -Is https://www.google.com" "Check basic HTTP request"
+  expect "HTTP/2 200"
+  exit 0
+
+command "curl -LIs http://google.com" "Check redirect"
+  expect "Server: gws"
+  exit 0
+
+command "curl -Is https://unknown" "Check request error"
+  !exit 0

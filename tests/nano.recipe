@@ -1,0 +1,13 @@
+# Bibop recipe for nano
+# See more: https://github.com/essentialkaos/bibop
+
+pkg nano
+
+fast-finish yes
+
+command "-" "Check environment"
+  app nano
+
+command "nano --version" "Check version info"
+  exit 0
+  output-contains "Compiled options: --disable-libmagic --enable-utf8"

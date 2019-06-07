@@ -1,0 +1,16 @@
+# Bibop recipe for PyYAML
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python34-PyYAML
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/yaml
+  dir {PYTHON2_SITEARCH}/yaml
+  !empty-dir {PYTHON2_SITEARCH}/yaml
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITEARCH}/yaml
+  dir {PYTHON3_SITEARCH}/yaml
+  !empty-dir {PYTHON3_SITEARCH}/yaml

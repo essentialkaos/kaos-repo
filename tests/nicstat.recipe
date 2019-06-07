@@ -1,0 +1,13 @@
+# Bibop recipe for nicstat
+# See more: https://github.com/essentialkaos/bibop
+
+pkg nicstat
+
+fast-finish yes
+
+command "-" "Check environment"
+  app nicstat
+
+command "nicstat -v" "Check version info"
+  exit 0
+  output-contains "nicstat version "

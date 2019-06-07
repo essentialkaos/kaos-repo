@@ -1,0 +1,10 @@
+# Sysconfig file for VULS server
+
+CONFIG=""
+IP=""
+PORT=""
+LOG_DIR=""
+USER=""
+PROXY_URL=""
+CVSS_OVER=""
+DEBUG=""

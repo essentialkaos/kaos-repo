@@ -1,0 +1,12 @@
+[Unit]
+Description=Exploit-DB Server 
+Before=httpd.service
+After=network.target
+
+[Service]
+PIDFile=/var/run/expld-server.pid
+ExecStart=/etc/init.d/expld-server start
+ExecStop=/etc/init.d/expld-server stop
+
+[Install]
+WantedBy=multi-user.target

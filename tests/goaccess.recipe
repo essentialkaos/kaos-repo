@@ -1,0 +1,14 @@
+# Bibop recipe for goaccess
+# See more: https://github.com/essentialkaos/bibop
+
+pkg goaccess
+
+fast-finish yes
+
+command "-" "Check environment"
+  app goaccess
+
+command "goaccess --version" "Check version info"
+  exit 0
+  output-contains "--enable-debug"
+  output-contains "--enable-utf8"

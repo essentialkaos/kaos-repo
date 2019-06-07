@@ -34,7 +34,7 @@
 
 Summary:            Friendly interactive shell (FISh)
 Name:               fish
-Version:            2.7.1
+Version:            3.0.0
 Release:            0%{?dist}
 License:            GPL2
 Group:              System Environment/Shells
@@ -44,7 +44,8 @@ Source0:            https://github.com/fish-shell/fish-shell/releases/download/%
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      ncurses-devel gettext gcc-c++ autoconf
+BuildRequires:      ncurses-devel gettext autoconf
+BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-binutils
 
 Requires:           bc python which man
 
@@ -61,6 +62,9 @@ is simple but incompatible with other shell languages.
 %setup -q
 
 %build
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+
 %configure
 
 %{__make} %{?_smp_mflags}
@@ -100,32 +104,35 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 3.0.0-0
+- Updated to the latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.3.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 2.1.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Oct 10 2014 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Dec 27 2013 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
 - Initial build

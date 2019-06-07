@@ -1,0 +1,32 @@
+# Bibop recipe for tabix
+# See more: https://github.com/essentialkaos/bibop
+
+pkg tabix
+
+fast-finish yes
+
+var data_dir /opt/tabix
+
+command "-" "Check files"
+  exist {data_dir}/index.html
+  exist {data_dir}/favicon.ico
+  exist {data_dir}/app
+  exist {data_dir}/assets
+  exist {data_dir}/fonts
+  exist {data_dir}/scripts
+  exist {data_dir}/styles
+
+  dir {data_dir}/app
+  dir {data_dir}/assets
+  dir {data_dir}/fonts
+  dir {data_dir}/scripts
+  dir {data_dir}/styles
+
+  !empty {data_dir}/index.html
+  !empty {data_dir}/favicon.ico
+
+  !empty-dir {data_dir}/app
+  !empty-dir {data_dir}/assets
+  !empty-dir {data_dir}/fonts
+  !empty-dir {data_dir}/scripts
+  !empty-dir {data_dir}/styles

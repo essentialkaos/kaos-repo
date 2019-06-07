@@ -1,0 +1,21 @@
+# Bibop recipe for python-msgpack for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-msgpack python34-msgpack
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/msgpack
+  dir {PYTHON2_SITEARCH}/msgpack
+
+  exist {PYTHON2_SITEARCH}/msgpack/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITEARCH}/msgpack
+  dir {PYTHON3_SITEARCH}/msgpack
+
+  exist {PYTHON3_SITEARCH}/msgpack/__init__.py
+  
+  exist {PYTHON3_SITEARCH}/msgpack/_packer.cpython-34m.so
+  exist {PYTHON3_SITEARCH}/msgpack/_unpacker.cpython-34m.so

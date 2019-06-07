@@ -1,0 +1,37 @@
+# Bibop recipe for NetData
+# See more: https://github.com/essentialkaos/bibop
+
+pkg netdata
+
+require-root yes
+
+var service_user  netdata
+var service_group netdata
+var service_name  netdata
+var delay 3
+
+command "-" "Check environment"
+  app netdata
+  service-present {service_name}
+  user-exist {service_user}
+  group-exist {service_group}
+
+command "systemctl start {service_name}" "Start NetData service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :19999
+  http-status GET "http://127.0.0.1:19999/" 200
+
+command "systemctl status {service_name}" "Check status of NetData service"
+  expect "active (running)"
+
+command "systemctl restart {service_name}" "Restart NetData service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :19999
+  http-status GET "http://127.0.0.1:19999/" 200
+
+command "systemctl stop {service_name}" "Stop NetData service"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :19999

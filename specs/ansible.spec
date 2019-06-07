@@ -10,7 +10,7 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.6.4
+Version:              2.7.6
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
@@ -89,9 +89,9 @@ if expr x'%{python_sitelib}' : 'x.*dist-packages/\?' ; then
     fi
 fi
 
-%{__mkdir_p} %{buildroot}%{_sysconfdir}/%{name}/
-%{__mkdir_p} %{buildroot}%{_mandir}/man1/
-%{__mkdir_p} %{buildroot}%{_datadir}/%{name}
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}/
+mkdir -p %{buildroot}%{_mandir}/man1/
+mkdir -p %{buildroot}%{_datadir}/%{name}
 
 cp examples/hosts %{buildroot}%{_sysconfdir}/%{name}/
 cp examples/ansible.cfg %{buildroot}%{_sysconfdir}/%{name}/
@@ -114,50 +114,62 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.6-0
+- Updated to the latest version
+
+* Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.5-0
+- Updated to the latest version
+
+* Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.4-0
+- Updated to the latest version
+
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.7-0
+- Updated to the latest version
+
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 2.5.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.3.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.4.1.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.2.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.1.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.2.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.1.1.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Thu May 26 2016 Gleb Goncharov <inbox@gongled.ru> - 2.1.0.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.0.2.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Mar 01 2016 Gleb Goncharov <inbox@gongled.ru> - 2.0.1.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sun Jan 31 2016 Gleb Goncharov <inbox@gongled.ru> - 2.0.0.1-0
 - Initial build

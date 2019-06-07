@@ -35,6 +35,7 @@ binary=${BINARY:-/usr/bin/pgbouncer}
 user=${USER:-pgbouncer}
 conf_file=${CONF_FILE:-/etc/pgbouncer/pgbouncer.ini}
 log_dir=${LOG_DIR:-/var/log/pgbouncer}
+max_wait=${MAX_WAIT:-120}
 
 is_restart=""
 
@@ -58,9 +59,7 @@ kv.disableOutputRedirect "start" "pre"
 
 reload() {
   kv.showProcessMessage "Reloading config"
-
   kv.sendSignal "$SIGNAL_HUP"
-
   kv.showStatusMessage $ACTION_OK
 
   return $ACTION_OK
@@ -68,9 +67,7 @@ reload() {
 
 pause() {
   kv.showProcessMessage "Pausing"
-
   kv.sendSignal "$SIGNAL_USR1"
-
   kv.showStatusMessage $ACTION_OK
 
   return $ACTION_OK
@@ -78,9 +75,7 @@ pause() {
 
 resume() {
   kv.showProcessMessage "Resuming"
-
   kv.sendSignal "$SIGNAL_USR2"
-
   kv.showStatusMessage $ACTION_OK
 
   return $ACTION_OK
@@ -98,7 +93,7 @@ preStartHandler() {
     has_errors=true
   fi
 
-  if kv.isBoundPort "$port" ; then
+  if [[ -z "$is_restart" ]] && kv.isBoundPort "$port" ; then
     kv.error "Port $port already bound"
     has_errors=true
   fi
@@ -142,6 +137,8 @@ preStartHandler() {
   if [[ -n "$has_errors" ]] ; then
     kv.exit 1
   fi
+
+  return $ACTION_OK
 }
 
 postStartHandler() {
@@ -187,18 +184,43 @@ preStopHandler() {
 startHandler() {
   if [[ -z "$is_restart" ]] ; then
     kv.run "$binary" "-d -q $conf_file"
-  else
-    kv.run "$binary" "-R -d -q $conf_file"
+    kv.getStartStatus
+    return $?
   fi
 
-  kv.getStartStatus
+  local pid i
 
-  return $?
+  # Get PID of old instance of pgbouncer
+  pid=$(kv.getPID)
+
+  # Run new instance of pgbouncer with "restart" mode
+  kv.run "$binary" "-R -d -q $conf_file"
+
+  # Check status of new instance
+  if ! kv.getStartStatus ; then
+    return $ACTION_ERROR
+  fi
+
+  # Wait till old instance is finished transferring connections to new one
+  for i in $(seq 1 "${max_wait}") ; do
+    # Old instance terminated
+    if ! kv.isProcExist "$pid" ; then
+      return $ACTION_OK
+    fi
+
+    sleep 1
+  done
+
+  return $ACTION_ERROR
 }
 
 stopHandler() {
-  kv.sendSignal "$SIGNAL_TERM"
+  # It's restart, do nothing
+  if [[ -n "$is_restart" ]] ; then
+    return $ACTION_OK
+  fi
 
+  kv.sendSignal "$SIGNAL_TERM"
   kv.getStopStatus
 
   return $?
@@ -238,4 +260,3 @@ readConfigProperty() {
 configure
 
 kv.go $@
-

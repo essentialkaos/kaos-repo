@@ -54,17 +54,17 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.11
+%global go_api 1.12
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.11
+Version:           1.12.5
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
-URL:               http://golang.org
+URL:               https://golang.org
 
 Source0:           https://storage.googleapis.com/%{name}/go%{version}.src.tar.gz
 
@@ -787,83 +787,119 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Wed May 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.5-0
+- Updated to the latest stable release
+
+* Wed May 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.4-0
+- Updated to the latest stable release
+
+* Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.3-0
+- Updated to the latest stable release
+
+* Sat Apr 06 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.2-0
+- Updated to the latest stable release
+
+* Fri Mar 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.1-0
+- Updated to the latest stable release
+
+* Tue Feb 26 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12-0
+- Updated to the latest stable release
+
+* Thu Jan 24 2019 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0
+- Updated to the latest stable release
+
+* Sat Dec 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.4-0
+- Updated to the latest stable release
+
+* Sat Dec 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.3-0
+- Updated to the latest stable release
+
+* Sat Nov 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.2-0
+- Updated to the latest stable release
+
+* Tue Oct 02 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.1-0
+- Updated to the latest stable release
+
+* Tue Oct 02 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11-0
+- Updated to the latest stable release
+
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Mar 30 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-1
 - Added missing tools (buildid, test2json)
 
 * Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Oct 26 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu May 25 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Mar 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-1
 - Improved spec
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Dec 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Oct 20 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Aug 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Jul 22 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Apr 21 2016 Gleb Goncharov <yum@gongled.ru> - 1.6.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Feb 19 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Feb 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-1
 - Improved spec
 
 * Fri Jan 15 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Dec 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-1
 - Added git to dependencies
 
 * Thu Oct 22 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Sep 01 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
 - Initial build

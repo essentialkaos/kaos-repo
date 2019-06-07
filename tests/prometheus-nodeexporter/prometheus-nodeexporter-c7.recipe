@@ -1,0 +1,58 @@
+# Bibop recipe for Prometheus Node Exporter
+# See more: https://github.com/essentialkaos/bibop
+
+pkg prometheus-nodeexporter
+
+require-root yes
+unsafe-actions yes
+
+var service_user  nodeexporter
+var service_group nodeexporter
+var service_name  prometheus-nodeexporter
+
+var logrotate_config /etc/logrotate.d/prometheus-nodeexporter
+var sysconfig /etc/sysconfig/prometheus-nodeexporter
+
+var run_dir /var/run/prometheus-nodeexporter
+var log_dir /var/log/prometheus-nodeexporter
+
+var delay 3
+
+command "-" "Check environment"
+  app prometheus-nodeexporter
+
+  service-present {service_name}
+
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  exist {sysconfig}
+  perms {sysconfig} 644
+
+  exist {run_dir}
+  dir {run_dir}
+  perms {run_dir} 755
+  owner {run_dir} {service_user}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}
+
+command "systemctl start {service_name}" "Start Node exporter service"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl status {service_name}" "Check status of Node exporter service"
+  expect "active (running)"
+
+command "systemctl restart {service_name}" "Restart Node exporter service"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl stop {service_name}" "Stop Node exporter service"
+  wait {delay}
+  !service-works {service_name}

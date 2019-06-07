@@ -1,0 +1,23 @@
+# Bibop recipe for GeoTIFF format library
+# See more: https://github.com/essentialkaos/bibop
+
+pkg libgeotiff libgeotiff-devel
+
+fast-finish yes
+
+var lib_name libgeotiff
+
+command "-" "Check environment"
+  app applygeo
+  app geotifcp
+  app listgeo
+  app makegeo
+
+command "-" "Check shared libs"
+  lib-loaded {lib_name}.so.*
+
+command "-" "Check headers"
+  lib-header {lib_name}
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}

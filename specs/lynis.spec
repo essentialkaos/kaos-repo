@@ -30,7 +30,7 @@
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            2.6.9
+Version:            2.7.0
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
@@ -95,6 +95,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.0-0
+- MACF-6240 - Detection of TOMOYO binary
+- MACF-6242 - Status of TOMOYO framework
+- SSH-7406 - OpenSSH server version detection
+- TOOL-5160 - Check active OSSEC analysis daemon
+- Changed several warning labels on screen
+- AUTH-9308 - More generic sulogin for systemd rescue.service
+- OS detection now ignores quotes for getting the OS ID.
+
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 2.6.9-0
 - Man page has been updated
 - Command 'lynis show options' provides up-to-date list
@@ -205,22 +214,22 @@ rm -rf %{buildroot}
 - TOOL-5122 - Snort configuration file
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 2.4.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.4.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Oct 06 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Oct 07 2015 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
 - Initial build

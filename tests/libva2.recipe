@@ -1,0 +1,24 @@
+# Bibop recipe for Libva 2
+# See more: https://github.com/essentialkaos/bibop
+
+pkg libva2 libva2-devel
+
+fast-finish yes
+
+var lib_name libva
+var lib_version 2
+
+command "-" "Check shared libs"
+  lib-loaded {lib_name}.so.{lib_version}
+  lib-loaded {lib_name}-x11.so.{lib_version}
+  lib-loaded {lib_name}-glx.so.{lib_version}
+  lib-loaded {lib_name}-drm.so.{lib_version}
+
+command "-" "Check headers"
+  lib-header va
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}
+  lib-config {lib_name}-x11
+  lib-config {lib_name}-glx
+  lib-config {lib_name}-drm

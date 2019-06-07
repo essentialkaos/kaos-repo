@@ -30,7 +30,7 @@
 
 Summary:            Tool for checking common errors in RPM packages
 Name:               rpmlint
-Version:            1.10
+Version:            1.11
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
@@ -45,8 +45,8 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildRequires:      python rpm-python sed
 
-Requires:           python rpm-python python-magic python-enchant cpio binutils
-Requires:           desktop-file-utils gzip bzip2 xz
+Requires:           python rpm-python python-magic >= 5.05 python-enchant cpio
+Requires:           binutils desktop-file-utils gzip bzip2 xz
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -106,11 +106,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.11-0
+- Updated to the latest release
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.9-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 14 2015 Anton Novojilov <andy@essentialkaos.com> - 1.8-0
 - Initial build

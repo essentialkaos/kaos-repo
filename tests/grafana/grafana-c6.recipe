@@ -1,0 +1,101 @@
+# Bibop recipe for Grafana on CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg grafana
+
+var man1_dir    /usr/share/man/man1
+var assets_dir  /usr/share/grafana
+var data_dir    /var/lib/grafana
+var log_dir     /var/log/grafana
+var conf_dir    /etc/grafana
+var sysconfig   /etc/sysconfig/grafana-server
+var db_file     {data_dir}/grafana.db
+var init_script /etc/init.d/grafana-server
+
+var service_user  grafana
+var service_group grafana
+var service_name  grafana-server
+
+var delay 3
+
+command "-" "Check binaries and service"
+  app grafana-cli
+  app grafana-server
+
+  service-present {service_name}
+
+command "-" "Check configuration files and scripts"
+  exist {conf_dir}
+  dir {conf_dir}
+  perms {conf_dir} 755
+  owner {conf_dir} root:root
+
+  exist {conf_dir}/grafana.ini
+  perms {conf_dir}/grafana.ini 640
+  owner {conf_dir}/grafana.ini root:{service_group}
+
+  exist {conf_dir}/ldap.toml
+  perms {conf_dir}/ldap.toml 640
+  owner {conf_dir}/ldap.toml root:{service_group}
+
+  exist {sysconfig}
+  perms {sysconfig} 644
+  owner {sysconfig} root:root
+
+  exist {init_script}
+  perms {init_script} 755
+
+command "-" "Check data directory"
+  exist {data_dir}
+  dir {data_dir}
+  perms {data_dir} 755
+  owner {data_dir} {service_user}:{service_group}
+
+  exist {data_dir}/plugins
+  dir {data_dir}/plugins
+  perms {data_dir}/plugins 755
+  owner {data_dir}/plugins {service_user}:{service_group}
+
+command "-" "Check logs directory"
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "-" "Check assets data"
+  exist {assets_dir}/public
+  dir {assets_dir}/public
+  perms {assets_dir}/public 755
+  owner {assets_dir}/public root:root
+
+  exist {assets_dir}/public/robots.txt
+  perms {assets_dir}/public/robots.txt 644
+
+command "-" "Check man pages"
+  exist {man1_dir}/grafana-cli.1.gz
+  exist {man1_dir}/grafana-server.1.gz
+
+  perms {man1_dir}/grafana-cli.1.gz 644
+  perms {man1_dir}/grafana-server.1.gz 644
+
+command "service {service_name} start" "Start Grafana Server daemon"
+  exit 0
+  service-works {service_name}
+
+command "-" "Check database"
+  wait 1
+  exist {db_file}
+  perms {db_file} 644
+  owner {db_file} {service_user}:{service_group}
+
+command "-" "Check logs"
+  exist {log_dir}/grafana.log
+  perms {log_dir}/grafana.log 644
+  owner {log_dir}/grafana.log {service_user}:{service_group}
+
+command "service {service_name} status" "Check status of Grafana Server daemon"
+  exit 0
+
+command "service {service_name} stop" "Stop Grafana Server daemon"
+  exit 0
+  !service-works {service_name}

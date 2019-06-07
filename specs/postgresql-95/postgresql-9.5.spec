@@ -73,7 +73,7 @@
 %endif
 
 %define majorver        9.5
-%define minorver        14
+%define minorver        17
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          95
@@ -108,7 +108,7 @@ Source3:           pg_config.h
 Source4:           README.rpm-dist
 Source5:           ecpg_config.h
 Source6:           %{realname}-%{majorver}-libs.conf
-Source7:           http://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
+Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
@@ -562,7 +562,7 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
     rm -f GNUmakefile Makefile *.o
     chmod 0755 pg_regress regress.so
   popd
-  cp %{SOURCE4} %{buildroot}%{install_dir}/lib/test/regress/Makefile
+  cp %{SOURCE2} %{buildroot}%{install_dir}/lib/test/regress/Makefile
   chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
 
@@ -1090,45 +1090,54 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue May 14 2019 Anton Novojilov <andy@essentialkaos.com> - 9.5.17-0
+- Updated to the latest stable release
+
+* Tue Feb 26 2019 Anton Novojilov <andy@essentialkaos.com> - 9.5.16-0
+- Updated to the latest stable release
+
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.15-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.14-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.13-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.12-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.11-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 9.5.10-1
 - Updated spec
 
 * Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 9.5.10-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Oct 10 2017 Anton Novojilov <andy@essentialkaos.com> - 9.5.9-1
 - Improved init script
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 9.5.9-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 16 2017 Anton Novojilov <andy@essentialkaos.com> - 9.5.7-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 9.5.6-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Nov 20 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 - Added systemd support
 
 * Tue Oct 18 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.4-1
 - Fixed bug with previous version definition in init script
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Jun 27 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.3-2
 - Added installing pg_config link using update-alternatives
@@ -1138,13 +1147,13 @@ rm -rf %{buildroot}
 - Fixed reading locale bug on CentOS7+
 
 * Mon May 16 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Apr 07 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 09 2016 Anton Novojilov <andy@essentialkaos.com> - 9.5.0-0
 - Initial build

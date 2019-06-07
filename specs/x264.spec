@@ -44,7 +44,7 @@
 
 # Found X264_BUILD in (x264.h)
 %define pkg_build            155
-%define pkg_snapshot_date    20180911
+%define pkg_snapshot_date    20190122
 %define pkg_snapshot_suffix  2245
 
 %define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_suffix}
@@ -132,26 +132,32 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 0.152_20180620-0
-- Updated to latest stable snapshot
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 0.155-20190122_0
+- Updated to the latest stable snapshot
 
-* Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 0.152_20180219-0
-- Updated to latest stable snapshot
+* Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 0.155-20181207_0
+- Updated to the latest stable snapshot
 
-* Tue Sep 19 2017 Anton Novojilov <andy@essentialkaos.com> - 0.152_20170918-0
-- Updated to latest stable snapshot
+* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 0.152-20180620_0
+- Updated to the latest stable snapshot
 
-* Wed Jul 12 2017 Anton Novojilov <andy@essentialkaos.com> - 0.151_20170711-0
-- Updated to latest stable snapshot
+* Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 0.152-20180219_0
+- Updated to the latest stable snapshot
 
-* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.150_20170709-0
-- Updated to latest stable snapshot
+* Tue Sep 19 2017 Anton Novojilov <andy@essentialkaos.com> - 0.152-20170918_0
+- Updated to the latest stable snapshot
 
-* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.149_20170321-0
-- Updated to latest stable snapshot
+* Wed Jul 12 2017 Anton Novojilov <andy@essentialkaos.com> - 0.151-20170711_0
+- Updated to the latest stable snapshot
 
-* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.148_20160905-0
-- Updated to latest stable snapshot
+* Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.150-20170709_0
+- Updated to the latest stable snapshot
 
-* Mon Apr 18 2016 Gleb Goncharov <yum@gongled.ru> - 0.148_20160416-0
-- Updated to latest stable snapshot
+* Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.149-20170321_0
+- Updated to the latest stable snapshot
+
+* Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 0.148-20160905_0
+- Updated to the latest stable snapshot
+
+* Mon Apr 18 2016 Gleb Goncharov <yum@gongled.ru> - 0.148-20160416_0
+- Updated to the latest stable snapshot

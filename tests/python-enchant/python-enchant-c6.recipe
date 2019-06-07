@@ -1,0 +1,24 @@
+# Bibop recipe for python-enchant for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-enchant python34-enchant
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/enchant
+  dir {PYTHON2_SITELIB}/enchant
+
+  exist {PYTHON2_SITELIB}/enchant/checker
+  dir {PYTHON2_SITELIB}/enchant/checker
+
+  exist {PYTHON2_SITELIB}/enchant/_enchant.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/enchant
+  dir {PYTHON3_SITELIB}/enchant
+
+  exist {PYTHON3_SITELIB}/enchant/checker
+  dir {PYTHON3_SITELIB}/enchant/checker
+
+  exist {PYTHON3_SITELIB}/enchant/_enchant.py

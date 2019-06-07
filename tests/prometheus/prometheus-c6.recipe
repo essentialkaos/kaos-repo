@@ -1,0 +1,69 @@
+# Bibop recipe for Prometheus
+# See more: https://github.com/essentialkaos/bibop
+
+pkg prometheus
+
+require-root yes
+unsafe-actions yes
+
+var service_user  prometheus
+var service_group prometheus
+var service_name  prometheus
+
+var service_config /etc/prometheus/prometheus.yml
+var logrotate_config /etc/logrotate.d/prometheus
+var sysconfig /etc/sysconfig/prometheus
+
+var state_dir /usr/share/prometheus
+var lib_dir /var/lib/prometheus
+var log_dir /var/log/prometheus
+
+command "-" "Check environment"
+  app prometheus
+  app promtool
+
+  service-present {service_name}
+
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist {service_config}
+  perms {service_config} 644
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  exist {sysconfig}
+  perms {sysconfig} 644
+
+  exist {state_dir}
+  dir {state_dir}
+  perms {state_dir} 755
+
+  exist {lib_dir}
+  dir {lib_dir}
+  perms {lib_dir} 755
+  owner {lib_dir} {service_user}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}
+
+command "service {service_name} start" "Start Prometheus service"
+  exit 0
+  service-works {service_name}
+  connect tcp :9090
+
+command "service {service_name} status" "Check status of Prometheus service"
+  exit 0
+
+command "service {service_name} restart" "Restart Prometheus service"
+  exit 0
+  service-works {service_name}
+  connect tcp :9090
+
+command "service {service_name} stop" "Stop Prometheus service"
+  exit 0
+  !service-works {service_name}
+  !connect tcp :9090

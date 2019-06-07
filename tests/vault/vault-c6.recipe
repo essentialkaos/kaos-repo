@@ -1,0 +1,61 @@
+# Bibop recipe for Vault
+# See more: https://github.com/essentialkaos/bibop
+
+pkg vault-agent vault-server
+
+require-root yes
+
+var service_user  vault
+var service_group vault
+
+var server_service vault-server
+var agent_service  vault-agent
+
+var server_log_dir /var/log/vault-server
+var server_config  /etc/vault/server/config.hcl
+
+var agent_log_dir /var/log/vault-agent
+var agent_config  /etc/vault/agent/config.hcl
+
+var delay 3
+
+command "-" "Check environment"
+  app vault
+
+  service-present {server_service}
+  service-present {agent_service}
+
+  exist {server_config}
+  perms {server_config} 644
+  owner {server_config} root:root
+
+  exist {server_log_dir}
+  perms {server_log_dir} 755
+  owner {server_log_dir} {service_user}:{service_group}
+
+  exist {agent_config}
+  perms {agent_config} 644
+  owner {agent_config} root:root
+
+  exist {agent_log_dir}
+  perms {agent_log_dir} 755
+  owner {agent_log_dir} {service_user}:{service_group}
+
+command "-" "Prepare test environment"
+  env-set VAULT_ADDR "http://127.0.0.1:8200"
+
+command "service {server_service} start" "Start Vault daemon"
+  wait {delay}
+  service-works {server_service}
+  connect tcp :8200
+
+command "vault status" "Check Vault status"
+  expect "Sealed             true"
+
+command "service {server_service} status" "Check status of Vault daemon"
+  exit 0
+
+command "service {server_service} stop" "Stop Vault daemon"
+  wait {delay}
+  !service-works {server_service}
+  !connect tcp :8000

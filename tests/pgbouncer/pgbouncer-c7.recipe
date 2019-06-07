@@ -1,0 +1,42 @@
+# Bibop recipe for pgbouncer
+# See more: https://github.com/essentialkaos/bibop
+
+pkg pgbouncer
+
+require-root yes
+
+var service_name pgbouncer
+var service_user pgbouncer
+var service_config /etc/pgbouncer/pgbouncer.ini
+var logrotate_config /etc/logrotate.d/pgbouncer
+
+var delay 3
+
+command "-" "Check environment"
+  app pgbouncer
+  service-present {service_name}
+  
+  exist {service_config}
+  owner {service_config} {service_user}
+  perms {service_config} 644
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+command "systemctl start {service_name}" "Start pgbouncer daemon"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :6432
+
+command "systemctl restart {service_name}" "Restart pgbouncer daemon"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :6432
+
+command "systemctl status {service_name}" "Check status of pgbouncer daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop keepalived daemon"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :6432

@@ -70,6 +70,7 @@ Requires:           python-pycurl python-certifi python >= 2.7
 Requires:           python-singledispatch
 
 Provides:           %{name} = %{version}-%{release}
+Provides:           python2-%{pkgname} = %{version}-%{release}
 
 ################################################################################
 

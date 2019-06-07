@@ -32,7 +32,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            8.12.0
+Version:            10.15.2
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -44,7 +44,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           zlib
 
-BuildRequires:      make python >= 2.6 openssl-devel zlib-devel
+BuildRequires:      make python >= 2.7 openssl-devel zlib-devel
 BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}
@@ -118,20 +118,32 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Mar 01 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.2-0
+- Updated to the latest stable release
+
+* Fri Mar 01 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.1-0
+- Updated to the latest stable release
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.0-0
+- Updated to the latest stable release
+
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 10.13.0-0
+- Updated to the latest stable release
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 8.12.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.11.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-1
 - Using GCC from devtoolset-3 for build
 
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.9.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-1
 - Add nodejs(engine) provides tag

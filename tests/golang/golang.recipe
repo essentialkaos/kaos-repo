@@ -1,0 +1,21 @@
+# Bibop recipe for Golang
+# See more: https://github.com/essentialkaos/bibop
+
+pkg golang
+
+fast-finish yes
+
+command "-" "Check environment"
+  app go
+
+command "go version" "Check version info"
+  exit 0
+  output-contains "go version go"
+
+command "go run test.go" "Execute basic script"
+  exit 0
+  output-contains "GOLANG WORKS"
+
+command "go run test-cgo.go" "Execute basic script with cgo"
+  exit 0
+  output-contains "42"

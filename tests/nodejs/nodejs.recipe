@@ -1,0 +1,15 @@
+# Bibop recipe for NodeJS
+# See more: https://github.com/essentialkaos/bibop
+
+pkg nodejs nodejs-devel
+
+fast-finish yes
+
+command "-" "Check environment"
+  app node
+  app npm
+  app npx
+
+command "node test.js" "Execute basic script"
+  exit 0
+  output-contains "NODE WORKS"

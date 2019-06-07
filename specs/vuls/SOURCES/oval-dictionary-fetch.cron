@@ -1,0 +1,2 @@
+# Download data every day at 6:30
+# 30 6 * * * vuls /usr/bin/oval-dictionary-fetch /opt/vuls/oval-dictionary all &> /dev/null || :

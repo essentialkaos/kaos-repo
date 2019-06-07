@@ -1,0 +1,15 @@
+# Bibop recipe for Lynis
+# See more: https://github.com/essentialkaos/bibop
+
+pkg lynis
+
+fast-finish yes
+
+command "-" "Check environment"
+  app lynis
+
+command "lynis --version" "Check version"
+  exit 0
+
+command "lynis audit system -Q" "Run basic check"
+  exit 0 180

@@ -1,0 +1,28 @@
+# Bibop recipe for keepalived
+# See more: https://github.com/essentialkaos/bibop
+
+pkg keepalived
+
+require-root yes
+
+var service_name keepalived
+var delay 3
+
+command "-" "Check environment"
+  app keepalived
+  service-present {service_name}
+
+  # Check config file
+  exist /etc/keepalived/keepalived.conf
+  perms /etc/keepalived/keepalived.conf 644
+
+command "systemctl start {service_name}" "Start keepalived daemon"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl status {service_name}" "Check status of keepalived daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop keepalived daemon"
+  wait {delay}
+  !service-works {service_name}

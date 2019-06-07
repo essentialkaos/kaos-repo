@@ -63,12 +63,6 @@
 %{!?uuid:%define uuid 1}
 %{!?ldap:%define ldap 1}
 
-%if 0%{?fedora} > 21
-%{!?plpython3:%global plpython3 1}
-%else
-%{!?plpython3:%global plpython3 0}
-%endif
-
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?systemd_enabled:%global systemd_enabled 0}
 %{!?sdt:%global sdt 0}
@@ -80,10 +74,10 @@
 %endif
 
 %define majorver        10
-%define minorver        5
+%define minorver        8
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
-%define pkgver          100
+%define pkgver          10
 %define realname        postgresql
 %define shortname       pgsql
 %define tinyname        pg
@@ -515,19 +509,10 @@ run_testsuite()
 }
 
 %if %runselftest
-  pushd src/test/regress
-    %{__make} %{?_smp_mflags} all
-    cp ../../../contrib/spi/refint.so .
-    cp ../../../contrib/spi/autoinc.so .
-    %{__make} MAX_CONNECTIONS=5 check
-    %{__make} clean
-  popd
-  pushd src/pl
-    %{__make} MAX_CONNECTIONS=5 check
-  popd
-  pushd contrib
-    %{__make} MAX_CONNECTIONS=5 check
-  popd
+  run_testsuite "src/test/regress"
+  %{__make} %{?_smp_mflags} clean -C "src/test/regress"
+  run_testsuite "src/pl"
+  run_testsuite "contrib"
 %endif
 
 %if %test
@@ -625,7 +610,7 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
     rm -f GNUmakefile Makefile *.o
     chmod 0755 pg_regress regress.so
   popd
-  cp %{SOURCE4} %{buildroot}%{install_dir}/lib/test/regress/Makefile
+  cp %{SOURCE2} %{buildroot}%{install_dir}/lib/test/regress/Makefile
   chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
 
@@ -802,35 +787,35 @@ chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null 
 
 # Create alternatives entries for common binaries and man files
 %post
-%{__updalt} --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}0
-%{__updalt} --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}0
-%{__updalt} --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}0
-%{__updalt} --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}0
-%{__updalt} --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}0
-%{__updalt} --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_dump       %{shortname}-pg_dump       %{install_dir}/bin/pg_dump       %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_dumpall    %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall    %{pkgver}0
-%{__updalt} --install %{_bindir}/pg_restore    %{shortname}-pg_restore    %{install_dir}/bin/pg_restore    %{pkgver}0
-%{__updalt} --install %{_bindir}/reindexdb     %{shortname}-reindexdb     %{install_dir}/bin/reindexdb     %{pkgver}0
-%{__updalt} --install %{_bindir}/vacuumdb      %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb      %{pkgver}0
+%{__updalt} --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}00
+%{__updalt} --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}00
+%{__updalt} --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}00
+%{__updalt} --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}00
+%{__updalt} --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}00
+%{__updalt} --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_dump       %{shortname}-pg_dump       %{install_dir}/bin/pg_dump       %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_dumpall    %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall    %{pkgver}00
+%{__updalt} --install %{_bindir}/pg_restore    %{shortname}-pg_restore    %{install_dir}/bin/pg_restore    %{pkgver}00
+%{__updalt} --install %{_bindir}/reindexdb     %{shortname}-reindexdb     %{install_dir}/bin/reindexdb     %{pkgver}00
+%{__updalt} --install %{_bindir}/vacuumdb      %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb      %{pkgver}00
 
-%{__updalt} --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_dumpall.1    %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1    %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/pg_restore.1    %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1    %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/psql.1          %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1          %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/reindexdb.1     %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1     %{pkgver}0
-%{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}0
+%{__updalt} --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_dumpall.1    %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1    %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/pg_restore.1    %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1    %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/psql.1          %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1          %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/reindexdb.1     %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1     %{pkgver}00
+%{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}00
 
 %post libs
-%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}0
+%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}00
 %{__ldconfig}
 
 # Drop alternatives entries for common binaries and man files
@@ -1162,13 +1147,6 @@ rm -rf %{buildroot}
 %{install_dir}/share/extension/plpythonu*
 %endif
 
-%if %plpython3
-%files plpython3 -f pg_plpython3.lst
-%defattr(-,%{username},%{groupname})
-%{pgbaseinstdir}/share/extension/plpython3*
-%{pgbaseinstdir}/lib/plpython3.so
-%endif
-
 %if %test
 %files test
 %defattr(-,%{username},%{groupname})
@@ -1179,23 +1157,35 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue May 14 2019 Anton Novojilov <andy@essentialkaos.com> - 10.8-0
+- Updated to the latest stable release
+
+* Tue Feb 26 2019 Anton Novojilov <andy@essentialkaos.com> - 10.7-0
+- Updated to the latest stable release
+
+* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 10.6-0
+- Updated to the latest stable release
+
+* Fri Oct 26 2018 Anton Novojilov <andy@essentialkaos.com> - 10.5-1
+- Fixed minor bug using pkgver macro in description's
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 10.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 10.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 10.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Mar 03 2018 Anton Novojilov <andy@essentialkaos.com> - 10.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 27 2018 Anton Novojilov <andy@essentialkaos.com> - 10.1-1
 - Improved spec
 
 * Sun Nov 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
 - Initial build

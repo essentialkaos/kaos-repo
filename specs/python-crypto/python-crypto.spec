@@ -71,6 +71,7 @@ BuildRequires:    gcc python2-devel >= 2.2 gmp-devel >= 4.1
 %{?filter_setup}
 
 Provides:         pycrypto = %{version}-%{release}
+Provides:         python2-crypto = %{version}-%{release}
 
 ################################################################################
 

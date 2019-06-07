@@ -53,8 +53,8 @@
 
 Summary:         Advanced System and Process Monitor
 Name:            atop
-Version:         2.3.0
-Release:         3%{?dist}
+Version:         2.4.0
+Release:         0%{?dist}
 License:         GPL
 Group:           Development/System
 URL:             http://www.atoptool.nl
@@ -63,7 +63,7 @@ Source0:         https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
 Source1:         %{name}.daily
 Source2:         %{name}.sysconfig
 
-Patch0:          %{name}-%{version}-script-path-fix.patch
+Patch0:          %{name}-script-path-fix.patch
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -109,8 +109,12 @@ rm -rf %{buildroot}
 
 install -dm 0755 %{buildroot}%{_bindir}
 install -dm 0755 %{buildroot}%{_sbindir}
-install -pm 0711 atop %{buildroot}%{_bindir}/
-install -pm 0700 atopacctd %{buildroot}%{_sbindir}/
+
+install -pm 0711 atop        %{buildroot}%{_bindir}/
+install -pm 0711 atopconvert %{buildroot}%{_bindir}/
+install -pm 0700 atopacctd   %{buildroot}%{_sbindir}/
+install -pm 0700 atopgpud    %{buildroot}%{_sbindir}/
+
 ln -sf %{_bindir}/atop  %{buildroot}%{_bindir}/atopsar
 
 install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
@@ -218,11 +222,15 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %endif
 %{_bindir}/atop
 %{_bindir}/atopsar
+%{_bindir}/atopconvert
 %{_sbindir}/atopacctd
+%{_sbindir}/atopgpud
 %{_mandir}/man1/atop.1*
 %{_mandir}/man1/atopsar.1*
+%{_mandir}/man1/atopconvert.1*
 %{_mandir}/man5/atoprc.5*
 %{_mandir}/man8/atopacctd.8*
+%{_mandir}/man8/atopgpud.8*
 %{_sysconfdir}/%{name}/atop.daily
 %{_crondir}/atop
 %{_sysconfdir}/logrotate.d/psaccs_atop
@@ -232,6 +240,23 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- Support for Nvidia GPU statistics
+- Support for Infiniband statistics
+- Support for Pressure Stall Information (PSI)
+- Faster startup of atop
+- Configurable options for atop running in the background
+- CPU Instructions Per Cycle (IPC)
+- Various NFS counters corrected
+- Recognition of nvme and nbd disks
+- Recognition of DEADLINE scheduling policy
+- Proper handling of memory locking (improper handling caused malloc failures
+  in previous versions)
+- Added atopconvert
+
+* Wed Nov 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-4
+- Fixed path in cron config and systemd unit
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-3
 - Improved atop configuration through sysconfig file
 
@@ -242,7 +267,11 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 - Added patch with script path fix
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
-- Updated to latest stable release
+- Support for Docker containers
+- Improved gathering of process data
+- Improved memory figures for processes
+- Variable width for PID column
+- Minor improvements
 
 * Fri Jan 20 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.3-0
 - Initial build for kaos repository

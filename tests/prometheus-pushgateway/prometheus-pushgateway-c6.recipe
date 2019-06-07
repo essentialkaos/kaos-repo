@@ -1,0 +1,56 @@
+# Bibop recipe for Prometheus Pushgateway
+# See more: https://github.com/essentialkaos/bibop
+
+pkg prometheus-pushgateway
+
+require-root yes
+unsafe-actions yes
+
+var service_user  pushgateway
+var service_group pushgateway
+var service_name  prometheus-pushgateway
+
+var logrotate_config /etc/logrotate.d/prometheus-pushgateway
+var sysconfig /etc/sysconfig/prometheus-pushgateway
+
+var run_dir /var/run/prometheus-pushgateway
+var log_dir /var/log/prometheus-pushgateway
+
+command "-" "Check environment"
+  app prometheus-pushgateway
+
+  service-present {service_name}
+
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  exist {sysconfig}
+  perms {sysconfig} 644
+
+  exist {run_dir}
+  dir {run_dir}
+  perms {run_dir} 755
+  owner {run_dir} {service_user}
+
+  exist {log_dir}
+  dir {log_dir}
+  perms {log_dir} 755
+  owner {log_dir} {service_user}
+
+command "service {service_name} start" "Start Pushgateway service"
+  exit 0
+  service-works {service_name}
+
+command "service {service_name} status" "Check status of Pushgateway service"
+  exit 0
+
+command "service {service_name} restart" "Restart Pushgateway service"
+  exit 0
+  service-works {service_name}
+
+command "service {service_name} stop" "Stop Pushgateway service"
+  exit 0
+  !service-works {service_name}

@@ -1,10 +1,16 @@
 ################################################################################
 
-%global __python3 %{_bindir}/python3
+%if 0%{?rhel} >= 7
+%global python_base python36
+%global __python3   %{_bindir}/python3.6
+%else
+%global python_base python34
+%global __python3   %{_bindir}/python3.4
+%endif
 
 %global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
-
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
 
@@ -42,8 +48,8 @@
 
 Summary:            Terminal session recorder
 Name:               asciinema
-Version:            2.0.1
-Release:            0%{?dist}
+Version:            2.0.2
+Release:            1%{?dist}
 License:            GPLv3
 Group:              Applications/Internet
 URL:                https://asciinema.org
@@ -54,9 +60,9 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 BuildArch:          noarch
 
-BuildRequires:      python34-devel python34-setuptools
+BuildRequires:      %{python_base}-devel %{python_base}-setuptools
 
-Requires:           python34 python34-setuptools
+Requires:           %{python_base} %{python_base}-setuptools
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -91,17 +97,32 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGELOG.md README.md LICENSE
 %{_bindir}/%{name}
 %{python3_sitelib}/%{name}/*
 %{python3_sitelib}/*.egg-info
 %{_mandir}/man1/%{name}.1*
+%{_defaultdocdir}/*
 
 ################################################################################
 
 %changelog
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-1
+- Updated for compatibility with Python 3.6
+
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-0
+- Official support for Python 3.7
+- Recording is now possible on US-ASCII locale
+- Improved Android support
+- Possibility of programatic recording with asciinema.record_asciicast function
+- Uses new JSON response format added recently to asciinema-server
+- Tweaked message about how to stop recording
+- Added proper description and other metadata to Python package
+
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
-- Updated to latest stable release
+- Fixed example in asciicast v2 format doc
+- Replaced deprecated encodestring (since Python 3.1) with encodebytes
+- Fixed location of config dir (you can mv ~/.asciinema ~/.config/asciinema)
+- Internal refactorings
 
 * Tue Mar 06 2018 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
-- Initial build for kaos repository
+- Initial build for EK repository

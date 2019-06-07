@@ -1,38 +1,27 @@
-diff -urN redis-4.0.11-orig/sentinel.conf redis-4.0.11/sentinel.conf
---- redis-4.0.11-orig/sentinel.conf	2018-08-04 01:44:56.000000000 +0300
-+++ redis-4.0.11/sentinel.conf	2018-08-07 15:09:33.000000000 +0300
+diff -urN redis-5.0.0-orig/sentinel.conf redis-5.0.0/sentinel.conf
+--- redis-5.0.0-orig/sentinel.conf	2018-10-17 18:31:39.000000000 +0300
++++ redis-5.0.0/sentinel.conf	2018-11-28 03:42:29.000000000 +0300
 @@ -1,5 +1,3 @@
 -# Example sentinel.conf
 -
  # *** IMPORTANT ***
  #
  # By default Sentinel will not be reachable from interfaces different than
-@@ -16,10 +14,23 @@
- #
- # protected-mode no
- 
-+# By default Redis Sentinel does not run as a daemon. Use 'yes' if you need it.
+@@ -23,7 +21,7 @@
+ # By default Redis Sentinel does not run as a daemon. Use 'yes' if you need it.
+ # Note that Redis will write a pid file in /var/run/redis-sentinel.pid when
+ # daemonized.
+-daemonize no
 +daemonize yes
-+
- # port <sentinel-port>
- # The port that this sentinel instance will run on
- port 26379
  
-+# When running daemonized, Redis Sentinelwrites a pid file in
-+# /var/run/redis.pid by default. You can specify a custom pid file
-+# location here.
-+pidfile /var/run/redis/sentinel.pid
-+
-+# Specify the log file name. Also the empty string can be used to force
-+# Redis Sentinel to log on the standard output. Note that if you use standard
-+# output for logging but daemonize, logs will be sent to /dev/null
+ # When running daemonized, Redis Sentinel writes a pid file in
+ # /var/run/redis-sentinel.pid by default. You can specify a custom pid file
+@@ -33,7 +31,7 @@
+ # Specify the log file name. Also the empty string can be used to force
+ # Sentinel to log on the standard output. Note that if you use standard
+ # output for logging but daemonize, logs will be sent to /dev/null
+-logfile ""
 +logfile /var/log/redis/sentinel.log
-+
+ 
  # sentinel announce-ip <ip>
  # sentinel announce-port <port>
- #
-@@ -202,4 +213,3 @@
- # to get the program executed.
- 
- sentinel deny-scripts-reconfig yes
--

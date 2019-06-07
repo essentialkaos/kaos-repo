@@ -1,0 +1,18 @@
+# Bibop recipe for python-click for CentOS 7
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-click python36-click
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/click
+  dir {PYTHON2_SITELIB}/click
+
+  exist {PYTHON2_SITELIB}/click/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/click
+  dir {PYTHON3_SITELIB}/click
+
+  exist {PYTHON3_SITELIB}/click/__init__.py

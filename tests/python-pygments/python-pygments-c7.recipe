@@ -1,0 +1,36 @@
+# Bibop recipe for python-pygments for CentOS 7
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-pygments python36-pygments
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITELIB}/pygments
+  exist {PYTHON2_SITELIB}/pygments/filters
+  exist {PYTHON2_SITELIB}/pygments/formatters
+  exist {PYTHON2_SITELIB}/pygments/lexers
+  exist {PYTHON2_SITELIB}/pygments/styles
+  
+  dir {PYTHON2_SITELIB}/pygments
+  dir {PYTHON2_SITELIB}/pygments/filters
+  dir {PYTHON2_SITELIB}/pygments/formatters
+  dir {PYTHON2_SITELIB}/pygments/lexers
+  dir {PYTHON2_SITELIB}/pygments/styles
+
+  exist {PYTHON2_SITELIB}/pygments/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITELIB}/pygments
+  exist {PYTHON3_SITELIB}/pygments/filters
+  exist {PYTHON3_SITELIB}/pygments/formatters
+  exist {PYTHON3_SITELIB}/pygments/lexers
+  exist {PYTHON3_SITELIB}/pygments/styles
+  
+  dir {PYTHON3_SITELIB}/pygments
+  dir {PYTHON3_SITELIB}/pygments/filters
+  dir {PYTHON3_SITELIB}/pygments/formatters
+  dir {PYTHON3_SITELIB}/pygments/lexers
+  dir {PYTHON3_SITELIB}/pygments/styles
+
+  exist {PYTHON3_SITELIB}/pygments/__init__.py

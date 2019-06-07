@@ -1,0 +1,8 @@
+# Sysconfig file for exploitdb server
+
+DATA_DIR=""
+IP=""
+PORT=""
+USER=""
+LOG_DIR=""
+LOG=""

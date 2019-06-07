@@ -41,7 +41,7 @@
 
 Summary:              Cross-platform asychronous I/O
 Name:                 libuv
-Version:              1.23.1
+Version:              1.25.0
 Release:              0%{?dist}
 License:              MIT, BSD and ISC
 Group:                Development/Tools
@@ -142,44 +142,50 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
+- Updated to the latest stable release
+
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.24.0-0
+- Updated to the latest stable release
+
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.23.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.23.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.21.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.20.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 1.19.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.19.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.16.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-1
 - Minor spec improvement
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Oct 18 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.9.1-0
 - Initial build

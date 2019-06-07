@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# vault-server        init file for starting up the vault-server daemon
+#
+# chkconfig:   - 20 80
+# description: Starts and stops the vault-server daemon
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+kv[prog_name]="vault-server"
+
+kv.readSysconfig
+
+binary=${BINARY:-/usr/bin/vault}
+conf_file=${CONF_FILE:-/etc/vault/server/config.hcl}
+
+kv[pid_file]="/var/run/vault-server/vault-server.pid"
+
+kv[user]="${USER:-vault}"
+kv[delay_start]=${DELAY_START:-15}
+kv[delay_stop]=${DELAY_STOP:-120}
+
+###############################################################################
+
+kv.addCommandVars "stop" "force"
+
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+
+kv.addHandler "start" "preStartHandler" "pre"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+preStartHandler() {
+  local has_errors=""
+
+  [[ ! -f "$binary" ]] && has_errors=true && kv.error "Error! File $binary doesn't exist"
+  [[ ! -x "$binary" ]] && has_errors=true && kv.error "Error! File $binary is not executable"
+
+  [[ ! -f "$conf_file" ]] && has_errors=true && kv.error "Error! File $conf_file doesn't exist"
+  [[ ! -r "$conf_file" ]] && has_errors=true && kv.error "Error! File $conf_file is not readable"
+
+  [[ -z "${kv[user]}" ]] && has_errors=true && kv.error "User value can't be empty"
+
+  if ! kv.hasUser "${kv[user]}" ; then
+    has_errors=true && kv.error "User ${kv[user]} not found in /etc/passwd file"
+  fi
+
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
+
+  return $ACTION_OK
+}
+
+startServiceHandler() {
+  setcap 'cap_ipc_lock=+ep' "$binary" &>/dev/null
+
+  if [[ $? -ne 0 ]] ; then
+    kv.log "Can't set cap_ipc_lock capability for $binary"
+  fi
+
+  kv.daemonize "$binary" "server" "-config=$conf_file"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  local pid=$(kv.getPid)
+
+  kv.sendSignal "$SIGNAL_INT"
+
+  if kv.getStopStatus ; then
+    return $ACTION_OK
+  else
+    if [[ -n "$1" ]] ; then
+      kv.killProcess $pid
+    fi
+
+    return $ACTION_ERROR
+  fi
+}
+
+###############################################################################
+
+kv.go "$@"

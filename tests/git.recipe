@@ -1,0 +1,32 @@
+# Bibop recipe for git
+# See more: https://github.com/essentialkaos/bibop
+
+lock-workdir no
+
+var repo https://github.com/essentialkaos/7zcat.git
+
+command "-" "Check environment"
+  app git
+
+command "git --version" "Check version info"
+  expect "git version"
+  exit 0
+
+command "git clone {repo}" "Clone repository"
+  exit 0
+  chdir 7zcat
+  exist .git
+
+command "git checkout develop" "Checkout branch"
+  exit 0
+  exist .git
+
+command "git checkout v1.3.0" "Checkout tag"
+  exit 0
+  exist .git
+
+command "-" "Cleanup"
+  exist {WORKDIR}/7zcat
+  remove {WORKDIR}/7zcat
+  !exist {WORKDIR}/7zcat
+  

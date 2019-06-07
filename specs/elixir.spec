@@ -32,7 +32,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.7.3
+Version:            1.8.2
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -96,83 +96,95 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
+- Updated to the latest version
+
+* Wed Feb 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated to the latest version
+
+* Sat Jan 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
+- Updated to the latest version
+
+* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
+- Updated to the latest version
+
 * Mon Aug 27 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Aug 22 2018 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.7.2-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Aug 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Aug 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.6-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.5-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Oct 25 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-1
 - Fixed Erlang OTP version dependency
 
 * Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Aug 23 2017 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.5.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Aug 23 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sun Sep 25 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
-- Updated to latest version
+- Updated to the latest version
 
 * Thu Jun 30 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 1.3.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Feb 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-1
 - Fixed broken links to binary files
 
 * Tue Jan 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Sun Oct 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
 - Initial build

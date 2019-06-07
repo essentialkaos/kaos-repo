@@ -1,0 +1,12 @@
+[Unit]
+Description=Security Tracker Server 
+Before=httpd.service
+After=network.target
+
+[Service]
+PIDFile=/var/run/sectd-server.pid
+ExecStart=/etc/init.d/sectd-server start
+ExecStop=/etc/init.d/sectd-server stop
+
+[Install]
+WantedBy=multi-user.target

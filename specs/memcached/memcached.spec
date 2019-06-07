@@ -51,7 +51,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.10
+Version:                  1.5.12
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -227,6 +227,14 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.12-0
+- fix INCR/DECR refcount leak for invalid items
+
+* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.11-0
+- extstore: balance IO thread queues
+- t/lru-maintainer.t: check for WARM item earlier, fixing race condition on
+  some platforms
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.10-0
 - fix alignment issues on some ARM platforms for chunked items
 - add missing va_end() call to logger_log()

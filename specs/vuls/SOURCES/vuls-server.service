@@ -1,0 +1,12 @@
+[Unit]
+Description=OVAL Dictionary Server 
+Before=httpd.service
+After=network.target
+
+[Service]
+PIDFile=/var/run/vuls-server.pid
+ExecStart=/etc/init.d/vuls-server start
+ExecStop=/etc/init.d/vuls-server stop
+
+[Install]
+WantedBy=multi-user.target
