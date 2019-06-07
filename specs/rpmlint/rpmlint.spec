@@ -43,7 +43,7 @@ Source2:            RhelCheck.py
 BuildArch:          noarch
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      python rpm-python sed
+BuildRequires:      python rpm-python sed python-magic >= 5.05
 
 Requires:           python rpm-python python-magic >= 5.05 python-enchant cpio
 Requires:           binutils desktop-file-utils gzip bzip2 xz
