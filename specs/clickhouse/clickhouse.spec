@@ -70,9 +70,10 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     centos-release-scl devtoolset-8
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
-BuildRequires:     unixODBC-devel readline-devel
+BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
 Requires:          openssl libicu libtool-ltdl unixODBC readline logrotate
+Requires:          lz4 librdkafka
 
 %if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
@@ -168,6 +169,8 @@ mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
+            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
             -DGLIBC_COMPATIBILITY=OFF \
             -DCMAKE_BUILD_TYPE:STRING=Release \
             $CMAKE_OPTIONS
