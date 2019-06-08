@@ -2061,4 +2061,3 @@ fi
 
 * Wed Feb 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.0-0
 - Initial build
-

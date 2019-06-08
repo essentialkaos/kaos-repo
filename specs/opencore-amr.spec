@@ -122,4 +122,3 @@ rm -rf %{buildroot}
 
 * Sat Feb 14 2009 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.1.2-1
 - Initial build
-

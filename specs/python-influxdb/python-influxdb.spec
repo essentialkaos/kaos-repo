@@ -65,4 +65,3 @@ rm -rf %{buildroot}
 
 * Fri Nov 17 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 4.4.1-0
 - Initial build
-

@@ -308,4 +308,3 @@ fi
 
 * Tue Dec 09 2014 Anton Novojilov <andy@essentialkaos.com> - 3.4.6-0
 - Initial build
-
