@@ -59,9 +59,9 @@ Source0:             https://github.com/edenhill/%{name}/archive/v%{version}.tar
 
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:       make gcc gcc-c++ zlib-devel
+BuildRequires:       make cmake3 gcc gcc-c++ zlib-devel cyrus-sasl-devel
 
-Requires:            zlib
+Requires:            zlib cyrus-sasl-lib
 
 Provides:            %{name} = %{version}-%{release}
 
@@ -90,15 +90,26 @@ libraries to develop applications using a Kafka databases.
 %setup -q
 
 %build
+%if 0%{?rhel} == 6
+export CMAKE_OPTIONS="$CMAKE_OPTIONS"
+%endif
 
-%configure
+mkdir -p build
 
-%{__make} %{?_smp_mflags}
+pushd build
+  cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DRDKAFKA_BUILD_STATIC:Bool=False \
+            $CMAKE_OPTIONS
+  %{__make} %{?_smp_mflags}
+popd
 
 %install
 rm -rf %{buildroot}
 
-%{make_install}
+pushd build
+  %{make_install}
+  rm -rfv %{buildroot}%{_libdir32}/cmake/RdKafka/
+popd
 
 %clean
 rm -rf %{buildroot}
@@ -114,6 +125,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc README.md LICENSE INTRODUCTION.md CONFIGURATION.md
+%{_defaultlicensedir}/%{name}/LICENSES.txt
 %{_libdir}/%{name}.so
 %{_libdir}/%{name}.so.%{minor_ver}
 %{_libdir}/%{name}++.so
@@ -122,14 +134,10 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/%{name}/*
-%{_libdir}/%{name}.a
-%{_libdir}/%{name}++.a
 %{_libdir}/%{name}.so
 %{_libdir}/%{name}++.so
 %{_pkgconfigdir}/%{realname}.pc
 %{_pkgconfigdir}/%{realname}++.pc
-%{_pkgconfigdir}/%{realname}-static.pc
-%{_pkgconfigdir}/%{realname}++-static.pc
 
 ################################################################################
 
