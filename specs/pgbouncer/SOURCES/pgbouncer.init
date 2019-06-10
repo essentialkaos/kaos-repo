@@ -137,6 +137,8 @@ preStartHandler() {
   if [[ -n "$has_errors" ]] ; then
     kv.exit 1
   fi
+
+  return $ACTION_OK
 }
 
 postStartHandler() {
@@ -258,4 +260,3 @@ readConfigProperty() {
 configure
 
 kv.go $@
-

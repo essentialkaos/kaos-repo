@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.4.1.3-stable
+# rpmbuilder:tag          v19.7.3.9-stable
 
 ################################################################################
 
@@ -57,21 +57,23 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.4.3.11
+Version:           19.7.3.9
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
 URL:               https://clickhouse.yandex
 
 Source:            %{name}-%{version}.tar.bz2
+Source1:           %{name}.logrotate
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-7
+BuildRequires:     centos-release-scl devtoolset-8
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
-BuildRequires:     unixODBC-devel readline-devel
+BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
-Requires:          openssl libicu libtool-ltdl unixODBC readline
+Requires:          openssl libicu libtool-ltdl unixODBC readline logrotate
+Requires:          lz4 librdkafka
 
 %if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
@@ -157,7 +159,7 @@ This package contains test suite for ClickHouse DBMS.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
 
 %if 0%{?rhel} == 6
 export CMAKE_OPTIONS="$CMAKE_OPTIONS -DENABLE_JEMALLOC=0 -DENABLE_RDKAFKA=0"
@@ -167,6 +169,9 @@ mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
+            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
+            -DGLIBC_COMPATIBILITY=OFF \
             -DCMAKE_BUILD_TYPE:STRING=Release \
             $CMAKE_OPTIONS
   %{__make} %{?_smp_mflags}
@@ -192,6 +197,8 @@ install -dm 755 %{buildroot}%{_datadir}/%{name}/bin
 install -dm 755 %{buildroot}%{_datadir}/%{name}/headers
 install -dm 700 %{buildroot}%{service_data_dir}
 install -dm 775 %{buildroot}%{service_log_dir}
+install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
+install -dm 755 %{buildroot}%{_rundir}/%{name}-server
 
 # Client
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}-client
@@ -206,6 +213,8 @@ install -pm 644 debian/%{name}.limits \
 install -pm 644 dbms/programs/server/config.xml \
                 dbms/programs/server/users.xml \
                 %{buildroot}%{_sysconfdir}/%{name}-server/
+
+install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 %if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
@@ -299,8 +308,10 @@ fi
 %{_bindir}/%{name}-odbc-bridge
 %{_bindir}/%{name}-report
 %{_bindir}/%{name}-server
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %attr(0700, %{service_user}, %{service_group}) %dir %{service_data_dir}
 %attr(0775, root, %{service_group}) %dir %{service_log_dir}
+%attr(0755, %{service_user}, %{service_group}) %dir %{_rundir}/%{name}-server
 
 %files server-common
 %defattr(-, root, root, -)
@@ -319,6 +330,10 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 05 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.7.3.9-0
+- Updated to the latest release
+- Added logrotate configuration
+
 * Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 19.4.3.11-0
 - Updated to the latest release
 

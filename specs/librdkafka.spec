@@ -49,7 +49,7 @@
 
 Summary:             Apache Kafka C/C++ client library
 Name:                librdkafka
-Version:             0.11.3
+Version:             1.0.1
 Release:             0%{?dist}
 License:             2-clause BSD
 Group:               Development/Libraries
@@ -62,6 +62,8 @@ BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} 
 BuildRequires:       make gcc gcc-c++ zlib-devel
 
 Requires:            zlib
+
+Provides:            %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -126,10 +128,15 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}++.so
 %{_pkgconfigdir}/%{realname}.pc
 %{_pkgconfigdir}/%{realname}++.pc
+%{_pkgconfigdir}/%{realname}-static.pc
+%{_pkgconfigdir}/%{realname}++-static.pc
 
 ################################################################################
 
 %changelog
+* Wed Jun 05 2019 Gleb Goncharov <inbox@gongled.ru> - 1.0.1-0
+- Updated to latest release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.3-0
 - Updated to latest release
 
@@ -151,5 +158,5 @@ rm -rf %{buildroot}
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
 - Updated to latest release
 
-* Tue Apr 05 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.0.99-0
+* Tue Apr 05 2016 Gleb Goncharov <inbox@gongled.ru> - 0.9.0.99-0
 - Initial build

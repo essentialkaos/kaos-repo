@@ -150,7 +150,7 @@ install -pm 0644 packaging/rpm/sysconfig/%{name}-server %{buildroot}%{_sysconfdi
 install -pm 0644 %{SOURCE10} %{buildroot}%{_tmpfilesdir}/%{name}.conf
 install -pm 0644 packaging/rpm/systemd/%{name}-server.service %{buildroot}%{_unitdir}/%{name}-server.service
 %else
-install -pm 0644 packaging/rpm/init.d/%{name}-server %{buildroot}%{_initrddir}/%{name}-server
+install -pm 0755 packaging/rpm/init.d/%{name}-server %{buildroot}%{_initrddir}/%{name}-server
 %endif
 
 %clean

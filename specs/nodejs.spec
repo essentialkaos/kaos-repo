@@ -44,7 +44,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Requires:           zlib
 
-BuildRequires:      make python >= 2.6 openssl-devel zlib-devel
+BuildRequires:      make python >= 2.7 openssl-devel zlib-devel
 BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}

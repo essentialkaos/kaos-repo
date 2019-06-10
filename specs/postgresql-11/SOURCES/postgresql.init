@@ -82,6 +82,8 @@ preStartServiceHandler() {
   createLog     || return $ACTION_ERROR
   checkData     || return $ACTION_ERROR
   makeSocketDir || return $ACTION_ERROR
+
+  return $ACTION_OK
 }
 
 startServiceHandler() {

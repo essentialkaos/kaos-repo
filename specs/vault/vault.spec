@@ -306,4 +306,3 @@ fi
 %changelog
 * Fri Jan 11 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.1-0
 - Initial build
-

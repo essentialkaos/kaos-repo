@@ -131,4 +131,3 @@ rm -rf %{buildroot}
 %changelog
 * Mon Aug 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.9.1-0
 - Initial build
-

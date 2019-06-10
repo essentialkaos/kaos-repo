@@ -45,10 +45,6 @@ command "-" "Check environment
   exist /var/spool/anacron/cron.weekly
   exist /var/spool/anacron/cron.monthly
 
-  perms /var/spool/anacron/cron.daily 600
-  perms /var/spool/anacron/cron.weekly 600
-  perms /var/spool/anacron/cron.monthly 600
-
 command "systemctl start {service_name}" "Start crond service"
   wait {delay}
   service-works {service_name}
