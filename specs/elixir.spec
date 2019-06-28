@@ -32,11 +32,11 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.8.2
+Version:            1.9.0
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
-URL:                http://elixir-lang.org
+URL:                https://elixir-lang.org
 
 Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.tar.gz
 
@@ -96,6 +96,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jun 28 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
+- Updated to the latest version
+
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
 - Updated to the latest version
 
