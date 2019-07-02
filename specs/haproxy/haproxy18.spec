@@ -51,8 +51,8 @@
 %define hp_datadir        %{_datadir}/%{name}
 
 %define lua_ver           5.3.5
-%define pcre_ver          8.42
-%define openssl_ver       1.1.1a
+%define pcre_ver          8.43
+%define openssl_ver       1.1.1c
 %define ncurses_ver       6.1
 %define readline_ver      8.0
 
@@ -60,7 +60,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.17
+Version:           1.8.20
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               http://haproxy.1wt.eu
@@ -184,7 +184,7 @@ use_regparm="USE_REGPARM=1"
 %endif
 
 %{__make} %{?_smp_mflags} CPU="generic" \
-                          TARGET="linux2628" \
+                          TARGET="linux-glibc" \
                           USE_OPENSSL=1 \
                           SSL_INC=openssl-%{openssl_ver}/build/include \
                           SSL_LIB=openssl-%{openssl_ver}/build/lib \
@@ -292,6 +292,120 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jul 02 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.20-0
+- BUG/MAJOR: listener: Make sure the listener exist before using it.
+- BUG/MINOR: listener: keep accept rate counters accurate under saturation
+- BUG/MEDIUM: logs: Only attempt to free startup_logs once.
+- BUG/MEDIUM: 51d: fix possible segfault on deinit_51degrees()
+- BUG/MINOR: ssl: fix warning about ssl-min/max-ver support
+- MEDIUM: threads: Use __ATOMIC_SEQ_CST when using the newer atomic API.
+- BUG/MEDIUM: threads/fd: do not forget to take into account epoll_fd/pipes
+- BUG/MAJOR: spoe: Fix initialization of thread-dependent fields
+- BUG/MAJOR: stats: Fix how huge POST data are read from the channel
+- BUG/MINOR: http/counters: fix missing increment of fe->srv_aborts
+- BUG/MEDIUM: ssl: ability to set TLS 1.3 ciphers using
+  ssl-default-server-ciphersuites
+- DOC: The option httplog is no longer valid in a backend.
+- BUG/MAJOR: checks: segfault during tcpcheck_main
+- BUILD: makefile: work around an old bug in GNU make-3.80
+- MINOR: tools: make memvprintf() never pass a NULL target to vsnprintf()
+- BUILD: makefile: fix build of IPv6 header on aix51
+- BUILD: makefile: add _LINUX_SOURCE_COMPAT to build on AIX-51
+- BUILD: Makefile: disable shared cache on AIX 5.1
+- BUG/MINOR: cli: correctly handle abns in 'show cli sockets'
+- MINOR: cli: start addresses by a prefix in 'show cli sockets'
+- BUG/MEDIUM: peers: fix a case where peer session is not cleanly reset on
+  release.
+- BUILD: use inttypes.h instead of stdint.h
+- BUILD: connection: fix naming of ip_v field
+- BUG/MEDIUM: pattern: assign pattern IDs after checking the config validity
+- BUG/MEDIUM: spoe: Queue message only if no SPOE applet is attached to the
+  stream
+- BUG/MEDIUM: spoe: Return an error if nothing is encoded for fragmented
+  messages
+- BUG/MINOR: threads: fix the process range of thread masks
+- MINOR: lists: Implement locked variations.
+- BUG/MEDIUM: lists: Properly handle the case we're removing the first elt.
+- BUG/MEDIUM: list: fix the rollback on addq in the locked liss
+- BUG/MEDIUM: list: fix LIST_POP_LOCKED's removal of the last pointer
+- BUG/MEDIUM: list: add missing store barriers when updating elements and head
+- MINOR: list: make the delete and pop operations idempotent
+- BUG/MEDIUM: list: correct fix for LIST_POP_LOCKED's removal of last element
+- BUG/MEDIUM: list: fix again LIST_ADDQ_LOCKED
+- BUG/MEDIUM: list: fix incorrect pointer unlocking in LIST_DEL_LOCKED()
+- MAJOR: listener: do not hold the listener lock in listener_accept()
+- BUG/MEDIUM: listener: use a self-locked list for the dequeue lists
+- BUG/MEDIUM: listener: make sure the listener never accepts too many conns
+- BUILD/MINOR: listener: Silent a few signedness warnings.
+- MINOR: skip get_gmtime where tm is unused
+- BUG/MAJOR: http_fetch: Get the channel depending on the keyword used
+- BUG/MEDIUM: maps: only try to parse the default value when it's present
+- BUG/MINOR: acl: properly detect pattern type SMP_T_ADDR
+- BUG/MEDIUM: thread/http: Add missing locks in set-map and add-acl HTTP rules
+- BUG/MINOR: 51d: Get the request channel to call CHECK_HTTP_MESSAGE_FIRST()
+- BUG/MINOR: da: Get the request channel to call CHECK_HTTP_MESSAGE_FIRST()
+- BUG/MINOR: spoe: Don't systematically wakeup SPOE stream in the applet handler
+
+* Tue Jul 02 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.19-0
+- DOC: ssl: Clarify when pre TLSv1.3 cipher can be used
+- DOC: ssl: Stop documenting ciphers example to use
+- BUG/MINOR: spoe: do not assume agent->rt is valid on exit
+- BUG/MINOR: lua: initialize the correct idle conn lists for the SSL sockets
+- BUG/MEDIUM: spoe: initialization depending on nbthread must be done last
+- BUG/MEDIUM: server: initialize the idle conns list after parsing the config
+- BUG/MAJOR: spoe: Don't try to get agent config during SPOP healthcheck
+- BUG/MAJOR: stream: avoid double free on unique_id
+- BUG/MINOR: config: Reinforce validity check when a process number is parsed
+
+* Tue Jul 02 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.18-0
+- DOC: http-request cache-use / http-response cache-store expects cache name
+- BUG/MAJOR: cache: fix confusion between zero and uninitialized cache key
+- BUG/MEDIUM: ssl: Disable anti-replay protection and set max data with 0RTT.
+- DOC: Be a bit more explicit about allow-0rtt security implications.
+- BUG/MEDIUM: ssl: missing allocation failure checks loading tls key file
+- BUG/MINOR: backend: don't use url_param_name as a hint for BE_LB_ALGO_PH
+- BUG/MINOR: backend: balance uri specific options were lost across defaults
+- BUG/MINOR: backend: BE_LB_LKUP_CHTREE is a value, not a bit
+- BUG/MINOR: stick_table: Prevent conn_cur from underflowing
+- BUG/MINOR: server: don't always trust srv_check_health when loading a
+  server state
+- BUG/MINOR: check: Wake the check task if the check is finished in
+  wake_srv_chk()
+- BUG/MEDIUM: ssl: Fix handling of TLS 1.3 KeyUpdate messages
+- DOC: mention the effect of nf_conntrack_tcp_loose on src/dst
+- MINOR: h2: add a bit-based frame type representation
+- MINOR: h2: declare new sets of frame types
+- BUG/MINOR: mux-h2: CONTINUATION in closed state must always return GOAWAY
+- BUG/MINOR: mux-h2: headers-type frames in HREM are always a connection error
+- BUG/MINOR: mux-h2: make it possible to set the error code on an already closed
+  stream
+- BUG/MINOR: hpack: return a compression error on invalid table size updates
+- DOC: nbthread is no longer experimental.
+- BUG/MINOR: spoe: corrected fragmentation string size
+- BUG/MINOR: deinit: tcp_rep.inspect_rules not deinit, add to deinit
+- SCRIPTS: add the slack channel URL to the announce script
+- SCRIPTS: add the issue tracker URL to the announce script
+- BUG/MINOR: stream: don't close the front connection when facing a backend
+  error
+- MINOR: xref: Add missing barriers.
+- BUG/MEDIUM: mux-h2: wake up flow-controlled streams on initial window update
+- BUG/MEDIUM: mux-h2: fix two half-closed to closed transitions
+- BUG/MEDIUM: mux-h2: make sure never to send GOAWAY on too old streams
+- BUG/MEDIUM: mux-h2: wait for the mux buffer to be empty before closing the
+  connection
+- MINOR: stream-int: expand the flags to 32-bit
+- MINOR: stream-int: add a new flag to mention that we want the connection to
+  be killed
+- MINOR: connstream: have a new flag CS_FL_KILL_CONN to kill a connection
+- BUG/MEDIUM: mux-h2: do not close the connection on aborted streams
+- BUG/MEDIUM: stream: Don't forget to free s->unique_id in stream_free().
+- BUG/MINOR: config: fix bind line thread mask validation
+- BUG/MAJOR: config: verify that targets of track-sc and stick rules are present
+- BUG/MAJOR: spoe: verify that backends used by SPOE cover all their callers'
+  processes
+- BUG/MINOR: config: make sure to count the error on incorrect track-sc/stick
+  rules
+
 * Fri Jan 11 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.17-0
 - BUG/MAJOR: stream-int: Update the stream expiration date in
   stream_int_notify()
