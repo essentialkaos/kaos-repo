@@ -59,8 +59,8 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.12.0
-Release:            1%{?dist}
+Version:            0.14.2
+Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
 URL:                https://github.com/rpm-software-management/createrepo_c
@@ -72,7 +72,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      gcc cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel
-BuildRequires:      rpm-devel >= 4.8.0-28
+BuildRequires:      rpm-devel >= 4.8.0-28 libmodulemd-devel
 
 %if 0%{?rhel} == 6
 Requires:           rpm >= 4.8.0-28
@@ -143,6 +143,7 @@ Python bindings for the createrepo_c library.
 
 sed -i '/unset(PYTHON_LIBRARY/d' src/python/CMakeLists.txt
 sed -i '/unset(PYTHON_INCLUDE_DIR/d' src/python/CMakeLists.txt
+sed -i 's/3 EXACT/3/g' src/python/CMakeLists.txt
 
 cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir} \
@@ -209,6 +210,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.2-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.0-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.2-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.1-0
+- Updated to the latest release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.0-0
+- Updated to the latest release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.2-0
+- Updated to the latest release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.1-0
+- Updated to the latest release
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-1
 - Updated for compatibility with Python 3.6
 
