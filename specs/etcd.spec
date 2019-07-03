@@ -1,27 +1,22 @@
 ################################################################################
 
-# rpmbuilder:gopack    github.com/coreos/etcd
-# rpmbuilder:tag       v3.3.9
-
-################################################################################
-
 %define  debug_package %{nil}
 
 ################################################################################
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.3.10
+Version:         3.3.13
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
 URL:             https://coreos.com/etcd
 
-Source0:         %{name}-%{version}.tar.bz2
+Source0:         https://github.com/etcd-io/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.10
+BuildRequires:   golang >= 1.12
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -44,9 +39,10 @@ highly-available replicated log.
 %prep
 %setup -qn %{name}-%{version}
 
-mkdir -p .src
-mv * .src/
-mv .src src
+mkdir -p .%{name}
+mv * .%{name}/
+mkdir -p src/github.com/coreos
+mv .%{name} src/github.com/coreos/%{name}
 
 cp -r src/github.com/coreos/%{name}/LICENSE \
       src/github.com/coreos/%{name}/README.md \
@@ -87,6 +83,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.13-0
+- Updated to the latest stable release
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.10-0
 - Updated to the latest stable release
 

@@ -69,7 +69,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.63.0
+Version:              7.65.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -241,7 +241,7 @@ rm -rf %{buildroot}
 %doc CHANGES README*
 %doc docs/BUGS docs/FAQ docs/FEATURES docs/TODO docs/HTTP2.md
 %doc docs/SSL-PROBLEMS.md docs/THANKS docs/KNOWN_BUGS docs/FEATURES
-%doc docs/MANUAL docs/RESOURCES docs/TheArtOfHttpScripting
+%doc docs/RESOURCES docs/TheArtOfHttpScripting
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 
@@ -266,6 +266,370 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.1-0
+- CURLOPT_LOW_SPEED_* repaired
+- NTLM: reset proxy "multipass" state when CONNECT request is done
+- PolarSSL: deprecate support step 1. Removed from configure
+- appveyor: add Visual Studio solution build
+- cmake: check for if_nametoindex()
+- cmake: support CMAKE_OSX_ARCHITECTURES when detecting SIZEOF variables
+- config-win32: add support for if_nametoindex and getsockname
+- conncache: Remove the DEBUGASSERT on length check
+- conncache: make "bundles" per host name when doing proxy tunnels
+- curl-win32.h: Enable Unix Domain Sockets based on the Windows SDK version
+- curl_share_setopt.3: improve wording
+- dump-header.d: spell out that no headers == empty file
+- example/http2-download: fix format specifier
+- examples: cleanups and compiler warning fixes
+- http2: Stop drain from being permanently set
+- http: don't parse body-related headers in bodyless responses
+- md4: build correctly with openssl without MD4
+- md4: include the mbedtls config.h to get the MD4 info
+- multi: track users of a socket better
+- nss: allow to specify TLS 1.3 ciphers if supported by NSS
+- parse_proxy: make sure portptr is initialized
+- parse_proxy: use the IPv6 zone id if given
+- sectransp: handle errSSLPeerAuthCompleted from SSLRead()
+- singlesocket: use separate variable for inner loop
+- ssl: Update outdated "openssl-only" comments for supported backends
+- tests: add HAProxy keywords
+- tests: add support to test against OpenSSH for Windows
+- tests: make test 1420 and 1406 work with rtsp-disabled libcurl
+- tls13-docs: mention it is only for OpenSSL >= 1.1.1
+- tool_parse_cfg: Avoid 2 fopen() for WIN32
+- tool_setopt: for builds with disabled-proxy, skip all proxy setopts()
+- url: Load if_nametoindex() dynamically from iphlpapi.dll on Windows
+- url: fix bad feature-disable #ifdef
+- url: use correct port in ConnectionExists()
+- winbuild: Use two space indentation
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.0-0
+- CURLOPT_DNS_USE_GLOBAL_CACHE: removed
+- CURLOPT_MAXAGE_CONN: set the maximum allowed age for conn reuse
+- pipelining: removed
+- CVE-2019-5435: Integer overflows in curl_url_set
+- CVE-2019-5436: tftp: use the current blksize for recvfrom()
+- --config: clarify that initial : and = might need quoting
+- AppVeyor: enable testing for WinSSL build
+- CURLMOPT_TIMERFUNCTION.3: warn about the recursive risk
+- CURLOPT_ADDRESS_SCOPE: fix range check and more
+- CURLOPT_CAINFO.3: with Schannel, you want Windows 8 or later
+- CURLOPT_CHUNK_BGN_FUNCTION.3: document the struct and time value
+- CURLOPT_READFUNCTION.3: see also CURLOPT_UPLOAD_BUFFERSIZE
+- CURL_MAX_INPUT_LENGTH: largest acceptable string input size
+- Curl_disconnect: treat all CONNECT_ONLY connections as "dead"
+- INTERNALS: Add code highlighting
+- OS400/ccsidcurl: replace use of Curl_vsetopt
+- OpenSSL: Report -fips in version if OpenSSL is built with FIPS
+- README.md: fix no-consecutive-blank-lines Codacy warning
+- VC15 project: remove MinimalRebuild
+- VS projects: use Unicode for VC10+
+- WRITEFUNCTION: add missing set_in_callback around callback
+- altsvc: Fix building with cookies disabled
+- auth: Rename the various authentication clean up functions
+- base64: build conditionally if there are users
+- build-openssl.bat: Fixed support for OpenSSL v1.1.0+
+- build: fix "clarify calculation precedence" warnings
+- checksrc.bat: ignore snprintf warnings in docs/examples
+- cirrus: Customize the disabled tests per FreeBSD version
+- cleanup: remove FIXME and TODO comments
+- cmake: avoid linking executable for some tests with cmake 3.6+
+- cmake: clear CMAKE_REQUIRED_LIBRARIES after each use
+- cmake: rename CMAKE_USE_DARWINSSL to CMAKE_USE_SECTRANSP
+- cmake: set SSL_BACKENDS
+- configure: avoid unportable `==' test(1) operator
+- configure: error out if OpenSSL wasn't detected when asked for
+- configure: fix default location for fish completions
+- cookie: Guard against possible NULL ptr deref
+- curl: make code work with protocol-disabled libcurl
+- curl: report error for "--no-" on non-boolean options
+- curl_easy_getinfo.3: fix minor formatting mistake
+- curlver.h: use parenthesis in CURL_VERSION_BITS macro
+- docs/BUG-BOUNTY: bug bounty time
+- docs/INSTALL: fix broken link
+- docs/RELEASE-PROCEDURE: link to live iCalendar
+- documentation: Fix several typos
+- doh: acknowledge CURL_DISABLE_DOH
+- doh: disable DOH for the cases it doesn't work
+- examples: remove unused variables
+- ftplistparser: fix LGTM alert "Empty block without comment"
+- hostip: acknowledge CURL_DISABLE_SHUFFLE_DNS
+- http: Ignore HTTP/2 prior knowledge setting for HTTP proxies
+- http: acknowledge CURL_DISABLE_HTTP_AUTH
+- http: mark bundle as not for multiuse on < HTTP/2 response
+- http_digest: Don't expose functions when HTTP and Crypto Auth are disabled
+- http_negotiate: do not treat failure of gss_init_sec_context() as fatal
+- http_ntlm: Corrected the name of the include guard
+- http_ntlm_wb: Handle auth for only a single request
+- http_ntlm_wb: Return the correct error on receiving an empty auth message
+- lib509: add missing include for strdup
+- lib557: initialize variables
+- makedebug: Fix ERRORLEVEL detection after running where.exe
+- mbedtls: enable use of EC keys
+- mime: acknowledge CURL_DISABLE_MIME
+- multi: improved HTTP_1_1_REQUIRED handling
+- netrc: acknowledge CURL_DISABLE_NETRC
+- nss: allow fifos and character devices for certificates
+- nss: provide more specific error messages on failed init
+- ntlm: Fix misaligned function comments for Curl_auth_ntlm_cleanup
+- ntlm: Support the NT response in the type-3 when OpenSSL doesn't include MD4
+- openssl: mark connection for close on TLS close_notify
+- openvms: Remove pre-processor for SecureTransport
+- openvms: Remove pre-processors for Windows
+- parse_proxy: use the URL parser API
+- parsedate: disabled on CURL_DISABLE_PARSEDATE
+- pingpong: disable more when no pingpong protocols are enabled
+- polarssl_threadlock: remove conditionally unused code
+- progress: acknowledge CURL_DISABLE_PROGRESS_METER
+- proxy: acknowledge DISABLE_PROXY more
+- resolve: apply Happy Eyeballs philosophy to parallel c-ares queries
+- revert "multi: support verbose conncache closure handle"
+- sasl: Don't send authcid as authzid for the PLAIN mechanism as per RFC 4616
+- sasl: only enable if there's a protocol enabled using it
+- scripts: fix typos
+- singleipconnect: show port in the verbose "Trying ..." message
+- smtp: fix compiler warning
+- socks5: user name and passwords must be shorter than 256
+- socks: fix error message
+- socksd: new SOCKS 4+5 server for tests
+- spnego_gssapi: fix return code on gss_init_sec_context() failure
+- ssh-libssh: remove unused variable
+- ssh: define USE_SSH if SSH is enabled (any backend)
+- ssh: move variable declaration to where it's used
+- test1002: correct the name
+- test2100: Fix typos in test description
+- tests/server/util: fix Windows Unicode build
+- tests: Run global cleanup at end of tests
+- tests: make Impacket (SMB server) Python 3 compatible
+- tool_cb_wrt: fix bad-function-cast warning
+- tool_formparse: remove redundant assignment
+- tool_help: Warn if curl and libcurl versions do not match
+- tool_help: include for strcasecmp
+- transfer: fix LGTM alert "Comparison is always true"
+- travis: add an osx http-only build
+- travis: allow builds on branches named "ci"
+- travis: install dependencies only when needed
+- travis: update some builds do Xenial
+- travis: updated mesalink builds
+- url: always clone the CUROPT_CURLU handle
+- url: convert the zone id from a IPv6 URL to correct scope id
+- urlapi: add CURLUPART_ZONEID to set and get
+- urlapi: increase supported scheme length to 40 bytes
+- urlapi: require a non-zero host name length when parsing URL
+- urlapi: stricter CURLUPART_PORT parsing
+- urlapi: strip off zone id from numerical IPv6 addresses
+- urlapi: urlencode characters above 0x7f correctly
+- vauth/cleartext: update the PLAIN login to match RFC 4616
+- vauth/oauth2: Fix OAUTHBEARER token generation
+- vauth: Fix incorrect function description for Curl_auth_user_contains_domain
+- vtls: fix potential ssl_buffer stack overflow
+- wildcard: disable from build when FTP isn't present
+- winbuild: Support MultiSSL builds
+- xattr: skip unittest on unsupported platforms
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.64.1-0
+- alt-svc: experiemental support added
+- configure: add --with-amissl
+- AppVeyor: add MinGW-w64 and classic Mingw builds
+- AppVeyor: switch VS 2015 builds to VS 2017 image
+- CURLU: fix NULL dereference when used over proxy
+- Curl_easy: remove req.maxfd - never used!
+- Curl_now: figure out windows version in win32_init:
+- Curl_resolv: fix a gcc -Werror=maybe-uninitialized warning
+- DoH: inherit some SSL options from user's easy handle
+- Secure Transport: no more "darwinssl"
+- Secure Transport: tvOS 11 is required for ALPN support
+- cirrus: Added FreeBSD builds using Cirrus CI
+- cleanup: make local functions static
+- cli tool: do not use mime.h private structures
+- cmdline-opts/proxytunnel.d: the option tunnnels all protocols
+- configure: add additional libraries to check for LDAP support
+- configure: remove the unused fdopen macro
+- configure: show features as well in the final summary
+- conncache: use conn->data to know if a transfer owns it
+- connection: never reuse CONNECT_ONLY connections
+- connection_check: restore original conn->data after the check
+- connection_check: set ->data to the transfer doing the check
+- cookie: Add support for cookie prefixes
+- cookies: dotless names can set cookies again
+- cookies: fix NULL dereference if flushing cookies with no CookieInfo set
+- curl.1: --user and --proxy-user are hidden from ps output
+- curl.1: mark the argument to --cookie as
+- curl.h: use __has_declspec_attribute for shared builds
+- curl: display --version features sorted alphabetically
+- curl: fix FreeBSD compiler warning in the --xattr code
+- curl: remove MANUAL from -M output
+- curl_easy_duphandle.3: clarify that a duped handle has no shares
+- curl_multi_remove_handle.3: use at any time, just not from within callbacks
+- curl_url.3: this API is not experimental anymore
+- dns: release sharelock as soon as possible
+- docs: update max-redirs.d phrasing
+- easy: fix win32 init to work without CURL_GLOBAL_WIN32
+- examples/10-at-a-time.c: improve readability and simplify
+- examples/cacertinmem.c: use multiple certificates for loading CA-chain
+- examples/crawler: Fix the Accept-Encoding setting
+- examples/ephiperfifo.c: various fixes
+- examples/externalsocket: add missing close socket calls
+- examples/http2-download: cleaned up
+- examples/http2-serverpush: add some sensible error checks
+- examples/http2-upload: cleaned up
+- examples/httpcustomheader: Value stored to 'res' is never read
+- examples/postinmemory: Potential leak of memory pointed to by 'chunk.memory'
+- examples/sftpuploadresume: Value stored to 'result' is never read
+- examples: only include
+- examples: remove recursive calls to curl_multi_socket_action
+- examples: remove superfluous null-pointer checks
+- file: fix "Checking if unsigned variable 'readcount' is less than zero."
+- fnmatch: disable if FTP is disabled
+- gnutls: remove call to deprecated gnutls_compression_get_name
+- gopher: remove check for path == NULL
+- gssapi: fix deprecated header warnings
+- hostip: make create_hostcache_id avoid alloc + free
+- http2: multi_connchanged() moved from multi.c, only used for h2
+- http2: verify :athority in push promise requests
+- http: make adding a blank header thread-safe
+- http: send payload when (proxy) authentication is done
+- http: set state.infilesize when sending multipart formposts
+- makefile: make checksrc and hugefile commands "silent"
+- mbedtls: make it build even if MBEDTLS_VERSION_C isn't set
+- mbedtls: release sessionid resources on error
+- memdebug: log pointer before freeing its data
+- memdebug: make debug-specific functions use curl_dbg_ prefix
+- mime: put the boundary buffer into the curl_mime struct
+- multi: call multi_done on connect timeouts, fixes CURLINFO_TOTAL_TIME
+- multi: remove verbose "Expire in" ... messages
+- multi: removed unused code for request retries
+- multi: support verbose conncache closure handle
+- negotiate: fix for HTTP POST with Negotiate
+- openssl: add support for TLS ASYNC state
+- openssl: if cert type is ENG and no key specified, key is ENG too
+- pretransfer: don't strlen() POSTFIELDS set for GET requests
+- rand: Fix a mismatch between comments in source and header
+- runtests: detect "schannel" as an alias for "winssl"
+- schannel: be quiet - remove verbose output
+- schannel: close TLS before removing conn from cache
+- schannel: support CALG_ECDH_EPHEM algorithm
+- scripts/completion.pl: also generate fish completion file
+- singlesocket: fix the 'sincebefore' placement
+- source: fix two 'nread' may be used uninitialized warnings
+- ssh: fix Condition '!status' is always true
+- ssh: loop the state machine if not done and not blocking
+- strerror: make the strerror function use local buffers
+- system_win32: move win32_init here from easy.c
+- test578: make it read data from the correct test
+- tests: Fixed XML validation errors in some test files
+- tests: add stderr comparison to the test suite
+- tests: fix multiple may be used uninitialized warnings
+- threaded-resolver: shutdown the resolver thread without error message
+- tool_cb_wrt: fix writing to Windows null device NUL
+- tool_getpass: termios.h is present on AmigaOS 3, but no tcgetattr/tcsetattr
+- tool_operate: build on AmigaOS
+- tool_operate: fix typecheck warning
+- transfer.c: do not compute length of undefined hex buffer
+- travis: add build using gnutls
+- travis: add scan-build
+- travis: bump the used wolfSSL version to 4.0.0
+- travis: enable valgrind for the iconv tests
+- travis: use updated compiler versions: clang 7 and gcc 8
+- unit1307: require FTP support
+- unit1651: survive curl_easy_init() fails
+- url/idnconvert: remove scan for <= 32 ascii values
+- url: change conn shutdown order to ensure SOCKETFUNCTION callbacks
+- urlapi: reduce variable scope, remove unreachable 'break'
+- urldata: convert bools to bitfields and move to end
+- urldata: simplify bytecounters
+- urlglob: Argument with 'nonnull' attribute passed null
+- version.c: silent scan-build even when librtmp is not enabled
+- vtls: rename some of the SSL functions
+- wolfssl: stop custom-adding curves
+- x509asn1: "Dereference of null pointer"
+- x509asn1: cleanup and unify code layout
+- zsh.pl: escape ':' character
+- zsh.pl: update regex to better match curl -h output
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.64.0-0
+- cookies: leave secure cookies alone
+- hostip: support wildcard hosts
+- http: Implement trailing headers for chunked transfers
+- http: added options for allowing HTTP/0.9 responses
+- timeval: Use high resolution timestamps on Windows
+- CVE-2018-16890: NTLM type-2 out-of-bounds buffer read
+- CVE-2019-3822: NTLMv2 type-3 header stack buffer overflow
+- CVE-2019-3823: SMTP end-of-response out-of-bounds read
+- FAQ: remove mention of sourceforge for github
+- OS400: handle memory error in list conversion
+- OS400: upgrade ILE/RPG binding.
+- README: add codacy code quality badge
+- Revert http_negotiate: do not close connection
+- THANKS: added several missing names from year <= 2000
+- build: make 'tidy' target work for metalink builds
+- cmake: added checks for variadic macros
+- cmake: updated check for HAVE_POLL_FINE to match autotools
+- cmake: use lowercase for function name like the rest of the code
+- configure: detect xlclang separately from clang
+- configure: fix recv/send/select detection on Android
+- configure: rewrite --enable-code-coverage
+- conncache_unlock: avoid indirection by changing input argument type
+- cookie: fix comment typo
+- cookies: allow secure override when done over HTTPS
+- cookies: extend domain checks to non psl builds
+- cookies: skip custom cookies when redirecting cross-site
+- curl --xattr: strip credentials from any URL that is stored
+- curl -J: refuse to append to the destination file
+- curl/urlapi.h: include "curl.h" first
+- curl_multi_remove_handle() don't block terminating c-ares requests
+- darwinssl: accept setting max-tls with default min-tls
+- disconnect: separate connections and easy handles better
+- disconnect: set conn->data for protocol disconnect
+- docs/version.d: mention MultiSSL
+- docs: fix the --tls-max description
+- docs: use $(INSTALL_DATA) to install man page
+- docs: use meaningless port number in CURLOPT_LOCALPORT example
+- gopher: always include the entire gopher-path in request
+- http2: clear pause stream id if it gets closed
+- if2ip: remove unused function Curl_if_is_interface_name
+- libssh: do not let libssh create socket
+- libssh: enable CURLOPT_SSH_KNOWNHOSTS and CURLOPT_SSH_KEYFUNCTION for libssh
+- libssh: free sftp_canonicalize_path() data correctly
+- libtest/stub_gssapi: use "real" snprintf
+- mbedtls: use VERIFYHOST
+- multi: multiplexing improvements
+- multi: set the EXPIRE_*TIMEOUT timers at TIMER_STARTSINGLE time
+- ntlm: fix NTMLv2 compliance
+- ntlm_sspi: add support for channel binding
+- openssl: adapt to 3.0.0, OpenSSL_version_num() is deprecated
+- openssl: fix the SSL_get_tlsext_status_ocsp_resp call
+- openvms: fix OpenSSL discovery on VAX
+- openvms: fix typos in documentation
+- os400: add a missing closing bracket
+- os400: fix extra parameter syntax error
+- pingpong: change default response timeout to 120 seconds
+- pingpong: ignore regular timeout in disconnect phase
+- printf: fix format specifiers
+- runtests.pl: Fix perl call to include srcdir
+- schannel: fix compiler warning
+- schannel: preserve original certificate path parameter
+- schannel: stop calling it "winssl"
+- sigpipe: if mbedTLS is used, ignore SIGPIPE
+- smb: fix incorrect path in request if connection reused
+- ssh: log the libssh2 error message when ssh session startup fails
+- test1558: verify CURLINFO_PROTOCOL on file:// transfer
+- test1561: improve test name
+- test1653: make it survive torture tests
+- tests: allow tests to pass by 2037-02-12
+- tests: move objnames-* from lib into tests
+- timediff: fix math for unsigned time_t
+- timeval: Disable MSVC Analyzer GetTickCount warning
+- tool_cb_prg: avoid integer overflow
+- travis: added cmake build for osx
+- urlapi: Fix port parsing of eol colon
+- urlapi: distinguish possibly empty query
+- urlapi: fix parsing ipv6 with zone index
+- urldata: rename easy_conn to just conn
+- winbuild: conditionally use /DZLIB_WINAPI
+- wolfssl: fix memory-leak in threaded use
+- spnego_sspi: add support for channel binding
+
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 7.63.0-0
 - curl: add %%{stderr} and %%{stdout} for --write-out
 - curl: add undocumented option --dump-module-paths for win32
