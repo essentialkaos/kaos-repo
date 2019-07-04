@@ -12,7 +12,8 @@ Group:           Applications/Internet
 License:         APLv2
 URL:             https://coreos.com/etcd
 
-Source0:         https://github.com/etcd-io/%{name}/archive/v%{version}.tar.gz
+# Use gopack to build archive: gopack -pv -t v3.3.13 github.com/etcd-io/etcd
+Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -39,23 +40,22 @@ highly-available replicated log.
 %prep
 %setup -qn %{name}-%{version}
 
-mkdir -p .%{name}
-mv * .%{name}/
-mkdir -p src/github.com/coreos
-mv .%{name} src/github.com/coreos/%{name}
+mkdir -p .src
+mv * .src/
+mv .src src
 
-cp -r src/github.com/coreos/%{name}/LICENSE \
-      src/github.com/coreos/%{name}/README.md \
-      src/github.com/coreos/%{name}/NOTICE \
-      src/github.com/coreos/%{name}/MAINTAINERS \
-      src/github.com/coreos/%{name}/Documentation .
+cp -r src/github.com/etcd-io/%{name}/LICENSE \
+      src/github.com/etcd-io/%{name}/README.md \
+      src/github.com/etcd-io/%{name}/NOTICE \
+      src/github.com/etcd-io/%{name}/MAINTAINERS \
+      src/github.com/etcd-io/%{name}/Documentation .
 
 %build
 export GOPATH=$(pwd)
 export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
 
-pushd src/github.com/coreos/%{name}
+pushd src/github.com/etcd-io/%{name}
   ./build
 popd
 
@@ -64,9 +64,9 @@ rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
 
-install -pm 755 src/github.com/coreos/%{name}/bin/%{name} \
+install -pm 755 src/github.com/etcd-io/%{name}/bin/%{name} \
                 %{buildroot}%{_bindir}/
-install -pm 755 src/github.com/coreos/%{name}/bin/%{name}ctl \
+install -pm 755 src/github.com/etcd-io/%{name}/bin/%{name}ctl \
                 %{buildroot}%{_bindir}/
 
 %clean
