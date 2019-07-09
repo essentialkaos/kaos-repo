@@ -1,4 +1,4 @@
-# Bibop recipe for Erlang
+# Bibop recipe for Erlang 20
 # See more: https://github.com/essentialkaos/bibop
 
 pkg erlang20
@@ -19,3 +19,6 @@ command "erl -noshell -s test main -s init stop" "Execute basic script"
 
 command "-" "Cleanup"
   remove test.beam
+
+command "escript ssl-test.erl" "Test support of ChaCha20 and TLS 1.2"
+  exit 0

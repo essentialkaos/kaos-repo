@@ -42,12 +42,12 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           3
-%define ver_patch         8.2
+%define ver_patch         8.5
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define libre_ver         2.9.2
+%define openssl_ver       1.1.1c
 
 ################################################################################
 
@@ -63,7 +63,7 @@ Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.g
 Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
 Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
-Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source10:          https://www.openssl.org/source/openssl-%{openssl_ver}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -708,16 +708,16 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-### Static LibreSSL build start ###
+### Static OpenSSL build start ###
 
-pushd libressl-%{libre_ver}
+pushd openssl-%{openssl_ver}
   mkdir build
-  ./configure --prefix=$(pwd)/build --enable-shared=no
-  %{__make} %{?_smp_mflags}
-  %{__make} install
+  ./config --prefix=$(pwd)/build no-shared no-threads -fPIC
+  %{__make} -j1
+  %{__make} -j1 install_sw
 popd
 
-### Static LibreSSL build complete ###
+### Static OpenSSL build complete ###
 
 export CFLAGS="%{optflags} -fno-strict-aliasing"
 export CXXLAGS=$CFLAGS
@@ -742,7 +742,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
-  --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
+  --with-ssl=$BUILDDIR/openssl-%{openssl_ver}/build \
   --with-ssl-rpath=no
 
 %{__make} %{?_smp_mflags}
@@ -1006,6 +1006,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.5-0
+- Updated to the latest release
+- LibreSSL replaced by OpenSSL due to lack of enabled newest ciphers
+
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.2-0
 - Updated to the latest release
 - LibreSSL updated to 2.9.2

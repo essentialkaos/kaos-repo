@@ -1,4 +1,4 @@
-# Bibop recipe for Erlang
+# Bibop recipe for Erlang 19
 # See more: https://github.com/essentialkaos/bibop
 
 pkg erlang19
