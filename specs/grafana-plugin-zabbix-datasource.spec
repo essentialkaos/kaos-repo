@@ -52,7 +52,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 Requires:             grafana
 
-BuildRequires:        nodejs
+BuildRequires:        git nodejs
 
 Provides:             %{name} = %{version}-%{release}
 
