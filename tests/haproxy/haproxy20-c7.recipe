@@ -1,0 +1,44 @@
+# Bibop recipe for HAProxy 2.0
+# See more: https://github.com/essentialkaos/bibop
+
+pkg haproxy-2.0.*
+
+require-root yes
+unsafe-actions yes
+
+var service_user haproxy
+var service_name haproxy
+var service_config /etc/haproxy/haproxy.cfg
+var logrotate_config /etc/logrotate.d/haproxy
+
+var delay 3
+
+command "-" "Check environment"
+  app haproxy
+  
+  service-present {service_name}
+  
+  user-exist {service_user}
+
+  exist {service_config}
+  perms {service_config} 644
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+command "-" "Place test config"
+  backup {service_config}
+  copy haproxy.cfg {service_config}
+
+command "systemctl start {service_name}" "Start HAProxy daemon"
+  wait {delay}
+  service-works {service_name}
+
+command "systemctl status {service_name}" "Check status of HAProxy daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop HAProxy daemon"
+  wait {delay}
+  !service-works {service_name}
+
+command "-" "Restore original config"
+  backup-restore {service_config}

@@ -53,11 +53,11 @@
 
 Summary:           Tool for service discovery, monitoring and configuration
 Name:              consul
-Version:           1.4.0
+Version:           1.5.2
 Release:           0%{?dist}
 Group:             Applications/Communications
 License:           MPLv2
-URL:               http://www.consul.io
+URL:               https://www.consul.io
 
 Source0:           https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 Source1:           %{name}-client.sysconfig
@@ -306,6 +306,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
+- Updated to the latest stable release
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
 - Updated to the latest stable release
 

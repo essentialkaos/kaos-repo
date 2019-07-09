@@ -1,0 +1,26 @@
+# Bibop recipe for libmodulemd
+# See more: https://github.com/essentialkaos/bibop
+
+pkg libmodulemd libmodulemd-devel
+
+fast-finish yes
+
+var lib_name modulemd-2.0
+
+command "-" "Check apps"
+  app modulemd-validator
+
+command "-" "Check shared libs"
+  lib-loaded libmodulemd.so.*
+
+command "-" "Check typelib file"
+  exist {LIBDIR}/girepository-1.0/Modulemd-2.0.typelib
+
+command "-" "Check headers"
+  lib-header {lib_name}
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}
+
+command "-" "Check docs"
+  dir /usr/share/gtk-doc/html/{lib_name}

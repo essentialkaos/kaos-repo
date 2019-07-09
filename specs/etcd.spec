@@ -1,27 +1,23 @@
 ################################################################################
 
-# rpmbuilder:gopack    github.com/coreos/etcd
-# rpmbuilder:tag       v3.3.9
-
-################################################################################
-
 %define  debug_package %{nil}
 
 ################################################################################
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.3.10
+Version:         3.3.13
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
 URL:             https://coreos.com/etcd
 
+# Use gopack to build archive: gopack -pv -t v3.3.13 github.com/etcd-io/etcd
 Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.10
+BuildRequires:   golang >= 1.12
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -48,18 +44,18 @@ mkdir -p .src
 mv * .src/
 mv .src src
 
-cp -r src/github.com/coreos/%{name}/LICENSE \
-      src/github.com/coreos/%{name}/README.md \
-      src/github.com/coreos/%{name}/NOTICE \
-      src/github.com/coreos/%{name}/MAINTAINERS \
-      src/github.com/coreos/%{name}/Documentation .
+cp -r src/github.com/etcd-io/%{name}/LICENSE \
+      src/github.com/etcd-io/%{name}/README.md \
+      src/github.com/etcd-io/%{name}/NOTICE \
+      src/github.com/etcd-io/%{name}/MAINTAINERS \
+      src/github.com/etcd-io/%{name}/Documentation .
 
 %build
 export GOPATH=$(pwd)
 export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
 
-pushd src/github.com/coreos/%{name}
+pushd src/github.com/etcd-io/%{name}
   ./build
 popd
 
@@ -68,9 +64,9 @@ rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
 
-install -pm 755 src/github.com/coreos/%{name}/bin/%{name} \
+install -pm 755 src/github.com/etcd-io/%{name}/bin/%{name} \
                 %{buildroot}%{_bindir}/
-install -pm 755 src/github.com/coreos/%{name}/bin/%{name}ctl \
+install -pm 755 src/github.com/etcd-io/%{name}/bin/%{name}ctl \
                 %{buildroot}%{_bindir}/
 
 %clean
@@ -87,6 +83,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.13-0
+- Updated to the latest stable release
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 3.3.10-0
 - Updated to the latest stable release
 

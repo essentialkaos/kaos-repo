@@ -46,13 +46,13 @@
 
 Summary:           Cron daemon for executing programs at set times
 Name:              cronie
-Version:           1.5.2
+Version:           1.5.4
 Release:           0%{?dist}
 License:           MIT and BSD and ISC and GPLv2
 Group:             System Environment/Base
 URL:               https://github.com/cronie-crond/cronie
 
-Source:            https://github.com/cronie-crond/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
+Source:            https://github.com/cronie-crond/%{name}/releases/download/%{name}-%{version}-final/%{name}-%{version}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -265,6 +265,18 @@ cp -a %{_lockdir}/subsys/%{service_name} %{_lockdir}/subsys/%{name} &>/dev/null 
 ################################################################################
 
 %changelog
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.4-0
+- crond: Fix regression from previous release. Only first job from a crontab was
+  being run.
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
+- Fix CVE-2019-9704 and CVE-2019-9705 to avoid local DoS of the crond
+- crontab: Make crontab without arguments fail
+- crond: In PAM configuration include system-auth instead of password-auth
+- crond: In the systemd service file restart crond if it fails
+- crond: Use the role from the crond context for system job contexts
+- Multiple small cleanups and fixes
+
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
 - crontab: do not try to replace the crontab with a directory
 - Support the MAILFROM also in anacron.

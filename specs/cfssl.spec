@@ -6,7 +6,7 @@
 
 Name:               cfssl
 Summary:            CloudFlare PKI Toolkit
-Version:            1.3.0
+Version:            1.3.3
 Release:            0%{?dist}
 URL:                https://github.com/cloudflare/cfssl
 Group:              Applications/Internet
@@ -16,7 +16,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 
 Source:             https://github.com/cloudflare/%{name}/archive/%{version}.tar.gz
 
-BuildRequires:      golang >= 1.9
+BuildRequires:      golang >= 1.12
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -83,6 +83,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.3-0
+- Updated to latest stable release
+
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
 - Updated to latest stable release
 
