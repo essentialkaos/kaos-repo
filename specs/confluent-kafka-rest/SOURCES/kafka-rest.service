@@ -8,7 +8,7 @@ ConditionPathExists=/etc/kafka-rest/kafka-rest.conf
 Type=simple
 User=kafka-rest
 Group=kafka-rest
-/var/run/kafka-rest.pid
+PIDFile=/var/run/kafka-rest.pid
 EnvironmentFile=-/etc/sysconfig/kafka-rest
 ExecStart=/usr/bin/kafka-rest-start /etc/kafka-rest/kafka-rest.conf
 KillSignal=SIGTERM
