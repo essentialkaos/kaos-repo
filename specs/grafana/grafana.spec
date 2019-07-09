@@ -44,7 +44,7 @@
 
 Summary:              Metrics dashboard and graph editor
 Name:                 grafana
-Version:              6.1.3
+Version:              6.2.5
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Applications/System
@@ -223,6 +223,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jul 09 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.2.5-0
+- Updated to the latest release
+
 * Tue Apr 16 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.1.3-0
 - Updated to the latest release
 
