@@ -1,0 +1,19 @@
+[Unit]
+Description=A REST proxy for Apache Kafka
+Documentation=http://docs.confluent.io/
+After=network.target kafka.target
+ConditionPathExists=/etc/kafka-rest/kafka-rest.conf
+
+[Service]
+Type=simple
+User=kafka-rest
+Group=kafka-rest
+/var/run/kafka-rest.pid
+EnvironmentFile=-/etc/sysconfig/kafka-rest
+ExecStart=/usr/bin/kafka-rest-start /etc/kafka-rest/kafka-rest.conf
+KillSignal=SIGTERM
+Restart=on-failure
+SyslogIdentifier=kafka-rest
+
+[Install]
+WantedBy=multi-user.target

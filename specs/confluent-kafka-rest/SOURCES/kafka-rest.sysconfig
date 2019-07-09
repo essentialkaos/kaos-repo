@@ -1,0 +1,15 @@
+# Generic JVM settings you want to add
+KAFKAREST_OPTS=""
+
+# Memory options
+KAFKAREST_HEAP_OPTS="-Xmx1g"
+
+# JVM performance options
+KAFKAREST_JVM_PERFORMANCE_OPTS="-server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=16M -XX:MinMetaspaceFreeRatio=50 -XX:MaxMetaspaceFreeRatio=80 -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true"
+
+# JMX settings
+# KAFKAREST_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=9096"
+
+# Logging directory
+LOG_DIR=/var/log/kafka-rest/
+
