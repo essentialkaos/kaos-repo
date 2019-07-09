@@ -213,8 +213,7 @@ install -pm 0755 %{SOURCE2} %{buildroot}%{_unitdir}
 install -pm 0644 %{SOURCE3} %{buildroot}%{_bindir}/zookeeper-client
 
 CLASSPATH=
-for i in %{buildroot}%{_zookeeper_noarch_libdir}/*.jar
-do
+for i in %{buildroot}%{_zookeeper_noarch_libdir}/*.jar ; do
   CLASSPATH="%{_zookeeper_noarch_libdir}/$(basename ${i}):${CLASSPATH}"
 done
 echo "[Service]" > %{buildroot}%{_unitdir}/%{name}.service.d/classpath.conf

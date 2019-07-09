@@ -753,8 +753,7 @@ tar -C %{buildroot}%{_datadir} -xf %{SOURCE2}
 # make links to binaries
 mkdir -p %{buildroot}%{_bindir}
 pushd %{buildroot}%{_bindir}
-for file in erl erlc escript run_erl
-do
+for file in erl erlc escript run_erl ; do
   ln -sf ../%{_lib}/erlang/bin/$file .
 done
 popd
