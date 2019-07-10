@@ -42,7 +42,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           3
-%define ver_patch         8.2
+%define ver_patch         8.5
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -1006,6 +1006,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 10 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 21.3.8.5-0
+- Fixed a bug in the loader that was similar to OTP-15938, yielding incorrect
+  code for some inputs on 64-bit platforms.
+- Fixed bug causing VM crash when doing textual dump of a process containing an
+  unhandled monitor down signal.
+- Fixed bug in lists:subtract/2 that produces incorrect results for some inputs
+  on 64-bit platforms.
+- Fixed bug causing scheduler threads in rare cases to block spinnning
+  indefinitely.
+
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.2-0
 - Updated to the latest release
 - LibreSSL updated to 2.9.2
