@@ -3,6 +3,8 @@
 
 pkg erlang20
 
+var libressl_ver 2.9.2
+
 command "-" "Check environment"
   app epmd
   app erl
@@ -20,5 +22,6 @@ command "erl -noshell -s test main -s init stop" "Execute basic script"
 command "-" "Cleanup"
   remove test.beam
 
-command "escript ssl-test.erl" "Test support of ChaCha20 and TLS 1.2"
+command "escript ssl-info.erl" "Check version of SSL/TLS library"
   exit 0
+  output-contains "LibreSSL {libressl_ver}"

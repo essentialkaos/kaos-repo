@@ -47,7 +47,7 @@
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define openssl_ver       1.1.1c
+%define libre_ver         2.9.2
 
 ################################################################################
 
@@ -63,7 +63,9 @@ Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.g
 Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
 Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
-Source10:          https://www.openssl.org/source/openssl-%{openssl_ver}.tar.gz
+Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+
+Patch0:            libressl-compat.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -684,6 +686,8 @@ a few bugs in the scanner, and improves HTML export.
 
 tar xzvf %{SOURCE10}
 
+%patch0 -p1
+
 %build
 
 export CFLAGS="%{optflags} -fPIC"
@@ -694,16 +698,16 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
-### Static OpenSSL build start ###
+### Static LibreSSL build start ###
 
-pushd openssl-%{openssl_ver}
+pushd libressl-%{libre_ver}
   mkdir build
-  ./config --prefix=$(pwd)/build no-shared no-threads -fPIC
-  %{__make} -j1
-  %{__make} -j1 install_sw
+  ./configure --prefix=$(pwd)/build --enable-shared=no
+  %{__make} %{?_smp_mflags}
+  %{__make} install
 popd
 
-### Static OpenSSL build complete ###
+### Static LibreSSL build complete ###
 
 export CFLAGS="%{optflags} -fno-strict-aliasing"
 export CXXLAGS=$CFLAGS
@@ -728,7 +732,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
-  --with-ssl=$BUILDDIR/openssl-%{openssl_ver}/build \
+  --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
   --with-ssl-rpath=no
 
 %{__make} %{?_smp_mflags}
