@@ -1,0 +1,86 @@
+# Bibop recipe for maven
+# See more: https://github.com/essentialkaos/bibop
+
+pkg maven maven-lib
+
+var data_dir /usr/share/java/maven
+var mvn_dir  /usr/share/maven
+var conf_dir /etc/maven
+
+var pkg_version 3.6.1
+
+command "-" "Check environment"
+  app mvn
+  app mvnDebug
+  app mvnyjp
+
+command "mvn -v" "Check Maven version info"
+  expect "Apache Maven {pkg_version}"
+  exit 0
+
+command "-" "Check configuration files and scripts"
+  exist /etc/m2.conf 
+  perms /etc/m2.conf 644
+  owner /etc/m2.conf root:root
+
+  dir {conf_dir}
+  perms {conf_dir} 755
+  owner {conf_dir} root:root
+
+  exist {conf_dir}/settings.xml
+  perms {conf_dir}/settings.xml 644
+  owner {conf_dir}/settings.xml root:root
+
+  dir {conf_dir}/logging
+  perms {conf_dir}/logging 755
+  owner {conf_dir}/logging root:root
+
+  exist {conf_dir}/logging/simplelogger.properties
+  perms {conf_dir}/logging/simplelogger.properties 644
+  owner {conf_dir}/logging/simplelogger.properties root:root
+
+  exist {mvn_dir}/bin/m2.conf
+  perms {mvn_dir}/bin/m2.conf 644
+  owner {mvn_dir}/bin/m2.conf root:root
+
+  dir {mvn_dir}
+  perms {mvn_dir} 755
+  owner {mvn_dir} root:root
+
+  exist {mvn_dir}/conf/settings.xml
+  perms {mvn_dir}/conf/settings.xml 644
+  owner {mvn_dir}/conf/settings.xml root:root
+
+  dir {mvn_dir}/conf/logging
+  perms {mvn_dir}/conf/logging 755
+  owner {mvn_dir}/conf/logging root:root
+
+  exist {mvn_dir}/conf/logging/simplelogger.properties
+  perms {mvn_dir}/conf/logging/simplelogger.properties 644
+  owner {mvn_dir}/conf/logging/simplelogger.properties root:root
+
+command "-" "Check Java libraries"
+  dir {data_dir}
+
+  !empty-dir {data_dir}
+
+  exist {data_dir}/maven-artifact-{pkg_version}.jar
+  exist {data_dir}/maven-builder-support-{pkg_version}.jar
+  exist {data_dir}/maven-compat-{pkg_version}.jar
+  exist {data_dir}/maven-core-{pkg_version}.jar
+  exist {data_dir}/maven-embedder-{pkg_version}.jar
+  exist {data_dir}/maven-model-{pkg_version}.jar
+  exist {data_dir}/maven-model-builder-{pkg_version}.jar
+  exist {data_dir}/maven-plugin-api-{pkg_version}.jar
+  exist {data_dir}/maven-repository-metadata-{pkg_version}.jar
+  exist {data_dir}/maven-resolver-api-1.3.3.jar
+  exist {data_dir}/maven-resolver-connector-basic-1.3.3.jar
+  exist {data_dir}/maven-resolver-impl-1.3.3.jar
+  exist {data_dir}/maven-resolver-provider-{pkg_version}.jar
+  exist {data_dir}/maven-resolver-spi-1.3.3.jar
+  exist {data_dir}/maven-resolver-transport-wagon-1.3.3.jar
+  exist {data_dir}/maven-resolver-util-1.3.3.jar
+  exist {data_dir}/maven-settings-{pkg_version}.jar
+  exist {data_dir}/maven-settings-builder-{pkg_version}.jar
+  exist {data_dir}/maven-shared-utils-3.2.1.jar
+  exist {data_dir}/maven-slf4j-provider-{pkg_version}.jar
