@@ -16,6 +16,10 @@
 
 %define package_name  pycurl
 
+# Used cURL version fo build
+# DO NOT FORGOT TO UPDATE IF NEWER VERSION IS USED!
+%define curl_version  7.63
+
 ################################################################################
 
 Summary:        A Python 3 interface to libcurl
@@ -32,9 +36,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 BuildRequires:  %{python_base}-bottle %{python_base}-nose
-BuildRequires:  gcc openssl-devel curl-devel
+BuildRequires:  gcc openssl-devel curl-devel >= %{curl_version}
 
-Requires:       %{python_base} %{python_base}-libs libcurl
+Requires:       %{python_base} %{python_base}-libs libcurl >= %{curl_version}
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -76,5 +80,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 7.43.0.-1
+- Hardcoded minimal required libcurl version
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 7.43.0-0
 - Initital build for kaos repository
