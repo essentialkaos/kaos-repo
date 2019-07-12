@@ -26,7 +26,9 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define patch_level       24
+%define patch_level       53
+
+%{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
@@ -282,9 +284,10 @@ cat %{SOURCE1} > %{buildroot}%{_sysconfdir}/%{name}-6/policy.xml
 rm -rf %{buildroot}
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
-
 %{__make} %{?_smp_mflags} check
+%endif
 
 %post libs
 /sbin/ldconfig
@@ -379,6 +382,9 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-53
+- Updated to the latest release
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-24
 - Updated to the latest release
 

@@ -6,7 +6,7 @@
 
 Summary:         Vendor Package Management for Golang
 Name:            glide
-Version:         0.13.2
+Version:         0.13.3
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
@@ -16,7 +16,7 @@ Source0:         https://github.com/Masterminds/%{name}/archive/v%{version}.tar.
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.9
+BuildRequires:   golang >= 1.12
 
 Requires:        golang
 
@@ -79,11 +79,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.3-0
+- Fixed issue where Glide is not detecting crypto/ed25519, now in the stdlib
+- Fixed segfault with Glide 0.13.2 when stripping Godep workspace
+- Fixed issues with submodules in newer versions of git (via dependency update)
+
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 0.13.2-0
-- Updated to the latest release
+- Fixes issues when stripping vendor directories from dependencies
 
 * Thu Nov 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.13.1-0
-- Updated to the latest release
+- Fix handling of new core package math/bits
 
 * Sat Nov 26 2016 Anton Novojilov <andy@essentialkaos.com> - 0.12.3-0
 - Initial build for kaos repo
