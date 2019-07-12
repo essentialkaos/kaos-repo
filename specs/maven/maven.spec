@@ -44,6 +44,8 @@
 %define pkg_homedir       %{_datadir}/%{name}
 %define pkg_confdir       %{_sysconfdir}/%{name}
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:            Java project management and project comprehension tool
@@ -91,10 +93,11 @@ Core part of Apache Maven that can be used as a library.
 %setup -qn %{pkg_name}-%{version}
 
 %build
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 %install
 rm -rf %{buildroot}
+
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 mvn -Dmaven.test.skip=true -DdistributionTargetDir="%{buildroot}%{pkg_homedir}" clean package
 
@@ -134,7 +137,9 @@ mv %{buildroot}%{pkg_homedir}/conf/logging %{buildroot}%{_sysconfdir}/%{name}/
 ln -sf %{_sysconfdir}/%{name}/logging %{buildroot}%{pkg_homedir}/conf/logging
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 mvn test
+%endif
 
 %clean
 rm -rf %{buildroot}
