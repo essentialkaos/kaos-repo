@@ -37,6 +37,8 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 %define pkg_name          common
@@ -73,10 +75,11 @@ Common utilities, including metrics and config.
 %setup -qn %{pkg_name}-%{version}
 
 %build
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 %install
 rm -rf %{buildroot}
+
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 mvn -Dmaven.test.skip=true install
 
@@ -89,7 +92,9 @@ pushd package/target/%{pkg_name}-package-%{version}-package/share
 popd
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 mvn test
+%endif
 
 %clean
 rm -rf %{buildroot}

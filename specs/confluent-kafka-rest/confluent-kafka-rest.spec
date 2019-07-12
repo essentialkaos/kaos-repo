@@ -38,6 +38,8 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __systemctl       %{_bindir}/systemctl
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 %define pkg_name          kafka-rest
@@ -71,7 +73,7 @@ Requires:           logrotate
 %if 0%{?rhel} >= 7
 Requires:           systemd
 %else
-Requires:           kaosv initscripts
+Requires:           kaosv >= 2.15 initscripts
 %endif
 
 BuildRequires:      java >= 1.7.0 java-devel >= 1.7.0 maven >= 3.2
@@ -94,10 +96,11 @@ clients.
 %setup -qn %{pkg_name}-%{version}
 
 %build
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 %install
 rm -rf %{buildroot}
+
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 mvn -Dmaven.test.skip=true install
 
@@ -135,7 +138,9 @@ install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{pkg_name}
 install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/%{pkg_name}
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 mvn test
+%endif
 
 %clean
 rm -rf %{buildroot}

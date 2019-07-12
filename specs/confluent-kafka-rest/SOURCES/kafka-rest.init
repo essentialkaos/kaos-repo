@@ -32,7 +32,6 @@ conf_file=${CONF_FILE:-/etc/kafka-rest/kafka-rest.conf}
 
 kv[user]="$kafka_rest_user"
 kv[prog_name]="kafka-rest"
-kv[search_pattern]="$conf_file"
 kv[auto_actions_log]=true
 
 ###############################################################################
@@ -73,20 +72,21 @@ startServiceHandler() {
   return $ACTION_ERROR
 }
 
+
 stopServiceHandler() {
-  local pid=`kv.getPid`
+    local pid=$(kv.getPid)
 
-  if [[ -n "$1" ]] ; then
-    kv.killProcess $pid
-  else
     kv.sendSignal SIGTERM
-  fi
 
-  if kv.getStopStatus ; then
-    return $ACTION_OK
-  fi
+    if kv.getStopStatus ; then
+        return $ACTION_OK
+    else
+        if [[ -n "$1" ]] ; then
+            kv.killProcess $pid
+        fi
 
-  return $ACTION_ERROR
+        return $ACTION_ERROR
+    fi
 }
 
 ###############################################################################
