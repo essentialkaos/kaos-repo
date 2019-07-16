@@ -9,7 +9,6 @@
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
-%define jdk_man_dir %{install_dir}/man/man1
 
 %define alt_priority 1200
 
@@ -71,10 +70,6 @@ deps="%{_bindir}/java java %{jdk_bin_dir}/java %{alt_priority}"
 
 for bin in $(ls -1 %{jdk_bin_dir}) ; do
   deps="$deps --slave %{_bindir}/$bin $bin %{jdk_bin_dir}/$bin"
-done
-
-for doc in $(ls -1 %{jdk_man_dir}) ; do
-  deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
 done
 
 deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java.sh %{install_dir}/java.sh"
