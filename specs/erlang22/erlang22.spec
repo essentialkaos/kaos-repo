@@ -72,6 +72,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
+BuildRequires:     lksctp-tools-devel
 
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
@@ -187,6 +188,7 @@ Includes the Erlang/OTP graphical libraries.
 Summary:   Erlang architecture independent files
 License:   MPL
 Group:     Development/Tools
+Requires:  lksctp-tools
 Provides:  %{name}-base = %{version}-%{release}
 Obsoletes: %{name}_otp = %{version}-%{release}
 Obsoletes: %{name}-gs_apps = %{version}-%{release}

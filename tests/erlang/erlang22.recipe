@@ -25,3 +25,6 @@ command "-" "Cleanup"
 command "escript ssl-info.erl" "Check version of SSL/TLS library"
   exit 0
   output-contains "LibreSSL {libressl_ver}"
+
+command "escript sctp-test.erl" "Check SCTP support"
+  exit 0
