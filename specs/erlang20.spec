@@ -42,7 +42,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           20
 %define ver_min           3
-%define ver_patch         8.21
+%define ver_patch         8.22
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
@@ -71,6 +71,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
+BuildRequires:     lksctp-tools-devel
 
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
@@ -194,6 +195,7 @@ Includes the Erlang/OTP graphical libraries.
 Summary:   Erlang architecture independent files
 License:   MPL
 Group:     Development/Tools
+Requires:  lksctp-tools
 Provides:  %{name}-base = %{version}-%{release}
 Obsoletes: %{name}_otp = %{version}-%{release}
 Obsoletes: %{name}-gs_apps = %{version}-%{release}
@@ -803,7 +805,6 @@ export BUILDDIR=$(pwd)
 
 pushd libressl-%{libre_ver}
   mkdir build
-  # perfecto:absolve 2
   ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
   %{__make} install
@@ -831,6 +832,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-kernel-poll \
   --enable-hipe \
   --enable-smp-support \
+  --enable-sctp \
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
@@ -859,8 +861,7 @@ tar -C %{buildroot}%{_datadir} -xf %{SOURCE2}
 # make links to binaries
 mkdir -p %{buildroot}%{_bindir}
 pushd %{buildroot}%{_bindir}
-for file in erl erlc escript run_erl
-do
+for file in erl erlc escript run_erl ; do
   ln -sf ../%{_lib}/erlang/bin/$file .
 done
 popd
@@ -1126,6 +1127,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.22-0
+- Updated to the latest release
+- Added sctp support
+
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.21-0
 - Updated to the latest release
 - LibreSSL updated to 2.9.2

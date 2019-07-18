@@ -1,7 +1,9 @@
-# Bibop recipe for Erlang
+# Bibop recipe for Erlang 20
 # See more: https://github.com/essentialkaos/bibop
 
 pkg erlang20
+
+var libressl_ver 2.9.2
 
 command "-" "Check environment"
   app epmd
@@ -19,3 +21,10 @@ command "erl -noshell -s test main -s init stop" "Execute basic script"
 
 command "-" "Cleanup"
   remove test.beam
+
+command "escript ssl-info.erl" "Check version of SSL/TLS library"
+  exit 0
+  output-contains "LibreSSL {libressl_ver}"
+
+command "escript sctp-test.erl" "Check SCTP support"
+  exit 0

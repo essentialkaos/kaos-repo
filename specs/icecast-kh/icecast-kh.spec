@@ -1,6 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       karlheyes:icecast-kh
+# rpmbuilder:tag          icecast-2.4.0-kh12
 
 ################################################################################
 
@@ -53,16 +54,17 @@
 %define groupname         icecast
 
 %define service_name      icecast
+%define kh_version        kh12
 
 ################################################################################
 
 Summary:           Icecast streaming media server (KH branch)
 Name:              icecast
-Version:           2.4.0
-Release:           11%{?dist}
+Version:           2.4.0.%{kh_version}
+Release:           0%{?dist}
 License:           GPLv2+ and GPLv2 and BSD
 Group:             Applications/Multimedia
-URL:               https://icecast.org
+URL:               https://github.com/karlheyes/icecast-kh
 
 Source0:           %{name}-%{version}.tar.bz2
 Source1:           %{name}.init
@@ -220,5 +222,8 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh12-0
+- Updated to the latest stable release
+
 * Sun Jan 20 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-10
 - Initial build for kaos repository

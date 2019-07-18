@@ -34,7 +34,7 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           4.1
+Version:           4.1.4
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
@@ -149,6 +149,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 4.1.4-0
+- Updated to version 4.1.4
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 4.1-0
 - Updated to version 4.1
 
