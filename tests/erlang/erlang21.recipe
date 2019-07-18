@@ -19,9 +19,6 @@ command "erl -noshell -s test main -s init stop" "Execute basic script"
   exit 0
   output-contains "ERLANG WORKS"
 
-command "-" "Cleanup"
-  remove test.beam
-
 command "escript ssl-info.erl" "Check version of SSL/TLS library"
   exit 0
   output-contains "LibreSSL {libressl_ver}"

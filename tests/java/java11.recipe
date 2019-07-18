@@ -29,6 +29,3 @@ command "javac Comp.java" "Test source compilation"
 command "java Comp" "Check compiled result"
   exit 0
   output-contains "SUCCESSFULLY COMPILED"
-
-command "-" "Cleanup"
-  remove Comp.class
