@@ -47,7 +47,7 @@
 
 Summary:            Validating, recursive, and caching DNS(SEC) resolver
 Name:               unbound
-Version:            1.8.3
+Version:            1.9.2
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Daemons
@@ -400,6 +400,15 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
+- Updated to the latest stable release
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
+- Updated to the latest stable release
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
+- Updated to the latest stable release
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
 - Updated to the latest stable release
 - Added ipsecmod support

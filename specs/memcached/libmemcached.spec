@@ -47,7 +47,7 @@
 Summary:                  Client library and command line tools for memcached server
 Name:                     libmemcached
 Version:                  1.0.18
-Release:                  0%{?dist}
+Release:                  1%{?dist}
 Group:                    System Environment/Libraries
 License:                  BSD
 URL:                      http://libmemcached.org
@@ -190,5 +190,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.0.18-1
+- Rebuilt with the latest version of libevent
+
 * Sat Sep 29 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.18-0
 - Initial build for kaos repository

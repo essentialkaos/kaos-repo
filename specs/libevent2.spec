@@ -12,8 +12,8 @@
 
 Summary:              Abstract asynchronous event notification library
 Name:                 %{pkgname}
-Version:              2.1.8
-Release:              2%{?dist}
+Version:              2.1.10
+Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
 URL:                  http://libevent.org/
@@ -100,6 +100,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.1.10-0
+- This release contains mostly fixes (some evbuffer oddity, AF_UNIX handling in
+  http server, some UB fixes and others) but also some new functionality
+  (without ABI breakage as usual) and now dist archive can be used for building
+  on windows (getopt had been added into it)
+
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.1.8-0
 - Libevent 2.1.8-stable, it contains openssl fixes for resetting fd and using
   bufferevent_openssl_filter_new(). vagrant fixes, some build fixes, increased

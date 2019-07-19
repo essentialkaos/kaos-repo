@@ -51,11 +51,11 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.12
+Version:                  1.5.16
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
-URL:                      http://memcached.org
+URL:                      https://memcached.org/
 
 Source0:                  https://github.com/%{name}/%{name}/archive/%{version}.tar.gz
 Source1:                  %{name}.init
@@ -227,6 +227,38 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.16-0
+- When nsuffix is 0 space for flags hasn't been allocated so don't memcpy them
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.15-0
+- Authentication mode for ASCII protocol
+- Speed up incr/decr by replacing snprintf
+- Use correct buffer size for internal URI encoding
+- change some links from http to https
+- Fix small memory leak in testapp.c
+- free window_global in slab_automove_extstore.c
+- remove inline_ascii_response option
+- -Y [filename] for ascii authentication mode
+- fix: idle-timeout wasn't compatible with binprot
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.14-0
+- update -h output for -I (max item size)
+- fix segfault in "lru" command
+- fix compile error on centos7
+- extstore: error adjusting page_size after ext_path
+- extstore: fix segfault if page_count is too high.
+- close delete + incr item survival race bug
+- FreeBSD superpages checking.
+- FreeBSD capabilities support.
+- memcached-tool dump fix loss of exp value
+- Add optional feature support to RPM package building
+- Fix "qw" in "MemcachedTest.pm" so wait_ext_flush is exported properly
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.13-0
+- Basic implementation of TLS for memcached
+- Improve Get And Touch documentation
+- TLS support
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.12-0
 - fix INCR/DECR refcount leak for invalid items
 

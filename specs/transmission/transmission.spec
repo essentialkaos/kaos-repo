@@ -54,7 +54,7 @@
 Summary:            A lightweight GTK+ BitTorrent client
 Name:               transmission
 Version:            2.94
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            MIT and GPLv2
 Group:              Applications/Internet
 URL:                http://www.transmissionbt.com
@@ -275,6 +275,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 2.94-1
+- Rebuilt with the latest version of libevent
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 2.94-0
 - Fix building against LibreSSL
 - Fix building against mbedTLS
