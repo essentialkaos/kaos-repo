@@ -50,7 +50,7 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              4.2.1
+Version:              4.2.4
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -435,7 +435,7 @@ cp man/zabbix_server.man %{buildroot}%{_mandir}/man8/zabbix_server.8
 cp man/zabbix_proxy.man %{buildroot}%{_mandir}/man8/zabbix_proxy.8
 
 # rename font for plots
-mv frontends/php/fonts/DejaVuSans.ttf frontends/php/fonts/graphfont.ttf
+mv frontends/php/assets/fonts/DejaVuSans.ttf frontends/php/assets/fonts/graphfont.ttf
 
 # install frontend files
 find frontends/php -name '*.orig' -delete
@@ -972,6 +972,124 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.4-0
+- Extended preprocessing steps with final result row; improved input validation
+  in preprocessing steps
+- Added access to vmware datastore at vmware vcenter level
+- Added display of maintenance information in configuration section for hosts
+  in maitenance
+- Added preloader for popup menus
+- Added ssl support for agent http checks
+- Added option to specify absolute path in loadmodule; thanks to glebs
+  ivanovskis for the patch
+- Fixed windows agent build
+- Fixed value trim in multiline input
+- Fixed zabbix_sender does not clean up its semaphores
+- Fixed not data loss on saving host prototypes by user with insufficient
+  permissions
+- Fixed checkbox selection on navigate to inherited template in triggers and
+  items
+- Fixed errors when trying to create a graph widget for key
+  system.cpu.util[,iowait] with y axis placed on the left side of the graph
+- Added output sanitization to prevent invalid utf-8 sequences in regexp-based
+  text replacement
+- Fixed horizontal scrolling in map
+- Fixed discovered hosts are not removed from table "dhosts" after removing and
+  adding the corresponding discovery check
+- Fixed colors for the multiselect disabled elements
+- 'it services --> service time --> note' infinite stretching
+- Fixed web scenarios pair manager issue when fields are duplicating on post
+  type toggle
+- Fixed missing sys/ioctl.h from src/libs/zbxsysinfo/openbsd/net.c; thanks to
+  andrea biscuola for the patch
+- Fixed zabbix fping feature detection does not work with fping builds since
+  10 feb 2017
+- Fixed distributive can contain untracked backup file include/config.h.in~
+- Fixed crash in global event correlation
+- Fixed "system.cpu.util" reporting incorrect cpu utilisation due to guest time
+  sometimes not being fully included in user time by "/proc/stat"
+- Fixed widgets flickering on refresh
+- Improved trigger expression list in trigger modal form
+- Fixed windows agent "eventlog" key for reading big event log files of
+  windows 2003
+- Fixed hidden error in graphs for php 7.3.5
+- Fixed regular expression file systems for discovery does not contain apfs
+- Fixed setup page to not to use bclib
+- Fixed dashboard map widget sub-map link behaviour
+- Fixed to host group limited global scripts to be usable in sub group
+- Fixed return value type and added preprocessing steps for items in remote
+  internal checks tamplates; fixed unsigned write cache value for remote
+  internal checks
+- Changed proxy to send timestamps of empty historical values to server, so
+  throttled items are not listed in administration/queue
+- Fixed http agent support of non-http scheme in url field
+- Fixed theoretical possibility of large numbers in json data being truncated,
+  added boolean value support to json parser
+- Fixed wrong filtering by "age less than" and "show suppressed problems" in
+  trigger overview
+- Fixed inactive, unmounted, unaccessible vmware datastore causes unknown
+  column nan insertion in field list
+- Fixed api validation of trigger dependency
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.3-0
+- Reverted changes that introduced error with write permissions in assets
+  directory
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.2-0
+- Upgraded jquery version v1.10.2 -> v3.3.1 and jqueryui v1.10.3 -> v1.12.1
+- Changed application filtering to partial name search
+- Fixed linking error if round() is undefined
+- Added file revision number generation for compilation on ms windows
+- Fixed scrollbar in overlay popups
+- Fixed error in ipmi poller causing growing queue
+- Fixed division by zero error in svg graph widget if selected time period is
+  so small that calculated step between 2 milestones is 0s
+- Removed "change password" button when cloning media types
+- Changed sorting by type, fixed information disclosure and formatting of
+  recipient name in action log screen item and dashboard widget; added new
+  sortfields to alert api
+- Fixed locale validation in user create and update api methods
+- Fixed tab key navigation for safari and edge browsers
+- Fixed trigger dependencies are ignored when changing only trigger state
+- Fixed api validation messages for linktrigger
+- Fixed buffer offset for reading hardware info from long dmi files
+- Fixed detection of logical functions (or / and) inside the context of
+  user macros
+- Deliver human friendly uptime in dashbord
+- Fixed transparency of draggable interfaces; changed cursor type for all
+  draggable and sortable elements
+- Fixed global search box loosing the search phrase after searching
+- Fixed several object ids allowing them to be 64 bit integers, added
+  asterisk for map navigation tree name field and changed the error message
+  to more generic one
+- Added state preservation eol
+- Fixed map element link coloring when linked problem is acknowledged
+- Fixed http poller crashes
+- Fixed trigger list checkboxes when filtering by single host
+- Fixed problem events to be filtered by "suppressed" instead of "related to
+  maintenance"
+- Made "test all steps" button be available only when at least 2 preprocessing
+  steps are created
+- Added warnings when zabbix components have different versions
+- Removed sid url argument for form cancel buttons
+- Fixed macro not being retained in trigger expression editing wizard
+- Increased header value input field max length
+- Fixed items being stuck in unsupported state under some conditions when
+  "discard unchanged" preprocessing step is used
+- Fixed the process of compiling the dummy.c module
+- Fixed invalid xpath for vmware "eventlog" key with "skip" option
+- Fixed sending log meta information without obvious needs
+- Added versioning of browser cached files
+- Reduced configuration cache fragmentation when reloading time based triggers
+- Improved performance of "remove host", "remove from host group", "unlink
+  from template" operations when processing network discovery events and using
+  mysql database
+- Fixed when undefined index: rows_per_page on global search screen
+- Fixed infinite loop and 100% cpu usage when using openipmi 2.0.26 or newer
+- Fixed "{{item.value}.regsub(<pattern>,<output>}" and
+  "{{item.lastvalue}.regsub(<pattern>,<output>}" being resolved
+  to *unknown* during upgrade
+
 * Mon Apr 22 2019 Andrey Kulikov <avk@brewkeeper.net> - 4.2.1-0
 - Increased socket response size limit
 - Fixed host.conn, host.ip, ipaddress and host.dns macros expansion in global
