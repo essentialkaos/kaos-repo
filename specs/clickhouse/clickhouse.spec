@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.7.3.9-stable
+# rpmbuilder:tag          v19.9.4.34-stable
 
 ################################################################################
 
@@ -57,7 +57,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.7.3.9
+Version:           19.9.4.34
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -65,6 +65,8 @@ URL:               https://clickhouse.yandex
 
 Source:            %{name}-%{version}.tar.bz2
 Source1:           %{name}.logrotate
+
+Patch0:            %{name}-fix-tz-filepath.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -157,6 +159,8 @@ This package contains test suite for ClickHouse DBMS.
 %prep
 %setup -q
 
+%patch0 -p1
+
 %build
 # Use gcc and gcc-c++ from devtoolset
 export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
@@ -169,6 +173,8 @@ mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DENABLE_EMBEDDED_COMPILER=0 \
+            -DENABLE_TESTS=OFF \
             -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
             -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
             -DGLIBC_COMPATIBILITY=OFF \
@@ -330,6 +336,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jul 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.9.4.34-0
+- Updated to the latest release
+
 * Wed Jun 05 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.7.3.9-0
 - Updated to the latest release
 - Added logrotate configuration
