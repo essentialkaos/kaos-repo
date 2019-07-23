@@ -77,18 +77,10 @@ BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 Requires:          openssl libicu libtool-ltdl unixODBC readline logrotate
 Requires:          lz4 librdkafka
 
-%if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-Requires(pre):     shadow-utils
-Requires(post):    chkconfig
-Requires(preun):   chkconfig
-Requires(preun):   initscripts
-Requires(postun):  initscripts
-%endif
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -165,10 +157,6 @@ This package contains test suite for ClickHouse DBMS.
 # Use gcc and gcc-c++ from devtoolset
 export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
 
-%if 0%{?rhel} == 6
-export CMAKE_OPTIONS="$CMAKE_OPTIONS -DENABLE_JEMALLOC=0 -DENABLE_RDKAFKA=0"
-%endif
-
 mkdir -p build
 
 pushd build
@@ -222,15 +210,9 @@ install -pm 644 dbms/programs/server/config.xml \
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 debian/%{name}-server.service \
                 %{buildroot}%{_unitdir}/
-%else
-install -dm 755 %{buildroot}%{_initddir}
-install -pm 755 debian/%{name}-server.init \
-                %{buildroot}%{_initddir}/%{name}-server
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -247,11 +229,7 @@ exit 0
 
 %post server
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} enable %{name}-server.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name}-server &>/dev/null || :
-%endif
 fi
 
 if [[ -d %{service_data_dir}/build ]] ; then
@@ -260,21 +238,14 @@ fi
 
 %preun server
 if [[ $1 -eq 0 ]]; then
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}-server.service &>/dev/null || :
   %{__systemctl} stop %{name}-server.service &>/dev/null || :
-%else
-  %{__service} %{name}-server stop &>/dev/null || :
-  %{__chkconfig} --del %{name}-server &>/dev/null || :
-%endif
 fi
 
 %postun server
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__systemctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
@@ -300,11 +271,7 @@ fi
 
 %files server
 %defattr(-, root, root, -)
-%if 0%{?rhel} >= 7
 %{_unitdir}/%{name}-server.service
-%else
-%{_initddir}/%{name}-server
-%endif
 %{_crondir}/%{name}-server
 %{_bindir}/%{name}-clang
 %{_bindir}/%{name}-copier
