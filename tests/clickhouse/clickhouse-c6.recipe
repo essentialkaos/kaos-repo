@@ -58,6 +58,10 @@ command "-" "Check server environment"
   perms {log_dir} 775
   owner {log_dir} root:{group}
 
+command "-" "Check linking with librdkafka shared lib"
+  lib-linked /usr/bin/clickhouse-client librdkafka.so.1
+  lib-linked /usr/bin/clickhouse-server librdkafka.so.1
+
 command "service {service_name} start" "Start ClickHouse daemon"
   exit 0
   service-works {service_name}
