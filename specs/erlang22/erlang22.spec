@@ -69,7 +69,7 @@ Patch0:            libressl-compat.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 BuildRequires:     lksctp-tools-devel
@@ -731,6 +731,8 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-kernel-poll \
   --enable-hipe \
   --enable-smp-support \
+  --enable-builtin-zlib \
+  --enable-sctp \
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
