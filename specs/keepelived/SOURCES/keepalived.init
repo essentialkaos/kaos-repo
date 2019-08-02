@@ -73,11 +73,6 @@ reload() {
 }
 
 check() {
-  if ! kv.statusIs "$STATUS_WORKS" ; then
-    kv.show "You must start service before this command usage" $BROWN
-    return $ACTION_ERROR
-  fi
-
   kv.showProcessMessage "Checking ${kv[prog_name]} config"
 
   testServiceConfig true
