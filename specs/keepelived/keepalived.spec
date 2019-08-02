@@ -63,6 +63,12 @@ BuildRequires:     net-snmp-devel
 BuildRequires:     gcc make openssl-devel libnl-devel kernel-devel popt-devel
 BuildRequires:     libnfnetlink-devel
 
+%if %{with snmp}
+Requires:          net-snmp-libs
+%endif
+
+Requires:          lm_sensors-libs
+
 %if 0%{?rhel} >= 7
 Requires:          systemd
 %else
