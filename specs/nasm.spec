@@ -41,7 +41,13 @@ Source1:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{n
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc perl(Env) autoconf >= 2.69 asciidoc xmlto
+BuildRequires:      make gcc perl(Env) asciidoc xmlto
+
+%if 0%{?rhel} <= 6
+BuildRequires:      autoconf268
+%else
+BuildRequires:      autoconf >= 2.69
+%endif
 
 Requires(post):     /sbin/install-info
 Requires(preun):    /sbin/install-info
@@ -74,7 +80,13 @@ include linker, library manager, loader, and information dump.
 tar xjf %{SOURCE1} --strip-components 1
 
 %build
+%if 0%{?rhel} <= 6
+sed -i 's/AC_PREREQ(2.69)/AC_PREREQ(2.68)/' configure.ac
+autoreconf268
+%else
 autoreconf
+%endif
+
 %configure
 
 %{__make} all %{?_smp_mflags}
@@ -129,9 +141,6 @@ fi
 ################################################################################
 
 %changelog
-* Sat May 25 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-1
-- Fixed bug in postun scriptlet
-
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-0
 - Fix crash due to multiple errors or warnings during the code generation pass
   if a list file is specified
@@ -192,6 +201,3 @@ fi
 - Added the --help command line option as an alias to -h.
 - Added -W, -D, and -Q suffix aliases for RET instructions so the operand
   sizes of these instructions can be encoded without using o16, o32 or o64.
-
-* Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 2.13.03-0
-- Initial build for kaos-repo
