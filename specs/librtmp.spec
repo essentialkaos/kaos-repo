@@ -1,5 +1,9 @@
 ################################################################################
 
+#rpmbuilder:git           git://git.ffmpeg.org/rtmpdump
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -38,13 +42,13 @@
 
 Summary:            RTMPDump Real-Time Messaging Protocol API
 Name:               librtmp
-Version:            2.3
+Version:            2.4
 Release:            0%{?dist}
 License:            LGPL
 Group:              System Environment/Libraries
-URL:                http://rtmpdump.mplayerhq.hu/
+URL:                https://rtmpdump.mplayerhq.hu
 
-Source0:            http://rtmpdump.mplayerhq.hu/download/%{pkg_name}-%{version}.tgz
+Source0:            %{pkg_name}-%{version}.tgz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -146,5 +150,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4-0
+- Updated to the latest version from official git repository
+
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 2.3-0
 - Initial build

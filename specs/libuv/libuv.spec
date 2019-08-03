@@ -41,7 +41,7 @@
 
 Summary:              Cross-platform asychronous I/O
 Name:                 libuv
-Version:              1.25.0
+Version:              1.30.1
 Release:              0%{?dist}
 License:              MIT, BSD and ISC
 Group:                Development/Tools
@@ -142,6 +142,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.30.1-0
+- Updated to the latest stable release
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
 - Updated to the latest stable release
 

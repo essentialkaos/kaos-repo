@@ -30,7 +30,7 @@
 
 Summary:            C library for the Publix Suffix List
 Name:               libpsl
-Version:            0.17.0
+Version:            0.20.2
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -150,8 +150,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.20.2-0
+- Updated to the latest stable release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 0.15.0-0
 - Initial build for kaos repo
