@@ -115,14 +115,12 @@ install -dm 755 %{buildroot}%{_mandir}/man1
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_datadir}/bash-completion/completions/mvn
 
-for jar in %{buildroot}%{pkg_homedir}/lib/%{name}-*.jar
-do
+for jar in %{buildroot}%{pkg_homedir}/lib/%{name}-*.jar ; do
     jarname=$(basename "$jar" .jar)
     ln -sfv %{pkg_homedir}/lib/${jarname}.jar %{buildroot}%{_datadir}/java/%{name}/${jarname}.jar
 done
 
-for b in %{buildroot}%{pkg_homedir}/bin/*
-do
+for b in %{buildroot}%{pkg_homedir}/bin/* ; do
     binaryname=$(basename "$b")
     ln -sfv %{pkg_homedir}/bin/${binaryname} %{buildroot}%{_bindir}/${binaryname}
 done
