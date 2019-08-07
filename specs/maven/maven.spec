@@ -1,5 +1,9 @@
 ################################################################################
 
+%define debug_package %{nil}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -61,10 +65,19 @@ Source1:            %{name}-bash-completion
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+%if %{?rhel} >= 7
 Requires:           java >= 1.7.0
+%else
+Requires:           java-1.8.0-openjdk-headless
+%endif
 Requires:           %{name}-lib = %{version}-%{release}
 
+%if %{?rhel} >= 7
 BuildRequires:      java >= 1.7.0 java-devel >= 1.7.0
+%else
+BuildRequires:      java-1.8.0-openjdk-headless java-1.8.0-openjdk-devel
+%endif
+
 BuildRequires:      maven >= 3.0.5
 
 Provides:           %{name} = %{version}-%{release}
@@ -82,7 +95,9 @@ reporting and documentation from a central piece of information.
 Summary:            Core part of Maven
 Group:              Development/Tools
 
+%if %{?rhel} >= 7
 Requires:           javapackages-tools
+%endif
 
 %description lib
 Core part of Apache Maven that can be used as a library.
