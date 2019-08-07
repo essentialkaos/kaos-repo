@@ -4,13 +4,13 @@
 
 ################################################################################
 
-%define jdk_major   12.0.1
-%define jdk_minor   12
+%define jdk_major   12.0.2
+%define jdk_minor   10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 
-%define alt_priority 1200
+%define alt_priority 1201
 
 ################################################################################
 

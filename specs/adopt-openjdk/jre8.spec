@@ -4,20 +4,20 @@
 
 ################################################################################
 
-%define jdk_major   8u212
-%define jdk_minor   b04
+%define jdk_major   8u222
+%define jdk_minor   b10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 800
+%define alt_priority 801
 
 ################################################################################
 
 Summary:            OpenJDK Runtime Environment (JRE 8)
 Name:               jre8
-Version:            1.8.0.212.b04
+Version:            1.8.0.222.b10
 Release:            0%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
@@ -96,5 +96,8 @@ fi
 ################################################################################
 
 %changelog
+* Thu Aug 08 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.222.b10-0
+- Updated to the latest version
+
 * Sun Jul 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.212.b04-0
 - Initial build for kaos repository

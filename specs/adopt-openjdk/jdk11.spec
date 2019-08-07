@@ -4,14 +4,14 @@
 
 ################################################################################
 
-%define jdk_major   11.0.3
-%define jdk_minor   7
+%define jdk_major   11.0.4
+%define jdk_minor   11
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1150
+%define alt_priority 1151
 
 ################################################################################
 
@@ -93,5 +93,8 @@ fi
 ################################################################################
 
 %changelog
+* Thu Aug 08 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.4.11-0
+- Updated to the latest version
+
 * Sun Jul 14 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.3.7-0
 - Initial build for kaos repository
