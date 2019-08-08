@@ -1,10 +1,14 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define __jar_repack %{nil}
 
 ################################################################################
 
-%define jdk_major   8u222
+%define jdk_major   222
 %define jdk_minor   b10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
@@ -17,14 +21,17 @@
 
 Summary:            OpenJDK Runtime Environment (JRE 8)
 Name:               jre8
-Version:            1.8.0.222.b10
+Epoch:              1
+Version:            1.8.0.%{jdk_major}.%{jdk_minor}
 Release:            0%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
 
-Source0:            https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk%{jdk_major}-%{jdk_minor}/OpenJDK8U-jre_x64_linux_hotspot_%{jdk_major}%{jdk_minor}.tar.gz
+Source0:            https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u%{jdk_major}-%{jdk_minor}/OpenJDK8U-jre_x64_linux_hotspot_8u%{jdk_major}%{jdk_minor}.tar.gz
 Source1:            java.sh
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -32,6 +39,11 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+Provides:           jre = 1:1.8.0
+Provides:           java = 1:1.8.0
+Provides:           jre-1.8.0 = 1:%{version}-%{release}
+Provides:           java-1.8.0 = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -49,7 +61,9 @@ for free.
 ################################################################################
 
 %prep
-%setup -qn jdk%{jdk_major}-%{jdk_minor}-jre
+%{crc_check}
+
+%setup -qn jdk8u%{jdk_major}-%{jdk_minor}-jre
 
 %build
 

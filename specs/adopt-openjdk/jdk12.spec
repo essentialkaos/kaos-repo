@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define __jar_repack %{nil}
 
 ################################################################################
@@ -17,6 +21,7 @@
 
 Summary:            OpenJDK Runtime Environment (JDK 12)
 Name:               jdk12
+Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
 Release:            0%{?dist}
 Group:              Development/Languages
@@ -26,12 +31,19 @@ URL:                https://adoptopenjdk.net
 Source0:            https://github.com/AdoptOpenJDK/openjdk12-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK12U-jdk_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:            java.sh
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+Provides:           jdk = 1:12
+Provides:           java = 1:12
+Provides:           jdk-%{jdk_major} = 1:%{version}-%{release}
+Provides:           java-%{jdk_major} = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -49,6 +61,8 @@ for free.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn jdk-%{jdk_major}+%{jdk_minor}
 
 %build
