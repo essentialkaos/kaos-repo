@@ -6,7 +6,7 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              2.8
+Version:              2.9a
 Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
@@ -64,6 +64,51 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 2.9a-0
+- Fix bugs in select-pane and the main-horizontal and main-vertical layouts.
+- Attempt to preserve horizontal cursor position as well as vertical with
+  reflow.
+- Rewrite main-vertical and horizontal and change layouts to better handle the
+  case where all panes won't fit into the window size, reduce problems with
+  pane border status lines and fix other bugs mostly found by Thomas Sattler.
+- Add format variables for the default formats in the various modes
+  (tree_mode_format and so on) and add a -a flag to display-message to list
+  variables with values.
+- Add a -v flag to display-message to show verbose messages as the format is
+  parsed, this allows formats to be debugged
+- Add support for HPA (\033[`).
+- Add support for origin mode (\033[?6h).
+- No longer clear history on RIS.
+- Extend the #[] style syntax and use that together with previous format
+  changes to allow the status line to be entirely configured with a single
+  option.
+- Add E: and T: format modifiers to expand a format twice (useful to expand the
+  value of an option).
+- The individual -fg, -bg and -attr options have been removed; they
+  were superseded by -style options in tmux 1.9.
+- Allow more than one mode to be opened in a pane. Modes are kept on a stack
+  and retrieved if the same mode is entered again. Exiting the active mode goes
+  back to the previous one.
+- When showing command output in copy mode, call it view mode instead (affects
+  pane_mode format).
+- Add -b to display-panes like run-shell.
+- Handle UTF-8 in word-separators option.
+- New "terminal" colour allowing options to use the terminal default colour
+  rather than inheriting the default from a parent option.
+- Do not move the cursor in copy mode when the mouse wheel is used.
+- Use the same working directory rules for jobs as new windows rather than
+  always starting in the user's home.
+- Allow panes to be one line or column in size.
+- Go to last line when goto-line number is out of range in copy mode.
+- Yank previously cut text if any with C-y in the command prompt, only use the
+  buffer if no text has been cut.
+- Add q: format modifier to quote shell special characters.
+- Add StatusLeft and StatusRight mouse locations (keys such as
+  MouseDown1StatusLeft) for the status-left and status-right areas of the
+  status line.
+- Add -Z to find-window.
+- Support for windows larger than the client.
+
 * Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
 - Make display-panes block the client until a pane is chosen or it
   times out.

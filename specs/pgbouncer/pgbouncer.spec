@@ -47,8 +47,8 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.9.0
-Release:           2%{?dist}
+Version:           1.10.0
+Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
@@ -176,7 +176,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYRIGHT NEWS.rst NEWS.rst
+%doc AUTHORS COPYRIGHT NEWS.md
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.ini
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
@@ -193,6 +193,25 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
+- Add support for enabling and disabling TLS 1.3. (TLS 1.3 was already
+  supported, depending on the OpenSSL library, but now the configuration
+  settings to pick the TLS protocol versions also support it)
+- Fix TLS 1.3 support. This was broken with OpenSSL 1.1.1 and 1.1.1a (but not
+  before or after).
+- Fix a rare crash in SHOW FDS.
+- Fix an issue that could lead to prolonged downtime if many cancel requests
+  arrive.
+- Avoid "unexpected response from login query" after a postgres reload.
+- Fix idle_transaction_timeout calculation. The bug would lead to premature
+  timeouts in specific situations.
+- Make various log and error messages more precise.
+- Fix issues found by Coverity (none had a significant impact in practice).
+- Improve and document all test scripts.
+- Add additional SHOW commands to the documentation.
+- Convert the documentation from rst to Markdown.
+- Python scripts in the source tree are all compatible with Python 3 now.
+
 * Thu May 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-2
 - Fixed permissions for logrotate config
 

@@ -38,7 +38,7 @@
 
 Summary:              Generic non-JVM producer and consumer for Apache Kafka
 Name:                 kafkacat
-Version:              1.3.1
+Version:              1.4.0
 Release:              0%{?dist}
 License:              2-clause BSD
 Group:                Development/Libraries
@@ -98,6 +98,19 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Consumer: Add support for printing message headers (-f ".. %%h.. \n")
+- Producer: Add support for specifying message headers (-H name=value)
+- Emit current controllerId in metadata output, if supported
+- Add -F <file> to read config from file. Defaults to $KAFKACAT_CONFIG or
+  ~/.config/kafkacat.conf. With some support for translating Java config
+  properties to librdkafka counterparts.
+- Support Fixed key (-k ..)
+- Make sure topic configuration is applied first
+- JSON: emit NULL keys and values as null rather than empty string
+- Fix tstype json output
+- Honour -c count in consumer mode by yielding
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
 - Added support for formatter T - message timestamp
 - Introduce -E argument (don't exit on error)

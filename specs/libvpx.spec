@@ -1,8 +1,8 @@
 ################################################################################
 
 %global majorver 1
-%global minorver 7
-%global patchver 0
+%global minorver 8
+%global patchver 1
 
 %ifarch %{ix86}
 %global vpxtarget x86-linux-gcc
@@ -118,5 +118,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated to the latest stable release
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
+- Updated to the latest stable release
+
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Initial build for kaos repository

@@ -33,7 +33,13 @@ binary=${BINARY:-/usr/sbin/keepalived}
 options=${KEEPALIVED_OPTIONS:--D}
 config=${CONFIG:-/etc/keepalived/keepalived.conf}
 
-kv[search_pattern]="$binary $options -f $config"
+kv[pid_dir]="/var/run/keepalived"
+
+daemon_pid="${kv[pid_dir]}/keepalived.pid"
+vrrp_pid="${kv[pid_dir]}/vrrp.pid"
+checkers_pid="${kv[pid_dir]}/checkers.pid"
+
+kv[pid_file]="$daemon_pid"
 
 ###############################################################################
 
@@ -41,22 +47,17 @@ kv.addHandler "start"   "startServiceHandler"
 kv.addHandler "stop"    "stopServiceHandler"
 
 kv.addCommand "reload"  "Reload and apply config"  "reload"
+kv.addCommand "check"   "Check config"             "check"
+
+kv.addHandler "start" "preStartHandler" "pre"
+
+kv.disableOutputRedirect "start" "pre"
 
 ###############################################################################
 
-prepare() {
-  local has_errors
-
-  [[ ! -x $binary ]] && has_errors=true && kv.error "<BINARY> must be executable file."
-  [[ ! -r $config ]] && has_errors=true && kv.error "<CONF_FILE> must be readable file."
-  [[ ! -s $config ]] && has_errors=true && kv.error "<CONF_FILE> can't be empty."
-
-  [[ $has_errors ]] && kv.exit $ACTION_ERROR
-}
-
 reload() {
   if ! kv.statusIs "$STATUS_WORKS" ; then
-    kv.show "You must start service before this command usage." $BROWN
+    kv.show "You must start service before this command usage" $BROWN
     return $ACTION_ERROR
   fi
 
@@ -71,10 +72,44 @@ reload() {
   return $status
 }
 
+check() {
+  kv.showProcessMessage "Checking ${kv[prog_name]} config"
+
+  testServiceConfig true
+
+  local status=$?
+
+  kv.showStatusMessage "$status"
+
+  if [[ $status -ne 0 ]] ; then
+    kv.show "Errors while configuration file validation:" $BOLD
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+
+  return $ACTION_OK
+}
+
 ###############################################################################
 
+preStartHandler() {
+  checkEnv
+
+  if ! testServiceConfig true ; then
+    kv.show "Errors while configuration file validation:" $BOLD
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    testServiceConfig
+    kv.show "-------------------------------------------------------------------------------" $GREY
+    return $ACTION_ERROR
+  fi
+
+  return $ACTION_OK
+}
+
 startServiceHandler() {
-  $binary $options -f $config
+  $binary $options -f $config -p $daemon_pid -r $vrrp_pid -c $checkers_pid
 
   [[ $? -ne 0 ]] && return $ACTION_ERROR
 
@@ -98,6 +133,36 @@ reloadConfigHandler() {
 
 ###############################################################################
 
-prepare
+checkEnv() {
+  local has_errors
+
+  [[ ! -f "$binary" ]] && has_errors=true && kv.error "Error! File $binary doesn't exist"
+  [[ ! -x "$binary" ]] && has_errors=true && kv.error "Error! File $binary is not executable"
+
+  [[ ! -f "$config" ]] && has_errors=true && kv.error "Error! File $config doesn't exist"
+  [[ ! -r "$config" ]] && has_errors=true && kv.error "Error! File $config is not readable"
+
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
+
+  return $ACTION_OK
+}
+
+testServiceConfig() {
+  local quiet="$1"
+
+  if [[ -n "$quiet" ]] ; then
+    $binary -t -f $config &> /dev/null
+  else
+    $binary -t -f $config
+  fi
+
+  if [[ $? -eq 0 ]] ; then
+    return $ACTION_OK
+  fi
+
+  return $ACTION_ERROR
+}
+
+###############################################################################
 
 kv.go $@

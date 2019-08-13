@@ -7,7 +7,7 @@
 
 Summary:            C Library for manipulating module metadata files
 Name:               libmodulemd
-Version:            2.5.0
+Version:            2.6.0
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -93,5 +93,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
+- Updated to the latest stable release
+
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
 - Initial build for kaos repository

@@ -1,21 +1,26 @@
 ################################################################################
 
-%define __os_install_post %{nil}
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-%define jdk_major   12.0.1
-%define jdk_minor   12
+%define __jar_repack %{nil}
+
+################################################################################
+
+%define jdk_major   12.0.2
+%define jdk_minor   10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 
-%define alt_priority 1200
+%define alt_priority 1201
 
 ################################################################################
 
 Summary:            OpenJDK Runtime Environment (JRE 12)
 Name:               jre12
+Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
 Release:            0%{?dist}
 Group:              Development/Languages
@@ -25,12 +30,19 @@ URL:                https://adoptopenjdk.net
 Source0:            https://github.com/AdoptOpenJDK/openjdk12-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK12U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:            java.sh
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+Provides:           jre = 1:12
+Provides:           java = 1:12
+Provides:           jre-%{jdk_major} = 1:%{version}-%{release}
+Provides:           java-%{jdk_major} = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -48,6 +60,8 @@ for free.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn jdk-%{jdk_major}+%{jdk_minor}-jre
 
 %build

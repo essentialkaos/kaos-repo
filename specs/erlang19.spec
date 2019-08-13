@@ -55,7 +55,7 @@
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_suffix}
-Release:           0%{?dist}
+Release:           1%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -68,7 +68,7 @@ Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt zlib-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make
 
@@ -857,6 +857,8 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-kernel-poll \
   --enable-hipe \
   --enable-smp-support \
+  --enable-builtin-zlib \
+  --enable-sctp \
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
@@ -1160,6 +1162,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 27 2019 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-1
+- Rebuilt with built-in zlib
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-0
 - Updated to the latest release
 

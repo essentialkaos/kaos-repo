@@ -1,14 +1,18 @@
 ################################################################################
 
+%define crc      14b620084c027d546fa0b3f083b800c6
+
+################################################################################
+
 Summary:         Wrapper library for the Video Decode and Presentation API
 Name:            libvdpau
-Version:         1.1.1
+Version:         1.2
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
 URL:             http://freedesktop.org/wiki/Software/VDPAU
 
-Source0:         http://cgit.freedesktop.org/~aplattner/%{name}/snapshot/%{name}-%{version}.tar.gz
+Source0:         https://gitlab.freedesktop.org/vdpau/%{name}/uploads/%{crc}/%{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -111,5 +115,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2-0
+- Updated to the latest stable release
+
 * Fri Mar 24 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
 - Initial build for kaos repository

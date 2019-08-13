@@ -3,11 +3,17 @@
 
 pkg erlang18
 
+var erts_version 7.3.1.6
+var bin_dir      /usr/lib64/erlang/erts-{erts_version}/bin
+
 command "-" "Check environment"
   app epmd
   app erl
   app erlc
   app escript
+
+command "-" "Check zlib linking"
+  !lib-linked {bin_dir}/beam libz.so.1
 
 command "erl -compile test" "Compile basic script"
   exit 0
@@ -16,6 +22,3 @@ command "erl -compile test" "Compile basic script"
 command "erl -noshell -s test main -s init stop" "Execute basic script"
   exit 0
   output-contains "ERLANG WORKS"
-
-command "-" "Cleanup"
-  remove test.beam

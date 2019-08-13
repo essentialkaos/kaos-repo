@@ -90,14 +90,16 @@
 
 Summary:           Open Source Apple Filing Protocol(AFP) fileserver
 Name:              netatalk
-Version:           3.1.11
+Version:           3.1.12
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/System
 URL:               http://netatalk.sourceforge.net
 
-Source0:           http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source0:           https://download.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:           %{name}.pam-system-auth
+
+Patch0:            make-install.patch
 
 BuildRequires:     gcc avahi-devel bison flex libattr-devel libgcrypt-devel
 BuildRequires:     krb5-devel openssl-devel libtdb-devel pam-devel
@@ -205,6 +207,8 @@ that use %{name}.
 rm -fr libevent/
 %endif
 
+%patch0 -p1
+
 # Avoid re-running the autotools
 # touch -r aclocal.m4 configure configure.ac macros/gssapi-check.m4
 
@@ -263,6 +267,7 @@ export CFLAGS="$CFLAGS -fsigned-char"
 
 %install
 rm -rf %{buildroot}
+
 %{make_install}
 
 mkdir -p %{buildroot}%{_var}/lock/%{name}
@@ -346,5 +351,8 @@ fi
 ################################################################################
 
 %changelog
-* Sun Feb 11 2018 <inbox@gongled.ru> - 3.1.11-0
-- Initial build
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 3.1.12-0
+- Updated to the latest stable release
+
+* Sun Feb 11 2018 Gleb Goncharov <inbox@gongled.ru> - 3.1.11-0
+- Initial build for kaos repository

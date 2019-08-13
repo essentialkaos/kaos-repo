@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.7.3.9-stable
+# rpmbuilder:tag          v19.9.4.34-stable
 
 ################################################################################
 
@@ -57,7 +57,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.7.3.9
+Version:           19.9.4.34
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -65,6 +65,8 @@ URL:               https://clickhouse.yandex
 
 Source:            %{name}-%{version}.tar.bz2
 Source1:           %{name}.logrotate
+
+Patch0:            %{name}-fix-tz-filepath.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -75,18 +77,10 @@ BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 Requires:          openssl libicu libtool-ltdl unixODBC readline logrotate
 Requires:          lz4 librdkafka
 
-%if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-Requires(pre):     shadow-utils
-Requires(post):    chkconfig
-Requires(preun):   chkconfig
-Requires(preun):   initscripts
-Requires(postun):  initscripts
-%endif
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -157,18 +151,18 @@ This package contains test suite for ClickHouse DBMS.
 %prep
 %setup -q
 
+%patch0 -p1
+
 %build
 # Use gcc and gcc-c++ from devtoolset
 export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
-
-%if 0%{?rhel} == 6
-export CMAKE_OPTIONS="$CMAKE_OPTIONS -DENABLE_JEMALLOC=0 -DENABLE_RDKAFKA=0"
-%endif
 
 mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DENABLE_EMBEDDED_COMPILER=0 \
+            -DENABLE_TESTS=OFF \
             -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
             -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
             -DGLIBC_COMPATIBILITY=OFF \
@@ -216,15 +210,9 @@ install -pm 644 dbms/programs/server/config.xml \
 
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 debian/%{name}-server.service \
                 %{buildroot}%{_unitdir}/
-%else
-install -dm 755 %{buildroot}%{_initddir}
-install -pm 755 debian/%{name}-server.init \
-                %{buildroot}%{_initddir}/%{name}-server
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -241,11 +229,7 @@ exit 0
 
 %post server
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} enable %{name}-server.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name}-server &>/dev/null || :
-%endif
 fi
 
 if [[ -d %{service_data_dir}/build ]] ; then
@@ -254,21 +238,14 @@ fi
 
 %preun server
 if [[ $1 -eq 0 ]]; then
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}-server.service &>/dev/null || :
   %{__systemctl} stop %{name}-server.service &>/dev/null || :
-%else
-  %{__service} %{name}-server stop &>/dev/null || :
-  %{__chkconfig} --del %{name}-server &>/dev/null || :
-%endif
 fi
 
 %postun server
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__systemctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
@@ -294,11 +271,7 @@ fi
 
 %files server
 %defattr(-, root, root, -)
-%if 0%{?rhel} >= 7
 %{_unitdir}/%{name}-server.service
-%else
-%{_initddir}/%{name}-server
-%endif
 %{_crondir}/%{name}-server
 %{_bindir}/%{name}-clang
 %{_bindir}/%{name}-copier
@@ -330,6 +303,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jul 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.9.4.34-0
+- Updated to the latest release
+
 * Wed Jun 05 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.7.3.9-0
 - Updated to the latest release
 - Added logrotate configuration

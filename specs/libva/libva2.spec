@@ -41,7 +41,7 @@
 
 Summary:            Video Acceleration (VA) API for Linux
 Name:               %{realname}2
-Version:            2.3.0
+Version:            2.5.0
 Release:            0%{?dist}
 Group:              System Environment/Libraries
 License:            MIT
@@ -130,17 +130,83 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
+- Correct the comment of color_range.
+- Add VA_FOURCC_A2B10G10R10 for format a2b10g10r10.
+- Adjust VAEncMiscParameterQuantization structure to be align with
+  VAEncMiscParameterBuffer(possible to impact BC)
+- Add attribute for max frame size
+- Add va_footer.html into distribution build
+- va_trace: hevc profiles added
+- Add new definition for input/output surface flag
+- va/va_trace: add trace support for VAEncMiscParameterTypeSkipFrame structure.
+- va/va_trace: add MPEG2 trace support for MiscParam and SequenceParam
+- va_openDriver: check strdup return value
+- Mark some duplicated field as deprecated
+- Add return value into logs
+- va/va_trace: add trace support for VAEncMiscParameterEncQuality structure.
+- Add newformat foucc defination
+- va_backend: remove unneeded linux/videodev2.h include
+- va_trace: add missing <sys/time.h> include
+- configure: don't build glx if VA/X11 isn't built
+- va/va_trace: unbreak with C89 after b369467
+- [common] Add A2RGB10 fourcc definition
+- build: meson: enables va messaging and visibility
+- va/va_trace: add trace support for RIR(rolling intra refresh).
+- va/va_trace: add trace support for ROI(region of interest).
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- va_TraceSurface support for VA_FOURCC_P010
+- Add pointer to struct wl_interface for driver to use
+- (integrate) va: fix new line symbol in error message
+- av: avoid driver path truncation
+- Fix compilation warning (uninit and wrong variable types) for Android O MR1
+- Allow import of the DRM PRIME 2 memory type
+- android: ignore unimportant compile warnnings
+- compile: fix sign/unsign compare in va_trace.c
+- android: replace utils/Log.h with log/log.h
+- High Dynamic Range Tone Mapping: Add a new filter for input metadata and some
+  comments.
+- Remove restrictions on vaSetDriverName()
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
-- Updated to the latest stable release
+- Bump VA-API version to 1.3.0 and libva to 2.3.0
+- Add max frame size parameters for multiple pass case in legacy mode
+- Add new BRC mode AVBR
+- Add new interface for High Dynamic Range tone mapping
+- Add missing enum to string conversions
+- Add hevc subsets parameters structure
+- Add Customized Noise Reduction (HVS) interfaces
+- Add new BRC mode definition QVBR
+- Add more complete colour properties for use in VPP
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
-- Updated to the latest stable release
+- Bump VA-API version to 1.2.0 and libva to 2.2.0
+- Add support for hevc range extension decoding
+- Add support for fast intra prediction in HEVC FEI
+- Add 10/12-bit YUV render target formats
+- Add fourcc code for Y210/Y216/Y410/Y416/RGB565/BGR565
+- Add VA_STATUS_ERROR_NOT_ENOUGH_BUFFER
+- Add VA_SURFACE_ATTRIB_USAGE_HINT_EXPORT
+- Improve documentation
 
 * Wed May 30 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-1
 - Added livba < 2 to conflicts
 
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
-- Updated to the latest stable release
+- Bump VA-API version to 1.1.0 and libva to 2.1.0
+- Add API for multi-frame processing
+- Add entrypoint VAEntrypointStats for Statistics
+- Add data structures for HEVC FEI support
+- Add new attributes for decoding/encoding/video processing
+- Add new VPP filter for Total Color Correction
+- Add blending interface in VPP
+- Add rotation interface in VPP
+- Add mirroring interface in VPP
+- Add Chroma siting flags in VPP
+- Add new color standard definitions
+- Add new interface for exporting surface
+- Add message callbacks for drivers to use
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
 - Initial build for kaos repository

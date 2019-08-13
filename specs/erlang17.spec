@@ -55,7 +55,7 @@
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_suffix}
-Release:           0%{?dist}
+Release:           1%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               http://www.erlang.org
@@ -68,7 +68,7 @@ Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel zlib-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
 BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make
 
@@ -900,13 +900,14 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-kernel-poll \
   --enable-hipe \
   --enable-smp-support \
+  --enable-builtin-zlib \
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
   --with-ssl=$BUILDDIR/libressl-%{libre_ver}/build \
   --with-ssl-rpath=no
 
-%{__make} -j1
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -1215,6 +1216,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 27 2019 Anton Novojilov <andy@essentialkaos.com> - 17.5.6.10-1
+- Rebuilt with built-in zlib
+
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 17.5.6.10-0
 - Updated to the latest release
 

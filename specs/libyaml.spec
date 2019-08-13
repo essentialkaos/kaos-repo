@@ -2,7 +2,7 @@
 
 Summary:         A C library for parsing and emitting YAML
 Name:            libyaml
-Version:         0.2.1
+Version:         0.2.2
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
@@ -80,8 +80,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.2.2-0
+- Updated to the latest release
+
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 0.2.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Nov 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.7-0
 - Initial build for kaos repo

@@ -67,7 +67,7 @@ Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make zlib-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 BuildRequires:     lksctp-tools-devel
@@ -741,6 +741,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-kernel-poll \
   --enable-hipe \
   --enable-smp-support \
+  --enable-builtin-zlib \
   --enable-sctp \
   --with-ssl \
   --disable-erlang-mandir \
@@ -1011,6 +1012,7 @@ rm -rf %{buildroot}
 * Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.5-0
 - Updated to the latest release
 - Added sctp support
+- Rebuilt with built-in zlib
 
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.2-0
 - Updated to the latest release

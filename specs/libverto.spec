@@ -2,8 +2,8 @@
 
 Summary:         Main loop abstraction library
 Name:            libverto
-Version:         0.3.0
-Release:         1%{?dist}
+Version:         0.3.1
+Release:         0%{?dist}
 License:         MIT
 Group:           Development/Libraries
 URL:             https://github.com/latchset/libverto
@@ -273,6 +273,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 0.3.1-0
+- Fix rare leak of DSO in module_load
+- Turn off -Wcast-function-type
+- Work around libev not being c89-compliant
+
 * Fri Dec 08 2017 Anton Novojilov <andy@essentialkaos.com> - 0.3.0-1
 - Improved spec
 

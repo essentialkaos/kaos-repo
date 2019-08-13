@@ -1,0 +1,21 @@
+From 4e1286e1e562d7ec3e7ddf51fb982a5b75359bd1 Mon Sep 17 00:00:00 2001
+From: Alexey Milovidov <milovidov@yandex-team.ru>
+Date: Mon, 8 Jul 2019 05:19:50 +0300
+Subject: [PATCH] Addition to prev. revision
+
+---
+ libs/libcommon/src/DateLUT.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libs/libcommon/src/DateLUT.cpp b/libs/libcommon/src/DateLUT.cpp
+index 7627c201155..ce3e7e32a26 100644
+--- a/libs/libcommon/src/DateLUT.cpp
++++ b/libs/libcommon/src/DateLUT.cpp
+@@ -68,7 +68,7 @@ std::string determineDefaultTimeZone()
+             tz_file_path = fs::read_symlink(tz_file_path);
+             /// If it's relative - make it absolute.
+             if (tz_file_path.is_relative())
+-                tz_file_path = (fs::path("/etc/localtime/") / tz_file_path).lexically_normal();
++                tz_file_path = (fs::path("/etc/") / tz_file_path).lexically_normal();
+         }
+     }
