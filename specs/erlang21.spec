@@ -4,6 +4,10 @@
 
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -42,7 +46,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           3
-%define ver_patch         8.5
+%define ver_patch         8.6
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -64,6 +68,8 @@ Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver
 Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
 Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -696,6 +702,8 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
@@ -1009,6 +1017,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.6-0
+- Updated to the latest release
+- Added CRC check for sources
+
 * Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.5-0
 - Updated to the latest release
 - Added sctp support

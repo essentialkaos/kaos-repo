@@ -4,6 +4,10 @@
 
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -42,7 +46,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           22
 %define ver_min           0
-%define ver_patch         5
+%define ver_patch         7
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -64,6 +68,8 @@ Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver
 Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
 
 Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+
+Source100:         checksum.sha512
 
 Patch0:            libressl-compat.patch
 
@@ -684,6 +690,8 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
@@ -995,5 +1003,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 22.0.7-0
+- Updated to the latest release
+- Added CRC check for sources
+
 * Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 22.0.5-0
 - Initial build for kaos repository
