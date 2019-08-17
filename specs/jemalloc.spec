@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -41,13 +45,15 @@
 
 Summary:            General-purpose scalable concurrent malloc implementation
 Name:               jemalloc
-Version:            5.2.0
+Version:            5.2.1
 Release:            0%{?dist}
 Group:              System Environment/Libraries
 License:            BSD
 URL:                http://jemalloc.net
 
 Source0:            https://github.com/jemalloc/jemalloc/releases/download/%{version}/%{name}-%{version}.tar.bz2
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -77,6 +83,8 @@ developing applications that use jemalloc.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -126,6 +134,29 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 5.2.1-0
+- Fix a severe virtual memory leak on Windows. This regression was first
+  released in 5.0.0.
+- Fix size 0 handling in posix_memalign(). This regression was first released
+  in 5.2.0.
+- Fix the prof_log unit test which may observe unexpected backtraces from
+  compiler optimizations. The test was first added in 5.2.0.
+- Fix the declaration of the extent_avail tree. This regression was first
+  released in 5.1.0.
+- Fix an incorrect reference in jeprof. This functionality was first released
+  in 3.0.0.
+- Fix an assertion on the deallocation fast-path. This regression was first
+  released in 5.2.0.
+- Fix the TLS_MODEL attribute in headers. This regression was first released
+  in 5.0.0.
+- Implement opt.retain on Windows and enable by default on 64-bit.
+- Optimize away a branch on the operator delete path.
+- Add format annotation to the format generator function.
+- Refactor and improve the size class header generation.
+- Remove best fit.
+- Avoid blocking on background thread locks for stats.
+- Added CRC check for all sources.
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 5.2.0-0
 - Implement oversize_threshold, which uses a dedicated arena for allocations
   crossing the specified threshold to reduce fragmentation.

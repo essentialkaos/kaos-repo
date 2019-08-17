@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -69,13 +73,15 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.65.1
+Version:              7.65.3
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
 URL:                  http://curl.haxx.se
 
-Source0:              http://curl.haxx.se/download/%{name}-%{version}.tar.bz2
+Source0:              https://curl.haxx.se/download/%{name}-%{version}.tar.bz2
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -172,6 +178,8 @@ documentation of the library, too.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn curl-%{version}
 
 %build
@@ -266,6 +274,94 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.3-0
+- progress: make the progress meter appear again
+
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.2-0
+- CIPHERS.md: Explain Schannel error SEC_E_ALGORITHM_MISMATCH
+- CMake: Convert errant elseif() to else()
+- CMake: Fix finding Brotli on case-sensitive file systems
+- CURLMOPT_SOCKETFUNCTION.3: clarified
+- CURLMOPT_SOCKETFUNCTION.3: fix typo
+- CURLOPT_CAINFO.3: polished wording
+- CURLOPT_HEADEROPT.3: Fix example
+- CURLOPT_RANGE.3: Caution against using it for HTTP PUT
+- CURLOPT_SEEKDATA.3: fix variable name
+- DEPRECATE: fixup versions and spelling
+- bindlocal: detect and avoid IP version mismatches in bind()
+- build: fix Codacy warnings
+- buildconf.bat: fix header filename
+- c-ares: honor port numbers in CURLOPT_DNS_SERVERS
+- config-os400: add getpeername and getsockname defines
+- configure: --disable-progress-meter
+- configure: fix --disable-code-coverage
+- configure: fix typo '--disable-http-uath'
+- configure: more --disable switches to toggle off individual features
+- configure: remove CURL_DISABLE_TLS_SRP
+- conn_maxage: move the check to prune_dead_connections()
+- curl: skip CURLOPT_PROXY_CAPATH for disabled-proxy builds
+- curl_multi_wait.3: escape backslash in example
+- docs: Explain behavior change in --tlsv1. options since 7.54
+- docs: Fix links to OpenSSL docs
+- docs: fix string suggesting HTTP/2 is not the default
+- examples/fopen: fix comparison
+- examples/htmltitle: use C++ casts between pointer types
+- headers: Remove no longer exported functions
+- http2: call done_sending on end of upload
+- http2: don't call stream-close on already closed streams
+- http2: remove CURL_DISABLE_TYPECHECK define
+- http: allow overriding timecond with custom header
+- http: clarify header buffer size calculation
+- krb5: fix compiler warning
+- lib: Use UTF-8 encoding in comments
+- libcurl-tutorial.3: Fix small typo (mutipart -> multipart)
+- libcurl: Restrict redirect schemes to HTTP, HTTPS, FTP and FTPS
+- multi: enable multiplexing by default (again)
+- multi: fix the transfer hashes in the socket hash entries
+- multi: make sure 'data' can present in several sockhash entries
+- netrc: Return the correct error code when out of memory
+- nss: don't set unused parameter
+- nss: inspect returnvalue of token check
+- nss: only cache valid CRL entries
+- nss: support using libnss on macOS
+- openssl: define HAVE_SSL_GET_SHUTDOWN based on version number
+- openssl: disable engine if OPENSSL_NO_UI_CONSOLE is defined
+- openssl: fix pubkey/signature algorithm detection in certinfo
+- openssl: remove outdated comment
+- os400: make vsetopt() non-static as Curl_vsetopt() for os400 support
+- quote.d: asterisk prefix works for SFTP as well
+- runtests: keep logfiles around by default
+- runtests: report single test time + total duration
+- smb: Use the correct error code for access denied on file open
+- sws: remove unused variables
+- system_win32: fix clang warning
+- system_win32: fix typo
+- test1165: verify that CURL_DISABLE_ symbols are in sync
+- test1521: adapt to SLISTPOINT
+- test1523: test CURLOPT_LOW_SPEED_LIMIT
+- test153: fix content-length to avoid occasional hang
+- test188/189: fix Content-Length
+- tests: have runtests figure out disabled features
+- tests: support non-localhost HOSTIP for dict/smb servers
+- tests: update fixed IP for hostip/clientip split
+- tool_cb_prg: Fix integer overflow in progress bar
+- travis: disable threaded resolver for coverage build
+- travis: enable alt-svc for coverage build
+- travis: enable brotli for all xenial jobs
+- travis: enable libssh2 for coverage build
+- travis: enable warnings-as-errors for coverage build
+- travis: update scan-build job to xenial
+- typecheck: CURLOPT_CONNECT_TO takes an slist too
+- typecheck: add 3 missing strings and a callback data pointer
+- unit1654: cleanup on memory failure
+- unpause: trigger a timeout for event-based transfers
+- url: Fix CURLOPT_MAXAGE_CONN time comparison
+- win32: make DLL loading a no-op for UWP
+- winbuild: Change Makefile to honor ENABLE_OPENSSL_AUTO_LOAD_CONFIG
+- winbuild: use WITH_PREFIX if given
+- wolfssl: refer to it as wolfSSL only
+- Added CRC check for all sources
+
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.1-0
 - CURLOPT_LOW_SPEED_* repaired
 - NTLM: reset proxy "multipass" state when CONNECT request is done
