@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %global _python_bytecompile_errors_terminate_build 0
 
 ################################################################################
@@ -54,22 +58,26 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.11.0
+Version:          1.16.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
-URL:              http://netdata.firehol.org
+URL:              https://www.netdata.cloud
 
 Source0:          https://github.com/netdata/netdata/releases/download/v%{version}/%{name}-v%{version}.tar.gz
 Source1:          %{name}.sysconfig
 Source2:          %{name}.init
 
+Source100:        checksum.sha512
+
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    libmnl-devel zlib-devel libuuid-devel
 BuildRequires:    make gcc autoconf automake xz PyYAML
+BuildRequires:    libmnl-devel zlib-devel libuuid-devel openssl-devel
+BuildRequires:    libuv-devel lz4-devel Judy-devel
 
-Requires:         kaosv >= 2.10 libmnl zlib curl jq pkgconfig lm_sensors PyYAML
+Requires:         kaosv >= 2.15 nc curl jq pkgconfig lm_sensors PyYAML
+Requires:         libmnl zlib libuv libuuid openssl lz4 Judy
 
 %if 0%{?rhel} >= 7
 BuildRequires:    systemd
@@ -92,7 +100,9 @@ Real-time performance monitoring, in the greatest possible detail!
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{version}_rolling
+%{crc_check}
+
+%setup -qn %{name}-v%{version}
 
 %build
 %configure \
@@ -186,6 +196,10 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
+- Updated to the latest stable release
+- Added CRC check for all sources
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
 - Updated to the latest stable release
 

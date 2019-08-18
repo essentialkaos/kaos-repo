@@ -1,14 +1,20 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:         Meta-package that only requires libnghttp2
 Name:            nghttp2
-Version:         1.34.0
+Version:         1.39.1
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
 URL:             https://nghttp2.org
 
 Source0:         https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -51,6 +57,8 @@ for building applications with libnghttp2.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -112,6 +120,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 1.39.1-0
+- Updated to the latest stable release
+
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.34.0-0
 - Updated to the latest stable release
 

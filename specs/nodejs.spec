@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,19 +36,21 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            10.15.2
+Version:            10.16.3
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                http://nodejs.org
 
-Source0:            http://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
+Source0:            https://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:           zlib
 
-BuildRequires:      make python >= 2.7 openssl-devel zlib-devel
+BuildRequires:      make python openssl-devel zlib-devel
 BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}
@@ -77,6 +83,8 @@ This package provides the header files for nodejs.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{shortname}-v%{version}
 
 %build
@@ -118,6 +126,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 10.16.3-0
+- Updated to the latest stable release
+
 * Fri Mar 01 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.2-0
 - Updated to the latest stable release
 

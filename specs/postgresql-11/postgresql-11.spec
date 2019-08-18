@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -76,7 +80,7 @@
 %endif
 
 %define majorver        11
-%define minorver        3
+%define minorver        5
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          11
@@ -111,11 +115,13 @@ Source3:           pg_config.h
 Source4:           README.rpm-dist
 Source5:           ecpg_config.h
 Source6:           %{realname}-%{majorver}-libs.conf
-Source7:           http://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
+Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
 Source11:          %{realname}.service
+
+Source100:         checksum.sha512
 
 Patch1:            rpm-%{shortname}.patch
 Patch2:            %{realname}-logging.patch
@@ -412,6 +418,7 @@ system, including regression tests and benchmarks.
 ################################################################################
 
 %prep
+%{crc_check}
 
 %setup -qn %{realname}-%{version}
 
@@ -1227,6 +1234,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 11.5-0
+- Updated to the latest stable release
+
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 11.4-0
+- Updated to the latest stable release
+
 * Tue May 14 2019 Anton Novojilov <andy@essentialkaos.com> - 11.3-0
 - Updated to the latest stable release
 
