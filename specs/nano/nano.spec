@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -34,16 +38,22 @@
 
 ################################################################################
 
+%define ek_theme_version  1.2.0
+
+################################################################################
+
 Summary:             A small text editor
 Name:                nano
-Version:             3.2
+Version:             4.3
 Release:             0%{?dist}
 License:             GPLv3+
 Group:               Applications/Editors
 URL:                 http://www.nano-editor.org
 
-Source0:             https://www.nano-editor.org/dist/v3/%{name}-%{version}.tar.gz
-Source1:             https://github.com/essentialkaos/blackhole-theme-nano/archive/master.tar.gz
+Source0:             https://www.nano-editor.org/dist/v4/%{name}-%{version}.tar.xz
+Source1:             https://github.com/essentialkaos/blackhole-theme-nano/archive/v%{ek_theme_version}.tar.gz
+
+Source100:           checksum.sha512
 
 Patch0:              %{name}-nanorc.patch
 
@@ -64,6 +74,8 @@ GNU nano is a small and friendly text editor.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 tar xzvf %{SOURCE1}
@@ -91,7 +103,7 @@ sed -i 's/^set titlecolor brightwhite,blue/set titlecolor brightwhite,red/' %{bu
 sed -i 's/^set statuscolor brightwhite,green/set statuscolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
 
 rm -f %{buildroot}%{_datadir}/%{name}/*.nanorc
-cp blackhole-theme-nano-master/*.nanorc \
+cp blackhole-theme-nano-%{ek_theme_version}/*.nanorc \
    %{buildroot}%{_datadir}/%{name}/
 
 rm -f %{buildroot}%{_infodir}/dir
@@ -133,6 +145,58 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 4.3-0
+- The ability to read from and write to a FIFO has been regained.
+- Startup time is reduced by fully parsing a syntax only when needed.
+- Asking for help (^G) when using --operatingdir does not crash.
+- The reading of a huge or slow file can be stopped with ^C.
+- Cut, zap, and copy operations are undone separately when intermixed.
+- M-D reports the correct number of lines (zero for an empty buffer).
+
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2-0
+- The integrated spell checker does not crash when 'spell' is missing.
+- Option --breaklonglines works also when --ignorercfiles is used.
+- Automatic hard-wrapping is more persistent in pushing words to the
+  same overflow line.
+
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 4.1-0
+- By default, a newline character is again automatically added at the
+  end of a buffer, to produce valid POSIX text files by default, but
+  also to get back the easy adding of text at the bottom.
+- The now unneeded option --finalnewline (-f) has been removed.
+- Syntax files are read in alphabetical order when globbing, so that
+  the precedence of syntaxes becomes predictable.
+- In the C syntax, preprocessor directives are highlighted differently.
+- M-S now toggles soft wrapping, and M-N toggles line numbers.
+- The jumpy-scrolling toggle has been removed.
+- The legacy keystrokes ^W^Y and ^W^V are recognized again.
+- Executing an external command is disallowed when in view mode.
+- Problems with resizing during external or speller commands were fixed.
+
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 4.0-0
+- An overlong line is no longer automatically hard-wrapped.
+- Smooth scrolling (one line at a time) has become the default.
+- A newline character is no longer automatically added at end of buffer.
+- The line below the title bar is by default part of the editing space.
+- Option --breaklonglines (-b) turns automatic hard-wrapping back on.
+- Option --jumpyscrolling (-j) gives the chunky, half-screen scrolling.
+- Option --finalnewline (-f) brings back the automatic newline at EOF.
+- Option --emptyline (-e) leaves the line below the title bar unused.
+- <Alt+Up> and <Alt+Down> now do a linewise scroll instead of a findnext.
+- Any number of justifications can be undone (like all other operations).
+- When marked text is justified, it becomes a single, separate paragraph.
+- Option --guidestripe=<number> draws a vertical bar at the given column.
+- Option --fill=<number> no longer turns on automatic hard-wrapping.
+- When a line continues offscreen, it now ends with a highlighted ">".
+- The halves of a split two-column character are shown as "[" and "]".
+- A line now scrolls horizontally one column earlier.
+- The bindable functions 'cutwordleft' and 'cutwordright' were renamed
+- to 'chopwordleft' and 'chopwordright' as they don't use the cutbuffer.
+- The paragraph-jumping functions were moved from Search to Go-to-Line.
+- Option --rebinddelete is able to compensate for more misbindings.
+- Options --morespace and --smooth are obsolete and thus ignored.
+- The --disable-wrapping-as-root configure option was removed.
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2-0
 - syntax: python: do not highlight 'print' and 'exec' in Python 3
 - bindings: allow using <Enter> to exit from the linter

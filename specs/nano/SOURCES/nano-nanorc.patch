@@ -1,8 +1,8 @@
-diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
---- nano-3.0-orig/doc/sample.nanorc.in	2018-09-09 12:39:27.000000000 +0300
-+++ nano-3.0/doc/sample.nanorc.in	2018-09-12 02:18:20.000000000 +0300
-@@ -60,7 +60,7 @@
- # set historylog
+diff -urN nano-4.0-orig/doc/sample.nanorc.in nano-4.0/doc/sample.nanorc.in
+--- nano-4.0-orig/doc/sample.nanorc.in	2019-03-09 12:21:52.000000000 +0300
++++ nano-4.0/doc/sample.nanorc.in	2019-08-17 14:38:24.000000000 +0300
+@@ -71,7 +71,7 @@
+ # set jumpyscrolling
  
  ## Display line numbers to the left of the text.
 -# set linenumbers
@@ -10,21 +10,8 @@ diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -99,7 +99,7 @@
- # set nopauses
- 
- ## Do not automatically hard-wrap text.
--# set nowrap
-+set nowrap
- 
- ## Set operating directory.  nano will not read or write files outside
- ## this directory and its subdirectories.  Also, the current directory
-@@ -148,20 +148,20 @@
+@@ -151,17 +151,17 @@
  # set smarthome
- 
- ## Use line-by-line scrolling instead of chunk-by-chunk.
--# set smooth
-+set smooth
  
  ## Enable soft line wrapping (AKA full-line display).
 -# set softwrap
@@ -44,24 +31,19 @@ diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
  
  ## Convert typed tabs to spaces.
  # set tabstospaces
-@@ -196,11 +196,11 @@
+@@ -216,6 +216,11 @@
+ # set keycolor brightmagenta
+ # set functioncolor magenta
  
- ## Paint the interface elements of nano.  These are examples;
- ## by default there are no colors, except for errorcolor.
--# set titlecolor brightwhite,blue
--# set statuscolor brightwhite,green
--# set errorcolor brightwhite,red
--# set selectedcolor brightwhite,magenta
--# set numbercolor cyan
 +set titlecolor brightwhite,blue
 +set statuscolor brightwhite,green
 +set errorcolor brightwhite,red
 +set selectedcolor brightwhite,magenta
 +set numbercolor brightblack
- # set keycolor cyan
- # set functioncolor green
- ## In root's .nanorc you might want to use:
-@@ -255,7 +255,7 @@
+ 
+ ## Setup of syntax coloring.
+ ##
+@@ -259,7 +264,7 @@
  ## them easier to remember and faster to type using nano's -Y option.
  
  ## To include all existing syntax definitions, you can do:

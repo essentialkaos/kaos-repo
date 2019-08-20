@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -73,7 +77,7 @@
 %endif
 
 %define majorver        9.5
-%define minorver        17
+%define minorver        19
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          95
@@ -113,6 +117,8 @@ Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
 Source11:          %{realname}.service
+
+Source100:         checksum.sha512
 
 Patch1:            rpm-%{shortname}.patch
 Patch2:            %{realname}-logging.patch
@@ -360,6 +366,7 @@ system, including regression tests and benchmarks.
 ################################################################################
 
 %prep
+%{crc_check}
 
 %setup -qn %{realname}-%{version}
 
@@ -1090,6 +1097,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 9.5.19-0
+- Updated to the latest stable release
+
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 9.5.18-0
+- Updated to the latest stable release
+
 * Tue May 14 2019 Anton Novojilov <andy@essentialkaos.com> - 9.5.17-0
 - Updated to the latest stable release
 

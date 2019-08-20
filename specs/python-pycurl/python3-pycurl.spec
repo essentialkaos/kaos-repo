@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -18,19 +22,21 @@
 
 # Used cURL version fo build
 # DO NOT FORGOT TO UPDATE IF NEWER VERSION IS USED!
-%define curl_version  7.63
+%define curl_version  7.65.3
 
 ################################################################################
 
 Summary:        A Python 3 interface to libcurl
 Name:           %{python_base}-%{package_name}
 Version:        7.43.0
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://pycurl.io
 
-Source:         https://dl.bintray.com/pycurl/%{package_name}/%{package_name}-%{version}.tar.gz
+Source0:        https://dl.bintray.com/pycurl/%{package_name}/%{package_name}-%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
@@ -53,6 +59,8 @@ of features.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{package_name}-%{version}
 
 %build
@@ -80,6 +88,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.43.0-1
+- Rebuilt with the latest version of curl
+- Added CRC check for all sources
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 7.43.0.-1
 - Hardcoded minimal required libcurl version
 

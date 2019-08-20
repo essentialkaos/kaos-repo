@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,13 +36,15 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.9.0
+Version:            1.9.1
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                https://elixir-lang.org
 
 Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -59,6 +65,8 @@ fault-tolerant, non-stop applications with hot code swapping.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -96,6 +104,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
+- Updated to the latest release
+- Added CRC check for sources
+
 * Fri Jun 28 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
 - Updated to the latest version
 

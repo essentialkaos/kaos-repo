@@ -35,24 +35,13 @@ kv.addCommand "reload" "Reload configuration file" "reload"
 
 kv.addCommandVars "stop" "force"
 
+kv.addHandler "start" "preStartServiceHandler" "pre"
 kv.addHandler "start" "startServiceHandler"
 kv.addHandler "stop"  "stopServiceHandler"
 
 kv.addCommandAlias "restart" "condrestart"
 
-###############################################################################
-
-prepare() {
-  local has_errors=""
-
-  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not exist"
-  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File <$binary> is not executable"
-
-  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not exist"
-  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File <$conf_file> is not readable"
-
-  [[ $has_errors ]] && kv.exit $ACTION_ERROR
-}
+kv.disableOutputRedirect "start" "pre"
 
 ###############################################################################
 
@@ -67,6 +56,20 @@ reload() {
 }
 
 ###############################################################################
+
+preStartServiceHandler() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "Error! File $binary is not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "Error! File $binary is not executable"
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Error! File $conf_file is not exist"
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Error! File $conf_file is not readable"
+
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
+
+  return $ACTION_OK
+}
 
 startServiceHandler() {
 
@@ -96,7 +99,5 @@ stopServiceHandler() {
 }
 
 ###############################################################################
-
-prepare
 
 kv.go "$@"

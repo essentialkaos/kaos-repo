@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define shortname      hg
 %define emacs_version  22.1
 
@@ -11,7 +15,7 @@
 
 Summary:           Distributed source control management tool
 Name:              mercurial
-Version:           4.8.2
+Version:           5.0.2
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Development/Tools
@@ -21,6 +25,8 @@ Source0:           https://www.mercurial-scm.org/release/%{name}-%{version}.tar.
 Source1:           %{name}-site-start.el
 Source2:           hgk.rc
 Source3:           certs.rc
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -80,6 +86,8 @@ shows diffs for each revision. Based on gitk for the git SCM.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -166,8 +174,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.8.2-0
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
 - Updated to the latest stable release
+- Added CRC check for all sources
 
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 4.7.2-0
 - Updated to the latest stable release
