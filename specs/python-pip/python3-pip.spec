@@ -49,7 +49,7 @@
 Summary:            Tool for installing and managing Python packages
 Name:               %{python_base}-%{pkgname}
 Version:            18.1
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                https://github.com/pypa/pip
@@ -65,6 +65,7 @@ BuildRequires:      %{python_base}-setuptools %{python_base}-devel
 Requires:           %{python_base}-setuptools %{python_base}-devel
 
 Provides:           pip3 = %{version}-%{release}
+Provides:           python3-pip = %{version}-%{release}
 Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
@@ -102,6 +103,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Sep 19 2019 Anton Novojilov <andy@essentialkaos.com> - 18.1-2
+- Fixed compatibility with the latest version of Python 3 package
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 18.1-1
 - Updated for compatibility with Python 3.6
 
