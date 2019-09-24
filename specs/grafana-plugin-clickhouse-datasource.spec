@@ -38,7 +38,7 @@
 
 Summary:              Clickhouse datasource for Grafana
 Name:                 grafana-plugin-clickhouse-datasource
-Version:              1.8.1
+Version:              1.9.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/System
@@ -70,7 +70,7 @@ sed -i 's/\"alerting\": false/\"alerting\": true/g' src/plugin.json
 
 %build
 npm install
-npm run build
+npm run build:prod
 
 rm -rf node_modules/
 
@@ -94,5 +94,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Sep 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.9.0-0
+- Updated to the latest release
+
 * Wed Apr 17 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.8.1-0
 - Initial build
