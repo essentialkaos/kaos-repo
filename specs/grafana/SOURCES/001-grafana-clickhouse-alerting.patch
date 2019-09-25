@@ -20,7 +20,7 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +	"encoding/json"
 +	"fmt"
 +	"github.com/grafana/grafana/pkg/components/null"
-+	"github.com/grafana/grafana/pkg/log"
++	"github.com/grafana/grafana/pkg/infra/log"
 +	"github.com/grafana/grafana/pkg/models"
 +	"github.com/grafana/grafana/pkg/tsdb"
 +	"github.com/pkg/errors"
@@ -79,7 +79,7 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +
 +	if e.DataSource.BasicAuth {
 +		params.Add("user", e.DataSource.BasicAuthUser)
-+		params.Add("password", e.DataSource.BasicAuthPassword)
++		params.Add("password", e.DataSource.DecryptedBasicAuthPassword())
 +	}
 +
 +	response, err := http.Get(fmt.Sprintf("%s?%s", e.DataSource.Url, params.Encode()))
