@@ -35,7 +35,7 @@
 
 Summary:           Timezone Updater Tool
 Name:              tzupdater
-Version:           2.1.2
+Version:           2.2.0
 Release:           0%{?dist}
 License:           http://www.oracle.com/technetwork/java/javasebusiness/downloads/tzupdater-lic-354297.txt
 Group:             Applications/Databases
@@ -88,6 +88,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Oct 05 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- JDK-8194474 (not public): Remove use of security digest calculations from
+  tzupdater. The IANA website now provides https functionality to allow secure
+  downloading of tzdata resource bundles. As a result, the SHA-512 digest
+  calculations (and hosted files) for tzdata bundle downloads are no longer
+  required.
+- JDK-8203908: TZUpdater tool fails to print version info for the users
+  without write persmisson
+
 * Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 2.1.2-0
 - Updated the protocol used for connecting to IANA for downloading the latest
   time-zone information to match recent changes in the IANA sites.
