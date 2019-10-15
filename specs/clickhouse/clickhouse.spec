@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.9.4.34-stable
+# rpmbuilder:tag          v19.14.7.15-stable
 
 ################################################################################
 
@@ -57,16 +57,13 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.9.4.34
+Version:           19.14.7.15
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
 URL:               https://clickhouse.yandex
 
 Source:            %{name}-%{version}.tar.bz2
-Source1:           %{name}.logrotate
-
-Patch0:            %{name}-fix-tz-filepath.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -74,7 +71,7 @@ BuildRequires:     centos-release-scl devtoolset-8
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
 BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
-Requires:          openssl libicu libtool-ltdl unixODBC readline logrotate
+Requires:          openssl libicu libtool-ltdl unixODBC readline
 Requires:          lz4 librdkafka
 
 Requires(pre):     shadow-utils
@@ -151,8 +148,6 @@ This package contains test suite for ClickHouse DBMS.
 %prep
 %setup -q
 
-%patch0 -p1
-
 %build
 # Use gcc and gcc-c++ from devtoolset
 export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
@@ -191,7 +186,6 @@ install -dm 755 %{buildroot}%{_datadir}/%{name}/bin
 install -dm 755 %{buildroot}%{_datadir}/%{name}/headers
 install -dm 700 %{buildroot}%{service_data_dir}
 install -dm 775 %{buildroot}%{service_log_dir}
-install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_rundir}/%{name}-server
 
 # Client
@@ -207,8 +201,6 @@ install -pm 644 debian/%{name}.limits \
 install -pm 644 dbms/programs/server/config.xml \
                 dbms/programs/server/users.xml \
                 %{buildroot}%{_sysconfdir}/%{name}-server/
-
-install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 debian/%{name}-server.service \
@@ -273,15 +265,12 @@ fi
 %defattr(-, root, root, -)
 %{_unitdir}/%{name}-server.service
 %{_crondir}/%{name}-server
-%{_bindir}/%{name}-clang
 %{_bindir}/%{name}-copier
 %{_bindir}/%{name}-format
-%{_bindir}/%{name}-lld
 %{_bindir}/%{name}-obfuscator
 %{_bindir}/%{name}-odbc-bridge
 %{_bindir}/%{name}-report
 %{_bindir}/%{name}-server
-%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %attr(0700, %{service_user}, %{service_group}) %dir %{service_data_dir}
 %attr(0775, root, %{service_group}) %dir %{service_log_dir}
 %attr(0755, %{service_user}, %{service_group}) %dir %{_rundir}/%{name}-server
@@ -303,6 +292,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 15 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.14.7.15-0
+- Updated to the latest release
+
 * Tue Jul 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.9.4.34-0
 - Updated to the latest release
 
