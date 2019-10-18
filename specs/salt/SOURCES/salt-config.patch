@@ -109,55 +109,55 @@ diff -urN salt-2018.3.1-orig/conf/minion salt-2018.3.1/conf/minion
  # as the main minion config file).
 -#default_include: minion.d/*.conf
 +default_include: minion.d/*.conf
- 
+
  # Set the location of the salt master server. If the master server cannot be
  # resolved, then the minion will fail to start.
-@@ -83,7 +83,7 @@
+@@ -92,7 +92,7 @@
  #sudo_user: root
- 
+
  # Specify the location of the daemon process ID file.
 -#pidfile: /var/run/salt-minion.pid
 +pidfile: /var/run/salt-minion.pid
- 
+
  # The root directory prepended to these options: pki_dir, cachedir, log_file,
  # sock_dir, pidfile.
-@@ -93,7 +93,7 @@
+@@ -102,7 +102,7 @@
  #conf_file: /etc/salt/minion
- 
+
  # The directory to store the pki information in
 -#pki_dir: /etc/salt/pki/minion
 +pki_dir: /etc/salt/pki/minion
- 
+
  # Explicitly declare the id for this minion to use, if left commented the id
  # will be the hostname as returned by the python call: socket.getfqdn()
-@@ -127,7 +127,7 @@
+@@ -136,7 +136,7 @@
  #
  # Where cache data goes.
  # This data may contain sensitive data and should be protected accordingly.
 -#cachedir: /var/cache/salt/minion
 +cachedir: /var/cache/salt/minion
- 
+
  # Append minion_id to these directories.  Helps with
  # multiple proxies and minions running on the same machine.
-@@ -146,7 +146,7 @@
+@@ -155,7 +155,7 @@
  #cache_jobs: False
- 
+
  # Set the directory used to hold unix sockets.
 -#sock_dir: /var/run/salt/minion
 +sock_dir: /var/run/salt/minion
- 
- # Set the default outputter used by the salt-call command. The default is
- # "nested".
-@@ -598,7 +598,7 @@
+
+ # The minion can take a while to start up when lspci and/or dmidecode is used
+ # to populate the grains for the minion. Set this to False if you do not need
+@@ -621,7 +621,7 @@
  #
  # Warning: Prior to changing this value, the minion should be stopped and all
  # Salt caches should be cleared.
 -#hash_type: sha256
 +hash_type: sha256
- 
+
  # The Salt pillar is searched for locally if file_client is set to local. If
  # this is the case, and pillar data is defined, then the pillar_roots need to
-@@ -716,8 +716,8 @@
+@@ -739,8 +739,8 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #
@@ -165,13 +165,14 @@ diff -urN salt-2018.3.1-orig/conf/minion salt-2018.3.1/conf/minion
 -#key_logfile: /var/log/salt/key
 +log_file: /var/log/salt/minion.log
 +key_logfile: /var/log/salt/key.log
- 
+
  # The level of messages to send to the console.
- # One of 'garbage', 'trace', 'debug', info', 'warning', 'error', 'critical'.
+ # One of 'garbage', 'trace', 'debug', 'info', 'warning', 'error', 'critical'.
+
 diff -urN salt-2018.3.1-orig/conf/proxy salt-2018.3.1/conf/proxy
 --- salt-2018.3.1-orig/conf/proxy	2018-06-13 19:03:06.000000000 +0300
 +++ salt-2018.3.1/conf/proxy	2018-06-19 15:59:45.000000000 +0300
-@@ -539,8 +539,8 @@
+@@ -538,8 +538,8 @@
  #log_file: file:///dev/log
  #log_file: udp://loghost:10514
  #
@@ -179,6 +180,7 @@ diff -urN salt-2018.3.1-orig/conf/proxy salt-2018.3.1/conf/proxy
 -#key_logfile: /var/log/salt/key
 +log_file: /var/log/salt/minion.log
 +key_logfile: /var/log/salt/key.log
- 
+
  # The level of messages to send to the console.
- # One of 'garbage', 'trace', 'debug', info', 'warning', 'error', 'critical'.
+ # One of 'garbage', 'trace', 'debug', 'info', 'warning', 'error', 'critical'.
+
