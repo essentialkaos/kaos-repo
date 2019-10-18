@@ -5,6 +5,10 @@
 
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -64,6 +68,8 @@ Group:             Applications/Databases
 URL:               https://clickhouse.yandex
 
 Source:            %{name}-%{version}.tar.bz2
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -146,6 +152,8 @@ This package contains test suite for ClickHouse DBMS.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build

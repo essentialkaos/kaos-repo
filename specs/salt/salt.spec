@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -77,6 +81,8 @@ Source9:          %{name}-api.service
 Source10:         README.fedora
 Source11:         %{name}.logrotate
 Source12:         salt.bash
+
+Source100:        checksum.sha512
 
 Patch0:           %{name}-config.patch
 
@@ -219,6 +225,8 @@ other existing packaging systems including RPM, Yum, and Pacman.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
