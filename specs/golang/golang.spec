@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -60,7 +64,7 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.13.1
+Version:           1.13.3
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -71,6 +75,8 @@ Source0:           https://storage.googleapis.com/%{name}/go%{version}.src.tar.g
 Source10:          %{name}-gdbinit
 Source11:          %{name}-prelink.conf
 Source12:          macros.%{name}
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -413,6 +419,8 @@ for _,d in pairs({"api", "doc", "include", "lib", "src"}) do
 end
 
 %prep
+%{crc_check}
+
 %setup -qn go
 
 %build
@@ -786,6 +794,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Sat Oct 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.3-0
+- Updated to the latest stable release
+
+* Sat Oct 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.2-0
+- Updated to the latest stable release
+
 * Thu Sep 26 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
 - Updated to the latest stable release
 
