@@ -12,5 +12,5 @@ command "-" "Check shared libraries"
   exist {pg_lib}/psqlodbca.so
   exist {pg_lib}/psqlodbc.so
 
-  perms {pg_lib}/psqlodbcw.so 755
-  perms {pg_lib}/psqlodbca.so 755
+  mode {pg_lib}/psqlodbcw.so 755
+  mode {pg_lib}/psqlodbca.so 755

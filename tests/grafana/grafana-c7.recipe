@@ -26,53 +26,53 @@ command "-" "Check binaries and service"
 command "-" "Check configuration files"
   exist {conf_dir}
   dir {conf_dir}
-  perms {conf_dir} 755
+  mode {conf_dir} 755
   owner {conf_dir} root:root
 
   exist {conf_dir}/grafana.ini
-  perms {conf_dir}/grafana.ini 640
+  mode {conf_dir}/grafana.ini 640
   owner {conf_dir}/grafana.ini root:{service_group}
 
   exist {conf_dir}/ldap.toml
-  perms {conf_dir}/ldap.toml 640
+  mode {conf_dir}/ldap.toml 640
   owner {conf_dir}/ldap.toml root:{service_group}
 
   exist {sysconfig}
-  perms {sysconfig} 644
+  mode {sysconfig} 644
   owner {sysconfig} root:root
 
 command "-" "Check data directory"
   exist {data_dir}
   dir {data_dir}
-  perms {data_dir} 755
+  mode {data_dir} 755
   owner {data_dir} {service_user}:{service_group}
 
   exist {data_dir}/plugins
   dir {data_dir}/plugins
-  perms {data_dir}/plugins 755
+  mode {data_dir}/plugins 755
   owner {data_dir}/plugins {service_user}:{service_group}
 
 command "-" "Check logs directory"
   exist {log_dir}
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}:{service_group}
 
 command "-" "Check assets data"
   exist {assets_dir}/public
   dir {assets_dir}/public
-  perms {assets_dir}/public 755
+  mode {assets_dir}/public 755
   owner {assets_dir}/public root:root
 
   exist {assets_dir}/public/robots.txt
-  perms {assets_dir}/public/robots.txt 644
+  mode {assets_dir}/public/robots.txt 644
 
 command "-" "Check man pages"
   exist {man1_dir}/grafana-cli.1.gz
   exist {man1_dir}/grafana-server.1.gz
 
-  perms {man1_dir}/grafana-cli.1.gz 644
-  perms {man1_dir}/grafana-server.1.gz 644
+  mode {man1_dir}/grafana-cli.1.gz 644
+  mode {man1_dir}/grafana-server.1.gz 644
 
 command "systemctl start {service_name}" "Start Grafana Server daemon"
   wait {delay}
@@ -81,12 +81,12 @@ command "systemctl start {service_name}" "Start Grafana Server daemon"
 command "-" "Check database"
   wait 1
   exist {db_file}
-  perms {db_file} 644
+  mode {db_file} 644
   owner {db_file} {service_user}:{service_group}
 
 command "-" "Check logs"
   exist {log_dir}/grafana.log
-  perms {log_dir}/grafana.log 644
+  mode {log_dir}/grafana.log 644
   owner {log_dir}/grafana.log {service_user}:{service_group}
 
 command "systemctl status {service_name}" "Check status of Grafana Server daemon"

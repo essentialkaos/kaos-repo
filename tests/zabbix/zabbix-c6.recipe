@@ -26,19 +26,19 @@ command "-" "Check agent environment"
   group-exist {service_user}
 
   dir {config_dir}/zabbix_agentd.d
-  perms {config_dir}/zabbix_agentd.d 755
+  mode {config_dir}/zabbix_agentd.d 755
   
   exist {config_dir}/zabbix_agentd.conf
-  perms {config_dir}/zabbix_agentd.conf 644
+  mode {config_dir}/zabbix_agentd.conf 644
 
   dir {config_dir}/alertscripts
   dir {config_dir}/externalscripts
 
   exist {logrotate_dir}/{agent_service}
-  perms {logrotate_dir}/{agent_service} 644
+  mode {logrotate_dir}/{agent_service} 644
 
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}:{service_group}
 
 command "-" "Check server environment"
@@ -50,13 +50,13 @@ command "-" "Check server environment"
   group-exist {service_user}
 
   exist {config_dir}/zabbix_server.conf
-  perms {config_dir}/zabbix_server.conf 640
+  mode {config_dir}/zabbix_server.conf 640
 
   exist {logrotate_dir}/{server_service}
-  perms {logrotate_dir}/{server_service} 644
+  mode {logrotate_dir}/{server_service} 644
 
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}:{service_group}
 
 command "service {server_service} start" "Start Zabbix Server daemon"

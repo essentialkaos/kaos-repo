@@ -16,7 +16,7 @@ command "-" "Check environment"
 
   # Check permissions
   exist /etc/keepalived/keepalived.conf
-  perms /etc/keepalived/keepalived.conf 644
+  mode /etc/keepalived/keepalived.conf 644
 
 command "service {service_name} start" "Start keepalived daemon with default config"
   !exit 0

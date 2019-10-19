@@ -9,7 +9,7 @@ var plugin_name vertamedia-clickhouse-datasource
 command "-" "Check plugin data"
   exist {plugin_dir}/{plugin_name}
   dir {plugin_dir}/{plugin_name}
-  perms {plugin_dir}/{plugin_name} 755
+  mode {plugin_dir}/{plugin_name} 755
   owner {plugin_dir}/{plugin_name} root:root
 
   exist {plugin_dir}/{plugin_name}/package.json

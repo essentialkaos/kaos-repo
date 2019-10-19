@@ -26,19 +26,19 @@ command "-" "Check environment"
   service-present {agent_service}
 
   exist {server_config}
-  perms {server_config} 644
+  mode {server_config} 644
   owner {server_config} root:root
 
   exist {server_log_dir}
-  perms {server_log_dir} 755
+  mode {server_log_dir} 755
   owner {server_log_dir} {service_user}:{service_group}
 
   exist {agent_config}
-  perms {agent_config} 644
+  mode {agent_config} 644
   owner {agent_config} root:root
 
   exist {agent_log_dir}
-  perms {agent_log_dir} 755
+  mode {agent_log_dir} 755
   owner {agent_log_dir} {service_user}:{service_group}
 
 command "-" "Prepare test environment"

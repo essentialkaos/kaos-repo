@@ -20,9 +20,9 @@ command "-" "Check environment"
   user-exist {service_user}
   
   exist {service_config}
-  perms {service_config} 640
+  mode {service_config} 640
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
   
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}

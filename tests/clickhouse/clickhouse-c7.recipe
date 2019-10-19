@@ -26,12 +26,12 @@ command "-" "Check client environment"
   app clickhouse-local
 
   exist {client_config}
-  perms {client_config} 644
+  mode {client_config} 644
   owner {client_config} root:root
 
   exist {client_conf_dir}
   dir {client_conf_dir}
-  perms {client_conf_dir} 755
+  mode {client_conf_dir} 755
 
   owner {client_conf_dir} {user}:{group}
 
@@ -48,16 +48,16 @@ command "-" "Check server environment"
   service-present clickhouse-server
 
   exist {cron_config}
-  perms {cron_config} 644
+  mode {cron_config} 644
 
   exist {data_dir}
   dir {data_dir}
-  perms {data_dir} 700
+  mode {data_dir} 700
   owner {data_dir} {user}:{group}
 
   exist {log_dir}
   dir {log_dir}
-  perms {log_dir} 775
+  mode {log_dir} 775
   owner {log_dir} root:{group}
 
 command "-" "Check linking with librdkafka shared lib"

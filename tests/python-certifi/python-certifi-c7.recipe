@@ -7,8 +7,8 @@ fast-finish yes
 
 command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/certifi/cacert.pem
-  perms {PYTHON2_SITELIB}/certifi/cacert.pem 644
+  mode {PYTHON2_SITELIB}/certifi/cacert.pem 644
 
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/certifi/cacert.pem
-  perms {PYTHON3_SITELIB}/certifi/cacert.pem 644
+  mode {PYTHON3_SITELIB}/certifi/cacert.pem 644

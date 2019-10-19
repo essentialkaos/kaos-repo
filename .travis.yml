@@ -12,9 +12,7 @@ before_install:
   - wget https://kaos.sh/perfecto/perfecto-docker
   - wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
   - wget https://kaos.sh/bibop/bibop-massive
-  - chmod +x perfecto-docker
-  - chmod +x bibop
-  - chmod +x bibop-massive
+  - chmod +x perfecto-docker bibop bibop-massive
   - export PATH="$(pwd):$PATH"
 
 script:

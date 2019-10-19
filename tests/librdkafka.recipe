@@ -17,5 +17,5 @@ command "-" "Check static libraries"
   exist /usr/lib64/librdkafka++.a
   exist /usr/lib64/librdkafka.a
 
-  perms /usr/lib64/librdkafka++.a 755
-  perms /usr/lib64/librdkafka.a 755
+  mode /usr/lib64/librdkafka++.a 755
+  mode /usr/lib64/librdkafka.a 755

@@ -16,7 +16,7 @@ command "-" "Check environment"
 
   # Check config file
   exist /etc/keepalived/keepalived.conf
-  perms /etc/keepalived/keepalived.conf 644
+  mode /etc/keepalived/keepalived.conf 644
 
 command "-" "Configuration backup"
   backup {config}

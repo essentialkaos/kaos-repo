@@ -19,9 +19,9 @@ command "-" "Check environment"
   user-exist {service_user}
 
   exist {service_config}
-  perms {service_config} 644
+  mode {service_config} 644
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
 command "-" "Place test config"
   backup {service_config}

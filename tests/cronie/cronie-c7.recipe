@@ -22,24 +22,24 @@ command "-" "Check environment
   exist /etc/cron.d/0hourly
 
   exist /etc/rc.d/init.d/crond
-  perms /etc/rc.d/init.d/crond 755
+  mode /etc/rc.d/init.d/crond 755
 
   exist /etc/sysconfig/crond
-  perms /etc/sysconfig/crond 644
+  mode /etc/sysconfig/crond 644
 
   exist /etc/pam.d/crond
-  perms /etc/pam.d/crond 644
+  mode /etc/pam.d/crond 644
 
   exist /etc/anacrontab
-  perms /etc/anacrontab 644
+  mode /etc/anacrontab 644
 
   exist /var/spool/cron
   dir /var/spool/cron
-  perms /var/spool/cron 700
+  mode /var/spool/cron 700
 
   exist /var/spool/anacron
   dir /var/spool/anacron
-  perms /var/spool/anacron 755
+  mode /var/spool/anacron 755
 
   exist /var/spool/anacron/cron.daily
   exist /var/spool/anacron/cron.weekly
