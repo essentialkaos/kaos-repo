@@ -19,6 +19,9 @@ command "pip --version" "Check version"
   output-contains "site-packages/pip"
   output-contains "python 3"
 
+command "python3 -Im ensurepip" "Check ensurepip command"
+  exit 0
+
 command "pip install youtube-dl" "Install youtube-dl"
   exit 0
   app youtube-dl
