@@ -3,7 +3,7 @@
 
 pkg jre11 jdk11
 
-var java_version 11.0.3
+var java_version 11.0
 
 command "-" "Check environment"
   app jar

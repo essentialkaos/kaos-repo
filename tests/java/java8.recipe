@@ -3,7 +3,7 @@
 
 pkg jre8 jdk8
 
-var java_version 1.8.0_212
+var java_version 1.8.0
 
 command "-" "Check environment"
   app jar
