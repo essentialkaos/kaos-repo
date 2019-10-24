@@ -1,6 +1,6 @@
 ################################################################################
 
-%define package_name      pygit2
+%define package_name pygit2
 
 ################################################################################
 
@@ -10,24 +10,17 @@ Version:        0.28.2
 Release:        0%{?dist}
 License:        GPLv2 with linking exception
 Group:          Development/Libraries
-URL:            http://www.pygit2.org
+URL:            https://www.pygit2.org
 
 Source:         https://github.com/libgit2/%{package_name}/archive/v%{version}/%{package_name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildRequires:  python-devel python-setuptools
-BuildRequires:  libgit2-devel
-BuildRequires:  openssl-devel
-BuildRequires:  python-cffi
-BuildRequires:  python-nose
-BuildRequires:  python-six
-BuildRequires:  python-backports-ssl_match_hostname
+BuildRequires:  libgit2-devel openssl-devel
+BuildRequires:  python-cffi python-nose python-six python-backports-ssl_match_hostname
 
-Requires:       python
-Requires:       python-backports-ssl_match_hostname
-Requires:       python-cffi
-Requires:       python-six
+Requires:       python python-cffi python-six python-backports-ssl_match_hostname
 
 Provides:       %{name} = %{verion}-%{release}
 
