@@ -23,7 +23,7 @@
 Summary:        The ssl.match_hostname() function from Python 3
 Name:           %{python_base}-%{pkgname}
 Version:        3.5.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        Python
 Group:          Development/Languages
 URL:            https://bitbucket.org/brandon/backports.ssl_match_hostname
@@ -34,9 +34,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
-BuildRequires:  %{python_base}-devel %{python_base}-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools %{python_base}-backports
 
-Requires:       %{python_base}
+Requires:       %{python_base} %{python_base}-backports
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 23 2019 Andrey Kulikov <avk@brewkeeper.net> - 3.5.0.1-2
+- Added backports python module to the build and install requirements list
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 3.5.0.1-1
 - Updated for compatibility with Python 3.6
 

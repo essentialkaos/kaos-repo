@@ -1,0 +1,18 @@
+# Bibop recipe for python-pygit2 for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-pygit2 python34-pygit2
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/pygit2
+  dir {PYTHON2_SITEARCH}/pygit2
+
+  exist {PYTHON2_SITEARCH}/pygit2/__init__.py
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITEARCH}/pygit2
+  dir {PYTHON3_SITEARCH}/pygit2
+
+  exist {PYTHON3_SITEARCH}/pygit2/__init__.py
