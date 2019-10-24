@@ -62,7 +62,7 @@
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2019.2.1
+Version:          2019.2.2
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -452,6 +452,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Oct 24 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.2-0
+- Updated to 2019.2.2
+
 * Wed Oct 16 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.1-0
 - Updated to 2019.2.1
 
