@@ -1,0 +1,9 @@
+# Sysconfig file for slony
+
+BINARY=""
+CONF_FILE=""
+PID_DIR=""
+LOG_DIR=""
+USER=""
+SLONCONNINFO=""
+SLONCLUSTERNAME=""
