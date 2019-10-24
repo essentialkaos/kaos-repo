@@ -34,10 +34,8 @@ command "-" "Check client environment"
   owner {client_conf_dir} {user}:{group}
 
 command "-" "Check server environment"
-  app clickhouse-clang
   app clickhouse-copier
   app clickhouse-format
-  app clickhouse-lld
   app clickhouse-obfuscator
   app clickhouse-odbc-bridge
   app clickhouse-report
