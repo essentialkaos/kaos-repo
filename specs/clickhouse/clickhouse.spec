@@ -281,7 +281,6 @@ fi
 %{_bindir}/%{name}-server
 %attr(0700, %{service_user}, %{service_group}) %dir %{service_data_dir}
 %attr(0775, root, %{service_group}) %dir %{service_log_dir}
-%attr(0755, %{service_user}, %{service_group}) %dir %{_rundir}/%{name}-server
 
 %files server-common
 %defattr(-, root, root, -)
