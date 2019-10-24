@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
@@ -13,6 +17,8 @@ License:         GPLv2 with exceptions
 URL:             https://libgit2.github.com
 
 Source0:         https://github.com/libgit2/libgit2/archive/v%{version}/%{name}-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -44,6 +50,8 @@ developing applications that use %{name}.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 # Remove VCS files from examples

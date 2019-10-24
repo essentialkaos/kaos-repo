@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -28,6 +32,8 @@ URL:            https://www.pygit2.org
 
 Source:         https://github.com/libgit2/%{package_name}/archive/v%{version}/%{package_name}-%{version}.tar.gz
 
+Source100:      checksum.sha512
+
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
@@ -47,6 +53,8 @@ the core of Git.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{package_name}-%{version}
 
 %build

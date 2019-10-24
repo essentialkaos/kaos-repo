@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define package_name pygit2
 
 ################################################################################
@@ -13,6 +17,8 @@ Group:          Development/Libraries
 URL:            https://www.pygit2.org
 
 Source:         https://github.com/libgit2/%{package_name}/archive/v%{version}/%{package_name}-%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
@@ -33,6 +39,8 @@ the core of Git.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{package_name}-%{version}
 
 %build
