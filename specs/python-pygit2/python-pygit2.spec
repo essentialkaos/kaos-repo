@@ -10,7 +10,7 @@ Version:        0.28.2
 Release:        0%{?dist}
 License:        GPLv2 with linking exception
 Group:          Development/Libraries
-URL:            http://www.pygit2.org 
+URL:            http://www.pygit2.org
 
 Source:         https://github.com/libgit2/%{package_name}/archive/v%{version}/%{package_name}-%{version}.tar.gz
 

@@ -26,7 +26,7 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-libgit2 is a portable, pure C implementation of the Git core methods 
+libgit2 is a portable, pure C implementation of the Git core methods
 provided as a re-entrant linkable library with a solid API, allowing
 you to write native speed custom Git applications in any language
 with bindings.
