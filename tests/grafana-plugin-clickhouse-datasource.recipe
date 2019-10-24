@@ -14,9 +14,9 @@ command "-" "Check plugin data"
 
   exist {plugin_dir}/{plugin_name}/package.json
   exist {plugin_dir}/{plugin_name}/dist
-  exist {plugin_dir}/{plugin_name}/specs
+  exist {plugin_dir}/{plugin_name}/spec
   exist {plugin_dir}/{plugin_name}/src
 
   dir {plugin_dir}/{plugin_name}/dist
-  dir {plugin_dir}/{plugin_name}/specs
+  dir {plugin_dir}/{plugin_name}/spec
   dir {plugin_dir}/{plugin_name}/src
