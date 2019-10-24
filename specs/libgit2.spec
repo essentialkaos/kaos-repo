@@ -1,25 +1,23 @@
 ################################################################################
 
+%{!?_without_check: %define _with_check 1}
+
+################################################################################
+
 Summary:         C implementation of the Git core methods as a library with a solid API
 Name:            libgit2
 Version:         0.28.3
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         GPLv2 with exceptions
-URL:             http://libgit2.github.com/
+URL:             https://libgit2.github.com
 
 Source0:         https://github.com/libgit2/libgit2/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc
-BuildRequires:   cmake
-BuildRequires:   http-parser-devel
-BuildRequires:   libcurl-devel
-BuildRequires:   libssh2-devel
-BuildRequires:   openssl-devel
-BuildRequires:   zlib-devel
-BuildRequires:   python
+BuildRequires:   gcc cmake python http-parser-devel libcurl-devel libssh2-devel
+BuildRequires:   openssl-devel zlib-devel
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -72,24 +70,26 @@ rm -rf %{buildroot}
 %{make_install} -C %{_target_platform}
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 pushd %{_target_platform}
   ctest -VV
 popd
+%endif
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
+
+################################################################################
 
 %files
 %defattr(-,root,root)
-%if 0%{?rhel} >= 7
-%license COPYING
-%else
 %doc COPYING
-%endif
 %{_libdir}/%{name}.so.*
 
 %files devel
@@ -98,6 +98,8 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 %{_includedir}/*
+
+################################################################################
 
 %changelog
 * Wed Oct 23 2019 Andrey Kulikov <avk@brewkeeper.net> - 0.28.3-0
