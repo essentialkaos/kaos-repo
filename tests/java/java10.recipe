@@ -3,7 +3,7 @@
 
 pkg jre10 jdk10
 
-var java_version 10.0.2
+var java_version 10.0
 
 command "-" "Check environment"
   app jar
