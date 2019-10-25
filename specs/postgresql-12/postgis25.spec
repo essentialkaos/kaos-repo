@@ -67,8 +67,8 @@ License:           GPLv2+
 Group:             Applications/Databases
 URL:               http://www.postgis.net
 
-Source0:           http://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
-Source1:           http://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
+Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
+Source1:           https://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
 Source2:           filter-requires-perl-Pg.sh
 
 Source100:         checksum.sha512

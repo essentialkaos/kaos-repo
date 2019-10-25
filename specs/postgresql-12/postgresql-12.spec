@@ -782,7 +782,7 @@ if [[ $1 -eq 1 ]] ; then
 %if %{systemd_enabled}
   %{__systemctl} daemon-reload %{service_name}.service &>/dev/null || :
   %{__systemctl} preset %{service_name}.service &>/dev/null || :
-  %{tmpfiles_create}
+  systemd-tmpfiles --create &>/dev/null || :
 %else
   %{__chkconfig} --add %{service_name} &>/dev/null || :
 %endif
