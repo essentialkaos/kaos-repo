@@ -16,5 +16,5 @@ before_install:
   - export PATH="$(pwd):$PATH"
 
 script:
-  - perfecto-docker $(find specs -name '*.spec' | sort | tr '\n' ' ')
+  - perfecto-docker -A PF20 $(find specs -name '*.spec' | sort | tr '\n' ' ')
   - bibop-massive -V tests
