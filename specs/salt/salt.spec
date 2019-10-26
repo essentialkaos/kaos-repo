@@ -182,7 +182,6 @@ infrastructure.
 Summary:          REST API for Salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name}-master = %{version}-%{release}
-Requires:         %{python_base}-cherrypy
 
 %description api
 salt-api provides a REST interface to the Salt master.
@@ -454,6 +453,7 @@ fi
 %changelog
 * Thu Oct 24 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.2-0
 - Updated to 2019.2.2
+- Removed cherrypy from dependencies
 
 * Wed Oct 16 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.1-0
 - Updated to 2019.2.1
