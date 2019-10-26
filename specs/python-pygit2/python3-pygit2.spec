@@ -37,7 +37,7 @@ Source100:      checksum.sha512
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
-BuildRequires:  libgit2-devel openssl-devel
+BuildRequires:  gcc libgit2-devel openssl-devel
 BuildRequires:  %{python_base}-cffi %{python_base}-nose %{python_base}-six
 
 Requires:       %{python_base} %{python_base}-cffi %{python_base}-six
