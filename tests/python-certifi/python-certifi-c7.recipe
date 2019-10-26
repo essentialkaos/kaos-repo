@@ -9,6 +9,10 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/certifi/cacert.pem
   mode {PYTHON2_SITELIB}/certifi/cacert.pem 644
 
+  python-module certifi
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/certifi/cacert.pem
   mode {PYTHON3_SITELIB}/certifi/cacert.pem 644
+
+  python3-module certifi

@@ -9,6 +9,10 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/backports/ssl_match_hostname
   dir {PYTHON2_SITELIB}/backports/ssl_match_hostname
 
+  python-module backports.ssl_match_hostname
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/backports/ssl_match_hostname
   dir {PYTHON3_SITELIB}/backports/ssl_match_hostname
+
+  python3-module backports.ssl_match_hostname

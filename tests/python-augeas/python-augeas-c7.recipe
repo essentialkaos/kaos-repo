@@ -12,9 +12,13 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/augeas.py
   exist {PYTHON2_SITELIB}/augeas/ffi.py
 
+  python-module augeas
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/augeas
   dir {PYTHON3_SITELIB}/augeas
 
   exist {PYTHON3_SITELIB}/augeas.py
   exist {PYTHON3_SITELIB}/augeas/ffi.py
+
+  python3-module augeas

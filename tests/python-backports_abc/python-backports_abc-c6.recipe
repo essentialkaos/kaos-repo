@@ -8,5 +8,9 @@ fast-finish yes
 command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/backports_abc.py
 
+  python-module backports_abc
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/backports_abc.py
+
+  python3-module backports_abc
