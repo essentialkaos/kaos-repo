@@ -10,18 +10,20 @@
 Summary:        Sandboxed template engine
 Name:           python-jinja2
 Version:        2.10
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
 
 Source:         https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
 
-BuildRequires:  python-devel python-setuptools
-
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildArch:      noarch
+
+BuildRequires:  python-devel python-setuptools
+
+Requires:       python python-markupsafe
 
 Provides:       %{name} = %{verion}-%{release}
 Provides:       python2-jinja2 = %{verion}-%{release}
@@ -59,6 +61,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-1
+- Added python-markupsafe package to dependencies
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.10-0
 - Updated to latest stable release
 

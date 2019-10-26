@@ -24,7 +24,7 @@
 Summary:        Sandboxed template engine
 Name:           %{python_base}-jinja2
 Version:        2.10
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
@@ -37,7 +37,7 @@ BuildArch:      noarch
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
-Requires:       %{python_base}
+Requires:       %{python_base} %{python_base}-markupsafe
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -74,6 +74,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-2
+- Added python36-markupsafe package to dependencies
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-1
 - Updated for compatibility with Python 3.6
 
