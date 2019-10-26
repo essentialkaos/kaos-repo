@@ -55,7 +55,7 @@
 Summary:            Python bindings for Enchant spellchecking library
 Name:               %{python_base}-%{pkgname}
 Version:            2.0.0
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            LGPLv2+
 Group:              Development/Languages
 URL:                https://pypi.org/project/pyenchant/
@@ -67,6 +67,8 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildArch:          noarch
 
 BuildRequires:      %{python_base}-setuptools %{python_base}-devel enchant-devel
+
+Requires:           %{python_base} enchant
 
 Provides:           PyEnchant = %{version}-%{release}
 
@@ -102,6 +104,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-2
+- Added enchant package to dependencies
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-1
 - Updated for compatibility with Python 3.6
 
