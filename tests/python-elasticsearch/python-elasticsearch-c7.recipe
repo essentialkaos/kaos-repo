@@ -20,6 +20,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITELIB}/elasticsearch/__init__.py
 
+  python-module elasticsearch
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/elasticsearch
   dir {PYTHON3_SITELIB}/elasticsearch
@@ -34,3 +36,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/elasticsearch/helpers
 
   exist {PYTHON3_SITELIB}/elasticsearch/__init__.py
+
+  python3-module elasticsearch

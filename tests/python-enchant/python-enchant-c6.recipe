@@ -14,6 +14,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITELIB}/enchant/_enchant.py
 
+  python-module enchant
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/enchant
   dir {PYTHON3_SITELIB}/enchant
@@ -22,3 +24,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/enchant/checker
 
   exist {PYTHON3_SITELIB}/enchant/_enchant.py
+
+  python3-module enchant
