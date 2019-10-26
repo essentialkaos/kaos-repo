@@ -12,7 +12,7 @@
 Summary:        Python client for Elasticsearch 2.x
 Name:           python-%{package_name}
 Version:        6.3.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
 URL:            https://github.com/elastic/elasticsearch-py
@@ -24,6 +24,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 BuildRequires:  python-devel python-setuptools
+
+Requires:       python python-urllib3
 
 Provides:       %{name} = %{verion}-%{release}
 Provides:       python2-%{package_name} = %{verion}-%{release}
@@ -59,6 +61,9 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-1
+- Added python-urllib3 to dependencies
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-0
 - Updated to latest stable release
 
