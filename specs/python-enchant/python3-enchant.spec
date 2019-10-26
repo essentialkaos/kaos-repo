@@ -104,7 +104,7 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-2
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-2
 - Added enchant package to dependencies
 
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-1
