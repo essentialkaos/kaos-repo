@@ -13,6 +13,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITEARCH}/markupsafe/_speedups.so
 
+  python-module markupsafe
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/markupsafe
   dir {PYTHON3_SITEARCH}/markupsafe
@@ -20,3 +22,5 @@ command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/markupsafe/__init__.py
 
   exist {PYTHON3_SITEARCH}/markupsafe/_speedups.cpython-36m-x86_64-linux-gnu.so
+
+  python3-module markupsafe
