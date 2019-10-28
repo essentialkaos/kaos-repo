@@ -1,0 +1,13 @@
+# Bibop recipe for python-zmq for CentOS 6
+# See more: https://github.com/essentialkaos/bibop
+
+pkg python-futures
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/concurrent/futures
+  dir {PYTHON2_SITEARCH}/concurrent/futures
+  exist {PYTHON2_SITEARCH}/concurrent/futures/__init__.py
+
+  python-module concurrent.futures
