@@ -22,11 +22,11 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
-BuildRequires:  gcc python-devel python-setuptools
+BuildRequires:  gcc python-devel >= 2.7 python-setuptools
 BuildRequires:  libgit2-devel openssl-devel
 BuildRequires:  python-cffi python-nose python-six python-backports-ssl_match_hostname
 
-Requires:       python python-cffi python-six python-backports-ssl_match_hostname
+Requires:       python >= 2.7 python-cffi python-six python-backports-ssl_match_hostname
 
 Provides:       %{name} = %{verion}-%{release}
 
