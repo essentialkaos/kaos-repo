@@ -22,7 +22,7 @@
 Summary:        Python client for Elasticsearch 2.x
 Name:           %{python_base}-%{package_name}
 Version:        6.3.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
 URL:            https://github.com/elastic/elasticsearch-py
@@ -68,6 +68,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 28 2019 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-2
+- Added python3-urllib3 to dependencies
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-1
 - Updated for compatibility with Python 3.6
 
