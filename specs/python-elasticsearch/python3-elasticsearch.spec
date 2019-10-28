@@ -35,6 +35,8 @@ BuildArch:      noarch
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
+Requires:       %{python_base} %{python_base}-urllib3
+
 Provides:       %{name} = %{verion}-%{release}
 
 ################################################################################
