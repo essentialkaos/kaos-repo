@@ -16,6 +16,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITEARCH}/tornado/speedups.so
 
+  python-module tornado
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/tornado
   dir {PYTHON3_SITEARCH}/tornado
@@ -26,3 +28,5 @@ command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/tornado/__init__.py
 
   exist {PYTHON3_SITEARCH}/tornado/speedups.cpython-36m-x86_64-linux-gnu.so
+
+  python3-module tornado

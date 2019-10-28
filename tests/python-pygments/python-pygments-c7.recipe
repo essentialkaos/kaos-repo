@@ -20,6 +20,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITELIB}/pygments/__init__.py
 
+  python-module pygments
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/pygments
   exist {PYTHON3_SITELIB}/pygments/filters
@@ -34,3 +36,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/pygments/styles
 
   exist {PYTHON3_SITELIB}/pygments/__init__.py
+
+  python3-module pygments
