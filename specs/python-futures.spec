@@ -45,7 +45,7 @@
 Summary:            Backport of the concurrent.futures package from Python 3.2
 Name:               python-%{pkgname}
 Version:            3.2.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            BSD
 Group:              Development/Libraries
 URL:                https://github.com/agronholm/pythonfutures
@@ -57,6 +57,9 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildArch:          noarch
 
 BuildRequires:      python-setuptools
+
+Provides:           %{name} = %{version}-%{release}
+Provides:           python2-%{pkgname} = %{version}-%{release}
 
 ################################################################################
 
@@ -91,6 +94,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 30 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.0-1
+- Added Provides info
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2.0-0
 - Updated to latest stable release
 
