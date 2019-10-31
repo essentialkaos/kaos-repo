@@ -704,6 +704,7 @@ cp /dev/null plpython.lst
   %find_lang libpq5-%{majorver}
   %find_lang pg_archivecleanup-%{majorver}
   %find_lang pg_basebackup-%{majorver}
+  %find_lang pg_checksums-%{majorver}
   %find_lang pg_config-%{majorver}
   %find_lang pg_controldata-%{majorver}
   %find_lang pg_ctl-%{majorver}
@@ -715,7 +716,6 @@ cp /dev/null plpython.lst
   %find_lang pg_upgrade-%{majorver}
   %find_lang pg_waldump-%{majorver}
   %find_lang pgscripts-%{majorver}
-  %find_lang pg_verify_checksums-%{majorver}
 
   %if %plperl
     %find_lang plperl-%{majorver}
@@ -747,6 +747,7 @@ cat pg_config-%{majorver}.lang \
 cat initdb-%{majorver}.lang \
     pg_ctl-%{majorver}.lang \
     psql-%{majorver}.lang \
+    pg_checksums-%{majorver}.lang \
     pg_dump-%{majorver}.lang \
     pg_basebackup-%{majorver}.lang \
     pg_rewind-%{majorver}.lang \
@@ -755,8 +756,7 @@ cat initdb-%{majorver}.lang \
     pg_test_fsync-%{majorver}.lang \
     pg_archivecleanup-%{majorver}.lang \
     pg_waldump-%{majorver}.lang \
-    pgscripts-%{majorver}.lang \
-    pg_verify_checksums-%{majorver}.lang > pg_main.lst
+    pgscripts-%{majorver}.lang > pg_main.lst
 
 cat postgres-%{majorver}.lang \
     pg_resetwal-%{majorver}.lang \
@@ -932,7 +932,7 @@ rm -rf %{buildroot}
 %files -f pg_main.lst
 %defattr(-,root,root)
 %doc doc/KNOWN_BUGS doc/MISSING_FEATURES
-%doc COPYRIGHT doc/bug.template
+%doc COPYRIGHT
 %doc README.rpm-dist
 %{install_dir}/bin/pgbench
 %{install_dir}/bin/clusterdb
@@ -1046,7 +1046,6 @@ rm -rf %{buildroot}
 %{install_dir}/lib/tablefunc.so
 %{install_dir}/lib/tcn.so
 %{install_dir}/lib/test_decoding.so
-%{install_dir}/lib/timetravel.so
 %{install_dir}/lib/tsm_system_rows.so
 %{install_dir}/lib/tsm_system_time.so
 %{install_dir}/lib/unaccent.so
@@ -1094,7 +1093,6 @@ rm -rf %{buildroot}
 %{install_dir}/share/extension/sslinfo*
 %{install_dir}/share/extension/tablefunc*
 %{install_dir}/share/extension/tcn*
-%{install_dir}/share/extension/timetravel*
 %{install_dir}/share/extension/tsm_system*
 %{install_dir}/share/extension/unaccent*
 %if %uuid
@@ -1112,11 +1110,13 @@ rm -rf %{buildroot}
 
 %files libs -f pg_libpq5.lst
 %defattr(-,root,root)
-%{install_dir}/lib/libpq.so.*
 %{install_dir}/lib/libecpg.so*
-%{install_dir}/lib/libpgfeutils.a
-%{install_dir}/lib/libpgtypes.so.*
 %{install_dir}/lib/libecpg_compat.so.*
+%{install_dir}/lib/libpgcommon_shlib.a
+%{install_dir}/lib/libpgfeutils.a
+%{install_dir}/lib/libpgport_shlib.a
+%{install_dir}/lib/libpgtypes.so.*
+%{install_dir}/lib/libpq.so.*
 %{install_dir}/lib/libpqwalreceiver.so
 %config(noreplace) %{install_dir}/share/%{service_name}-libs.conf
 
@@ -1133,17 +1133,17 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{majorver}
 %endif
 %{install_dir}/bin/initdb
+%{install_dir}/bin/pg_checksums
 %{install_dir}/bin/pg_controldata
 %{install_dir}/bin/pg_ctl
 %{install_dir}/bin/pg_resetwal
-%{install_dir}/bin/pg_verify_checksums
 %{install_dir}/bin/postgres
 %{install_dir}/bin/postmaster
 %{install_dir}/share/man/man1/initdb.*
+%{install_dir}/share/man/man1/pg_checksums.*
 %{install_dir}/share/man/man1/pg_controldata.*
 %{install_dir}/share/man/man1/pg_ctl.*
 %{install_dir}/share/man/man1/pg_resetwal.*
-%{install_dir}/share/man/man1/pg_verify_checksums.*
 %{install_dir}/share/man/man1/postgres.*
 %{install_dir}/share/man/man1/postmaster.*
 %{install_dir}/share/postgres.bki
@@ -1174,7 +1174,6 @@ rm -rf %{buildroot}
 %attr(700,%{username},%{groupname}) %dir %{_sharedstatedir}/%{shortname}/%{majorver}/data
 %attr(700,%{username},%{groupname}) %dir %{_sharedstatedir}/%{shortname}/%{majorver}/backups
 %{install_dir}/lib/*_and_*.so
-%{install_dir}/share/conversion_create.sql
 %{install_dir}/share/information_schema.sql
 %{install_dir}/share/snowball_create.sql
 %{install_dir}/share/sql_features.txt
