@@ -194,13 +194,12 @@ Zabbix server with PostgresSQL database support.
 Summary:              Zabbix java gateway
 Group:                Applications/Internet
 
+Requires:             java >= 1.8.0
 %if 0%{?rhel} >= 7
-Requires:             java-headless >= 1.8.0
 Requires(post):       systemd
 Requires(preun):      systemd
 Requires(postun):     systemd
 %else
-Requires:             java >= 1.8.0
 Requires(post):       %{__chkconfig}
 Requires(preun):      %{__chkconfig}
 Requires(preun):      %{__service}
@@ -368,7 +367,6 @@ sed -i -e 's|/tmp/zabbix_java.log|%{_localstatedir}/log/zabbix/zabbix_java_gatew
 %build
 
 export PATH="/usr/pgsql-9.6/bin:$PATH"
-export GOPATH=$(pwd)
 
 build_flags="
         --enable-dependency-tracking
