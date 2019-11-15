@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.15.3.6-stable
+# rpmbuilder:tag          v19.17.2.4-stable
 
 ################################################################################
 
@@ -61,7 +61,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.15.3.6
+Version:           19.17.2.4
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -230,6 +230,12 @@ exit 0
 %post server
 if [[ $1 -eq 1 ]] ; then
   %{__systemctl} enable %{name}-server.service &>/dev/null || :
+
+  random_pass=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w18 | head -n1)
+
+  # Generate password for default user
+  sed -i "s#<password></password>#<password>$random_pass</password>#" \
+         %{_sysconfdir}/%{name}-server/users.xml
 fi
 
 if [[ -d %{service_data_dir}/build ]] ; then
@@ -299,24 +305,27 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 15 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.2.4-0
+- Updated to the latest stable release
+
 * Fri Oct 25 2019 Anton Novojilov <andy@essentialkaos.com> - 19.15.3.6-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Tue Oct 15 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.14.7.15-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Tue Jul 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.9.4.34-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Wed Jun 05 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.7.3.9-0
-- Updated to the latest release
+- Updated to the latest stable release
 - Added logrotate configuration
 
 * Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 19.4.3.11-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Mon Mar 25 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.4.1.3-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 18.16.1-0
 - Initial build for kaos repository
