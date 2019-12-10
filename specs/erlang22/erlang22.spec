@@ -45,10 +45,10 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           22
-%define ver_min           0
-%define ver_patch         7
+%define ver_min           2
+%define ver_patch         0
 %define ver_suffix        %{ver_min}.%{ver_patch}
-%define ver_string        %{ver_maj}.%{ver_suffix}
+%define ver_string        %{ver_maj}.%{ver_min}
 %define realname          erlang
 
 %define libre_ver         2.9.2
@@ -1003,6 +1003,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 22.2-0
+- Updated to the latest release
+
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 22.1.8-0
+- Updated to the latest release
+
 * Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 22.0.7-0
 - Updated to the latest release
 - Added CRC check for sources

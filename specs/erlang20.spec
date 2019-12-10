@@ -42,7 +42,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           20
 %define ver_min           3
-%define ver_patch         8.22
+%define ver_patch         8.24
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
@@ -1128,6 +1128,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.24-0
+- Updated to the latest release
+
 * Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.22-0
 - Updated to the latest release
 - Added sctp support

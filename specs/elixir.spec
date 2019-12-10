@@ -36,7 +36,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.9.1
+Version:            1.9.4
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -104,6 +104,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
+- Updated to the latest release
+
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
+- Updated to the latest release
+
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
+- Updated to the latest release
+
 * Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
 - Updated to the latest release
 - Added CRC check for sources
