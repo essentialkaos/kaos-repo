@@ -5,7 +5,7 @@ pkg erlang22
 
 var libressl_ver 2.9.2
 
-var erts_version 10.4.4
+var erts_version 10.6
 var bin_dir      /usr/lib64/erlang/erts-{erts_version}/bin
 
 command "-" "Check environment"
