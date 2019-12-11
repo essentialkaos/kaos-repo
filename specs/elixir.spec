@@ -48,7 +48,7 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang >= 20 git
+BuildRequires:      erlang20 git
 
 Requires:           erlang >= 20
 
