@@ -5,9 +5,6 @@ pkg erlang20
 
 var libressl_ver 2.9.2
 
-var erts_version 9.3.3.13
-var bin_dir      /usr/lib64/erlang/erts-{erts_version}/bin
-
 command "-" "Check environment"
   app epmd
   app erl
@@ -15,7 +12,7 @@ command "-" "Check environment"
   app escript
 
 command "-" "Check zlib linking"
-  !lib-linked {bin_dir}/beam.smp libz.so.1
+  !lib-linked {ERLANG_BIN_DIR}/beam.smp libz.so.1
 
 command "erl -compile test" "Compile basic script"
   exit 0
