@@ -26,6 +26,8 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:            Library for manipulating ID3v1 and ID3v2 tags
@@ -134,7 +136,9 @@ rm -f %{buildroot}%{_libdir}/libid3.la
 install -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}

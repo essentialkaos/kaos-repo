@@ -1,5 +1,9 @@
 ################################################################################
 
+%{!?_without_check: %define _with_check 1}
+
+################################################################################
+
 Summary:            Library to extract data from within an Excel spreadsheet
 Name:               freexl
 Version:            1.0.5
@@ -71,7 +75,9 @@ rm -rf %{buildroot}
 rm -f %{buildroot}%{_libdir}/lib%{name}.la
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 # Clean up
 pushd examples

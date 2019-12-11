@@ -2,6 +2,8 @@
 
 %define _hardened_build   1
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 %define _posixroot        /
@@ -175,9 +177,6 @@ pushd qt
   %{__make} %{?_smp_mflags}
 popd
 
-%check
-%{__make} %{?_smp_mflags} check
-
 %install
 rm -rf %{buildroot}
 
@@ -197,6 +196,11 @@ install -dm 0755 %{buildroot}%{_datadir}/appdata
 
 install -pm 0644 daemon/%{name}-daemon.service  %{buildroot}%{_unitdir}/
 install -pm 0644 %{SOURCE1} %{buildroot}%{_datadir}/appdata/%{name}-gtk.appdata.xml
+
+%check
+%if %{?_with_check:1}%{?_without_check:0}
+%{__make} %{?_smp_mflags} check
+%endif
 
 %clean
 rm -rf %{buildroot}

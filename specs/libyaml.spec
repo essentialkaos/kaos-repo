@@ -1,5 +1,9 @@
 ################################################################################
 
+%{!?_without_check: %define _with_check 1}
+
+################################################################################
+
 Summary:         A C library for parsing and emitting YAML
 Name:            libyaml
 Version:         0.2.2
@@ -52,7 +56,9 @@ rm -rf %{buildroot}
 rm -f %{buildroot}%{_libdir}/*.{la,a}
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}

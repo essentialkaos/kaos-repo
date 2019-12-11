@@ -36,6 +36,8 @@
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 %define _pkgconfigdir     %{_libdir}/pkgconfig
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:         An XML parser library designed for Jabber applications
@@ -95,7 +97,9 @@ mv %{buildroot}%{_infodir}/%{name} %{buildroot}%{_infodir}/%{name}.info
 rm -f %{buildroot}%{_infodir}/dir
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}

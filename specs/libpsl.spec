@@ -26,6 +26,8 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:            C library for the Publix Suffix List
@@ -116,14 +118,18 @@ find %{buildroot} -name '*.la' -delete -print
 chrpath --delete %{buildroot}%{_bindir}/psl
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 

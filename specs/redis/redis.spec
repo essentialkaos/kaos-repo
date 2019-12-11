@@ -4,7 +4,7 @@
 
 ################################################################################
 
-%global with_tests   %{?_with_tests:1}%{!?_with_tests:0}
+%{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
@@ -169,7 +169,7 @@ ln -sf %{_bindir}/%{name}-server %{buildroot}%{_bindir}/%{name}-sentinel
 ln -sf %{_bindir}/%{name}-server %{buildroot}%{_sbindir}/%{name}-server
 
 %check
-%if 0%{?with_tests}
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} %{?_smp_mflags} test
 %{__make} %{?_smp_mflags} test-sentinel
 %endif

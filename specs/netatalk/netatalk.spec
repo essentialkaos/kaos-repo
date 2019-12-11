@@ -43,6 +43,8 @@
 %define with_systemd      0
 %endif
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 %define _posixroot        /
@@ -277,7 +279,9 @@ install -pm 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 find %{buildroot} -name '*.la' -delete -print
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 bash test/afpd/test.sh
+%endif
 
 %clean
 rm -rf %{buildroot}

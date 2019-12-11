@@ -32,6 +32,8 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:         Jansson JSON Library
@@ -80,15 +82,17 @@ Header files for Jansson JSON Library
 
 %{__make} %{?_smp_mflags}
 
-%check
-%{__make} check
-
 %install
 rm -rf %{buildroot}
 
 %{make_install} INSTALL="install -p"
 
 rm -f %{buildroot}%{_libdir}/*.la
+
+%check
+%if %{?_with_check:1}%{?_without_check:0}
+%{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}

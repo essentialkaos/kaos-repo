@@ -37,6 +37,8 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:            Cartographic projection software (PROJ.4)
@@ -161,6 +163,7 @@ install -pm 0644 src/projects.h \
                  %{buildroot}%{_includedir}/
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 pushd nad
   # Set test enviroment for proj
   export PROJ_LIB=%{buildroot}%{_datadir}/%{name}
@@ -173,6 +176,7 @@ pushd nad
   ./testntv2    %{buildroot}%{_bindir}/%{name} || :
   ./testvarious %{buildroot}%{_bindir}/%{name} || :
 popd
+%endif
 
 %clean
 rm -rf %{buildroot}
