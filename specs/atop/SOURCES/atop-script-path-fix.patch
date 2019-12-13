@@ -1,13 +1,13 @@
-diff -urN atop-2.3.0-orig/atop.cronsysv atop-2.3.0/atop.cronsysv
---- atop-2.3.0-orig/atop.cronsysv	2017-03-25 12:00:03.000000000 +0300
-+++ atop-2.3.0/atop.cronsysv	2018-11-07 11:48:27.000000000 +0300
+diff -urN atop-2.5.0-orig/atop.cronsysv atop-2.5.0/atop.cronsysv
+--- atop-2.5.0-orig/atop.cronsysv	2019-11-02 14:12:33.000000000 +0300
++++ atop-2.5.0/atop.cronsysv	2019-12-12 17:51:07.000000000 +0300
 @@ -1,2 +1,2 @@
  # daily restart of atop at midnight
 -0 0 * * * root /usr/share/atop/atop.daily&
 +0 0 * * * root /etc/atop/atop.daily&
-diff -urN atop-2.3.0-orig/atop.init atop-2.3.0/atop.init
---- atop-2.3.0-orig/atop.init	2017-03-25 12:00:03.000000000 +0300
-+++ atop-2.3.0/atop.init	2018-11-07 11:46:49.000000000 +0300
+diff -urN atop-2.5.0-orig/atop.init atop-2.5.0/atop.init
+--- atop-2.5.0-orig/atop.init	2019-11-02 14:12:33.000000000 +0300
++++ atop-2.5.0/atop.init	2019-12-12 17:51:40.000000000 +0300
 @@ -31,7 +31,7 @@
  		:
  	else
@@ -31,17 +31,3 @@ diff -urN atop-2.3.0-orig/atop.init atop-2.3.0/atop.init
  	;;
  
    *)
-diff -urN atop-2.3.0-orig/atop.service atop-2.3.0/atop.service
---- atop-2.3.0-orig/atop.service	2017-03-25 12:00:03.000000000 +0300
-+++ atop-2.3.0/atop.service	2018-11-07 11:46:49.000000000 +0300
-@@ -4,9 +4,8 @@
- 
- [Service]
- Type=simple
--ExecStart=/usr/share/atop/atop.daily
-+ExecStart=/etc/atop/atop.daily
- KillSignal=SIGUSR2
--#ExecStopPost=/usr/bin/sleep 3
- 
- [Install]
- WantedBy=multi-user.target

@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -48,13 +52,15 @@
 
 Summary:              A GNU general-purpose parser generator
 Name:                 bison
-Version:              3.4.1
+Version:              3.5
 Release:              0%{?dist}
 License:              GPLv3+
 Group:                Development/Tools
 URL:                  https://www.gnu.org/software/bison/
 
-Source:               https://ftp.gnu.org/pub/gnu/bison/bison-%{version}.tar.xz
+Source0:              https://ftp.gnu.org/pub/gnu/bison/bison-%{version}.tar.xz
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -117,6 +123,8 @@ Bison manual section for more information.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -166,6 +174,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 3.5-0
+- Updated to latest stable release
+
+* Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
+- Updated to latest stable release
+
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
 - Updated to latest stable release
 

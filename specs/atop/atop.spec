@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} && 0%{?rhel} <= 6
 %{!?systemd_enabled:%global systemd_enabled 0}
 %else
@@ -53,15 +57,17 @@
 
 Summary:         Advanced System and Process Monitor
 Name:            atop
-Version:         2.4.0
+Version:         2.5.0
 Release:         0%{?dist}
 License:         GPL
 Group:           Development/System
-URL:             http://www.atoptool.nl
+URL:             https://www.atoptool.nl
 
 Source0:         https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
 Source1:         %{name}.daily
 Source2:         %{name}.sysconfig
+
+Source100:       checksum.sha512
 
 Patch0:          %{name}-script-path-fix.patch
 
@@ -97,6 +103,8 @@ as reports.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
@@ -142,8 +150,10 @@ install -dm 0755 %{buildroot}%{_crondir}
 install -dm 0755 %{buildroot}%{_unitdir}
 install -dm 0755 %{buildroot}%{_sharedstatedir}/systemd/system-sleep
 install -pm 0644 atop.service %{buildroot}%{_unitdir}/atop.service
+install -pm 0644 atop-rotate.service %{buildroot}%{_unitdir}/atop-rotate.service
+install -pm 0644 atop-rotate.timer %{buildroot}%{_unitdir}/atop-rotate.timer
 install -pm 0644 atopacct.service %{buildroot}%{_unitdir}/atopacct.service
-install -pm 0644 atop.cronsystemd %{buildroot}%{_crondir}/atop
+install -pm 0644 atopgpu.service %{buildroot}%{_unitdir}/atopgpu.service
 install -pm 0711 atop-pm.sh %{buildroot}%{_sharedstatedir}/systemd/system-sleep/atop-pm.sh
 %else
 install -dm 0755 %{buildroot}%{_initddir}
@@ -165,10 +175,13 @@ mv %{_logdir}/%{name}/atop_$(date +%Y%m%d) %{_logdir}/%{name}/atop_$(date +%Y%m%
 touch %{_logdir}/%{name}/dummy_before %{_logdir}/%{name}/dummy_after
 
 %if %{systemd_enabled}
+%{__systemctl} daemon-reload &>/dev/null || :
 %{__systemctl} enable atop &>/dev/null || :
-%{__systemctl} start  atop &>/dev/null || :
 %{__systemctl} enable atopacct &>/dev/null || :
-%{__systemctl} start  atopacct &>/dev/null || :
+%{__systemctl} enable atop-rotate.timer &>/dev/null || :
+%{__systemctl} start atop &>/dev/null || :
+%{__systemctl} start atopacct &>/dev/null || :
+%{__systemctl} start atop-rotate.timer &>/dev/null || :
 %else
 %{__chkconfig} --add atopacct
 %{__chkconfig} --add atop
@@ -188,10 +201,12 @@ sleep 2
 %preun
 %if %{systemd_enabled}
 if [[ $1 -eq 0 ]] ; then
-  %{__systemctl} stop    atop &>/dev/null || :
+  %{__systemctl} stop atop &>/dev/null || :
+  %{__systemctl} stop atopacct &>/dev/null || :
+  %{__systemctl} stop atopgpu &>/dev/null || :
   %{__systemctl} disable atop &>/dev/null || :
-  %{__systemctl} stop    atopacct &>/dev/null || :
   %{__systemctl} disable atopacct &>/dev/null || :
+  %{__systemctl} disable atopgpu &>/dev/null || :
 fi
 %else
 killall atopacctd &>/dev/null || :
@@ -214,11 +229,15 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %if %{systemd_enabled}
 %config(noreplace) %{_unitdir}/atop.service
 %config(noreplace) %{_unitdir}/atopacct.service
+%config(noreplace) %{_unitdir}/atopgpu.service
+%config(noreplace) %{_unitdir}/atop-rotate.service
+%config(noreplace) %{_unitdir}/atop-rotate.timer
 %{_sharedstatedir}/systemd/system-sleep/atop-pm.sh
 %else
 %config(noreplace) %{_initddir}/atop
 %config(noreplace) %{_initddir}/atopacct
 %{_sysconfdir}/%{name}/45atoppm
+%{_crondir}/atop
 %endif
 %{_bindir}/atop
 %{_bindir}/atopsar
@@ -232,7 +251,6 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %{_mandir}/man8/atopacctd.8*
 %{_mandir}/man8/atopgpud.8*
 %{_sysconfdir}/%{name}/atop.daily
-%{_crondir}/atop
 %{_sysconfdir}/logrotate.d/psaccs_atop
 %{_sysconfdir}/logrotate.d/psaccu_atop
 %dir %{_logdir}/%{name}/
@@ -240,6 +258,11 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 ################################################################################
 
 %changelog
+* Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
+- Avoid using perf counters in VM
+- Improve daily rotation of logfile for systemd-based systems
+- Bug fixes
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
 - Support for Nvidia GPU statistics
 - Support for Infiniband statistics

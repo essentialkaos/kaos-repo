@@ -73,7 +73,7 @@
 
 Summary:              Utility for getting files from remote servers
 Name:                 curl
-Version:              7.65.3
+Version:              7.67.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/Internet
@@ -274,6 +274,225 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 7.67.0-0
+- curl: added --no-progress-meter
+- setopt: CURLMOPT_MAX_CONCURRENT_STREAMS is new
+- urlapi: CURLU_NO_AUTHORITY allows empty authority/host part
+- BINDINGS: five new bindings addded
+- CURLOPT_TIMEOUT.3: Clarify transfer timeout time includes queue time
+- CURLOPT_TIMEOUT.3: remove the mention of "minutes"
+- ESNI: initial build/setup support
+- FTP: FTPFILE_NOCWD: avoid redundant CWDs
+- FTP: allow "rubbish" prepended to the SIZE response
+- FTP: remove trailing slash from path for LIST/MLSD
+- FTP: skip CWD to entry dir when target is absolute
+- FTP: url-decode path before evaluation
+- HTTP3.md: move -p for mkdir, remove -j for make
+- HTTP3: fix invalid use of sendto for connected UDP socket
+- HTTP3: fix ngtcp2 Windows build
+- HTTP3: fix prefix parameter for ngtcp2 build
+- HTTP3: fix typo somehere1 > somewhere1
+- HTTP3: show an --alt-svc using example too
+- INSTALL: add missing space for configure commands
+- INSTALL: add vcpkg installation instructions
+- README: minor grammar fix
+- altsvc: accept quoted ma and persist values
+- altsvc: both backends run h3-23 now
+- appveyor: Add MSVC ARM64 build
+- appveyor: Use two parallel compilation on appveyor with CMake
+- appveyor: add --disable-proxy autotools build
+- appveyor: add 32-bit MinGW-w64 build
+- appveyor: add a winbuild
+- appveyor: add a winbuild that uses VS2017
+- appveyor: make winbuilds with DEBUG=no/yes and VS 2015/2017
+- appveyor: publish artifacts on appveyor
+- appveyor: upgrade VS2017 to VS2019
+- asyn-thread: make use of Curl_socketpair() where available
+- asyn-thread: s/AF_LOCAL/AF_UNIX for Solaris
+- build: Remove unused HAVE_LIBSSL and HAVE_LIBCRYPTO defines
+- checksrc: fix uninitialized variable warning
+- chunked-encoding: stop hiding the CURLE_BAD_CONTENT_ENCODING error
+- cirrus: Increase the git clone depth
+- cirrus: Switch the FreeBSD 11.x build to 11.3 and add a 13.0 build
+- cirrus: switch off blackhole status on the freebsd CI machines
+- cleanups: 21 various PVS-Studio warnings
+- configure: only say ipv6 enabled when the variable is set
+- configure: remove all cyassl references
+- conn-reuse: requests wanting NTLM can reuse non-NTLM connections
+- connect: return CURLE_OPERATION_TIMEDOUT for errno == ETIMEDOUT
+- connect: silence sign-compare warning
+- cookie: avoid harmless use after free
+- cookie: pass in the correct cookie amount to qsort()
+- cookies: change argument type for Curl_flush_cookies
+- cookies: using a share with cookies shouldn't enable the cookie engine
+- copyrights: update copyright notices to 2019
+- curl: create easy handles on-demand and not ahead of time
+- curl: ensure HTTP 429 triggers --retry
+- curl: exit the create_transfers loop on errors
+- curl: fix memory leaked by parse_metalink()
+- curl: load large files with -d @ much faster
+- docs/HTTP3: fix `--with-ssl` ngtcp2 configure flag
+- docs: added multi-event.c example
+- docs: disambiguate CURLUPART_HOST is for host name (ie no port)
+- docs: note on failed handles not being counted by curl_multi_perform
+- doh: allow only http and https in debug mode
+- doh: avoid truncating DNS QTYPE to lower octet
+- doh: clean up dangling DOH memory on easy close
+- doh: fix (harmless) buffer overrun
+- doh: fix undefined behaviour and open up for gcc and clang optimization
+- doh: return early if there is no time left
+- examples/sslbackend: fix -Wchar-subscripts warning
+- examples: remove the "this exact code has not been verified"
+- git: add tests/server/disabled to .gitignore
+- gnutls: make gnutls_bye() not wait for response on shutdown
+- http2: expire a timeout at end of stream
+- http2: prevent dup'ed handles to send dummy PRIORITY frames
+- http2: relax verification of :authority in push promise requests
+- http2_recv: a closed stream trumps pause state
+- http: lowercase headernames for HTTP/2 and HTTP/3
+- ldap: Stop using wide char version of ldapp_err2string
+- ldap: fix OOM error on missing query string
+- mbedtls: add error message for cert validity starting in the future
+- mime: when disabled, avoid C99 macro
+- ngtcp2: adapt to API change
+- ngtcp2: compile with latest ngtcp2 + nghttp3 draft-23
+- ngtcp2: remove fprintf() calls
+- openssl: close_notify on the FTP data connection doesn't mean closure
+- openssl: fix compiler warning with LibreSSL
+- openssl: use strerror on SSL_ERROR_SYSCALL
+- os400: getpeername() and getsockname() return ebcdic AF_UNIX sockaddr
+- parsedate: fix date parsing disabled builds
+- quiche: don't close connection at end of stream
+- quiche: persist connection details (fixes -I with --http3)
+- quiche: set 'drain' when returning without having drained the queues
+- quiche: update HTTP/3 config creation to new API
+- redirect: handle redirects to absolute URLs containing spaces
+- runtests: get textaware info from curl instead of perl
+- schannel: reverse the order of certinfo insertions
+- schannel_verify: Fix concurrent openings of CA file
+- security: silence conversion warning
+- setopt: handle ALTSVC set to NULL
+- setopt: make it easier to add new enum values
+- setopt: store CURLOPT_RTSP_SERVER_CSEQ correctly
+- smb: check for full size message before reading message details
+- smbserver: fix Python 3 compatibility
+- socks: Fix destination host shown on SOCKS5 error
+- test1162: disable MSYS2's POSIX path conversion
+- test1591: fix spelling of http feature
+- tests: add `connect to non-listen` keywords
+- tests: fix narrowing conversion warnings
+- tests: fix the test 3001 cert failures
+- tests: makes tests succeed when using --disable-proxy
+- tests: use %%FILE_PWD for file:// URLs
+- tests: use port 2 instead of 60000 for a safer non-listening port
+- tool_operate: Fix retry sleep time shown to user when Retry-After
+- travis: Add an ARM64 build
+- url: Curl_free_request_state() should also free doh handles
+- url: don't set appconnect time for non-ssl/non-ssh connections
+- url: fix the NULL hostname compiler warning
+- url: normalize CURLINFO_EFFECTIVE_URL
+- url: only reuse TLS connections with matching pinning
+- urlapi: avoid index underflow for short ipv6 hostnames
+- urlapi: fix URL encoding when setting a full URL
+- urlapi: fix unused variable warning
+- urlapi: question mark within fragment is still fragment
+- urldata: use 'bool' for the bit type on MSVC compilers
+- vtls: Fix comment typo about macosx-version-min compiler flag
+- vtls: fix narrowing conversion warnings
+- winbuild/MakefileBuild.vc: Add vssh
+- winbuild/MakefileBuild.vc: Fix line endings
+- winbuild: Add manifest to curl.exe for proper OS version detection
+- winbuild: add ENABLE_UNICODE option
+
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 7.66.0-0
+- CURLINFO_RETRY_AFTER: parse the Retry-After header value
+- HTTP3: initial (experimental still not working) support
+- curl: --sasl-authzid added to support CURLOPT_SASL_AUTHZID from the tool
+- curl: support parallel transfers with -Z
+- curl_multi_poll: a sister to curl_multi_wait() that waits more
+- sasl: Implement SASL authorisation identity via CURLOPT_SASL_AUTHZID
+- CVE-2019-5481: FTP-KRB double-free
+- CVE-2019-5482: TFTP small blocksize heap buffer overflow
+- CI: remove duplicate configure flag for LGTM.com
+- CMake: remove needless newlines at end of gss variables
+- CMake: use platform dependent name for dlopen() library
+- CURLINFO docs: mention that in redirects times are added
+- CURLOPT_ALTSVC.3: use a "" file name to not load from a file
+- CURLOPT_ALTSVC_CTRL.3: remove CURLALTSVC_ALTUSED
+- CURLOPT_HEADERFUNCTION.3: clarify
+- CURLOPT_HTTP_VERSION: seting this to 3 forces HTTP/3 use directly
+- CURLOPT_READFUNCTION.3: provide inline example
+- CURLOPT_SSL_VERIFYHOST: treat the value 1 as 2
+- Curl_addr2string: take an addrlen argument too
+- Curl_fillreadbuffer: avoid double-free trailer buf on error
+- HTTP: use chunked Transfer-Encoding for HTTP_POST if size unknown
+- alt-svc: add protocol version selection masking
+- alt-svc: fix removal of expired cache entry
+- alt-svc: make it use h3-22 with ngtcp2 as well
+- alt-svc: more liberal ALPN name parsing
+- alt-svc: send Alt-Used: in redirected requests
+- alt-svc: with quiche, use the quiche h3 alpn string
+- appveyor: pass on -k to make
+- asyn-thread: create a socketpair to wait on
+- build-openssl: fix build with Visual Studio 2019
+- cleanup: move functions out of url.c and make them static
+- cleanup: remove the 'numsocks' argument used in many places
+- configure: avoid undefined check_for_ca_bundle
+- curl.h: add CURL_HTTP_VERSION_3 to the version enum
+- curl.h: fix outdated comment
+- curl: cap the maximum allowed values for retry time arguments
+- curl: handle a libcurl build without netrc support
+- curl: make use of CURLINFO_RETRY_AFTER when retrying
+- curl: remove outdated comment
+- curl: use .curlrc (with a dot) on Windows
+- curl: use CURLINFO_PROTOCOL to check for HTTP(s)
+- curl_global_init_mem.3: mention it was added in 7.12.0
+- curl_version: bump string buffer size to 250
+- curl_version_info.3: mentioned ALTSVC and HTTP3
+- curl_version_info: offer quic (and h3) library info
+- curl_version_info: provide nghttp2 details
+- defines: avoid underscore-prefixed defines
+- docs/ALTSVC: remove what works and the experimental explanation
+- docs/EXPERIMENTAL: explain what it means and what is experimental now
+- docs/MANUAL.md: converted to markdown from plain text
+- docs/examples/curlx: fix errors
+- docs: s/curl_debug/curl_dbg_debug in comments and docs
+- easy: resize receive buffer on easy handle reset
+- examples: Avoid reserved names in hiperfifo examples
+- examples: add http3.c, altsvc.c and http3-present.c
+- getenv: support up to 4K environment variable contents on windows
+- http09: disable HTTP/0.9 by default in both tool and library
+- http2: when marked for closure and wanted to close == OK
+- http2_recv: trigger another read when the last data is returned
+- http: fix use of credentials from URL when using HTTP proxy
+- http_negotiate: improve handling of gss_init_sec_context() failures
+- md4: Use our own MD4 when no crypto libraries are available
+- multi: call detach_connection before Curl_disconnect
+- netrc: make the code try ".netrc" on Windows
+- nss: use TLSv1.3 as default if supported
+- openssl: build warning free with boringssl
+- openssl: use SSL_CTX_set__proto_version() when available
+- plan9: add support for running on Plan 9
+- progress: reset download/uploaded counter between transfers
+- readwrite_data: repair setting the TIMER_STARTTRANSFER stamp
+- scp: fix directory name length used in memcpy
+- smb: init *msg to NULL in smb_send_and_recv()
+- smtp: check for and bail out on too short EHLO response
+- source: remove names from source comments
+- spnego_sspi: add typecast to fix build warning
+- src/makefile: fix uncompressed hugehelp.c generation
+- ssh-libssh: do not specify O_APPEND when not in append mode
+- ssh: move code into vssh for SSH backends
+- sspi: fix memory leaks
+- tests: Replace outdated test case numbering documentation
+- tftp: return error when packet is too small for options
+- timediff: make it 64 bit (if possible) even with 32 bit time_t
+- travis: reduce number of torture tests in 'coverage'
+- url: make use of new HTTP version if alt-svc has one
+- urlapi: verify the IPv6 numerical address
+- urldata: avoid 'generic', use dedicated pointers
+- vauth: Use CURLE_AUTH_ERROR for auth function errors
+
 * Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.3-0
 - progress: make the progress meter appear again
 

@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 %if 0%{?rhel} == 5
@@ -10,13 +14,14 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.8.1
+Version:              2.9.2
 Release:              0%{?dist}
 URL:                  http://www.ansible.com
 License:              GPLv3
 Group:                Development/Libraries
 
-Source:               http://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
+Source0:              https://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -71,6 +76,8 @@ are transferred to managed machines automatically.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -114,6 +121,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.9.2-0
+- Updated to the latest version
+
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
 - Updated to the latest version
 
