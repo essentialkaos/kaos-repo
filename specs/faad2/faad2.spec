@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -40,15 +44,15 @@
 
 Summary:           Library and frontend for decoding MPEG2/4 AAC
 Name:              faad2
-Version:           2.7
+Version:           2.8.8
 Release:           0%{?dist}
 License:           GPLv2
 Group:             Applications/Multimedia
-URL:               http://www.audiocoding.com
+URL:               https://www.audiocoding.com
 
-Source0:           http://download.sourceforge.net/faac/%{name}-%{version}.tar.bz2
+Source0:           https://freefr.dl.sourceforge.net/project/faac/%{name}-src/%{name}-2.8.0/%{name}-%{version}.tar.gz
 
-Patch0:            %{name}-%{version}-mp4ff.patch
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -90,11 +94,12 @@ Header files from faad2 that are needed to build programs that use it.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
-%patch0 -p1 -b .mp4ff
 
 %build
-autoreconf -i
+autoreconf -fi
 
 %configure \
   --without-xmms \
@@ -123,7 +128,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING ChangeLog NEWS README TODO
 %{_bindir}/%{pkg_name}
-%{_mandir}/manm/%{pkg_name}.man*
+%{_mandir}/man1/faad.*
 
 %files -n lib%{name}
 %defattr(-,root,root,-)
@@ -139,5 +144,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 2.8.8-0
+- Updated to the latest stable release
+
 * Mon Sep 05 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 2.7-0
 - Initial build

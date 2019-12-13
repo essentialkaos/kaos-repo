@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -39,13 +43,15 @@
 
 Summary:            A minimalistic plugin API for video effects
 Name:               frei0r
-Version:            1.6.1
+Version:            1.7.0
 Release:            0%{?dist}
 License:            GPLv2+
 Group:              System Environment/Libraries
-URL:                http://frei0r.dyne.org
+URL:                https://frei0r.dyne.org
 
 Source0:            https://github.com/dyne/%{name}/archive/v%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -66,6 +72,8 @@ can be controlled by parameters.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -104,14 +112,28 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
+- This release includes three new filters, code cleanups and several
+  bugfixes improving stability of existing plugins.
+- New filters (3): normaliz0r, elastic_scale, premultiply.
+- Updated (47): alpha0ps, baltan, bgsubtractor, bluescreen0r, blur,
+  c0rners, cairogradient, cairoimagegrid, cartoon, cluster,
+  coloradj, colorhalftone, curves, d90stairsteppingfix, defish0r,
+  delay0r, edgeglow, emboss, facebl0r, facedetect, levels,
+  lightgraffiti, measure, ndvi, nervous, nosync0r, primaries,
+  rgbnoice, rgbsplit0r, scanline0r, select0r, sopsat, spillsupress,
+  three_point_balance, timeout, tutorial, vertigo, vignette, water,
+  alphaatop, alphain, alphaout, alphaover, alphaxor,
+  cairoaffineblend, cairoblend, xfade0r.
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
-- Updated to latest stable release
+- Minor fixes to the build system
 
 * Wed Apr 13 2016 Gleb Goncharov <yum@gongled.ru> - 1.5-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon Mar 17 2014 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon Mar 14 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 1.3-0
 - Initial build

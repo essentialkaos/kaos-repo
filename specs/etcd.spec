@@ -1,23 +1,27 @@
 ################################################################################
 
+# rpmbuilder:gopack    github.com/etcd-io/etcd
+# rpmbuilder:tag       v3.3.18
+
+################################################################################
+
 %define  debug_package %{nil}
 
 ################################################################################
 
 Summary:         Distributed reliable key-value store for the most critical data of a distributed system
 Name:            etcd
-Version:         3.3.13
+Version:         3.3.18
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         APLv2
 URL:             https://coreos.com/etcd
 
-# Use gopack to build archive: gopack -pv -t v3.3.13 github.com/etcd-io/etcd
 Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.12
+BuildRequires:   golang >= 1.13
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -54,9 +58,21 @@ cp -r src/github.com/etcd-io/%{name}/LICENSE \
 export GOPATH=$(pwd)
 export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
+export GIT_SHA=$(cut -f1 -d' ' src/REVISIONS | head -c7)
+
+mkdir src/github.com/coreos
+ln -sf $(pwd)/src/github.com/etcd-io/%{name} \
+       src/github.com/coreos/%{name}
 
 pushd src/github.com/etcd-io/%{name}
-  ./build
+  mkdir bin
+  go build -installsuffix cgo \
+           -ldflags "-X github.com/etcd-io/%{name}/version.GitSHA=$GIT_SHA" \
+           -o "bin/etcd" github.com/etcd-io/%{name}
+
+  go build -installsuffix cgo \
+           -ldflags "-X github.com/etcd-io/%{name}/version.GitSHA=$GIT_SHA" \
+           -o "bin/etcdctl" github.com/etcd-io/%{name}/etcdctl
 popd
 
 %install
@@ -83,6 +99,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.18-0
+- Updated to the latest stable release
+
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.13-0
 - Updated to the latest stable release
 
