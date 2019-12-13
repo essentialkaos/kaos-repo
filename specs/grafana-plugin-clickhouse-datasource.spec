@@ -1,3 +1,9 @@
+################################################################################
+
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -38,13 +44,15 @@
 
 Summary:              Clickhouse datasource for Grafana
 Name:                 grafana-plugin-clickhouse-datasource
-Version:              1.9.2
+Version:              1.9.4
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/System
 URL:                  https://github.com/Vertamedia/clickhouse-grafana
 
 Source0:              https://github.com/Vertamedia/%{short_name}/archive/%{version}.tar.gz
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -63,6 +71,8 @@ database.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{short_name}-%{version}
 
 # Enable alerting support
@@ -94,8 +104,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
+- Ad Hoc Filters small adjustments for numeric values
+- UI optimizations within Metric builder
+
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
+- Ad Hoc Filters improvments
+
 * Sun Oct 20 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.9.2-0
-- Updated to the latest release
+- Compatibility fix to support grafana 6.4.x
+- Ad Hoc Filters fix
+- $conditionalTest ALL value option fix
 
 * Mon Sep 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.9.0-0
 - Updated to the latest release

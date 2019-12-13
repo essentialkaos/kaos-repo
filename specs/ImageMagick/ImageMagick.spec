@@ -1,5 +1,13 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%{!?_without_check: %define _with_check 1}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -26,9 +34,7 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define patch_level       53
-
-%{!?_without_check: %define _with_check 1}
+%define patch_level       78
 
 ################################################################################
 
@@ -42,6 +48,8 @@ URL:                https://www.imagemagick.org
 
 Source0:            https://www.imagemagick.org/download/%{name}-%{version}-%{patch_level}.tar.bz2
 Source1:            policy.xml
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -192,6 +200,8 @@ however.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}-%{patch_level}
 
 # for %%doc
@@ -382,6 +392,9 @@ export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-78
+- Updated to the latest release
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-53
 - Updated to the latest release
 

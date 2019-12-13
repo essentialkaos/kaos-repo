@@ -1,18 +1,24 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:            A general purpose library and file format for storing scientific data
 Name:               hdf
-Version:            4.2.13
+Version:            4.2.14
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
-URL:                http://hdfgroup.org/products/hdf4/index.html
+URL:                https://hdfgroup.org/products/hdf4/index.html
 
-Source:             http://www.hdfgroup.org/ftp/HDF/releases/HDF%{version}/src/%{name}-%{version}.tar.bz2
+Source0:            https://support.hdfgroup.org/ftp/HDF/releases/HDF%{version}/src/%{name}-%{version}.tar.bz2
+
+Source100:          checksum.sha512
 
 Patch0:             %{name}-4.2.5-maxavailfiles.patch
 
@@ -51,6 +57,8 @@ HDF development headers and libraries.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %patch0 -p1 -b .maxavailfiles
@@ -125,6 +133,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.14-0
+- Updated to latest stable release
+
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 4.2.13-0
 - Updated to latest stable release
 

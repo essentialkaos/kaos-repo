@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define debug_package  %{nil}
 
 ################################################################################
@@ -44,7 +48,7 @@
 
 Summary:              Metrics dashboard and graph editor
 Name:                 grafana
-Version:              6.3.6
+Version:              6.5.2
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Applications/System
@@ -52,13 +56,14 @@ URL:                  https://grafana.org
 
 Source0:              https://github.com/%{name}/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:              %{name}-assets-%{version}.tar.bz2
-
 Source10:             %{name}-tmpfiles.conf
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source100:            checksum.sha512
 
 Patch0:               000-%{name}-fhs-fix.patch
 Patch1:               001-%{name}-clickhouse-alerting.patch
+
+BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %if 0%{?rhel} >= 7
 Requires(post):       systemd
@@ -77,7 +82,7 @@ Requires(postun):     initscripts
 BuildRequires:        systemd
 %endif
 
-BuildRequires:        gcc golang >= 1.11
+BuildRequires:        gcc golang >= 1.13
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -90,6 +95,8 @@ Graphite, InfluxDB & OpenTSDB.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 %setup -q -T -D -a 1
 
@@ -223,6 +230,9 @@ fi
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 6.5.2-0
+- Updated to the latest release
+
 * Mon Sep 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.3.6-0
 - Updated to the latest release
 
