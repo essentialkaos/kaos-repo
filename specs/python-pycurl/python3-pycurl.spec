@@ -20,21 +20,23 @@
 
 %define package_name  pycurl
 
+%define pypi_path     ac/b3/0f3979633b7890bab6098d84c84467030b807a1e2b31f5d30103af5a71ca
+
 # Used cURL version fo build
 # DO NOT FORGOT TO UPDATE IF NEWER VERSION IS USED!
-%define curl_version  7.65.3
+%define curl_version  7.67.0
 
 ################################################################################
 
 Summary:        A Python 3 interface to libcurl
 Name:           %{python_base}-%{package_name}
-Version:        7.43.0
-Release:        1%{?dist}
+Version:        7.43.0.3
+Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://pycurl.io
 
-Source0:        https://dl.bintray.com/pycurl/%{package_name}/%{package_name}-%{version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/%{pypi_path}/%{package_name}-%{version}.tar.gz
 
 Source100:      checksum.sha512
 
@@ -88,6 +90,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 7.43.0.3-0
+- Updated to the latest version
+
 * Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.43.0-1
 - Rebuilt with the latest version of curl
 - Added CRC check for all sources
