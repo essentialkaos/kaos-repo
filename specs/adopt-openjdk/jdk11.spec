@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   11.0.4
-%define jdk_minor   11
+%define jdk_major   11.0.5
+%define jdk_minor   10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1151
+%define alt_priority 1152
 
 ################################################################################
 
