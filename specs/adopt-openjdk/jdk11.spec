@@ -41,8 +41,10 @@ Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
 Provides:           jdk = 1:11
+Provides:           jdk-lts = 1:11
 Provides:           java = 1:11
 Provides:           jdk-%{jdk_major} = 1:%{version}-%{release}
+Provides:           jdk-lts-%{jdk_major} = 1:%{version}-%{release}
 Provides:           java-%{jdk_major} = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
@@ -74,6 +76,8 @@ rm -rf demo release
 
 mkdir -p %{buildroot}%{install_dir}
 cp -a * %{buildroot}%{install_dir}/
+
+install -pm 644 %{SOURCE1} %{buildroot}%{install_dir}/
 
 %clean
 rm -rf %{buildroot}
@@ -107,6 +111,9 @@ fi
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.5.10-0
+- Updated to the latest version
+
 * Thu Aug 08 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.4.11-0
 - Updated to the latest version
 

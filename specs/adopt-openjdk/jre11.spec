@@ -41,8 +41,10 @@ Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
 Provides:           jre = 1:11
+Provides:           jre-lts = 1:11
 Provides:           java = 1:11
 Provides:           jre-%{jdk_major} = 1:%{version}-%{release}
+Provides:           jre-lts-%{jdk_major} = 1:%{version}-%{release}
 Provides:           java-%{jdk_major} = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
@@ -91,7 +93,7 @@ for doc in $(ls -1 %{jdk_man_dir}) ; do
   deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
 done
 
-deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java.sh %{install_dir}/java.sh"
+deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}/java.sh"
 
 %{_sbindir}/update-alternatives --install $deps
 

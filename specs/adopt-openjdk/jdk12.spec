@@ -75,6 +75,8 @@ rm -rf demo release
 mkdir -p %{buildroot}%{install_dir}
 cp -a * %{buildroot}%{install_dir}/
 
+install -pm 644 %{SOURCE1} %{buildroot}%{install_dir}/
+
 %clean
 rm -rf %{buildroot}
 

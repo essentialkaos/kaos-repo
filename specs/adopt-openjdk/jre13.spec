@@ -86,7 +86,7 @@ for bin in $(ls -1 %{jdk_bin_dir}) ; do
   deps="$deps --slave %{_bindir}/$bin $bin %{jdk_bin_dir}/$bin"
 done
 
-deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java.sh %{install_dir}/java.sh"
+deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}/java.sh"
 
 %{_sbindir}/update-alternatives --install $deps
 
