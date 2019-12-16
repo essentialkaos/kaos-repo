@@ -1,5 +1,13 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%define __jar_repack %{nil}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _opt              /opt
@@ -41,17 +49,21 @@
 
 Summary:              A powerful build system for the JVM
 Name:                 gradle
-Version:              4.0.1
+Version:              5.6.4
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Development/Tools
-URL:                  http://gradle.org
+URL:                  https://gradle.org
 
 Source0:              https://services.gradle.org/distributions/%{name}-%{version}-src.zip
 
+Source100:            checksum.sha512
+
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        jdk8
+BuildRequires:        jdk11 git
+
+Requires:             java
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -72,17 +84,27 @@ including Eclipse, IntelliJ, and Jenkins.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
+
+# Fix for shitty Kotlin source files names
+export LC_ALL="en_US.UTF-8"
+export JAVA_OPTS="-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"
+
 ./gradlew core:build -x integTest --continue --stacktrace
 
 %install
 rm -rf %{buildroot}
 
+install -dm 755 %{buildroot}%{_bindir}
+
 ./gradlew install -Pgradle_installPath=%{buildroot}%{_opt}/%{name}/%{version}
 
 ln -sf %{_opt}/%{name}/%{version} %{buildroot}%{_opt}/%{name}/current
+ln -sf %{_opt}/%{name}/%{version}/bin/%{name} %{buildroot}%{_bindir}/%{name}
 
 ################################################################################
 
@@ -93,25 +115,29 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{_opt}/%{name}/*
+%{_bindir}/%{name}
+%{_opt}/%{name}
 
 ################################################################################
 
 %changelog
+* Mon Dec 16 2019 Anton Novojilov <andy@essentialkaos.com> - 5.6.4-0
+- Updated to the latest stable release
+
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 3.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 3.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Mar 29 2016 Gleb Goncharov <yum@gongled.me> - 2.12-0
 - Initial build

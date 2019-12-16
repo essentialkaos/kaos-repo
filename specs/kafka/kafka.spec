@@ -1,5 +1,13 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%define __jar_repack %{nil}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -48,7 +56,7 @@
 
 ################################################################################
 
-%define major_version     2.11
+%define scala_version     2.12
 %define user_name         kafka
 %define group_name        kafka
 %define service_name      kafka
@@ -58,7 +66,7 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             1.1.1
+Version:             2.4.0
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
@@ -71,8 +79,12 @@ Source3:             %{name}.conf
 Source4:             %{name}.logrotate
 Source5:             %{name}.sysconfig
 
+Source100:           checksum.sha512
+
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:           noarch
+
+BuildRequires:       jdk11 maven gradle which
 
 %if 0%{?rhel} <= 6
 Requires:            kaosv
@@ -80,7 +92,7 @@ Requires:            kaosv
 Requires:            systemd
 %endif
 
-BuildRequires:       java-devel gradle which
+Requires:            java
 
 %if 0%{?rhel} <= 6
 Requires(post):      %{__chkconfig} initscripts
@@ -122,14 +134,15 @@ Configuration and startup files for Apache Kafka broker.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
-export PATH=$PATH:/opt/gradle/current/bin
-gradle releaseTarGz
+gradle -PscalaVersion=%{scala_version} clean releaseTarGz
 
 pushd core/build/distributions
-  tar xvfz %{name}_%{major_version}-%{version}.tgz
+  tar xvfz %{name}_%{scala_version}-%{version}.tgz
 popd
 
 %install
@@ -157,7 +170,7 @@ install -pm 755 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}
 install -pm 644 %{SOURCE4} %{buildroot}%{_logrotatedir}/%{name}
 install -pm 644 %{SOURCE5} %{buildroot}%{_sysconfigdir}/%{name}
 
-pushd core/build/distributions/%{name}_%{major_version}-%{version}
+pushd core/build/distributions/%{name}_%{scala_version}-%{version}
   mv bin %{buildroot}%{_opt}/%{name}
   mv libs %{buildroot}%{_opt}/%{name}
   mv config %{buildroot}%{_opt}/%{name}
@@ -229,44 +242,65 @@ fi
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- Updated to the latest release
+
+* Mon Dec 16 2019 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
+- Updated to the latest release
+
 * Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
-- Updated to latest release
+- Updated to the latest release
 
 * Mon Mar 12 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Nov 08 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.0-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.0.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.0.0-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 0.10.2.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.10.2.0-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.10.1.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.1.0-0
-- Updated to latest release
+- Updated to the latest release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0.0-0
-- Updated to latest release
+- Updated to the latest release
 
 * Fri Apr 01 2016 Gleb Goncharov <ggoncharov@fun-box.ru> - 0.9.0.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Thu Jun 25 2015 Anton Novojilov <anovojilov@fun-box.ru> - 0.8.2.1-0
 - Initial build
