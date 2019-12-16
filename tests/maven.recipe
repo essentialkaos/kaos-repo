@@ -1,0 +1,58 @@
+# Bibop recipe for maven
+# See more: https://github.com/essentialkaos/bibop
+
+pkg maven maven-lib
+
+var data_dir /usr/share/java/maven
+var mvn_dir  /usr/share/maven
+var conf_dir /etc/maven
+
+command "-" "Check environment"
+  app mvn
+  app mvnDebug
+  app mvnyjp
+
+command "mvn -v" "Check Maven version info"
+  expect "Apache Maven"
+  exit 0
+
+command "-" "Check configuration files and scripts"
+  exist /etc/m2.conf 
+  perms /etc/m2.conf 644
+  owner /etc/m2.conf root:root
+
+  dir {conf_dir}
+  perms {conf_dir} 755
+  owner {conf_dir} root:root
+
+  exist {conf_dir}/settings.xml
+  perms {conf_dir}/settings.xml 644
+  owner {conf_dir}/settings.xml root:root
+
+  dir {conf_dir}/logging
+  perms {conf_dir}/logging 755
+  owner {conf_dir}/logging root:root
+
+  exist {conf_dir}/logging/simplelogger.properties
+  perms {conf_dir}/logging/simplelogger.properties 644
+  owner {conf_dir}/logging/simplelogger.properties root:root
+
+  exist {mvn_dir}/bin/m2.conf
+  perms {mvn_dir}/bin/m2.conf 644
+  owner {mvn_dir}/bin/m2.conf root:root
+
+  dir {mvn_dir}
+  perms {mvn_dir} 755
+  owner {mvn_dir} root:root
+
+  exist {mvn_dir}/conf/settings.xml
+  perms {mvn_dir}/conf/settings.xml 644
+  owner {mvn_dir}/conf/settings.xml root:root
+
+  dir {mvn_dir}/conf/logging
+  perms {mvn_dir}/conf/logging 755
+  owner {mvn_dir}/conf/logging root:root
+
+  exist {mvn_dir}/conf/logging/simplelogger.properties
+  perms {mvn_dir}/conf/logging/simplelogger.properties 644
+  owner {mvn_dir}/conf/logging/simplelogger.properties root:root
