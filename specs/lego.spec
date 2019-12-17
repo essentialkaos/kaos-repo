@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/go-acme/lego
-# rpmbuilder:tag       v2.6.0
+# rpmbuilder:tag       v3.2.0
 
 ################################################################################
 
@@ -45,7 +45,7 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         2.6.0
+Version:         3.2.0
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -53,7 +53,7 @@ URL:             https://github.com/go-acme/lego
 
 Source0:         %{name}-%{version}.tar.bz2
 
-BuildRequires:   golang >= 1.12
+BuildRequires:   golang >= 1.13
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -91,6 +91,10 @@ install -pm 755 src/github.com/go-acme/%{name}/dist/%{name} \
                 %{buildroot}%{_bindir}/
 
 %clean
+# Fix permissions for files and directories in modules dir
+find pkg -type d -exec chmod 0755 {} \;
+find pkg -type f -exec chmod 0644 {} \;
+
 rm -rf %{buildroot}
 
 ################################################################################
@@ -103,6 +107,26 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.0-0
+- [dnsprovider] Add support for autodns
+- [dnsprovider] httpreq: Allow use environment vars from a _FILE file
+- [lib] Don't deactivate valid authorizations
+- [lib] Expose more SOA fields found by dns01.FindZoneByFqdn
+- [dnsprovider] use token as unique ID
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 3.1.0-0
+- [dnsprovider] Add DNS provider for Liquid Web
+- [dnsprovider] cloudflare: add support for API tokens
+- [cli] feat: ease operation behind proxy servers
+- [dnsprovider] cloudflare: update client
+- [dnsprovider] linodev4: propagation timeout configuration
+- [dnsprovider] ovh: fix int overflow
+- [dnsprovider] bindman: fix client version
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 3.0.2-0
+- migrate to go module
+- update DNS clients
+
 * Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
 - [dnsprovider] Add support for Joker.com DMAPI
 - [dnsprovider] Add support for Bindman DNS provider

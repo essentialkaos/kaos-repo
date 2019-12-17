@@ -49,7 +49,7 @@
 
 Summary:             Apache Kafka C/C++ client library
 Name:                librdkafka
-Version:             1.1.0
+Version:             1.3.0
 Release:             0%{?dist}
 License:             2-clause BSD
 Group:               Development/Libraries
@@ -146,6 +146,18 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Updated to the latest release
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
 - Updated to the latest release
 - Static libraries moved to separate package
