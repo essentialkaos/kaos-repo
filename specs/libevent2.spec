@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define realname      libevent
 
 %if 0%{?rhel} >= 7
@@ -12,13 +16,15 @@
 
 Summary:              Abstract asynchronous event notification library
 Name:                 %{pkgname}
-Version:              2.1.10
+Version:              2.1.11
 Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
-URL:                  http://libevent.org/
+URL:                  https://libevent.org
 
-Source:               https://github.com/%{realname}/%{realname}/archive/release-%{version}-stable.tar.gz
+Source0:              https://github.com/%{realname}/%{realname}/archive/release-%{version}-stable.tar.gz
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -55,6 +61,8 @@ Development files for %{name}
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{realname}-release-%{version}-stable
 
 %build
@@ -100,6 +108,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.1.11-0
+- Protect min_heap_push_ against integer overflow
+- Revert "Protect min_heap_push_ against integer overflow."
+- evdns: add new options -- so-rcvbuf/so-sndbuf
+- Change autoconf version to 2.62 and automake version to 1.11.2
+- cmake: install shared library only if it was requested
+- Missing <winerror.h> on win7/MinGW(MINGW32_NT-6.1)/MSYS
+- cmake: set library names to be the same as with autotools
+- Enable _GNU_SOURCE for Android
+- Enable kqueue for APPLE targets
+- autotools: do not install bufferevent_ssl.h under --disable-openssl
+- cmake: link against shell32.lib/advapi32.lib
+- Add README.md into dist archive
+- cmake: add missing autotools targets (doxygen, uninstall, event_rpcgen.py)
+- m4/libevent_openssl.m4: fix detection of openssl
+- Fix detection of the __has_attribute() for apple clang [ci skip]
+- buffer: fix possible NULL dereference in evbuffer_setcb() on ENOMEM
+- Warn if forked from the event loop during event_reinit()
+- evutil: set the have_checked_interfaces in evutil_check_interfaces()
+- https-client: correction error checking
+
 * Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.1.10-0
 - This release contains mostly fixes (some evbuffer oddity, AF_UNIX handling in
   http server, some UB fixes and others) but also some new functionality

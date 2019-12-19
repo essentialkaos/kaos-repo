@@ -1,5 +1,13 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%{!?_without_check: %define _with_check 1}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -37,29 +45,34 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-%{!?_without_check: %define _with_check 1}
+%define datumgrid_ver     1.8
 
 ################################################################################
 
-Summary:            Cartographic projection software (PROJ.4)
+Summary:            Cartographic projection software (PROJ)
 Name:               proj
-Version:            4.9.3
+Version:            6.2.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Applications/Engineering
 URL:                http://proj.osgeo.org
 
-Source0:            http://download.osgeo.org/%{name}/%{name}-%{version}.tar.gz
-Source1:            http://download.osgeo.org/%{name}/%{name}-datumgrid-1.6.zip
+Source0:            https://download.osgeo.org/%{name}/%{name}-%{version}.tar.gz
+Source1:            https://download.osgeo.org/%{name}/%{name}-datumgrid-%{datumgrid_ver}.tar.gz
+Source2:            FindPROJ4.cmake
+
+Source100:          checksum.sha512
 
 Patch0:             %{name}-removeinclude.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc libtool
+BuildRequires:      make gcc-c++ sqlite-devel libtool
 
 Requires(post):     %{__ldconfig}
 Requires(postun):   %{__ldconfig}
+
+Requires:           %{name}-datumgrid = %{datumgrid_ver}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -73,7 +86,7 @@ projection functions.
 ################################################################################
 
 %package devel
-Summary:            Development files for PROJ.4
+Summary:            Development files for PROJ
 Group:              Development/Libraries
 
 Requires:           %{name} = %{version}-%{release}
@@ -84,7 +97,7 @@ This package contains libproj and the appropriate header files and man pages.
 ################################################################################
 
 %package static
-Summary:        Development files for PROJ.4
+Summary:        Development files for PROJ
 Group:          Development/Libraries
 
 %description static
@@ -92,90 +105,56 @@ This package contains libproj static library.
 
 ################################################################################
 
-%package nad
-Summary:        US and Canadian datum shift grids for PROJ.4
-Group:          Applications/Engineering
+%package datumgrid
+Summary:        Additional datum shift grids for PROJ
+Group:          Development/Tools
+License:        CC-BY and Freely Distributable and Ouverte and Public Domain
 
-Requires:       %{name} = %{version}-%{release}
+Version:        %{datumgrid_ver}
 
-%description nad
-This package contains additional US and Canadian datum shift grids.
+BuildArch:      noarch
 
-################################################################################
-
-%package epsg
-Summary:        EPSG dataset for PROJ.4
-Group:          Applications/Engineering
-
-Requires:       %{name} = %{version}-%{release}
-
-%description epsg
-This package contains additional EPSG dataset.
+%description datumgrid
+This package contains additional datum shift grids.
 
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
-%patch0 -p0
+%patch0 -p1
 
-# Disable internal libtool to avoid hardcoded r-path
-for makefile in `find . -type f -name 'Makefile.in'`; do
-  sed -i 's|@LIBTOOL@|%{_bindir}/libtool|g' $makefile
-done
-
-# Prepare nad
-pushd nad
-  unzip %{SOURCE1}
-popd
-
-# Fix shebag header of scripts
-for script in `find nad/ -type f -perm -a+x`; do
-  sed -i -e '1,1s|:|#!/bin/bash|' $script
-done
+mkdir nad
+tar xvf %{SOURCE1} -C nad | \
+  sed -e "s!^!%{_datadir}/%{name}/!" \
+      -e "/README/s!^!%%doc !" > datumgrid.files
 
 %build
-
-# Fix version info to respect new ABI
-sed -i -e 's|5\:4\:5|6\:4\:6|' src/Makefile*
-
 %configure
 
-%{__make} OPTIMIZE="$RPM_OPT_FLAGS" %{?_smp_mflags}
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 
-%{makeinstall}
+%{make_install}
 
-install -pm 0644 nad/pj_out27.dist nad/pj_out83.dist nad/td_out.dist \
-                 %{buildroot}%{_datadir}/%{name}
+chmod -x %{buildroot}%{_libdir}/libproj.la
+install -pm 644 nad/* %{buildroot}%{_datadir}/%{name}/
 
-install -pm 0755 nad/test27 nad/test83 nad/testvarious \
-                 %{buildroot}%{_datadir}/%{name}
-
-install -pm 0644 nad/epsg \
-                 %{buildroot}%{_datadir}/%{name}
-
-
-# Install projects.h manually
-install -pm 0644 src/projects.h \
-                 %{buildroot}%{_includedir}/
+mkdir -p %{buildroot}%{_datadir}/cmake/Modules/
+install -pm 644 %{SOURCE2} %{buildroot}%{_datadir}/cmake/Modules/FindPROJ4.cmake
+sed -i "s/!PROJ_VERSION!/%{version}/" %{buildroot}%{_datadir}/cmake/Modules/FindPROJ4.cmake
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
-pushd nad
-  # Set test enviroment for proj
-  export PROJ_LIB=%{buildroot}%{_datadir}/%{name}
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH%{buildroot}%{_libdir}
-
-  # Run tests for proj
-  ./test27      %{buildroot}%{_bindir}/%{name} || :
-  ./test83      %{buildroot}%{_bindir}/%{name} || :
-  ./testIGNF    %{buildroot}%{_bindir}/%{name} || :
-  ./testntv2    %{buildroot}%{_bindir}/%{name} || :
-  ./testvarious %{buildroot}%{_bindir}/%{name} || :
-popd
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} \
+  %{__make} PROJ_LIB=%{buildroot}%{_datadir}/%{name} check || ( cat src/test-suite.log; exit 1 )
 %endif
 
 %clean
@@ -192,40 +171,39 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc NEWS AUTHORS COPYING README ChangeLog
+%dir %{_datadir}/%{name}
 %{_bindir}/*
 %{_mandir}/man1/*.1*
-%{_libdir}/*.so.*
+%{_libdir}/libproj.so.15*
+%{_datadir}/%{name}/*
 
 %files devel
 %defattr(-,root,root,-)
 %{_mandir}/man3/*.3*
 %{_includedir}/*.h
-%{_libdir}/*.so
+%{_includedir}/proj/
+%{_includedir}/proj_json_streaming_writer.hpp
+%{_datadir}/proj/projjson.schema.json
+%{_libdir}/libproj.so
+%{_libdir}/pkgconfig/%{name}.pc
+%{_datadir}/cmake/Modules/FindPROJ4.cmake
 %exclude %{_libdir}/*.a
 %exclude %{_libdir}/libproj.la
 
 %files static
 %defattr(-,root,root,-)
-%{_libdir}/*.a
+%{_libdir}/libproj.a
 %{_libdir}/libproj.la
 
-%files nad
+%files datumgrid -f datumgrid.files
 %defattr(-,root,root,-)
-%doc nad/README
-%attr(0755,root,root) %{_datadir}/%{name}/test27
-%attr(0755,root,root) %{_datadir}/%{name}/test83
-%attr(0755,root,root) %{_datadir}/%{name}/testvarious
-%attr(0755,root,root) %{_libdir}/pkgconfig/%{name}.pc
-%exclude %{_datadir}/%{name}/epsg
-%{_datadir}/%{name}
-
-%files epsg
-%defattr(-,root,root,-)
-%doc nad/README
-%attr(0644,root,root) %{_datadir}/%{name}/epsg
+%dir %{_datadir}/%{name}
 
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 6.2.1-0
+- Updated to the latest stable release
+
 * Sat Mar 11 2017 Anton Novojilov <andy@essentialkaos.com> - 4.9.3-0
 - Initial build for kaos repository
