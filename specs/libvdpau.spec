@@ -1,22 +1,29 @@
 ################################################################################
 
-%define crc      14b620084c027d546fa0b3f083b800c6
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%global _vpath_srcdir   .
+%global _vpath_builddir %{_target_platform}
 
 ################################################################################
 
 Summary:         Wrapper library for the Video Decode and Presentation API
 Name:            libvdpau
-Version:         1.2
+Version:         1.3
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
-URL:             http://freedesktop.org/wiki/Software/VDPAU
+URL:             https://freedesktop.org/wiki/Software/VDPAU
 
-Source0:         https://gitlab.freedesktop.org/vdpau/%{name}/uploads/%{crc}/%{name}-%{version}.tar.bz2
+Source0:         https://gitlab.freedesktop.org/vdpau/%{name}/-/archive/%{version}/%{name}-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   autoconf automake doxygen graphviz libtool libX11-devel
+BuildRequires:   doxygen graphviz libtool libX11-devel meson
 BuildRequires:   libXext-devel xorg-x11-proto-devel gcc gcc-c++
 
 %if 0%{?fedora} >= 18 || 0%{?rhel} >= 7
@@ -36,19 +43,6 @@ modern GPUs.
 
 ################################################################################
 
-%package docs
-
-Summary:         Documentation for libvdpau
-Group:           Documentation
-BuildArch:       noarch
-Provides:        libvdpau-docs = %{version}-%{release}
-Obsoletes:       libvdpau-docs < 0.6-2
-
-%description docs
-The libvdpau-docs package contains documentation for libvdpau.
-
-################################################################################
-
 %package devel
 Summary:         Development files for libvdpau
 Group:           Development/Libraries
@@ -62,35 +56,27 @@ applications that use libvdpau.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
-autoreconf -vif
-%configure --disable-static
-
-%{__make} %{?_smp_mflags}
+%{meson} -D documentation=false
+%{meson_build}
 
 %install
 rm -rf %{buildroot}
 
-%{make_install} INSTALL="install -p"
+%{meson_install}
 
-find %{buildroot} -name '*.la' -delete
-
-# Let %%doc macro create the correct location in the rpm file, creates a
-# versioned docdir in <= f19 and an unversioned docdir in >= f20.
-rm -rf %{buildroot}%{_docdir}
-
-mv doc/html-out html
+%clean
+rm -rf %{buildroot}
 
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -102,10 +88,6 @@ rm -rf %{buildroot}
 %dir %{_libdir}/vdpau
 %{_libdir}/vdpau/%{name}_trace.so*
 
-%files docs
-%defattr(-,root,root,-)
-%doc html
-
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/vdpau/
@@ -115,6 +97,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3-0
+- Updated to the latest stable release
+
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2-0
 - Updated to the latest stable release
 

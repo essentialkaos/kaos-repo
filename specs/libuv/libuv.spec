@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -41,14 +45,15 @@
 
 Summary:              Cross-platform asychronous I/O
 Name:                 libuv
-Version:              1.30.1
+Version:              1.34.0
 Release:              0%{?dist}
 License:              MIT, BSD and ISC
 Group:                Development/Tools
-URL:                  http://libuv.org
+URL:                  https://libuv.org
 
 Source0:              https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz
 Source1:              %{name}.pc.in
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -85,6 +90,8 @@ Development libraries for libuv.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -114,8 +121,6 @@ sed -e "s#@prefix@#%{_prefix}#g" \
 %clean
 rm -rf %{buildroot}
 
-################################################################################
-
 %post
 %{__ldconfig}
 
@@ -142,6 +147,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.34.0-0
+- Updated to the latest stable release
+
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.30.1-0
 - Updated to the latest stable release
 

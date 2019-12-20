@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -40,13 +44,16 @@
 
 Summary:          View one or multiple files like tail but with multiple windows
 Name:             multitail
-Version:          6.4.2
+Version:          6.5.0
 Release:          0%{?dist}
 License:          GPL
 Group:            Applications/Text
-URL:              http://www.vanheusden.com/%{name}/
+URL:              https://www.vanheusden.com/%{name}/
 
-Source:           http://www.vanheusden.com/%{name}/%{name}-%{version}.tgz
+Source0:          https://www.vanheusden.com/%{name}/%{name}-%{version}.tgz
+
+Source100:        checksum.sha512
+
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:    make gcc ncurses-devel
@@ -67,6 +74,8 @@ given regular expressions and deleting and adding windows.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -80,7 +89,9 @@ install -dm 755 %{buildroot}%{_mandir}/man1/
 install -dm 755 %{buildroot}%{_sysconfdir}
 install -dm 755 %{buildroot}%{_loc_datarootdir}/%{name}
 
-%{make_install}
+%{make_install} PREFIX="%{_prefix}"
+
+mv %{buildroot}%{_prefix}%{_sysconfdir}/* %{buildroot}%{_sysconfdir}/
 
 rm -f %{buildroot}%{_sysconfdir}/%{name}.conf.new
 rm -rf %{buildroot}%{_sysconfdir}/%{name}/
@@ -109,14 +120,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 6.5.0-0
+- Updated to the lastes stable release
+
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.2-0
-- Updated to lastes stable release
+- Updated to the lastes stable release
 
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.1-0
-- Updated to lastes stable release
+- Updated to the lastes stable release
 
 * Tue Apr 01 2014 Anton Novojilov <andy@essentialkaos.com> - 6.2.1-0
-- Updated to lastes stable release
+- Updated to the lastes stable release
 
 * Tue Jan 14 2014 Anton Novojilov <andy@essentialkaos.com> - 6.0-0
 - Updated to release 6.0

@@ -1,8 +1,6 @@
 ################################################################################
 
-%ifarch i386
-  %define optflags -O2 -g -march=i686
-%endif
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
@@ -51,16 +49,18 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.16
+Version:                  1.5.20
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
-URL:                      https://memcached.org/
+URL:                      https://memcached.org
 
 Source0:                  https://github.com/%{name}/%{name}/archive/%{version}.tar.gz
 Source1:                  %{name}.init
 Source2:                  %{name}.sysconf
 Source3:                  %{name}.service
+
+Source100:                checksum.sha512
 
 BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -119,6 +119,7 @@ Version of memcached show more additional information for debugging.
 ################################################################################
 
 %prep
+%{crc_check}
 
 %setup -q
 ./autogen.sh
@@ -227,6 +228,48 @@ fi
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.20-0
+- Security fix: Don't allow UDP with binprot SASL
+- Remove multiple double-initializations of condition variables and mutexes
+- Fix data race in assoc_start_expand
+- Use a proper data type for settings.sig_hup
+- restart: add error handling when a tag is not found in a metadata file
+- doc: Update rfc2629.dtd, use local copy, fix error, and fix warning
+- doc: Fix out-of-tree build
+- slab rebalance performance improvements
+- fix potential deadlock bug in log watcher
+- Support running tests in out-of-tree build
+- configure: Fix cross-compilation errors
+- DTrace build fix
+
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.19-0
+- Keep "last access" time up to date in default segmented LRU mode
+- slow down t/watcher.t test more
+- Add include stdio.h to restart.c
+- Reload CA cert in refresh routine
+- TLS: fix leak of SSL context on accept failure
+- drop privileges for FreeBSD.
+- Make memcached setgroups failure non-fatal
+- restart: use /tmp for restart tests
+- restart: add missing msync at close time
+- The meta commands feature
+
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.18-0
+- new feature: warm cache restart
+
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.17-0
+- fix strncpy call in stats conns to avoid ASAN violation
+- extstore: fix indentation
+- add error handling when calling dup function
+- add unlock when item_cachedump malloc failed
+- extstore: emulate pread(v) for macOS
+- fix off-by-one in logger to allow CAS commands to be logged.
+- use strdup for explicitly configured slab sizes
+- move mem_requested from slabs.c to items.c (internal cleanup)
+- add server address to the "stats conns" output
+- log client connection id with fetchers and mutations
+- Add a handler for seccomp crashes
+
 * Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.16-0
 - When nsuffix is 0 space for flags hasn't been allocated so don't memcpy them
 

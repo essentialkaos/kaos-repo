@@ -1,14 +1,19 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:         MPEG audio decoding library
 Name:            libmad
 Version:         0.15.1b
 Release:         0%{?dist}
 License:         GPL
 Group:           System Environment/Libraries
-URL:             http://www.underbit.com/products/mad/
+URL:             https://www.underbit.com/products/mad/
 
 Source0:         ftp://ftp.mars.org/pub/mpeg/%{name}-%{version}.tar.gz
+Source100:       checksum.sha512
 
 Patch0:          %{name}-gcc44-compatibily.patch
 
@@ -48,6 +53,8 @@ to develop programs that will use libmad for mpeg audio decoding.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 %patch0 -p1
 
@@ -56,11 +63,13 @@ to develop programs that will use libmad for mpeg audio decoding.
     --disable-dependency-tracking \
     --enable-accuracy \
     --disable-debugging
+
 %{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
-%{makeinstall}
+
+%{make_install}
 
 %post
 /sbin/ldconfig
