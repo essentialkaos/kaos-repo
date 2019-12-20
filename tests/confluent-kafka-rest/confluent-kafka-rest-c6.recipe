@@ -1,0 +1,42 @@
+# Bibop recipe for Kafka REST Proxy
+# See more: https://github.com/essentialkaos/bibop
+
+pkg confluent-kafka-rest
+
+require-root yes
+unsafe-actions yes
+
+var service_name     kafka-rest
+var service_config   /etc/kafka-rest/kafka-rest.conf
+var logrotate_config /etc/logrotate.d/kafka-rest
+
+command "-" "Check environment"
+  app kafka-rest-run-class
+  app kafka-rest-start
+  app kafka-rest-stop
+  app kafka-rest-stop-service
+
+  service-present kafka-rest
+
+  exist {service_config}
+  perms {service_config} 640
+  owner {service_config} kafka-rest:kafka-rest
+
+  exist {logrotate_config}
+  perms {logrotate_config} 644
+
+  file-contains {logrotate_config} "su kafka-rest kafka-rest"
+
+command "service {service_name} start" "Start Kafka REST service"
+  exit 0
+  service-works {service_name}
+  wait 3
+  connect tcp :8082
+
+command "service {service_name} status" "Check status of Kafka REST service"
+  exit 0
+
+command "service {service_name} stop" "Stop Kafka REST service"
+  wait 60
+  !service-works {service_name}
+  !connect tcp :8082
