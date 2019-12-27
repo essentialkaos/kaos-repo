@@ -123,8 +123,9 @@ popd
 
 rm -rf %{buildroot}%{sonar_prefix}/bin/windows-x86-64
 rm -rf %{buildroot}%{sonar_prefix}/bin/macosx-universal-64
+rm -rf %{buildroot}%{sonar_prefix}/logs
 
-ln -sf %{_logdir}/%{name} %{buildroot}%{sonar_prefix}/logs
+ln -sf %{_logdir}/%{name}/ %{buildroot}%{sonar_prefix}/logs
 
 install -pm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 install -pm 0644 %{SOURCE2} %{buildroot}%{sonar_prefix}/conf/%{short_name}.properties
