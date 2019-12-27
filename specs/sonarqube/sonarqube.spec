@@ -78,9 +78,9 @@ Source3:              %{name}.sysctl
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        java-11-openjdk java-11-openjdk-devel
+BuildRequires:        jdk11 gradle
 
-Requires:             java-11-openjdk java-11-openjdk-headless
+Requires:             java = 11
 
 Requires(post):       systemd
 Requires(preun):      systemd
@@ -103,7 +103,7 @@ can fix the leak and therefore improve code quality systematically.
 %setup -qn %{name}-%{version}
 
 %build
-./gradlew build -DbuildNumber=1 -x test
+gradle build -DbuildNumber=1 -x test
 
 %install
 rm -rf %{buildroot}
