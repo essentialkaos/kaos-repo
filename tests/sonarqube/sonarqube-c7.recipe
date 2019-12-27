@@ -12,33 +12,28 @@ var service_port  9000
 var delay 15
 
 command "-" "Check environment"
-  app sonarqube
   service-present {service_name}
   user-exist {service_user}
   group-exist {service_group}
 
 command "-" "Check working directory"
   dir "/var/lib/sonarqube"
-  mode "/var/lib/sonarqube" 0755
-  owner "/var/lib/sonarqube" {service_user}
-  group "/var/lib/sonarqube" {service_group}
+  mode "/var/lib/sonarqube" 755
+  owner "/var/lib/sonarqube" root:root
 
 command "-" "Check data directory"
   dir "/var/lib/sonarqube/data"
-  mode "/var/lib/sonarqube/data" 0755
-  owner "/var/lib/sonarqube/data" {service_user}
-  group "/var/lib/sonarqube/data" {service_group}
+  mode "/var/lib/sonarqube/data" 750
+  owner "/var/lib/sonarqube/data" {service_user}:{service_group}
 
 command "-" "Check directory for temporary files"
   dir "/var/lib/sonarqube/temp"
-  mode "/var/lib/sonarqube/temp" 0755
-  owner "/var/lib/sonarqube/temp" {service_user}
-  group "/var/lib/sonarqube/temp" {service_group}
+  mode "/var/lib/sonarqube/temp" 750
+  owner "/var/lib/sonarqube/temp" {service_user}:{service_group}
 
 command "-" "Check logging directory"
-  mode "/var/log/sonarqube" 0755
-  owner "/var/log/sonarqube" {service_user}
-  group "/var/log/sonarqube" {service_group}
+  mode "/var/log/sonarqube" 755
+  owner "/var/log/sonarqube" {service_user}:{service_group}
 
 command "systemctl start {service_name}" "Start SonarQube service"
   wait {delay}
