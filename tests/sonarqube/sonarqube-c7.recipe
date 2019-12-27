@@ -9,7 +9,7 @@ var service_user  sonarqube
 var service_group sonarqube
 var service_name  sonarqube
 var service_port  9000
-var delay 15
+var delay 30
 
 command "-" "Check environment"
   service-present {service_name}
