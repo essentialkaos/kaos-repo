@@ -1,5 +1,13 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%define __jar_repack %{nil}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -48,7 +56,7 @@
 
 Summary:            Utilities and a small framework for building REST services
 Name:               confluent-rest-utils
-Version:            5.2.2
+Version:            5.4.0
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Tools
@@ -56,11 +64,13 @@ URL:                https://github.com/confluentinc/rest-utils
 
 Source0:            https://github.com/confluentinc/%{pkg_name}/archive/v%{version}.tar.gz
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           java >= 1.7.0
+Requires:           java >= 1.8.0
 
-BuildRequires:      java >= 1.7.0 java-devel >= 1.7.0 maven >= 3.2
+BuildRequires:      jdk8 maven git
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -73,14 +83,14 @@ Java REST APIs using Jersey, Jackson, Jetty, and Hibernate Validator.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{pkg_name}-%{version}
 
 %build
 
 %install
 rm -rf %{buildroot}
-
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 mvn -Dmaven.test.skip=true install
 
@@ -112,5 +122,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Jul 09 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 5.2.2-0
-- Initial build.
+* Wed Jan 15 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 5.4.0-0
+- Initial build

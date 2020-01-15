@@ -1,5 +1,13 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%define __jar_repack %{nil}
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -38,8 +46,6 @@
 %define __ldconfig        %{_sbin}/ldconfig
 %define __systemctl       %{_bindir}/systemctl
 
-%{!?_without_check: %define _with_check 1}
-
 ################################################################################
 
 %define pkg_name          kafka-rest
@@ -52,7 +58,7 @@
 
 Summary:            Confluent REST Proxy for Kafka
 Name:               confluent-kafka-rest
-Version:            5.2.2
+Version:            5.4.0
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Tools
@@ -64,9 +70,11 @@ Source2:            %{pkg_name}.init
 Source3:            %{pkg_name}.sysconfig
 Source4:            %{pkg_name}.logrotate
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           java >= 1.7.0
+Requires:           java >= 1.8.0
 Requires:           confluent-common = %{version}-%{release}
 Requires:           confluent-rest-utils = %{version}-%{release}
 Requires:           logrotate
@@ -76,7 +84,7 @@ Requires:           systemd
 Requires:           kaosv >= 2.15 initscripts
 %endif
 
-BuildRequires:      java >= 1.7.0 java-devel >= 1.7.0 maven >= 3.2
+BuildRequires:      jdk8 maven git
 BuildRequires:      confluent-common = %{version}-%{release}
 BuildRequires:      confluent-rest-utils = %{version}-%{release}
 
@@ -93,14 +101,14 @@ clients.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{pkg_name}-%{version}
 
 %build
 
 %install
 rm -rf %{buildroot}
-
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 
 mvn -Dmaven.test.skip=true install
 
@@ -136,11 +144,6 @@ install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{pkg_name}
 
 install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{pkg_name}
 install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/%{pkg_name}
-
-%check
-%if %{?_with_check:1}%{?_without_check:0}
-mvn test
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -206,5 +209,5 @@ fi
 ################################################################################
 
 %changelog
-* Tue Jul 09 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 5.2.2-0
-- Initial build.
+* Wed Jan 15 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 5.4.0-0
+- Initial build
