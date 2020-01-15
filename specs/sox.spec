@@ -49,7 +49,7 @@ which will use the SoX sound file format converter.
 %setup -q
 
 %build
-CFLAGS="$RPM_OPT_FLAGS -D_FILE_OFFSET_BITS=64"
+CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64"
 %configure --without-lpc10 \
            --with-gsm \
            --with-alsa=dyn \

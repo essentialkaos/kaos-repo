@@ -75,7 +75,7 @@ library by Dom Lachowicz.
 %setup -qn pyenchant-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" python setup.py build
+CFLAGS="%{optflags}" python setup.py build
 
 %install
 rm -rf %{buildroot}

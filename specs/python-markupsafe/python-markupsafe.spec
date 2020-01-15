@@ -40,7 +40,7 @@ A library for safe markup escaping.
 %setup -qn MarkupSafe-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" python setup.py build
+CFLAGS="%{optflags}" python setup.py build
 
 %install
 rm -rf %{buildroot}

@@ -53,7 +53,7 @@ cp backports/ssl_match_hostname/README.txt .
 cp backports/ssl_match_hostname/LICENSE.txt .
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" python setup.py build
+CFLAGS="%{optflags}" python setup.py build
 
 %install
 rm -rf %{buildroot}

@@ -168,7 +168,7 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 %endif
       -DBUILD_SHARED_LIBS:BOOL=ON .
 
-%{__make} %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+%{__make} %{?_smp_mflags} RPM_OPT_FLAGS="%{optflags}"
 %{__make} %{?_smp_mflags} doc-c
 
 %install

@@ -68,8 +68,8 @@ chmod a-x *hdf/*/*.c hdf/*/*.h
 %build
 rm config/*linux-gnu
 
-export CFLAGS="$RPM_OPT_FLAGS -fPIC"
-export FFLAGS="$RPM_OPT_FLAGS -fPIC -ffixed-line-length-none"
+export CFLAGS="%{optflags} -fPIC"
+export FFLAGS="%{optflags} -fPIC -ffixed-line-length-none"
 
 %configure --disable-production \
            --disable-netcdf \

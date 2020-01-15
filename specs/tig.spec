@@ -68,7 +68,7 @@ Using it as a pager, it will display input from stdin and colorize it.
 %build
 %{configure}
 
-CFLAGS="$RPM_OPT_FLAGS -DVERSION=%{name}-%{version}-%{release}"
+CFLAGS="%{optflags} -DVERSION=%{name}-%{version}-%{release}"
 
 %{__make} prefix=%{_prefix} %{?_smp_mflags} all
 %{__make} prefix=%{_prefix} doc-man doc-html
@@ -76,7 +76,7 @@ CFLAGS="$RPM_OPT_FLAGS -DVERSION=%{name}-%{version}-%{release}"
 %install
 rm -rf %{buildroot}
 
-CFLAGS="$RPM_OPT_FLAGS -DVERSION=%{name}-%{version}-%{release}"
+CFLAGS="%{optflags} -DVERSION=%{name}-%{version}-%{release}"
 
 %{make_install} install-doc-man prefix=%{_prefix} \
                                 bindir=%{_bindir} \

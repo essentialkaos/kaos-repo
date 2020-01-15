@@ -177,8 +177,8 @@ popd
 # This is needed to rebuild the configure script to support Python 3.x
 # autoreconf -iv
 export LDFLAGS="-Wl,-z,relro,-z,now -pie -specs=/usr/lib/rpm/redhat/redhat-hardened-ld"
-export CFLAGS="$RPM_OPT_FLAGS -fPIE -pie"
-export CXXFLAGS="$RPM_OPT_FLAGS -fPIE -pie"
+export CFLAGS="%{optflags} -fPIE -pie"
+export CXXFLAGS="%{optflags} -fPIE -pie"
 
 %if 0%{with_python}
 pushd %{name}-%{version}_python2

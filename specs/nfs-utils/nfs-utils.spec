@@ -154,7 +154,7 @@ export PIE
 
 ./autogen.sh
 
-CFLAGS="`echo $RPM_OPT_FLAGS $ARCH_OPT_FLAGS $PIE -D_FILE_OFFSET_BITS=64`"
+CFLAGS="`echo %{optflags} $ARCH_OPT_FLAGS $PIE -D_FILE_OFFSET_BITS=64`"
 
 %configure \
     CFLAGS="$CFLAGS" \

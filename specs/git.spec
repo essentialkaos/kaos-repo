@@ -185,14 +185,14 @@ Perl interface to Git
 %setup -qn %{name}-%{version}
 
 %build
-%{__make} %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" \
+%{__make} %{?_smp_mflags} CFLAGS="%{optflags}" \
      %{path_settings} \
      all
 
 %install
 rm -rf %{buildroot}
 
-%{__make} %{?_smp_mflags} CFLAGS="$RPM_OPT_FLAGS" DESTDIR=%{buildroot} \
+%{__make} %{?_smp_mflags} CFLAGS="%{optflags}" DESTDIR=%{buildroot} \
      %{path_settings} \
      INSTALLDIRS=vendor install %{!?_without_docs: install-doc}
 

@@ -228,7 +228,7 @@ cp -p Magick++/demo/*.cpp Magick++/demo/*.miff Magick++/examples
            --with-openjp2
 
 # perfecto:absolve 1
-%{__make}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -295,7 +295,7 @@ rm -rf %{buildroot}
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
-export LD_LIBRARY_PATH=%{buildroot}/%{_libdir}
+export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %{__make} %{?_smp_mflags} check
 %endif
 

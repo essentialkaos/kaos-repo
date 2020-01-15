@@ -113,7 +113,7 @@ iconv -f iso-8859-2 -t utf-8 < ChangeLog > ChangeLog.tmp
 mv ChangeLog.tmp ChangeLog
 
 %build
-export CFLAGS="$RPM_OPT_FLAGS"
+export CFLAGS="%{optflags}"
 export LDFLAGS="$LDFLAGS -Wl,-z,relro -Wl,-z,now"
 
 ./configure --libdir=%{_libdir} \

@@ -85,8 +85,8 @@ Pure python bindings for augeas http://augeas.net
 %setup -qn %{pkg_name}-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build_ext -i
-CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
+CFLAGS="%{optflags}" %{__python3} setup.py build_ext -i
+CFLAGS="%{optflags}" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}

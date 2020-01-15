@@ -50,7 +50,7 @@ This is a Python (de)serializer for MessagePack.
 %setup -qn %{pkgname}-python-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
+CFLAGS="%{optflags}" %{__python3} setup.py build
 
 %install
 rm -rf %{buildroot}

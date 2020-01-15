@@ -136,7 +136,7 @@ export PYTHON_INCLUDES=-I%{_pyinclude}
 %{__autoconf}
 %endif
 
-export CFLAGS="$RPM_OPT_FLAGS -fpic"
+export CFLAGS="%{optflags} -fpic"
 
 %configure \
         --prefix=%{_prefix} \
