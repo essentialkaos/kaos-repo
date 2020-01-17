@@ -3,12 +3,12 @@
 Summary:           Network traffic statics utility
 Name:              nicstat
 Version:           1.95
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           Artistic 2.0
 Group:             Applications/System
-URL:               http://sourceforge.net/projects/nicstat
+URL:               https://sourceforge.net/projects/nicstat
 
-Source:            http://downloads.sourceforge.net/%{name}/%{name}-src-%{version}.tar.gz
+Source:            https://downloads.sourceforge.net/%{name}/%{name}-src-%{version}.tar.gz
 
 # https://github.com/scotte/nicstat
 Patch0:            %{name}-scotte-fixes.patch
@@ -63,6 +63,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 1.95-2
+- Updated patch with fixes
+
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.95-1
 - Added patch with bugfixes
 

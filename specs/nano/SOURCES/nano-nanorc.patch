@@ -1,7 +1,7 @@
-diff -urN nano-4.0-orig/doc/sample.nanorc.in nano-4.0/doc/sample.nanorc.in
---- nano-4.0-orig/doc/sample.nanorc.in	2019-03-09 12:21:52.000000000 +0300
-+++ nano-4.0/doc/sample.nanorc.in	2019-08-17 14:38:24.000000000 +0300
-@@ -71,7 +71,7 @@
+diff -urN nano-4.5-orig/doc/sample.nanorc.in nano-4.5/doc/sample.nanorc.in
+--- nano-4.5-orig/doc/sample.nanorc.in	2019-10-04 12:38:05.000000000 +0300
++++ nano-4.5/doc/sample.nanorc.in	2020-01-17 14:59:09.000000000 +0300
+@@ -66,7 +66,7 @@
  # set jumpyscrolling
  
  ## Display line numbers to the left of the text.
@@ -10,7 +10,16 @@ diff -urN nano-4.0-orig/doc/sample.nanorc.in nano-4.0/doc/sample.nanorc.in
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -151,17 +151,17 @@
+@@ -76,7 +76,7 @@
+ ## The opening and closing brackets that can be found by bracket
+ ## searches.  They cannot contain blank characters.  The former set must
+ ## come before the latter set, and both must be in the same order.
+-# set matchbrackets "(<[{)>]}"
++set matchbrackets "(<[{)>]}"
+ 
+ ## Enable mouse support, if available for your system.  When enabled,
+ ## mouse clicks can be used to place the cursor, set the mark (with a
+@@ -150,17 +150,17 @@
  # set smarthome
  
  ## Enable soft line wrapping (AKA full-line display).
@@ -31,7 +40,7 @@ diff -urN nano-4.0-orig/doc/sample.nanorc.in nano-4.0/doc/sample.nanorc.in
  
  ## Convert typed tabs to spaces.
  # set tabstospaces
-@@ -216,6 +216,11 @@
+@@ -215,6 +215,11 @@
  # set keycolor brightmagenta
  # set functioncolor magenta
  
@@ -43,12 +52,11 @@ diff -urN nano-4.0-orig/doc/sample.nanorc.in nano-4.0/doc/sample.nanorc.in
  
  ## Setup of syntax coloring.
  ##
-@@ -259,7 +264,7 @@
- ## them easier to remember and faster to type using nano's -Y option.
+@@ -259,6 +264,7 @@
  
  ## To include all existing syntax definitions, you can do:
--# include "@PKGDATADIR@/*.nanorc"
+ # include "@PKGDATADIR@/*.nanorc"
 +include "/usr/share/nano/*.nanorc"
  
  
- ## Key bindings.
+ ## If <Tab> should always produce four spaces when editing a Python file,

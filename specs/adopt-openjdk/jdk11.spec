@@ -8,7 +8,7 @@
 
 ################################################################################
 
-%define jdk_major   11.0.5
+%define jdk_major   11.0.6
 %define jdk_minor   10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
@@ -111,6 +111,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.6.10-0
+- Updated to the latest version
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.5.10-0
 - Updated to the latest version
 

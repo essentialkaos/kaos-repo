@@ -58,7 +58,7 @@
 
 Summary:          Real-time performance monitoring tool
 Name:             netdata
-Version:          1.16.0
+Version:          1.19.0
 Release:          0%{?dist}
 Group:            Applications/System
 License:          GPLv2+
@@ -72,12 +72,12 @@ Source100:        checksum.sha512
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    make gcc autoconf automake xz PyYAML
+BuildRequires:    make gcc autoconf automake xz python PyYAML
 BuildRequires:    libmnl-devel zlib-devel libuuid-devel openssl-devel
 BuildRequires:    libuv-devel lz4-devel Judy-devel
 
 Requires:         kaosv >= 2.15 nc curl jq pkgconfig lm_sensors PyYAML
-Requires:         libmnl zlib libuv libuuid openssl lz4 Judy
+Requires:         libmnl zlib libuv libuuid openssl lz4 Judy python curl
 
 %if 0%{?rhel} >= 7
 BuildRequires:    systemd
@@ -196,6 +196,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 1.19.0-0
+- Updated to the latest stable release
+
 * Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
 - Updated to the latest stable release
 - Added CRC check for all sources
