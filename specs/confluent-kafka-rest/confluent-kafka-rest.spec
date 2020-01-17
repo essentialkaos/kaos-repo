@@ -85,8 +85,6 @@ Requires:           kaosv >= 2.15 initscripts
 %endif
 
 BuildRequires:      jdk8 maven git
-BuildRequires:      confluent-common = %{version}-%{release}
-BuildRequires:      confluent-rest-utils = %{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
