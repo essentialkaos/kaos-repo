@@ -10,7 +10,7 @@ Version:         1.3.1
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
-URL:             http://www.opus-codec.org
+URL:             https://www.opus-codec.org
 
 Source0:         https://archive.mozilla.org/pub/%{name}/%{name}-%{version}.tar.gz
 Source1:         https://tools.ietf.org/rfc/rfc6716.txt
