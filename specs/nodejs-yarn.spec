@@ -52,7 +52,7 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           nodejs
+Requires:           nodejs >= 12
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           yarnpkg = %{version}-%{release}
