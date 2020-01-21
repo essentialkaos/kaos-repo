@@ -53,9 +53,9 @@ Version:           1.4.4
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
-URL:               http://pgxn.org/dist/pg_repack/
+URL:               https://pgxn.org/dist/pg_repack/
 
-Source0:           http://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source0:           https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

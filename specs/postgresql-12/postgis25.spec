@@ -61,11 +61,11 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
 Name:              %{realname}25_%{pg_maj_ver}
-Version:           2.5.0
+Version:           2.5.3
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
-URL:               http://www.postgis.net
+URL:               https://www.postgis.net
 
 Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
 Source1:           https://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
@@ -295,5 +295,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 2.5.3-0
+- Updated to the latest stable release
+
 * Fri Oct 25 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
 - Initial build

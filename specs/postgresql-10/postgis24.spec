@@ -57,14 +57,14 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
 Name:              %{fullname}_%{pg_maj_ver}
-Version:           2.4.5
+Version:           2.4.8
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
-URL:               http://www.postgis.net
+URL:               https://www.postgis.net
 
-Source0:           http://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
-Source1:           http://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
+Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
+Source1:           https://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
 Source2:           filter-requires-perl-Pg.sh
 
 Patch0:            %{fullname}-gdalfpic.patch
@@ -240,7 +240,7 @@ rm -rf %{buildroot}
 %{pg_dir}/lib/liblwgeom*.so*
 %if %raster
 %{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*rtpostgis*.sql
-%{pg_dir}/lib/address_standardizer-%{maj_ver}.so
+%{pg_dir}/lib/address_standardizer.so
 %{pg_dir}/lib/postgis_topology-%{maj_ver}.so
 %{pg_dir}/lib/rtpostgis-%{maj_ver}.so
 %endif
@@ -271,5 +271,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.8-0
+- Updated to the latest stable release
+
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.5-0
 - Initial build

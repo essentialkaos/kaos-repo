@@ -80,7 +80,7 @@
 %endif
 
 %define majorver        12
-%define minorver        0
+%define minorver        1
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
@@ -187,6 +187,7 @@ BuildRequires:     openldap-devel
 BuildRequires:     llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 %if 0%{?rhel} == 7
+# from centos-release-scl
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
@@ -1239,5 +1240,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 12.1-0
+- Updated to the latest stable release
+
 * Fri Oct 25 2019 Anton Novojilov <andy@essentialkaos.com> - 12.0-0
 - Initial build

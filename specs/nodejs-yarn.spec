@@ -93,6 +93,7 @@ rm -f %{buildroot}%{nodejs_sitelib}/%{npm_name}/bin/*.cmd
 
 ln -sf ../lib/node_modules/yarn/bin/yarn.js %{buildroot}%{_bindir}/%{name}
 ln -sf ../lib/node_modules/yarn/bin/yarn.js %{buildroot}%{_bindir}/yarnpkg
+ln -sf ../lib/node_modules/yarn/bin/yarn.js %{buildroot}%{_bindir}/yarn
 
 %clean
 rm -rf %{buildroot}
@@ -105,6 +106,7 @@ rm -rf %{buildroot}
 %{nodejs_sitelib}/%{npm_name}
 %{_bindir}/%{name}
 %{_bindir}/yarnpkg
+%{_bindir}/yarn
 
 ################################################################################
 

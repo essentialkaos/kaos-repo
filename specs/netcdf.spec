@@ -21,20 +21,21 @@
 
 Summary:            Libraries for the Unidata network Common Data Form
 Name:               netcdf
-Version:            4.6.1
+Version:            4.7.3
 Release:            0%{?dist}
 License:            NetCDF
 Group:              Applications/Engineering
-URL:                http://www.unidata.ucar.edu/downloads/netcdf/
+URL:                https://www.unidata.ucar.edu/downloads/netcdf/
 
-Source0:            ftp://ftp.unidata.ucar.edu/pub/%{name}/%{name}-%{version}.tar.gz
+Source0:            https://www.unidata.ucar.edu/downloads/%{name}/ftp/%{name}-c-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc chrpath doxygen hdf-static hdf5-devel gawk
+BuildRequires:      make gcc chrpath doxygen hdf-static gawk
 BuildRequires:      libcurl-devel m4 zlib-devel openssh-clients
+BuildRequires:      hdf5-devel >= 1.10
 
-Requires:           hdf5
+Requires:           hdf5 >= 1.10
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -77,7 +78,7 @@ This package contains the netCDF C static libs.
 ################################################################################
 
 %prep
-%setup -q
+%setup -qn %{name}-c-%{version}
 
 %build
 export LDFLAGS="-Wl,-z,relro -L%{_libdir}/hdf"
@@ -96,7 +97,6 @@ rm -rf %{buildroot}
 %{make_install} -C build
 
 chrpath --delete %{buildroot}%{_bindir}/nc{copy,dump,gen,gen3}
-chrpath --delete %{buildroot}%{_bindir}/ocprint
 
 rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{_infodir}/dir
@@ -124,7 +124,6 @@ rm -rf %{buildroot}
 %{_bindir}/ncdump
 %{_bindir}/ncgen
 %{_bindir}/ncgen3
-%{_bindir}/ocprint
 %{_libdir}/*.so.*
 %{_mandir}/man1/*
 
@@ -145,11 +144,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 4.7.3-0
+- Updated to the latest stable release
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 4.6.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 4.5.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 4.4.1.1-0
 - Initial build for kaos repository

@@ -1,9 +1,0 @@
-/var/log/prometheus/*.log {
-    weekly
-    rotate 8
-    copytruncate
-    delaycompress
-    compress
-    notifempty
-    missingok
-}

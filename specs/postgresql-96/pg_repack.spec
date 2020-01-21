@@ -49,13 +49,13 @@
 
 Summary:           Reorganize tables in PostgreSQL databases without any locks
 Name:              %{realname}%{pg_maj_ver}
-Version:           1.4.4
+Version:           1.4.5
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
-URL:               http://pgxn.org/dist/pg_repack/
+URL:               https://pgxn.org/dist/pg_repack/
 
-Source0:           http://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source0:           https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -110,6 +110,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 21 2020 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
+- Updated to the latest stable release
+
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
 - Updated to the latest stable release
 
