@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -53,13 +57,15 @@
 
 Summary:          A Python library to address multiple cloud provider APIs
 Name:             %{python_base}-libcloud
-Version:          2.3.0
-Release:          1%{?dist}
+Version:          2.8.0
+Release:          0%{?dist}
 License:          ASL 2.0
 Group:            Development/Languages
-URL:              http://libcloud.apache.org
+URL:              https://libcloud.apache.org
 
-Source0:          http://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name}-%{version}.tar.bz2
+Source0:          https://apache-mirror.rbc.ru/pub/apache/libcloud/%{tarball_name}-%{version}.tar.bz2
+
+Source100:        checksum.sha512
 
 BuildArch:        noarch
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -80,6 +86,8 @@ products that work between any of the services that it supports.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{tarball_name}-%{version}
 
 %build
@@ -103,29 +111,32 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 2.8.0-0
+- Updated to the latest version
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-1
 - Updated for compatibility with Python 3.6
 
 * Wed Mar 14 2018 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 2.2.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Mon Oct 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Apr 08 2016 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Oct 23 2015 Gleb Goncharov <inbox@gongled.ru> - 0.18.0-0
 - Initial build

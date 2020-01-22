@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -18,19 +22,21 @@
 
 ################################################################################
 
-%define         pypi_path 4d/de/32d741db316d8fdb7680822dd37001ef7a448255de9699ab4bfcbdf4172b
+%define         pypi_path b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094
 
 ################################################################################
 
 Summary:        Implements a XML/HTML/XHTML Markup safe string for Python
 Name:           %{python_base}-markupsafe
-Version:        1.0
-Release:        1%{?dist}
+Version:        1.1.1
+Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
-URL:            http://pypi.python.org/pypi/MarkupSafe
+URL:            https://pypi.python.org/pypi/MarkupSafe
 
-Source:         https://pypi.python.org/packages/%{pypi_path}/MarkupSafe-%{version}.tar.gz
+Source0:        https://pypi.python.org/packages/%{pypi_path}/MarkupSafe-%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -48,6 +54,8 @@ A library for safe markup escaping.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn MarkupSafe-%{version}
 
 %build
@@ -72,12 +80,15 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS LICENSE README.rst
+%doc LICENSE.rst README.rst
 %{python3_sitearch}/*
 
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- Updated to the latest version
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 1.0-1
 - Updated for compatibility with Python 3.6
 
