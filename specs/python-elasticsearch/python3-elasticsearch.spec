@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -21,13 +25,15 @@
 
 Summary:        Python client for Elasticsearch 2.x
 Name:           %{python_base}-%{package_name}
-Version:        6.3.1
-Release:        2%{?dist}
+Version:        7.5.1
+Release:        0%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
 URL:            https://github.com/elastic/elasticsearch-py
 
-Source:         https://github.com/elastic/%{source_name}/archive/%{version}.tar.gz
+Source0:        https://github.com/elastic/%{source_name}/archive/%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -49,6 +55,8 @@ to be opinion-free and very extendable.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{source_name}-%{version}
 
 %clean
@@ -70,6 +78,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 7.5.1-0
+- Updated to the latest stable release
+
 * Mon Oct 28 2019 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-2
 - Added python3-urllib3 to dependencies
 
@@ -77,31 +88,31 @@ rm -rf %{buildroot}
 - Updated for compatibility with Python 3.6
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 6.2.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 6.1.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 6.0.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 5.4.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 5.3.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 5.2.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 5.1.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Sep 06 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 2.4.0-0
 - Initial build

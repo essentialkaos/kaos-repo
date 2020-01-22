@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -21,13 +25,15 @@
 
 Summary:        InfluxDB-Python is a client for interacting with InfluxDB
 Name:           %{python_base}-influxdb
-Version:        5.2.0
-Release:        1%{?dist}
+Version:        5.2.3
+Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
 URL:            https://github.com/influxdata/influxdb-python
 
-Source:         https://github.com/influxdata/%{package_altname}/archive/v%{version}.tar.gz
+Source0:        https://github.com/influxdata/%{package_altname}/archive/v%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
@@ -49,6 +55,8 @@ time series database.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{package_altname}-%{version}
 
 %build
@@ -71,6 +79,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 5.2.3-0
+- Updated to the latest stable release
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 5.2.0-1
 - Updated for compatibility with Python 3.6
 

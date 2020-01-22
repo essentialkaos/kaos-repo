@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -35,7 +39,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.9
+Version:         1.2.16
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -43,6 +47,8 @@ URL:             https://github.com/pyenv/pyenv
 
 Source0:         https://github.com/pyenv/%{name}/archive/v%{version}.tar.gz
 Source1:         %{name}.profile
+
+Source100:       checksum.sha512
 
 Patch0:          %{name}-default-root.patch
 Patch1:          %{name}-hit-prefix-arrow.patch
@@ -77,6 +83,8 @@ from the source codes.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
@@ -130,6 +138,54 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.16-0
+- python-build: Add CPython 3.8.1
+- python-build: Add CPython 3.7.6
+- python-build: Add CPython 3.6.10
+- python-build: Add CPython 3.5.9
+- python-build: Add PyPy 7.3.0
+
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.15-0
+- python-build: Add CPython 3.7.5
+- python-build: Add CPython 2.7.17
+- python-build: Add CPython 3.5.8
+- python-build: Add PyPy 7.2.0
+- python-build: Add anaconda3-2019.10
+- pyenv-help: Show text for all pyenv commands in pyenv-help
+
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.14-0
+- python-build: Add CPython 3.8.0
+- python-build: Add Anaconda-2019.07
+- python-build: Add Micropython 1.11
+- python-build: Fix compatibility issues with Homebrew installed Tcl/Tk
+- pyenv-exec: Do not use exec -a, do not mangle PATH for system Python
+
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.13-0
+- python-build: Add CPython 3.7.4
+- python-build: Add CPython 3.6.9
+
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.12-0
+- python-build: Find zlib from Xcode or brew on Mojave
+- python-build: Add PyPy 7.1.1
+- python-build: Add CPython 3.8.0b1
+
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.11-0
+- python-build: Fix posix_close name collision in 2.4 builds
+- python-build: Add CPython 3.4.10
+- python-build: Add Anaconda 2019.03
+- python-build: Allow overriding the preference of OpenSSL version per
+  definition basis
+- python-build: Imported changes from rbenv/ruby-build 20190401
+- python-build: Use GNU Readline 8.0 on macOS if brew's package isn't available
+
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.10-0
+- python-build: Force y, Y, yes or YES to confirm installation
+- python-build: Add PyPy 7.0.0, 7.1.0
+- python-build: Add CPython 2.7.16, 3.5.7 and 3.7.3
+- python-build: Install python-gdb.py
+- python-build: Add micropython 1.10
+- python-build: Prefer Homebrew's OpenSSL 1.1 over 1.0
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.9-0
 - python-build: Add CPython 3.7.2 and CPython 3.6.8
 - python-build: Add anaconda[23]-5.3.1
