@@ -4,6 +4,10 @@
 
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -31,18 +35,26 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+%define __sysctl          %{_bindir}/systemctl
+
 ################################################################################
 
 #define __cputoolize true
 %define _disable_ld_no_undefined 1
 
+%if 0%{?rhel} >= 7
+%{!?systemd_enabled:%global systemd_enabled 1}
+%else
+%{!?systemd_enabled:%global systemd_enabled 0}
+%endif
+
 ################################################################################
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           17
-%define ver_min           5
-%define ver_patch         6.10
+%define ver_maj           19
+%define ver_min           3
+%define ver_patch         6.13
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
@@ -55,22 +67,28 @@
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_suffix}
-Release:           1%{?dist}
+Release:           2%{?dist}
 Group:             Development/Tools
 License:           MPL
-URL:               http://www.erlang.org
+URL:               https://www.erlang.org
 
 Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
-Source1:           http://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
-Source2:           http://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
+Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
+Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
+Source3:           epmd.service
+Source4:           epmd.socket
+Source5:           epmd@.service
+Source6:           epmd@.socket
 
-Source10:          http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
-BuildRequires:     valgrind-devel fop java-1.7.0-openjdk-devel make
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make
 
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
 
@@ -105,16 +123,14 @@ Requires:          %{name}-snmp = %{version}
 Requires:          %{name}-ssh = %{version}
 Requires:          %{name}-ssl = %{version}
 Requires:          %{name}-syntax_tools = %{version}
-Requires:          %{name}-test_server = %{version}
 Requires:          %{name}-tools = %{version}
 Requires:          %{name}-typer = %{version}
-Requires:          %{name}-webtool = %{version}
 Requires:          %{name}-xmerl = %{version}
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang18 erlang19 erlang20 erlang21
+Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang20 erlang21
 
 ################################################################################
 
@@ -175,10 +191,8 @@ Requires: %{name}-snmp = %{version}
 Requires: %{name}-ssh = %{version}
 Requires: %{name}-ssl = %{version}
 Requires: %{name}-syntax_tools = %{version}
-Requires: %{name}-test_server = %{version}
 Requires: %{name}-tools = %{version}
 Requires: %{name}-typer = %{version}
-Requires: %{name}-webtool = %{version}
 Requires: %{name}-wx = %{version}
 Requires: %{name}-xmerl = %{version}
 
@@ -205,6 +219,14 @@ Provides:  %{name}-base = %{version}-%{release}
 Obsoletes: %{name}_otp = %{version}-%{release}
 Obsoletes: %{name}-gs_apps = %{version}-%{release}
 Obsoletes: %{name}-otp_libs = %{version}-%{release}
+
+%if %{systemd_enabled}
+BuildRequires:     systemd systemd-devel
+
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+%endif
 
 %description -n %{name}-base
 Erlang architecture independent files
@@ -643,22 +665,6 @@ usage etc.
 
 ################################################################################
 
-%package -n %{name}-ose
-Summary:  A high-performance, POSIX compatible, multicore real-time operating system
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-ose
-A high-performance, POSIX compatible, multicore real-time operating system
-maximizing your hardware utilization.
-
-It is compact and robust, and powers embedded systems in wide-range of
-vertical markets from telecom to automotive to industrial automation and
-beyond.
-
-################################################################################
-
 %package -n %{name}-otp_mibs
 Summary:  Snmp management information base for Erlang
 License:  MPL
@@ -781,17 +787,6 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 
 ################################################################################
 
-%package -n %{name}-test_server
-Summary:  The OTP test sewrver for Erlang
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-test_server
-The OTP test sewrver for Erlang.
-
-################################################################################
-
 %package -n %{name}-tools
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
@@ -812,18 +807,6 @@ Requires: %{name}-base = %{version}-%{release}
 
 %description -n %{name}-typer
 A type annotator of Erlang code.
-
-################################################################################
-
-%package -n %{name}-webtool
-Summary:  Tool that simplifying the use of web based Erlang tools
-License:  MPL
-Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-
-%description -n %{name}-webtool
-Erlang Module to configure,and start the webserver httpd and the various
-web based tools to Erlang/OTP.
 
 ################################################################################
 
@@ -855,6 +838,8 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
@@ -901,6 +886,10 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-hipe \
   --enable-smp-support \
   --enable-builtin-zlib \
+  --enable-sctp \
+  %if %{systemd_enabled}
+  --enable-systemd \
+  %endif
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
@@ -913,6 +902,14 @@ ERL_TOP=`pwd`; export ERL_TOP
 rm -rf %{buildroot}
 
 %{make_install} INSTALL_PREFIX=%{buildroot}
+
+%if %{systemd_enabled}
+install -d %{buildroot}%{_unitdir}
+install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/epmd.service
+install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/epmd.socket
+install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/epmd@.service
+install -pm 644 %{SOURCE6} %{buildroot}%{_unitdir}/epmd@.socket
+%endif
 
 # clean up
 find %{buildroot}%{_libdir}/erlang -perm 0775 | xargs chmod 755
@@ -950,15 +947,41 @@ popd
 # (tpg) remove not needed files
 rm -rf %{buildroot}%{_datadir}/COPYRIGHT
 rm -rf %{buildroot}%{_datadir}/PR.template
-rm -rf %{buildroot}%{_datadir}/README
+rm -rf %{buildroot}%{_datadir}/README.md
 
 # (tpg) remove this manpages as they conflicts with openssl
 rm -rf %{buildroot}%{_mandir}/man3/ssl.3.*
 rm -rf %{buildroot}%{_mandir}/man3/crypto.3.*
 rm -rf %{buildroot}%{_mandir}/man3/zlib.3.*
 
+%pre -n %{name}-base
+%if %{systemd_enabled}
+getent group epmd &> /dev/null || groupadd -r epmd &>/dev/null || :
+getent passwd epmd &> /dev/null || \
+  useradd -r -g epmd -d /dev/null -s /sbin/nologin \
+          -c "Erlang Port Mapper Daemon" epmd &>/dev/null || :
+%endif
+
 %post -n %{name}-base
 %{_libdir}/erlang/Install -minimal %{_libdir}/erlang &>/dev/null || :
+%if %{systemd_enabled}
+%{__sysctl} enable epmd.service &>/dev/null || :
+%endif
+
+%preun -n %{name}-base
+%if %{systemd_enabled}
+if [[ $1 -eq 0 ]] ; then
+  %{__sysctl} --no-reload disable epmd.service &>/dev/null || :
+  %{__sysctl} stop epmd.service &>/dev/null || :
+fi
+%endif
+
+%postun -n %{name}-base
+%if %{systemd_enabled}
+if [[ $1 -ge 1 ]] ; then
+  %{__sysctl} daemon-reload &>/dev/null || :
+fi
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -971,7 +994,7 @@ rm -rf %{buildroot}
 
 %files -n %{name}-stack
 %defattr(-,root,root,-)
-%doc EPLICENCE
+%doc LICENSE.txt
 
 %files -n %{name}-base
 %defattr(-,root,root,-)
@@ -979,6 +1002,12 @@ rm -rf %{buildroot}
 %dir %{_libdir}/erlang/bin
 %dir %{_libdir}/erlang/lib
 %dir %{_libdir}/erlang/misc
+%if %{systemd_enabled}
+%{_unitdir}/epmd.service
+%{_unitdir}/epmd.socket
+%{_unitdir}/epmd@.service
+%{_unitdir}/epmd@.socket
+%endif
 %{_bindir}/*
 %{_libdir}/erlang/Install
 %{_libdir}/erlang/bin/ct_run
@@ -1144,10 +1173,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/os_mon-*
 
-%files -n %{name}-ose
-%defattr(-,root,root,-)
-%{elibdir}/ose-*
-
 %files -n %{name}-otp_mibs
 %defattr(-,root,root,-)
 %{elibdir}/otp_mibs-*
@@ -1188,10 +1213,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/syntax_tools-*
 
-%files -n %{name}-test_server
-%defattr(-,root,root,-)
-%{elibdir}/test_server-*
-
 %files -n %{name}-tools
 %defattr(-,root,root,-)
 %{elibdir}/tools-*
@@ -1200,10 +1221,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/typer-*
 %{_libdir}/%{realname}/bin/typer
-
-%files -n %{name}-webtool
-%defattr(-,root,root,-)
-%{elibdir}/webtool-*
 
 %files -n %{name}-wx
 %defattr(-,root,root,-)
@@ -1216,31 +1233,37 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sat Jul 27 2019 Anton Novojilov <andy@essentialkaos.com> - 17.5.6.10-1
+* Fri Jan 24 2020 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-2
+- Rebuilt with systemd support
+
+* Sat Jul 27 2019 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-1
 - Rebuilt with built-in zlib
 
-* Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 17.5.6.10-0
+* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-0
 - Updated to the latest release
 
-* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 17.5-3
+* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
+- Updated to the latest release
+- LibreSSL updated to 2.8.2
+
+* Sun Jul 29 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.9-0
+- Updated to the latest release
+
+* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-2
 - Using GCC from devtoolset-3 for build
 
-* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 17.5-2
+* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-1
 - Rebuilt with EC support
 - Rebuilt with statically linked LibreSSL
 
-* Sat Jul 18 2015 Anton Novojilov <andy@essentialkaos.com> - 17.5-1
-- Fixed bug with crypto module
-- Fixed wrong dependencies in stack package
+* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.3-0
+- Updated to latest stable release
 
-* Wed Apr 01 2015 Anton Novojilov <andy@essentialkaos.com> - 17.5-0
-- Updated to 17.5
+* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.2-0
+- Updated to latest stable release
 
-* Thu Dec 11 2014 Anton Novojilov <andy@essentialkaos.com> - 17.4-0
-- Updated to 17.4
+* Fri Sep 23 2016 Anton Novojilov <andy@essentialkaos.com> - 19.1-0
+- Updated to latest stable release
 
-* Mon Oct 13 2014 Anton Novojilov <andy@essentialkaos.com> - 17.3-0
-- Updated to 17.3
-
-* Wed Sep 03 2014 Anton Novojilov <andy@essentialkaos.com> - 17.1-0
+* Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 19-0
 - Initial build
