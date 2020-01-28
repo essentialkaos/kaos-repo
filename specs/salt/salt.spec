@@ -60,15 +60,19 @@
 
 ################################################################################
 
+%define pypi_subpath      25/ee/cd9ed4a912506f5f6f0eb00891e661840bd9df0fae781f78fa9f04515447
+
+################################################################################
+
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2019.2.2
+Version:          2019.2.3
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
 
-Source0:          https://github.com/saltstack/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/%{pypi_subpath}/%{name}-%{version}.tar.gz
 Source1:          %{name}.sysconfig
 Source2:          %{name}-master.init
 Source3:          %{name}-syndic.init
@@ -451,6 +455,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 2019.2.3-0
+- Updated to 2019.2.3
+
 * Thu Oct 24 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.2-0
 - Updated to 2019.2.2
 - Removed cherrypy from dependencies

@@ -36,7 +36,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.9.4
+Version:            1.10.0
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -48,9 +48,9 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang20 git
+BuildRequires:      erlang21 git
 
-Requires:           erlang >= 20
+Requires:           erlang >= 21
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
@@ -74,7 +74,7 @@ LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags}
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
-LC_ALL="en_US.UTF-8" %{__make} test
+LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags} test
 %endif
 
 %install
@@ -104,6 +104,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
+- Updated to the latest release
+
 * Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
 - Updated to the latest release
 

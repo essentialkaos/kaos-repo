@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -35,8 +39,8 @@
 
 Summary:         Simple Ruby version management utility
 Name:            rbenv
-Version:         1.1.1
-Release:         2%{?dist}
+Version:         1.1.2
+Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
 URL:             https://github.com/sstephenson/rbenv
@@ -44,10 +48,10 @@ URL:             https://github.com/sstephenson/rbenv
 Source0:         https://github.com/rbenv/%{name}/archive/v%{version}.tar.gz
 Source1:         %{name}.profile
 
-Patch0:          %{name}-init-fix.patch
-Patch1:          %{name}-default-root.patch
-Patch2:          %{name}-configure-sed.patch
-Patch3:          %{name}-hit-prefix-arrow.patch
+Source100:       checksum.sha512
+
+Patch0:          %{name}-default-root.patch
+Patch1:          %{name}-hit-prefix-arrow.patch
 
 BuildRequires:   make gcc
 
@@ -65,12 +69,12 @@ tradition of single-purpose tools that do one thing well.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 
@@ -109,6 +113,18 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.1.2-0
+- Fix rehash mechanism for versions of bash that complain about
+  clobbering /dev/null
+- Enforce absolute RBENV_DIR to avoid having to unset CDPATH
+- rbenv-version-file: ensure that the version file is a file
+- rbenv init -: fix output to work without args and set -u
+- rbenv shell: better error message when shell integration wasn't enabled
+- Enable freezing rbenv version via rbenv version-name > .ruby-version
+  in the shell
+- rbenv-which: avoid changing PATH unless necessary
+- rbenv-prefix: do not silence rbenv-which errors for system version
+
 * Mon Aug 07 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-1
 - Improvements
 
