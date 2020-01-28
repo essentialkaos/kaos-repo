@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -53,7 +57,7 @@
 
 Summary:           Tool for managing secrets and protecting sensitive data
 Name:              vault
-Version:           1.0.1
+Version:           1.3.2
 Release:           0%{?dist}
 Group:             Applications/Communications
 License:           MPLv2
@@ -69,9 +73,11 @@ Source6:           %{name}-server.service
 Source7:           %{name}-agent.conf
 Source8:           %{name}-server.conf
 
+Source100:         checksum.sha512
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.10
+BuildRequires:     golang >= 1.13
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -144,6 +150,8 @@ administration for operators.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 mkdir -p .src/github.com/hashicorp/%{name}
@@ -160,6 +168,8 @@ export GIT_IMPORT="github.com/hashicorp/%{name}/version"
 export GOLDFLAGS="-X $GIT_IMPORT.GitDescribe=%{version}"
 
 pushd src/github.com/hashicorp/%{name}
+  sed -i '/replace git.apache.org/d' go.mod
+
   %{__make} %{?_smp_mflags} bootstrap || :
   $GOPATH/bin/gox -osarch="${XC_OS}/${XC_ARCH}" \
                   -ldflags "${GOLDFLAGS}" \
@@ -199,6 +209,10 @@ install -pm 644 %{SOURCE7} %{buildroot}%{_sysconfdir}/%{name}/agent/config.hcl
 install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/%{name}/server/config.hcl
 
 %clean
+# Fix permissions for files and directories in modules dir
+find pkg -type d -exec chmod 0755 {} \;
+find pkg -type f -exec chmod 0644 {} \;
+
 rm -rf %{buildroot}
 
 ################################################################################
@@ -304,5 +318,8 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
+- Updated to the latest stable release
+
 * Fri Jan 11 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.0.1-0
 - Initial build

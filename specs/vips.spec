@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -41,13 +45,15 @@
 
 Name:              vips
 Summary:           C/C++ library for processing large images
-Version:           8.7.4
+Version:           8.9.1
 Release:           0%{?dist}
 License:           LGPLv2+
 Group:             System Environment/Libraries
 URL:               https://libvips.github.io/libvips/
 
-Source:            https://github.com/libvips/libvips/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source0:           https://github.com/libvips/libvips/releases/download/v%{version}/%{name}-%{version}.tar.gz
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -104,6 +110,8 @@ PDF formats.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 find . -name 'CVS' -type d -print0 | xargs -0 rm -rf
@@ -138,7 +146,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS NEWS THANKS TODO COPYING ChangeLog
+%doc AUTHORS NEWS THANKS COPYING ChangeLog
 %{_libdir}/*.so.*
 
 %files devel
@@ -156,6 +164,131 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.9.1-0
+- fix new_from_file for openslide from CLI and C
+- fix thumbnail autorot
+- fix a warning with magicksave with no delay array
+- fix a race in tiled tiff load
+- better imagemagick init
+- lock for metadata changes, fixing a race in highly threaded applications
+
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.9.0-0
+- add vips_image_get/set_array_int()
+- disable webp alpha output if all frame fill the canvas and are solid
+- support arrays of delays for animated images
+- add "unlimited" flag to svgload
+- disable webp alpha output if all frames fill the canvas and are solid
+- add "compression" option to heifsave
+- support webp and zstd compression in tiff
+- loaders use "minimise" to close input files earlier
+- integrate support for oss-fuzz
+- add vips_switch() / vips_case() ... fast many-way ifthenelse
+- better const handling for arithmetic operators fixes comparisons against out
+  of range values
+- sharpen restores input colourspace
+- handle alpha in heifload / heifsave
+- add @Interpretation and @Format to rawload
+- nifti load/save uses double for all floating point metadata
+- add vips_error_buffer_copy()
+- add VipsSource and VipsTarget: a universal IO class for loaders and savers
+- jpeg, png, tiff (though not tiffsave), rad, svg, ppm and webp use the new
+  IO class
+- rewritten ppm load/save is faster and uses less memory
+- add @no_strip option to dzsave
+- add iiif layout to dzsave
+- fix use of resolution-unit metadata on tiff save
+- support TIFF CIELAB images with alpha
+- support TIFF with premultiplied alpha in any band
+- block metadata changes on shared images
+- RGB and sRGB are synonymous
+
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.8.4-0
+- improve compatibility with older imagemagick versions
+- remove realpath, since it can fail on systems with grsec
+- block metadata changes on shared images
+
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.8.3-0
+- revert sharpen restoring the input colourspace
+- xres/yres tiffsave params were in pixels/cm
+
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.8.2-0
+- better early shutdown in readers
+- don't attempt to save large XMP to jpeg
+- always fetch HEIC metadata from the main image
+- fix loop in malformed ppm
+- better support for PNGs with long comment names
+- fix build with GM
+- add locks for pdfium load
+- fix build with MSVC
+- fix a problem with shinkv tail processing
+- fix a read one byte beyond buffer bug in jpegload
+- make GIF parsing less strict
+- better feof() handling in GIF load
+- clip coding and interpretation on vips image read
+- check image bounds for GIF load
+- prevent over-pre-shrink in thumbnail
+- fix sharpen with sigma 0.5
+- sharpen restores input colourspace
+- verify bands/format for coded images
+- improve data_length handling for jpeg metadata
+
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.8.1-0
+- improve realpath() use on older libc
+- better magickload error messages
+- more consistent behaviour for page-height metadata
+- fix for composite with many small images and some combinations of blend modes
+- fix memleak in tiff pyr save to memory
+- istiff attempts to read the first directory rather than just testing
+  the magic number
+- much faster ismagick()
+- better behaviour for vips_region_fetch() if request lies partly ouside image
+- remove 256 band limit in arithmetic.c
+- disable Orc if building with CET
+- fix vipsthumbnail with pyr tiff
+- text autofit could occasionally terminate early
+- fewer warnings on tiffload
+- vips_resize() breaks aspect ratio and limits shrink to prevent <1px dimensions
+
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 8.8.0-0
+- much faster smartcrop
+- add low/high to smartcrop
+- add XMP support to png read/write
+- deprecate thumbnail auto_rotate, add no_rotate
+- implement thumbnail shrink-on-load for openslide images
+- add animated webp support
+- revise vips_cast() to improve behaviour with uint images
+- add bandand()/or()/eor() to cplusplus binding
+- implement shrink-on-load for tiff pyramids
+- added vips_image_set_blob_copy()
+- don't stop composite on first non-transparent image
+- add vips_rect_overlapsrect()
+- composite is much faster at positioning subimages
+- stop tiff pyr layers if width or height drop to 1
+- dzsave has a new skip_blanks option
+- add vips_CMYK2XYZ() and vips_XYZ2CMYK(), plus associated routes
+- include cmyk and srgb fallback profiles
+- add vips_profile_load() and use it everywhere
+- fix race in temp filename creation
+- add @reduction_effort param to webpsave
+- add @option_string param to thumbnail_buffer
+- add XMP, IPCT, ICC, EXIF etc. support to magickload/magicksave
+- much lower memuse for gifload
+- tilecache speedups
+- add vips_heifload(), vips_heifsave()
+- add heif thumbnail support to vips_thumbnail()
+- free threadpool earlier, reducing mem growth for some long-running processes
+- add vips_region_fetch() / _width() / _height() for language bindings
+- vips_text() supports justification
+- move vips_image_set_kill() and iskilled() to the public API
+- dzsave to szi sets suffix correctly
+- dzsave szi writes "scan-properties.xml"
+- add vips_image_(get|set)_image()
+- add openslideload option to attach all associated images as metadata
+- dzsave to szi will write all associated images
+- remove old c++ and python interfaces
+- vipsthumbnail can thumbnail animated and multipage images
+- much better Windows build
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 8.7.4-0
 - zero memory on allocate to prevent write of uninitialized memory under some
   error conditions

@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -47,7 +51,7 @@
 
 Summary:            Validating, recursive, and caching DNS(SEC) resolver
 Name:               unbound
-Version:            1.9.5
+Version:            1.9.6
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Daemons
@@ -70,6 +74,8 @@ Source14:           %{name}.sysconfig
 Source15:           %{name}-anchor.timer
 Source16:           %{name}-munin.README
 Source17:           %{name}-anchor.service
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -162,6 +168,8 @@ Python 2 modules and extensions for unbound
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qcn %{name}-%{version}
 
 %if 0%{with_python}
@@ -400,6 +408,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.9.6-0
+- Updated to the latest stable release
+
 * Tue Nov 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.5-0
 - Updated to the latest stable release
 
