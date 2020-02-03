@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -50,14 +54,14 @@
 ################################################################################
 
 Name:                 zabbix
-Version:              4.4.1
+Version:              4.4.5
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
-URL:                  http://www.zabbix.com
+URL:                  https://www.zabbix.com
 
-Source0:              http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
+Source0:              https://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
 Source1:              %{name}-web22.conf
 Source2:              %{name}-web24.conf
 Source3:              %{name}-logrotate.in
@@ -74,13 +78,15 @@ Source21:             %{name}-server.service
 Source22:             %{name}-proxy.service
 Source23:             %{name}-tmpfiles.conf
 
+Source100:            checksum.sha512
+
 Patch0:               config.patch
 Patch1:               fonts-config.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
-BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
+BuildRequires:        openldap-devel openssl-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
 BuildRequires:        pcre-devel zlib-devel
@@ -341,6 +347,8 @@ Zabbix web frontend for PostgreSQL
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn zabbix-%{version}
 
 %patch0 -p1
@@ -1086,6 +1094,178 @@ fi
 ################################################################################
 
 %changelog
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.5-0
+- Added zabbix_js command line utility for embedded javascript testing
+- Added new key vfs.fs.get to collect mounted filesystems information and
+  relevant metrics into json
+- Added "template app haproxy"
+- Added media "pagerduty"
+- Added "template db redis" template
+- Added housekeeping of unused/deleted items values in value cache
+- Added media "slack"
+- Added redis plugin for agent2
+- Added windows support to agent2 file plugin
+- Added strict validation of input parameters in script.get() method
+- Reworked template linking with multiselect and loading macro list with ajax
+- Fixed maintenance time period update every field validation
+- Fixed file change time in vfs.file.time on windows
+- Fixed allowing user to enter blank spaces in media type webhook parameter
+  names, script and menu entry name and url fields
+- Fixed memory leak and wrong type cast; thanks to yudai hashimoto for the patch
+- Fixed sql error during prototype removal by adding select for update locks
+- Added bulk gathering of attributes for zabbix java gateway when using
+  attribute discovery
+- Fixed time of check - time of use issues reported by coverity
+- Fixed memory leak in alert manager
+- Fixed 'opdata' property in event.get and problem.get for events without triggers
+- Fixed providing notifications for devices without audio support
+- Fixed crash on jsonpath function processing
+- Fixed deadlock on maintenance table when using oracle database
+- Icmppingloss counting all after first 400 ping responses as lost
+- Fixed error when creating user with long password
+- Fixed httpstepid validation when its value exceeds int32
+- Fixed agent2 build failure on 32-bit platforms
+- Fixed web scenario step allowing to use 0 timeout
+- Fixed duplicate entry errors on 32-bit architecture during item application
+  discovery
+- Fixed scroll bar visibility in svg graph widget configuration form
+- Fixed non well formed numeric value encountered in maintenance
+- Fixed indistinguishable validation messages for graph axis and unified graph
+  validation messages in overrides
+- Fixed db2 data import script
+- Fixed spelling issues in the code
+- Reverted fix for axis labels calculation
+- Fixed dynamic rows losing old input at form error
+- Fixed aria-live message partially visible beneath multiselect controls
+- Fixed not operator in correlation function expression
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.4-0
+- Added pushover webhook integration
+- Added media "mattermost"
+- Added media "opsgenie"
+- Added agent2 windows build support
+- Implemented 'delete missing' option for imported template linkages
+- Updated templates to internal version v0.34
+- Added windows services template, updated windows template objects
+  descriptions, added missing user macro
+- Added missing webhook parameters to default database data
+- Fixed url validation before output
+- Fixed agent2 plugin configuration not being called if no plugin specific
+  parameters are set
+- Fixed lld macro substitution when postgrsql is used
+- Removed redundant code block
+- Added missing get parameters in availability report
+- Fixed graph widget dimensions errors on high dpi screens
+- Fixed fatal error occurring in user profile and user edit forms when php
+  fileinfo extension does not exist
+- Fixed incorrect double quotes in history plain text view
+- Fixed widget saving with slow internet connection
+- Fixed validation of "interfaceid" field for http agent items with large ids
+- Fixed support for php 7.4
+- Changed condition description message for tag value in actions and event
+  correlations
+- Fixed context-aware lld macro expansion in jsonpath preprocessing
+- Fixed multiselect searching suggests in template mass update
+- Fixed high memory usage during startup
+- Fixed agent2 passive check timemouts exhausting plugin capacity
+- Fixed build fail on netbsd
+- Fixed request not being cancelled along with popup window in widgets
+- Removed templateid from screen api output
+- Fixed server check warning width in chrome
+- Fixed graph widget scroll disappear
+- Fixed widget vertically stretch
+- Fixed undefined offset in problem by severity widget
+- Fixed "type of information" field in item form being marked as required when
+  it is read-only
+- Fixed image map elements having a hand cursor when there is no context menu
+  available
+- Fixed axis labels calculation
+- Fixed long snmp oid value goes beyond fields block
+- Updated zabbix website links
+- Fixed map-type widget clipping in internet explorer
+- Fixed memory leak
+- Improved zabbix server performance when using maintenance
+- Fixed infinite loop when writing export to file fails
+- Splitted host_resources templates into 3 subtemplates: for cpu, memory and
+  storage
+- Fixed graph widget multiselect collapse
+- Fixed flexible textarea behavior
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.3-0
+- Fixed agent memory leak
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.2-0
+- Moved lld rules from parent templates to linked templates for module
+  host-resources-mib snmpv2, module interfaces windows snmpv2, net arista
+  snmpv2, os windows snmpv2
+- Changed agent2 plugin configuration, moved maxlinespersecond,
+  enableremotecommands, logremotecommands from global to plugin configuration
+- Fixed not setting the default values of multiselects on initial load
+- Reworked custom item select to multiselect
+- Added compression support for zabbix agent 2
+- Disabled guest user by default
+- Added scrollbars for item and problem descriptions
+- Implemented in monitoring -> problems the button "export to csv" to export
+  all pages
+- Fixed performance of history syncers and timer processes by not locking each
+  other when suppressing events
+- Fixed links to usergroups in user list
+- Added range validation and optional conversion to is_double()
+- Fixed "y-axis" graph widget field type
+- Fixed log rotation on windows
+- Fixed dynamic graphs not updating when changing host in combo box
+- Fixed "readonly" feature for checkbox and combobox
+- Fixed json null value being treated as empty string for lld filters
+- Fixed array_db validation when validated value is not an array
+- Made user profile icon visible for guest user
+- Implemeted webhook returned tags preview in media type test modal window,
+  added server improvements in webhook processing, removed webhooks from
+  watchdog media type lists
+- Moved interface_type_priority definition to misc.c
+- Fixed the process of saving the scroll position on the latest data page in
+  internet explorer
+- Fixed lld not to create items on wrong host if there are failed transactions
+- Fixed disappearance of successful modification message while saving the
+  dashboards
+- Fixed preprocessing regex for ping.time
+- Fixed possible out of bounds access in csv to json preprocessing
+- Fixed wrong placeholder in graph widget form
+- Fixed throttled lld items being shown in queue when monitored through
+  zabbix proxy
+- Fixed username and password fields resetting and saving for item, item
+  prototype and lld rule on type change
+- Improved performance of timer process when reading from "problem_tag" table
+- Fixed multiselect suggest box clipping when overflowing not allowed in parent
+  containers
+- Fixed undefined offset error in action operation condition form
+- Optimized active logs checks monitoring when buffer flushing fails
+- Fixed wrong element label update in map constructor
+- Fixed zabbix agent 2 compilation on i386, arm, ppc64le and s390x architectures
+- Fixed {trigger.id} to be supported on trigger level in addition to host level
+  and template level tags
+- Fixed problems by severity widget problem duplication
+- Fixed widget form positioing when changing widget type from graph to any
+  other type
+- Fixed unneeded padding for dashboard url widget
+- Fixed oracle performance by using "between" operator in sql queries
+- Fixed long text wrapping in the latest data history
+- Fixed possible null pointer arithmetic; thanks to mikhail grigorev for
+  the patch
+- Fixed go compiler check during configuration
+- Fixed missing maxlength property for global macros description field
+- Fixed sla calculation when requested time window starts during the service
+  time; fixed downtime time calculation
+- Fixed when the httptest api selects too many entries from the httpstep table
+  when editing a specific web scenario
+- Fixed disappearing dependent trigger cells and rows in overview
+- Added handling of bom to detect encoding for vfs.file.contents, vfs.file.regex
+  and vfs.file.regmatch
+- Added support of event.tags.<name> macros to trigger based notifications
+- Fixed wrong tab number being remembered when several browser tabs are in use
+- Fixed sort order in plain text screen
+- Fixed checkboxes of "connections from host" in host prototype encryption tab
+  not being disabled
+
 * Sun Nov 10 2019 Andrey Kulikov <avk@brewkeeper.net> - 4.4.1-0
 - Implemented host api inventory_mode field as part of host object
 - Added support of {trigger.id} macro in trigger tags

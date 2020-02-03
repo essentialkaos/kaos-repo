@@ -2,13 +2,13 @@
 
 Summary:            Free reimplementation of the OpenDivX video codec
 Name:               xvidcore
-Version:            1.3.5
+Version:            1.3.7
 Release:            0%{?dist}
 License:            XviD
 Group:              System Environment/Libraries
-URL:                http://www.xvid.org
+URL:                https://labs.xvid.com
 
-Source0:            http://downloads.xvid.org/downloads/%{name}-%{version}.tar.gz
+Source0:            https://downloads.xvid.com/downloads/%{name}-%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -96,11 +96,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.7-0
+- Fix for a regression in initializing the Inter matrix with MPEG Quantization
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.6-0
+- Fix for various, long-standing and potentially critical security
+  vulnerabilities in the decoder (credit to OSS-Fuzz)
+- Always use .text sections in nasm code for macho target
+
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.5-0
-- Updated to latest stable release
+- AmigaOS build patch by Fredrik Wikstrom
+- Support for applevel multithreading mode also for AVI output in xvid_encraw
+- Set interlacing flag in decoder correctly
+- Re-add support to decode raw YV12 input FourCC video
+- Fix: Produce debug output only when debug option is enabled
+- Fixed bug in thumbnail creation on Windows 7
+- Fix output buffer stride calculation in MFT
+- Setting interlaced flags on output pins correctly in DirectShow and MFT
+- Corrected pixel aspect ratio support in MFT
 
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Apr 24 2016 Gleb Goncharov <yum@gongled.ru> - 1.3.3-0
 - Updated to latest version
