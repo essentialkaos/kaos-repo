@@ -137,7 +137,7 @@ Summary:              Zabbix Get
 Group:                Applications/Internet
 
 %description get
-Zabbix get command line utility
+Zabbix get command line utility.
 
 ################################################################################
 
@@ -146,7 +146,16 @@ Summary:              Zabbix Sender
 Group:                Applications/Internet
 
 %description sender
-Zabbix sender command line utility
+Zabbix sender command line utility.
+
+################################################################################
+
+%package js
+Summary:              Zabbix JS
+Group:                Applications/Internet
+
+%description js
+Command line utility that can be used for embedded script testing.
 
 ################################################################################
 
@@ -191,10 +200,10 @@ Requires(postun):     %{__service}
 
 Conflicts:            zabbix-server-mysql
 
-################################################################################
-
 %description server-pgsql
 Zabbix server with PostgresSQL database support.
+
+################################################################################
 
 %package java-gateway
 Summary:              Zabbix java gateway
@@ -215,7 +224,7 @@ Requires(postun):     %{__service}
 BuildRequires:        java-devel >= 1.8.0 pcre-devel zlib-devel
 
 %description java-gateway
-Zabbix java gateway
+Zabbix java gateway.
 
 ################################################################################
 
@@ -310,7 +319,7 @@ Requires(post):       %{_sbindir}/update-alternatives
 Requires(preun):      %{_sbindir}/update-alternatives
 
 %description web
-Zabbix web frontend common package
+Zabbix web frontend common package.
 
 ################################################################################
 
@@ -326,7 +335,7 @@ Requires:             zabbix-web = %{version}-%{release}
 Conflicts:            zabbix-web-pgsql
 
 %description web-mysql
-Zabbix web frontend for MySQL
+Zabbix web frontend for MySQL.
 
 ################################################################################
 
@@ -342,7 +351,7 @@ Requires:             zabbix-web = %{version}-%{release}
 Conflicts:            zabbix-web-mysql
 
 %description web-pgsql
-Zabbix web frontend for PostgreSQL
+Zabbix web frontend for PostgreSQL.
 
 ################################################################################
 
@@ -908,13 +917,10 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %dir %{_sysconfdir}/zabbix/zabbix_agentd.d
-
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
-
 %{_sbindir}/zabbix_agentd
 %{_mandir}/man8/zabbix_agentd.8*
 %if 0%{?rhel} >= 7
@@ -924,35 +930,32 @@ fi
 %{_sysconfdir}/init.d/zabbix-agent
 %endif
 
+%files js
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%{_bindir}/zabbix_js
 
 %files get
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-
 %{_bindir}/zabbix_get
 %{_mandir}/man1/zabbix_get.1*
-
 
 %files sender
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-
 %{_bindir}/zabbix_sender
 %{_mandir}/man1/zabbix_sender.1*
-
 
 %files server-mysql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-server-mysql-%{version}/
 %dir %{_sysconfdir}/zabbix/alertscripts
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_server.conf
-
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
@@ -962,19 +965,15 @@ fi
 %endif
 %{_sbindir}/zabbix_server_mysql
 
-
 %files server-pgsql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-server-pgsql-%{version}/
 %dir %{_sysconfdir}/zabbix/alertscripts
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_server.conf
-
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
@@ -984,18 +983,14 @@ fi
 %endif
 %{_sbindir}/zabbix_server_pgsql
 
-
 %files proxy-mysql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-proxy-mysql-%{version}/
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
-
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
@@ -1005,18 +1000,14 @@ fi
 %endif
 %{_sbindir}/zabbix_proxy_mysql
 
-
 %files proxy-pgsql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-proxy-pgsql-%{version}/
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
-
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
@@ -1026,20 +1017,15 @@ fi
 %endif
 %{_sbindir}/zabbix_proxy_pgsql
 
-
 %files proxy-sqlite3
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
-
 %attr(0750,%{service_user},%{service_group}) %dir %{service_home}
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
-
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
@@ -1049,20 +1035,15 @@ fi
 %endif
 %{_sbindir}/zabbix_proxy_sqlite3
 
-
 %files java-gateway
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-java-gateway
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_java_gateway.conf
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_java_gateway_logback.xml
-
 %{_datadir}/zabbix-java-gateway
-
 %if 0%{?rhel} >= 7
 %{_sbindir}/zabbix_java_gateway
 %{_unitdir}/zabbix-java-gateway.service
@@ -1075,21 +1056,18 @@ fi
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %dir %attr(0750,apache,apache) %{_sysconfdir}/zabbix/web
-
 %config(noreplace) %{_sysconfdir}/zabbix/web/maintenance.inc.php
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/zabbix.conf
-
 %ghost %attr(0644,apache,apache) %config(noreplace) %{_sysconfdir}/zabbix/web/zabbix.conf.php
-
 %{_datadir}/zabbix
-
 
 %files web-mysql
 %defattr(-,root,root,-)
-
+# no files for you
 
 %files web-pgsql
 %defattr(-,root,root,-)
+# no files for you
 
 ################################################################################
 
@@ -1117,7 +1095,8 @@ fi
   attribute discovery
 - Fixed time of check - time of use issues reported by coverity
 - Fixed memory leak in alert manager
-- Fixed 'opdata' property in event.get and problem.get for events without triggers
+- Fixed 'opdata' property in event.get and problem.get for events without
+  triggers
 - Fixed providing notifications for devices without audio support
 - Fixed crash on jsonpath function processing
 - Fixed deadlock on maintenance table when using oracle database
