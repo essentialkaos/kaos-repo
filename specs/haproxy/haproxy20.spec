@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -60,13 +64,13 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.0.7
+Version:           2.0.12
 Release:           0%{?dist}
 License:           GPLv2+
-URL:               http://haproxy.1wt.eu
+URL:               https://haproxy.1wt.eu
 Group:             System Environment/Daemons
 
-Source0:           http://www.haproxy.org/download/2.0/src/%{name}-%{version}.tar.gz
+Source0:           https://www.haproxy.org/download/2.0/src/%{name}-%{version}.tar.gz
 Source1:           %{name}.init
 Source2:           %{name}.cfg
 Source3:           %{name}.logrotate
@@ -79,10 +83,12 @@ Source12:          https://www.openssl.org/source/openssl-%{openssl_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
+Source100:         checksum.sha512
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make zlib-devel
-BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
 Requires:          setup >= 2.8.14-14 kaosv >= 2.15
 
@@ -116,6 +122,8 @@ possibility not to expose fragile web servers to the net.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 tar xzvf %{SOURCE10}
@@ -127,7 +135,7 @@ tar xzvf %{SOURCE14}
 %build
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 ### DEPS BUILD START ###
 
@@ -295,6 +303,196 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.0.12-0
+- DOC: Improve documentation of http-re(quest|sponse) replace-(header|value|uri)
+- DOC: clarify the fact that replace-uri works on a full URI
+- BUG/MINOR: sample: fix the closing bracket and LF in the debug converter
+- BUG/MINOR: sample: always check converters' arguments
+- BUG/MEDIUM: ssl: Don't set the max early data we can receive too early.
+- MINOR: task: only check TASK_WOKEN_ANY to decide to requeue a task
+- BUG/MAJOR: task: add a new TASK_SHARED_WQ flag to fix foreing requeuing
+- BUG/MEDIUM: ssl: Revamp the way early data are handled.
+- MINOR: fd/threads: make _GET_NEXT()/_GET_PREV() use the volatile attribute
+- BUG/MEDIUM: fd/threads: fix a concurrency issue between add and rm on
+  the same fd
+- BUG/MINOR: ssl: openssl-compat: Fix getm_ defines
+- BUG/MEDIUM: stream: Be sure to never assign a TCP backend to an HTX stream
+- BUILD: ssl: improve SSL_CTX_set_ecdh_auto compatibility
+
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.0.11-0
+- BUG/MINOR: stream: init variables when the list is empty
+- BUG/MINOR: contrib/prometheus-exporter: Use HTX errors and not legacy ones
+- BUG/MINOR: contrib/prometheus-exporter: decode parameter and value only
+- BUG/MINOR: http-htx: Don't make http_find_header() fail if the value is empty
+- DOC: Clarify behavior of server maxconn in HTTP mode
+- DOC: clarify matching strings on binary fetches
+- DOC: move the "group" keyword at the right place
+- BUG/MEDIUM: stream-int: don't subscribed for recv when we're trying to
+  flush data
+- BUG/MINOR: stream-int: avoid calling rcv_buf() when splicing is still possible
+- BUG/MEDIUM: listener/thread: fix a race when pausing a listener
+- BUG/MINOR: ssl: certificate choice can be unexpected with openssl >= 1.1.1
+- BUG/MEDIUM: mux-h1: Never reuse H1 connection if a shutw is pending
+- BUG/MINOR: mux-h1: Don't rely on CO_FL_SOCK_RD_SH to set H1C_F_CS_SHUTDOWN
+- BUG/MINOR: mux-h1: Fix conditions to know whether or not we may receive data
+- BUG/MEDIUM: tasks: Make sure we switch wait queues in task_set_affinity().
+- BUG/MEDIUM: checks: Make sure we set the task affinity just before connecting.
+- BUG/MINOR: mux-h1: Be sure to set CS_FL_WANT_ROOM when EOM can't be added
+- BUG/MINOR: proxy: make soft_stop() also close FDs in LI_PAUSED state
+- BUG/MINOR: listener/threads: always use atomic ops to clear the FD events
+- BUG/MINOR: listener: also clear the error flag on a paused listener
+- BUG/MEDIUM: listener/threads: fix a remaining race in the listener's accept()
+- DOC: document the listener state transitions
+- BUG/MAJOR: dns: add minimalist error processing on the Rx path
+- BUG/MEDIUM: proto_udp/threads: recv() and send() must not be exclusive.
+- BUG/MEDIUM: kqueue: Make sure we report read events even when no data.
+- DOC: listeners: add a few missing transitions
+- BUG/MINOR: tasks: only requeue a task if it was already in the queue
+- DOC: proxies: HAProxy only supports 3 connection modes
+- BUILD/MINOR: ssl: shut up a build warning about format truncation
+- BUILD/MINOR: tools: shut up the format truncation warning in get_gmt_offset()
+- BUILD: do not disable -Wformat-truncation anymore
+- DOC: remove references to the outdated architecture.txt
+- BUG/MINOR: log: fix minor resource leaks on logformat error path
+- BUG/MINOR: mworker: properly pass SIGTTOU/SIGTTIN to workers
+- BUG/MINOR: listener: do not immediately resume on transient error
+- BUG/MINOR: server: make "agent-addr" work on default-server line
+- BUG/MINOR: listener: fix off-by-one in state name check
+- BUILD/MINOR: unix sockets: silence an absurd gcc warning about strncpy()
+
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.0.10-0
+- BUG/MINOR: init: fix set-dumpable when using uid/gid
+- MINOR: peers: Alway show the table info for disconnected peers.
+- MINOR: peers: Add TX/RX heartbeat counters.
+- MINOR: peers: Add debugging information to "show peers".
+- BUG/MINOR: peers: Wrong null "server_name" data field handling.
+- BUG/MINOR: ssl: fix crt-list neg filter for openssl < 1.1.1
+- BUG/MEDIUM: mworker: don't fill the -sf argument with -1 during the reexec
+- BUG/MINOR: peers: "peer alive" flag not reset when deconnecting.
+- BUILD/MINOR: ssl: fix compiler warning about useless statement
+- BUG/MEDIUM: stream-int: Don't loose events on the CS when an EOS is reported
+- BUILD: debug: Avoid warnings in dev mode with -02 because of some BUG_ON tests
+- BUG/MINOR: mux-h1: Fix tunnel mode detection on the response path
+- BUG/MINOR: http-ana: Properly catch aborts during the payload forwarding
+- MINOR: freq_ctr: Make the sliding window sums thread-safe
+- MINOR: stream: Remove the lock on the proxy to update time stats
+- MINOR: counters: Add fields to store the max observed for {q,c,d,t}_time
+- MINOR: contrib/prometheus-exporter: Report metrics about max times for
+  sessions
+- BUG/MINOR: contrib/prometheus-exporter: Rename some metrics
+- MINOR: contrib/prometheus-exporter: report the number of idle conns
+  per server
+- MINOR: contrib/prometheus-exporter: filter exported metrics by scope
+- MINOR: contrib/prometheus-exporter: Add a param to ignore servers
+  in maintenance
+- BUG/MINOR: stream-int: Fix si_cs_recv() return value
+- MINOR: stats: Report max times in addition of the averages for sessions
+- REGTEST: vtest can now enable mcli with its own flag
+- MEDIUM: mux-h1: Add the support of headers adjustment for bogus HTTP/1 apps
+- BUG/MINOR: mux-h1: Fix a UAF in cfg_h1_headers_case_adjust_postparser()
+- BUG/MINOR: mux-h1: Adjust header case when chunked encoding is add to
+  a message
+- DOC: Add missing stats fields in the management manual
+- DOC: Add documentation about the use-service action
+- BUG/MINOR: cli: fix out of bounds in -S parser
+- BUG/MINOR: ssl: fix curve setup with LibreSSL
+- MINOR: ist: add ist_find_ctl()
+- BUG/MAJOR: h2: reject header values containing invalid chars
+- BUG/MAJOR: h2: make header field name filtering stronger
+- BUG/MAJOR: mux-h2: don't try to decode a response HEADERS frame in idle state
+- SCRIPTS: create-release: show the correct origin name in suggested commands
+- SCRIPTS: git-show-backports: add "-s" to proposed cherry-pick commands
+
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.0.9-0
+- MINOR: config: warn on presence of "\n" in header values/replacements
+- BUG/MINOR: mux-h2: do not emit logs on backend connections
+- MINOR: tcp: avoid confusion in time parsing init
+- BUG/MINOR: cli: don't call the kw->io_release if kw->parse failed
+- BUG/MINOR: mux-h2: Don't pretend mux buffers aren't full anymore if nothing
+  sent
+- BUG/MAJOR: stream-int: Don't receive data from mux until SI_ST_EST is reached
+- BUG/MINOR: spoe: fix off-by-one length in UUID format string
+- MINOR: mux: Add a new method to get informations about a mux.
+- BUG/MEDIUM: stream_interface: Only use SI_ST_RDY when the mux is ready.
+- BUG/MEDIUM: servers: Only set SF_SRV_REUSED if the connection if fully ready.
+- BUG/MINOR: config: Update cookie domain warn to RFC6265
+- BUG/MEDIUM: mux-h2: report no available stream on a connection having errors
+- BUG/MEDIUM: mux-h2: immediately remove a failed connection from the idle list
+- BUG/MEDIUM: mux-h2: immediately report connection errors on streams
+- BUG/MEDIUM: mux-h1: Disable splicing for chunked messages
+- BUG/MEDIUM: stream: Be sure to support splicing at the mux level to enable it
+- MINOR: doc: http-reuse connection pool fix
+- BUG/MEDIUM: stream: Be sure to release allocated captures for TCP streams
+- BUG/MINOR: action: do-resolve now use cached response
+- BUG: dns: timeout resolve not applied for valid resolutions
+- DOC: management: document reuse and connect counters in the CSV format
+- DOC: management: document cache_hits and cache_lookups in the CSV format
+- DOC: management: fix typo on "cache_lookups" stats output
+- BUG/MINOR: queue/threads: make the queue unlinking atomic
+- BUG/MEDIUM: listeners: always pause a listener on out-of-resource condition
+- BUG/MEDIUM: Make sure we leave the session list in session_free().
+- CLEANUP: session: slightly simplify idle connection cleanup logic
+- MINOR: memory: also poison the area on freeing
+- BUILD: contrib/da: remove an "unused" warning
+- BUG/MINOR: log: limit the size of the startup-logs
+- BUG/MEDIUM: filters: Don't call TCP callbacks for HTX streams
+- BUG/MINOR: mux-h1: Don't set CS_FL_EOS on a read0 when receiving data to pipe
+
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.0.8-0
+- BUG/MINOR: stats: Add a missing break in a switch statement
+- BUG/MINOR: lua: Properly initialize the buffer's fields for string samples
+  in hlua_lua2(smp|arg)
+- BUG/MEDIUM: lua: Store stick tables into the sample's `t` field
+- BUG/MINOR: action: do-resolve does not yield on requests with body
+- MINOR: mux-h2: add a per-connection list of blocked streams
+- BUILD: ebtree: make eb_is_empty() and eb_is_dup() take a const
+- BUG/MEDIUM: mux-h2: do not enforce timeout on long connections
+- BUG/MINOR: peers: crash on reload without local peer.
+- BUG/MEDIUM: cache: make sure not to cache requests with absolute-uri
+- DOC: clarify some points around http-send-name-header's behavior
+- DOC: fix typo in Prometheus exporter doc
+- MINOR: stats: mention in the help message support for "json" and "typed"
+- BUG/MEDIUM: applet: always check a fast running applet's activity before
+  killing
+- BUG/MINOR: ssl: abort on sni allocation failure
+- BUG/MINOR: ssl: free the sni_keytype nodes
+- BUG/MINOR: ssl: abort on sni_keytypes allocation failure
+- BUILD: ssl: wrong #ifdef for SSL engines code
+- BUG/MEDIUM: htx: Catch chunk_memcat() failures when HTX data are formatted to
+  h1
+- BUG/MINOR: chunk: Fix tests on the chunk size in functions copying data
+- BUG/MINOR: mux-h1: Mark the output buffer as full when the xfer is interrupted
+- BUG/MINOR: mux-h1: Capture ignored parsing errors
+- BUG/MINOR: WURFL: fix send_log() function arguments
+- MINOR: version: make the version strings variables, not constants
+- BUG/MINOR: http-htx: Properly set htx flags on error files to support
+  keep-alive
+- BUG/MINOR: mworker/ssl: close openssl FDs unconditionally
+- BUG/MINOR: tcp: Don't alter counters returned by tcp info fetchers
+- BUG/MEDIUM: mux_pt: Make sure we don't have a conn_stream before freeing.
+- BUG/MAJOR: idle conns: schedule the cleanup task on the correct threads
+- BUG/MEDIUM: mux_pt: Don't destroy the connection if we have a stream attached.
+- BUG/MEDIUM: mux_pt: Only call the wake emthod if nobody subscribed to receive.
+- REGTEST: mcli/mcli_show_info: launch a 'show info' on the master CLI
+- CLEANUP: ssl: make ssl_sock_load_cert*() return real error codes
+- CLEANUP: ssl: make ssl_sock_put_ckch_into_ctx handle errcode/warn
+- CLEANUP: ssl: make ssl_sock_load_dh_params handle errcode/warn
+- CLEANUP: bind: handle warning label on bind keywords parsing.
+- BUG/MEDIUM: ssl: 'tune.ssl.default-dh-param' value ignored with
+  openssl > 1.1.1
+- BUG/MINOR: mworker/cli: reload fail with inherited FD
+- BUG/MINOR: ssl: Fix fd leak on error path when a TLS ticket keys file
+  is parsed
+- BUG/MINOR: stick-table: Never exceed (MAX_SESS_STKCTR-1) when fetching
+  a stkctr
+- BUG/MINOR: cache: alloc shctx after check config
+- BUG/MINOR: sample: Make the `field` converter compatible with `-m found`
+- BUG/MINOR: mux-h2: also make sure blocked legacy connections may expire
+- BUG/MEDIUM: http: unbreak redirects in legacy mode
+- BUG/MINOR: ssl: fix memcpy overlap without consequences.
+- BUG/MINOR: stick-table: fix an incorrect 32 to 64 bit key conversion
+- BUG/MEDIUM: pattern: make the pattern LRU cache thread-local and lockless
+
 * Thu Oct 10 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.7-0
 - BUG/MEDIUM: stick-table: Properly handle "show table" with a data type
   argument

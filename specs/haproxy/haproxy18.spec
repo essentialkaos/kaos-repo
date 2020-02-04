@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -60,13 +64,13 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.21
+Version:           1.8.23
 Release:           0%{?dist}
 License:           GPLv2+
-URL:               http://haproxy.1wt.eu
+URL:               https://haproxy.1wt.eu
 Group:             System Environment/Daemons
 
-Source0:           http://www.haproxy.org/download/1.8/src/%{name}-%{version}.tar.gz
+Source0:           https://www.haproxy.org/download/1.8/src/%{name}-%{version}.tar.gz
 Source1:           %{name}.init
 Source2:           %{name}.cfg
 Source3:           %{name}.logrotate
@@ -79,10 +83,12 @@ Source12:          https://www.openssl.org/source/openssl-%{openssl_ver}.tar.gz
 Source13:          https://ftp.gnu.org/pub/gnu/ncurses/ncurses-%{ncurses_ver}.tar.gz
 Source14:          https://ftp.gnu.org/gnu/readline/readline-%{readline_ver}.tar.gz
 
+Source100:         checksum.sha512
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make zlib-devel
-BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
 Requires:          setup >= 2.8.14-14 kaosv >= 2.15
 
@@ -116,6 +122,8 @@ possibility not to expose fragile web servers to the net.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 tar xzvf %{SOURCE10}
@@ -127,7 +135,7 @@ tar xzvf %{SOURCE14}
 %build
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 ### DEPS BUILD START ###
 
@@ -292,6 +300,75 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.23-0
+- MINOR: tcp: avoid confusion in time parsing init
+- BUG/MINOR: cli: don't call the kw->io_release if kw->parse failed
+- BUG/MINOR: config: Update cookie domain warn to RFC6265
+- BUG/MEDIUM: stream: Be sure to support splicing at the mux level to enable it
+- BUG/MEDIUM: stream: Be sure to release allocated captures for TCP streams
+- BUG: dns: timeout resolve not applied for valid resolutions
+- BUG/MEDIUM: listeners: always pause a listener on out-of-resource condition
+- BUG/MINOR: ssl: fix crt-list neg filter for openssl < 1.1.1
+- BUILD/MINOR: ssl: fix compiler warning about useless statement
+- MINOR: ist: add ist_find_ctl()
+- BUG/MAJOR: h2: reject header values containing invalid chars
+- BUG/MAJOR: h2: make header field name filtering stronger
+- SCRIPTS: create-release: show the correct origin name in suggested commands
+- SCRIPTS: git-show-backports: add "-s" to proposed cherry-pick commands
+
+* Tue Feb 04 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.22-0
+- BUILD/MINOR: stream: avoid a build warning with threads disabled
+- BUG/MINOR: haproxy: fix rule->file memory leak
+- MINOR: connection: add new function conn_is_back()
+- BUG/MEDIUM: ssl: Use the early_data API the right way.
+- BUG/MEDIUM: checks: make sure the warmup task takes the server lock
+- BUG/MINOR: logs/threads: properly split the log area upon startup
+- MINOR: doc: Document allow-0rtt on the server line.
+- BUG/MEDIUM: spoe: Be sure the sample is found before setting its context
+- DOC: fixed typo in management.txt
+- BUG/MINOR: mworker: disable SIGPROF on re-exec
+- BUG/MEDIUM: listener/threads: fix an AB/BA locking issue in delete_listener()
+- BUG/MEDIUM: proto-http: Always start the parsing if there is no outgoing data
+- BUG/MEDIUM: http: also reject messages where "chunked" is missing from
+  transfer-enoding
+- BUG/MINOR: filters: Properly set the HTTP status code on analysis error
+- BUG/MINOR: acl: Fix memory leaks when an ACL expression is parsed
+- BUG/MEDIUM: check/threads: make external checks run exclusively on thread 1
+- BUG/MEDIUM: namespace: close open namespaces during soft shutdown
+- BUG/MAJOR: mux_h2: Don't consume more payload than received for skipped frames
+- MINOR: tools: implement my_flsl()
+- BUG/MEDIUM: spoe: Use a different engine-id per process
+- DOC: Fix documentation about the cli command to get resolver stats
+- BUG/MEDIUM: namespace: fix fd leak in master-worker mode
+- BUG/MINOR: lua: Properly initialize the buffer's fields for string samples
+  in hlua_lua2(smp|arg)
+- BUG/MEDIUM: cache: make sure not to cache requests with absolute-uri
+- DOC: clarify some points around http-send-name-header's behavior
+- MINOR: stats: mention in the help message support for "json" and "typed"
+- BUG/MINOR: ssl: free the sni_keytype nodes
+- BUG/MINOR: chunk: Fix tests on the chunk size in functions copying data
+- BUG/MINOR: WURFL: fix send_log() function arguments
+- BUG/MINOR: tcp: Don't alter counters returned by tcp info fetchers
+- BUG/MINOR: ssl: abort on sni allocation failure
+- BUG/MINOR: ssl: abort on sni_keytypes allocation failure
+- CLEANUP: ssl: make ssl_sock_load_cert*() return real error codes
+- CLEANUP: ssl: make ssl_sock_put_ckch_into_ctx handle errcode/warn
+- CLEANUP: ssl: make ssl_sock_load_dh_params handle errcode/warn
+- CLEANUP: bind: handle warning label on bind keywords parsing.
+- BUG/MEDIUM: ssl: 'tune.ssl.default-dh-param' value ignored with
+  openssl > 1.1.1
+- BUG/MINOR: mworker/ssl: close OpenSSL FDs on reload
+- BUILD: ssl: fix again a libressl build failure after the openssl FD leak fix
+- BUG/MINOR: mworker/ssl: close openssl FDs unconditionally
+- BUG/MINOR: ssl: Fix fd leak on error path when a TLS ticket keys file
+  is parsed
+- BUG/MINOR: stick-table: Never exceed (MAX_SESS_STKCTR-1) when fetching
+  a stkctr
+- BUG/MINOR: sample: Make the `field` converter compatible with `-m found`
+- BUG/MINOR: ssl: fix memcpy overlap without consequences.
+- BUG/MINOR: stick-table: fix an incorrect 32 to 64 bit key conversion
+- BUG/MEDIUM: pattern: make the pattern LRU cache thread-local and lockless
+
 * Thu Oct 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.21-0
 - BUG/MINOR: http: Call stream_inc_be_http_req_ctr() only one time per request
 - BUG/MEDIUM: spoe: arg len encoded in previous frag frame but len changed
