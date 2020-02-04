@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -35,7 +39,6 @@
 ################################################################################
 
 %define __ldconfig        %{_sbin}/ldconfig
-%define __service         %{_sbin}/service
 %define __touch           %{_bin}/touch
 %define __chkconfig       %{_sbin}/chkconfig
 %define __updalt          %{_sbindir}/update-alternatives
@@ -61,13 +64,13 @@
 
 Summary:              High-performance coordination service for distributed applications
 Name:                 zookeeper
-Version:              3.4.10
+Version:              3.5.6
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Applications/Databases
 URL:                  https://zookeeper.apache.org
 
-Source0:              http://mirror.cogentco.com/pub/apache/%{name}/%{name}-%{version}/%{name}-%{version}.tar.gz
+Source0:              http://mirror.cogentco.com/pub/apache/%{name}/%{name}-%{version}/apache-%{name}-%{version}.tar.gz
 
 Source1:              %{name}.init
 Source2:              %{name}.service
@@ -79,8 +82,10 @@ Source7:              log4j.properties
 Source8:              log4j-cli.properties
 Source9:              java.env
 
+Source100:            checksum.sha512
+
 BuildRequires:        java-devel
-BuildRequires:        tar wget ant ant-junit cppunit-doc
+BuildRequires:        tar wget ant ant-junit cppunit-doc chrpath
 BuildRequires:        hamcrest-demo hamcrest-javadoc hamcrest patch xz libtool
 BuildRequires:        python-devel gcc make libtool autoconf cppunit-devel
 
@@ -88,14 +93,8 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 Requires:             logrotate nc libzookeeper
 
-%if 0%{?rhel} <= 6
-Requires(post):       chkconfig initscripts
-Requires(pre):        chkconfig initscripts
-%endif
-%if 0%{?rhel} >= 7
 Requires(post):       systemd
 Requires(pre):        systemd
-%endif
 
 Provides:             %{name} = %{version}-%{release}
 AutoReqProv:          no
@@ -148,31 +147,18 @@ developing with libzookeeper.
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{version}
+%{crc_check}
+
+%setup -qn apache-%{name}-%{version}
+
+# Fix version name
+sed -i 's#${version-base}-${version-suffix}#${version-base}#' build.xml
 
 %build
-ant compile_jute
-
-pushd src/c
-  rm -rf aclocal.m4 autom4te.cache/ config.guess config.status config.log \
-    config.sub configure depcomp install-sh ltmain.sh libtool \
-    Makefile Makefile.in missing stamp-h1 compile
-  autoheader
-  libtoolize --force
-  aclocal
-  automake -a
-  autoconf
-  autoreconf
-  %configure
-  %{__make} %{?_smp_mflags}
-popd
-
-ant jar
+ant package-native tar
 
 %install
 rm -rf %{buildroot}
-
-%{make_install} -C src/c
 
 install -dm 0755 %{buildroot}%{_bindir}
 install -dm 0755 %{buildroot}%{_sbindir}
@@ -183,14 +169,18 @@ install -dm 0755 %{buildroot}%{_localstatedir}/log/%{name}
 install -dm 0755 %{buildroot}%{_localstatedir}/lib/%{name}
 install -dm 0755 %{buildroot}%{_datadir}/%{name}
 install -dm 0755 %{buildroot}%{_zookeeper_noarch_libdir}
-%if 0%{?rhel} <= 6
-install -dm 0755 %{buildroot}%{_initrddir}
-%endif
-
-%if 0%{?rhel} >= 7
 install -dm 0755 %{buildroot}%{_unitdir}
 install -dm 0755 %{buildroot}%{_unitdir}/%{name}.service.d
-%endif
+
+install -dm 0755 %{buildroot}%{_includedir}
+install -dm 0755 %{buildroot}%{_includedir}/%{name}
+install -dm 0755 %{buildroot}%{_libdir}
+
+chrpath --delete build/c/build/bin/*
+
+cp -a build/c/build/bin/* %{buildroot}%{_bindir}/
+cp -a build/c/build/include/* %{buildroot}%{_includedir}/%{name}/
+cp -a build/c/build/lib/* %{buildroot}%{_libdir}/
 
 cp -a bin %{buildroot}%{_zookeeper_noarch_libdir}
 cp build/lib/*.jar %{buildroot}%{_zookeeper_noarch_libdir}
@@ -204,11 +194,6 @@ install -pm 0644 %{SOURCE8} %{buildroot}%{_sysconfdir}/%{name}/log4j-cli.propert
 install -pm 0644 %{SOURCE9} %{buildroot}%{_sysconfdir}/%{name}/java.env
 install -pm 0644 conf/configuration.xsl %{buildroot}%{_sysconfdir}/%{name}/configuration.xsl
 
-%if 0%{?rhel} <= 6
-install -pm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{service_name}
-%endif
-
-%if 0%{?rhel} >= 7
 install -pm 0755 %{SOURCE2} %{buildroot}%{_unitdir}
 install -pm 0644 %{SOURCE3} %{buildroot}%{_bindir}/zookeeper-client
 
@@ -218,7 +203,6 @@ for i in %{buildroot}%{_zookeeper_noarch_libdir}/*.jar ; do
 done
 echo "[Service]" > %{buildroot}%{_unitdir}/%{name}.service.d/classpath.conf
 echo "Environment=CLASSPATH=${CLASSPATH}" >> %{buildroot}%{_unitdir}/%{name}.service.d/classpath.conf
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -234,13 +218,8 @@ fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} <= 6
-  %{__chkconfig} --add %{service_name} &>/dev/null || :
-%endif
-%if 0%{?rhel} >= 7
   %{__systemctl} daemon-reload %{name}.service &>/dev/null || :
   %{__systemctl} preset %{name}.service &>/dev/null || :
-%endif
 fi
 
 %post -n lib%{name}
@@ -251,22 +230,15 @@ fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} <= 6
-  %{__service} %{service_name} stop &>/dev/null || :
-  %{__chkconfig} --del %{service_name} &>/dev/null || :
-%endif
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
-%endif
 fi
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE.txt NOTICE.txt README.txt
-%doc docs recipes
+%doc LICENSE.txt NOTICE.txt
 %dir %attr(0750,%{zookeeper_user},%{zookeeper_group}) %{_localstatedir}/lib/%{name}
 %dir %attr(0750,%{zookeeper_user},%{zookeeper_group}) %{_localstatedir}/log/%{name}
 %{_zookeeper_noarch_libdir}
@@ -276,23 +248,17 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-%if 0%{?rhel} <= 6
-%{_initrddir}/%{service_name}
-%endif
-%if 0%{?rhel} >= 7
 %attr(755,root,root) %{_bindir}/zookeeper-client
 %{_unitdir}/%{name}.service
 %{_unitdir}/%{name}.service.d/classpath.conf
-%endif
 
 %files -n lib%{name}
-%defattr(-, root, root, -)
-%doc src/c/README src/c/LICENSE
+%defattr(-,root,root,-)
 %{_libdir}/lib%{name}_mt.so.*
 %{_libdir}/lib%{name}_st.so.*
 
 %files -n lib%{name}-devel
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %{_includedir}
 %{_libdir}/*.a
 %{_libdir}/*.la
@@ -301,6 +267,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Feb 04 2020 Anton Novojilov <andy@essentialkaos.com> - 3.5.6-0
+- Updated to the latest release
+
 * Mon Aug 07 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.4.10-0
 - Updated to the latest release
 - Improved RPM spec
