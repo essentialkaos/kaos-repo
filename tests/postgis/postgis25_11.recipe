@@ -6,7 +6,7 @@ pkg postgresql11-server postgis25_11 postgis25_11-client postgis25_11-devel post
 fast-finish yes
 
 var postgis_major_version 2.5
-var postgis_version       2.5.0
+var postgis_version       2.5.3
 var postgres_version      11
 var pkg_ver               25_11
 

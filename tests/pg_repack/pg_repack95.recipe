@@ -5,7 +5,7 @@ pkg pg_repack95
 
 fast-finish yes
 
-var repack_version   1.4.4
+var repack_version   1.4.5
 var postgres_version 9.5
 
 var data_dir /usr/pgsql-{postgres_version}/share

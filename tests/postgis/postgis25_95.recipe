@@ -6,7 +6,7 @@ pkg postgresql95-server postgis25_95 postgis25_95-client postgis25_95-devel post
 fast-finish yes
 
 var postgis_major_version 2.5
-var postgis_version       2.5.0
+var postgis_version       2.5.3
 var postgres_version      9.5
 var pkg_ver               25_95
 
