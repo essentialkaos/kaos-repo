@@ -7,20 +7,14 @@ fast-finish yes
 
 var data_dir /usr/share/java/confluent-common
 
-var pkg_version 5.2.2
+var pkg_version 5.4.0
 
 command "-" "Check java libraries"
   dir {data_dir}
 
   !empty-dir {data_dir}
 
-  exist {data_dir}/audience-annotations-0.5.0.jar
   exist {data_dir}/build-tools-{pkg_version}.jar
   exist {data_dir}/common-config-{pkg_version}.jar
   exist {data_dir}/common-metrics-{pkg_version}.jar
   exist {data_dir}/common-utils-{pkg_version}.jar
-  exist {data_dir}/jline-0.9.94.jar
-  exist {data_dir}/netty-3.10.6.Final.jar
-  exist {data_dir}/slf4j-api-1.7.25.jar
-  exist {data_dir}/zkclient-0.10.jar
-  exist {data_dir}/zookeeper-3.4.13.jar
