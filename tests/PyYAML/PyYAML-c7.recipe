@@ -1,7 +1,7 @@
 # Bibop recipe for PyYAML
 # See more: https://kaos.sh/bibop
 
-pkg python-PyYAML python36-PyYAML
+pkg PyYAML python36-PyYAML
 
 fast-finish yes
 
