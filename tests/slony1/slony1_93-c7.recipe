@@ -1,5 +1,5 @@
 # Bibop recipe for Slony 1 for PostgreSQL 9.3
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg slony1-93
 

@@ -1,5 +1,5 @@
 # Bibop recipe for PostGIS 2.4 for PostgreSQL 10
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql10-server postgis24_10 postgis24_10-client postgis24_10-devel postgis24_10-utils
 

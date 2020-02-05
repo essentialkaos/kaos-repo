@@ -1,5 +1,5 @@
 # Bibop recipe for python-elasticsearch for CentOS 6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-elasticsearch python34-elasticsearch
 

@@ -1,5 +1,5 @@
 # Bibop recipe for Salt
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg salt-master salt-minion salt-syndic
 

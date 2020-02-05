@@ -1,5 +1,5 @@
 # Bibop recipe for python-enchant for CentOS 6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-enchant python34-enchant
 

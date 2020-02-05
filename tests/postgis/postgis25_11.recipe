@@ -1,5 +1,5 @@
 # Bibop recipe for PostGIS 2.5 for PostgreSQL 11
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql11-server postgis25_11 postgis25_11-client postgis25_11-devel postgis25_11-utils
 

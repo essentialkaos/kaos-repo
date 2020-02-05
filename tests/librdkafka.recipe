@@ -1,5 +1,5 @@
 # Bibop recipe for librdkafka
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg librdkafka librdkafka-static librdkafka-devel
 

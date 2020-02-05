@@ -1,5 +1,5 @@
 # Bibop recipe for libgit2
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg libgit2 libgit2-devel
 

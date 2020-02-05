@@ -1,5 +1,5 @@
 # Bibop recipe for PostgreSQL 9.5
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql95-server postgresql95-libs postgresql95-devel
 

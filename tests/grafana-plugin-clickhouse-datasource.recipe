@@ -1,5 +1,5 @@
 # Bibop recipe for Clickhouse datasource plugin for Grafana
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg grafana-plugin-clickhouse-datasource
 

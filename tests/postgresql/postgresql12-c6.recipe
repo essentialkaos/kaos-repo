@@ -1,5 +1,5 @@
 # Bibop recipe for PostgreSQL 12
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql12-server postgresql12-libs postgresql12-devel
 

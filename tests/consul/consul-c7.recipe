@@ -1,5 +1,5 @@
 # Bibop recipe for consul
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg consul-client consul-server
 

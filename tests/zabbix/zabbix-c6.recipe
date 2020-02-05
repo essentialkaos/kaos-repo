@@ -1,5 +1,5 @@
 # Bibop recipe for Zabbix
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg zabbix-agent zabbix-server-pgsql zabbix-proxy-pgsql zabbix-java-gateway
 

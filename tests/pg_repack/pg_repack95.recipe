@@ -1,5 +1,5 @@
 # Bibop recipe for pg_repack for PostgreSQL 9.5
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg pg_repack95
 

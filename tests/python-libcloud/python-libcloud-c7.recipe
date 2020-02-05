@@ -1,5 +1,5 @@
 # Bibop recipe for python-libcloud for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-libcloud python36-libcloud
 

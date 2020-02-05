@@ -1,5 +1,5 @@
 # Bibop recipe for PostGIS 2.5 for PostgreSQL 9.4
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql94-server postgis25_94 postgis25_94-client postgis25_94-devel postgis25_94-utils
 

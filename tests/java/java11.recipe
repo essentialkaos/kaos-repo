@@ -1,5 +1,5 @@
 # Bibop recipe for JRE11 and JDK11
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg jre11 jdk11
 

@@ -1,5 +1,5 @@
 # Bibop recipe for PyYAML
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-PyYAML python36-PyYAML
 

@@ -1,5 +1,5 @@
 # Bibop recipe for python-pygments for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-pygments python36-pygments
 

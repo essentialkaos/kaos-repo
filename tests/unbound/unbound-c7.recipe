@@ -1,5 +1,5 @@
 # Bibop recipe for Unbound
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg unbound unbound-libs unbound-devel
 

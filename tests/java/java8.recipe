@@ -1,5 +1,5 @@
 # Bibop recipe for JRE8 and JDK8
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg jre8 jdk8
 

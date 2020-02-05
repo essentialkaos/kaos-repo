@@ -1,5 +1,5 @@
 # Bibop recipe for tabix
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg tabix
 

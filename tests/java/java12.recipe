@@ -1,5 +1,5 @@
 # Bibop recipe for JRE12 and JDK12
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg jre12 jdk12
 

@@ -1,5 +1,5 @@
 # Bibop recipe for PostgreSQL 9.6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql96-server postgresql96-libs postgresql96-devel
 

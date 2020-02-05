@@ -1,5 +1,5 @@
 # Bibop recipe for git
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 lock-workdir no
 

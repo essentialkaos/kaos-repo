@@ -1,5 +1,5 @@
 # Bibop recipe for HAProxy 2.0
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg haproxy-2.0.*
 

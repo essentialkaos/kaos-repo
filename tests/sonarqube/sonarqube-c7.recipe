@@ -1,5 +1,5 @@
 # Bibop recipe for SonarQube
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg sonarqube
 

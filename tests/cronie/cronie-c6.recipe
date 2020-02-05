@@ -1,5 +1,5 @@
 # Bibop recipe for cronie for CentOS 6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg cronie cronie-anacron
 

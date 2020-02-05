@@ -1,5 +1,5 @@
 # Bibop recipe for confluent-rest-utils
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg confluent-rest-utils
 

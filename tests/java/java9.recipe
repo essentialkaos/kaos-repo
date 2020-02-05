@@ -1,5 +1,5 @@
 # Bibop recipe for JRE9 and JDK9
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg jre9 jdk9
 

@@ -1,5 +1,5 @@
 # Bibop recipe for Kafka REST Proxy
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg confluent-kafka-rest
 

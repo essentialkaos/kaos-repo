@@ -1,5 +1,5 @@
 # Bibop recipe for Erlang 21
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg erlang21
 

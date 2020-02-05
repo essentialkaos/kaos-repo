@@ -1,5 +1,5 @@
 # Bibop recipe for PIP for CentOS 6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python34 python34-pip
 

@@ -1,5 +1,5 @@
 # Bibop recipe for python-jinja2 for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-jinja2 python36-jinja2
 

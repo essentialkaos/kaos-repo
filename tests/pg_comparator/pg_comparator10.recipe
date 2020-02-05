@@ -1,5 +1,5 @@
 # Bibop recipe for pg_comparator for PostgreSQL 10
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg pg_comparator10
 

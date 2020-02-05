@@ -1,5 +1,5 @@
 # Bibop recipe for python-backports_abc for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-backports_abc python36-backports_abc
 
