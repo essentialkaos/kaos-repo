@@ -32,9 +32,9 @@
 %endif
 
 %if 0%{?rhel} >= 7
-%define with_procpsng    1
+%define with_procpsng     1
 %else
-%define with_procpsng    0
+%define with_procpsng     0
 %endif
 
 %if 0%{?rhel} >= 7
@@ -289,26 +289,24 @@ rm -rf %{buildroot}
 ################################################################################
 
 %post
+%{__ldconfig}
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} <= 6
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
 %if 0%{?rhel} >= 7
   %{__systemctl} daemon-reload %{name}.service &>/dev/null || :
   %{__systemctl} preset %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
 %endif
 fi
-%{__ldconfig}
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} <= 6
-  %{__service} %{name} stop &>/dev/null || :
-  %{__chkconfig} --del %{name} &>/dev/null || :
-%endif
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
+%else
+  %{__service} %{name} stop &>/dev/null || :
+  %{__chkconfig} --del %{name} &>/dev/null || :
 %endif
 fi
 
@@ -317,11 +315,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS CONTRIBUTORS NEWS
-%if 0%{?rhel} >= 7
-%license COPYING COPYRIGHT
-%else
 %doc COPYING COPYRIGHT
-%endif
 %doc doc/manual/*.html
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/%{name}-dbus.conf
 %dir %{_sysconfdir}/%{name}
