@@ -21,11 +21,11 @@ command "-" "Check environment"
   service-present kafka-rest
 
   exist {service_config}
-  perms {service_config} 640
+  mode {service_config} 640
   owner {service_config} kafka-rest:kafka-rest
 
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
   file-contains {logrotate_config} "su kafka-rest kafka-rest"
 
