@@ -3,6 +3,8 @@
 
 pkg clickhouse-client clickhouse-server
 
+require-root yes
+
 var user  clickhouse
 var group clickhouse
 
@@ -10,6 +12,8 @@ var cron_config /etc/cron.d/clickhouse-server
 
 var client_config   /etc/clickhouse-client/config.xml
 var client_conf_dir /etc/clickhouse-client/conf.d
+
+var server_users_config /etc/clickhouse-server/users.xml
 
 var data_dir /var/lib/clickhouse
 var log_dir /var/log/clickhouse-server
@@ -56,6 +60,9 @@ command "-" "Check server environment"
   mode {log_dir} 775
   owner {log_dir} root:{group}
 
+command "-" "Server users configuration backup"
+  backup {server_users_config}
+
 command "service {service_name} start" "Start ClickHouse daemon"
   exit 0
   service-works {service_name}
@@ -74,3 +81,6 @@ command "service {service_name} stop" "Stop ClickHouse daemon"
   !service-works {service_name}
   !connect tcp :8123
   !connect tcp :9000
+
+command "-" "Configuration restore"
+  backup-restore {server_users_config}
