@@ -233,6 +233,7 @@ fi
 %changelog
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 6.5.2-0
 - Updated to the latest release
+- Improved ClickHouse alerting
 
 * Mon Sep 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.3.6-0
 - Updated to the latest release
