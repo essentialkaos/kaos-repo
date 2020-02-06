@@ -63,8 +63,11 @@ command "-" "Check server environment"
   mode {log_dir} 775
   owner {log_dir} root:{group}
 
-command "-" "Server users configuration backup"
+command "-" "Server users configuration update"
   backup {server_users_config}
+
+command "-" "Repliace server users configuration"
+  copy users.xml {server_users_config}
 
 command "-" "Check linking with librdkafka shared lib"
   lib-linked /usr/bin/clickhouse-client librdkafka.so.1

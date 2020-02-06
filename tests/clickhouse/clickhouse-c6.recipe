@@ -61,8 +61,11 @@ command "-" "Check server environment"
   mode {log_dir} 775
   owner {log_dir} root:{group}
 
-command "-" "Server users configuration backup"
+command "-" "Server users configuration update"
   backup {server_users_config}
+
+command "-" "Repliace server users configuration"
+  copy users.xml {server_users_config}
 
 command "service {service_name} start" "Start ClickHouse daemon"
   exit 0
