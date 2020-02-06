@@ -38,7 +38,7 @@
 
 ################################################################################
 
-Summary:            Fast, reliable, and secure dependency management.
+Summary:            Fast, reliable, and secure dependency management
 Name:               nodejs-yarn
 Version:            1.21.1
 Release:            0%{?dist}
