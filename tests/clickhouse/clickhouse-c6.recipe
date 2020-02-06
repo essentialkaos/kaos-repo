@@ -4,6 +4,7 @@
 pkg clickhouse-client clickhouse-server
 
 require-root yes
+unsafe-actions yes
 
 var user  clickhouse
 var group clickhouse
