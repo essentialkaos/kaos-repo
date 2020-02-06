@@ -149,11 +149,13 @@ install -dm 0755 %{buildroot}%{_crondir}
 %if %{systemd_enabled}
 install -dm 0755 %{buildroot}%{_unitdir}
 install -dm 0755 %{buildroot}%{_sharedstatedir}/systemd/system-sleep
+install -dm 0755 %{buildroot}%{_sysconfdir}/default
 install -pm 0644 atop.service %{buildroot}%{_unitdir}/atop.service
 install -pm 0644 atop-rotate.service %{buildroot}%{_unitdir}/atop-rotate.service
 install -pm 0644 atop-rotate.timer %{buildroot}%{_unitdir}/atop-rotate.timer
 install -pm 0644 atopacct.service %{buildroot}%{_unitdir}/atopacct.service
 install -pm 0644 atopgpu.service %{buildroot}%{_unitdir}/atopgpu.service
+install -pm 0644 atop.default %{buildroot}%{_sysconfdir}/default/atop
 install -pm 0711 atop-pm.sh %{buildroot}%{_sharedstatedir}/systemd/system-sleep/atop-pm.sh
 %else
 install -dm 0755 %{buildroot}%{_initddir}
