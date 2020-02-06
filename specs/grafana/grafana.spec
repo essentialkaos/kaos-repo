@@ -56,6 +56,7 @@ URL:                  https://grafana.org
 
 Source0:              https://github.com/%{name}/%{name}/archive/v%{version}/%{name}-%{version}.tar.gz
 Source1:              %{name}-assets-%{version}.tar.bz2
+Source2:              %{name}-server.service
 Source10:             %{name}-tmpfiles.conf
 
 Source100:            checksum.sha512
@@ -155,7 +156,7 @@ install -pm 0644 conf/ldap.toml %{buildroot}%{_sysconfdir}/%{name}/ldap.toml
 install -pm 0644 packaging/rpm/sysconfig/%{name}-server %{buildroot}%{_sysconfdir}/sysconfig/%{name}-server
 %if 0%{?rhel} >= 7
 install -pm 0644 %{SOURCE10} %{buildroot}%{_tmpfilesdir}/%{name}.conf
-install -pm 0644 packaging/rpm/systemd/%{name}-server.service %{buildroot}%{_unitdir}/%{name}-server.service
+install -pm 0644 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}-server.service
 %else
 install -pm 0755 packaging/rpm/init.d/%{name}-server %{buildroot}%{_initrddir}/%{name}-server
 %endif
