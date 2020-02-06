@@ -234,6 +234,7 @@ rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
 %config(noreplace) %{_unitdir}/atopgpu.service
 %config(noreplace) %{_unitdir}/atop-rotate.service
 %config(noreplace) %{_unitdir}/atop-rotate.timer
+%config(noreplace) %{_sysconfdir}/default/atop
 %{_sharedstatedir}/systemd/system-sleep/atop-pm.sh
 %else
 %config(noreplace) %{_initddir}/atop
