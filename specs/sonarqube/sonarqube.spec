@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define __jar_repack                       0
 %define __find_requires                    %{nil}
 %define _use_internal_dependency_generator 0
@@ -76,6 +80,8 @@ Source1:              %{name}.service
 Source2:              %{name}.properties
 Source3:              %{name}.sysctl
 
+Source100:            checksum.sha512
+
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        jdk11 gradle
@@ -100,6 +106,8 @@ can fix the leak and therefore improve code quality systematically.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -167,17 +175,18 @@ fi
 %config(noreplace) %attr(0644,%{service_user},%{service_group}) %{sonar_prefix}/conf/%{short_name}.properties
 %attr(0644,%{service_user},%{service_group}) %{sonar_prefix}/conf/wrapper.conf
 %{_unitdir}/%{name}.service
-%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/bin/
-%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/data/
-%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/temp/
-%{sonar_prefix}/elasticsearch/
+%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/bin
+%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/data
+%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/temp
+%{sonar_prefix}/elasticsearch
 %attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/extensions/
-%{sonar_prefix}/lib/
-%attr(0755,%{service_user},%{service_group}) %{sonar_prefix}/logs/
-%{sonar_prefix}/web/
+%{sonar_prefix}/lib
+%attr(0755,%{service_user},%{service_group}) %{_logdir}/%{name}
+%{sonar_prefix}/logs
+%{sonar_prefix}/web
 
 ################################################################################
 
 %changelog
 * Wed Dec 25 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 7.9.1-0
-- Initial build.
+- Initial build
