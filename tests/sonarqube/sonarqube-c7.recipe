@@ -1,7 +1,7 @@
 # Bibop recipe for SonarQube
 # See more: https://kaos.sh/bibop
 
-pkg sonarqube
+pkg sonarqube jre11
 
 require-root yes
 

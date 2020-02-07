@@ -73,7 +73,7 @@ Version:              7.9.1
 Release:              0%{?dist}
 License:              LGPLv3
 Group:                System Environment/Daemons
-URL:                  https://www.sonarqube.org/
+URL:                  https://www.sonarqube.org
 
 Source0:              https://github.com/SonarSource/%{name}/archive/%{version}.tar.gz
 Source1:              %{name}.service
@@ -86,7 +86,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        jdk11 gradle
 
-Requires:             java = 11
+Requires:             java
 
 Requires(post):       systemd
 Requires(preun):      systemd
