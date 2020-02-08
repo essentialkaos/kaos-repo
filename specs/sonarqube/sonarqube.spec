@@ -152,15 +152,25 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %post
-%systemd_post %{name}.service
-%sysctl -p
+%{__sysctl} -p
+
+if [[ $1 -eq 1 ]] ; then
+  %{__systemctl} preset %{name}.servic &>/dev/null || :
+fi
 
 %preun
-%systemd_preun %{name}.service
+if [[ $1 -eq 0 ]] ; then
+  %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__systemctl} stop %{name}.service &>/dev/null || :
+fi
 
 %postun
-%systemd_postun_with_restart %{name}.service
-%sysctl -p
+%{__sysctl} -p
+%{__systemctl} daemon-reload &>/dev/null || :
+
+if [[ $1 -ge 1 ]] ; then
+  %{__systemctl} try-restart %{name}.service &>/dev/null || :
+fi
 
 ################################################################################
 
