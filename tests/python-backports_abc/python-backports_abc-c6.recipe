@@ -1,5 +1,5 @@
 # Bibop recipe for python-backports_abc for CentOS 6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-backports_abc python34-backports_abc
 
@@ -8,5 +8,9 @@ fast-finish yes
 command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/backports_abc.py
 
+  python-module backports_abc
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/backports_abc.py
+
+  python3-module backports_abc

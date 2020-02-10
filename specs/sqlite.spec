@@ -1,18 +1,18 @@
 ################################################################################
 
-%define tarversion  3260000
+%define tarversion  3310100
 
 ################################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
-Version:            3.26.0
+Version:            3.31.1
 Release:            0%{?dist}
 License:            GPL
 Group:              Development/Tools
-URL:                http://www.sqlite.org
+URL:                https://www.sqlite.org
 
-Source0:            http://www.sqlite.org/2018/%{name}-autoconf-%{tarversion}.tar.gz
+Source0:            https://www.sqlite.org/2020/%{name}-autoconf-%{tarversion}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -128,6 +128,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 3.31.1-0
+- Updated to the latest stable release
+
 * Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.26.0-0
 - Updated to the latest stable release
 

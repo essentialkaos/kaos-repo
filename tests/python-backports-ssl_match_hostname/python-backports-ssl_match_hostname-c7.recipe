@@ -1,5 +1,5 @@
 # Bibop recipe for python-backports_abc for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-backports-ssl_match_hostname python36-backports-ssl_match_hostname
 
@@ -9,6 +9,10 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/backports/ssl_match_hostname
   dir {PYTHON2_SITELIB}/backports/ssl_match_hostname
 
+  python-module backports.ssl_match_hostname
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/backports/ssl_match_hostname
   dir {PYTHON3_SITELIB}/backports/ssl_match_hostname
+
+  python3-module backports.ssl_match_hostname

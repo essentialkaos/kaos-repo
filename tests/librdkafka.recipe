@@ -1,7 +1,7 @@
 # Bibop recipe for librdkafka
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
-pkg librdkafka librdkafka-devel
+pkg librdkafka librdkafka-static librdkafka-devel
 
 command "-" "Check shared library"
   lib-loaded librdkafka++.so.*
@@ -13,8 +13,9 @@ command "-" "Check headers and package config"
   lib-config rdkafka++
   lib-config rdkafka
 
+command "-" "Check static libraries"
   exist /usr/lib64/librdkafka++.a
   exist /usr/lib64/librdkafka.a
 
-  perms /usr/lib64/librdkafka++.a 755
-  perms /usr/lib64/librdkafka.a 755
+  mode /usr/lib64/librdkafka++.a 755
+  mode /usr/lib64/librdkafka.a 755

@@ -1,5 +1,5 @@
 # Bibop recipe for Prometheus Pushgateway
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg prometheus-pushgateway
 
@@ -27,19 +27,19 @@ command "-" "Check environment"
   group-exist {service_group}
 
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
   exist {sysconfig}
-  perms {sysconfig} 644
+  mode {sysconfig} 644
 
   exist {run_dir}
   dir {run_dir}
-  perms {run_dir} 755
+  mode {run_dir} 755
   owner {run_dir} {service_user}
 
   exist {log_dir}
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}
 
 command "systemctl start {service_name}" "Start Pushgateway service"

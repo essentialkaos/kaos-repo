@@ -1,5 +1,5 @@
 # Bibop recipe for python-pycurl for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python36-pycurl
 
@@ -12,3 +12,5 @@ command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/curl/__init__.py
 
   exist {PYTHON3_SITEARCH}/pycurl.cpython-36m-x86_64-linux-gnu.so
+
+  python3-module curl

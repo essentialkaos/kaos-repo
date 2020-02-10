@@ -30,7 +30,7 @@
 
 Summary:            Top-like PostgreSQL statistics viewer
 Name:               pgcenter
-Version:            0.5.0
+Version:            0.6.4
 Release:            0%{?dist}
 License:            BSD 3-Clause
 Group:              Development/Tools
@@ -40,7 +40,7 @@ Source0:            https://github.com/lesovsky/%{name}/archive/v%{version}.tar.
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make golang >= 1.11
+BuildRequires:      make golang >= 1.13
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -106,6 +106,104 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 0.6.4-0
+- attempt to fix goreleaser builds
+- goreleaser: clean before build
+- update travis config
+
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 0.6.3-0
+- Accept /proc/diskstat metrics with extra fields.
+- added help description about pg_stat_progress_create_index view
+- added menu for switching between progress stats in top utility
+- added pg_stat_progress_cluster stats to top/record/report utils
+- added pg_stat_progress_create_index stats
+- added stats context related to pg_stat_progress_cluster view
+- added support for pg_stat_database.checksum_failures
+- adjust header's styles of iostat/nicstat tabs in top utility
+- another try of aligning refactoring - skip aligning if no rows in result
+  set - don't truncate long values, such as names
+- avoid rude disconnection from postgres at top-program exit
+- describe "pgcenter config" doc more verbosely
+- fix crashes when postgres is not running
+- fix units
+- implemented switching between two progress stats
+- improve input args for progress stats in report utility
+- inject version info at build time
+- moved psql hotkey from 'p' to '~'
+- readme/changelog changes
+- report: print header at the beginning of the output
+- rethinking pg_stat_progress_vacuum query: - wait events merged into single
+  column - changed order of columns - move 'wait events' after 'state' - changed
+  totals to percents for scanned and vacuumed numbers changed reports' buitin
+  docs
+
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 0.6.2-0
+- Cursor handling improvements
+- Hide cursor when canceling operation
+- Quitting from help and main screens with 'q' key
+- fix code formatting, misspeling, etc.
+- fixed acidentally used case-sensitive pattern matching when accounting number
+  of user-started vacuums
+- record/report: extend "--help" messages
+- record/report: improve aligning and truncation of pg_stat_statements.query
+- reworked pg_stat_statements queries
+- rewrite PQconnectdb using connection setup in a loop
+- top-like UI highlighting improvements
+- top: do polling pg_stat_statements only if it's available (issue #59)
+- top: fixed handling of libpq errors during connection establishment
+- top: printLogtail() tiny refactoring, removed unnecessary retval
+- top: read remote stats only if pgcenter schema exists
+- top: removed notes about deprecated hotkeys; issue #57
+
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 0.6.1-0
+- README: add badges
+- top: fix wrong assembling of path to logfile
+
+* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 0.6.0-0
+- Added dependencies downloading before building
+- Changelog file is returned
+- Merge pull request #46 from andyone/master
+- added CGO_ENABLED=0
+- added goreleaser support
+- added wait events profiling
+- cast all numeric to the same precision
+- command management refactoring: config: moved parameters check from main
+  program code to command management code config: emit error if neither '-i'
+  nor '-u' specified profile: emit error if '-P' is not specified
+- doc improvements and fixes
+- fix division by zero in query to pg_stat_user_functions
+- fix travis config
+- fix travis config, try 2
+- fixed GoReport recommendations top: fix wrong masks handling when
+  cancel/terminate group of backends fixed cyclomatic complexity in
+  functions added proper comments for variables and methods done code
+  formatting
+- lib/stat: fix wrong calculation of hits values
+- lib/utils/postgres: remove explicit sslmode from connectin string
+- output aligning rewritten: - fixed aligning for 'top' command - dynamic
+  aligning for 'report' command - two new hotkeys in 'top', have been
+  introduced which allow to change width of active columns
+  (up/down arrows) - column width map moved from PGresult level to
+  Context - aligning is performed once when first stats displayed - stat.Print()
+  marked as deprecated - fixed couple IDE's warnings (unused variables)
+- pg_stat_database query fixes: - strict cast of blk_read_time and
+  blk_write_time to numeric helps to avoid some kind of errors in diff/sort
+  operations - show blks_read in kilobytes - clarify builtin help add error
+  check into PGresult.New()
+- profile: added docs and examples
+- release 0.6.0
+- remove tabs from queries (looks ugly when log_destination=syslog)
+- removed old commented and unused code
+- report: extend built-in help
+- report: show last processed stats file on error\ when something goes wrong
+  and pgcenter is failed to read stats, it shows name of\ last processes stats
+  file within tar file. It helps to debug what was happened.
+- some refactoring in connection handling module: added error handling of pq
+  (go driver) related errors added extra error handling in
+  replaceEmptySettings() rewriten PGhost(), use advanced query for getting
+  'host' value fixed error when attepmting to connect to non-SSL postgres:
+  'pq: SSL is not enabled on the server'
+
 * Wed Oct 03 2018 Anton Novojilov <andy@essentialkaos.com> - 0.5.0-0
 - pgcenter rewritten on Go from scratch
 - pgcenter functionality divided into sub-commands (git/perf-style)

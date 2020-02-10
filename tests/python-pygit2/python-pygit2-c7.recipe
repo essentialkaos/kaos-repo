@@ -1,0 +1,22 @@
+# Bibop recipe for python-pygit2 for CentOS 7
+# See more: https://kaos.sh/bibop
+
+pkg python-pygit2 python36-pygit2
+
+fast-finish yes
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/pygit2
+  dir {PYTHON2_SITEARCH}/pygit2
+
+  exist {PYTHON2_SITEARCH}/pygit2/__init__.py
+
+  python-module pygit2
+
+command "-" "Check Python 3 installation"
+  exist {PYTHON3_SITEARCH}/pygit2
+  dir {PYTHON3_SITEARCH}/pygit2
+
+  exist {PYTHON3_SITEARCH}/pygit2/__init__.py
+
+  python3-module pygit2

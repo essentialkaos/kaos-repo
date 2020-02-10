@@ -1,11 +1,11 @@
 # Bibop recipe for Snort
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg snort daq
 
 require-root yes
 
-var version 2.9.12
+var version 2.9.15.1
 
 var service_name  snortd
 var service_user  snort
@@ -37,18 +37,19 @@ command "-" "Check environment"
   exist {config_dir}/reference.config
   exist {config_dir}/classification.config
 
-  perms {config_dir}/snort.conf 644
+  mode {config_dir}/snort.conf 644
   owner {config_dir}/snort.conf root:root
 
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
   exist {log_dir}
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}:{service_group}
 
 command "-" "Check Snort libraries"
+  exist {LIBDIR}/snort-{version}_dynamicengine/libsf_engine.so
   exist {LIBDIR}/snort-{version}_dynamicpreprocessor/libsf_appid_preproc.so
   exist {LIBDIR}/snort-{version}_dynamicpreprocessor/libsf_dce2_preproc.so
   exist {LIBDIR}/snort-{version}_dynamicpreprocessor/libsf_dnp3_preproc.so

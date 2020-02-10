@@ -58,14 +58,14 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_comb_ver}
 Name:              %{fullname}_%{pg_comb_ver}
-Version:           2.5.0
+Version:           2.5.3
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
-URL:               http://www.postgis.net
+URL:               https://www.postgis.net
 
-Source0:           http://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
-Source1:           http://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
+Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
+Source1:           https://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
 Source2:           filter-requires-perl-Pg.sh
 
 Patch0:            %{fullname}-gdalfpic.patch
@@ -275,5 +275,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 2.5.3-0
+- Updated to the latest stable release
+
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
 - Initial build

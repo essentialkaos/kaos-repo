@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
 
 %if 0%{?rhel} == 5
@@ -10,13 +14,14 @@
 
 Summary:              Radically simple IT automation
 Name:                 ansible
-Version:              2.7.6
+Version:              2.9.4
 Release:              0%{?dist}
-URL:                  http://www.ansible.com
+URL:                  https://www.ansible.com
 License:              GPLv3
 Group:                Development/Libraries
 
-Source:               http://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
+Source0:              https://releases.ansible.com/ansible/%{name}-%{version}.tar.gz
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -37,23 +42,7 @@ BuildRequires:        python-setuptools
 
 Requires:             PyYAML python-markupsafe python-paramiko python-jinja2
 Requires:             python-keyczar python-httplib2 python-setuptools
-Requires:             python-crypto python-six
-%endif
-
-%if 0%{?fedora} >= 18
-BuildRequires:        python-devel
-BuildRequires:        python-setuptools
-
-Requires:             PyYAML python-paramiko python-jinja2 python-keyczar
-Requires:             python-httplib2 python-setuptools python-six
-%endif
-
-%if 0%{?suse_version}
-BuildRequires:        python-devel
-BuildRequires:        python-setuptools
-
-Requires:             python-paramiko python-jinja2 python-keyczar python-yaml
-Requires:             python-httplib2 python-setuptools python-six
+Requires:             python-crypto python-six python-argparse
 %endif
 
 Requires:             sshpass
@@ -71,6 +60,8 @@ are transferred to managed machines automatically.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -114,6 +105,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Feb 10 2020 Anton Novojilov <andy@essentialkaos.com> - 2.9.4-0
+- Updated to the latest version
+
+* Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.9.2-0
+- Updated to the latest version
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
+- Updated to the latest version
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.6-0
 - Updated to the latest version
 

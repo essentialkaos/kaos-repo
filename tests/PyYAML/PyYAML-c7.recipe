@@ -1,7 +1,7 @@
 # Bibop recipe for PyYAML
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
-pkg python36-PyYAML
+pkg PyYAML python36-PyYAML
 
 fast-finish yes
 
@@ -10,7 +10,11 @@ command "-" "Check Python 2 installation"
   dir {PYTHON2_SITEARCH}/yaml
   !empty-dir {PYTHON2_SITEARCH}/yaml
 
+  python-module yaml
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/yaml
   dir {PYTHON3_SITEARCH}/yaml
   !empty-dir {PYTHON3_SITEARCH}/yaml
+
+  python3-module yaml

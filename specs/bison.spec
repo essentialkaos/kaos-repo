@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -42,15 +46,21 @@
 
 ################################################################################
 
+%define _smp_mflags -j1
+
+################################################################################
+
 Summary:              A GNU general-purpose parser generator
 Name:                 bison
-Version:              3.2.4
+Version:              3.5
 Release:              0%{?dist}
 License:              GPLv3+
 Group:                Development/Tools
-URL:                  http://www.gnu.org/software/bison/
+URL:                  https://www.gnu.org/software/bison/
 
-Source:               http://ftp.gnu.org/pub/gnu/bison/bison-%{version}.tar.xz
+Source0:              https://ftp.gnu.org/pub/gnu/bison/bison-%{version}.tar.xz
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -113,6 +123,8 @@ Bison manual section for more information.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -121,6 +133,7 @@ Bison manual section for more information.
 
 %install
 rm -rf %{buildroot}
+
 %{make_install}
 
 rm -f %{buildroot}%{_bindir}/yacc
@@ -151,7 +164,7 @@ rm -rf %{buildroot}
 %files -f %{name}-runtime.lang runtime
 %defattr(-,root,root)
 %doc COPYING
-%{_datarootdir}/locale/*/LC_MESSAGES/%{name}-runtime.mo
+%{_datarootdir}/locale/*/LC_MESSAGES/%{name}-gnulib.mo
 
 %files devel
 %defattr(-,root,root)
@@ -161,6 +174,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 3.5-0
+- Updated to latest stable release
+
+* Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
+- Updated to latest stable release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
+- Updated to latest stable release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4-0
+- Updated to latest stable release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.2-0
+- Updated to latest stable release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.1-0
+- Updated to latest stable release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3-0
+- Updated to latest stable release
+
 * Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
 - Updated to latest stable release
 

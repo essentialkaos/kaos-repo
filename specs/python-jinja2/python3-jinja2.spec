@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -23,13 +27,15 @@
 
 Summary:        Sandboxed template engine
 Name:           %{python_base}-jinja2
-Version:        2.10
-Release:        1%{?dist}
+Version:        2.10.3
+Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://jinja.pocoo.org
 
-Source:         https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
+Source0:        https://github.com/pallets/%{package_name}/archive/%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
@@ -37,7 +43,7 @@ BuildArch:      noarch
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
-Requires:       %{python_base}
+Requires:       %{python_base} %{python_base}-markupsafe
 
 Provides:       %{name} = %{verion}-%{release}
 
@@ -52,6 +58,8 @@ templates and python code.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn jinja-%{version}
 
 %build
@@ -74,6 +82,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 2.10.3-0
+- Updated to the latest stable release
+
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-2
+- Added python36-markupsafe package to dependencies
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-1
 - Updated for compatibility with Python 3.6
 

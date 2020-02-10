@@ -73,6 +73,7 @@ RELEASE_PATH="${RELEASE_DIR}/grafana-assets-${VERSION}.tar.bz2"
 export PATH=${BUILDROOT}/node_modules/yarn/bin:${PATH}
 
 ################################################################################
+
 # Print coloured message to terminal
 #
 # 1: Message (String)
@@ -80,11 +81,11 @@ export PATH=${BUILDROOT}/node_modules/yarn/bin:${PATH}
 # Code: No
 # Echo: No
 show() {
-    if [[ -n "$2" && -z "$no_colors" ]] ; then
-        echo -e "\033[${2}m${1}\033[0m"
-    else
-        echo -e "$1"
-    fi
+  if [[ -n "$2" && -z "$no_colors" ]] ; then
+    echo -e "\033[${2}m${1}\033[0m"
+  else
+    echo -e "$1"
+  fi
 }
 
 # Print error and exit with given message
@@ -122,7 +123,7 @@ usage() {
 # Code: Yes
 # Echo: Yes
 checkDeps() {
-  for p in $@ ; do
+  for p in "$@" ; do
     if ! type "$p" >/dev/null ; then
       printErrorAndExit "unable to find program: $p"
       return 1

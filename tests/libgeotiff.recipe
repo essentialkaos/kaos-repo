@@ -1,5 +1,5 @@
 # Bibop recipe for GeoTIFF format library
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg libgeotiff libgeotiff-devel
 

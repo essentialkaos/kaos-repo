@@ -1,5 +1,5 @@
 # Bibop recipe for MMGeoIP
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg MMGeoIP
 
@@ -22,11 +22,11 @@ command "-" "Check data"
   !empty /usr/local/share/GeoIP/GeoLite2-City-Locations-en.dat
   !empty /usr/local/share/GeoIP/GeoLite2-City-Locations-ru.dat
 
-  perms /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv4.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv6.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-Country-Locations-en.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-Country-Locations-ru.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv4.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv6.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-City-Locations-en.dat 644
-  perms /usr/local/share/GeoIP/GeoLite2-City-Locations-ru.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv4.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-Country-Blocks-IPv6.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-Country-Locations-en.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-Country-Locations-ru.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv4.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-City-Blocks-IPv6.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-City-Locations-en.dat 644
+  mode /usr/local/share/GeoIP/GeoLite2-City-Locations-ru.dat 644

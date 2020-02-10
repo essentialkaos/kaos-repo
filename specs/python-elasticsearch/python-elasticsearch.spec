@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 
 ################################################################################
@@ -11,19 +15,23 @@
 
 Summary:        Python client for Elasticsearch 2.x
 Name:           python-%{package_name}
-Version:        6.3.1
+Version:        7.5.1
 Release:        0%{?dist}
 License:        ASLv2.0
 Group:          Development/Libraries
 URL:            https://github.com/elastic/elasticsearch-py
 
-Source:         https://github.com/elastic/%{source_name}/archive/%{version}.tar.gz
+Source0:        https://github.com/elastic/%{source_name}/archive/%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
-BuildRequires:  python-devel python-setuptools
+BuildRequires:  python-devel >= 2.7 python-setuptools
+
+Requires:       python >= 2.7 python-urllib3
 
 Provides:       %{name} = %{verion}-%{release}
 Provides:       python2-%{package_name} = %{verion}-%{release}
@@ -38,6 +46,8 @@ to be opinion-free and very extendable.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{source_name}-%{version}
 
 %clean
@@ -59,6 +69,12 @@ python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 7.5.1-0
+- Updated to the latest stable release
+
+* Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-1
+- Added python-urllib3 to dependencies
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 6.3.1-0
 - Updated to latest stable release
 

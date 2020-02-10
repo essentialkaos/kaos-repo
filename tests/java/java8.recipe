@@ -1,0 +1,31 @@
+# Bibop recipe for JRE8 and JDK8
+# See more: https://kaos.sh/bibop
+
+pkg jre8 jdk8
+
+var java_version 1.8.0
+
+command "-" "Check environment"
+  app jar
+  app java
+  app javac
+  app keytool
+
+command "java -version" "Check Java version"
+  exit 0
+  output-contains "{java_version}"
+
+command "javac -version" "Check Java compiler version"
+  exit 0
+  output-contains "{java_version}"
+
+command "java Test" "Check precompiled class file"
+  exit 0
+  output-contains "JAVA WORKS"
+
+command "javac Comp.java" "Test source compilation"
+  exit 0
+
+command "java Comp" "Check compiled result"
+  exit 0
+  output-contains "SUCCESSFULLY COMPILED"

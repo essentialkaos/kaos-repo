@@ -38,7 +38,7 @@
 
 Summary:              Generic non-JVM producer and consumer for Apache Kafka
 Name:                 kafkacat
-Version:              1.3.1
+Version:              1.5.0
 Release:              0%{?dist}
 License:              2-clause BSD
 Group:                Development/Libraries
@@ -98,6 +98,31 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Confluent Schema-Registry and Apache Avro support: consumer can now
+  deserialize Avro messages (-s avro)
+- Added generic primitive deserialization using pack-str format (e.g., -s
+  'key=i h$')
+- Start and/or stop consuming based on timestamp (-o s@1568276617000
+  -o e@1568276622000)
+- New Dockerfile based on Alpine
+- kafkacat is now compatible with old docker images by removing an initial
+  kafkacat argument if it is present.
+- Dont overwrite producev() error code
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
+- Consumer: Add support for printing message headers (-f ".. %%h.. \n")
+- Producer: Add support for specifying message headers (-H name=value)
+- Emit current controllerId in metadata output, if supported
+- Add -F <file> to read config from file. Defaults to $KAFKACAT_CONFIG or
+  ~/.config/kafkacat.conf. With some support for translating Java config
+  properties to librdkafka counterparts.
+- Support Fixed key (-k ..)
+- Make sure topic configuration is applied first
+- JSON: emit NULL keys and values as null rather than empty string
+- Fix tstype json output
+- Honour -c count in consumer mode by yielding
+
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
 - Added support for formatter T - message timestamp
 - Introduce -E argument (don't exit on error)

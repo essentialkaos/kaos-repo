@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -43,23 +47,24 @@
 ################################################################################
 
 # Found X264_BUILD in (x264.h)
-%define pkg_build            155
-%define pkg_snapshot_date    20190122
-%define pkg_snapshot_suffix  2245
+%define pkg_build  159
+%define pkg_date   20200128
 
-%define pkg_snapshot_version %{pkg_snapshot_date}-%{pkg_snapshot_suffix}
+%define pkg_sha    1771b556ee45207f8711744ccbd5d42a3949b14c
 
 ################################################################################
 
 Summary:            H.264 (MPEG-4 AVC) encoder library
 Name:               x264
 Version:            0.%{pkg_build}
-Release:            %{pkg_snapshot_date}_0%{?dist}
+Release:            %{pkg_date}_0%{?dist}
 License:            GPL
 Group:              System Environment/Libraries
-URL:                http://www.videolan.org/developers/x264.html
+URL:                https://www.videolan.org/developers/x264.html
 
-Source0:            http://ftp.videolan.org/pub/videolan/%{name}/snapshots/%{name}-snapshot-%{pkg_snapshot_version}-stable.tar.bz2
+Source0:            https://code.videolan.org/videolan/x264/-/archive/%{pkg_sha}/%{name}-%{pkg_sha}.tar.bz2
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -86,7 +91,9 @@ Header files and shared libraries for x264.
 ################################################################################
 
 %prep
-%setup -qn %{name}-snapshot-%{pkg_snapshot_version}-stable
+%{crc_check}
+
+%setup -qn %{name}-%{pkg_sha}
 
 %build
 
@@ -132,6 +139,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 0.159-20200128_0
+- Updated to the latest stable snapshot
+
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 0.157-20190711_0
+- Updated to the latest stable snapshot
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 0.155-20190122_0
 - Updated to the latest stable snapshot
 

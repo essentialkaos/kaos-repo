@@ -1,0 +1,19 @@
+# Bibop recipe for Zabbix datasource plugin for Grafana
+# See more: https://kaos.sh/bibop
+
+pkg grafana-plugin-zabbix-datasource
+
+var plugin_dir  /var/lib/grafana/plugins
+var plugin_name alexanderzobnin-zabbix-app
+
+command "-" "Check plugin data"
+  exist {plugin_dir}/{plugin_name}
+  dir {plugin_dir}/{plugin_name}
+  mode {plugin_dir}/{plugin_name} 755
+  owner {plugin_dir}/{plugin_name} root:root
+
+  exist {plugin_dir}/{plugin_name}/dist
+  exist {plugin_dir}/{plugin_name}/src
+
+  dir {plugin_dir}/{plugin_name}/dist
+  dir {plugin_dir}/{plugin_name}/src

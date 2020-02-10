@@ -47,7 +47,7 @@ listAdditions() {
     app_name=$(getSpecValue "$spec" "name")
     app_desc=$(getSpecValue "$spec" "summary")
 
-    echo "- [ ] \`${app_name}\` (_${app_desc}_)"
+    echo "- \`${app_name}\` (_${app_desc}_)"
 
   done < <(getChanges "$TYPE_ADD")
 
@@ -84,7 +84,7 @@ listModifications() {
     app_name=$(getSpecValue "$spec" "name")
     app_ver=$(getSpecValue "$spec" "version")
 
-    echo "- [ ] \`${app_name}\` updated to $app_ver"
+    echo "- \`${app_name}\` updated to $app_ver"
 
   done < <(getChanges "$TYPE_MOD")
 

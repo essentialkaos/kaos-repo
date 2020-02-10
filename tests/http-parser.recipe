@@ -1,5 +1,5 @@
 # Bibop recipe for HTTP Parser
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg http-parser http-parser-devel
 

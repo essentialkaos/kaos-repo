@@ -1,0 +1,39 @@
+diff -urN netatalk-3.1.12-orig/distrib/initscripts/Makefile.in netatalk-3.1.12/distrib/initscripts/Makefile.in
+--- netatalk-3.1.12-orig/distrib/initscripts/Makefile.in	2018-12-20 10:24:49.000000000 +0300
++++ netatalk-3.1.12/distrib/initscripts/Makefile.in	2019-07-19 15:46:44.000000000 +0300
+@@ -751,7 +751,7 @@
+ @USE_REDHAT_SYSV_TRUE@	chmod a+x $(sysv_SCRIPTS)
+ 
+ @USE_REDHAT_SYSV_TRUE@install-data-hook:
+-@USE_REDHAT_SYSV_TRUE@	-chkconfig --add $(sysv_SCRIPTS)
++	@echo "SKIPPED"
+ 
+ @USE_REDHAT_SYSV_TRUE@uninstall-startup:
+ @USE_REDHAT_SYSV_TRUE@	-chkconfig --del $(sysv_SCRIPTS)
+@@ -761,7 +761,7 @@
+ @USE_SYSTEMD_TRUE@	cp -f service.systemd netatalk.service
+ 
+ @USE_SYSTEMD_TRUE@install-data-hook:
+-@USE_SYSTEMD_TRUE@	-systemctl daemon-reload
++	@echo "SKIPPED"
+ 
+ @USE_SYSTEMD_TRUE@uninstall-startup:
+ @USE_SYSTEMD_TRUE@	-systemctl disable $(service_DATA)
+@@ -772,7 +772,7 @@
+ @USE_DEBIAN_SYSTEMD_TRUE@	cp -f service.systemd netatalk.service
+ 
+ @USE_DEBIAN_SYSTEMD_TRUE@install-data-hook:
+-@USE_DEBIAN_SYSTEMD_TRUE@	-systemctl daemon-reload
++	@echo "SKIPPED"
+ 
+ @USE_DEBIAN_SYSTEMD_TRUE@uninstall-startup:
+ @USE_DEBIAN_SYSTEMD_TRUE@	-systemctl disable $(service_DATA)
+@@ -784,7 +784,7 @@
+ @USE_SUSE_SYSV_TRUE@	chmod a+x $(sysv_SCRIPTS)
+ 
+ @USE_SUSE_SYSV_TRUE@install-data-hook:
+-@USE_SUSE_SYSV_TRUE@	-insserv $(sysv_SCRIPTS)
++	@echo "SKIPPED"
+ 
+ @USE_SUSE_SYSV_TRUE@uninstall-startup:
+ @USE_SUSE_SYSV_TRUE@	-insserv -d $(sysv_SCRIPTS)

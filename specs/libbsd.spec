@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -43,13 +47,15 @@
 
 Summary:         Library providing BSD-compatible functions for portability
 Name:            libbsd
-Version:         0.9.1
+Version:         0.10.0
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
-URL:             https://libbsd.freedesktop.org/
+URL:             https://libbsd.freedesktop.org
 
 Source0:         https://gitlab.freedesktop.org/%{name}/%{name}/-/archive/%{version}/%{name}-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -78,6 +84,8 @@ Header files for libbsd package.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 echo %{version} > .dist-version
 
@@ -129,6 +137,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 0.10.0-0
+- Updated to the latest stable release
+
 * Mon Aug 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.9.1-0
 - Initial build
-

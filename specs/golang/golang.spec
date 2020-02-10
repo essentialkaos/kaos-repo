@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -54,13 +58,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.12
+%global go_api 1.13
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.12.5
+Version:           1.13.7
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -71,6 +75,8 @@ Source0:           https://storage.googleapis.com/%{name}/go%{version}.src.tar.g
 Source10:          %{name}-gdbinit
 Source11:          %{name}-prelink.conf
 Source12:          macros.%{name}
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -413,6 +419,8 @@ for _,d in pairs({"api", "doc", "include", "lib", "src"}) do
 end
 
 %prep
+%{crc_check}
+
 %setup -qn go
 
 %build
@@ -598,7 +606,6 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %exclude %{goroot}/bin/
 %exclude %{goroot}/src/
 
-%exclude %{goroot}/pkg/bootstrap/
 %exclude %{goroot}/pkg/darwin_*/
 %exclude %{goroot}/pkg/freebsd_*/
 %exclude %{goroot}/pkg/linux_*/
@@ -787,6 +794,42 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Wed Jan 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.7-0
+- Updated to the latest stable release
+
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.6-0
+- Updated to the latest stable release
+
+* Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.5-0
+- Updated to the latest stable release
+
+* Fri Nov 01 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.4-0
+- Updated to the latest stable release
+
+* Sat Oct 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.3-0
+- Updated to the latest stable release
+
+* Sat Oct 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.2-0
+- Updated to the latest stable release
+
+* Thu Sep 26 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
+- Updated to the latest stable release
+
+* Wed Sep 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13-0
+- Updated to the latest stable release
+
+* Tue Aug 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.9-0
+- Updated to the latest stable release
+
+* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.8-0
+- Updated to the latest stable release
+
+* Tue Jul 09 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.7-0
+- Updated to the latest stable release
+
+* Wed Jun 12 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.6-0
+- Updated to the latest stable release
+
 * Wed May 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.5-0
 - Updated to the latest stable release
 

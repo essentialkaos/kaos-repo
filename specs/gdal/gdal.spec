@@ -44,12 +44,12 @@
 Summary:           GDAL/OGR - a translator library for raster and vector geospatial data formats
 Name:              gdal
 Version:           1.11.5
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           MIT and BSD-3-Clause
 Group:             Development/Libraries
-URL:               http://www.gdal.org
+URL:               https://www.gdal.org
 
-Source0:           http://download.osgeo.org/%{name}/%{version}/%{name}-%{version}.tar.gz
+Source0:           https://download.osgeo.org/%{name}/%{version}/%{name}-%{version}.tar.gz
 
 Patch0:            %{name}-python_install.patch
 Patch1:            %{name}-perl.patch
@@ -60,10 +60,10 @@ BuildRequires:     autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2 expat-deve
 BuildRequires:     geos-devel >= 3 giflib-devel hdf-devel >= 4.0 libgeotiff-devel
 BuildRequires:     libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel >= 3.6.0
 BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel
-BuildRequires:     libspatialite-devel python-setuptools ruby-devel sqlite-devel swig
+BuildRequires:     python-setuptools ruby-devel sqlite-devel swig
 BuildRequires:     unixODBC-devel libcurl-devel zlib-devel >= 1.1.4 xerces-c-devel
 BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker python-devel
-BuildRequires:     freexl-devel postgresql92-devel
+BuildRequires:     freexl-devel postgresql93-devel
 
 Requires:          xerces-c
 
@@ -88,8 +88,8 @@ Requires:          %{name} = %{version}-%{release}
 
 Requires:          hdf-devel >= 4.0 expat-devel geos-devel >= 3 libgeotiff-devel >= 1.2.1
 Requires:          libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel
-Requires:          netcdf-devel libspatialite-devel mysql-devel libcurl-devel
-Requires:          postgresql92-devel sqlite-devel >= 3 unixODBC-devel xerces-c-devel
+Requires:          netcdf-devel mysql-devel libcurl-devel
+Requires:          postgresql93-devel sqlite-devel >= 3 unixODBC-devel xerces-c-devel
 Requires:          giflib-devel freexl-devel
 
 %description devel
@@ -136,7 +136,7 @@ export PYTHON_INCLUDES=-I%{_pyinclude}
 %{__autoconf}
 %endif
 
-export CFLAGS="$RPM_OPT_FLAGS -fpic"
+export CFLAGS="%{optflags} -fpic"
 
 %configure \
         --prefix=%{_prefix} \
@@ -161,7 +161,6 @@ export CFLAGS="$RPM_OPT_FLAGS -fpic"
         --with-jpeg \
         --with-odbc \
         --with-mysql \
-        --with-spatialite \
         --with-python \
         --with-curl \
         --with-pg \
@@ -397,6 +396,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-2
+- Rebuilt with latest version of netcdf
+- Removed libspatialite support
+- Minimal required version of PostgreSQL set to 9.3
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-1
 - Rebuilt with latest version of netcdf
 

@@ -1,5 +1,5 @@
 # Bibop recipe for Memcached
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg memcached memcached-devel
 

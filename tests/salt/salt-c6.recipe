@@ -1,5 +1,5 @@
 # Bibop recipe for Salt
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg salt-master salt-minion salt-syndic
 
@@ -35,15 +35,15 @@ command "-" "Check environment"
   service-present salt-syndic
 
   exist {master_config}
-  perms {master_config} 640
+  mode {master_config} 640
   owner {master_config} root:root
 
   exist {minion_config}
-  perms {minion_config} 640
+  mode {minion_config} 640
   owner {minion_config} root:root
 
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
   file-contains {logrotate_config} "create 640 root root"
 

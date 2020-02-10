@@ -1,19 +1,25 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:              GeoTIFF format library
 Name:                 libgeotiff
-Version:              1.4.3
+Version:              1.5.1
 Release:              0%{?dist}
 License:              MIT
 Group:                System Environment/Libraries
 URL:                  https://trac.osgeo.org/geotiff/
 
-Source:               http://download.osgeo.org/geotiff/%{name}/%{name}-%{version}.tar.gz
+Source0:              https://download.osgeo.org/geotiff/%{name}/%{name}-%{version}.tar.gz
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        make gcc gcc-c++ doxygen chrpath
-BuildRequires:        libtiff-devel libjpeg-devel proj-devel zlib-devel
+BuildRequires:        libtiff-devel libjpeg-devel zlib-devel proj-devel >= 6
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -40,6 +46,8 @@ The GeoTIFF library provides support for development of geotiff image format.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -87,7 +95,6 @@ install -pm 644 %{name}.pc %{buildroot}%{_libdir}/pkgconfig/
 #clean up junks
 rm -rf %{buildroot}%{_libdir}/*.a
 rm -rf %{buildroot}%{_libdir}/*.la
-echo "" >> %{buildroot}%{_datadir}/epsg_csv/codes.csv
 
 chrpath --delete %{buildroot}%{_bindir}/applygeo
 chrpath --delete %{buildroot}%{_bindir}/geotifcp
@@ -118,10 +125,6 @@ rm -rf %{buildroot}
 %{_bindir}/makegeo
 %{_libdir}/%{name}.so.*
 %{_mandir}/man1/*.gz
-%{_datadir}/epsg_csv/csv2c.py*
-%{_datadir}/epsg_csv/csv_tools.py*
-%dir %{_datadir}/epsg_csv
-%attr(0644,root,root) %{_datadir}/epsg_csv/*.csv
 
 %files devel
 %defattr(-,root,root,-)
@@ -134,6 +137,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
+- Updated to the latest stable release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Updated to the latest stable release
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
 - Updated to the latest stable release
 

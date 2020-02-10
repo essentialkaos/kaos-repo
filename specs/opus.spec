@@ -6,11 +6,11 @@
 
 Summary:         An audio codec for use in low-delay speech and audio communication
 Name:            opus
-Version:         1.3
+Version:         1.3.1
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
-URL:             http://www.opus-codec.org
+URL:             https://www.opus-codec.org
 
 Source0:         https://archive.mozilla.org/pub/%{name}/%{name}-%{version}.tar.gz
 Source1:         https://tools.ietf.org/rfc/rfc6716.txt
@@ -95,6 +95,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
+- A new OPUS_GET_IN_DTX query to know if the encoder is in DTX mode (last
+  frame was either a comfort noise frame or not encoded at all)
+- A new (and still experimental) CMake-based build system that is eventually
+  meant to replace the VS2015 build system (the autotools one will stay)
+
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
 - Improvements to the VAD and speech/music classification using an RNN
 - Support for ambisonics coding using channel mapping families 2 and 3

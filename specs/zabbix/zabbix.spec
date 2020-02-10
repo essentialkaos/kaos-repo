@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -45,31 +49,36 @@
 
 %define service_user      %{name}
 %define service_group     %{name}
-%define service_home      %{_libdir}/%{name}
+%define service_home      %{_sharedstatedir}/%{name}
 
 ################################################################################
 
 Name:                 zabbix
-Version:              4.2.1
+Version:              4.4.5
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
-URL:                  http://www.zabbix.com
+URL:                  https://www.zabbix.com
 
-Source0:              http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
+Source0:              https://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
 Source1:              %{name}-web22.conf
 Source2:              %{name}-web24.conf
 Source3:              %{name}-logrotate.in
+Source4:              %{name}-java-gateway.init
 
 Source10:             %{name}-agent.init
 Source11:             %{name}-server.init
 Source12:             %{name}-proxy.init
+Source13:             %{name}-java-gateway.service
+Source14:             %{name}_java_gateway
 
 Source20:             %{name}-agent.service
 Source21:             %{name}-server.service
 Source22:             %{name}-proxy.service
 Source23:             %{name}-tmpfiles.conf
+
+Source100:            checksum.sha512
 
 Patch0:               config.patch
 Patch1:               fonts-config.patch
@@ -77,7 +86,7 @@ Patch1:               fonts-config.patch
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
-BuildRequires:        openldap-devel gnutls-devel iksemel-devel unixODBC-devel
+BuildRequires:        openldap-devel openssl-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
 BuildRequires:        pcre-devel zlib-devel
@@ -128,7 +137,7 @@ Summary:              Zabbix Get
 Group:                Applications/Internet
 
 %description get
-Zabbix get command line utility
+Zabbix get command line utility.
 
 ################################################################################
 
@@ -137,7 +146,16 @@ Summary:              Zabbix Sender
 Group:                Applications/Internet
 
 %description sender
-Zabbix sender command line utility
+Zabbix sender command line utility.
+
+################################################################################
+
+%package js
+Summary:              Zabbix JS
+Group:                Applications/Internet
+
+%description js
+Command line utility that can be used for embedded script testing.
 
 ################################################################################
 
@@ -184,6 +202,29 @@ Conflicts:            zabbix-server-mysql
 
 %description server-pgsql
 Zabbix server with PostgresSQL database support.
+
+################################################################################
+
+%package java-gateway
+Summary:              Zabbix java gateway
+Group:                Applications/Internet
+
+Requires:             java >= 1.8.0
+%if 0%{?rhel} >= 7
+Requires(post):       systemd
+Requires(preun):      systemd
+Requires(postun):     systemd
+%else
+Requires(post):       %{__chkconfig}
+Requires(preun):      %{__chkconfig}
+Requires(preun):      %{__service}
+Requires(postun):     %{__service}
+%endif
+
+BuildRequires:        java-devel >= 1.8.0 pcre-devel zlib-devel
+
+%description java-gateway
+Zabbix java gateway.
 
 ################################################################################
 
@@ -278,7 +319,7 @@ Requires(post):       %{_sbindir}/update-alternatives
 Requires(preun):      %{_sbindir}/update-alternatives
 
 %description web
-Zabbix web frontend common package
+Zabbix web frontend common package.
 
 ################################################################################
 
@@ -294,7 +335,7 @@ Requires:             zabbix-web = %{version}-%{release}
 Conflicts:            zabbix-web-pgsql
 
 %description web-mysql
-Zabbix web frontend for MySQL
+Zabbix web frontend for MySQL.
 
 ################################################################################
 
@@ -310,11 +351,13 @@ Requires:             zabbix-web = %{version}-%{release}
 Conflicts:            zabbix-web-mysql
 
 %description web-pgsql
-Zabbix web frontend for PostgreSQL
+Zabbix web frontend for PostgreSQL.
 
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn zabbix-%{version}
 
 %patch0 -p1
@@ -335,6 +378,9 @@ sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
 sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/postgresql/data.sql
 sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/sqlite3/data.sql
 
+# change log directory for Java Gateway
+sed -i -e 's|/tmp/zabbix_java.log|%{_localstatedir}/log/zabbix/zabbix_java_gateway.log|g' src/zabbix_java/lib/logback.xml
+
 %build
 
 export PATH="/usr/pgsql-9.6/bin:$PATH"
@@ -347,6 +393,7 @@ build_flags="
         --enable-agent
         --enable-proxy
         --enable-ipv6
+        --enable-java
         --with-net-snmp
         --with-ldap
         --with-libcurl
@@ -359,13 +406,13 @@ build_flags="
         --with-libpcre
 "
 
-%configure $build_flags --with-mysql --enable-server --with-jabber
+%configure $build_flags --with-mysql --enable-server
 %{__make} %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_mysql
 mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_mysql
 
-%configure $build_flags --with-postgresql --enable-server --with-jabber
+%configure $build_flags --with-postgresql --enable-server
 %{__make} %{?_smp_mflags}
 
 mv src/zabbix_server/zabbix_server src/zabbix_server/zabbix_server_pgsql
@@ -386,6 +433,10 @@ rm -rf %{buildroot}
 # clean unnecessary binaries
 rm -f %{buildroot}%{_sbindir}/zabbix_server
 rm -f %{buildroot}%{_sbindir}/zabbix_proxy
+# delete unnecessary files from java gateway
+rm -f %{buildroot}%{_sbindir}/zabbix_java/settings.sh
+rm -f %{buildroot}%{_sbindir}/zabbix_java/startup.sh
+rm -f %{buildroot}%{_sbindir}/zabbix_java/shutdown.sh
 
 # install necessary directories
 install -dm 755 %{buildroot}%{_bindir}
@@ -402,6 +453,8 @@ install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/externalscripts
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_agentd.d
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_server.d
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_proxy.d
+
+install -dm 755 %{buildroot}%{service_home}
 
 install -dm 755 %{buildroot}%{_localstatedir}/log/zabbix
 install -dm 755 %{buildroot}%{_localstatedir}/run/zabbix
@@ -420,6 +473,14 @@ install -dm 755 %{buildroot}%{_datadir}/zabbix
 
 install -dm 755 %{buildroot}%{_sysconfdir}/httpd/conf.d
 
+mv %{buildroot}%{_sbindir}/zabbix_java/lib/logback.xml %{buildroot}%{_sysconfdir}/zabbix/zabbix_java_gateway_logback.xml
+rm -f %{buildroot}%{_sbindir}/zabbix_java/lib/logback-console.xml
+mv %{buildroot}%{_sbindir}/zabbix_java %{buildroot}%{_datadir}/zabbix-java-gateway
+
+%if 0%{?rhel} >= 7
+install -pm 755 -p %{SOURCE14} %{buildroot}%{_sbindir}/zabbix_java_gateway
+%endif
+
 # install binaries
 install -pm 755 src/zabbix_agent/zabbix_agentd %{buildroot}%{_sbindir}/
 install -pm 755 src/zabbix_server/zabbix_server_* %{buildroot}%{_sbindir}/
@@ -435,7 +496,7 @@ cp man/zabbix_server.man %{buildroot}%{_mandir}/man8/zabbix_server.8
 cp man/zabbix_proxy.man %{buildroot}%{_mandir}/man8/zabbix_proxy.8
 
 # rename font for plots
-mv frontends/php/fonts/DejaVuSans.ttf frontends/php/fonts/graphfont.ttf
+mv frontends/php/assets/fonts/DejaVuSans.ttf frontends/php/assets/fonts/graphfont.ttf
 
 # install frontend files
 find frontends/php -name '*.orig' -delete
@@ -469,9 +530,8 @@ cat conf/zabbix_server.conf | sed \
         -e '/^# AlertScriptsPath=/a \\nAlertScriptsPath=%{_sysconfdir}/zabbix/alertscripts' \
         -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/zabbix/externalscripts' \
         -e 's|^DBUser=root|DBUser=zabbix|g' \
-        -e '/^# DBSocket=/a \\nDBSocket=%{_localstatedir}/lib/mysql/mysql.sock' \
-        -e '/^# SNMPTrapperFile=.*/a \\nSNMPTrapperFile=/var/log/snmptrap/snmptrap.log' \
-        -e '/^# SocketDir=.*/a \\nSocketDir=/var/run/zabbix' \
+        -e '/^# SNMPTrapperFile=.*/a \\nSNMPTrapperFile=%{_localstatedir}/log/snmptrap/snmptrap.log' \
+        -e '/^# SocketDir=.*/a \\nSocketDir=%{_localstatedir}/run/zabbix' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_server.conf
 
 # perfecto:absolve 10
@@ -481,10 +541,14 @@ cat conf/zabbix_proxy.conf | sed \
         -e '/^# LogFileSize=/a \\nLogFileSize=0' \
         -e '/^# ExternalScripts=/a \\nExternalScripts=%{_sysconfdir}/zabbix/externalscripts' \
         -e 's|^DBUser=root|DBUser=zabbix|g' \
-        -e '/^# DBSocket=/a \\nDBSocket=%{_localstatedir}/lib/mysql/mysql.sock' \
-        -e '/^# SNMPTrapperFile=.*/a \\nSNMPTrapperFile=/var/log/snmptrap/snmptrap.log' \
-        -e '/^# SocketDir=.*/a \\nSocketDir=/var/run/zabbix' \
+        -e '/^# SNMPTrapperFile=.*/a \\nSNMPTrapperFile=%{_localstatedir}/log/snmptrap/snmptrap.log' \
+        -e '/^# SocketDir=.*/a \\nSocketDir=%{_localstatedir}/run/zabbix' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_proxy.conf
+
+# perfecto:absolve 3
+cat src/zabbix_java/settings.sh | sed \
+        -e 's|^PID_FILE=.*|PID_FILE="%{_localstatedir}/run/zabbix/zabbix_java.pid"|g' \
+        > %{buildroot}%{_sysconfdir}/zabbix/zabbix_java_gateway.conf
 
 # install logrotate configuration files
 cat %{SOURCE3} | sed \
@@ -496,13 +560,18 @@ cat %{SOURCE3} | sed \
 cat %{SOURCE3} | sed \
         -e 's|COMPONENT|proxy|g' \
         > %{buildroot}%{_sysconfdir}/logrotate.d/zabbix-proxy
+cat %{SOURCE3} | sed \
+        -e 's|COMPONENT|java_gateway|g' \
+        > %{buildroot}%{_sysconfdir}/logrotate.d/zabbix-java-gateway
 
 # install startup scripts
 %if 0%{?rhel} >= 7
 install -pDm 644 %{SOURCE20} %{buildroot}%{_unitdir}/zabbix-agent.service
 install -pDm 644 %{SOURCE21} %{buildroot}%{_unitdir}/zabbix-server.service
 install -pDm 644 %{SOURCE22} %{buildroot}%{_unitdir}/zabbix-proxy.service
+install -pDm 644 %{SOURCE13} %{buildroot}%{_unitdir}/zabbix-java-gateway.service
 %else
+install -pDm 755 %{SOURCE4} %{buildroot}%{_sysconfdir}/init.d/zabbix-java-gateway
 install -pDm 755 %{SOURCE10} %{buildroot}%{_sysconfdir}/init.d/zabbix-agent
 install -pDm 755 %{SOURCE11} %{buildroot}%{_sysconfdir}/init.d/zabbix-server
 install -pDm 755 %{SOURCE12} %{buildroot}%{_sysconfdir}/init.d/zabbix-proxy
@@ -513,6 +582,7 @@ install -pDm 755 %{SOURCE12} %{buildroot}%{_sysconfdir}/init.d/zabbix-proxy
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-agent.conf
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-server.conf
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-java-gateway.conf
 %endif
 
 # copy sql files for servers
@@ -550,10 +620,57 @@ rm -rf %{buildroot}
 %pre agent
 %{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
 %{__getent} passwd %{service_user} >/dev/null || \
-        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
-        -c "Zabbix Monitoring System" %{service_user}
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
 exit 0
 
+
+%pre server-mysql
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
+
+
+%pre server-pgsql
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
+
+
+%pre proxy-mysql
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
+
+
+%pre proxy-pgsql
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
+
+
+%pre proxy-sqlite3
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
+
+
+%pre java-gateway
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
 
 %post agent
 %if 0%{?rhel} >= 7
@@ -561,46 +678,6 @@ exit 0
 %else
 %{__chkconfig} --add zabbix-agent &>/dev/null || :
 %endif
-
-
-%pre server-mysql
-%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
-%{__getent} passwd %{service_user} >/dev/null || \
-        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
-        -c "Zabbix Monitoring System" %{service_user}
-exit 0
-
-
-%pre server-pgsql
-%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
-%{__getent} passwd %{service_user} >/dev/null || \
-        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
-        -c "Zabbix Monitoring System" %{service_user}
-exit 0
-
-
-%pre proxy-mysql
-%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
-%{__getent} passwd %{service_user} >/dev/null || \
-        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
-        -c "Zabbix Monitoring System" %{service_user}
-exit 0
-
-
-%pre proxy-pgsql
-%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
-%{__getent} passwd %{service_user} >/dev/null || \
-        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
-        -c "Zabbix Monitoring System" %{service_user}
-exit 0
-
-
-%pre proxy-sqlite3
-%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
-%{__getent} passwd %{service_user} >/dev/null || \
-        %{__useradd} -r -g %{service_user} -s /sbin/nologin -d %{service_home} \
-        -c "Zabbix Monitoring System" %{service_user}
-exit 0
 
 
 %post server-mysql
@@ -655,6 +732,16 @@ exit 0
 %endif
 %{__updalternatives} --install %{_sbindir}/zabbix_proxy \
         zabbix-proxy %{_sbindir}/zabbix_proxy_sqlite3 10
+exit 0
+
+
+%post java-gateway
+%if 0%{?rhel} >= 7
+%systemd_post zabbix-java-gateway.service
+%else
+%{__chkconfig} --add zabbix-java-gateway
+%endif
+
 exit 0
 
 
@@ -740,6 +827,18 @@ fi
 exit 0
 
 
+%preun java-gateway
+if [[ $1 -eq 0 ]]; then
+%if 0%{?rhel} >= 7
+%systemd_preun zabbix-java-gateway.service
+%else
+%{__service} zabbix-java-gateway stop &>/dev/null || :
+%{__chkconfig} --del zabbix-java-gateway
+%endif
+fi
+exit 0
+
+
 %postun agent
 %if 0%{?rhel} >= 7
 %systemd_postun_with_restart zabbix-agent.service
@@ -799,6 +898,15 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
+%postun java-gateway
+%if 0%{?rhel} >= 7
+%systemd_postun_with_restart zabbix-java-gateway.service
+%else
+if [[ $1 -ge 1 ]]; then
+%{__service} zabbix-java-gateway try-restart &>/dev/null || :
+fi
+%endif
+
 ################################################################################
 
 %files
@@ -807,15 +915,12 @@ fi
 
 %files agent
 %defattr(-,root,root,-)
-%doc %{_docdir}/zabbix-agent-%{version}/
+%doc AUTHORS ChangeLog COPYING NEWS README
 %dir %{_sysconfdir}/zabbix/zabbix_agentd.d
-
 %config(noreplace) %{_sysconfdir}/zabbix/zabbix_agentd.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
-
 %{_sbindir}/zabbix_agentd
 %{_mandir}/man8/zabbix_agentd.8*
 %if 0%{?rhel} >= 7
@@ -825,35 +930,32 @@ fi
 %{_sysconfdir}/init.d/zabbix-agent
 %endif
 
+%files js
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%{_bindir}/zabbix_js
 
 %files get
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-
 %{_bindir}/zabbix_get
 %{_mandir}/man1/zabbix_get.1*
-
 
 %files sender
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
-
 %{_bindir}/zabbix_sender
 %{_mandir}/man1/zabbix_sender.1*
-
 
 %files server-mysql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-server-mysql-%{version}/
 %dir %{_sysconfdir}/zabbix/alertscripts
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_server.conf
-
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
@@ -863,19 +965,15 @@ fi
 %endif
 %{_sbindir}/zabbix_server_mysql
 
-
 %files server-pgsql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-server-pgsql-%{version}/
 %dir %{_sysconfdir}/zabbix/alertscripts
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-server
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_server.conf
-
 %{_mandir}/man8/zabbix_server.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-server.service
@@ -885,18 +983,14 @@ fi
 %endif
 %{_sbindir}/zabbix_server_pgsql
 
-
 %files proxy-mysql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-proxy-mysql-%{version}/
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
-
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
@@ -906,18 +1000,14 @@ fi
 %endif
 %{_sbindir}/zabbix_proxy_mysql
 
-
 %files proxy-pgsql
 %defattr(-,root,root,-)
 %doc %{_docdir}/zabbix-proxy-pgsql-%{version}/
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
-
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
-
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
@@ -927,18 +1017,15 @@ fi
 %endif
 %{_sbindir}/zabbix_proxy_pgsql
 
-
 %files proxy-sqlite3
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %dir %{_sysconfdir}/zabbix/externalscripts
-
 %config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-proxy
-
+%attr(0750,%{service_user},%{service_group}) %dir %{service_home}
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
 %attr(0640,root,%{service_group}) %config(noreplace) %{_sysconfdir}/zabbix/zabbix_proxy.conf
-
 %{_mandir}/man8/zabbix_proxy.8*
 %if 0%{?rhel} >= 7
 %{_unitdir}/zabbix-proxy.service
@@ -948,30 +1035,403 @@ fi
 %endif
 %{_sbindir}/zabbix_proxy_sqlite3
 
+%files java-gateway
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-java-gateway
+%attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
+%attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_java_gateway.conf
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_java_gateway_logback.xml
+%{_datadir}/zabbix-java-gateway
+%if 0%{?rhel} >= 7
+%{_sbindir}/zabbix_java_gateway
+%{_unitdir}/zabbix-java-gateway.service
+%{_libdir32}/tmpfiles.d/zabbix-java-gateway.conf
+%else
+%{_sysconfdir}/init.d/zabbix-java-gateway
+%endif
 
 %files web
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %dir %attr(0750,apache,apache) %{_sysconfdir}/zabbix/web
-
 %config(noreplace) %{_sysconfdir}/zabbix/web/maintenance.inc.php
 %config(noreplace) %{_sysconfdir}/httpd/conf.d/zabbix.conf
-
 %ghost %attr(0644,apache,apache) %config(noreplace) %{_sysconfdir}/zabbix/web/zabbix.conf.php
-
 %{_datadir}/zabbix
-
 
 %files web-mysql
 %defattr(-,root,root,-)
-
+# no files for you
 
 %files web-pgsql
 %defattr(-,root,root,-)
+# no files for you
 
 ################################################################################
 
 %changelog
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.5-0
+- Added zabbix_js command line utility for embedded javascript testing
+- Added new key vfs.fs.get to collect mounted filesystems information and
+  relevant metrics into json
+- Added "template app haproxy"
+- Added media "pagerduty"
+- Added "template db redis" template
+- Added housekeeping of unused/deleted items values in value cache
+- Added media "slack"
+- Added redis plugin for agent2
+- Added windows support to agent2 file plugin
+- Added strict validation of input parameters in script.get() method
+- Reworked template linking with multiselect and loading macro list with ajax
+- Fixed maintenance time period update every field validation
+- Fixed file change time in vfs.file.time on windows
+- Fixed allowing user to enter blank spaces in media type webhook parameter
+  names, script and menu entry name and url fields
+- Fixed memory leak and wrong type cast; thanks to yudai hashimoto for the patch
+- Fixed sql error during prototype removal by adding select for update locks
+- Added bulk gathering of attributes for zabbix java gateway when using
+  attribute discovery
+- Fixed time of check - time of use issues reported by coverity
+- Fixed memory leak in alert manager
+- Fixed 'opdata' property in event.get and problem.get for events without
+  triggers
+- Fixed providing notifications for devices without audio support
+- Fixed crash on jsonpath function processing
+- Fixed deadlock on maintenance table when using oracle database
+- Icmppingloss counting all after first 400 ping responses as lost
+- Fixed error when creating user with long password
+- Fixed httpstepid validation when its value exceeds int32
+- Fixed agent2 build failure on 32-bit platforms
+- Fixed web scenario step allowing to use 0 timeout
+- Fixed duplicate entry errors on 32-bit architecture during item application
+  discovery
+- Fixed scroll bar visibility in svg graph widget configuration form
+- Fixed non well formed numeric value encountered in maintenance
+- Fixed indistinguishable validation messages for graph axis and unified graph
+  validation messages in overrides
+- Fixed db2 data import script
+- Fixed spelling issues in the code
+- Reverted fix for axis labels calculation
+- Fixed dynamic rows losing old input at form error
+- Fixed aria-live message partially visible beneath multiselect controls
+- Fixed not operator in correlation function expression
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.4-0
+- Added pushover webhook integration
+- Added media "mattermost"
+- Added media "opsgenie"
+- Added agent2 windows build support
+- Implemented 'delete missing' option for imported template linkages
+- Updated templates to internal version v0.34
+- Added windows services template, updated windows template objects
+  descriptions, added missing user macro
+- Added missing webhook parameters to default database data
+- Fixed url validation before output
+- Fixed agent2 plugin configuration not being called if no plugin specific
+  parameters are set
+- Fixed lld macro substitution when postgrsql is used
+- Removed redundant code block
+- Added missing get parameters in availability report
+- Fixed graph widget dimensions errors on high dpi screens
+- Fixed fatal error occurring in user profile and user edit forms when php
+  fileinfo extension does not exist
+- Fixed incorrect double quotes in history plain text view
+- Fixed widget saving with slow internet connection
+- Fixed validation of "interfaceid" field for http agent items with large ids
+- Fixed support for php 7.4
+- Changed condition description message for tag value in actions and event
+  correlations
+- Fixed context-aware lld macro expansion in jsonpath preprocessing
+- Fixed multiselect searching suggests in template mass update
+- Fixed high memory usage during startup
+- Fixed agent2 passive check timemouts exhausting plugin capacity
+- Fixed build fail on netbsd
+- Fixed request not being cancelled along with popup window in widgets
+- Removed templateid from screen api output
+- Fixed server check warning width in chrome
+- Fixed graph widget scroll disappear
+- Fixed widget vertically stretch
+- Fixed undefined offset in problem by severity widget
+- Fixed "type of information" field in item form being marked as required when
+  it is read-only
+- Fixed image map elements having a hand cursor when there is no context menu
+  available
+- Fixed axis labels calculation
+- Fixed long snmp oid value goes beyond fields block
+- Updated zabbix website links
+- Fixed map-type widget clipping in internet explorer
+- Fixed memory leak
+- Improved zabbix server performance when using maintenance
+- Fixed infinite loop when writing export to file fails
+- Splitted host_resources templates into 3 subtemplates: for cpu, memory and
+  storage
+- Fixed graph widget multiselect collapse
+- Fixed flexible textarea behavior
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.3-0
+- Fixed agent memory leak
+
+* Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.2-0
+- Moved lld rules from parent templates to linked templates for module
+  host-resources-mib snmpv2, module interfaces windows snmpv2, net arista
+  snmpv2, os windows snmpv2
+- Changed agent2 plugin configuration, moved maxlinespersecond,
+  enableremotecommands, logremotecommands from global to plugin configuration
+- Fixed not setting the default values of multiselects on initial load
+- Reworked custom item select to multiselect
+- Added compression support for zabbix agent 2
+- Disabled guest user by default
+- Added scrollbars for item and problem descriptions
+- Implemented in monitoring -> problems the button "export to csv" to export
+  all pages
+- Fixed performance of history syncers and timer processes by not locking each
+  other when suppressing events
+- Fixed links to usergroups in user list
+- Added range validation and optional conversion to is_double()
+- Fixed "y-axis" graph widget field type
+- Fixed log rotation on windows
+- Fixed dynamic graphs not updating when changing host in combo box
+- Fixed "readonly" feature for checkbox and combobox
+- Fixed json null value being treated as empty string for lld filters
+- Fixed array_db validation when validated value is not an array
+- Made user profile icon visible for guest user
+- Implemeted webhook returned tags preview in media type test modal window,
+  added server improvements in webhook processing, removed webhooks from
+  watchdog media type lists
+- Moved interface_type_priority definition to misc.c
+- Fixed the process of saving the scroll position on the latest data page in
+  internet explorer
+- Fixed lld not to create items on wrong host if there are failed transactions
+- Fixed disappearance of successful modification message while saving the
+  dashboards
+- Fixed preprocessing regex for ping.time
+- Fixed possible out of bounds access in csv to json preprocessing
+- Fixed wrong placeholder in graph widget form
+- Fixed throttled lld items being shown in queue when monitored through
+  zabbix proxy
+- Fixed username and password fields resetting and saving for item, item
+  prototype and lld rule on type change
+- Improved performance of timer process when reading from "problem_tag" table
+- Fixed multiselect suggest box clipping when overflowing not allowed in parent
+  containers
+- Fixed undefined offset error in action operation condition form
+- Optimized active logs checks monitoring when buffer flushing fails
+- Fixed wrong element label update in map constructor
+- Fixed zabbix agent 2 compilation on i386, arm, ppc64le and s390x architectures
+- Fixed {trigger.id} to be supported on trigger level in addition to host level
+  and template level tags
+- Fixed problems by severity widget problem duplication
+- Fixed widget form positioing when changing widget type from graph to any
+  other type
+- Fixed unneeded padding for dashboard url widget
+- Fixed oracle performance by using "between" operator in sql queries
+- Fixed long text wrapping in the latest data history
+- Fixed possible null pointer arithmetic; thanks to mikhail grigorev for
+  the patch
+- Fixed go compiler check during configuration
+- Fixed missing maxlength property for global macros description field
+- Fixed sla calculation when requested time window starts during the service
+  time; fixed downtime time calculation
+- Fixed when the httptest api selects too many entries from the httpstep table
+  when editing a specific web scenario
+- Fixed disappearing dependent trigger cells and rows in overview
+- Added handling of bom to detect encoding for vfs.file.contents, vfs.file.regex
+  and vfs.file.regmatch
+- Added support of event.tags.<name> macros to trigger based notifications
+- Fixed wrong tab number being remembered when several browser tabs are in use
+- Fixed sort order in plain text screen
+- Fixed checkboxes of "connections from host" in host prototype encryption tab
+  not being disabled
+
+* Sun Nov 10 2019 Andrey Kulikov <avk@brewkeeper.net> - 4.4.1-0
+- Implemented host api inventory_mode field as part of host object
+- Added support of {trigger.id} macro in trigger tags
+- Fixed accessibility of localstorage identifier if cookies are made
+  unaccessible for client side scripts
+- Fixed when widgets content is not stretched over the whole widget area on
+  safari
+- Fixed visual overlay of timeline dots on widget header
+- Fixed oracle character set mismatch error
+- Fixed trigger not firing for first collected value if it's timestamp is in
+  future
+- Fixed stdout and stderr redirection after external log rotation
+- Added key 'tests' for bootstrap.sh when working with cmocka tests
+- Fixed incorrect displaying of unacknowledged and resolved recent problematic
+  triggers in trigger overview and dashboard widget
+- Improved performance and memory consumption of script.getscriptsbyhosts()
+  method
+- Fixed detection of fping minimal interval
+- Fixed configuration.export method in api improperly formatting "application"
+  property within "httptests" when exporting in json format
+- Fixed typo in system templates
+- Fixed widgets with hidden headers not reacting on mouse hovering
+- Fixed housekeeper to cleanup history not only for current item type of
+  information but also for other previously selected types
+- Added support for more than 64 cpus in windows agent
+- Fixed value mapping in template net hp comware hh3c snmp
+- Fixed spelling issues in the code
+- Fixed support of libcurl version less than 7.38 for kerberos
+  authentification
+- Fgixed empty transaction to database in lld worker
+- Fixed fping double call
+- Fixed log.h is not self-sufficient
+- Fixed broken validation of peer certificate issuer and subject strings in
+  tls connect, fixed logging
+- Ensuring errbuf is emptied before every curl_easy_perform request
+- Fixed ipmi poller skips processing if one of the elements is missing
+  information
+- Fixed server crashing when linking web scenario template
+- Fixed zabbix_sender failing to report the error due to closed connection
+- Added new macro event.recovery.name to display recovery event name in
+  recovery alerts
+- Fixed false item insertion into the queue after maintenance
+- Fixed to allow custom intervals for active zabbix agent
+- Improved embedded script curlhttprequest object internal error handling
+- Fixed error in the elastic search clearing history
+- Fixed log items graphs drawing with numeric values like trapper items
+- Fixed occurrence of an undefined index in discovered graph configuration
+- Fixed disappearing new widget placeholder in dashboard edit mode
+- Fixed unsupported option "only_hostid" in template screens constructor
+- Fixed memory and performance leaks in gtlc.js library
+- Fixed incorrect triggers being displayed in availability report when
+  filtering by template
+- Fixed displaying of "acknowledge" menu option for "not classified" problems
+  in the trigger overview page
+- Fixed sigbus crash when mmap memory is not accessible
+- Fixed freeing locked resources when zabbix agent cannot be started and has
+  to exit with failure
+- Fixed trailing slash being set in cookie path
+- Fixed possibility of high cpu usage on windows
+- Fixed race condition between history syncer and escalator that caused
+  recovery operations being delayed by step duration
+- Getting disk controller type from linked controller label value
+- Fixed jsonpath parsing for comma characters inside quoted string
+- Fixed empty sql query dbexecute_overflowed_sql call during host availability
+  update
+- Adjusted timer sleeping period to process maintenances each minute
+  at 00 seconds
+- Changed agent.ping type to zabbix_passive in template module zabbix agent
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.4-0
+- Extended preprocessing steps with final result row; improved input validation
+  in preprocessing steps
+- Added access to vmware datastore at vmware vcenter level
+- Added display of maintenance information in configuration section for hosts
+  in maitenance
+- Added preloader for popup menus
+- Added ssl support for agent http checks
+- Added option to specify absolute path in loadmodule; thanks to glebs
+  ivanovskis for the patch
+- Fixed windows agent build
+- Fixed value trim in multiline input
+- Fixed zabbix_sender does not clean up its semaphores
+- Fixed not data loss on saving host prototypes by user with insufficient
+  permissions
+- Fixed checkbox selection on navigate to inherited template in triggers and
+  items
+- Fixed errors when trying to create a graph widget for key
+  system.cpu.util[,iowait] with y axis placed on the left side of the graph
+- Added output sanitization to prevent invalid utf-8 sequences in regexp-based
+  text replacement
+- Fixed horizontal scrolling in map
+- Fixed discovered hosts are not removed from table "dhosts" after removing and
+  adding the corresponding discovery check
+- Fixed colors for the multiselect disabled elements
+- 'it services --> service time --> note' infinite stretching
+- Fixed web scenarios pair manager issue when fields are duplicating on post
+  type toggle
+- Fixed missing sys/ioctl.h from src/libs/zbxsysinfo/openbsd/net.c; thanks to
+  andrea biscuola for the patch
+- Fixed zabbix fping feature detection does not work with fping builds since
+  10 feb 2017
+- Fixed distributive can contain untracked backup file include/config.h.in~
+- Fixed crash in global event correlation
+- Fixed "system.cpu.util" reporting incorrect cpu utilisation due to guest time
+  sometimes not being fully included in user time by "/proc/stat"
+- Fixed widgets flickering on refresh
+- Improved trigger expression list in trigger modal form
+- Fixed windows agent "eventlog" key for reading big event log files of
+  windows 2003
+- Fixed hidden error in graphs for php 7.3.5
+- Fixed regular expression file systems for discovery does not contain apfs
+- Fixed setup page to not to use bclib
+- Fixed dashboard map widget sub-map link behaviour
+- Fixed to host group limited global scripts to be usable in sub group
+- Fixed return value type and added preprocessing steps for items in remote
+  internal checks tamplates; fixed unsigned write cache value for remote
+  internal checks
+- Changed proxy to send timestamps of empty historical values to server, so
+  throttled items are not listed in administration/queue
+- Fixed http agent support of non-http scheme in url field
+- Fixed theoretical possibility of large numbers in json data being truncated,
+  added boolean value support to json parser
+- Fixed wrong filtering by "age less than" and "show suppressed problems" in
+  trigger overview
+- Fixed inactive, unmounted, unaccessible vmware datastore causes unknown
+  column nan insertion in field list
+- Fixed api validation of trigger dependency
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.3-0
+- Reverted changes that introduced error with write permissions in assets
+  directory
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 4.2.2-0
+- Upgraded jquery version v1.10.2 -> v3.3.1 and jqueryui v1.10.3 -> v1.12.1
+- Changed application filtering to partial name search
+- Fixed linking error if round() is undefined
+- Added file revision number generation for compilation on ms windows
+- Fixed scrollbar in overlay popups
+- Fixed error in ipmi poller causing growing queue
+- Fixed division by zero error in svg graph widget if selected time period is
+  so small that calculated step between 2 milestones is 0s
+- Removed "change password" button when cloning media types
+- Changed sorting by type, fixed information disclosure and formatting of
+  recipient name in action log screen item and dashboard widget; added new
+  sortfields to alert api
+- Fixed locale validation in user create and update api methods
+- Fixed tab key navigation for safari and edge browsers
+- Fixed trigger dependencies are ignored when changing only trigger state
+- Fixed api validation messages for linktrigger
+- Fixed buffer offset for reading hardware info from long dmi files
+- Fixed detection of logical functions (or / and) inside the context of
+  user macros
+- Deliver human friendly uptime in dashbord
+- Fixed transparency of draggable interfaces; changed cursor type for all
+  draggable and sortable elements
+- Fixed global search box loosing the search phrase after searching
+- Fixed several object ids allowing them to be 64 bit integers, added
+  asterisk for map navigation tree name field and changed the error message
+  to more generic one
+- Added state preservation eol
+- Fixed map element link coloring when linked problem is acknowledged
+- Fixed http poller crashes
+- Fixed trigger list checkboxes when filtering by single host
+- Fixed problem events to be filtered by "suppressed" instead of "related to
+  maintenance"
+- Made "test all steps" button be available only when at least 2 preprocessing
+  steps are created
+- Added warnings when zabbix components have different versions
+- Removed sid url argument for form cancel buttons
+- Fixed macro not being retained in trigger expression editing wizard
+- Increased header value input field max length
+- Fixed items being stuck in unsupported state under some conditions when
+  "discard unchanged" preprocessing step is used
+- Fixed the process of compiling the dummy.c module
+- Fixed invalid xpath for vmware "eventlog" key with "skip" option
+- Fixed sending log meta information without obvious needs
+- Added versioning of browser cached files
+- Reduced configuration cache fragmentation when reloading time based triggers
+- Improved performance of "remove host", "remove from host group", "unlink
+  from template" operations when processing network discovery events and using
+  mysql database
+- Fixed when undefined index: rows_per_page on global search screen
+- Fixed infinite loop and 100% cpu usage when using openipmi 2.0.26 or newer
+- Fixed "{{item.value}.regsub(<pattern>,<output>}" and
+  "{{item.lastvalue}.regsub(<pattern>,<output>}" being resolved
+  to *unknown* during upgrade
+
 * Mon Apr 22 2019 Andrey Kulikov <avk@brewkeeper.net> - 4.2.1-0
 - Increased socket response size limit
 - Fixed host.conn, host.ip, ipaddress and host.dns macros expansion in global
@@ -2061,4 +2521,3 @@ fi
 
 * Wed Feb 17 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.0-0
 - Initial build
-

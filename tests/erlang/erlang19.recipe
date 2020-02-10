@@ -1,5 +1,5 @@
-# Bibop recipe for Erlang
-# See more: https://github.com/essentialkaos/bibop
+# Bibop recipe for Erlang 19
+# See more: https://kaos.sh/bibop
 
 pkg erlang19
 
@@ -9,6 +9,9 @@ command "-" "Check environment"
   app erlc
   app escript
 
+command "-" "Check zlib linking"
+  !lib-linked {ERLANG_BIN_DIR}/beam libz.so.1
+
 command "erl -compile test" "Compile basic script"
   exit 0
   exist test.beam
@@ -16,6 +19,3 @@ command "erl -compile test" "Compile basic script"
 command "erl -noshell -s test main -s init stop" "Execute basic script"
   exit 0
   output-contains "ERLANG WORKS"
-
-command "-" "Cleanup"
-  remove test.beam

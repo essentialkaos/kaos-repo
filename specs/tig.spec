@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,13 +36,15 @@
 
 Summary:            Tig is an ncurses-based text-mode interface for git
 Name:               tig
-Version:            2.4.1
+Version:            2.5.0
 Release:            0%{?dist}
 License:            GPL
 Group:              Development/Tools
 URL:                https://github.com/jonas/tig
 
 Source0:            https://github.com/jonas/tig/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -63,12 +69,14 @@ Using it as a pager, it will display input from stdin and colorize it.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
 %{configure}
 
-CFLAGS="$RPM_OPT_FLAGS -DVERSION=%{name}-%{version}-%{release}"
+CFLAGS="%{optflags} -DVERSION=%{name}-%{version}-%{release}"
 
 %{__make} prefix=%{_prefix} %{?_smp_mflags} all
 %{__make} prefix=%{_prefix} doc-man doc-html
@@ -76,7 +84,7 @@ CFLAGS="$RPM_OPT_FLAGS -DVERSION=%{name}-%{version}-%{release}"
 %install
 rm -rf %{buildroot}
 
-CFLAGS="$RPM_OPT_FLAGS -DVERSION=%{name}-%{version}-%{release}"
+CFLAGS="%{optflags} -DVERSION=%{name}-%{version}-%{release}"
 
 %{make_install} install-doc-man prefix=%{_prefix} \
                                 bindir=%{_bindir} \
@@ -104,6 +112,48 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
+- Single file view enters blame mode on "b"
+- Show untracked files in the default view
+- Disable graph if log.follow is enabled and there is only one pathspec
+- Disable graph for author searches
+- git_colors: interpret 'ul' as 'underline'
+- Add refname variable
+- Add -C option to specify the working directory
+- Improve behaviour of auto and periodic refresh modes
+- Add support for repos created with git --work-tree
+- Add diff-highlight to pager mode
+- Show annotated commits in main view
+- Introduce reflog view
+- Add option to start with cursor on HEAD commit
+- Support combined diffs with more than 2 parents
+- Improve how a toggle option value is shown on the status line
+- Add options to filter refs output
+- Update utf8proc to v2.4.0
+- Fix garbled cursor line with older ncurses versions
+- Fix diff highlighting of removed lines starting with -- and added line
+  starting with ++
+- Fix loop when displaying search result if regex matches an empty string
+- Add synchronous command description in tigrc
+- Fix parsing of git rev-parse output
+- Propagate --first-parent to diff arguments
+- Use proper type for hash table size
+- Fix incorrect cppcheck warning about realloc() use
+- Don't shift signed int by 31 bits
+- Fix Vim going background after running Tig outside of a git repository
+- make-builtin-config: use "read -r"
+- Fix segfaults with readline 8.0
+- Reset state before closing stage view automatically
+- Don't use a child view as previous view
+- Force reload of VIEW_FLEX_WIDTH views only when needed
+- Combined diff uses @@@ as hunk marker
+- Fix memory leak induced by 'tig grep'
+- Fix memory leak in main view
+- Exit gracefully if refs view was defined without ref column
+- Fix pager view not moving up when child view is open
+- make-builtin-config: Fix unportable sed usage in read_tigrc()
+- Properly detect combined diffs
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 2.4.1-0
 - Add CURSES_CFLAGS to CPPFLAGS.
 

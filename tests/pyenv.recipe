@@ -1,5 +1,5 @@
 # Bibop recipe for pyenv
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg pyenv pyenv-plugin-python-build
 

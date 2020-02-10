@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %global _configure ../configure
 
 %global configure_opts \\\
@@ -14,14 +18,16 @@
 
 Summary:              A general purpose library and file format for storing scientific data
 Name:                 hdf5
-Version:              1.8.20
+Version:              1.10.5
 Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
-URL:                  http://www.hdfgroup.org/HDF5/
+URL:                  https://www.hdfgroup.org/HDF5/
 
-Source:               http://support.hdfgroup.org/ftp/HDF5/current18/src/%{name}-%{version}.tar.bz2
+Source:               https://support.hdfgroup.org/ftp/HDF5/releases/%{name}-1.10/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
 Source1:              h5comp
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -68,6 +74,8 @@ HDF5 static libraries.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -117,10 +125,12 @@ done
 
 chrpath --delete %{buildroot}%{_bindir}/gif2h5
 chrpath --delete %{buildroot}%{_bindir}/h52gif
+chrpath --delete %{buildroot}%{_bindir}/h5clear
 chrpath --delete %{buildroot}%{_bindir}/h5copy
 chrpath --delete %{buildroot}%{_bindir}/h5debug
 chrpath --delete %{buildroot}%{_bindir}/h5diff
 chrpath --delete %{buildroot}%{_bindir}/h5dump
+chrpath --delete %{buildroot}%{_bindir}/h5format_convert
 chrpath --delete %{buildroot}%{_bindir}/h5import
 chrpath --delete %{buildroot}%{_bindir}/h5jam
 chrpath --delete %{buildroot}%{_bindir}/h5ls
@@ -130,6 +140,7 @@ chrpath --delete %{buildroot}%{_bindir}/h5repack
 chrpath --delete %{buildroot}%{_bindir}/h5repart
 chrpath --delete %{buildroot}%{_bindir}/h5stat
 chrpath --delete %{buildroot}%{_bindir}/h5unjam
+chrpath --delete %{buildroot}%{_bindir}/h5watch
 chrpath --delete %{buildroot}%{_libdir}/*.so.*
 
 %clean
@@ -149,10 +160,12 @@ rm -rf %{buildroot}
 %doc release_docs/HISTORY*.txt
 %{_bindir}/gif2h5
 %{_bindir}/h52gif
+%{_bindir}/h5clear
 %{_bindir}/h5copy
 %{_bindir}/h5debug
 %{_bindir}/h5diff
 %{_bindir}/h5dump
+%{_bindir}/h5format_convert
 %{_bindir}/h5import
 %{_bindir}/h5jam
 %{_bindir}/h5ls
@@ -162,6 +175,7 @@ rm -rf %{buildroot}
 %{_bindir}/h5repart
 %{_bindir}/h5stat
 %{_bindir}/h5unjam
+%{_bindir}/h5watch
 %{_libdir}/*.so.*
 
 %files devel
@@ -183,11 +197,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.10.5-0
+- Updated to the latest stable release
+
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.21-0
+- Updated to the latest stable release
+
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.8.20-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.19-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.18-0
 - Initial build for kaos repository

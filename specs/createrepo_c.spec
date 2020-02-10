@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -59,20 +63,22 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.12.0
-Release:            1%{?dist}
+Version:            0.15.4
+Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
 URL:                https://github.com/rpm-software-management/createrepo_c
 
 Source0:            https://github.com/rpm-software-management/%{name}/archive/%{version}.tar.gz
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      gcc cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
-BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel
-BuildRequires:      rpm-devel >= 4.8.0-28
+BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
+BuildRequires:      rpm-devel >= 4.8.0-28 libmodulemd-devel libyaml-devel
 
 %if 0%{?rhel} == 6
 Requires:           rpm >= 4.8.0-28
@@ -137,12 +143,15 @@ Python bindings for the createrepo_c library.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
 
 sed -i '/unset(PYTHON_LIBRARY/d' src/python/CMakeLists.txt
 sed -i '/unset(PYTHON_INCLUDE_DIR/d' src/python/CMakeLists.txt
+sed -i 's/3 EXACT/3/g' src/python/CMakeLists.txt
 
 cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir} \
@@ -159,7 +168,7 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
 %endif
       -DBUILD_SHARED_LIBS:BOOL=ON .
 
-%{__make} %{?_smp_mflags} RPM_OPT_FLAGS="$RPM_OPT_FLAGS"
+%{__make} %{?_smp_mflags} RPM_OPT_FLAGS="%{optflags}"
 %{__make} %{?_smp_mflags} doc-c
 
 %install
@@ -204,11 +213,51 @@ rm -rf %{buildroot}
 
 %files -n %{python_base}-%{name}
 %defattr(-,root,root,-)
+%{python3_sitearch}/*.egg-info
 %{python3_sitearch}/createrepo_c/
 
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.4-0
+- Updated to the latest release
+
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.3-0
+- Updated to the latest release
+
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.2-0
+- Updated to the latest release
+
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.1-0
+- Updated to the latest release
+
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.0-0
+- Updated to the latest release
+
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.3-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.2-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.0-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.2-0
+- Updated to the latest release
+
+* Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.1-0
+- Updated to the latest release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.0-0
+- Updated to the latest release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.2-0
+- Updated to the latest release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.1-0
+- Updated to the latest release
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-1
 - Updated for compatibility with Python 3.6
 

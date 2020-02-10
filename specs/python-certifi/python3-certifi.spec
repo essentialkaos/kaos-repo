@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -53,13 +57,15 @@
 
 Summary:            Python package for providing Mozilla's CA Bundle
 Name:               %{python_base}-%{pkgname}
-Version:            2018.11.29
-Release:            1%{?dist}
+Version:            2019.11.28
+Release:            0%{?dist}
 License:            MPLv2.0
 Group:              Development/Libraries
 URL:                https://github.com/certifi/python-certifi
 
 Source0:            https://github.com/certifi/python-%{pkgname}/archive/%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -81,6 +87,8 @@ the identity of TLS hosts. It has been extracted from the Requests project.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn python-%{pkgname}-%{version}
 
 rm -rf %{pkgname}.egg-info
@@ -106,6 +114,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 2019.11.28-0
+- Updated to the latest release
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.11.29-1
 - Updated for compatibility with Python 3.6
 

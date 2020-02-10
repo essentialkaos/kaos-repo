@@ -1,5 +1,5 @@
 # Bibop recipe for python-libcloud for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-libcloud python36-libcloud
 
@@ -30,6 +30,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITELIB}/libcloud/__init__.py
 
+  python-module libcloud
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/libcloud
   exist {PYTHON3_SITELIB}/libcloud/backup
@@ -54,3 +56,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/libcloud/utils
 
   exist {PYTHON3_SITELIB}/libcloud/__init__.py
+
+  python3-module libcloud

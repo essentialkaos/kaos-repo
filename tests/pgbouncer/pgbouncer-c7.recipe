@@ -1,5 +1,5 @@
 # Bibop recipe for pgbouncer
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg pgbouncer
 
@@ -18,10 +18,10 @@ command "-" "Check environment"
   
   exist {service_config}
   owner {service_config} {service_user}
-  perms {service_config} 644
+  mode {service_config} 644
 
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
 command "systemctl start {service_name}" "Start pgbouncer daemon"
   wait {delay}

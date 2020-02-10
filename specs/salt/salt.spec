@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
@@ -56,15 +60,19 @@
 
 ################################################################################
 
+%define pypi_subpath      25/ee/cd9ed4a912506f5f6f0eb00891e661840bd9df0fae781f78fa9f04515447
+
+################################################################################
+
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2018.3.3
-Release:          1%{?dist}
+Version:          2019.2.3
+Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
 URL:              https://github.com/saltstack/salt
 
-Source0:          https://github.com/saltstack/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source0:          https://files.pythonhosted.org/packages/%{pypi_subpath}/%{name}-%{version}.tar.gz
 Source1:          %{name}.sysconfig
 Source2:          %{name}-master.init
 Source3:          %{name}-syndic.init
@@ -77,6 +85,8 @@ Source9:          %{name}-api.service
 Source10:         README.fedora
 Source11:         %{name}.logrotate
 Source12:         salt.bash
+
+Source100:        checksum.sha512
 
 Patch0:           %{name}-config.patch
 
@@ -176,7 +186,6 @@ infrastructure.
 Summary:          REST API for Salt, a parallel remote execution system
 Group:            System Environment/Daemons
 Requires:         %{name}-master = %{version}-%{release}
-Requires:         %{python_base}-cherrypy
 
 %description api
 salt-api provides a REST interface to the Salt master.
@@ -219,6 +228,8 @@ other existing packaging systems including RPM, Yum, and Pacman.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
@@ -444,6 +455,16 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 2019.2.3-0
+- Updated to 2019.2.3
+
+* Thu Oct 24 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.2-0
+- Updated to 2019.2.2
+- Removed cherrypy from dependencies
+
+* Wed Oct 16 2019 Andrey Kulikov <avk@brewkeeper.net> - 2019.2.1-0
+- Updated to 2019.2.1
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.3.3-1
 - Updated for compatibility with Python 3.6
 

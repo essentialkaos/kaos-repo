@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,20 +36,22 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            10.15.2
+Version:            12.15.0
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
-URL:                http://nodejs.org
+URL:                https://nodejs.org
 
-Source0:            http://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
+Source0:            https://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Requires:           zlib
 
-BuildRequires:      make python >= 2.7 openssl-devel zlib-devel
-BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
+BuildRequires:      make python openssl-devel zlib-devel
+BuildRequires:      devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{shortname} = %{version}-%{release}
@@ -77,11 +83,13 @@ This package provides the header files for nodejs.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{shortname}-v%{version}
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 %{_configure} --prefix=%{_prefix} \
               --shared-zlib \
@@ -91,6 +99,9 @@ export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
 
 %install
 rm -rf %{buildroot}
+
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 %{make_install}
 
@@ -118,6 +129,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 06 2020 Anton Novojilov <andy@essentialkaos.com> - 12.15.0-0
+- Updated to the latest stable release
+
+* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 12.14.1-0
+- Updated to the latest stable release
+
+* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 10.16.3-0
+- Updated to the latest stable release
+
 * Fri Mar 01 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.2-0
 - Updated to the latest stable release
 

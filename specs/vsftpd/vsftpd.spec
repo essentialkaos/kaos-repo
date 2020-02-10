@@ -169,4 +169,3 @@ rm -rf %{buildroot}
 
 * Sun Mar 13 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.3-0
 - Initial build
-

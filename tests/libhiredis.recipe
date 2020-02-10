@@ -1,5 +1,5 @@
 # Bibop recipe for Hiredis
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg libhiredis libhiredis-devel
 

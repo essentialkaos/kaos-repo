@@ -1,5 +1,5 @@
 # Bibop recipe for ODBC driver for PostgreSQL 9.4
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql94-odbc
 
@@ -12,5 +12,5 @@ command "-" "Check shared libraries"
   exist {pg_lib}/psqlodbca.so
   exist {pg_lib}/psqlodbc.so
 
-  perms {pg_lib}/psqlodbcw.so 755
-  perms {pg_lib}/psqlodbca.so 755
+  mode {pg_lib}/psqlodbcw.so 755
+  mode {pg_lib}/psqlodbca.so 755

@@ -53,11 +53,11 @@
 
 Summary:           Tool for service discovery, monitoring and configuration
 Name:              consul
-Version:           1.4.0
+Version:           1.6.2
 Release:           0%{?dist}
 Group:             Applications/Communications
 License:           MPLv2
-URL:               http://www.consul.io
+URL:               https://www.consul.io
 
 Source0:           https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 Source1:           %{name}-client.sysconfig
@@ -71,7 +71,7 @@ Source8:           %{name}-server.conf
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.10
+BuildRequires:     golang >= 1.13
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -201,6 +201,10 @@ install -pm 644 %{SOURCE7} %{buildroot}%{_sysconfdir}/%{name}/client/config.json
 install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/%{name}/server/config.json
 
 %clean
+# Fix permissions for files and directories in modules dir
+find pkg -type d -exec chmod 0755 {} \;
+find pkg -type f -exec chmod 0644 {} \;
+
 rm -rf %{buildroot}
 
 ################################################################################
@@ -306,6 +310,12 @@ fi
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.6.2-0
+- Updated to the latest stable release
+
+* Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
+- Updated to the latest stable release
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
 - Updated to the latest stable release
 

@@ -1,0 +1,56 @@
+# Bibop recipe for SonarQube
+# See more: https://kaos.sh/bibop
+
+pkg sonarqube jre11
+
+require-root yes
+
+var service_user  sonarqube
+var service_group sonarqube
+var service_name  sonarqube
+var service_port  9000
+var delay 30
+
+command "-" "Check environment"
+  service-present {service_name}
+  user-exist {service_user}
+  group-exist {service_group}
+
+command "-" "Check working directory"
+  dir "/var/lib/sonarqube"
+  mode "/var/lib/sonarqube" 755
+  owner "/var/lib/sonarqube" root:root
+
+command "-" "Check data directory"
+  dir "/var/lib/sonarqube/data"
+  mode "/var/lib/sonarqube/data" 750
+  owner "/var/lib/sonarqube/data" {service_user}:{service_group}
+
+command "-" "Check directory for temporary files"
+  dir "/var/lib/sonarqube/temp"
+  mode "/var/lib/sonarqube/temp" 750
+  owner "/var/lib/sonarqube/temp" {service_user}:{service_group}
+
+command "-" "Check logging directory"
+  mode "/var/log/sonarqube" 755
+  owner "/var/log/sonarqube" {service_user}:{service_group}
+
+command "systemctl start {service_name}" "Start SonarQube service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :{service_port}
+  http-status GET "http://127.0.0.1:{service_port}/" 200
+
+command "systemctl status {service_name}" "Check status of SonarQube service"
+  expect "active (running)"
+
+command "systemctl restart {service_name}" "Restart SonarQube service"
+  wait {delay}
+  service-works {service_name}
+  connect tcp :{service_port}
+  http-status GET "http://127.0.0.1:{service_port}/" 200
+
+command "systemctl stop {service_name}" "Stop SonarQube service"
+  wait {delay}
+  !service-works {service_name}
+  !connect tcp :{service_port}

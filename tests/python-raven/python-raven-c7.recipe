@@ -1,5 +1,5 @@
 # Bibop recipe for python-raven for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-raven python36-raven
 
@@ -26,6 +26,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITELIB}/raven/__init__.py
 
+  python-module raven
+
 command "-" "Check Python 3 installation"
   app raven3
 
@@ -46,3 +48,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/raven/utils
 
   exist {PYTHON3_SITELIB}/raven/__init__.py
+
+  python3-module raven

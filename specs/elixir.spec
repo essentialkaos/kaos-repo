@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,19 +36,21 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.8.2
+Version:            1.10.0
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
-URL:                http://elixir-lang.org
+URL:                https://elixir-lang.org
 
 Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.tar.gz
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang >= 20 git
+BuildRequires:      erlang21 git
 
-Requires:           erlang >= 20
+Requires:           erlang >= 21
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
@@ -59,6 +65,8 @@ fault-tolerant, non-stop applications with hot code swapping.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -66,7 +74,7 @@ LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags}
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
-LC_ALL="en_US.UTF-8" %{__make} test
+LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags} test
 %endif
 
 %install
@@ -96,6 +104,25 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
+- Updated to the latest release
+
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
+- Updated to the latest release
+
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
+- Updated to the latest release
+
+* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
+- Updated to the latest release
+
+* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
+- Updated to the latest release
+- Added CRC check for sources
+
+* Fri Jun 28 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
+- Updated to the latest version
+
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
 - Updated to the latest version
 

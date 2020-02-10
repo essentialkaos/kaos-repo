@@ -1,8 +1,12 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %global majorver 1
-%global minorver 7
-%global patchver 0
+%global minorver 8
+%global patchver 2
 
 %ifarch %{ix86}
 %global vpxtarget x86-linux-gcc
@@ -20,7 +24,8 @@ License:            BSD
 Group:              System Environment/Libraries
 URL:                https://chromium.googlesource.com/webm/libvpx/
 
-Source:             https://chromium.googlesource.com/webm/%{name}/+archive/v%{version}.tar.gz
+Source0:            https://chromium.googlesource.com/webm/%{name}/+archive/v%{version}.tar.gz
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -60,6 +65,8 @@ and decoder.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -cqn %{name}-%{version}
 
 %build
@@ -118,5 +125,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
+- Updated to the latest stable release
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
+- Updated to the latest stable release
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
+- Updated to the latest stable release
+
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Initial build for kaos repository

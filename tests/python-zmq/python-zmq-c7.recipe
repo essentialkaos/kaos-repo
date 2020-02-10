@@ -1,5 +1,5 @@
 # Bibop recipe for python-zmq for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-zmq python36-zmq
 
@@ -30,6 +30,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITEARCH}/zmq/__init__.py
 
+  python-module zmq
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/zmq
   exist {PYTHON3_SITEARCH}/zmq/auth
@@ -54,3 +56,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITEARCH}/zmq/utils
 
   exist {PYTHON3_SITEARCH}/zmq/__init__.py
+
+  python3-module zmq

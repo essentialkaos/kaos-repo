@@ -1,0 +1,17 @@
+[Unit]
+Description=SonarQube Continuous Inspection
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=sonarqube
+WorkingDirectory=/opt/sonarqube
+EnvironmentFile=-/etc/sysconfig/sonarqube
+ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+SyslogIdentifier=sonarqube
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target

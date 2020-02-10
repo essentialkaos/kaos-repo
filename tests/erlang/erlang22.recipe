@@ -1,0 +1,30 @@
+# Bibop recipe for Erlang 22
+# See more: https://kaos.sh/bibop
+
+pkg erlang22
+
+var libressl_ver 2.9.2
+
+command "-" "Check environment"
+  app epmd
+  app erl
+  app erlc
+  app escript
+
+command "-" "Check zlib linking"
+  !lib-linked {ERLANG_BIN_DIR}/beam.smp libz.so.1
+
+command "erl -compile test" "Compile basic script"
+  exit 0
+  exist test.beam
+
+command "erl -noshell -s test main -s init stop" "Execute basic script"
+  exit 0
+  output-contains "ERLANG WORKS"
+
+command "escript ssl-info.erl" "Check version of SSL/TLS library"
+  exit 0
+  output-contains "LibreSSL {libressl_ver}"
+
+command "escript sctp-test.erl" "Check SCTP support"
+  exit 0

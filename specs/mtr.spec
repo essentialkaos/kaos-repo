@@ -1,19 +1,27 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:              A network diagnostic tool
 Name:                 mtr
-Version:              0.92
+Version:              0.93
 Release:              0%{?dist}
 Epoch:                10
 License:              GPLv2+
 Group:                Applications/Internet
-URL:                  http://www.bitwizard.nl/mtr/
+URL:                  https://www.bitwizard.nl/mtr/
 
-Source:               https://github.com/traviscross/mtr/archive/v%{version}.tar.gz
+Source0:              https://github.com/traviscross/mtr/archive/v%{version}.tar.gz
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:        autoconf automake libtool ncurses-devel
+
+Provides:             %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -24,6 +32,8 @@ into one program.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -55,7 +65,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING FORMATS NEWS README SECURITY
+%doc AUTHORS COPYING FORMATS NEWS README.md SECURITY BSDCOPYING
 %{_sbindir}/%{name}
 %{_sbindir}/%{name}-packet
 %{_mandir}/man8/*
@@ -65,5 +75,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 0.93-0
+- Updated to the latest release
+
 * Wed Oct 04 2017 Anton Novojilov <andy@essentialkaos.com> - 0.92-0
 - Initial build for kaos repository

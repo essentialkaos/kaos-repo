@@ -30,7 +30,7 @@
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            2.7.0
+Version:            2.7.5
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
@@ -95,6 +95,91 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.5-0
+- Danish translation
+- Slackware end-of-life information
+- Detect BSD-style (rc.d) init in Linux systems
+- Detection of Bro and Suricata (IDS)
+- Corrected end-of-life entries for CentOS 5 and 6
+- AUTH-9204 - change name to check in /etc/passwd file for QNAP devices
+- AUTH-9268 - AIX enhancement to use correct find statement
+- FILE-6310 - Filter on correct field for AIX
+- NETW-3012 - set ss command as preferred option for Linux and changed output
+  format
+- List of PHP ini file locations has been extended
+- Removed several pieces of the code as part of cleanup and code health
+- Extended help
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.4-0
+- FILE-6324 - Discover XFS mount points
+- INSE-8000 - Installed inetd package
+- INSE-8100 - Installed xinetd package
+- INSE-8102 - Status of xinet daemon
+- INSE-8104 - xinetd configuration file
+- INSE-8106 - xinetd configuration for inactive daemon
+- INSE-8200 - Usage of TCP wrappers
+- INSE-8300 - Presence of rsh client
+- INSE-8302 - Presence of rsh server
+- Detect equery binary detection
+- New 'generate' command
+- AUTH-9278 - Test LDAP in all PAM components on Red Hat and other systems
+- PKGS-7410 - Add support for DPKG-based systems to gather installed kernel
+  packages
+- PKGS-7420 - Detect toolkit to automatically download and apply upgrades
+- PKGS-7328 - Added global Zypper option --non-interactive
+- PKGS-7330 - Added global Zypper option --non-interactive
+- PKGS-7386 - Only show warning when vulnerable packages were discovered
+- PKGS-7392 - Skip test for Zypper-based systems
+- Minor changes to improve text output, test descriptions, and logging
+- Changed CentOS identifiers in end-of-life database
+- AIX enhancement for IsRunning function
+- Extended PackageIsInstalled function
+- Improve text output on AIX systems
+- Corrected lsvg binary detection
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.3-0
+- Detection for Lynis being scheduled (e.g. cronjob)
+- HTTP-6624 - Improved logging for test
+- KRNL-5820 - Changed color for default fs.suid_dumpable value
+- LOGG-2154 - Adjusted test to search in configuration file correctly
+- NETW-3015 - Added support for ip binary
+- SQD-3610 - Description of test changed
+- SQD-3613 - Corrected description in code
+- SSH-7408 - Increased values for MaxAuthRetries
+- Improvements to allow tailored tool tips in future
+- Corrected detection of blkid binary
+- Minor textual changes and cleanups
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.2-0
+- AUTH-9409 - Support for doas (OpenBSD)
+- AUTH-9410 - Test file permissions of doas configuration
+- BOOT-5117 - Support for systemd-boot boot loader added
+- BOOT-5177 - Simplify service filter and allow multiple dots in service names
+- BOOT-5262 - Check OpenBSD boot daemons
+- BOOT-5263 - Test permissions for boot files and scripts
+- Support for end-of-life detection of the operating system
+- New 'lynis show eol' command
+- Korean translation
+- AUTH-9252 - Adds support for files in sudoers.d
+- AUTH-9252 - Test extended to check file and directory ownership
+- BOOT-5122 - Use NONE instead of WARNING if no password is set
+- FIRE-4540 - Modify test to better measure rules
+- KRNL-5788 - Resolve false positive warning on missing /vmlinuz
+- NETW-2704 - Ignore inline comments in /etc/resolv.conf
+- PKGS-7388 - Improve detection for security archive
+- RPi/Raspian path to PAM_FILE_LOCATIONS
+
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
+- AUTH-9282 - Improve support for Red Hat and clones
+- FIRE-4534 - Additional support for Hands Off!, LuLu, and Radio Silence
+- LOGG-2190 - Added MariaDB filter for deleted files (tested on CentOS)
+- SHLL-6230 - Add /etc/bash.bashrc.local to umask check
+- Removed shift statement that did not work on all operating systems
+- Minor cleanups and enhancements
+- Small improvements to logging
+- Support for macOS Mojave
+- Translation: Slovak
+
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.0-0
 - MACF-6240 - Detection of TOMOYO binary
 - MACF-6242 - Status of TOMOYO framework

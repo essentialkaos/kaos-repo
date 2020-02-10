@@ -1,5 +1,5 @@
 # Bibop recipe for Slony 1 for PostgreSQL 9.3
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg slony1-94
 
@@ -22,17 +22,17 @@ command "-" "Check environment"
   exist /etc/slony1-{postgres_version_comb}/slon.conf
   exist /etc/slony1-{postgres_version_comb}/slon_tools.conf
 
-  perms /etc/slony1-{postgres_version_comb}/slon.conf 644
-  perms /etc/slony1-{postgres_version_comb}/slon_tools.conf 644
+  mode /etc/slony1-{postgres_version_comb}/slon.conf 644
+  mode /etc/slony1-{postgres_version_comb}/slon_tools.conf 644
 
   owner /etc/slony1-{postgres_version_comb}/slon.conf root
   owner /etc/slony1-{postgres_version_comb}/slon_tools.conf root
 
   exist /etc/sysconfig/slony1-{postgres_version_comb}
-  perms /etc/sysconfig/slony1-{postgres_version_comb} 644
+  mode /etc/sysconfig/slony1-{postgres_version_comb} 644
 
   exist /etc/rc.d/init.d/slony1-{postgres_version_comb}
-  perms /etc/rc.d/init.d/slony1-{postgres_version_comb} 755
+  mode /etc/rc.d/init.d/slony1-{postgres_version_comb} 755
 
 command "-" "Check binaries"
   exist {bin_dir}/slon
@@ -64,34 +64,34 @@ command "-" "Check binaries"
   exist {bin_dir}/slony_logshipper
   exist {bin_dir}/slony_show_configuration
 
-  perms {bin_dir}/slon 755
-  perms {bin_dir}/slon_kill 755
-  perms {bin_dir}/slon_start 755
-  perms {bin_dir}/slon_status 755
-  perms {bin_dir}/slon_watchdog 755
-  perms {bin_dir}/slon_watchdog2 755
-  perms {bin_dir}/slonik 755
-  perms {bin_dir}/slonik_add_node 755
-  perms {bin_dir}/slonik_build_env 755
-  perms {bin_dir}/slonik_create_set 755
-  perms {bin_dir}/slonik_drop_node 755
-  perms {bin_dir}/slonik_drop_sequence 755
-  perms {bin_dir}/slonik_drop_set 755
-  perms {bin_dir}/slonik_drop_table 755
-  perms {bin_dir}/slonik_execute_script 755
-  perms {bin_dir}/slonik_failover 755
-  perms {bin_dir}/slonik_init_cluster 755
-  perms {bin_dir}/slonik_merge_sets 755
-  perms {bin_dir}/slonik_move_set 755
-  perms {bin_dir}/slonik_print_preamble 755
-  perms {bin_dir}/slonik_restart_node 755
-  perms {bin_dir}/slonik_store_node 755
-  perms {bin_dir}/slonik_subscribe_set 755
-  perms {bin_dir}/slonik_uninstall_nodes 755
-  perms {bin_dir}/slonik_unsubscribe_set 755
-  perms {bin_dir}/slonik_update_nodes 755
-  perms {bin_dir}/slony_logshipper 755
-  perms {bin_dir}/slony_show_configuration 755
+  mode {bin_dir}/slon 755
+  mode {bin_dir}/slon_kill 755
+  mode {bin_dir}/slon_start 755
+  mode {bin_dir}/slon_status 755
+  mode {bin_dir}/slon_watchdog 755
+  mode {bin_dir}/slon_watchdog2 755
+  mode {bin_dir}/slonik 755
+  mode {bin_dir}/slonik_add_node 755
+  mode {bin_dir}/slonik_build_env 755
+  mode {bin_dir}/slonik_create_set 755
+  mode {bin_dir}/slonik_drop_node 755
+  mode {bin_dir}/slonik_drop_sequence 755
+  mode {bin_dir}/slonik_drop_set 755
+  mode {bin_dir}/slonik_drop_table 755
+  mode {bin_dir}/slonik_execute_script 755
+  mode {bin_dir}/slonik_failover 755
+  mode {bin_dir}/slonik_init_cluster 755
+  mode {bin_dir}/slonik_merge_sets 755
+  mode {bin_dir}/slonik_move_set 755
+  mode {bin_dir}/slonik_print_preamble 755
+  mode {bin_dir}/slonik_restart_node 755
+  mode {bin_dir}/slonik_store_node 755
+  mode {bin_dir}/slonik_subscribe_set 755
+  mode {bin_dir}/slonik_uninstall_nodes 755
+  mode {bin_dir}/slonik_unsubscribe_set 755
+  mode {bin_dir}/slonik_update_nodes 755
+  mode {bin_dir}/slony_logshipper 755
+  mode {bin_dir}/slony_show_configuration 755
 
 command "-" "Check libraries"
   exist {lib_dir}/slon-tools.pm
@@ -105,12 +105,12 @@ command "-" "Check SQL files"
   exist {data_dir}/slony1_funcs.v83.{slony_version}.sql
   exist {data_dir}/slony1_funcs.v84.{slony_version}.sql
 
-  perms {data_dir}/slony1_base.{slony_version}.sql 644
-  perms {data_dir}/slony1_base.v83.{slony_version}.sql 644
-  perms {data_dir}/slony1_base.v84.{slony_version}.sql 644
-  perms {data_dir}/slony1_funcs.{slony_version}.sql 644
-  perms {data_dir}/slony1_funcs.v83.{slony_version}.sql 644
-  perms {data_dir}/slony1_funcs.v84.{slony_version}.sql 644
+  mode {data_dir}/slony1_base.{slony_version}.sql 644
+  mode {data_dir}/slony1_base.v83.{slony_version}.sql 644
+  mode {data_dir}/slony1_base.v84.{slony_version}.sql 644
+  mode {data_dir}/slony1_funcs.{slony_version}.sql 644
+  mode {data_dir}/slony1_funcs.v83.{slony_version}.sql 644
+  mode {data_dir}/slony1_funcs.v84.{slony_version}.sql 644
 
 command "systemctl start {service_name}" "Start Slony1 daemon"
   wait {delay}

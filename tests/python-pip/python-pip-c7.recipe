@@ -1,7 +1,7 @@
 # Bibop recipe for PIP for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
-pkg python36 python36-pip
+pkg python36-pip
 
 require-root yes
 
@@ -18,6 +18,9 @@ command "pip --version" "Check version"
   wait-output 5
   output-contains "site-packages/pip"
   output-contains "python 3"
+
+command "python3 -Im ensurepip" "Check ensurepip command"
+  exit 0
 
 command "pip install youtube-dl" "Install youtube-dl"
   exit 0

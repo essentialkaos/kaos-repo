@@ -6,7 +6,7 @@
 
 Summary:         HTTP request/response parser for C
 Name:            http-parser
-Version:         2.9.0
+Version:         2.9.2
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
@@ -127,6 +127,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.9.2-0
+- Updated to the latest stable release
+
 * Fri Jan 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2.9.0-0
 - Updated to the latest stable release
 

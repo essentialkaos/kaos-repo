@@ -1,5 +1,5 @@
 # Bibop recipe for Clickhouse datasource plugin for Grafana
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg grafana-plugin-clickhouse-datasource
 
@@ -9,14 +9,14 @@ var plugin_name vertamedia-clickhouse-datasource
 command "-" "Check plugin data"
   exist {plugin_dir}/{plugin_name}
   dir {plugin_dir}/{plugin_name}
-  perms {plugin_dir}/{plugin_name} 755
+  mode {plugin_dir}/{plugin_name} 755
   owner {plugin_dir}/{plugin_name} root:root
 
   exist {plugin_dir}/{plugin_name}/package.json
   exist {plugin_dir}/{plugin_name}/dist
-  exist {plugin_dir}/{plugin_name}/specs
+  exist {plugin_dir}/{plugin_name}/spec
   exist {plugin_dir}/{plugin_name}/src
 
   dir {plugin_dir}/{plugin_name}/dist
-  dir {plugin_dir}/{plugin_name}/specs
+  dir {plugin_dir}/{plugin_name}/spec
   dir {plugin_dir}/{plugin_name}/src

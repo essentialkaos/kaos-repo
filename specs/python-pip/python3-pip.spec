@@ -44,17 +44,22 @@
 
 %define pkgname     pip
 
+%define python_wheelname %{pkgname}-%{version}-py2.py3-none-any.whl
+%define python_wheeldir  %{_datadir}/python-wheels
+
 ################################################################################
 
 Summary:            Tool for installing and managing Python packages
 Name:               %{python_base}-%{pkgname}
 Version:            18.1
-Release:            1%{?dist}
+Release:            3%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                https://github.com/pypa/pip
 
 Source0:            https://github.com/pypa/%{pkgname}/archive/%{version}.tar.gz
+
+Patch0:             allow-stripping-given-prefix-from-wheel-RECORD-files.patch
 
 BuildArch:          noarch
 
@@ -65,6 +70,7 @@ BuildRequires:      %{python_base}-setuptools %{python_base}-devel
 Requires:           %{python_base}-setuptools %{python_base}-devel
 
 Provides:           pip3 = %{version}-%{release}
+Provides:           python3-pip = %{version}-%{release}
 Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
@@ -75,11 +81,34 @@ in the Python Package Index. It’s a replacement for easy_install.
 
 ################################################################################
 
+%if 0%{?rhel} >= 7
+%package wheel
+Summary:            The pip wheel
+
+Group:              Development/Tools
+
+BuildRequires:      %{python_base}-pip %{python_base}-wheel
+
+Requires:           %{python_base}-%{pkgname} = %{version}
+Requires:           ca-certificates
+
+%description wheel
+A Python wheel of pip to use with venv.
+%endif
+
+################################################################################
+
 %prep
 %setup -qn %{pkgname}-%{version}
 
+%patch0 -p1
+
 %build
+%if 0%{?rhel} >= 7
+%{__python3} setup.py bdist_wheel
+%else
 %{__python3} setup.py build
+%endif
 
 %install
 rm -rf %{buildroot}
@@ -87,6 +116,15 @@ rm -rf %{buildroot}
 %{__python3} setup.py install -O1 --skip-build --root %{buildroot}
 
 rm -rf %{buildroot}%{_bindir}/%{pkgname}-*
+
+%if 0%{?rhel} >= 7
+pip3 install -I dist/%{python_wheelname} \
+             --root %{buildroot} \
+             --strip-file-prefix %{buildroot}
+
+mkdir -p %{buildroot}%{python_wheeldir}
+install -p dist/%{python_wheelname} -t %{buildroot}%{python_wheeldir}
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -99,9 +137,22 @@ rm -rf %{buildroot}
 %attr(755, root, root) %{_bindir}/%{pkgname}*
 %{python3_sitelib}/%{pkgname}*
 
+%if 0%{?rhel} >= 7
+%files wheel
+%defattr(-, root, root, -)
+%{python_wheeldir}/%{python_wheelname}
+%endif
+
 ################################################################################
 
 %changelog
+* Tue Oct 01 2019 Anton Novojilov <andy@essentialkaos.com> - 18.1-3
+- Added patch for stripping prefix from script paths in wheel RECORD
+- Added wheel package for CentOS 7
+
+* Thu Sep 19 2019 Anton Novojilov <andy@essentialkaos.com> - 18.1-2
+- Fixed compatibility with the latest version of Python 3 package
+
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 18.1-1
 - Updated for compatibility with Python 3.6
 

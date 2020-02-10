@@ -32,11 +32,13 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:         Jansson JSON Library
 Name:            jansson
-Version:         2.11
+Version:         2.12
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -80,15 +82,17 @@ Header files for Jansson JSON Library
 
 %{__make} %{?_smp_mflags}
 
-%check
-%{__make} check
-
 %install
 rm -rf %{buildroot}
 
 %{make_install} INSTALL="install -p"
 
 rm -f %{buildroot}%{_libdir}/*.la
+
+%check
+%if %{?_with_check:1}%{?_without_check:0}
+%{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -115,20 +119,23 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.12-0
+- Updated to the latest stable release
+
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 2.11-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 2.10-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.9-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.8-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 2.7-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Tue Apr 01 2014 Anton Novojilov <andy@essentialkaos.com> - 2.6-2
 - Initial build

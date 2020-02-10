@@ -1,8 +1,8 @@
-diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
---- nano-3.0-orig/doc/sample.nanorc.in	2018-09-09 12:39:27.000000000 +0300
-+++ nano-3.0/doc/sample.nanorc.in	2018-09-12 02:18:20.000000000 +0300
-@@ -60,7 +60,7 @@
- # set historylog
+diff -urN nano-4.5-orig/doc/sample.nanorc.in nano-4.5/doc/sample.nanorc.in
+--- nano-4.5-orig/doc/sample.nanorc.in	2019-10-04 12:38:05.000000000 +0300
++++ nano-4.5/doc/sample.nanorc.in	2020-01-17 14:59:09.000000000 +0300
+@@ -66,7 +66,7 @@
+ # set jumpyscrolling
  
  ## Display line numbers to the left of the text.
 -# set linenumbers
@@ -10,21 +10,17 @@ diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -99,7 +99,7 @@
- # set nopauses
+@@ -76,7 +76,7 @@
+ ## The opening and closing brackets that can be found by bracket
+ ## searches.  They cannot contain blank characters.  The former set must
+ ## come before the latter set, and both must be in the same order.
+-# set matchbrackets "(<[{)>]}"
++set matchbrackets "(<[{)>]}"
  
- ## Do not automatically hard-wrap text.
--# set nowrap
-+set nowrap
- 
- ## Set operating directory.  nano will not read or write files outside
- ## this directory and its subdirectories.  Also, the current directory
-@@ -148,20 +148,20 @@
+ ## Enable mouse support, if available for your system.  When enabled,
+ ## mouse clicks can be used to place the cursor, set the mark (with a
+@@ -150,17 +150,17 @@
  # set smarthome
- 
- ## Use line-by-line scrolling instead of chunk-by-chunk.
--# set smooth
-+set smooth
  
  ## Enable soft line wrapping (AKA full-line display).
 -# set softwrap
@@ -44,29 +40,23 @@ diff -urN nano-3.0-orig/doc/sample.nanorc.in nano-3.0/doc/sample.nanorc.in
  
  ## Convert typed tabs to spaces.
  # set tabstospaces
-@@ -196,11 +196,11 @@
+@@ -215,6 +215,11 @@
+ # set keycolor brightmagenta
+ # set functioncolor magenta
  
- ## Paint the interface elements of nano.  These are examples;
- ## by default there are no colors, except for errorcolor.
--# set titlecolor brightwhite,blue
--# set statuscolor brightwhite,green
--# set errorcolor brightwhite,red
--# set selectedcolor brightwhite,magenta
--# set numbercolor cyan
 +set titlecolor brightwhite,blue
 +set statuscolor brightwhite,green
 +set errorcolor brightwhite,red
 +set selectedcolor brightwhite,magenta
 +set numbercolor brightblack
- # set keycolor cyan
- # set functioncolor green
- ## In root's .nanorc you might want to use:
-@@ -255,7 +255,7 @@
- ## them easier to remember and faster to type using nano's -Y option.
+ 
+ ## Setup of syntax coloring.
+ ##
+@@ -259,6 +264,7 @@
  
  ## To include all existing syntax definitions, you can do:
--# include "@PKGDATADIR@/*.nanorc"
+ # include "@PKGDATADIR@/*.nanorc"
 +include "/usr/share/nano/*.nanorc"
  
  
- ## Key bindings.
+ ## If <Tab> should always produce four spaces when editing a Python file,

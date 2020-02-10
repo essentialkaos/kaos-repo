@@ -1,5 +1,5 @@
 # Bibop recipe for python-elasticsearch for CentOS 7
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-elasticsearch python36-elasticsearch
 
@@ -20,6 +20,8 @@ command "-" "Check Python 2 installation"
 
   exist {PYTHON2_SITELIB}/elasticsearch/__init__.py
 
+  python-module elasticsearch
+
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/elasticsearch
   dir {PYTHON3_SITELIB}/elasticsearch
@@ -34,3 +36,5 @@ command "-" "Check Python 3 installation"
   dir {PYTHON3_SITELIB}/elasticsearch/helpers
 
   exist {PYTHON3_SITELIB}/elasticsearch/__init__.py
+
+  python3-module elasticsearch

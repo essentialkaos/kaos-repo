@@ -1,5 +1,5 @@
 # Bibop recipe for HAProxy 1.9
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg haproxy-1.9.*
 
@@ -21,13 +21,9 @@ command "-" "Check environment"
   user-exist {service_user}
 
   exist {service_config}
-  perms {service_config} 644
+  mode {service_config} 644
   exist {logrotate_config}
-  perms {logrotate_config} 644
-
-command "-" "Place test config"
-  backup {service_config}
-  copy haproxy.cfg {service_config}
+  mode {logrotate_config} 644
 
 command "systemctl start {service_name}" "Start HAProxy daemon"
   wait {delay}
@@ -36,9 +32,9 @@ command "systemctl start {service_name}" "Start HAProxy daemon"
 command "systemctl status {service_name}" "Check status of HAProxy daemon"
   expect "active (running)"
 
+command "-" "Make HTTP request"
+  http-status GET "http://127.0.0.1:80" 200
+
 command "systemctl stop {service_name}" "Stop HAProxy daemon"
   wait {delay}
   !service-works {service_name}
-
-command "-" "Restore original config"
-  backup-restore {service_config}

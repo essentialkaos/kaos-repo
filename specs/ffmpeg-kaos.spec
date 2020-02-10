@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -34,13 +38,15 @@
 
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
-Version:           4.1
+Version:           4.2.2
 Release:           0%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
-URL:               http://ffmpeg.org
+URL:               https://ffmpeg.org
 
-Source:            http://ffmpeg.org/releases/%{source_name}-%{version}.tar.bz2
+Source0:           https://ffmpeg.org/releases/%{source_name}-%{version}.tar.bz2
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -76,6 +82,8 @@ quality polyphase filter.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{source_name}-%{version}
 test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > version.h
 
@@ -149,6 +157,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 4.2.2-0
+- Updated to version 4.2.2
+
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 4.1.4-0
+- Updated to version 4.1.4
+
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 4.1-0
 - Updated to version 4.1
 

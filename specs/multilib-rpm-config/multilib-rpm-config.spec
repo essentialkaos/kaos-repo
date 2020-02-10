@@ -8,6 +8,8 @@
 %global ml_fix          %rrcdir/multilib-fix
 %global ml_info         %rrcdir/multilib-info
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:         Multilib packaging helpers
@@ -75,6 +77,7 @@ install -m 755 -p multilib-info %{buildroot}/%{ml_info}
 rm -rf %{buildroot}
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 mkdir tests ; cd tests
 ml_fix="sh $(pwd)/../multilib-fix --buildroot $(pwd)"
 capable="sh $(pwd)/../multilib-info --multilib-capable"
@@ -95,11 +98,11 @@ gcc ./basic/main.c
 
 pwd
 if $($capable) ; then
-    cp -r template really-works
-    $ml_fix --file /really-works/header.h
-    gcc really-works/main.c
-    ./a.out
-    test -f really-works/header-*.h
+  cp -r template really-works
+  $ml_fix --file /really-works/header.h
+  gcc really-works/main.c
+  ./a.out
+  test -f really-works/header-*.h
 fi
 
 cp -r template other_arch
@@ -117,6 +120,7 @@ test ! -f aarch64-no-change/header-*.h
 test $($capable --arch x86_64) = true
 test $($capable --arch aarch64) = false
 test $($capable --arch ppc64p7) = true
+%endif
 
 ################################################################################
 

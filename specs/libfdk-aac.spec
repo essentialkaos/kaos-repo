@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,13 +36,15 @@
 
 Summary:           Fraunhofer FDK AAC codec library
 Name:              libfdk-aac
-Version:           2.0.0
+Version:           2.0.1
 Release:           0%{?dist}
 License:           Copyright Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
 Group:             System Environment/Libraries
 URL:               https://github.com/mstorsjo/fdk-aac
 
-Source:            https://github.com/mstorsjo/fdk-aac/archive/v%{version}.tar.gz
+Source0:           https://github.com/mstorsjo/fdk-aac/archive/v%{version}.tar.gz
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -57,6 +63,8 @@ Modified library of Fraunhofer AAC decoder and encoder.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn fdk-aac-%{version}
 
 %build
@@ -94,6 +102,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
+- Minor release with a number of crash/fuzz fixes, primarily for the decoder
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
 - Major update in the upstream source base, with support for new
   profiles and features, and numerous crash/fuzz fixes

@@ -1,26 +1,32 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define package_name      click
 
 ################################################################################
 
-Summary:        A simple wrapper around optparse for powerful command line utilities.
+Summary:        A simple wrapper around optparse for powerful command line utilities
 Name:           python-click
-Version:        6.7
+Version:        7.0
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
-URL:            http://github.com/mitsuhiko/click
+URL:            https://github.com/mitsuhiko/click
 
-Source:         https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
+Source0:        https://github.com/mitsuhiko/%{package_name}/archive/%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildArch:      noarch
 
-BuildRequires:  python-devel python-setuptools
+BuildRequires:  python-devel >= 2.7 python-setuptools
 
-Requires:       python
+Requires:       python >= 2.7
 
 Provides:       %{name} = %{verion}-%{release}
 Provides:       python2-click = %{verion}-%{release}
@@ -36,6 +42,8 @@ sensible defaults out of the box.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{package_name}-%{version}
 
 %build
@@ -58,6 +66,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 7.0-0
+- Updated to the latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 6.7-0
 - Updated to latest stable release
 

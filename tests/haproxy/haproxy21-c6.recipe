@@ -1,0 +1,38 @@
+# Bibop recipe for HAProxy 2.1
+# See more: https://kaos.sh/bibop
+
+pkg haproxy-2.1.*
+
+require-root yes
+unsafe-actions yes
+
+var service_user haproxy
+var service_name haproxy
+var service_config /etc/haproxy/haproxy.cfg
+var logrotate_config /etc/logrotate.d/haproxy
+
+command "-" "Check environment"
+  app haproxy
+  
+  service-present {service_name}
+  
+  user-exist {service_user}
+
+  exist {service_config}
+  mode {service_config} 644
+  exist {logrotate_config}
+  mode {logrotate_config} 644
+
+command "service {service_name} start" "Start HAProxy daemon"
+  exit 0
+  service-works {service_name}
+
+command "service {service_name} status" "Check status of HAProxy daemon"
+  exit 0
+
+command "-" "Make HTTP request"
+  http-status GET "http://127.0.0.1:80" 200
+
+command "service {service_name} stop" "Stop HAProxy daemon"
+  exit 0
+  !service-works {service_name}

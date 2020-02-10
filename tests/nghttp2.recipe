@@ -1,5 +1,5 @@
 # Bibop recipe for nghttp2
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg nghttp2 libnghttp2 libnghttp2-devel
 

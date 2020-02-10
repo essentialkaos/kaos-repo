@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -41,20 +45,22 @@
 
 Summary:            Powerful image loading and rendering library
 Name:               imlib2
-Version:            1.4.8
+Version:            1.6.1
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
 URL:                https://docs.enlightenment.org/api/imlib2/html
 
-Source0:            http://prdownloads.sourceforge.net/enlightenment/%{name}-%{version}.tar.bz2
+Source0:            https://prdownloads.sourceforge.net/enlightenment/%{name}-%{version}.tar.bz2
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           zlib
-
 BuildRequires:      make gcc gcc-c++ autoconf freetype-devel
 BuildRequires:      automake libtool libtool-ltdl-devel
+
+Requires:           zlib
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -176,6 +182,17 @@ GIF image loader for Imlib2.
 
 ################################################################################
 
+%package loader_ico
+Summary:            Imlib2 ICO loader
+Group:              System Environment/Libraries
+
+Requires:           %{name} = %{version}
+
+%description loader_ico
+ICO image loader for Imlib2.
+
+################################################################################
+
 %package loader_pnm
 Summary:            Imlib2 PNM loader
 Group:              System Environment/Libraries
@@ -262,6 +279,8 @@ id3 tag image loader/saver for Imlib2.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -347,6 +366,10 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/gif.so
 
+%files loader_ico
+%defattr(-,root,root,-)
+%attr(755,root,root) %{_libdir}/%{name}/loaders/ico.so
+
 %files loader_pnm
 %defattr(-,root,root,-)
 %attr(755,root,root) %{_libdir}/%{name}/loaders/pnm.so
@@ -378,5 +401,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Updated to the latest stable release
+
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
+- Updated to the latest stable release
+
 * Tue Apr 12 2016 Gleb Goncharov <yum@gongled.ru> - 1.4.8-0
 - Initial build

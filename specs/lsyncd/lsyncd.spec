@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -46,7 +50,7 @@
 Summary:              File change monitoring and synchronization daemon
 Name:                 lsyncd
 Version:              2.2.2
-Release:              1%{?dist}
+Release:              2%{?dist}
 License:              GPLv2+
 Group:                Applications/Internet
 URL:                  https://github.com/axkibe/lsyncd
@@ -57,6 +61,8 @@ Source2:              %{name}.init
 Source3:              %{name}.sysconfig
 Source4:              %{name}.logrotate
 Source5:              %{name}.conf
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -87,6 +93,8 @@ not hamper local file system performance.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-release-%{version}
 
 %build
@@ -168,6 +176,10 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-2
+- Improved init script
+- Added CRC check for all sources
+
 * Mon Aug 28 2017 Gleb Goncharov <inbox@gongled.ru> - 2.2.2-1
 - Fixed invalid path to binary in systemd unit file
 

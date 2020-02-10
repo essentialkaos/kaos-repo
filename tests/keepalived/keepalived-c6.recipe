@@ -1,11 +1,14 @@
 # Bibop recipe for keepalived
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg keepalived
 
 require-root yes
+unsafe-actions yes
 
 var service_name keepalived
+var config /etc/keepalived/keepalived.conf
+var pid_dir /var/run/keepalived
 
 command "-" "Check environment"
   app keepalived
@@ -13,7 +16,17 @@ command "-" "Check environment"
 
   # Check permissions
   exist /etc/keepalived/keepalived.conf
-  perms /etc/keepalived/keepalived.conf 644
+  mode /etc/keepalived/keepalived.conf 644
+
+command "service {service_name} start" "Start keepalived daemon with default config"
+  !exit 0
+  !service-works {service_name}
+
+command "-" "Configuration backup"
+  backup {config}
+
+command "-" "Update configuration"
+  copy keepalived.conf {config}
 
 command "service {service_name} start" "Start keepalived daemon"
   exit 0
@@ -22,6 +35,18 @@ command "service {service_name} start" "Start keepalived daemon"
 command "service {service_name} status" "Check status of keepalived daemon"
   exit 0
 
+  exist {pid_dir}/keepalived.pid
+  exist {pid_dir}/vrrp.pid
+
+  process-works {pid_dir}/keepalived.pid
+  process-works {pid_dir}/vrrp.pid
+
 command "service {service_name} stop" "Stop keepalived daemon"
   exit 0
   !service-works {service_name}
+
+  !exist {pid_dir}/keepalived.pid
+  !exist {pid_dir}/vrrp.pid
+
+command "-" "Configuration restore"
+  backup-restore {config}

@@ -1,38 +1,43 @@
-diff -urN grafana-6.0.2-orig/pkg/cmd/grafana-server/main.go grafana-6.0.2/pkg/cmd/grafana-server/main.go
---- grafana-6.0.2-orig/pkg/cmd/grafana-server/main.go	2019-03-19 13:06:06.000000000 +0000
-+++ grafana-6.0.2/pkg/cmd/grafana-server/main.go	2019-04-15 19:43:29.052643000 +0000
-@@ -21,6 +21,7 @@
- 	"github.com/grafana/grafana/pkg/setting"
- 	_ "github.com/grafana/grafana/pkg/tsdb/azuremonitor"
- 	_ "github.com/grafana/grafana/pkg/tsdb/cloudwatch"
-+	_ "github.com/grafana/grafana/pkg/tsdb/clickhouse"
- 	_ "github.com/grafana/grafana/pkg/tsdb/elasticsearch"
- 	_ "github.com/grafana/grafana/pkg/tsdb/graphite"
- 	_ "github.com/grafana/grafana/pkg/tsdb/influxdb"
-diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg/tsdb/clickhouse/clickhouse.go
---- grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go	1970-01-01 00:00:00.000000000 +0000
-+++ grafana-6.0.2/pkg/tsdb/clickhouse/clickhouse.go	2019-04-15 19:44:23.494985000 +0000
-@@ -0,0 +1,150 @@
+diff --git a/pkg/cmd/grafana-server/main.go b/pkg/cmd/grafana-server/main.go
+index 14d6036e826..e35326bf417 100644
+--- a/pkg/cmd/grafana-server/main.go
++++ b/pkg/cmd/grafana-server/main.go
+@@ -30,6 +30,7 @@ import (
+ 	_ "github.com/grafana/grafana/pkg/tsdb/prometheus"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/stackdriver"
+ 	_ "github.com/grafana/grafana/pkg/tsdb/testdatasource"
++	_ "github.com/portmare/grafana/pkg/tsdb/clickhouse"
+ )
+ 
+ var version = "5.0.0"
+diff --git a/pkg/tsdb/clickhouse/clickhouse.go b/pkg/tsdb/clickhouse/clickhouse.go
+new file mode 100644
+index 00000000000..eed58e6a583
+--- /dev/null
++++ b/pkg/tsdb/clickhouse/clickhouse.go
+@@ -0,0 +1,166 @@
 +package clickhouse
 +
 +import (
 +	"context"
 +	"encoding/json"
 +	"fmt"
-+	"github.com/grafana/grafana/pkg/components/null"
-+	"github.com/grafana/grafana/pkg/log"
-+	"github.com/grafana/grafana/pkg/models"
-+	"github.com/grafana/grafana/pkg/tsdb"
-+	"github.com/pkg/errors"
 +	"io/ioutil"
 +	"net/http"
 +	"net/url"
 +	"strconv"
++
++	"github.com/grafana/grafana/pkg/components/null"
++	"github.com/grafana/grafana/pkg/infra/log"
++	"github.com/grafana/grafana/pkg/models"
++	"github.com/grafana/grafana/pkg/tsdb"
++	"github.com/pkg/errors"
 +)
 +
 +type Clickhouse struct {
 +	*models.DataSource
-+	log log.Logger
++	log         log.Logger
++	QueryParser *QueryParser
 +}
 +
 +type clickhouseResponse struct {
@@ -40,14 +45,15 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +		Name string `json:"name"`
 +		Type string `json:"type"`
 +	} `json:"meta"`
-+	Data []map[string]string `json:"data"`
-+	Rows int64               `json:"rows"`
++	Data []map[string]interface{} `json:"data"`
++	Rows int64                    `json:"rows"`
 +}
 +
 +func NewClickhouseExecutor(dsInfo *models.DataSource) (tsdb.TsdbQueryEndpoint, error) {
 +	return &Clickhouse{
-+		DataSource: dsInfo,
-+		log:        log.New("tsdb.clickhouse"),
++		DataSource:  dsInfo,
++		log:         log.New("tsdb.clickhouse"),
++		QueryParser: &QueryParser{},
 +	}, nil
 +}
 +
@@ -69,8 +75,9 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +func (e *Clickhouse) executeQuery(query *tsdb.Query, timeRange *tsdb.TimeRange) *tsdb.QueryResult {
 +	queryResult := tsdb.NewQueryResult()
 +
-+	queryString, err := query.Model.Get("rawQuery").String()
++	queryString, err := e.QueryParser.Parse(query.Model, timeRange)
 +	if err != nil {
++		e.log.Info(query.Model.String())
 +		queryResult.Error = errors.Wrap(err, "Cannot get raw query")
 +		return queryResult
 +	}
@@ -79,7 +86,7 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +
 +	if e.DataSource.BasicAuth {
 +		params.Add("user", e.DataSource.BasicAuthUser)
-+		params.Add("password", e.DataSource.BasicAuthPassword)
++		params.Add("password", e.DataSource.DecryptedBasicAuthPassword())
 +	}
 +
 +	response, err := http.Get(fmt.Sprintf("%s?%s", e.DataSource.Url, params.Encode()))
@@ -100,17 +107,11 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +		queryResult.Error = errors.Wrapf(err, "Cannot parse the response: %s", responseBody)
 +		return queryResult
 +	}
-+	dateTimeColumnName, err := query.Model.Get("dateTimeColDataType").String()
-+	if err != nil {
-+		queryResult.Error = err
-+		return queryResult
-+	}
-+
 +	format := query.Model.Get("format").MustString("time_series")
 +
 +	switch format {
 +	case "time_series":
-+		series, err := e.buildSeries(clickhouseResponse, dateTimeColumnName, timeRange)
++		series, err := e.buildSeries(clickhouseResponse, timeRange)
 +		if err != nil {
 +			queryResult.Error = err
 +			return queryResult
@@ -123,14 +124,15 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +	return queryResult
 +}
 +
-+func (e *Clickhouse) buildSeries(responseJson *clickhouseResponse, timeColumnName string, timeRange *tsdb.TimeRange) ([]*tsdb.TimeSeries, error) {
-+	series := make([]*tsdb.TimeSeries, 0)
-+	for _, row := range responseJson.Data {
-+		timeString, ok := row[timeColumnName]
-+		if !ok {
-+			return nil, errors.New("Cannot find time column")
-+		}
++func (e *Clickhouse) buildSeries(responseJson *clickhouseResponse, timeRange *tsdb.TimeRange) (tsdb.TimeSeriesSlice, error) {
++	var series tsdb.TimeSeriesSlice
++	points := make(map[string]tsdb.TimeSeriesPoints, 0)
 +
++	// time column is always first
++	timeColumnName := responseJson.Meta[0].Name
++
++	for _, row := range responseJson.Data {
++		timeString := fmt.Sprint(row[timeColumnName])
 +		time, err := strconv.ParseFloat(timeString, 64)
 +		if err != nil {
 +			return nil, errors.New(fmt.Sprintf("Cannot parse float %s", timeString))
@@ -140,26 +142,617 @@ diff -urN grafana-6.0.2-orig/pkg/tsdb/clickhouse/clickhouse.go grafana-6.0.2/pkg
 +			continue
 +		}
 +
-+		i := 0
-+		for columnName, columnValue := range row {
-+			if columnName == timeColumnName {
++		// generate series name
++		var seriesName string
++		stringColumns := make(map[string]bool, 0)
++		for _, meta := range responseJson.Meta {
++			if meta.Name == timeColumnName {
 +				continue
 +			}
-+			value, err := strconv.ParseFloat(columnValue, 64)
++			columnValue := fmt.Sprint(row[meta.Name])
++			_, err := strconv.ParseFloat(columnValue, 64)
 +			if err != nil {
-+				return nil, errors.New(fmt.Sprintf("Cannot parse float %s", columnValue))
++				stringColumns[meta.Name] = true
++				seriesName += "." + columnValue
++			}
++		}
++
++		// generate series points
++		for columnName, columnValue := range row {
++			if columnName == timeColumnName || stringColumns[columnName] {
++				continue
++			}
++			value, err := strconv.ParseFloat(fmt.Sprint(columnValue), 64)
++			if err != nil {
++				continue
 +			}
 +
-+			point := tsdb.TimePoint{null.FloatFrom(value), null.FloatFrom(time)}
-+
-+			// Append a new series if it's the first point
-+			if len(series) <= i {
-+				series = append(series, tsdb.NewTimeSeries(columnName, tsdb.TimeSeriesPoints{}))
-+			}
-+
-+			series[i].Points = append(series[i].Points, point)
-+			i += 1
++			fullSeriesName := seriesName + "." + columnName
++			point := tsdb.NewTimePoint(null.FloatFrom(value), time)
++			points[fullSeriesName] = append(points[fullSeriesName], point)
 +		}
 +	}
++
++	for metric, values := range points {
++		series = append(series, &tsdb.TimeSeries{
++			Name:   metric,
++			Points: values,
++		})
++	}
++
 +	return series, nil
++}
+diff --git a/pkg/tsdb/clickhouse/query_parser.go b/pkg/tsdb/clickhouse/query_parser.go
+new file mode 100644
+index 00000000000..4a60ee08883
+--- /dev/null
++++ b/pkg/tsdb/clickhouse/query_parser.go
+@@ -0,0 +1,195 @@
++package clickhouse
++
++import (
++	"fmt"
++	"regexp"
++	"strconv"
++	"strings"
++	"time"
++
++	"github.com/grafana/grafana/pkg/components/simplejson"
++	"github.com/grafana/grafana/pkg/tsdb"
++)
++
++// QueryParser is struct for export parse functions
++type QueryParser struct{}
++
++var intervalSteps = map[string]int{
++	"s": 1,
++	"m": 60,
++	"h": 3600,
++	"d": 86400,
++}
++
++// Parse interpolate query string by data of model and time range
++func (qp *QueryParser) Parse(model *simplejson.Json, timeRange *tsdb.TimeRange) (string, error) {
++	query, err := model.Get("query").String()
++	if err != nil {
++		return "", err
++	}
++	formattedQuery := strings.TrimSpace(query)
++	formattedQuery = qp.ParseInterval(formattedQuery, model)
++	formattedQuery, err = qp.ParseTimeSeries(formattedQuery, model)
++	if err != nil {
++		return "", err
++	}
++	formattedQuery, err = qp.ParseTable(formattedQuery, model)
++	if err != nil {
++		return "", err
++	}
++	formattedQuery, err = qp.ParseTimeFilter(formattedQuery, model, timeRange)
++	if err != nil {
++		return "", err
++	}
++
++	reg := regexp.MustCompile(`\$\w*`)
++	if reg.MatchString(formattedQuery) {
++		return "", fmt.Errorf("Supports in query only $table, $timeSeries, $timeFilter, $interval")
++	}
++
++	return formattedQuery, nil
++}
++
++// ParseTimeSeries replace $timeSeries to time series of dateTimeColumn from query string
++func (qp *QueryParser) ParseTimeSeries(query string, model *simplejson.Json) (string, error) {
++	reg := regexp.MustCompile(`\$timeSeries`)
++	if !reg.MatchString(query) {
++		return query, nil
++	}
++
++	dateTimeColumnName, dateTimeType, err := qp.GetDateTimeColumn(model)
++	if err != nil {
++		return query, err
++	}
++
++	var pattern string
++	if pattern = "(intDiv(%s, %d) * %d) * 1000"; dateTimeType == "DATETIME" {
++		pattern = "(intDiv(toUInt32(%s), %d) * %d) * 1000"
++	}
++	interval := qp.GetInterval(model)
++	timeSeries := fmt.Sprintf(pattern, dateTimeColumnName, interval, interval)
++	return reg.ReplaceAllString(query, timeSeries), nil
++}
++
++// ParseTable replace $table to names of database and table from query string
++func (qp *QueryParser) ParseTable(query string, model *simplejson.Json) (string, error) {
++	reg := regexp.MustCompile(`\$table`)
++	if !reg.MatchString(query) {
++		return query, nil
++	}
++
++	table, err := model.Get("table").String()
++	if err != nil {
++		return query, nil
++	}
++
++	database, err := model.Get("database").String()
++	if err != nil {
++		database = "default"
++	}
++
++	return reg.ReplaceAllString(query, fmt.Sprintf("%s.%s", database, table)), nil
++}
++
++// ParseInterval replace $interval to calculated interval from data model
++func (qp *QueryParser) ParseInterval(query string, model *simplejson.Json) string {
++	reg := regexp.MustCompile(`\$interval`)
++	if !reg.MatchString(query) {
++		return query
++	}
++
++	return reg.ReplaceAllString(query, string(qp.GetInterval(model)))
++}
++
++// ParseTimeFilter replace $timeFilter to interval of dateTimeColumn by timeRange from query string
++func (qp *QueryParser) ParseTimeFilter(query string, model *simplejson.Json, timeRange *tsdb.TimeRange) (string, error) {
++	reg := regexp.MustCompile(`\$timeFilter`)
++	if !reg.MatchString(query) {
++		return query, nil
++	}
++
++	dateTimeColumnName, dateTimeType, err := qp.GetDateTimeColumn(model)
++	if err != nil {
++		return query, err
++	}
++
++	from, to := qp.GetTimeRangeAsTimestamps(timeRange, dateTimeType == "DATETIME")
++	var result string
++	if timeRange.To == "now" {
++		result = fmt.Sprintf("%s >= %s", dateTimeColumnName, from)
++	} else {
++		result = fmt.Sprintf("%s BETWEEN %s AND %s", dateTimeColumnName, from, to)
++	}
++
++	return reg.ReplaceAllString(query, result), nil
++}
++
++// GetInterval generate interval in seconds for time series by step and interval from data of model
++func (qp *QueryParser) GetInterval(model *simplejson.Json) int {
++	intervalFactor, err := model.Get("intervalFactor").Int()
++	if err != nil {
++		intervalFactor = 1
++	}
++
++	intervalStr, _ := model.Get("interval").String()
++
++	return intervalFactor * qp.IntervalToSeconds(intervalStr)
++}
++
++// IntervalToSeconds convert interval's string to seconds, exp. IntervalToSeconds("5m") => 300
++func (qp *QueryParser) IntervalToSeconds(intervalStr string) int {
++	if intervalStr == "" {
++		return 1
++	}
++
++	re := regexp.MustCompile(`^(\d+)(\w+)$`)
++	matches := re.FindAllStringSubmatch(intervalStr, -1)
++	if len(matches[0]) == 3 {
++		value, _ := strconv.Atoi(matches[0][1])
++		step := intervalSteps[string(matches[0][2])]
++		if value > 0 && step > 0 {
++			return value * step
++		}
++	}
++
++	return 1
++}
++
++// GetDateTimeColumn return date or datetime column with date type
++func (qp *QueryParser) GetDateTimeColumn(model *simplejson.Json) (string, string, error) {
++	dateTimeColumnName, dtErr := model.Get("dateTimeColDataType").String()
++	dateColumnName, dErr := model.Get("dateColDataType").String()
++	if dtErr != nil && dErr != nil {
++		return "", "", dtErr
++	}
++
++	dateTimeType, err := model.Get("dateTimeType").String()
++	if err != nil {
++		dateTimeType = "DATETIME"
++	}
++
++	if dateTimeColumnName == "" {
++		return dateColumnName, "DATE", nil
++	}
++
++	return dateTimeColumnName, dateTimeType, nil
++}
++
++// GetTimeRangeAsTimestamps return interval from time range
++func (qp *QueryParser) GetTimeRangeAsTimestamps(timeRange *tsdb.TimeRange, isDateTime bool) (string, string) {
++	now := time.Now().Unix()
++	from := now - int64(qp.IntervalToSeconds(timeRange.From))
++
++	matches := strings.Split(timeRange.To, "-")
++	var to int64
++	if to = now; len(matches) > 1 {
++		to -= int64(qp.IntervalToSeconds(timeRange.To))
++	}
++
++	var pattern string
++	if pattern = "%d"; !isDateTime {
++		pattern = "toDate(%d)"
++	}
++
++	return fmt.Sprintf(pattern, from), fmt.Sprintf(pattern, to)
++}
+diff --git a/vendor/github.com/portmare/grafana/pkg/tsdb/clickhouse/clickhouse.go b/vendor/github.com/portmare/grafana/pkg/tsdb/clickhouse/clickhouse.go
+new file mode 100644
+index 00000000000..6e743d2baaf
+--- /dev/null
++++ b/vendor/github.com/portmare/grafana/pkg/tsdb/clickhouse/clickhouse.go
+@@ -0,0 +1,166 @@
++package clickhouse
++
++import (
++	"context"
++	"encoding/json"
++	"fmt"
++	"io/ioutil"
++	"net/http"
++	"net/url"
++	"strconv"
++
++	"github.com/grafana/grafana/pkg/components/null"
++	"github.com/grafana/grafana/pkg/infra/log"
++	"github.com/grafana/grafana/pkg/models"
++	"github.com/grafana/grafana/pkg/tsdb"
++	"github.com/pkg/errors"
++)
++
++type Clickhouse struct {
++	*models.DataSource
++	log         log.Logger
++	QueryParser *QueryParser
++}
++
++type clickhouseResponse struct {
++	Meta []struct {
++		Name string `json:"name"`
++		Type string `json:"type"`
++	} `json:"meta"`
++	Data []map[string]interface{} 	`json:"data"`
++	Rows int64               		`json:"rows"`
++}
++
++func NewClickhouseExecutor(dsInfo *models.DataSource) (tsdb.TsdbQueryEndpoint, error) {
++	return &Clickhouse{
++		DataSource:  dsInfo,
++		log:         log.New("tsdb.clickhouse"),
++		QueryParser: &QueryParser{},
++	}, nil
++}
++
++func init() {
++	tsdb.RegisterTsdbQueryEndpoint("vertamedia-clickhouse-datasource", NewClickhouseExecutor)
++}
++
++func (e *Clickhouse) Query(ctx context.Context, dsInfo *models.DataSource, tsdbQuery *tsdb.TsdbQuery) (*tsdb.Response, error) {
++	result := &tsdb.Response{}
++	result.Results = make(map[string]*tsdb.QueryResult)
++
++	for _, query := range tsdbQuery.Queries {
++		result.Results[query.RefId] = e.executeQuery(query, tsdbQuery.TimeRange)
++	}
++
++	return result, nil
++}
++
++func (e *Clickhouse) executeQuery(query *tsdb.Query, timeRange *tsdb.TimeRange) *tsdb.QueryResult {
++	queryResult := tsdb.NewQueryResult()
++
++	queryString, err := e.QueryParser.Parse(query.Model, timeRange)
++	if err != nil {
++		e.log.Info(query.Model.String())
++		queryResult.Error = errors.Wrap(err, "Cannot get raw query")
++		return queryResult
++	}
++	params := url.Values{}
++	params.Add("query", fmt.Sprintf("%s FORMAT JSON", queryString))
++
++	if e.DataSource.BasicAuth {
++		params.Add("user", e.DataSource.BasicAuthUser)
++		params.Add("password", e.DataSource.DecryptedBasicAuthPassword())
++	}
++
++	response, err := http.Get(fmt.Sprintf("%s?%s", e.DataSource.Url, params.Encode()))
++	if err != nil {
++		queryResult.Error = errors.Wrap(err, "Request is failed")
++		return queryResult
++	}
++
++	responseBody, err := ioutil.ReadAll(response.Body)
++	if err != nil {
++		queryResult.Error = errors.Wrap(err, "Cannot read response body")
++		return queryResult
++	}
++
++	clickhouseResponse := &clickhouseResponse{}
++	err = json.Unmarshal(responseBody, clickhouseResponse)
++	if err != nil {
++		queryResult.Error = errors.Wrapf(err, "Cannot parse the response: %s", responseBody)
++		return queryResult
++	}
++	format := query.Model.Get("format").MustString("time_series")
++
++	switch format {
++	case "time_series":
++		series, err := e.buildSeries(clickhouseResponse, timeRange)
++		if err != nil {
++			queryResult.Error = err
++			return queryResult
++		}
++		queryResult.Series = series
++	default:
++		queryResult.Error = errors.Errorf("%s format does not support", format)
++	}
++
++	return queryResult
++}
++
++func (e *Clickhouse) buildSeries(responseJson *clickhouseResponse, timeRange *tsdb.TimeRange) (tsdb.TimeSeriesSlice, error) {
++	var series tsdb.TimeSeriesSlice
++	points := make(map[string]tsdb.TimeSeriesPoints, 0)
++
++	// time column is always first
++	timeColumnName := responseJson.Meta[0].Name
++
++	for _, row := range responseJson.Data {
++		timeString := fmt.Sprint(row[timeColumnName])
++		time, err := strconv.ParseFloat(timeString, 64)
++		if err != nil {
++			return nil, errors.New(fmt.Sprintf("Cannot parse float %s", timeString))
++		}
++
++		if timeRange != nil && (float64(timeRange.GetFromAsMsEpoch()) > time || float64(timeRange.GetToAsMsEpoch()) < time) {
++			continue
++		}
++
++		// generate series name
++		var seriesName string
++		stringColumns := make(map[string]bool, 0)
++		for _, meta := range responseJson.Meta {
++			if meta.Name == timeColumnName {
++				continue
++			}
++			columnValue := fmt.Sprint(row[meta.Name])
++			_, err := strconv.ParseFloat(columnValue, 64)
++			if err != nil {
++				stringColumns[meta.Name] = true
++				seriesName += "." + columnValue
++			}
++		}
++
++		// generate series points
++		for columnName, columnValue := range row {
++			if columnName == timeColumnName || stringColumns[columnName] {
++				continue
++			}
++			value, err := strconv.ParseFloat(fmt.Sprint(columnValue), 64)
++			if err != nil {
++				continue
++			}
++
++			fullSeriesName := seriesName + "." + columnName
++			point := tsdb.NewTimePoint(null.FloatFrom(value), time)
++			points[fullSeriesName] = append(points[fullSeriesName], point)
++		}
++	}
++
++	for metric, values := range points {
++		series = append(series, &tsdb.TimeSeries{
++			Name:   metric,
++			Points: values,
++		})
++	}
++
++	return series, nil
++}
+diff --git a/vendor/github.com/portmare/grafana/pkg/tsdb/clickhouse/query_parser.go b/vendor/github.com/portmare/grafana/pkg/tsdb/clickhouse/query_parser.go
+new file mode 100644
+index 00000000000..4a60ee08883
+--- /dev/null
++++ b/vendor/github.com/portmare/grafana/pkg/tsdb/clickhouse/query_parser.go
+@@ -0,0 +1,195 @@
++package clickhouse
++
++import (
++	"fmt"
++	"regexp"
++	"strconv"
++	"strings"
++	"time"
++
++	"github.com/grafana/grafana/pkg/components/simplejson"
++	"github.com/grafana/grafana/pkg/tsdb"
++)
++
++// QueryParser is struct for export parse functions
++type QueryParser struct{}
++
++var intervalSteps = map[string]int{
++	"s": 1,
++	"m": 60,
++	"h": 3600,
++	"d": 86400,
++}
++
++// Parse interpolate query string by data of model and time range
++func (qp *QueryParser) Parse(model *simplejson.Json, timeRange *tsdb.TimeRange) (string, error) {
++	query, err := model.Get("query").String()
++	if err != nil {
++		return "", err
++	}
++	formattedQuery := strings.TrimSpace(query)
++	formattedQuery = qp.ParseInterval(formattedQuery, model)
++	formattedQuery, err = qp.ParseTimeSeries(formattedQuery, model)
++	if err != nil {
++		return "", err
++	}
++	formattedQuery, err = qp.ParseTable(formattedQuery, model)
++	if err != nil {
++		return "", err
++	}
++	formattedQuery, err = qp.ParseTimeFilter(formattedQuery, model, timeRange)
++	if err != nil {
++		return "", err
++	}
++
++	reg := regexp.MustCompile(`\$\w*`)
++	if reg.MatchString(formattedQuery) {
++		return "", fmt.Errorf("Supports in query only $table, $timeSeries, $timeFilter, $interval")
++	}
++
++	return formattedQuery, nil
++}
++
++// ParseTimeSeries replace $timeSeries to time series of dateTimeColumn from query string
++func (qp *QueryParser) ParseTimeSeries(query string, model *simplejson.Json) (string, error) {
++	reg := regexp.MustCompile(`\$timeSeries`)
++	if !reg.MatchString(query) {
++		return query, nil
++	}
++
++	dateTimeColumnName, dateTimeType, err := qp.GetDateTimeColumn(model)
++	if err != nil {
++		return query, err
++	}
++
++	var pattern string
++	if pattern = "(intDiv(%s, %d) * %d) * 1000"; dateTimeType == "DATETIME" {
++		pattern = "(intDiv(toUInt32(%s), %d) * %d) * 1000"
++	}
++	interval := qp.GetInterval(model)
++	timeSeries := fmt.Sprintf(pattern, dateTimeColumnName, interval, interval)
++	return reg.ReplaceAllString(query, timeSeries), nil
++}
++
++// ParseTable replace $table to names of database and table from query string
++func (qp *QueryParser) ParseTable(query string, model *simplejson.Json) (string, error) {
++	reg := regexp.MustCompile(`\$table`)
++	if !reg.MatchString(query) {
++		return query, nil
++	}
++
++	table, err := model.Get("table").String()
++	if err != nil {
++		return query, nil
++	}
++
++	database, err := model.Get("database").String()
++	if err != nil {
++		database = "default"
++	}
++
++	return reg.ReplaceAllString(query, fmt.Sprintf("%s.%s", database, table)), nil
++}
++
++// ParseInterval replace $interval to calculated interval from data model
++func (qp *QueryParser) ParseInterval(query string, model *simplejson.Json) string {
++	reg := regexp.MustCompile(`\$interval`)
++	if !reg.MatchString(query) {
++		return query
++	}
++
++	return reg.ReplaceAllString(query, string(qp.GetInterval(model)))
++}
++
++// ParseTimeFilter replace $timeFilter to interval of dateTimeColumn by timeRange from query string
++func (qp *QueryParser) ParseTimeFilter(query string, model *simplejson.Json, timeRange *tsdb.TimeRange) (string, error) {
++	reg := regexp.MustCompile(`\$timeFilter`)
++	if !reg.MatchString(query) {
++		return query, nil
++	}
++
++	dateTimeColumnName, dateTimeType, err := qp.GetDateTimeColumn(model)
++	if err != nil {
++		return query, err
++	}
++
++	from, to := qp.GetTimeRangeAsTimestamps(timeRange, dateTimeType == "DATETIME")
++	var result string
++	if timeRange.To == "now" {
++		result = fmt.Sprintf("%s >= %s", dateTimeColumnName, from)
++	} else {
++		result = fmt.Sprintf("%s BETWEEN %s AND %s", dateTimeColumnName, from, to)
++	}
++
++	return reg.ReplaceAllString(query, result), nil
++}
++
++// GetInterval generate interval in seconds for time series by step and interval from data of model
++func (qp *QueryParser) GetInterval(model *simplejson.Json) int {
++	intervalFactor, err := model.Get("intervalFactor").Int()
++	if err != nil {
++		intervalFactor = 1
++	}
++
++	intervalStr, _ := model.Get("interval").String()
++
++	return intervalFactor * qp.IntervalToSeconds(intervalStr)
++}
++
++// IntervalToSeconds convert interval's string to seconds, exp. IntervalToSeconds("5m") => 300
++func (qp *QueryParser) IntervalToSeconds(intervalStr string) int {
++	if intervalStr == "" {
++		return 1
++	}
++
++	re := regexp.MustCompile(`^(\d+)(\w+)$`)
++	matches := re.FindAllStringSubmatch(intervalStr, -1)
++	if len(matches[0]) == 3 {
++		value, _ := strconv.Atoi(matches[0][1])
++		step := intervalSteps[string(matches[0][2])]
++		if value > 0 && step > 0 {
++			return value * step
++		}
++	}
++
++	return 1
++}
++
++// GetDateTimeColumn return date or datetime column with date type
++func (qp *QueryParser) GetDateTimeColumn(model *simplejson.Json) (string, string, error) {
++	dateTimeColumnName, dtErr := model.Get("dateTimeColDataType").String()
++	dateColumnName, dErr := model.Get("dateColDataType").String()
++	if dtErr != nil && dErr != nil {
++		return "", "", dtErr
++	}
++
++	dateTimeType, err := model.Get("dateTimeType").String()
++	if err != nil {
++		dateTimeType = "DATETIME"
++	}
++
++	if dateTimeColumnName == "" {
++		return dateColumnName, "DATE", nil
++	}
++
++	return dateTimeColumnName, dateTimeType, nil
++}
++
++// GetTimeRangeAsTimestamps return interval from time range
++func (qp *QueryParser) GetTimeRangeAsTimestamps(timeRange *tsdb.TimeRange, isDateTime bool) (string, string) {
++	now := time.Now().Unix()
++	from := now - int64(qp.IntervalToSeconds(timeRange.From))
++
++	matches := strings.Split(timeRange.To, "-")
++	var to int64
++	if to = now; len(matches) > 1 {
++		to -= int64(qp.IntervalToSeconds(timeRange.To))
++	}
++
++	var pattern string
++	if pattern = "%d"; !isDateTime {
++		pattern = "toDate(%d)"
++	}
++
++	return fmt.Sprintf(pattern, from), fmt.Sprintf(pattern, to)
 +}

@@ -4,16 +4,8 @@ This repository contains spec files and patches used for building RPM packages f
 
 ### Installation
 
-#### CentOS/RHEL 6.x
-
-```
-[sudo] yum install -y https://yum.kaos.st/6/release/x86_64/kaos-repo-9.2-0.el6.noarch.rpm
-```
-
-#### CentOS/RHEL 7.x
-
-```
-[sudo] yum install -y https://yum.kaos.st/7/release/x86_64/kaos-repo-9.2-0.el7.noarch.rpm
+```bash
+[sudo] yum install -y https://yum.kaos.st/get/$(uname -r).rpm
 ```
 
 For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) and [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository packages. You could install this packages by next command:
@@ -22,7 +14,16 @@ For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) an
 [sudo] yum install -y epel-release centos-release-scl
 ```
 
-### [_perfecto_](https://github.com/essentialkaos/perfecto) Check Status
+### End-of-support schedule
+
+| CentOS/RHEL version | Updates     | Repository removal |
+|---------------------|-------------|--------------------|
+| `6.x`               | 1 Jan 2020  | 1 Jun 2020         |
+| `7.x`               | 1 Jan 2022  | 6 Jun 2022         |
+| `8.x`               | —           | —                  |
+
+
+### [_perfecto_](https://github.com/essentialkaos/perfecto) check status
 
 | Branch                 | Status |
 |------------------------|--------|

@@ -1,5 +1,5 @@
 # Bibop recipe for Prometheus
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg prometheus
 
@@ -28,26 +28,26 @@ command "-" "Check environment"
   group-exist {service_group}
 
   exist {service_config}
-  perms {service_config} 644
+  mode {service_config} 644
 
   exist {logrotate_config}
-  perms {logrotate_config} 644
+  mode {logrotate_config} 644
 
   exist {sysconfig}
-  perms {sysconfig} 644
+  mode {sysconfig} 644
 
   exist {state_dir}
   dir {state_dir}
-  perms {state_dir} 755
+  mode {state_dir} 755
 
   exist {lib_dir}
   dir {lib_dir}
-  perms {lib_dir} 755
+  mode {lib_dir} 755
   owner {lib_dir} {service_user}
 
   exist {log_dir}
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}
 
 command "service {service_name} start" "Start Prometheus service"

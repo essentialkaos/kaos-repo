@@ -1,5 +1,5 @@
 # Bibop recipe for createrepo_c
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg createrepo_c createrepo_c-devel createrepo_c-libs
 
@@ -14,8 +14,8 @@ command "-" "Check libs"
   lib-header createrepo_c
 
 command "createrepo_c --version" "Check version info"
-  expect "Version: 0.12.0"
   exit 0
+  output-match "Version: 0\.\d+\.\d+"
 
 command "createrepo_c --help" "Check help info"
   expect "Help Options:"

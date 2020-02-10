@@ -26,11 +26,13 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+%{!?_without_check: %define _with_check 1}
+
 ################################################################################
 
 Summary:            C library for the Publix Suffix List
 Name:               libpsl
-Version:            0.17.0
+Version:            0.20.2
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -116,14 +118,18 @@ find %{buildroot} -name '*.la' -delete -print
 chrpath --delete %{buildroot}%{_bindir}/psl
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
+%endif
 
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -150,8 +156,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.20.2-0
+- Updated to the latest stable release
+
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 0.15.0-0
 - Initial build for kaos repo

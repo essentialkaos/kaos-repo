@@ -1,5 +1,5 @@
 # Bibop recipe for Unbound
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg unbound unbound-libs unbound-devel
 
@@ -26,7 +26,7 @@ command "-" "Check environment"
   dir {config_dir}/local.d
 
   exist {config_dir}/unbound.conf
-  perms {config_dir}/unbound.conf 644
+  mode {config_dir}/unbound.conf 644
   owner {config_dir}/unbound.conf root:root
 
   exist {config_dir}/icannbundle.pem

@@ -1,5 +1,5 @@
 # Bibop recipe for pg_comparator for PostgreSQL 9.4
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg pg_comparator94
 
@@ -15,7 +15,7 @@ var extension_dir {data_dir}/extension
 
 command "-" "Check library"
   exist {lib_dir}/pgcmp.so
-  perms {lib_dir}/pgcmp.so 755
+  mode {lib_dir}/pgcmp.so 755
 
 command "-" "Check binary"
   app pg_comparator

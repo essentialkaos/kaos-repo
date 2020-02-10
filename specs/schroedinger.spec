@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -40,12 +44,14 @@
 Summary:            Portable libraries for the high quality Dirac video codec
 Name:               schroedinger
 Version:            1.0.11
-Release:            2%{?dist}
+Release:            3%{?dist}
 Group:              System Environment/Libraries
 License:            LGPL
-URL:                http://www.diracvideo.org
+URL:                https://sourceforge.net/projects/schrodinger/
 
-Source0:            http://www.diracvideo.org/download/%{name}/%{name}-%{version}.tar.gz
+Source0:            %{name}-%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -80,6 +86,8 @@ Development files for schroedinger.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -124,6 +132,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-3
+- Minor improvements
+
 * Wed Jan 25 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.11-2
 - Minor improvements
 

@@ -1,5 +1,5 @@
 # Bibop recipe for HAProxy 1.8
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg haproxy-1.8.*
 
@@ -19,13 +19,9 @@ command "-" "Check environment"
   user-exist {service_user}
 
   exist {service_config}
-  perms {service_config} 644
+  mode {service_config} 644
   exist {logrotate_config}
-  perms {logrotate_config} 644
-
-command "-" "Place test config"
-  backup {service_config}
-  copy haproxy.cfg {service_config}
+  mode {logrotate_config} 644
 
 command "service {service_name} start" "Start HAProxy daemon"
   exit 0
@@ -34,9 +30,9 @@ command "service {service_name} start" "Start HAProxy daemon"
 command "service {service_name} status" "Check status of HAProxy daemon"
   exit 0
 
+command "-" "Make HTTP request"
+  http-status GET "http://127.0.0.1:80" 200
+
 command "service {service_name} stop" "Stop HAProxy daemon"
   exit 0
   !service-works {service_name}
-
-command "-" "Restore original config"
-  backup-restore {service_config}

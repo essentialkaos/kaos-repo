@@ -71,7 +71,7 @@ also known as AC-3.
 ################################################################################
 
 %package devel
-Summary:           Header files and static libraries for liba52.
+Summary:           Header files and static libraries for liba52
 Group:             Development/Libraries
 Requires:          %{name} = %{version}
 

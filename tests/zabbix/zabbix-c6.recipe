@@ -1,7 +1,7 @@
 # Bibop recipe for Zabbix
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
-pkg zabbix-agent zabbix-server-pgsql
+pkg zabbix-agent zabbix-server-pgsql zabbix-proxy-pgsql zabbix-java-gateway
 
 require-root yes
 
@@ -10,6 +10,8 @@ var service_group  zabbix
 
 var agent_service  zabbix-agent
 var server_service zabbix-server
+var proxy_service zabbix-proxy
+var java_gateway_service zabbix-java-gateway
 
 var service_user zabbix
 
@@ -26,19 +28,38 @@ command "-" "Check agent environment"
   group-exist {service_user}
 
   dir {config_dir}/zabbix_agentd.d
-  perms {config_dir}/zabbix_agentd.d 755
-  
+  mode {config_dir}/zabbix_agentd.d 755
+
   exist {config_dir}/zabbix_agentd.conf
-  perms {config_dir}/zabbix_agentd.conf 644
+  mode {config_dir}/zabbix_agentd.conf 644
 
   dir {config_dir}/alertscripts
   dir {config_dir}/externalscripts
 
   exist {logrotate_dir}/{agent_service}
-  perms {logrotate_dir}/{agent_service} 644
+  mode {logrotate_dir}/{agent_service} 644
 
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "-" "Check java gateway environment"
+  service-present {java_gateway_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  exist {config_dir}/zabbix_java_gateway.conf
+  mode {config_dir}/zabbix_java_gateway.conf 644
+
+  exist {config_dir}/zabbix_java_gateway_logback.xml
+  mode {config_dir}/zabbix_java_gateway_logback.xml 644
+
+  exist {logrotate_dir}/{java_gateway_service}
+  mode {logrotate_dir}/{java_gateway_service} 644
+
+  dir {log_dir}
+  mode {log_dir} 755
   owner {log_dir} {service_user}:{service_group}
 
 command "-" "Check server environment"
@@ -50,28 +71,39 @@ command "-" "Check server environment"
   group-exist {service_user}
 
   exist {config_dir}/zabbix_server.conf
-  perms {config_dir}/zabbix_server.conf 640
+  mode {config_dir}/zabbix_server.conf 640
 
   exist {logrotate_dir}/{server_service}
-  perms {logrotate_dir}/{server_service} 644
+  mode {logrotate_dir}/{server_service} 644
 
   dir {log_dir}
-  perms {log_dir} 755
+  mode {log_dir} 755
   owner {log_dir} {service_user}:{service_group}
 
 command "service {server_service} start" "Start Zabbix Server daemon"
   exit 0
   service-works {server_service}
 
+command "service {java_gateway_service} start" "Start Zabbix Java Gateway"
+  exit 0
+  service-works {java_gateway_service}
+
 command "service {agent_service} start" "Start Zabbix Agent daemon"
   exit 0
   service-works {agent_service}
+
+command "service {java_gateway_service} status" "Check status of Zabbix Java Gateway"
+  exit 0
 
 command "service {agent_service} status" "Check status of Zabbix Agent daemon"
   exit 0
 
 command "service {server_service} status" "Check status of Zabbix Server daemon"
   exit 0
+
+command "service {java_gateway_service} stop" "Stop Zabbix Java Gateway"
+  exit 0
+  !service-works {java_gateway_service}
 
 command "service {agent_service} stop" "Stop Zabbix Agent daemon"
   exit 0
@@ -80,3 +112,32 @@ command "service {agent_service} stop" "Stop Zabbix Agent daemon"
 command "service {server_service} stop" "Stop Zabbix Server daemon"
   exit 0
   !service-works {server_service}
+
+command "-" "Check proxy environment"
+  app zabbix_proxy_pgsql
+
+  service-present {proxy_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  exist {config_dir}/zabbix_proxy.conf
+  mode {config_dir}/zabbix_proxy.conf 640
+
+  exist {logrotate_dir}/{proxy_service}
+  mode {logrotate_dir}/{proxy_service} 644
+
+  dir {log_dir}
+  mode {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "service {proxy_service} start" "Start Zabbix Proxy daemon"
+  exit 0
+  service-works {proxy_service}
+
+command "service {proxy_service} status" "Check status of Zabbix Proxy daemon"
+  exit 0
+
+command "service {proxy_service} stop" "Stop Zabbix Proxy daemon"
+  exit 0
+  !service-works {proxy_service}

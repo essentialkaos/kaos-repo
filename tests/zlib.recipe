@@ -1,5 +1,5 @@
 # Bibop recipe for zlib
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg zlib zlib-devel zlib-static minizip minizip-devel
 

@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 # rpmbuilder:qa-rpaths 0x0001,0x0002
 
 ################################################################################
@@ -59,13 +63,15 @@
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
-Version:         2.9.12
+Version:         2.9.15.1
 Release:         0%{?dist}
 License:         GPL
 Group:           Applications/Internet
-URL:             http://www.snort.org
+URL:             https://www.snort.org
 
 Source0:         https://www.snort.org/downloads/%{name}/%{name}-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 Patch0:          snort-config.patch
 
@@ -92,6 +98,8 @@ and much more.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %patch0 -p1
@@ -225,6 +233,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 2.9.15.1-0
+- Updated to the latest version
+
 * Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 2.9.12-0
 - Updated to the latest version
 

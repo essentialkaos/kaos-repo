@@ -1,5 +1,5 @@
 # Bibop recipe for python-augeas for CentOS 6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg python-augeas python34-augeas
 
@@ -18,3 +18,5 @@ command "-" "Check Python 3 installation"
 
   exist {PYTHON3_SITELIB}/augeas.py
   exist {PYTHON3_SITELIB}/augeas/ffi.py
+
+  python3-module augeas

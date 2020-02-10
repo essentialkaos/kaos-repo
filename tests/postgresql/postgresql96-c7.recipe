@@ -1,5 +1,5 @@
 # Bibop recipe for PostgreSQL 9.6
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg postgresql96-server postgresql96-libs postgresql96-devel
 
@@ -27,15 +27,15 @@ command "-" "Check environment"
   group-exist {service_group}
 
   exist /etc/sysconfig/{service_name}
-  perms /etc/sysconfig/{service_name} 644
+  mode /etc/sysconfig/{service_name} 644
   exist /etc/init.d/{service_name}
-  perms /etc/init.d/{service_name} 755
+  mode /etc/init.d/{service_name} 755
 
 command "-" "Check data directory"
   exist {data_dir}/backups
   exist {data_dir}/data
   owner {data_dir}/data {service_user}
-  perms {data_dir}/data 700
+  mode {data_dir}/data 700
 
 command "-" "Check binaries"
   exist {install_dir}/bin/createdb
@@ -51,18 +51,18 @@ command "-" "Check binaries"
   exist {install_dir}/bin/postgres
   exist {install_dir}/bin/psql
 
-  perms {install_dir}/bin/createdb 755
-  perms {install_dir}/bin/createuser 755
-  perms {install_dir}/bin/dropdb 755
-  perms {install_dir}/bin/dropuser 755
-  perms {install_dir}/bin/initdb 755
-  perms {install_dir}/bin/pg_config 755
-  perms {install_dir}/bin/pg_ctl 755
-  perms {install_dir}/bin/pg_dump 755
-  perms {install_dir}/bin/pg_dumpall 755
-  perms {install_dir}/bin/pg_restore 755
-  perms {install_dir}/bin/postgres 755
-  perms {install_dir}/bin/psql 755
+  mode {install_dir}/bin/createdb 755
+  mode {install_dir}/bin/createuser 755
+  mode {install_dir}/bin/dropdb 755
+  mode {install_dir}/bin/dropuser 755
+  mode {install_dir}/bin/initdb 755
+  mode {install_dir}/bin/pg_config 755
+  mode {install_dir}/bin/pg_ctl 755
+  mode {install_dir}/bin/pg_dump 755
+  mode {install_dir}/bin/pg_dumpall 755
+  mode {install_dir}/bin/pg_restore 755
+  mode {install_dir}/bin/postgres 755
+  mode {install_dir}/bin/psql 755
 
 command "-" "Check development environment"
   exist {install_dir}/lib/libecpg_compat.so
@@ -83,10 +83,10 @@ command "service {service_name} initdb" "Database initialization"
   exist {data_dir}/data/pg_ident.conf
   exist {data_dir}/data/postgresql.conf
   exist {data_dir}/data/pg_xlog
-  perms {data_dir}/data/pg_hba.conf 600
-  perms {data_dir}/data/pg_ident.conf 600
-  perms {data_dir}/data/postgresql.conf 600
-  perms {data_dir}/data/pg_xlog 700
+  mode {data_dir}/data/pg_hba.conf 600
+  mode {data_dir}/data/pg_ident.conf 600
+  mode {data_dir}/data/postgresql.conf 600
+  mode {data_dir}/data/pg_xlog 700
   !empty {data_dir}/data/pg_hba.conf
   !empty {data_dir}/data/pg_ident.conf
   !empty {data_dir}/data/postgresql.conf

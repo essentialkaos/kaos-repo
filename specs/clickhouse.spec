@@ -1,7 +1,11 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.4.1.3-stable
+# rpmbuilder:tag          v19.17.5.18-stable
+
+################################################################################
+
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
@@ -57,7 +61,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.4.3.11
+Version:           19.17.5.18
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -65,26 +69,21 @@ URL:               https://clickhouse.yandex
 
 Source:            %{name}-%{version}.tar.bz2
 
+Source100:         checksum.sha512
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-7
+BuildRequires:     centos-release-scl devtoolset-8
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
-BuildRequires:     unixODBC-devel readline-devel
+BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
 Requires:          openssl libicu libtool-ltdl unixODBC readline
+Requires:          lz4 librdkafka
 
-%if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-Requires(pre):     shadow-utils
-Requires(post):    chkconfig
-Requires(preun):   chkconfig
-Requires(preun):   initscripts
-Requires(postun):  initscripts
-%endif
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -153,20 +152,23 @@ This package contains test suite for ClickHouse DBMS.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
-
-%if 0%{?rhel} == 6
-export CMAKE_OPTIONS="$CMAKE_OPTIONS -DENABLE_JEMALLOC=0 -DENABLE_RDKAFKA=0"
-%endif
+export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
 
 mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DENABLE_EMBEDDED_COMPILER=0 \
+            -DENABLE_TESTS=OFF \
+            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
+            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
+            -DGLIBC_COMPATIBILITY=OFF \
             -DCMAKE_BUILD_TYPE:STRING=Release \
             $CMAKE_OPTIONS
   %{__make} %{?_smp_mflags}
@@ -192,6 +194,7 @@ install -dm 755 %{buildroot}%{_datadir}/%{name}/bin
 install -dm 755 %{buildroot}%{_datadir}/%{name}/headers
 install -dm 700 %{buildroot}%{service_data_dir}
 install -dm 775 %{buildroot}%{service_log_dir}
+install -dm 755 %{buildroot}%{_rundir}/%{name}-server
 
 # Client
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}-client
@@ -207,15 +210,9 @@ install -pm 644 dbms/programs/server/config.xml \
                 dbms/programs/server/users.xml \
                 %{buildroot}%{_sysconfdir}/%{name}-server/
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 debian/%{name}-server.service \
                 %{buildroot}%{_unitdir}/
-%else
-install -dm 755 %{buildroot}%{_initddir}
-install -pm 755 debian/%{name}-server.init \
-                %{buildroot}%{_initddir}/%{name}-server
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -232,11 +229,13 @@ exit 0
 
 %post server
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} enable %{name}-server.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name}-server &>/dev/null || :
-%endif
+
+  random_pass=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w18 | head -n1)
+
+  # Generate password for default user
+  sed -i "s#<password></password>#<password>$random_pass</password>#" \
+         %{_sysconfdir}/%{name}-server/users.xml
 fi
 
 if [[ -d %{service_data_dir}/build ]] ; then
@@ -245,21 +244,14 @@ fi
 
 %preun server
 if [[ $1 -eq 0 ]]; then
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}-server.service &>/dev/null || :
   %{__systemctl} stop %{name}-server.service &>/dev/null || :
-%else
-  %{__service} %{name}-server stop &>/dev/null || :
-  %{__chkconfig} --del %{name}-server &>/dev/null || :
-%endif
 fi
 
 %postun server
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__systemctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
@@ -285,16 +277,10 @@ fi
 
 %files server
 %defattr(-, root, root, -)
-%if 0%{?rhel} >= 7
 %{_unitdir}/%{name}-server.service
-%else
-%{_initddir}/%{name}-server
-%endif
 %{_crondir}/%{name}-server
-%{_bindir}/%{name}-clang
 %{_bindir}/%{name}-copier
 %{_bindir}/%{name}-format
-%{_bindir}/%{name}-lld
 %{_bindir}/%{name}-obfuscator
 %{_bindir}/%{name}-odbc-bridge
 %{_bindir}/%{name}-report
@@ -319,11 +305,30 @@ fi
 ################################################################################
 
 %changelog
+* Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.5.18-0
+- Updated to the latest stable release
+
+* Fri Nov 15 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.2.4-0
+- Updated to the latest stable release
+
+* Fri Oct 25 2019 Anton Novojilov <andy@essentialkaos.com> - 19.15.3.6-0
+- Updated to the latest stable release
+
+* Tue Oct 15 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.14.7.15-0
+- Updated to the latest stable release
+
+* Tue Jul 23 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.9.4.34-0
+- Updated to the latest stable release
+
+* Wed Jun 05 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.7.3.9-0
+- Updated to the latest stable release
+- Added logrotate configuration
+
 * Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 19.4.3.11-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Mon Mar 25 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.4.1.3-0
-- Updated to the latest release
+- Updated to the latest stable release
 
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 18.16.1-0
 - Initial build for kaos repository

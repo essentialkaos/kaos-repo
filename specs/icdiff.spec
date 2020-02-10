@@ -1,14 +1,20 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.9.4
+Version:           1.9.5
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
-URL:               http://www.jefftk.com/icdiff
+URL:               https://www.jefftk.com/icdiff
 
 Source0:           https://github.com/jeffkaufman/%{name}/archive/release-%{version}.tar.gz
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -28,6 +34,8 @@ Improved colored diff.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-release-%{version}
 
 %build
@@ -53,6 +61,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.5-0
+- Error handling: unknown encoding
+- pipes: stop printing an error when pipes close
+- git-icdiff: start search for pager in icdiff.pager
+- fix: fix the unknown option 'default' error when call git config
+- feat: show the real file name when displaying git diff result
+- fix FIRST_TIME_CHECK_GIT_DIFF
+- options parsing: fall back to 80 columns on errors, and clean things up
+
 * Sun Jan 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
 - Allow {path} and {basename} in --label
 - Properly implement git difftool protocol

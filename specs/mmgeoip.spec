@@ -19,7 +19,7 @@
 Summary:           GeoLite2 Country and City Databases
 Name:              MMGeoIP
 Version:           2.0
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           CC BY-SA 4.0
 Group:             Applications/Databases
 URL:               https://www.maxmind.com
@@ -79,6 +79,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0-1
+- Data updated
+
 * Thu May 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0-0
 - Switched to GeoLite2 data source
 

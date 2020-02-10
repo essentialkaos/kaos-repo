@@ -32,9 +32,9 @@
 %endif
 
 %if 0%{?rhel} >= 7
-%define with_procpsng    1
+%define with_procpsng     1
 %else
-%define with_procpsng    0
+%define with_procpsng     0
 %endif
 
 %if 0%{?rhel} >= 7
@@ -42,6 +42,8 @@
 %else
 %define with_systemd      0
 %endif
+
+%{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
@@ -90,14 +92,16 @@
 
 Summary:           Open Source Apple Filing Protocol(AFP) fileserver
 Name:              netatalk
-Version:           3.1.11
+Version:           3.1.12
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/System
 URL:               http://netatalk.sourceforge.net
 
-Source0:           http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
+Source0:           https://download.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:           %{name}.pam-system-auth
+
+Patch0:            make-install.patch
 
 BuildRequires:     gcc avahi-devel bison flex libattr-devel libgcrypt-devel
 BuildRequires:     krb5-devel openssl-devel libtdb-devel pam-devel
@@ -205,6 +209,8 @@ that use %{name}.
 rm -fr libevent/
 %endif
 
+%patch0 -p1
+
 # Avoid re-running the autotools
 # touch -r aclocal.m4 configure configure.ac macros/gssapi-check.m4
 
@@ -263,6 +269,7 @@ export CFLAGS="$CFLAGS -fsigned-char"
 
 %install
 rm -rf %{buildroot}
+
 %{make_install}
 
 mkdir -p %{buildroot}%{_var}/lock/%{name}
@@ -272,7 +279,9 @@ install -pm 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 find %{buildroot} -name '*.la' -delete -print
 
 %check
+%if %{?_with_check:1}%{?_without_check:0}
 bash test/afpd/test.sh
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -280,26 +289,24 @@ rm -rf %{buildroot}
 ################################################################################
 
 %post
+%{__ldconfig}
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} <= 6
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
 %if 0%{?rhel} >= 7
   %{__systemctl} daemon-reload %{name}.service &>/dev/null || :
   %{__systemctl} preset %{name}.service &>/dev/null || :
+%else
+  %{__chkconfig} --add %{name} &>/dev/null || :
 %endif
 fi
-%{__ldconfig}
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} <= 6
-  %{__service} %{name} stop &>/dev/null || :
-  %{__chkconfig} --del %{name} &>/dev/null || :
-%endif
 %if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
+%else
+  %{__service} %{name} stop &>/dev/null || :
+  %{__chkconfig} --del %{name} &>/dev/null || :
 %endif
 fi
 
@@ -308,11 +315,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS CONTRIBUTORS NEWS
-%if 0%{?rhel} >= 7
-%license COPYING COPYRIGHT
-%else
 %doc COPYING COPYRIGHT
-%endif
 %doc doc/manual/*.html
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/%{name}-dbus.conf
 %dir %{_sysconfdir}/%{name}
@@ -346,5 +349,8 @@ fi
 ################################################################################
 
 %changelog
-* Sun Feb 11 2018 <inbox@gongled.ru> - 3.1.11-0
-- Initial build
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 3.1.12-0
+- Updated to the latest stable release
+
+* Sun Feb 11 2018 Gleb Goncharov <inbox@gongled.ru> - 3.1.11-0
+- Initial build for kaos repository

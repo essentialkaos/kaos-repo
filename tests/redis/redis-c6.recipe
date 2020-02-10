@@ -1,5 +1,5 @@
 # Bibop recipe for Redis
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg redis redis-cli
 
@@ -30,14 +30,14 @@ command "-" "Check environment"
   group-exist {service_group}
 
   exist {redis_config}
-  perms {redis_config} 640
+  mode {redis_config} 640
   exist {sentinel_config}
-  perms {sentinel_config} 640
+  mode {sentinel_config} 640
 
   exist {redis_logrotate}
-  perms {redis_logrotate} 644
+  mode {redis_logrotate} 644
   exist {sentinel_logrotate}
-  perms {sentinel_logrotate} 644
+  mode {sentinel_logrotate} 644
 
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}

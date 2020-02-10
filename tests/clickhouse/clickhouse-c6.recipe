@@ -1,7 +1,10 @@
 # Bibop recipe for ClickHouse
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg clickhouse-client clickhouse-server
+
+require-root yes
+unsafe-actions yes
 
 var user  clickhouse
 var group clickhouse
@@ -10,6 +13,8 @@ var cron_config /etc/cron.d/clickhouse-server
 
 var client_config   /etc/clickhouse-client/config.xml
 var client_conf_dir /etc/clickhouse-client/conf.d
+
+var server_users_config /etc/clickhouse-server/users.xml
 
 var data_dir /var/lib/clickhouse
 var log_dir /var/log/clickhouse-server
@@ -24,20 +29,18 @@ command "-" "Check client environment"
   app clickhouse-local
 
   exist {client_config}
-  perms {client_config} 644
+  mode {client_config} 644
   owner {client_config} root:root
 
   exist {client_conf_dir}
   dir {client_conf_dir}
-  perms {client_conf_dir} 755
+  mode {client_conf_dir} 755
 
   owner {client_conf_dir} {user}:{group}
 
 command "-" "Check server environment"
-  app clickhouse-clang
   app clickhouse-copier
   app clickhouse-format
-  app clickhouse-lld
   app clickhouse-obfuscator
   app clickhouse-odbc-bridge
   app clickhouse-report
@@ -46,17 +49,23 @@ command "-" "Check server environment"
   service-present clickhouse-server
 
   exist {cron_config}
-  perms {cron_config} 644
+  mode {cron_config} 644
 
   exist {data_dir}
   dir {data_dir}
-  perms {data_dir} 700
+  mode {data_dir} 700
   owner {data_dir} {user}:{group}
 
   exist {log_dir}
   dir {log_dir}
-  perms {log_dir} 775
+  mode {log_dir} 775
   owner {log_dir} root:{group}
+
+command "-" "Server users configuration update"
+  backup {server_users_config}
+
+command "-" "Repliace server users configuration"
+  copy users.xml {server_users_config}
 
 command "service {service_name} start" "Start ClickHouse daemon"
   exit 0
@@ -76,3 +85,6 @@ command "service {service_name} stop" "Stop ClickHouse daemon"
   !service-works {service_name}
   !connect tcp :8123
   !connect tcp :9000
+
+command "-" "Configuration restore"
+  backup-restore {server_users_config}

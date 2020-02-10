@@ -49,7 +49,7 @@
 
 Summary:             Apache Kafka C/C++ client library
 Name:                librdkafka
-Version:             1.0.1
+Version:             1.3.0
 Release:             0%{?dist}
 License:             2-clause BSD
 Group:               Development/Libraries
@@ -75,6 +75,16 @@ reliability and high performance in mind, current figures exceed
 
 ################################################################################
 
+%package static
+Summary:             Static libraries for librdkafka C development
+Group:               Development/Libraries
+Requires:            %{name} = %{version}
+
+%description static
+The %{name}-static package contains the static libraries for librdkafka.
+
+################################################################################
+
 %package devel
 Summary:             Header files and libraries for librdkafka C development
 Group:               Development/Libraries
@@ -90,7 +100,6 @@ libraries to develop applications using a Kafka databases.
 %setup -q
 
 %build
-
 %configure
 
 %{__make} %{?_smp_mflags}
@@ -119,11 +128,14 @@ rm -rf %{buildroot}
 %{_libdir}/%{name}++.so
 %{_libdir}/%{name}++.so.%{minor_ver}
 
+%files static
+%defattr(-,root,root,-)
+%{_libdir}/%{name}.a
+%{_libdir}/%{name}++.a
+
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/%{name}/*
-%{_libdir}/%{name}.a
-%{_libdir}/%{name}++.a
 %{_libdir}/%{name}.so
 %{_libdir}/%{name}++.so
 %{_pkgconfigdir}/%{realname}.pc
@@ -134,29 +146,45 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
+- Updated to the latest release
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Updated to the latest release
+
+* Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
+- Updated to the latest release
+- Static libraries moved to separate package
+
 * Wed Jun 05 2019 Gleb Goncharov <inbox@gongled.ru> - 1.0.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.3-0
-- Updated to latest release
+- Updated to the latest release
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.11.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.5-0
-- Updated to latest release
+- Updated to the latest release
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.9.2-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Jun 18 2016 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Apr 05 2016 Gleb Goncharov <inbox@gongled.ru> - 0.9.0.99-0
 - Initial build

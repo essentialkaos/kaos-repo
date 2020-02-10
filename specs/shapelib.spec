@@ -1,18 +1,24 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:         C library for handling ESRI Shapefiles
 Name:            shapelib
-Version:         1.4.1
+Version:         1.5.0
 Release:         0%{?dist}
 License:         (LGPLv2+ or MIT) and GPLv2+ and Public Domain
 Group:           Development/Libraries
 URL:             http://shapelib.maptools.org/
 
-Source:          http://download.osgeo.org/%{name}/%{name}-%{version}.tar.gz
+Source0:         https://download.osgeo.org/%{name}/%{name}-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc-c++ make proj-devel chrpath
+BuildRequires:   gcc-c++ make chrpath
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -47,6 +53,8 @@ This package contains various utility programs distributed with shapelib.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -92,8 +100,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- Add FTDate entry in DBFFieldType
+- Remove PROJ.4 dependency and functionality, causing removal of SHPProject(),
+  SHPSetProjection() and SHPFreeProjection() from contrib/shpgeo.h, and removal
+  of the contrib shpproj utility
+- shpopen.c: avoid being dependent on correctness of file size field in .shp
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.1-0
-- Updated to latest stable release
+- Fix a regression regarding re-writing the last shape of a file
 
 * Thu Sep 07 2017 Gleb Goncharov <inbox@gongled.ru> - 1.4.0-0
 - Initial build

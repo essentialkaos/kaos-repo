@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -32,13 +36,15 @@
 
 Summary:           Ultimate Packer for eXecutables
 Name:              upx
-Version:           3.95
+Version:           3.96
 Release:           0%{?dist}
 License:           GPLv2+ and Public Domain
 Group:             Applications/Archiving
 URL:               https://upx.github.io
 
-Source:            https://github.com/upx/upx/releases/download/v%{version}/%{name}-%{version}-src.tar.xz
+Source0:           https://github.com/upx/upx/releases/download/v%{version}/%{name}-%{version}-src.tar.xz
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -57,6 +63,8 @@ executables suffer no memory overhead or other drawbacks.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}-src
 
 sed -i -e 's/ -O2/ /' -e 's/ -Werror//' src/Makefile
@@ -87,6 +95,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 3.96-0
+- bug fixes
+
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 3.95-0
 - Flag --android-shlib to work around bad design in Android
 - Flag --force-pie when ET_DYN main program is not marked as DF_1_PIE

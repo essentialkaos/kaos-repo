@@ -1,7 +1,7 @@
 ################################################################################
 
-# rpmbuilder:gopack    github.com/xenolf/lego
-# rpmbuilder:tag       v2.0.1
+# rpmbuilder:gopack    github.com/go-acme/lego
+# rpmbuilder:tag       v3.2.0
 
 ################################################################################
 
@@ -45,15 +45,15 @@
 
 Summary:         Let's Encrypt client
 Name:            lego
-Version:         2.0.1
+Version:         3.2.0
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
-URL:             https://github.com/xenolf/lego
+URL:             https://github.com/go-acme/lego
 
 Source0:         %{name}-%{version}.tar.bz2
 
-BuildRequires:   golang >= 1.11
+BuildRequires:   golang >= 1.13
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -62,7 +62,7 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Let's Encrypt client written in Go
+Let's Encrypt client written in Go.
 
 ################################################################################
 
@@ -75,12 +75,10 @@ export GOPATH=$(pwd)
 # Move all sources to src directory
 mkdir -p .src ; mv * .src ; mv .src src
 
-go get -v github.com/golang/dep/...
 export PATH="$GOPATH/bin:$PATH"
 
-pushd src/github.com/xenolf/%{name}
-  %{__make} dependencies
-  %{__make} build
+pushd src/github.com/go-acme/%{name}
+  go build -v -ldflags '-X "main.version=%{version}"' -o dist/lego ./cmd/lego/
 popd
 
 %install
@@ -89,10 +87,14 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
 
-install -pm 755 src/github.com/xenolf/%{name}/dist/%{name} \
+install -pm 755 src/github.com/go-acme/%{name}/dist/%{name} \
                 %{buildroot}%{_bindir}/
 
 %clean
+# Fix permissions for files and directories in modules dir
+find pkg -type d -exec chmod 0755 {} \;
+find pkg -type f -exec chmod 0644 {} \;
+
 rm -rf %{buildroot}
 
 ################################################################################
@@ -105,6 +107,96 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.0-0
+- [dnsprovider] Add support for autodns
+- [dnsprovider] httpreq: Allow use environment vars from a _FILE file
+- [lib] Don't deactivate valid authorizations
+- [lib] Expose more SOA fields found by dns01.FindZoneByFqdn
+- [dnsprovider] use token as unique ID
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 3.1.0-0
+- [dnsprovider] Add DNS provider for Liquid Web
+- [dnsprovider] cloudflare: add support for API tokens
+- [cli] feat: ease operation behind proxy servers
+- [dnsprovider] cloudflare: update client
+- [dnsprovider] linodev4: propagation timeout configuration
+- [dnsprovider] ovh: fix int overflow
+- [dnsprovider] bindman: fix client version
+
+* Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 3.0.2-0
+- migrate to go module
+- update DNS clients
+
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
+- [dnsprovider] Add support for Joker.com DMAPI
+- [dnsprovider] Add support for Bindman DNS provider
+- [dnsprovider] Add support for EasyDNS
+- [lib] Get an existing certificate by URL
+- [dnsprovider] digitalocean: LEGO_EXPERIMENTAL_CNAME_SUPPORT support
+- [dnsprovider] gcloud: Use fqdn to get zone Present/CleanUp
+- [dnsprovider] exec: serial behavior
+- [dnsprovider] manual: serial behavior.
+- [dnsprovider] Strip newlines when reading environment variables from _FILE
+  suffixed files.
+- [cli] fix: cli disable-cp option.
+- [dnsprovider] gcloud: fix zone visibility.
+
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
+- [cli] Adds renew hook
+- [dnsprovider] Adds 'Since' to DNS providers documentation
+- [dnsprovider] gcloud: use public DNS zones
+- [dnsprovider] route53: enhance documentation.
+- [dnsprovider] cloudns: fix TTL and status validation
+- [dnsprovider] sakuracloud: supports concurrent update
+- [dnsprovider] Disable authz when solve fail.
+- Add tzdata to the Docker image.
+
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- Migrate from xenolf/lego to go-acme/lego.
+- [dnsprovider] Add DNS Provider for Domain Offensive (do.de)
+- [dnsprovider] Adds information about '_FILE' suffix.
+- [cli,dnsprovider] Add 'manual' provider to the output of dnshelp
+- [dnsprovider] hostingde: Use provided ZoneName instead of domain
+- [dnsprovider] pdns: fix wildcard with SANs
+
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- [dnsprovider] Add DNS Provider for ClouDNS.net
+- [dnsprovider] Add DNS Provider for Oracle Cloud
+- [cli] Adds log when no renewal.
+- [dnsprovider,lib] Add a mechanism to wrap a PreCheckFunc
+- [dnsprovider] oraclecloud: better way to get private key.
+- [dnsprovider] exoscale: update library
+- [dnsprovider] OVH: Refresh zone after deleting challenge record
+- [dnsprovider] oraclecloud: ttl config and timeout
+- [dnsprovider] hostingde: fix client fails if customer has no access
+  to dns-groups
+- [dnsprovider] vscale: getting sub-domain
+- [dnsprovider] selectel: getting sub-domain
+- [dnsprovider] vscale: fix TXT records clean up
+- [dnsprovider] selectel: fix TXT records clean up
+
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
+- [dnsprovider] Add support for Openstack Designate as a DNS provider
+- [dnsprovider] gcloud: Option to specify gcloud service account json by
+  env as string
+- [experimental feature] Resolve CNAME when creating dns-01 challenge. To
+  enable: set LEGO_EXPERIMENTAL_CNAME_SUPPORT to true.
+- [cli] Applies Let’s Encrypt’s recommendation about renew. The option --days
+  of the command renew has a new default value (30)
+- [lib] Uses a jittered exponential backoff
+- [cli] CLI and key type.
+- [dnsprovider] httpreq: Endpoint with path.
+- [dnsprovider] fastdns: Do not overwrite existing TXT records
+- Log wildcard domain correctly in validation
+
+* Thu Jul 18 2019 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
+- [dnsprovider] Add support for zone.ee as a DNS provider.
+- [dnsprovider] nifcloud: Change DNS base url.
+- [dnsprovider] gcloud: More detailed information about Google Cloud DNS.
+- [lib] fix: OCSP, set HTTP client.
+- [dnsprovider] alicloud: fix pagination.
+- [dnsprovider] namecheap: fix panic
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
 - [cli,lib] Option to disable the complete propagation Requirement
 - [lib,cli] Support non-ascii domain name (punnycode)

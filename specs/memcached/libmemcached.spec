@@ -1,8 +1,6 @@
 ################################################################################
 
-%ifarch i386
-  %define optflags -O2 -g -march=i686
-%endif
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
@@ -47,14 +45,16 @@
 Summary:                  Client library and command line tools for memcached server
 Name:                     libmemcached
 Version:                  1.0.18
-Release:                  0%{?dist}
+Release:                  2%{?dist}
 Group:                    System Environment/Libraries
 License:                  BSD
-URL:                      http://libmemcached.org
-
-BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+URL:                      https://libmemcached.org
 
 Source0:                  https://launchpad.net/%{name}/1.0/%{version}/+download/%{name}-%{version}.tar.gz
+
+Source100:                checksum.sha512
+
+BuildRoot:                %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:            make gcc gcc-c++
 BuildRequires:            cyrus-sasl-devel flex bison python-sphinx
@@ -113,6 +113,8 @@ you will need to install libmemcached-devel.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 mkdir examples
@@ -190,5 +192,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.0.18-2
+- Rebuilt with the latest version of libevent
+
+* Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.0.18-1
+- Rebuilt with the latest version of libevent
+
 * Sat Sep 29 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.18-0
 - Initial build for kaos repository

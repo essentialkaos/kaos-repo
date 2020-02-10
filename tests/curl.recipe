@@ -1,5 +1,5 @@
 # Bibop recipe for cURL
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg curl libcurl libcurl-devel
 

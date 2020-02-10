@@ -1,5 +1,5 @@
 # Bibop recipe for atop
-# See more: https://github.com/essentialkaos/bibop
+# See more: https://kaos.sh/bibop
 
 pkg atop
 
@@ -10,7 +10,13 @@ var pid_file /var/run/atop.pid
 
 command "-" "Check environment"
   app atop
+  app atopsar
+  app atopconvert
+  app atopacctd
+  app atopgpud
+
   exist /etc/cron.d/atop
+
   service-present {service_name}
 
 command "service {service_name} start" "Start daemon"
