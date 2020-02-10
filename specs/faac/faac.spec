@@ -40,9 +40,9 @@ Version:           1.29.9.2
 Release:           0%{?dist}
 License:           LGPL
 Group:             Applications/Multimedia
-URL:               http://www.audiocoding.com
+URL:               https://www.audiocoding.com
 
-Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:           https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -63,7 +63,7 @@ files.
 ################################################################################
 
 %package devel
-Summary:           Header files and static libraries for faac.
+Summary:           Header files and static libraries for faac
 Group:             Development/Libraries
 Requires:          %{name} = %{version}
 

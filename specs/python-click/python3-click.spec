@@ -22,7 +22,7 @@
 
 ################################################################################
 
-Summary:        A simple wrapper around optparse for powerful command line utilities.
+Summary:        A simple wrapper around optparse for powerful command line utilities
 Name:           %{python_base}-click
 Version:        7.0
 Release:        0%{?dist}
