@@ -10,7 +10,7 @@ var lib_dir        /var/lib/nfs
 
 var delay 3
 
-command "-" "Check environment"
+command "-" "Check apps and configs"
   app mount.nfs
   app mount.nfs4
   app nfsdcltrack
@@ -33,6 +33,28 @@ command "-" "Check environment"
   app sm-notify
   app start-statd
 
+  exist {conf_file}
+  mode {conf_file} 644
+
+  exist {lib_dir}
+  mode {lib_dir} 755
+
+command "-" "Check users and groups"
+  user-exist rpcuser
+  user-id rpcuser 29
+  user-gid rpcuser 29
+  user-group rpcuser rpcuser
+  group-exist rpcuser
+  group-id rpcuser 29
+
+  user-exist nfsnobody
+  user-id nfsnobody 65534
+  user-gid nfsnobody 65534
+  user-group nfsnobody nfsnobody
+  group-exist nfsnobody
+  group-id nfsnobody 65534
+
+command "-" "Check unit files"
   service-present auth-rpcgss-module
   service-present nfs
   service-present nfs-blkmap
@@ -47,12 +69,6 @@ command "-" "Check environment"
   service-present rpc-gssd
   service-present rpc-statd
   service-present rpc-statd-notify
-
-  exist {conf_file}
-  mode {conf_file} 644
-
-  exist {lib_dir}
-  mode {lib_dir} 755
 
 command "systemctl start nfs-server" "Start NFS Server daemon"
   wait {delay}
