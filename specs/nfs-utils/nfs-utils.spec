@@ -64,10 +64,10 @@ Summary:              NFS utilities and supporting clients and daemons for the k
 Name:                 nfs-utils
 Epoch:                1
 Version:              1.3.4
-Release:              2%{?dist}
+Release:              3%{?dist}
 License:              MIT and GPLv2 and GPLv2+ and BSD
 Group:                System Environment/Daemons
-URL:                  http://sourceforge.net/projects/nfs
+URL:                  https://sourceforge.net/projects/nfs
 
 Source0:              https://www.kernel.org/pub/linux/utils/%{name}/%{version}/%{name}-%{version}.tar.xz
 Source1:              id_resolver.conf
@@ -339,6 +339,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-3
+- Rebuilt with the latest version of libevent
+
 * Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-2
 - Rebuilt with the latest version of libevent
 
