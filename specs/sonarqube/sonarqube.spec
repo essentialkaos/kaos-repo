@@ -133,6 +133,8 @@ rm -rf %{buildroot}%{sonar_prefix}/bin/windows-x86-64
 rm -rf %{buildroot}%{sonar_prefix}/bin/macosx-universal-64
 rm -rf %{buildroot}%{sonar_prefix}/logs
 
+rm -f %{buildroot}%{sonar_prefix}/temp/README.txt
+
 ln -sf %{_logdir}/%{name}/ %{buildroot}%{sonar_prefix}/logs
 
 install -pm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
@@ -176,12 +178,12 @@ fi
 
 %files
 %defattr(-,root,root)
+%doc %{sonar_prefix}/COPYING
 %{_opt}/%{name}
 %{_sysctldir}/%{name}.conf
 %attr(0750,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}/data
 %attr(0750,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}/temp
 %attr(0755,%{service_user},%{service_group}) %{_logdir}/%{name}
-%doc %{sonar_prefix}/COPYING
 %config(noreplace) %attr(0644,%{service_user},%{service_group}) %{sonar_prefix}/conf/%{short_name}.properties
 %attr(0644,%{service_user},%{service_group}) %{sonar_prefix}/conf/wrapper.conf
 %{_unitdir}/%{name}.service
