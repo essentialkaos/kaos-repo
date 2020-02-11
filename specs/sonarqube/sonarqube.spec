@@ -152,7 +152,7 @@ if [[ $1 -eq 1 ]] ; then
 fi
 
 %post
-%{__sysctl} -p
+%{__sysctl} -p &> /dev/null
 
 if [[ $1 -eq 1 ]] ; then
   %{__systemctl} preset %{name}.servic &>/dev/null || :
@@ -165,7 +165,7 @@ if [[ $1 -eq 0 ]] ; then
 fi
 
 %postun
-%{__sysctl} -p
+%{__sysctl} -p &> /dev/null
 %{__systemctl} daemon-reload &>/dev/null || :
 
 if [[ $1 -ge 1 ]] ; then
