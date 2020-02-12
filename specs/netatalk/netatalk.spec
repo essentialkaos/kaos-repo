@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _hardened_build   1
 
 %{!?kerberos:%define kerberos 1}
@@ -93,13 +97,15 @@
 Summary:           Open Source Apple Filing Protocol(AFP) fileserver
 Name:              netatalk
 Version:           3.1.12
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 Group:             Applications/System
 URL:               http://netatalk.sourceforge.net
 
 Source0:           https://download.sourceforge.net/%{name}/%{name}-%{version}.tar.bz2
 Source1:           %{name}.pam-system-auth
+
+Source100:         checksum.sha512
 
 Patch0:            make-install.patch
 
@@ -204,6 +210,8 @@ that use %{name}.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 %if 0%{?with_libevent}
 rm -fr libevent/
@@ -349,6 +357,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 12 2020 Anton Novojilov <andy@essentialkaos.com> - 3.1.12-1
+- Rebuilt with the latest version of libevent
+
 * Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 3.1.12-0
 - Updated to the latest stable release
 
