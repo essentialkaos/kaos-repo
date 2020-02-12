@@ -157,7 +157,7 @@ fi
 %{__sysctl} -p &> /dev/null
 
 if [[ $1 -eq 1 ]] ; then
-  %{__systemctl} preset %{name}.servic &>/dev/null || :
+  %{__systemctl} preset %{name}.service &>/dev/null || :
 fi
 
 %preun
