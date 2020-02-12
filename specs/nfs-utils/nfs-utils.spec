@@ -225,18 +225,16 @@ for x in gssd idmapd ; do
   fi
 done
 
-if [[ $? -eq 1 ]] ; then
-  getent group %{rpcuser_group} &> /dev/null || groupadd -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
-  getent group %{nfsnobody_group} &> /dev/null || groupadd -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
-  getent passwd %{rpcuser_name} &> /dev/null || \
-    useradd -l -c "RPC Service User" -r -g %{rpcuser_uid} \
-      -s /sbin/nologin -u %{rpcuser_uid} \
-      -d %{rpcuser_home} %{rpcuser_name} &>/dev/null || :
-  getent passwd %{nfsnobody_name} &> /dev/null || \
-    useradd -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
-      -s /sbin/nologin -u %{nfsnobody_uid} \
-      -d %{nfsnobody_home} %{nfsnobody_name} &>/dev/null || :
-fi
+getent group %{rpcuser_group} &> /dev/null || groupadd -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
+getent group %{nfsnobody_group} &> /dev/null || groupadd -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
+getent passwd %{rpcuser_name} &> /dev/null || \
+  useradd -l -c "RPC Service User" -r -g %{rpcuser_uid} \
+    -s /sbin/nologin -u %{rpcuser_uid} \
+    -d %{rpcuser_home} %{rpcuser_name} &>/dev/null || :
+getent passwd %{nfsnobody_name} &> /dev/null || \
+  useradd -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
+    -s /sbin/nologin -u %{nfsnobody_uid} \
+    -d %{nfsnobody_home} %{nfsnobody_name} &>/dev/null || :
 
 %post
 if [[ $1 -eq 1 ]] ; then
