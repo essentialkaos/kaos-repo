@@ -1,0 +1,30 @@
+# Bibop recipe for libverto
+# See more: https://kaos.sh/bibop
+
+pkg libverto libverto-devel libverto-glib libverto-glib-devel libverto-libevent libverto-libevent-devel libverto-tevent libverto-tevent-devel
+
+fast-finish yes
+
+command "-" "Check shared libs"
+  lib-loaded libverto.so.*
+  lib-loaded libverto-glib.so.*
+  lib-loaded libverto-libevent.so.*
+  lib-loaded libverto-tevent.so.*
+
+  lib-exist libverto.so
+  lib-exist libverto-glib.so
+  lib-exist libverto-libevent.so
+  lib-exist libverto-tevent.so
+
+command "-" "Check headers"
+  lib-header verto
+  lib-header verto-module
+  lib-header verto-glib
+  lib-header verto-libevent
+  lib-header verto-tevent
+
+command "-" "Check pkg-config"
+  lib-config libverto
+  lib-config libverto-glib
+  lib-config libverto-libevent
+  lib-config libverto-tevent

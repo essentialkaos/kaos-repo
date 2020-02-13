@@ -1,0 +1,89 @@
+# Bibop recipe for Netatalk AFP
+# See more: https://kaos.sh/bibop
+
+pkg netatalk netatalk-devel
+
+require-root yes
+
+var conf_dir /etc/netatalk
+var lib_name atalk
+
+var delay 3
+
+command "-" "Check apps and configuration files"
+  app ad
+  app afpldaptest
+  app afppasswd
+  app afpstats
+  app apple_dump
+  app asip-status.pl
+  app cnid2_create
+  app dbd
+  app macusers
+
+  app afpd
+  app cnid_dbd
+  app cnid_metad
+  app netatalk
+
+  dir {conf_dir}
+
+  exist {conf_dir}/afp.conf
+  exist {conf_dir}/dbus-session.conf
+  exist {conf_dir}/extmap.conf
+
+  exist /etc/pam.d/netatalk
+
+  mode {conf_dir}/afp.conf 644
+  mode {conf_dir}/dbus-session.conf 644
+  mode {conf_dir}/extmap.conf 644
+
+command "-" "Check service units"
+  service-present netatalk
+
+command "-" "Check library and headers"
+  lib-loaded libatalk.so.*
+
+  app netatalk-config
+
+  exist {LIBDIR}/libatalk.so
+
+  exist {LIBDIR}/netatalk/uams_clrtxt.so
+  exist {LIBDIR}/netatalk/uams_dhx.so
+  exist {LIBDIR}/netatalk/uams_dhx2.so
+  exist {LIBDIR}/netatalk/uams_dhx2_pam.so
+  exist {LIBDIR}/netatalk/uams_dhx2_passwd.so
+  exist {LIBDIR}/netatalk/uams_dhx_pam.so
+  exist {LIBDIR}/netatalk/uams_dhx_passwd.so
+  exist {LIBDIR}/netatalk/uams_gss.so
+  exist {LIBDIR}/netatalk/uams_guest.so
+  exist {LIBDIR}/netatalk/uams_pam.so
+  exist {LIBDIR}/netatalk/uams_passwd.so
+  exist {LIBDIR}/netatalk/uams_pgp.so
+  exist {LIBDIR}/netatalk/uams_randnum.so
+
+  mode {LIBDIR}/netatalk/uams_dhx2_pam.so 755
+  mode {LIBDIR}/netatalk/uams_dhx2_passwd.so 755
+  mode {LIBDIR}/netatalk/uams_dhx_pam.so 755
+  mode {LIBDIR}/netatalk/uams_dhx_passwd.so 755
+  mode {LIBDIR}/netatalk/uams_gss.so 755
+  mode {LIBDIR}/netatalk/uams_guest.so 755
+  mode {LIBDIR}/netatalk/uams_pam.so 755
+  mode {LIBDIR}/netatalk/uams_passwd.so 755
+  mode {LIBDIR}/netatalk/uams_pgp.so 755
+  mode {LIBDIR}/netatalk/uams_randnum.so 755
+
+  lib-header {lib_name}
+
+command "systemctl start netatalk" "Start Netatalk AFP daemon"
+  wait {delay}
+  service-works netatalk
+  connect tcp {IP}:548
+
+command "systemctl status netatalk" "Check status of Netatalk AFP daemon"
+  expect "active (running)"
+
+command "systemctl stop netatalk" "Stop Netatalk AFP daemon"
+  wait {delay}
+  !service-works netatalk
+  !connect tcp {IP}:548

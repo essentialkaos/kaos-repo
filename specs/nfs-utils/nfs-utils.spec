@@ -64,10 +64,10 @@ Summary:              NFS utilities and supporting clients and daemons for the k
 Name:                 nfs-utils
 Epoch:                1
 Version:              1.3.4
-Release:              2%{?dist}
+Release:              3%{?dist}
 License:              MIT and GPLv2 and GPLv2+ and BSD
 Group:                System Environment/Daemons
-URL:                  http://sourceforge.net/projects/nfs
+URL:                  https://sourceforge.net/projects/nfs
 
 Source0:              https://www.kernel.org/pub/linux/utils/%{name}/%{version}/%{name}-%{version}.tar.xz
 Source1:              id_resolver.conf
@@ -225,44 +225,16 @@ for x in gssd idmapd ; do
   fi
 done
 
-# Create rpcuser gid as long as it does not already exist
-cat %{_sysconfdir}/group | cut -d ':' -f 1 | grep --quiet %{rpcuser_group} &>/dev/null
-
-if [[ $? -eq 1 ]] ; then
-  %{__groupadd} -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
-else
-  %{__groupmod} -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
-fi
-
-# Create rpcuser uid as long as it does not already exist.
-cat %{_sysconfdir}/passwd | cut -d ':' -f 1 | grep --quiet %{rpcuser_name} &>/dev/null
-
-if [[ $? -eq 1 ]] ; then
-  %{__useradd} -l -c "RPC Service User" -r -g %{rpcuser_uid} \
+getent group %{rpcuser_group} &> /dev/null || groupadd -g %{rpcuser_gid} %{rpcuser_group} &>/dev/null || :
+getent group %{nfsnobody_group} &> /dev/null || groupadd -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
+getent passwd %{rpcuser_name} &> /dev/null || \
+  useradd -l -c "RPC Service User" -r -g %{rpcuser_uid} \
     -s /sbin/nologin -u %{rpcuser_uid} \
     -d %{rpcuser_home} %{rpcuser_name} &>/dev/null || :
-else
-  %{__usermod} -u %{rpcuser_uid} -g %{rpcuser_uid} rpcuser &>/dev/null || :
-fi
-
-# Create nfsnobody gid as long as it does not already exist
-cat %{_sysconfdir}/group | cut -d ':' -f 1 | grep --quiet %{nfsnobody_group} &>/dev/null
-if [[ "$?" -eq 1 ]] ; then
-  %{__groupadd} -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
-else
-  %{__groupmod} -g %{nfsnobody_gid} %{nfsnobody_group} &>/dev/null || :
-fi
-
-# Create nfsnobody uid as long as it does not already exist.
-cat %{_sysconfdir}/passwd | cut -d ':' -f 1 | grep --quiet %{nfsnobody_name} &>/dev/null
-
-if [[ $? -eq 1 ]]; then
-  %{__useradd} -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
+getent passwd %{nfsnobody_name} &> /dev/null || \
+  useradd -l -c "Anonymous NFS User" -r -g %{nfsnobody_uid} \
     -s /sbin/nologin -u %{nfsnobody_uid} \
     -d %{nfsnobody_home} %{nfsnobody_name} &>/dev/null || :
-else
-    %{__usermod} -u %{nfsnobody_uid} -g %{nfsnobody_uid} %{nfsnobody_name} &>/dev/null || :
-fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
@@ -277,11 +249,9 @@ fi
 chown -R rpcuser:rpcuser %{rpcuser_home}/statd
 
 %preun
-if [[ $1 -eq 0 ]]; then
+if [[ $1 -eq 0 ]] ; then
   %systemd_preun nfs-client.target
   %systemd_preun nfs-server.server
-
-  rm -rf %{_sharedstatedir}/nfs/statd %{_sharedstatedir}/nfs/v4recovery
 fi
 
 %postun
@@ -339,6 +309,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Feb 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-3
+- Rebuilt with the latest version of libevent
+
 * Fri Jul 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-2
 - Rebuilt with the latest version of libevent
 
