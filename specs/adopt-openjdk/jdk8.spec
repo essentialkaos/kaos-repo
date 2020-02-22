@@ -8,8 +8,8 @@
 
 ################################################################################
 
-%define jdk_major   232
-%define jdk_minor   b09
+%define jdk_major   242
+%define jdk_minor   b08
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
@@ -97,10 +97,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 
 %{_sbindir}/update-alternatives --install $deps
 
-%postun
-if [[ $1 -eq 0 ]] ; then
-  %{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
-fi
+%preun
+%{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
 
 ################################################################################
 
@@ -112,6 +110,12 @@ fi
 ################################################################################
 
 %changelog
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.242.b08-0
+- Updated to the latest version
+
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-1
+- Fixed bug with removing previous version from alternatives
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-0
 - Updated to the latest version
 

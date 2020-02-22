@@ -23,7 +23,7 @@ Summary:            OpenJDK Runtime Environment (JDK 10)
 Name:               jdk10
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            0%{?dist}
+Release:            1%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -95,10 +95,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 
 %{_sbindir}/update-alternatives --install $deps
 
-%postun
-if [[ $1 -eq 0 ]] ; then
-  %{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
-fi
+%preun
+%{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
 
 ################################################################################
 
@@ -109,5 +107,8 @@ fi
 ################################################################################
 
 %changelog
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 10.0.2.13-1
+- Fixed bug with removing previous version from alternatives
+
 * Sun Jul 14 2019 Anton Novojilov <andy@essentialkaos.com> - 10.0.2.13-0
 - Initial build for kaos repository
