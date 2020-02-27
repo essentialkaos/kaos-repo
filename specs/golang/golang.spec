@@ -58,13 +58,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.13
+%global go_api 1.14
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.13.7
+Version:           1.14
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -515,13 +515,8 @@ cp -a %{SOURCE10} %{buildroot}%{_sysconfdir}/gdbinit.d/%{name}.gdb
 mkdir -p %{buildroot}%{_sysconfdir}/prelink.conf.d
 cp -a %{SOURCE11} %{buildroot}%{_sysconfdir}/prelink.conf.d/%{name}.conf
 
-%if 0%{?rhel} > 6 || 0%{?fedora} > 0
 mkdir -p %{buildroot}%{_rpmconfigdir}/macros.d
 cp -av %{SOURCE12} %{buildroot}%{_rpmconfigdir}/macros.d/macros.%{name}
-%else
-mkdir -p %{buildroot}%{_sysconfdir}/rpm
-cp -av %{SOURCE12} %{buildroot}%{_sysconfdir}/rpm/macros.%{name}
-%endif
 
 ################################################################################
 
@@ -625,12 +620,7 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 
 %{_sysconfdir}/gdbinit.d
 %{_sysconfdir}/prelink.conf.d
-
-%if 0%{?rhel} > 6 || 0%{?fedora} > 0
 %{_rpmconfigdir}/macros.d/macros.golang
-%else
-%{_sysconfdir}/rpm/macros.golang
-%endif
 
 %files -f go-src.list src
 %defattr(-,root,root,-)
@@ -794,6 +784,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Wed Feb 26 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14-0
+- Updated to the latest stable release
+
 * Wed Jan 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.7-0
 - Updated to the latest stable release
 
