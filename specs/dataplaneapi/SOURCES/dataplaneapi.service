@@ -1,0 +1,16 @@
+[Unit]
+Description=HAProxy Data Plane API
+After=network-online.target syslog.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+PIDFile=/run/dataplaneapi.pid
+KillMode=process
+EnvironmentFile=-/etc/sysconfig/dataplaneapi
+ExecStart=/usr/sbin/dataplaneapi --port $DATAPLANEAPI_PORT --haproxy-bin $DATAPLANEAPI_HAPROXY_BIN --config-file $DATAPLANEAPI_CONFIG_FILE --reload-delay $DATAPLANEAPI_RELOAD_DELAY --reload-cmd "$DATAPLANEAPI_RELOAD_CMD" --restart-cmd "$DATAPLANEAPI_RESTART_CMD" --userlist $DATAPLANEAPI_USERLIST --transaction-dir $DATAPLANEAPI_TRANSACTION_DIR --log-to $DATAPLANEAPI_LOG_TO --log-file $DATAPLANEAPI_LOG_FILE --log-level $DATAPLANEAPI_LOG_LEVEL --log-format $DATAPLANEAPI_LOG_FORMAT $DATAPLANEAPI_OPTIONS
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
