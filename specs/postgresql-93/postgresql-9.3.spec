@@ -74,7 +74,7 @@
 
 %define majorver        9.3
 %define minorver        25
-%define rel             1
+%define rel             2
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          93
 %define realname        postgresql
@@ -1073,6 +1073,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 9.3.25-2
+- Fixed bug in init script
+
 * Fri Jun 07 2019 Anton Novojilov <andy@essentialkaos.com> - 9.3.25-1
 - Improved init script
 

@@ -81,7 +81,7 @@
 
 %define majorver        12
 %define minorver        1
-%define rel             0
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
 %define realname        postgresql
@@ -1240,6 +1240,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 12.2-1
+- Fixed bug in init script
+
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 12.1-0
 - Updated to the latest stable release
 

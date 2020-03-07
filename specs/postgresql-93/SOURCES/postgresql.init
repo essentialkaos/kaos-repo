@@ -57,10 +57,10 @@ kv[oom_adj]="$OOM_DISABLE"
 
 ###############################################################################
 
-kv.addCommand "initdb"  "Init new database"                 "initdb"
-kv.addCommand "upgrade" "Upgrade old instnace"              "upgrade"
-kv.addCommand "reload"  "Reload configuration files"        "reload"
-kv.addCommand "promote" "Trigger failover"                  "promote"
+kv.addCommand "initdb"  "Init new database"           "initdb"
+kv.addCommand "upgrade" "Upgrade data"                "upgrade"
+kv.addCommand "reload"  "Reload configuration files"  "reload"
+kv.addCommand "promote" "Trigger failover"            "promote"
 
 kv.addHandler "start"   "startServiceHandler"
 kv.addHandler "start"   "preStartServiceHandler" "pre"
@@ -147,8 +147,8 @@ upgrade() {
 
   local cur_version="${1-$MAJOR_VERSION}"
   local prev_version="${2-$PREV_VERSION}"
-  local cur_init="$PROG_NAME-$cur_version"
-  local prev_init="$PROG_NAME-$prev_version"
+  local cur_init="${kv[prog_name]}-$cur_version"
+  local prev_init="${kv[prog_name]}-$prev_version"
 
   if [[ ! -f "$INIT_DIR/$cur_init" ]] ; then
     kv.error "Couldn't find init script $INIT_DIR/$cur_init" $ACTION_ERROR
@@ -165,10 +165,10 @@ upgrade() {
     return $ACTION_ERROR
   fi
 
-  local old_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/$PROG_NAME-$cur_version")
-  local old_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/$PROG_NAME-$prev_version")
-  local new_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/$PROG_NAME-$cur_version")
-  local new_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/$PROG_NAME-$prev_version")
+  local old_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/${kv[prog_name]}-$cur_version")
+  local old_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/${kv[prog_name]}-$prev_version")
+  local new_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/${kv[prog_name]}-$cur_version")
+  local new_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/${kv[prog_name]}-$prev_version")
 
   /sbin/service "${PROG_NAME}${PKG_VERSION}" initdb
 
