@@ -3,6 +3,8 @@
 
 pkg erlang21
 
+var libressl_ver 2.9.2
+
 var epmd_service epmd
 var epmd_port    4369
 
@@ -42,7 +44,7 @@ command "systemctl status {epmd_service}" "Check status of Erlang Port Mapper Da
   expect "active (running)"
   connect tcp :{epmd_port}
 
-command "systemctl stop {epmd_service}" "Stop HAProxy daemon"
+command "systemctl stop {epmd_service}.socket" "Stop Erlang Port Mapper Daemon (with socket service)"
   wait {delay}
   !service-works {epmd_service}
   !connect tcp :{epmd_port}
