@@ -59,9 +59,11 @@ Source1:            %{name}.service
 Source2:            %{name}.logrotate
 Source3:            %{name}.sysconfig
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      golang >= 1.12
+BuildRequires:      golang
 
 Requires:           haproxy >= 1.9
 Requires(post):     systemd
@@ -79,6 +81,8 @@ endpoints for managing HAProxy. It requires HAProxy version 1.9.0 or higher.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 mkdir -p .src/github.com/haproxytech/%{name}
@@ -125,7 +129,7 @@ if [[ $1 -eq 0 ]]; then
 fi
 
 %postun
-  %{__sysctl} daemon-reload &>/dev/null || :
+%{__sysctl} daemon-reload &>/dev/null || :
 
 ################################################################################
 
