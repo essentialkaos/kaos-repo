@@ -63,7 +63,7 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      golang
+BuildRequires:      golang >= 1.13
 
 Requires:           haproxy >= 1.9
 Requires(post):     systemd
