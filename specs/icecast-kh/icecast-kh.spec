@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       karlheyes:icecast-kh
-# rpmbuilder:tag          icecast-2.4.0-kh12
+# rpmbuilder:tag          icecast-2.4.0-kh13
 
 ################################################################################
 
@@ -54,23 +54,22 @@
 %define groupname         icecast
 
 %define service_name      icecast
-%define kh_version        kh12
+%define kh_version        13
 
 ################################################################################
 
 Summary:           Icecast streaming media server (KH branch)
 Name:              icecast
-Version:           2.4.0.%{kh_version}
+Version:           2.4.0.kh%{kh_version}
 Release:           0%{?dist}
 License:           GPLv2+ and GPLv2 and BSD
 Group:             Applications/Multimedia
 URL:               https://github.com/karlheyes/icecast-kh
 
 Source0:           %{name}-%{version}.tar.bz2
-Source1:           %{name}.init
-Source2:           %{name}.service
-Source3:           %{name}.logrotate
-Source4:           %{name}.xml
+Source1:           %{name}.service
+Source2:           %{name}.logrotate
+Source3:           %{name}.xml
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -82,15 +81,8 @@ Requires:          libogg libtheora libvorbis libxml2 libxslt speex openssl
 
 Requires(pre):     shadow-utils
 
-%if 0%{?rhel} >= 7
 BuildRequires:     systemd
 Requires:          systemd
-%else
-Requires(post):    /sbin/chkconfig
-Requires(preun):   /sbin/chkconfig
-Requires(preun):   /sbin/service
-Requires(postun):  /sbin/service
-%endif
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -156,14 +148,10 @@ install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
 install -dm 755 %{buildroot}%{_pkgdocdir}/examples
 install -dm 755 %{buildroot}%{_pkgdocdir}/conf
 
-%if 0%{?rhel} >= 7
-install -Dpm 0644 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}.service
-%else
-install -Dpm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-%endif
+install -Dpm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 
-install -Dpm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-install -Dpm 0640 %{SOURCE4} %{buildroot}%{_sysconfdir}/%{name}.xml
+install -Dpm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -Dpm 0640 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}.xml
 
 cp -a html/ AUTHORS NEWS TODO %{buildroot}%{_pkgdocdir}
 cp -a conf/*.dist %{buildroot}%{_pkgdocdir}/conf
@@ -181,22 +169,14 @@ fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} daemon-reload %{service_name}.service &>/dev/null || :
   %{__systemctl} preset %{service_name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{service_name} &>/dev/null || :
-%endif
 fi
 
 %postun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{service_name}.service &>/dev/null || :
   %{__systemctl} stop %{service_name}.service &>/dev/null || :
-%else
-  %{__service} stop %{service_name} &>/dev/null || :
-%endif
 fi
 
 ################################################################################
@@ -208,12 +188,7 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/%{name}
 %{_datadir}/%{name}
-%if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
-%else
-%dir %attr(-,%{username},%{groupname}) %{_localstatedir}/run/%{name}
-%{_initrddir}/%{name}
-%endif
 
 %files doc
 %defattr(-,root,root,-)
@@ -222,6 +197,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Apr 01 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh13-0
+- Updated to the latest stable release
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh12-0
 - Updated to the latest stable release
 
