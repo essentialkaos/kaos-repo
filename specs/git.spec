@@ -11,7 +11,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.25.0
+Version:          2.26.1
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -284,6 +284,299 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 16 2020 Anton Novojilov <andy@essentialkaos.com> - 2.26.1-0
+- With a crafted URL that contains a newline in it, the credential
+  helper machinery can be fooled to give credential information for
+  a wrong host.  The attack has been made impossible by forbidding
+  a newline character in any value passed via the credential
+  protocol.
+
+* Thu Apr 16 2020 Anton Novojilov <andy@essentialkaos.com> - 2.26.0-0
+- "git rebase" uses a different backend that is based on the 'merge'
+  machinery by default.  There are a few known differences in the
+  behaviour from the traditional machinery based on patch+apply.
+- Sample credential helper for using .netrc has been updated to work
+  out of the box.
+- gpg.minTrustLevel configuration variable has been introduced to
+  tell various signature verification codepaths the required minimum
+  trust level.
+- The command line completion (in contrib/) learned to complete
+  subcommands and arguments to "git worktree".
+- Disambiguation logic to tell revisions and pathspec apart has been
+  tweaked so that backslash-escaped glob special characters do not
+  count in the "wildcards are pathspec" rule.
+- One effect of specifying where the GIT_DIR is (either with the
+  environment variable, or with the "git --git-dir=<where> cmd"
+  option) is to disable the repository discovery.  This has been
+  placed a bit more stress in the documentation, as new users often
+  get confused.
+- Two help messages given when "git add" notices the user gave it
+  nothing to add have been updated to use advise() API.
+- A new version of fsmonitor-watchman hook has been introduced, to
+  avoid races.
+- "git config" learned to show in which "scope", in addition to in
+  which file, each config setting comes from.
+- The basic 7 colors learned the brighter counterparts
+  (e.g. "brightred").
+- "git sparse-checkout" learned a new "add" subcommand.
+- A configuration element used for credential subsystem can now use
+  wildcard pattern to specify for which set of URLs the entry
+  applies.
+- "git clone --recurse-submodules --single-branch" now uses the same
+  single-branch option when cloning the submodules.
+- "git rm" and "git stash" learns the new "--pathspec-from-file"
+  option.
+- "git am --show-current-patch" is a way to show the piece of e-mail
+  for the stopped step, which is not suitable to directly feed "git
+  apply" (it is designed to be a good "git am" input).  It learned a
+  new option to show only the patch part.
+- Handling of conflicting renames in merge-recursive have further
+  been made consistent with how existing codepaths try to mimic what
+  is done to add/add conflicts.
+- Tell .editorconfig that in this project, -.txt files are indented
+  with tabs.
+- The test-lint machinery knew to check "VAR=VAL shell_function"
+  construct, but did not check "VAR= shell_function", which has been
+  corrected.
+- Replace "git config --bool" calls with "git config --type=bool" in
+  sample templates.
+- The effort to move "git-add--interactive" to C continues.
+- Improve error message generation for "git submodule add".
+- Preparation of test scripts for the day when the object names will
+  use SHA-256 continues.
+- Warn programmers about pretend_object_file() that allows the code
+  to tentatively use in-core objects.
+- The way "git pack-objects" reuses objects stored in existing pack
+  to generate its result has been improved.
+- The transport protocol version 2 becomes the default one.
+- Traditionally, we avoided threaded grep while searching in objects
+  (as opposed to files in the working tree) as accesses to the object
+  layer is not thread-safe.  This limitation is getting lifted.
+- "git rebase -i" (and friends) used to unnecessarily check out the
+  tip of the branch to be rebased, which has been corrected.
+- A low-level API function get_oid(), that accepts various ways to
+  name an object, used to issue end-user facing error messages
+  without l10n, which has been updated to be translatable.
+- Unneeded connectivity check is now disabled in a partial clone when
+  fetching into it.
+- Some rough edges in the sparse-checkout feature, especially around
+  the cone mode, have been cleaned up.
+- The diff-- plumbing family of subcommands now pay attention to the
+  diff.wsErrorHighlight configuration, which has been ignored before;
+  this allows "git add -p" to also show the whitespace problems to
+  the end user.
+- Some codepaths were given a repository instance as a parameter to
+  work in the repository, but passed the_repository instance to its
+  callees, which has been cleaned up (somewhat).
+- Memory footprint and performance of "git name-rev" has been
+  improved.
+- The object reachability bitmap machinery and the partial cloning
+  machinery were not prepared to work well together, because some
+  object-filtering criteria that partial clones use inherently rely
+  on object traversal, but the bitmap machinery is an optimization
+  to bypass that object traversal.  There however are some cases
+  where they can work together, and they were taught about them.
+- "git rebase" has learned to use the merge backend (i.e. the
+  machinery that drives "rebase -i") by default, while allowing
+  "--apply" option to use the "apply" backend (e.g. the moral
+  equivalent of "format-patch piped to am").  The rebase.backend
+  configuration variable can be set to customize.
+- Underlying machinery of "git bisect--helper" is being refactored
+  into pieces that are more easily reused.
+- "git commit" gives output similar to "git status" when there is
+  nothing to commit, but without honoring the advise.statusHints
+  configuration variable, which has been corrected.
+- has_object_file() said "no" given an object registered to the
+  system via pretend_object_file(), making it inconsistent with
+  read_object_file(), causing lazy fetch to attempt fetching an
+  empty tree from promisor remotes.
+- Complete an update to tutorial that encourages "git switch" over
+  "git checkout" that was done only half-way.
+- C pedantry ;-) fix.
+- The code that tries to skip over the entries for the paths in a
+  single directory using the cache-tree was not careful enough
+  against corrupt index file.
+- Reduce unnecessary round-trip when running "ls-remote" over the
+  stateless RPC mechanism.
+- "git restore --staged" did not correctly update the cache-tree
+  structure, resulting in bogus trees to be written afterwards, which
+  has been corrected.
+- The code recently added to move to the entry beyond the ones in the
+  same directory in the index in the sparse-cone mode did not count
+  the number of entries to skip over incorrectly, which has been
+  corrected.
+- Rendering by "git log --graph" of ancestry lines leading to a merge
+  commit were made suboptimal to waste vertical space a bit with a
+  recent update, which has been corrected.
+- Work around test breakages caused by custom regex engine used in
+  libasan, when address sanitizer is used with more recent versions
+  of gcc and clang.
+- Minor bugfixes to "git add -i" that has recently been rewritten in C.
+- "git fetch --refmap=" option has got a better documentation.
+- "git checkout X" did not correctly fail when X is not a local
+  branch but could name more than one remote-tracking branches
+  (i.e. to be dwimmed as the starting point to create a corresponding
+  local branch), which has been corrected.
+- Corner case bugs in "git clean" that stems from a (necessarily for
+  performance reasons) awkward calling convention in the directory
+  enumeration API has been corrected.
+- A fetch that is told to recursively fetch updates in submodules
+  inevitably produces reams of output, and it becomes hard to spot
+  error messages.  The command has been taught to enumerate
+  submodules that had errors at the end of the operation.
+- The "--recurse-submodules" option of various subcommands did not
+  work well when run in an alternate worktree, which has been
+  corrected.
+- Futureproofing a test not to depend on the current implementation
+  detail.
+- Running "git rm" on a submodule failed unnecessarily when
+  .gitmodules is only cache-dirty, which has been corrected.
+- C pedantry ;-) fix.
+- "git grep --no-index" should not get affected by the contents of
+  the .gitmodules file but when "--recurse-submodules" is given or
+  the "submodule.recurse" variable is set, it did.  Now these
+  settings are ignored in the "--no-index" mode.
+- Technical details of the bundle format has been documented.
+- Unhelpful warning messages during documentation build have been squelched.
+- "git rebase -i" identifies existing commits in its todo file with
+  their abbreviated object name, which could become ambiguous as it
+  goes to create new commits, and has a mechanism to avoid ambiguity
+  in the main part of its execution.  A few other cases however were
+  not covered by the protection against ambiguity, which has been
+  corrected.
+- Allow the rebase.missingCommitsCheck configuration to kick in when
+  "rebase --edit-todo" and "rebase --continue" restarts the procedure.
+- The way "git submodule status" reports an initialized but not yet
+  populated submodule has not been reimplemented correctly when a
+  part of the "git submodule" command was rewritten in C, which has
+  been corrected.
+- The code to automatically shrink the fan-out in the notes tree had
+  an off-by-one bug, which has been killed.
+- The index-pack code now diagnoses a bad input packstream that
+  records the same object twice when it is used as delta base; the
+  code used to declare a software bug when encountering such an
+  input, but it is an input error.
+- The code to compute the commit-graph has been taught to use a more
+  robust way to tell if two object directories refer to the same
+  thing.
+- "git remote rename X Y" needs to adjust configuration variables
+  (e.g. branch.<name>.remote) whose value used to be X to Y.
+  branch.<name>.pushRemote is now also updated.
+- Update to doc-diff.
+- Doc markup fix.
+- "git check-ignore" did not work when the given path is explicitly
+  marked as not ignored with a negative entry in the .gitignore file.
+- The merge-recursive machinery failed to refresh the cache entry for
+  a merge result in a couple of places, resulting in an unnecessary
+  merge failure, which has been fixed.
+- Fix for a bug revealed by a recent change to make the protocol v2
+  the default.
+- In rare cases "git worktree add <path>" could think that <path>
+  was already a registered worktree even when it wasn't and refuse
+  to add the new worktree. This has been corrected.
+- "git push" should stop from updating a branch that is checked out
+  when receive.denyCurrentBranch configuration is set, but it failed
+  to pay attention to checkouts in secondary worktrees.  This has
+  been corrected.
+- "git rebase BASE BRANCH" rebased/updated the tip of BRANCH and
+  checked it out, even when the BRANCH is checked out in a different
+  worktree.  This has been corrected.
+- "git describe" in a repository with multiple root commits sometimes
+  gave up looking for the best tag to describe a given commit with
+  too early, which has been adjusted.
+- "git merge signed-tag" while lacking the public key started to say
+  "No signature", which was utterly wrong.  This regression has been
+  reverted.
+- MinGW's poll() emulation has been improved.
+- "git show" and others gave an object name in raw format in its
+  error output, which has been corrected to give it in hex.
+- "git fetch" over HTTP walker protocol did not show any progress
+  output.  We inherently do not know how much work remains, but still
+  we can show something not to bore users.
+- Both "git ls-remote -h" and "git grep -h" give short usage help,
+  like any other Git subcommand, but it is not unreasonable to expect
+  that the former would behave the same as "git ls-remote --head"
+  (there is no other sensible behaviour for the latter).  The
+  documentation has been updated in an attempt to clarify this.
+
+* Thu Apr 16 2020 Anton Novojilov <andy@essentialkaos.com> - 2.25.2-0
+- Minor bugfixes to "git add -i" that has recently been rewritten in C.
+- An earlier update to show the location of working tree in the error
+  message did not consider the possibility that a git command may be
+  run in a bare repository, which has been corrected.
+- The "--recurse-submodules" option of various subcommands did not
+  work well when run in an alternate worktree, which has been
+  corrected.
+- Running "git rm" on a submodule failed unnecessarily when
+  .gitmodules is only cache-dirty, which has been corrected.
+- "git rebase -i" identifies existing commits in its todo file with
+  their abbreviated object name, which could become ambigous as it
+  goes to create new commits, and has a mechanism to avoid ambiguity
+  in the main part of its execution.  A few other cases however were
+  not covered by the protection against ambiguity, which has been
+  corrected.
+- The index-pack code now diagnoses a bad input packstream that
+  records the same object twice when it is used as delta base; the
+  code used to declare a software bug when encountering such an
+  input, but it is an input error.
+- The code to automatically shrink the fan-out in the notes tree had
+  an off-by-one bug, which has been killed.
+- "git check-ignore" did not work when the given path is explicitly
+  marked as not ignored with a negative entry in the .gitignore file.
+- The merge-recursive machinery failed to refresh the cache entry for
+  a merge result in a couple of places, resulting in an unnecessary
+  merge failure, which has been fixed.
+- Fix for a bug revealed by a recent change to make the protocol v2
+  the default.
+- "git merge signed-tag" while lacking the public key started to say
+  "No signature", which was utterly wrong.  This regression has been
+  reverted.
+- MinGW's poll() emulation has been improved.
+- "git show" and others gave an object name in raw format in its
+  error output, which has been corrected to give it in hex.
+- Both "git ls-remote -h" and "git grep -h" give short usage help,
+  like any other Git subcommand, but it is not unreasonable to expect
+  that the former would behave the same as "git ls-remote --head"
+  (there is no other sensible behaviour for the latter).  The
+  documentation has been updated in an attempt to clarify this.
+
+* Thu Apr 16 2020 Anton Novojilov <andy@essentialkaos.com> - 2.25.1-0
+- "git commit" gives output similar to "git status" when there is
+  nothing to commit, but without honoring the advise.statusHints
+  configuration variable, which has been corrected.
+- has_object_file() said "no" given an object registered to the
+  system via pretend_object_file(), making it inconsistent with
+  read_object_file(), causing lazy fetch to attempt fetching an
+  empty tree from promisor remotes.
+- The code that tries to skip over the entries for the paths in a
+  single directory using the cache-tree was not careful enough
+  against corrupt index file.
+- Complete an update to tutorial that encourages "git switch" over
+  "git checkout" that was done only half-way.
+- Reduce unnecessary round-trip when running "ls-remote" over the
+  stateless RPC mechanism.
+- "git restore --staged" did not correctly update the cache-tree
+  structure, resulting in bogus trees to be written afterwards, which
+  has been corrected.
+- The code recently added to move to the entry beyond the ones in the
+  same directory in the index in the sparse-cone mode did not count
+  the number of entries to skip over incorrectly, which has been
+  corrected.
+- Work around test breakages caused by custom regex engine used in
+  libasan, when address sanitizer is used with more recent versions
+  of gcc and clang.
+- "git fetch --refmap=" option has got a better documentation.
+- Corner case bugs in "git clean" that stems from a (necessarily for
+  performance reasons) awkward calling convention in the directory
+  enumeration API has been corrected.
+- "git grep --no-index" should not get affected by the contents of
+  the .gitmodules file but when "--recurse-submodules" is given or
+  the "submodule.recurse" variable is set, it did.  Now these
+  settings are ignored in the "--no-index" mode.
+- Technical details of the bundle format has been documented.
+- Unhelpful warning messages during documentation build have been
+  squelched.
+
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 2.25.0-0
 - A tutorial on object enumeration has been added.
 - The branch description ("git branch --edit-description") has been
