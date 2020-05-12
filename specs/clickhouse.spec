@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.17.9.60-stable
+# rpmbuilder:tag          v20.3.8.53-lts
 
 ################################################################################
 
@@ -61,7 +61,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.17.9.60
+Version:           20.3.8.53
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -100,7 +100,7 @@ system that allows generating analytical data reports in real time.
 Summary:           ClickHouse client binary
 Group:             Applications/Databases
 
-Requires:          %{name}-common-static = %{version}-%{release}
+Requires:          %{name}-server = %{version}-%{release}
 
 %description client
 This package contains client binary for ClickHouse DBMS.
@@ -158,7 +158,7 @@ This package contains test suite for ClickHouse DBMS.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 
 mkdir -p build
 
@@ -305,11 +305,8 @@ fi
 ################################################################################
 
 %changelog
-* Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
+* Mon Apr 27 2020 Sergey Nikiforov <aquatoid.skynet@gmail.com> - 20.3.8.53-0
 - Updated to the latest stable release
-
-* Tue Mar 24 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.17.5.18-1
-- Removed dependency of clickhouse-client from clickhouse-server
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.5.18-0
 - Updated to the latest stable release
