@@ -73,7 +73,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-8
+BuildRequires:     centos-release-scl devtoolset-9
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
 BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
