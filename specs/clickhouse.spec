@@ -311,6 +311,9 @@ fi
 * Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
 - Updated to the latest stable release
 
+* Tue Mar 24 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.17.5.18-1
+- Removed dependency of clickhouse-client from clickhouse-server
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.5.18-0
 - Updated to the latest stable release
 
