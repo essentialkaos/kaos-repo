@@ -100,7 +100,7 @@ system that allows generating analytical data reports in real time.
 Summary:           ClickHouse client binary
 Group:             Applications/Databases
 
-Requires:          %{name}-server = %{version}-%{release}
+Requires:          %{name}-common-static = %{version}-%{release}
 
 %description client
 This package contains client binary for ClickHouse DBMS.
@@ -306,6 +306,9 @@ fi
 
 %changelog
 * Mon Apr 27 2020 Sergey Nikiforov <aquatoid.skynet@gmail.com> - 20.3.8.53-0
+- Updated to the latest stable release
+
+* Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
 - Updated to the latest stable release
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.5.18-0
