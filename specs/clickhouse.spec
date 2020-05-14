@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.17.9.60-stable
+# rpmbuilder:tag          v20.3.8.53-lts
 
 ################################################################################
 
@@ -61,7 +61,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.17.9.60
+Version:           20.3.8.53
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -73,7 +73,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-8
+BuildRequires:     centos-release-scl devtoolset-9
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
 BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
@@ -158,7 +158,7 @@ This package contains test suite for ClickHouse DBMS.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 
 mkdir -p build
 
@@ -305,6 +305,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Apr 27 2020 Sergey Nikiforov <aquatoid.skynet@gmail.com> - 20.3.8.53-0
+- Updated to the latest stable release
+
 * Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
 - Updated to the latest stable release
 
