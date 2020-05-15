@@ -73,7 +73,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-9
+BuildRequires:     devtoolset-9-gcc-c++ devtoolset-9-binutils
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
 BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
@@ -206,8 +206,8 @@ install -pm 644 debian/%{name}-server.cron.d \
 install -pm 644 debian/%{name}.limits \
                 %{buildroot}%{_sysconfdir}/security/limits.d/%{name}.conf
 
-install -pm 644 dbms/programs/server/config.xml \
-                dbms/programs/server/users.xml \
+install -pm 644 programs/server/config.xml \
+                programs/server/users.xml \
                 %{buildroot}%{_sysconfdir}/%{name}-server/
 
 install -dm 755 %{buildroot}%{_unitdir}
@@ -305,7 +305,7 @@ fi
 ################################################################################
 
 %changelog
-* Mon Apr 27 2020 Sergey Nikiforov <aquatoid.skynet@gmail.com> - 20.3.8.53-0
+* Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.53-0
 - Updated to the latest stable release
 
 * Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
