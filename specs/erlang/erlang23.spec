@@ -42,32 +42,25 @@
 #define __cputoolize true
 %define _disable_ld_no_undefined 1
 
-%if 0%{?rhel} >= 7
-%{!?systemd_enabled:%global systemd_enabled 1}
-%else
-%{!?systemd_enabled:%global systemd_enabled 0}
-%endif
-
 ################################################################################
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           19
-%define ver_min           3
-%define ver_patch         6.13
+%define ver_maj           23
+%define ver_min           0
+%define ver_patch         1
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
-
 %define realname          erlang
 
-%define libre_ver         2.8.2
+%define libre_ver         3.1.2
 
 ################################################################################
 
 Summary:           General-purpose programming language and runtime environment
 Name:              %{realname}%{ver_maj}
 Version:           %{ver_suffix}
-Release:           2%{?dist}
+Release:           0%{?dist}
 Group:             Development/Tools
 License:           MPL
 URL:               https://www.erlang.org
@@ -84,13 +77,16 @@ Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre
 
 Source100:         checksum.sha512
 
+Patch0:            %{realname}%{ver_maj}-libressl-compat.patch
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel libxslt
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel
-BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel make
+BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
+BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
+BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
+BuildRequires:     lksctp-tools-devel
 
-BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
 Requires:          tk tcl
 
@@ -107,15 +103,13 @@ Requires:          %{name}-erl_docgen = %{version}
 Requires:          %{name}-erl_interface = %{version}
 Requires:          %{name}-et = %{version}
 Requires:          %{name}-eunit = %{version}
+Requires:          %{name}-ftp = %{version}
 Requires:          %{name}-hipe = %{version}
-Requires:          %{name}-ic = %{version}
 Requires:          %{name}-inets = %{version}
 Requires:          %{name}-mnesia = %{version}
 Requires:          %{name}-observer = %{version}
 Requires:          %{name}-os_mon = %{version}
-Requires:          %{name}-otp_mibs = %{version}
 Requires:          %{name}-parsetools = %{version}
-Requires:          %{name}-percept = %{version}
 Requires:          %{name}-public_key = %{version}
 Requires:          %{name}-reltool = %{version}
 Requires:          %{name}-runtime_tools = %{version}
@@ -124,13 +118,15 @@ Requires:          %{name}-ssh = %{version}
 Requires:          %{name}-ssl = %{version}
 Requires:          %{name}-syntax_tools = %{version}
 Requires:          %{name}-tools = %{version}
+Requires:          %{name}-tftp = %{version}
 Requires:          %{name}-typer = %{version}
 Requires:          %{name}-xmerl = %{version}
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang20 erlang21
+Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
+Conflicts:         erlang20 erlang21 erlang22
 
 ################################################################################
 
@@ -152,13 +148,6 @@ Requires: %{name}-base = %{version}-%{release}
 Requires: %{name}-asn1 = %{version}
 Requires: %{name}-common_test = %{version}
 Requires: %{name}-compiler = %{version}
-Requires: %{name}-cosEvent = %{version}
-Requires: %{name}-cosEventDomain = %{version}
-Requires: %{name}-cosFileTransfer = %{version}
-Requires: %{name}-cosNotification = %{version}
-Requires: %{name}-cosProperty = %{version}
-Requires: %{name}-cosTime = %{version}
-Requires: %{name}-cosTransactions = %{version}
 Requires: %{name}-crypto = %{version}
 Requires: %{name}-debugger = %{version}
 Requires: %{name}-dialyzer = %{version}
@@ -170,20 +159,16 @@ Requires: %{name}-erl_docgen = %{version}
 Requires: %{name}-erl_interface = %{version}
 Requires: %{name}-et = %{version}
 Requires: %{name}-eunit = %{version}
-Requires: %{name}-gs = %{version}
+Requires: %{name}-ftp = %{version}
 Requires: %{name}-hipe = %{version}
-Requires: %{name}-ic = %{version}
 Requires: %{name}-inets = %{version}
 Requires: %{name}-jinterface = %{version}
 Requires: %{name}-megaco = %{version}
 Requires: %{name}-mnesia = %{version}
 Requires: %{name}-observer = %{version}
 Requires: %{name}-odbc = %{version}
-Requires: %{name}-orber = %{version}
 Requires: %{name}-os_mon = %{version}
-Requires: %{name}-otp_mibs = %{version}
 Requires: %{name}-parsetools = %{version}
-Requires: %{name}-percept = %{version}
 Requires: %{name}-public_key = %{version}
 Requires: %{name}-reltool = %{version}
 Requires: %{name}-runtime_tools = %{version}
@@ -191,6 +176,7 @@ Requires: %{name}-snmp = %{version}
 Requires: %{name}-ssh = %{version}
 Requires: %{name}-ssl = %{version}
 Requires: %{name}-syntax_tools = %{version}
+Requires: %{name}-tftp = %{version}
 Requires: %{name}-tools = %{version}
 Requires: %{name}-typer = %{version}
 Requires: %{name}-wx = %{version}
@@ -215,18 +201,17 @@ Includes the Erlang/OTP graphical libraries.
 Summary:   Erlang architecture independent files
 License:   MPL
 Group:     Development/Tools
+Requires:  lksctp-tools
 Provides:  %{name}-base = %{version}-%{release}
 Obsoletes: %{name}_otp = %{version}-%{release}
 Obsoletes: %{name}-gs_apps = %{version}-%{release}
 Obsoletes: %{name}-otp_libs = %{version}-%{release}
 
-%if %{systemd_enabled}
 BuildRequires:     systemd systemd-devel
 
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%endif
 
 %description -n %{name}-base
 Erlang architecture independent files
@@ -260,8 +245,8 @@ Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
 
 %description -n %{name}-manpages
-Documentation for the Erlang programming language in `man' format. This
-documentation can be read using the command `erl -man mod', where `mod' is
+Documentation for the Erlang programming language in `man` format. This
+documentation can be read using the command `erl -man mod`, where 'mod' is
 the name of the module you want documentation on.
 
 ################################################################################
@@ -379,90 +364,6 @@ byte-code is executed by the Erlang emulator.
 
 ################################################################################
 
-%package -n %{name}-cosEvent
-Summary:  Orber OMG Event Service
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosEvent
-The cosEvent application is an Erlang implementation of a CORBA Service
-CosEvent.
-
-################################################################################
-
-%package -n %{name}-cosEventDomain
-Summary:  Orber OMG Event Domain Service
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosEventDomain
-The cosEventDomain application is an Erlang implementation of a CORBA
-Service CosEventDomainAdmin.
-
-################################################################################
-
-%package -n %{name}-cosFileTransfer
-Summary:  Orber OMG File Transfer Service
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosFileTransfer
-The cosFileTransfer Application is an Erlang implementation of the
-OMG CORBA File Transfer Service.
-
-################################################################################
-
-%package -n %{name}-cosNotification
-Summary:  Orber OMG Notification Service
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosNotification
-The cosNotification application is an Erlang implementation of the OMG
-CORBA Notification Service.
-
-################################################################################
-
-%package -n %{name}-cosProperty
-Summary:  Orber OMG Property Service
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosProperty
-The cosProperty Application is an Erlang implementation of the OMG
-CORBA Property Service.
-
-################################################################################
-
-%package -n %{name}-cosTime
-Summary:  Orber OMG Timer and TimerEvent Services
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosTime
-The cosTime application is an Erlang implementation of the OMG
-CORBA Time and TimerEvent Services.
-
-################################################################################
-
-%package -n %{name}-cosTransactions
-Summary:  Orber OMG Transaction Service
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-cosTransactions
-The cosTransactions application is an Erlang implementation of the OMG
-CORBA Transaction Service.
-
-################################################################################
-
 %package -n %{name}-crypto
 Summary:  Cryptographical support
 License:  MPL
@@ -532,16 +433,15 @@ Erlang support for unit testing.
 
 ################################################################################
 
-%package -n %{name}-gs
-Summary:  Graphics System used to write platform independent user interfaces
+%package -n %{name}-ftp
+Summary:  A File Transfer Protocol client
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}, tk, tcl
+Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
 
-%description -n %{name}-gs
-The Graphics System application, GS, is a library of routines for writing
-graphical user interfaces. Programs written using GS work on all Erlang
-platforms and do not depend upon the underlying windowing system.
+%description -n %{name}-ftp
+This module implements a client for file transfer according to a subset of the
+File Transfer Protocol (FTP).
 
 ################################################################################
 
@@ -564,17 +464,6 @@ Group:    Development/Tools
 
 %description -n %{name}-inviso
 An Erlang trace tool.
-
-################################################################################
-
-%package -n %{name}-ic
-Summary:  IDL compiler
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-ic
-The IC application is an Erlang implementation of an IDL compiler.
 
 ################################################################################
 
@@ -641,18 +530,6 @@ on ODBC (Open Database).
 
 ################################################################################
 
-%package -n %{name}-orber
-Summary:  CORBA Object Request Broker
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-orber
-The Orber application is an Erlang implementation of a CORBA Object Request
-Broker.
-
-################################################################################
-
 %package -n %{name}-os_mon
 Summary:  Monitor which allows inspection of the underlying operating system
 License:  MPL
@@ -662,18 +539,6 @@ Group:    Development/Tools
 %description -n %{name}-os_mon
 The operating system monitor OS_Mon monitors operating system disk and memory
 usage etc.
-
-################################################################################
-
-%package -n %{name}-otp_mibs
-Summary:  Snmp management information base for Erlang
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-otp_mibs
-The OTP_Mibs application provides an SNMP management information base for
-Erlang nodes.
 
 ################################################################################
 
@@ -688,17 +553,6 @@ The Parsetools application contains utilities for parsing, e.g. the yecc
 module. Yecc is an LALR-1 parser generator for Erlang, similar to yacc.
 Yecc takes a BNF grammar definition as input, and produces Erlang code for
 a parser as output.
-
-################################################################################
-
-%package -n %{name}-percept
-Summary:  Concurrency profiler tool for Erlang
-License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Group:    Development/Tools
-
-%description -n %{name}-percept
-A concurrency profiler tool for Erlang.
 
 ################################################################################
 
@@ -787,6 +641,17 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 
 ################################################################################
 
+%package -n %{name}-tftp
+Summary:  Trivial FTP
+License:  MPL
+Group:    Development/Tools
+Requires: %{name}-base = %{version}-%{release}
+
+%description -n %{name}-tftp
+Trivial FTP.
+
+################################################################################
+
 %package -n %{name}-tools
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
@@ -844,13 +709,15 @@ a few bugs in the scanner, and improves HTML export.
 
 tar xzvf %{SOURCE10}
 
+%patch0 -p1
+
 %build
 
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
@@ -887,9 +754,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-smp-support \
   --enable-builtin-zlib \
   --enable-sctp \
-  %if %{systemd_enabled}
   --enable-systemd \
-  %endif
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
@@ -903,13 +768,11 @@ rm -rf %{buildroot}
 
 %{make_install} INSTALL_PREFIX=%{buildroot}
 
-%if %{systemd_enabled}
 install -d %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/epmd.service
 install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/epmd.socket
 install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/epmd@.service
 install -pm 644 %{SOURCE6} %{buildroot}%{_unitdir}/epmd@.socket
-%endif
 
 # clean up
 find %{buildroot}%{_libdir}/erlang -perm 0775 | xargs chmod 755
@@ -955,33 +818,25 @@ rm -rf %{buildroot}%{_mandir}/man3/crypto.3.*
 rm -rf %{buildroot}%{_mandir}/man3/zlib.3.*
 
 %pre -n %{name}-base
-%if %{systemd_enabled}
 getent group epmd &> /dev/null || groupadd -r epmd &>/dev/null || :
 getent passwd epmd &> /dev/null || \
   useradd -r -g epmd -d /dev/null -s /sbin/nologin \
           -c "Erlang Port Mapper Daemon" epmd &>/dev/null || :
-%endif
 
 %post -n %{name}-base
 %{_libdir}/erlang/Install -minimal %{_libdir}/erlang &>/dev/null || :
-%if %{systemd_enabled}
 %{__sysctl} enable epmd.service &>/dev/null || :
-%endif
 
 %preun -n %{name}-base
-%if %{systemd_enabled}
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable epmd.service &>/dev/null || :
   %{__sysctl} stop epmd.service &>/dev/null || :
 fi
-%endif
 
 %postun -n %{name}-base
-%if %{systemd_enabled}
 if [[ $1 -ge 1 ]] ; then
   %{__sysctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -1002,17 +857,16 @@ rm -rf %{buildroot}
 %dir %{_libdir}/erlang/bin
 %dir %{_libdir}/erlang/lib
 %dir %{_libdir}/erlang/misc
-%if %{systemd_enabled}
 %{_unitdir}/epmd.service
 %{_unitdir}/epmd.socket
 %{_unitdir}/epmd@.service
 %{_unitdir}/epmd@.socket
-%endif
 %{_bindir}/*
 %{_libdir}/erlang/Install
 %{_libdir}/erlang/bin/ct_run
 %{_libdir}/erlang/bin/epmd
 %{_libdir}/erlang/bin/erl
+%{_libdir}/erlang/bin/erl_call
 %{_libdir}/erlang/bin/erlc
 %{_libdir}/erlang/bin/escript
 %{_libdir}/erlang/bin/no_dot_erlang.boot
@@ -1051,34 +905,6 @@ rm -rf %{buildroot}
 %files -n %{name}-common_test
 %defattr(-,root,root,-)
 %{elibdir}/common_test-*
-
-%files -n %{name}-cosEvent
-%defattr(-,root,root,-)
-%{elibdir}/cosEvent-*
-
-%files -n %{name}-cosEventDomain
-%defattr(-,root,root,-)
-%{elibdir}/cosEventDomain-*
-
-%files -n %{name}-cosFileTransfer
-%defattr(-,root,root,-)
-%{elibdir}/cosFileTransfer-*
-
-%files -n %{name}-cosNotification
-%defattr(-,root,root,-)
-%{elibdir}/cosNotification-*
-
-%files -n %{name}-cosProperty
-%defattr(-,root,root,-)
-%{elibdir}/cosProperty-*
-
-%files -n %{name}-cosTime
-%defattr(-,root,root,-)
-%{elibdir}/cosTime-*
-
-%files -n %{name}-cosTransactions
-%defattr(-,root,root,-)
-%{elibdir}/cosTransactions-*
 
 %files -n %{name}-crypto
 %defattr(-,root,root,-)
@@ -1125,17 +951,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/eunit-*
 
-%files -n %{name}-gs
+%files -n %{name}-ftp
 %defattr(-,root,root,-)
-%{elibdir}/gs-*
+%{elibdir}/ftp-*
 
 %files -n %{name}-hipe
 %defattr(-,root,root,-)
 %{elibdir}/hipe-*
-
-%files -n %{name}-ic
-%defattr(-,root,root,-)
-%{elibdir}/ic-*
 
 %files -n %{name}-inets
 %defattr(-,root,root,-)
@@ -1165,25 +987,13 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/odbc-*
 
-%files -n %{name}-orber
-%defattr(-,root,root,-)
-%{elibdir}/orber-*
-
 %files -n %{name}-os_mon
 %defattr(-,root,root,-)
 %{elibdir}/os_mon-*
 
-%files -n %{name}-otp_mibs
-%defattr(-,root,root,-)
-%{elibdir}/otp_mibs-*
-
 %files -n %{name}-parsetools
 %defattr(-,root,root,-)
 %{elibdir}/parsetools-*
-
-%files -n %{name}-percept
-%defattr(-,root,root,-)
-%{elibdir}/percept-*
 
 %files -n %{name}-public_key
 %defattr(-,root,root,-)
@@ -1213,13 +1023,16 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/syntax_tools-*
 
+%files -n %{name}-tftp
+%defattr(-,root,root,-)
+%{elibdir}/tftp-*
+
 %files -n %{name}-tools
 %defattr(-,root,root,-)
 %{elibdir}/tools-*
 
 %files -n %{name}-typer
 %defattr(-,root,root,-)
-%{elibdir}/typer-*
 %{_libdir}/%{realname}/bin/typer
 
 %files -n %{name}-wx
@@ -1233,37 +1046,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Fri Jan 24 2020 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-2
-- Rebuilt with systemd support
-
-* Sat Jul 27 2019 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-1
-- Rebuilt with built-in zlib
-
-* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.13-0
-- Updated to the latest release
-
-* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.12-0
-- Updated to the latest release
-- LibreSSL updated to 2.8.2
-
-* Sun Jul 29 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3.6.9-0
-- Updated to the latest release
-
-* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-2
-- Using GCC from devtoolset-3 for build
-
-* Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 19.3-1
-- Rebuilt with EC support
-- Rebuilt with statically linked LibreSSL
-
-* Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.3-0
-- Updated to latest stable release
-
-* Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 19.2-0
-- Updated to latest stable release
-
-* Fri Sep 23 2016 Anton Novojilov <andy@essentialkaos.com> - 19.1-0
-- Updated to latest stable release
-
-* Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 19-0
-- Initial build
+* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.1-0
+- Initial build for kaos repository
