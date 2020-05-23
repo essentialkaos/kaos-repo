@@ -1,6 +1,6 @@
 diff -urN redis-6.0.0-orig/redis.conf redis-6.0.0/redis.conf
 --- redis-6.0.0-orig/redis.conf	2020-04-30 16:04:41.000000000 +0300
-+++ redis-6.0.0/redis.conf	2020-05-22 15:33:59.000000000 +0300
++++ redis-6.0.0/redis.conf	2020-05-23 16:23:06.000000000 +0300
 @@ -66,7 +66,7 @@
  # IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
  # JUST COMMENT THE FOLLOWING LINE.
@@ -10,15 +10,6 @@ diff -urN redis-6.0.0-orig/redis.conf redis-6.0.0/redis.conf
  
  # Protected mode is a layer of security protection, in order to avoid that
  # Redis instances left open on the internet are accessed and exploited.
-@@ -202,7 +202,7 @@
- 
- # By default Redis does not run as a daemon. Use 'yes' if you need it.
- # Note that Redis will write a pid file in /var/run/redis.pid when daemonized.
--daemonize no
-+daemonize yes
- 
- # If you run Redis from upstart or systemd, Redis can interact with your
- # supervision tree. Options:
 @@ -224,7 +224,7 @@
  #
  # Creating a pid file is best effort: if Redis is not able to create it
