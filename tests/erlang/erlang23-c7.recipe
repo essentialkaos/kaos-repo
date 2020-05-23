@@ -1,7 +1,7 @@
 # Bibop recipe for Erlang 23
 # See more: https://kaos.sh/bibop
 
-pkg erlang22
+pkg erlang23
 
 var libressl_ver 3.1.2
 
