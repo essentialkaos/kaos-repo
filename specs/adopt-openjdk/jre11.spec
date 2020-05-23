@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   11.0.6
+%define jdk_major   11.0.7
 %define jdk_minor   10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1102
+%define alt_priority 1103
 
 ################################################################################
 
@@ -23,7 +23,7 @@ Summary:            OpenJDK Runtime Environment (JRE 11)
 Name:               jre11
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            1%{?dist}
+Release:            0%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -109,6 +109,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.7.10-0
+- Updated to the latest version
+
 * Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.6.10-1
 - Fixed bug with removing previous version from alternatives
 

@@ -8,27 +8,26 @@
 
 ################################################################################
 
-%define jdk_major   252
-%define jdk_minor   b09
+%define jdk_major   14.0.1
+%define jdk_minor   7
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
-%define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 802
+%define alt_priority 1400
 
 ################################################################################
 
-Summary:            OpenJDK Runtime Environment (JRE 8)
-Name:               jre8
+Summary:            OpenJDK Runtime Environment (JRE 14)
+Name:               jre14
 Epoch:              1
-Version:            1.8.0.%{jdk_major}.%{jdk_minor}
+Version:            %{jdk_major}.%{jdk_minor}
 Release:            0%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
 
-Source0:            https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u%{jdk_major}-%{jdk_minor}/OpenJDK8U-jre_x64_linux_hotspot_8u%{jdk_major}%{jdk_minor}.tar.gz
+Source0:            https://github.com/AdoptOpenJDK/openjdk14-binaries/releases/download/jdk-%{jdk_major}%2B%{jdk_minor}/OpenJDK14U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:            java.sh
 
 Source100:          checksum.sha512
@@ -40,12 +39,10 @@ Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
-Provides:           jre = 1:1.8.0
-Provides:           jre-lts = 1:1.8.0
-Provides:           java = 1:1.8.0
-Provides:           jre-1.8.0 = 1:%{version}-%{release}
-Provides:           jre-lts-1.8.0 = 1:%{version}-%{release}
-Provides:           java-1.8.0 = 1:%{version}-%{release}
+Provides:           jre = 1:14
+Provides:           java = 1:14
+Provides:           jre-%{jdk_major} = 1:%{version}-%{release}
+Provides:           java-%{jdk_major} = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -65,7 +62,7 @@ for free.
 %prep
 %{crc_check}
 
-%setup -qn jdk8u%{jdk_major}-%{jdk_minor}-jre
+%setup -qn jdk-%{jdk_major}+%{jdk_minor}-jre
 
 %build
 
@@ -89,10 +86,6 @@ for bin in $(ls -1 %{jdk_bin_dir}) ; do
   deps="$deps --slave %{_bindir}/$bin $bin %{jdk_bin_dir}/$bin"
 done
 
-for doc in $(ls -1 %{jdk_man_dir}) ; do
-  deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
-done
-
 deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}/java.sh"
 
 %{_sbindir}/update-alternatives --install $deps
@@ -104,26 +97,10 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 
 %files
 %defattr(-, root, root, -)
-%doc ASSEMBLY_EXCEPTION LICENSE THIRD_PARTY_README
 %{install_dir}
 
 ################################################################################
 
 %changelog
-* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.252.b09-0
-- Updated to the latest version
-
-* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.242.b08-0
-- Updated to the latest version
-
-* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-1
-- Fixed bug with removing previous version from alternatives
-
-* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-0
-- Updated to the latest version
-
-* Thu Aug 08 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.222.b10-0
-- Updated to the latest version
-
-* Sun Jul 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.212.b04-0
+* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 14.0.1.7-0
 - Initial build for kaos repository
