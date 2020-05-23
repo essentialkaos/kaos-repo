@@ -71,7 +71,7 @@ Patch1:             sentinel-config.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make tcl
+BuildRequires:      make tcl systemd-devel
 BuildRequires:      devtoolset-7-gcc
 
 Requires:           %{name}-cli >= %{version}
@@ -115,6 +115,7 @@ Client for working with Redis from console
 %build
 # Use gcc and gcc-c++ from devtoolset
 export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export BUILD_WITH_SYSTEMD=yes
 
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
 
