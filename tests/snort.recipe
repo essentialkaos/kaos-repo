@@ -5,7 +5,7 @@ pkg snort daq
 
 require-root yes
 
-var version 2.9.15.1
+var version 2.9.16
 
 var service_name  snortd
 var service_user  snort
