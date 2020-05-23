@@ -47,9 +47,6 @@
 
 ################################################################################
 
-%define beta 0
-
-%{?beta:%define __os_install_post /usr/lib/rpm/brp-compress}
 %{!?kerbdir:%define kerbdir "/usr"}
 %{!?test:%define test 1}
 %{!?plpython:%define plpython 1}
@@ -67,19 +64,9 @@
 %{!?uuid:%define uuid 1}
 %{!?ldap:%define ldap 1}
 
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%{!?systemd_enabled:%global systemd_enabled 0}
-%{!?sdt:%global sdt 0}
-%{!?selinux:%global selinux 0}
-%else
-%{!?systemd_enabled:%global systemd_enabled 1}
-%{!?sdt:%global sdt 1}
-%{!?selinux:%global selinux 1}
-%endif
-
 %define majorver        10
-%define minorver        11
-%define rel             1
+%define minorver        13
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          10
 %define realname        postgresql
@@ -176,21 +163,14 @@ BuildRequires:     libuuid-devel
 BuildRequires:     openldap-devel
 %endif
 
+BuildRequires:     systemd systemd-devel
+
 Requires:          %{__ldconfig} initscripts
 Requires:          %{name}-libs = %{version}
-
-%if %{systemd_enabled}
-BuildRequires:     systemd systemd-devel
 
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-Requires(post):   chkconfig
-Requires(preun):  chkconfig
-Requires(preun):  initscripts
-Requires(postun): initscripts
-%endif
 
 Requires(post):    %{__updalt}
 Requires(postun):  %{__updalt}
@@ -240,7 +220,7 @@ Group:             Applications/Databases
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version}-%{release}
 Requires:          %{name}-libs = %{version}-%{release}
-Requires:          glibc kaosv >= 2.13 numactl
+Requires:          glibc kaosv >= 2.16 numactl
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -407,20 +387,9 @@ CFLAGS="${CFLAGS} -I%{_includedir}/et" ; export CFLAGS
 %endif
 
 # Strip out -ffast-math from CFLAGS....
-
 CFLAGS=$(echo "$CFLAGS" | xargs -n 1 | grep -v ffast-math | xargs -n 100)
 CFLAGS="$CFLAGS -DLINUX_OOM_SCORE_ADJ=0"
-
-%if 0%{?rhel}
-  LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
-%endif
-
-%if %icu
-%if 0%{?rhel} && 0%{?rhel} <= 6
-  ICU_CFLAGS='-I%{_includedir}' ; export ICU_CFLAGS
-  ICU_LIBS='-L%{_libdir} -licui18n -licuuc -licudata' ; export ICU_LIBS
-%endif
-%endif
+LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
 
 export CFLAGS
 export LIBNAME=%{_lib}
@@ -430,10 +399,6 @@ export LIBNAME=%{_lib}
   --includedir=%{install_dir}/include \
   --mandir=%{install_dir}/share/man \
   --datadir=%{install_dir}/share \
-%if %beta
-  --enable-debug \
-  --enable-cassert \
-%endif
 %if %icu
   --with-icu \
 %endif
@@ -565,8 +530,6 @@ sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_initddir}/%{service
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_initddir}/%{service_name}
 
-%if %{systemd_enabled}
-
 # Installing and updating systemd config
 install -d %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE11} %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
@@ -577,8 +540,6 @@ sed -i 's/{{PKG_VERSION}}/%{majorver}/g' %{buildroot}%{_unitdir}/postgresql-%{ma
 sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
-
-%endif
 
 ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{majorver}
 
@@ -713,18 +674,11 @@ if [[ $1 -eq 1 ]] ; then
               %{__useradd} -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
 fi
 
-touch %{_logdir}/%{shortname}
-chown %{username}:%{groupname} %{_logdir}/%{shortname}
-chmod 0700 %{_logdir}/%{shortname}
-
 %post server
 if [[ $1 -eq 1 ]] ; then
-%if %{systemd_enabled}
   %{__systemctl} daemon-reload %{service_name}.service &>/dev/null || :
   %{__systemctl} preset %{service_name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{service_name} &>/dev/null || :
-%endif
+
   %{__ldconfig}
 fi
 
@@ -743,25 +697,17 @@ fi
 echo "[[ -f /etc/profile ]] && source /etc/profile
 PGDATA=/var/lib/pgsql/%{majorver}/data
 export PGDATA" > %{_sharedstatedir}/%{shortname}/.bash_profile
-
-chown %{username}: %{_sharedstatedir}/%{shortname}/.bash_profile
+chown -h %{username}: %{_sharedstatedir}/%{shortname}/.bash_profile
 
 %preun server
 if [[ $1 -eq 0 ]] ; then
-%if %{systemd_enabled}
   %{__systemctl} --no-reload disable %{service_name}.service &>/dev/null || :
   %{__systemctl} stop %{service_name}.service &>/dev/null || :
-%else
-  %{__service} %{service_name} stop &>/dev/null || :
-  %{__chkconfig} --del %{service_name} &>/dev/null || :
-%endif
 fi
 
 %postun server
-%{__ldconfig}
-%if %{systemd_enabled}
 %{__systemctl} daemon-reload &>/dev/null || :
-%endif
+%{__ldconfig}
 
 %if %plperl
 %post   plperl
@@ -789,7 +735,7 @@ fi
 
 %if %test
 %post test
-chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
+chown -R -h %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
 %endif
 
 # Create alternatives entries for common binaries and man files
@@ -1058,9 +1004,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %config(noreplace) %{_initddir}/%{service_name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
-%if %{systemd_enabled}
 %config(noreplace) %{_unitdir}/postgresql-%{majorver}.service
-%endif
 %attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{majorver}
 %if %pam
@@ -1164,6 +1108,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 10.13-0
+- Updated to the latest stable release
+- Spec improvements
+
 * Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 10.11-1
 - Fixed bug in init script
 
