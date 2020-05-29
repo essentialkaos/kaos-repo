@@ -54,7 +54,7 @@
 %define groupname         icecast
 
 %define service_name      icecast
-%define kh_version        13
+%define kh_version        14
 
 ################################################################################
 
@@ -147,6 +147,7 @@ install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
 install -dm 755 %{buildroot}%{_pkgdocdir}/examples
 install -dm 755 %{buildroot}%{_pkgdocdir}/conf
+install -dm 755 %{buildroot}%{_rundir}/%{name}
 
 install -Dpm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 
@@ -184,6 +185,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %dir %attr(-,%{username},%{groupname}) %{_localstatedir}/log/%{name}
+%dir %attr(-,%{username},%{groupname}) %{_rundir}/%{name}
 %config(noreplace) %attr(-,root,%{groupname}) %{_sysconfdir}/%{name}.xml
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/%{name}
@@ -197,6 +199,10 @@ fi
 ################################################################################
 
 %changelog
+* Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh14-0
+- Updated to the latest stable release
+- Fixed bug with logs rotation
+
 * Wed Apr 01 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh13-0
 - Updated to the latest stable release
 
