@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       karlheyes:icecast-kh
-# rpmbuilder:tag          icecast-2.4.0-kh13
+# rpmbuilder:tag          icecast-2.4.0-kh14
 
 ################################################################################
 
@@ -200,14 +200,47 @@ fi
 
 %changelog
 * Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh14-0
-- Updated to the latest stable release
-- Fixed bug with logs rotation
+- Fixed bug with logs rotation.
+- Allow for using secs (eg 5s) in queue/min-queue/burst measures.
+- Allow multiple icy sources on same port. Just embed in password a
+  mountpoint:pass. The shoutcast-mount tag still creates the +1 port and sets
+  a default mountpoint but source can override this.
+- Fix log issue which could cause a deadlock if on-[dis]connect or auth cmd
+  are used.
+- Allow configure to accept ICY_CHARSET to set alternate in build. The default
+  ICY metadata is assumed to be UTF8, but some sites still have issues with
+  setting tags or parameters, so allow a different default if they need it.
+- Regression on FLV wrapped aac metadata fixed.
+- Crash/corruption fix if using stream auth and metadata updates via admin.
+- Fix for glibc rwlock priority.
+- Added the icy-metadata in headers allowed with CORS.
+- Rework XFF to be earlier, useful in cases where banned IPs apply.
+- Allow wildcards in XFF.
+- Drop the BSD NOPUSH setting for now. Have seen poor performance because of
+  it in certain cases.
+- Openssl API cleanups. eg API differences between versions.
+- Various small fixes, build and operational.
 
 * Wed Apr 01 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh13-0
-- Updated to the latest stable release
+- Fix an annoying race case. memory corruption in certain cases that are hard
+  to trigger normally but typically involes a listener disconnecting in certain
+  conditions.
+- Tightened up use-after-free cases with regard to the queue pruning.
+- Leak fixes with intro via auth.
+- Allow seconds to be specified in burst and queue size fields. Just specify
+  the number followed by s eg 30s or 5s. Eventually we could make this the
+  default so that is can apply to various bitrates.
+- Small minor cleanups across the board.
 
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh12-0
-- Updated to the latest stable release
+- Fix up some incorrect or stale block cases from previous release for non-ogg
+  streams. Usually cause by short write triggers or queue jumps.
+- Change default charset for non-ogg streams to utf8 instead of latin1, you can
+  still use latin1 either with <charset> mount setting or charset= query param
+  to metadata.
+- Global listeners count could get messed up with fallback to files, also make
+  it a regular update stat in-line with other global stats.
+- Avoid possible crash case on log re-opening, not so common.
 
 * Sun Jan 20 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-10
 - Initial build for kaos repository
