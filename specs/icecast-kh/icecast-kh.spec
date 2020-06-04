@@ -61,7 +61,7 @@
 Summary:           Icecast streaming media server (KH branch)
 Name:              icecast
 Version:           2.4.0.kh%{kh_version}
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+ and GPLv2 and BSD
 Group:             Applications/Multimedia
 URL:               https://github.com/karlheyes/icecast-kh
@@ -70,6 +70,7 @@ Source0:           %{name}-%{version}.tar.bz2
 Source1:           %{name}.service
 Source2:           %{name}.logrotate
 Source3:           %{name}.xml
+Source4:           json.xsl
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -154,8 +155,14 @@ install -Dpm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 install -Dpm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -Dpm 0640 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}.xml
 
+install -Dpm 0644 %{SOURCE4} %{buildroot}%{_datadir}/%{name}/web/
+
 cp -a html/ AUTHORS NEWS TODO %{buildroot}%{_pkgdocdir}
 cp -a conf/*.dist %{buildroot}%{_pkgdocdir}/conf
+
+# Remove useless templates
+rm -f %{buildroot}%{_datadir}/%{name}/7.xsl
+rm -f %{buildroot}%{_datadir}/%{name}/status2.xsl
 
 %clean
 rm -rf %{buildroot}
@@ -199,6 +206,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jun 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh14-1
+- Added xsl template for generating JSON with tracks info
+
 * Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh14-0
 - Fixed bug with logs rotation.
 - Allow for using secs (eg 5s) in queue/min-queue/burst measures.
