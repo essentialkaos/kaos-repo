@@ -46,7 +46,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            6.0.3
+Version:            6.0.4
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -54,7 +54,6 @@ URL:                https://redis.io
 
 Source0:            https://github.com/antirez/%{name}/archive/%{version}.tar.gz
 Source1:            %{name}.logrotate
-Source2:            %{name}.init
 Source3:            %{name}.sysconfig
 Source4:            sentinel.logrotate
 Source5:            sentinel.init
@@ -225,6 +224,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jun 04 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.4-0
+- Updated to the latest stable release
+
 * Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.3-0
 - Updated to the latest stable release
 
