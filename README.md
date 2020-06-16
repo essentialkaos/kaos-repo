@@ -18,8 +18,8 @@ For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) an
 
 | CentOS/RHEL version | Updates     | Repository removal |
 |---------------------|-------------|--------------------|
-| `6.x`               | 1 Jan 2020  | 1 Jun 2020         |
-| `7.x`               | 1 Jan 2022  | 6 Jun 2022         |
+| `6.x`               | 1 Jan 2020  | 31 Dec 2020        |
+| `7.x`               | 1 Jan 2022  | 31 Dec 2022        |
 | `8.x`               | —           | —                  |
 
 
