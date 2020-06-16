@@ -1,7 +1,7 @@
 # Bibop recipe for Zabbix
 # See more: https://kaos.sh/bibop
 
-pkg zabbix-agent zabbix-server-pgsql zabbix-proxy-pgsql zabbix-java-gateway
+pkg zabbix-agent zabbix-agent2 zabbix-server-pgsql zabbix-proxy-pgsql zabbix-java-gateway
 
 require-root yes
 
@@ -9,6 +9,7 @@ var service_user   zabbix
 var service_group  zabbix
 
 var agent_service  zabbix-agent
+var agent2_service  zabbix-agent
 var server_service zabbix-server
 var proxy_service zabbix-proxy
 var java_gateway_service zabbix-java-gateway
@@ -158,3 +159,35 @@ command "systemctl status {proxy_service}" "Check status of Zabbix Proxy daemon"
 command "systemctl stop {proxy_service}" "Stop Zabbix Proxy daemon"
   wait {delay}
   !service-works {proxy_service}
+
+command "-" "Check agent2 environment"
+  app zabbix_agent2
+
+  service-present {agent2_service}
+
+  user-exist  {service_user}
+  group-exist {service_user}
+
+  dir {config_dir}/zabbix_agent2.d
+  mode {config_dir}/zabbix_agent2.d 755
+
+  exist {config_dir}/zabbix_agent2.conf
+  mode {config_dir}/zabbix_agent2.conf 644
+
+  exist {logrotate_dir}/{agent2_service}
+  mode {logrotate_dir}/{agent2_service} 644
+
+  dir {log_dir}
+  mode {log_dir} 755
+  owner {log_dir} {service_user}:{service_group}
+
+command "systemctl start {agent2_service}" "Start Zabbix Agent 2 daemon"
+  exit 0
+  service-works {agent2_service}
+
+command "systemctl status {agent2_service}" "Check status of Zabbix Agent 2 daemon"
+  exit 0
+
+command "systemctl stop {agent2_service}" "Stop Zabbix Agent 2 daemon"
+  exit 0
+  !service-works {agent2_service}
