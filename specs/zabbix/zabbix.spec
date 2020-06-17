@@ -1166,8 +1166,47 @@ fi
 
 %changelog
 * Mon Jun 15 2020 Andrey Kulikov <avk@brewkeeper.net> - 5.0.1-0
-- update to 5.0.1
-- added patch that fixes (ZBX-17801)
+- Added patch that fixes (ZBX-17801)
+- Added Spiceworks integration guide
+- Increased max configuration cache size limit to 64GB
+- Added LLD for perf_counter; thanks to Ryan Armstrong for the patch
+- Added media "OTRS"
+- Added win perf_instance.discovery and perf_instance_en.discovery to agent2
+- Added agent2 PostgreSQL plugin and template
+- Added two way functionality for acknowledgement, close and annotation
+  with SIGNL4
+- Added component version item to server and proxy remote monitoring templates
+- Fixed lld override validation and visualization; fixed discover control in
+  prototype edit forms
+- Added double.sql file to source distribution tarball
+- Reverted fix graph line interruptions when discarding values with heartbeat
+- Fixed 4-byte utf-8 sequence handling in embedded scripts
+- Fixed issue with trigger for service status
+- Fixed unreachable poller being too busy due to snmp checks being attempted
+  twice at a time
+- Fixed latest data all applications expansion with every refresh
+- Fixed a failing query when updating existing host prototypes
+- Fixed selected menu item appearance upon opening screens of any host
+- Fixed error message box position
+- Fixed markup in user media popup
+- Increased timescaledb chunk interval for trends and trends_uint to 1 month
+- Fixed javascript preprocessing output variable initialization to not trigger
+  false positive memory allocation warning
+- Implemented host preselection in filter graph fields in
+  monitoring -> hosts -> graphs section
+- Fixed notification window location
+- Fix invalid memory size in evaluate_macro_function()
+- Fixed agent request parameter type parsing
+- Fixed web.page.get,web.page,web.page.regexp keys on zabbix agent2 not to
+  verify server's certificate chain and host name
+- Fixed element of filters is not focused on several pages
+- Fixed start time data loading in maintenance edit form
+- Fixed acknowledge option in context menu on problems page
+- Fixed log level check in case of debuglevel=0
+- Fixed runtime error in action operations
+- Removed unused code left from mbedtls support
+- Fixed server crashes on regexp preprocessing
+- Shadow global auto_increment variables for mysql
 
 * Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.5-0
 - Added zabbix_js command line utility for embedded javascript testing
