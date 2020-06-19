@@ -1,0 +1,138 @@
+diff --git a/ChangeLog.d/bugfix/ZBX-17801 b/ChangeLog.d/bugfix/ZBX-17801
+new file mode 100644
+index 0000000000..3abef6d3d1
+--- /dev/null
++++ b/ChangeLog.d/bugfix/ZBX-17801
+@@ -0,0 +1 @@
++.......PS. [ZBX-17801] shadow global auto_increment MySQL variables only for proxy (arimdjonoks)
+diff --git a/include/db.h b/include/db.h
+index c5b2cd4e9a..841913633d 100644
+--- a/include/db.h
++++ b/include/db.h
+@@ -479,6 +479,8 @@ DB_ACKNOWLEDGE;
+ int	DBinit(char **error);
+ void	DBdeinit(void);
+ 
++void	DBinit_autoincrement_options(void);
++
+ int	DBconnect(int flag);
+ void	DBclose(void);
+ 
+diff --git a/include/zbxdb.h b/include/zbxdb.h
+index cf5a78d6e9..2e5ddc745f 100644
+--- a/include/zbxdb.h
++++ b/include/zbxdb.h
+@@ -82,6 +82,8 @@ zbx_db_value_t;
+ int	zbx_db_init(const char *dbname, const char *const db_schema, char **error);
+ void	zbx_db_deinit(void);
+ 
++void	zbx_db_init_autoincrement_options(void);
++
+ int	zbx_db_connect(char *host, char *user, char *password, char *dbname, char *dbschema, char *dbsocket, int port,
+ 			char *tlsmode, char *cert, char *key, char *ca, char *cipher, char *cipher_13);
+ void	zbx_db_close(void);
+diff --git a/src/libs/zbxdb/db.c b/src/libs/zbxdb/db.c
+index 7c0177e5cd..7ae8b86f0d 100644
+--- a/src/libs/zbxdb/db.c
++++ b/src/libs/zbxdb/db.c
+@@ -72,6 +72,8 @@ static char	*last_db_strerror = NULL;	/* last database error message */
+ 
+ extern int	CONFIG_LOG_SLOW_QUERIES;
+ 
++static int	config_db_auto_increment;
++
+ #if defined(HAVE_MYSQL)
+ static MYSQL			*conn = NULL;
+ #elif defined(HAVE_ORACLE)
+@@ -332,6 +334,18 @@ static int	is_recoverable_postgresql_error(const PGconn *pg_conn, const PGresult
+ }
+ #endif
+ 
++/******************************************************************************
++ *                                                                            *
++ * Function: zbx_db_init_autoincrement_options                                *
++ *                                                                            *
++ * Purpose: specify the autoincrement options during db connect               *
++ *                                                                            *
++ ******************************************************************************/
++void	zbx_db_init_autoincrement_options(void)
++{
++	config_db_auto_increment = 1;
++}
++
+ /******************************************************************************
+  *                                                                            *
+  * Function: zbx_db_connect                                                   *
+@@ -393,20 +407,24 @@ int	zbx_db_connect(char *host, char *user, char *password, char *dbname, char *d
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
+-	/* shadow global auto_increment variables */
+-
+-	if (0 != MYSQL_OPTIONS(conn, MYSQL_INIT_COMMAND, MYSQL_OPTIONS_ARGS_VOID_CAST
+-			"set @@session.auto_increment_increment=1"))
++	if (1 == config_db_auto_increment)
+ 	{
+-		zabbix_log(LOG_LEVEL_ERR, "Cannot set auto_increment_increment option.");
+-		ret = ZBX_DB_FAIL;
+-	}
++		/* Shadow global auto_increment variables. */
++		/* Setting session variables requires special permissions in MySQL 8.0.14-8.0.17. */
+ 
+-	if (ZBX_DB_OK == ret && 0 != MYSQL_OPTIONS(conn, MYSQL_INIT_COMMAND, MYSQL_OPTIONS_ARGS_VOID_CAST
+-			"set @@session.auto_increment_offset=1"))
+-	{
+-		zabbix_log(LOG_LEVEL_ERR, "Cannot set auto_increment_offset option.");
+-		ret = ZBX_DB_FAIL;
++		if (0 != MYSQL_OPTIONS(conn, MYSQL_INIT_COMMAND, MYSQL_OPTIONS_ARGS_VOID_CAST
++				"set @@session.auto_increment_increment=1"))
++		{
++			zabbix_log(LOG_LEVEL_ERR, "Cannot set auto_increment_increment option.");
++			ret = ZBX_DB_FAIL;
++		}
++
++		if (ZBX_DB_OK == ret && 0 != MYSQL_OPTIONS(conn, MYSQL_INIT_COMMAND, MYSQL_OPTIONS_ARGS_VOID_CAST
++				"set @@session.auto_increment_offset=1"))
++		{
++			zabbix_log(LOG_LEVEL_ERR, "Cannot set auto_increment_offset option.");
++			ret = ZBX_DB_FAIL;
++		}
+ 	}
+ 
+ #if defined(HAVE_MYSQL_TLS)
+diff --git a/src/libs/zbxdbhigh/db.c b/src/libs/zbxdbhigh/db.c
+index cd37caee38..c3727792ce 100644
+--- a/src/libs/zbxdbhigh/db.c
++++ b/src/libs/zbxdbhigh/db.c
+@@ -149,6 +149,18 @@ void	zbx_db_validate_config(void)
+ }
+ #endif
+ 
++/******************************************************************************
++ *                                                                            *
++ * Function: DBinit_autoincrement_options                                     *
++ *                                                                            *
++ * Purpose: specify the autoincrement options when connecting to the database *
++ *                                                                            *
++ ******************************************************************************/
++void	DBinit_autoincrement_options(void)
++{
++	zbx_db_init_autoincrement_options();
++}
++
+ /******************************************************************************
+  *                                                                            *
+  * Function: DBconnect                                                        *
+diff --git a/src/zabbix_proxy/proxy.c b/src/zabbix_proxy/proxy.c
+index 8304c3c149..0dc22497c1 100644
+--- a/src/zabbix_proxy/proxy.c
++++ b/src/zabbix_proxy/proxy.c
+@@ -1102,6 +1102,8 @@ int	MAIN_ZABBIX_ENTRY(int flags)
+ 		exit(EXIT_FAILURE);
+ 	}
+ 
++	DBinit_autoincrement_options();
++
+ 	if (ZBX_DB_UNKNOWN == (db_type = zbx_db_get_database_type()))
+ 	{
+ 		zabbix_log(LOG_LEVEL_CRIT, "cannot use database \"%s\": database is not a Zabbix database",

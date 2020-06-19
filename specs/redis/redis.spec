@@ -46,7 +46,7 @@
 
 Summary:            A persistent key-value database
 Name:               redis
-Version:            5.0.7
+Version:            6.0.4
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
@@ -54,7 +54,6 @@ URL:                https://redis.io
 
 Source0:            https://github.com/antirez/%{name}/archive/%{version}.tar.gz
 Source1:            %{name}.logrotate
-Source2:            %{name}.init
 Source3:            %{name}.sysconfig
 Source4:            sentinel.logrotate
 Source5:            sentinel.init
@@ -71,26 +70,16 @@ Patch1:             sentinel-config.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc tcl
+BuildRequires:      make tcl systemd-devel
+BuildRequires:      devtoolset-7-gcc
 
 Requires:           %{name}-cli >= %{version}
 Requires:           logrotate
-%if 0%{?rhel} <= 6
-Requires:           kaosv >= 2.15
-%endif
 
-%if 0%{?rhel} >= 7
 Requires(pre):      shadow-utils
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
-%else
-Requires(pre):      shadow-utils
-Requires(post):     chkconfig
-Requires(preun):    chkconfig
-Requires(preun):    initscripts
-Requires(postun):   initscripts
-%endif
 
 ################################################################################
 
@@ -123,12 +112,11 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
-%ifarch %ix86
-sed -i '/integration\/logging/d' tests/test_helper.tcl
-%{__make} %{?_smp_mflags} 32bit MALLOC=jemalloc
-%else
+# Use gcc and gcc-c++ from devtoolset
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export BUILD_WITH_SYSTEMD=yes
+
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
-%endif
 
 %install
 rm -rf %{buildroot}
@@ -151,13 +139,6 @@ install -dm 755 %{buildroot}%{_localstatedir}/lib/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
 
-%if 0%{?rhel} <= 6
-install -dm 755 %{buildroot}%{_initrddir}
-install -pm 755 %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
-install -pm 755 %{SOURCE5} %{buildroot}%{_initrddir}/sentinel
-%endif
-
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/%{name}.service.d
 install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d
@@ -165,7 +146,6 @@ install -pm 644 %{SOURCE7} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE9} %{buildroot}%{_sysconfdir}/systemd/system/%{name}.service.d/limit.conf
 install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
-%endif
 
 chmod 755 %{buildroot}%{_bindir}/%{name}-*
 
@@ -190,37 +170,19 @@ useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__sysctl} enable %{name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
 fi
-
-chown %{name}:%{name} %{_sysconfdir}/%{name}.conf
-chown %{name}:%{name} %{_sysconfdir}/sentinel.conf
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
   %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__sysctl} --no-reload disable sentinel.service &>/dev/null || :
   %{__sysctl} stop %{name}.service &>/dev/null || :
   %{__sysctl} stop sentinel.service &>/dev/null || :
-%else
-  %{__service} %{name} stop &> /dev/null || :
-  %{__service} sentinel stop &> /dev/null || :
-  %{__chkconfig} --del %{name} &> /dev/null || :
-  %{__chkconfig} --del sentinel &> /dev/null || :
-%endif
 fi
 
 %postun
-%if 0%{?rhel} >= 7
-if [[ $1 -ge 1 ]] ; then
-  %{__sysctl} daemon-reload &>/dev/null || :
-fi
-%endif
+%{__sysctl} daemon-reload &>/dev/null || :
 
 %clean
 rm -rf %{buildroot}
@@ -235,23 +197,17 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/sentinel
-%config(noreplace) %{_sysconfdir}/*.conf
 
-%dir %attr(0755, %{name}, root) %{_localstatedir}/lib/%{name}
-%dir %attr(0755, %{name}, root) %{_localstatedir}/log/%{name}
-%dir %attr(0755, %{name}, root) %{_localstatedir}/run/%{name}
+%attr(-,%{name},%{name}) %config(noreplace) %{_sysconfdir}/*.conf
 
-%if 0%{?rhel} <= 6
-%{_initrddir}/%{name}
-%{_initrddir}/sentinel
-%endif
+%dir %attr(0755,%{name},root) %{_localstatedir}/lib/%{name}
+%dir %attr(0755,%{name},root) %{_localstatedir}/log/%{name}
+%dir %attr(0755,%{name},root) %{_localstatedir}/run/%{name}
 
-%if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
 %{_unitdir}/sentinel.service
 %{_sysconfdir}/systemd/system/%{name}.service.d/limit.conf
 %{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
-%endif
 
 %{_bindir}/%{name}-server
 %{_bindir}/%{name}-sentinel
@@ -268,6 +224,21 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jun 04 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.4-0
+- Updated to the latest stable release
+
+* Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.3-0
+- Updated to the latest stable release
+
+* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.2-0
+- Updated to the latest stable release
+
+* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.1-0
+- Updated to the latest stable release
+
+* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.0-0
+- Updated to the latest stable release
+
 * Thu Jan 23 2020 Anton Novojilov <andy@essentialkaos.com> - 5.0.7-0
 - Updated to the latest stable release
 

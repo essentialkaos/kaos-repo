@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       karlheyes:icecast-kh
-# rpmbuilder:tag          icecast-2.4.0-kh13
+# rpmbuilder:tag          icecast-2.4.0-kh14
 
 ################################################################################
 
@@ -54,14 +54,14 @@
 %define groupname         icecast
 
 %define service_name      icecast
-%define kh_version        13
+%define kh_version        14
 
 ################################################################################
 
 Summary:           Icecast streaming media server (KH branch)
 Name:              icecast
 Version:           2.4.0.kh%{kh_version}
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+ and GPLv2 and BSD
 Group:             Applications/Multimedia
 URL:               https://github.com/karlheyes/icecast-kh
@@ -70,6 +70,7 @@ Source0:           %{name}-%{version}.tar.bz2
 Source1:           %{name}.service
 Source2:           %{name}.logrotate
 Source3:           %{name}.xml
+Source4:           json.xsl
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -147,14 +148,21 @@ install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
 install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
 install -dm 755 %{buildroot}%{_pkgdocdir}/examples
 install -dm 755 %{buildroot}%{_pkgdocdir}/conf
+install -dm 755 %{buildroot}%{_rundir}/%{name}
 
 install -Dpm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 
 install -Dpm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -Dpm 0640 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}.xml
 
+install -Dpm 0644 %{SOURCE4} %{buildroot}%{_datadir}/%{name}/web/
+
 cp -a html/ AUTHORS NEWS TODO %{buildroot}%{_pkgdocdir}
 cp -a conf/*.dist %{buildroot}%{_pkgdocdir}/conf
+
+# Remove useless templates
+rm -f %{buildroot}%{_datadir}/%{name}/7.xsl
+rm -f %{buildroot}%{_datadir}/%{name}/status2.xsl
 
 %clean
 rm -rf %{buildroot}
@@ -184,6 +192,7 @@ fi
 %files
 %defattr(-,root,root,-)
 %dir %attr(-,%{username},%{groupname}) %{_localstatedir}/log/%{name}
+%dir %attr(-,%{username},%{groupname}) %{_rundir}/%{name}
 %config(noreplace) %attr(-,root,%{groupname}) %{_sysconfdir}/%{name}.xml
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/%{name}
@@ -197,11 +206,51 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jun 05 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh14-1
+- Added xsl template for generating JSON with tracks info
+
+* Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh14-0
+- Fixed bug with logs rotation.
+- Allow for using secs (eg 5s) in queue/min-queue/burst measures.
+- Allow multiple icy sources on same port. Just embed in password a
+  mountpoint:pass. The shoutcast-mount tag still creates the +1 port and sets
+  a default mountpoint but source can override this.
+- Fix log issue which could cause a deadlock if on-[dis]connect or auth cmd
+  are used.
+- Allow configure to accept ICY_CHARSET to set alternate in build. The default
+  ICY metadata is assumed to be UTF8, but some sites still have issues with
+  setting tags or parameters, so allow a different default if they need it.
+- Regression on FLV wrapped aac metadata fixed.
+- Crash/corruption fix if using stream auth and metadata updates via admin.
+- Fix for glibc rwlock priority.
+- Added the icy-metadata in headers allowed with CORS.
+- Rework XFF to be earlier, useful in cases where banned IPs apply.
+- Allow wildcards in XFF.
+- Drop the BSD NOPUSH setting for now. Have seen poor performance because of
+  it in certain cases.
+- Openssl API cleanups. eg API differences between versions.
+- Various small fixes, build and operational.
+
 * Wed Apr 01 2020 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh13-0
-- Updated to the latest stable release
+- Fix an annoying race case. memory corruption in certain cases that are hard
+  to trigger normally but typically involes a listener disconnecting in certain
+  conditions.
+- Tightened up use-after-free cases with regard to the queue pruning.
+- Leak fixes with intro via auth.
+- Allow seconds to be specified in burst and queue size fields. Just specify
+  the number followed by s eg 30s or 5s. Eventually we could make this the
+  default so that is can apply to various bitrates.
+- Small minor cleanups across the board.
 
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0.kh12-0
-- Updated to the latest stable release
+- Fix up some incorrect or stale block cases from previous release for non-ogg
+  streams. Usually cause by short write triggers or queue jumps.
+- Change default charset for non-ogg streams to utf8 instead of latin1, you can
+  still use latin1 either with <charset> mount setting or charset= query param
+  to metadata.
+- Global listeners count could get messed up with fallback to files, also make
+  it a regular update stat in-line with other global stats.
+- Avoid possible crash case on log re-opening, not so common.
 
 * Sun Jan 20 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-10
 - Initial build for kaos repository

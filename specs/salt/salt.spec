@@ -60,13 +60,13 @@
 
 ################################################################################
 
-%define pypi_subpath      25/ee/cd9ed4a912506f5f6f0eb00891e661840bd9df0fae781f78fa9f04515447
+%define pypi_subpath      60/2c/9fe1a3f2eb5380271f2067b2d3d25ffead2fe753f91a22fed0877357498f
 
 ################################################################################
 
 Summary:          A parallel remote execution system
 Name:             salt
-Version:          2019.2.3
+Version:          2019.2.4
 Release:          0%{?dist}
 License:          ASL 2.0
 Group:            System Environment/Daemons
@@ -455,6 +455,9 @@ fi
 ################################################################################
 
 %changelog
+* Sun May 03 2020 Anton Novojilov <andy@essentialkaos.com> - 2019.2.4-0
+- Updated to 2019.2.4 with fixes for CVE-2020-11651 and CVE-2020-11652
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 2019.2.3-0
 - Updated to 2019.2.3
 

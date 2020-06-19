@@ -46,14 +46,14 @@
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           22
-%define ver_min           3
-%define ver_patch         4.1
+%define ver_maj           23
+%define ver_min           0
+%define ver_patch         1
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define libre_ver         2.9.2
+%define libre_ver         3.1.2
 
 ################################################################################
 
@@ -125,7 +125,8 @@ Requires:          %{name}-xmerl = %{version}
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang19 erlang20
+Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
+Conflicts:         erlang20 erlang21 erlang22
 
 ################################################################################
 
@@ -865,6 +866,7 @@ rm -rf %{buildroot}
 %{_libdir}/erlang/bin/ct_run
 %{_libdir}/erlang/bin/epmd
 %{_libdir}/erlang/bin/erl
+%{_libdir}/erlang/bin/erl_call
 %{_libdir}/erlang/bin/erlc
 %{_libdir}/erlang/bin/escript
 %{_libdir}/erlang/bin/no_dot_erlang.boot
@@ -1044,25 +1046,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 22.3.4.1-0
-- Updated to the latest release
-
-* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 22.3.0-0
-- Updated to the latest release
-- Using DevToolSet 7 for build
-
-* Fri Jan 24 2020 Anton Novojilov <andy@essentialkaos.com> - 22.2.3-0
-- Updated to the latest release
-
-* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 22.2-0
-- Updated to the latest release
-
-* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 22.1.8-0
-- Updated to the latest release
-
-* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 22.0.7-0
-- Updated to the latest release
-- Added CRC check for sources
-
-* Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 22.0.5-0
+* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.1-0
 - Initial build for kaos repository

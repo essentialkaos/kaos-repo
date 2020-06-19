@@ -49,12 +49,6 @@
 
 ################################################################################
 
-%ifarch %ix86
-  %define optflags -O2 -g -march=i686
-%endif
-
-################################################################################
-
 %define rules_dir         %{_sysconfdir}/%{name}/rules
 %define daemon_name       snortd
 %define usershell         /bin/false
@@ -63,7 +57,7 @@
 
 Summary:         An open source Network Intrusion Detection System (NIDS)
 Name:            snort
-Version:         2.9.15.1
+Version:         2.9.16
 Release:         0%{?dist}
 License:         GPL
 Group:           Applications/Internet
@@ -113,6 +107,7 @@ export AM_CFLAGS="%{optflags}"
             --libdir=%{_libdir} \
             --sysconfdir=%{_sysconfdir}/%{name} \
             --with-libpcap-includes=%{_includedir} \
+            --enable-sourcefire \
             --enable-targetbased \
             --enable-control-socket
 
@@ -191,7 +186,6 @@ exit 0
 
 %post
 if [[ $1 -eq 1 ]] ; then
-  chown -R %{name}:%{name} %{_var}/log/%{name}
   %{__chkconfig} --add %{daemon_name}
 fi
 
@@ -233,6 +227,10 @@ fi
 ################################################################################
 
 %changelog
+* Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 2.9.16-0
+- Updated to the latest version
+- Removed unsafe owner change
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 2.9.15.1-0
 - Updated to the latest version
 

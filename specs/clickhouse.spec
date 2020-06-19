@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.17.9.60-stable
+# rpmbuilder:tag          v20.3.8.53-lts
 
 ################################################################################
 
@@ -61,7 +61,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.17.9.60
+Version:           20.3.8.53
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -73,7 +73,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-8
+BuildRequires:     devtoolset-9-gcc-c++ devtoolset-9-binutils
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
 BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
 
@@ -158,7 +158,7 @@ This package contains test suite for ClickHouse DBMS.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 
 mkdir -p build
 
@@ -206,8 +206,8 @@ install -pm 644 debian/%{name}-server.cron.d \
 install -pm 644 debian/%{name}.limits \
                 %{buildroot}%{_sysconfdir}/security/limits.d/%{name}.conf
 
-install -pm 644 dbms/programs/server/config.xml \
-                dbms/programs/server/users.xml \
+install -pm 644 programs/server/config.xml \
+                programs/server/users.xml \
                 %{buildroot}%{_sysconfdir}/%{name}-server/
 
 install -dm 755 %{buildroot}%{_unitdir}
@@ -305,6 +305,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.53-0
+- Updated to the latest stable release
+
 * Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
 - Updated to the latest stable release
 

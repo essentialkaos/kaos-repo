@@ -48,7 +48,7 @@
 
 Summary:              Metrics dashboard and graph editor
 Name:                 grafana
-Version:              6.5.2
+Version:              6.7.4
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Applications/System
@@ -66,24 +66,12 @@ Patch1:               001-%{name}-clickhouse-alerting.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if 0%{?rhel} >= 7
+BuildRequires:        make gcc systemd golang >= 1.13
+
 Requires(post):       systemd
 Requires(preun):      systemd
 Requires(postun):     systemd
 Requires(pre):        shadow-utils
-%else
-Requires(pre):        shadow-utils
-Requires(post):       chkconfig
-Requires(preun):      chkconfig
-Requires(preun):      initscripts
-Requires(postun):     initscripts
-%endif
-
-%if 0%{?rhel} >= 7
-BuildRequires:        systemd
-%endif
-
-BuildRequires:        gcc golang >= 1.13
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -138,12 +126,8 @@ install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}
 install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}/plugins
 install -dm 0755 %{buildroot}%{_mandir}/man1
 install -dm 0755 %{buildroot}%{_localstatedir}/log/%{name}
-%if 0%{?rhel} >= 7
 install -dm 0744 %{buildroot}%{_unitdir}
 install -dm 0755 %{buildroot}%{_tmpfilesdir}
-%else
-install -dm 0755 %{buildroot}%{_initrddir}
-%endif
 
 cp -a conf public %{buildroot}%{service_home}
 
@@ -154,12 +138,8 @@ install -pm 0644 conf/distro-defaults.ini %{buildroot}%{_sysconfdir}/%{name}/%{n
 install -pm 0644 conf/distro-defaults.ini %{buildroot}%{service_home}/conf/defaults.ini
 install -pm 0644 conf/ldap.toml %{buildroot}%{_sysconfdir}/%{name}/ldap.toml
 install -pm 0644 packaging/rpm/sysconfig/%{name}-server %{buildroot}%{_sysconfdir}/sysconfig/%{name}-server
-%if 0%{?rhel} >= 7
 install -pm 0644 %{SOURCE10} %{buildroot}%{_tmpfilesdir}/%{name}.conf
 install -pm 0644 %{SOURCE2} %{buildroot}%{_unitdir}/%{name}-server.service
-%else
-install -pm 0755 packaging/rpm/init.d/%{name}-server %{buildroot}%{_initrddir}/%{name}-server
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -174,30 +154,19 @@ getent passwd %{service_user} &>/dev/null || \
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} enable %{name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
-%else
-  %{__service} %{name} stop &> /dev/null || :
-  %{__chkconfig} --del %{name} &> /dev/null || :
-%endif
 fi
 
 %postun
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__systemctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
@@ -216,12 +185,8 @@ fi
 %config(noreplace) %attr(0640,root,%{service_group}) %{_sysconfdir}/%{name}/%{name}.ini
 %config(noreplace) %attr(0640,root,%{service_group}) %{_sysconfdir}/%{name}/ldap.toml
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}-server
-%if 0%{?rhel} >= 7
 %{_tmpfilesdir}/%{name}.conf
 %{_unitdir}/%{name}-server.service
-%else
-%{_initrddir}/%{name}-server
-%endif
 %{service_home}/public
 %attr(-,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}
 %attr(-,root,%{service_group}) %{service_home}/conf/*
@@ -231,6 +196,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 03 2020 Anton Novojilov <andy@essentialkaos.com> - 6.7.4-0
+- Updated to the latest release
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 6.5.2-0
 - Updated to the latest release
 - Improved ClickHouse alerting
