@@ -10,7 +10,7 @@
 
 Summary:              A terminal multiplexer
 Name:                 tmux
-Version:              3.0a
+Version:              3.1b
 Release:              0%{?dist}
 License:              ISC and BSD
 Group:                Applications/System
@@ -22,7 +22,8 @@ Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make automake gcc ncurses-devel libevent2-devel
+BuildRequires:        make byacc autoconf automake gcc
+BuildRequires:        ncurses-devel libevent-devel
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -74,6 +75,101 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jun 27 2020 Anton Novojilov <andy@essentialkaos.com> - 3.1b-0
+- Fix build on systems without sys/queue.h.
+- Fix crash when allow-rename is on and an empty name is set.
+
+* Sat Jun 27 2020 Anton Novojilov <andy@essentialkaos.com> - 3.1a-0
+- Do not close stdout prematurely in control mode since it is needed to print
+  exit messages. Prevents hanging when detaching with iTerm2.
+
+* Sat Jun 27 2020 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
+- Only search the visible part of the history when marking (highlighting)
+  search terms. This is much faster than searching the whole history and solves
+  problems with large histories. The count of matches shown is now the visible
+  matches rather than all matches.
+- Search using regular expressions in copy mode. search-forward and
+  search-backward use regular expressions by default; the incremental versions
+  do not.
+- Turn off mouse mode 1003 as well as the rest when exiting.
+- Add selection_active format for when the selection is present but not moving
+  with the cursor.
+- Fix dragging with modifier keys, so binding keys such as C-MouseDrag1Pane and
+  C-MouseDragEnd1Pane now work.
+- Add -a to list-keys to also list keys without notes with -N.
+- Do not jump to next word end if already on a word end when selecting a word;
+  fixes select-word with single character words and vi(1) keys.
+- Fix top and bottom pane calculation with pane border status enabled.
+- Add support for adding a note to a key binding (with bind-key -N) and use
+  this to add descriptions to the default key bindings. A new -N flag to
+  list-keys shows key bindings with notes. Change the default ? binding to use
+  this to show a readable summary of keys. Also extend command-prompt to return
+  the name of the key pressed and add a default binding (/) to show the note
+  for the next key pressed.
+- Add support for the iTerm2 DSR 1337 sequence to get the terminal version.
+- Treat plausible but invalid keys (like C-BSpace) as literal like any other
+  unrecognised string passed to send-keys.
+- Detect iTerm2 and enable use of DECSLRM (much faster with horizontally split
+  windows).
+- Add -Z to default switch-client command in tree mode.
+- Add ~ to quoted characters for %%%.
+- Document client exit messages in the manual page.
+- Do not let read-only clients limit the size, unless all clients are
+  read-only.
+- Add a number of new formats to inspect what sessions and clients a window is
+  present or active in.
+- Change file reading and writing to go through the client if necessary. This
+  fixes commands like "tmux loadb /dev/fd/X". Also modify source-file to
+  support "-" for standard input, like load-buffer and save-buffer.
+- Add ~/.config/tmux/tmux.conf to the default search path for configuration
+  files.
+- Bump the escape sequence timeout to five seconds to allow for longer
+  legitimate sequences.
+- Make a best effort to set xpixel and ypixel for each pane and add formats for
+  them.
+- Add push-default to status-left and status-right in status-format[0].
+- Do not clear search marks on cursor movement with vi(1) keys.
+- Add p format modifier for padding to width and allow multiple substitutions
+  in a single format.
+- Add -f for full size to join-pane (like split-window).
+- Do not use bright when emulating 256 colours on an 8 colour terminal because
+  it is also bold on some terminals.
+- Make select-pane -P set window-active-style also to match previous behaviour.
+- Do not truncate list-keys output.
+- Turn automatic-rename back on if the \033k rename escape sequence is used
+  with an empty name.
+- Add support for percentage sizes for resize-pane ("-x 10%"). Also change
+  split-window and join-pane -l to accept similar percentages and deprecate the
+  -p flag.
+- Add -F flag to send-keys to expand formats in search-backward and forward
+  copy mode commands and copy_cursor_word and copy_cursor_line formats for word
+  and line at cursor in copy mode. Use for default # and - binding with vi(1)
+  keys.
+- Add formats for word and line at cursor position in copy mode.
+- Add formats for cursor and selection position in copy mode.
+- Support all the forms of RGB colour strings in OSC sequences rather than
+  requiring two digits.
+- Limit lazy resize to panes in attached sessions only.
+- Add an option to set the key sent by backspace for those whose system uses ^H
+  rather than ^?.
+- Change new-session -A without a session name (that is, no -s option also) to
+  attach to the best existing session like attach-session rather than a new
+  one.
+- Add a "latest" window-size option which tries to size windows based on the
+  most recently used client. This is now the default.
+- Add simple support for OSC 7 (result is available in the pane_path format).
+- Add push-default and pop-default for styles which change the colours and
+  attributes used for #[default]. These are used in status-format to restore
+  the behaviour of window-status-style being the default for
+  window-status-format.
+- Add window_marked_flag.
+- Add cursor-down-and-cancel in copy mode.
+- Default to previous search string for search-forward and search-backward.
+- Add -Z flag to rotate-window, select-pane, swap-pane, switch-client to
+  preserve zoomed state.
+- Add -N to capture-pane to preserve trailing spaces.
+- Add reverse sorting in tree, client and buffer modes.
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 3.0a-0
 - Do not require REG_STARTEND.
 - Respawn panes or windows correctly if default-command is set.
