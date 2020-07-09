@@ -40,7 +40,7 @@
 
 Summary:              Zabbix datasource for Grafana
 Name:                 grafana-plugin-zabbix-datasource
-Version:              3.10.2
+Version:              3.12.2
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/System
@@ -92,5 +92,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.12.2-0
+- Updated to the latest release
+
 * Tue Jul 09 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.10.2-0
 - Initial build
