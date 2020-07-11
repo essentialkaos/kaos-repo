@@ -1,0 +1,219 @@
+# Bibop recipe for bison
+# See more: https://kaos.sh/bibop
+
+pkg bison bison-devel bison-runtime
+
+fast-finish yes
+
+var data_dir /usr/share/locale/
+
+command "-" "Check environment"
+  app bison
+
+command "-" "Check static libs"
+  exist /usr/lib64/liby.a
+  mode /usr/lib64/liby.a 644
+
+command "-" "Check runtime"
+  exist {data_dir}/af/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/af/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/ast/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ast/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/be/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/be/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/bg/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/bg/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/bg/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/bg/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ca/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ca/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/ca/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ca/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/cs/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/cs/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/da/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/da/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/da/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/da/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/de/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/de/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/de/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/de/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/el/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/el/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/el/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/el/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/eo/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/eo/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/eo/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/eo/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/es/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/es/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/es/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/es/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/et/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/et/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/et/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/et/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/eu/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/eu/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/fi/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/fi/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/fi/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/fi/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/fr/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/fr/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/fr/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/fr/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ga/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ga/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/ga/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ga/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/gl/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/gl/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/gl/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/gl/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/hr/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/hr/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/hu/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/hu/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/hu/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/hu/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ia/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ia/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/id/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/id/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/it/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/it/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/it/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/it/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ja/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ja/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/ja/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ja/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ko/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ko/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/ky/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ky/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/lt/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/lt/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/lv/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/lv/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ms/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ms/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/ms/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ms/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/nb/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/nb/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/nb/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/nb/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/nl/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/nl/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/nl/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/nl/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/pl/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/pl/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/pl/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/pl/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/pt/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/pt/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/pt/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/pt/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/pt_BR/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/pt_BR/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/pt_BR/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/pt_BR/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ro/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ro/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/ro/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ro/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/ru/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/ru/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/ru/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/ru/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/rw/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/rw/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/sk/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/sk/LC_MESSAGES/bison-gnulib.mo 644
+
+  exist {data_dir}/sl/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/sl/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/sl/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/sl/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/sq/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/sq/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/sr/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/sr/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/sr/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/sr/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/sv/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/sv/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/sv/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/sv/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/th/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/th/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/tr/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/tr/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/tr/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/tr/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/uk/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/uk/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/uk/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/uk/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/vi/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/vi/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/vi/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/vi/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/zh_CN/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/zh_CN/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/zh_CN/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/zh_CN/LC_MESSAGES/bison-runtime.mo 644
+
+  exist {data_dir}/zh_TW/LC_MESSAGES/bison-gnulib.mo
+  mode {data_dir}/zh_TW/LC_MESSAGES/bison-gnulib.mo 644
+  exist {data_dir}/zh_TW/LC_MESSAGES/bison-runtime.mo
+  mode {data_dir}/zh_TW/LC_MESSAGES/bison-runtime.mo 644
