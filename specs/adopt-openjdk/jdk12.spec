@@ -40,6 +40,8 @@ Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
+AutoProv:           no
+
 Provides:           jdk = 1:12
 Provides:           java = 1:12
 Provides:           jdk-%{jdk_major} = 1:%{version}-%{release}
@@ -107,6 +109,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 12.0.1.12-2
+- Rebuilt with disabled automatic dependency processing
+
 * Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 12.0.1.12-1
 - Fixed bug with removing previous version from alternatives
 

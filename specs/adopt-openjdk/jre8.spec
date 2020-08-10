@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   252
-%define jdk_minor   b09
+%define jdk_major   265
+%define jdk_minor   b01
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 802
+%define alt_priority 803
 
 ################################################################################
 
@@ -39,6 +39,8 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+AutoProv:           no
 
 Provides:           jre = 1:1.8.0
 Provides:           jre-lts = 1:1.8.0
@@ -110,6 +112,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.265.b01-0
+- Updated to the latest version
+
 * Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.252.b09-0
 - Updated to the latest version
 
