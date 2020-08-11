@@ -23,7 +23,7 @@ Summary:            OpenJDK Runtime Environment (JDK 12)
 Name:               jdk12
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            2%{?dist}
+Release:            0%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -110,8 +110,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
-* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 12.0.1.12-2
-- Rebuilt with disabled automatic dependency processing
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 12.0.2.10-0
+- Updated to the latest version
 
 * Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 12.0.1.12-1
 - Fixed bug with removing previous version from alternatives
