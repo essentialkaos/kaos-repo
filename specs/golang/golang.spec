@@ -64,7 +64,7 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.14.6
+Version:           1.14.7
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -784,6 +784,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.7-0
+- Updated to the latest stable release
+
 * Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.6-0
 - Updated to the latest stable release
 
