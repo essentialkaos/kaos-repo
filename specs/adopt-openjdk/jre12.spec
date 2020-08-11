@@ -22,7 +22,7 @@ Summary:            OpenJDK Runtime Environment (JRE 12)
 Name:               jre12
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            1%{?dist}
+Release:            2%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -40,6 +40,7 @@ Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
 AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jre = 1:12
 Provides:           java = 1:12

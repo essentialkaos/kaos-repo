@@ -41,6 +41,7 @@ Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
 AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jre = 1:1.8.0
 Provides:           jre-lts = 1:1.8.0

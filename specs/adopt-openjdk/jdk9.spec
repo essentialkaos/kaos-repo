@@ -41,6 +41,7 @@ Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
 
 AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jdk = 1:9
 Provides:           java = 1:9
