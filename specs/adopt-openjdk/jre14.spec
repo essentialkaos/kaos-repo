@@ -14,7 +14,7 @@
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 
-%define alt_priority 1401
+%define alt_priority 1402
 
 ################################################################################
 

@@ -15,7 +15,7 @@
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1451
+%define alt_priority 1452
 
 ################################################################################
 
