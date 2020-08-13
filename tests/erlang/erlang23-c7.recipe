@@ -3,7 +3,7 @@
 
 pkg erlang23
 
-var libressl_ver 3.1.2
+var libressl_ver 3.1.3
 
 var epmd_service epmd
 var epmd_port    4369
