@@ -1,18 +1,24 @@
 ################################################################################
 
-%define tarversion  3310100
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%define tarversion  3330000
 
 ################################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
-Version:            3.31.1
+Version:            3.33.0
 Release:            0%{?dist}
-License:            GPL
+License:            Public domain
 Group:              Development/Tools
 URL:                https://www.sqlite.org
 
 Source0:            https://www.sqlite.org/2020/%{name}-autoconf-%{tarversion}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -72,6 +78,8 @@ database access without running a separate RDBMS process.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn sqlite-autoconf-%{tarversion}
 
 %build
@@ -128,6 +136,21 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.33.0-0
+- Updated to the latest stable release
+
+* Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.3-0
+- Updated to the latest stable release
+
+* Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.2-0
+- Updated to the latest stable release
+
+* Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.1-0
+- Updated to the latest stable release
+
+* Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.0-0
+- Updated to the latest stable release
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 3.31.1-0
 - Updated to the latest stable release
 
