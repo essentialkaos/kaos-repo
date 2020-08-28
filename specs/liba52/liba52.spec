@@ -4,6 +4,10 @@
 
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -45,12 +49,14 @@
 Summary:           A free library for decoding ATSC A/52 (aka AC-3) streams
 Name:              liba52
 Version:           0.7.4
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPL
 Group:             Applications/Multimedia
 URL:               http://liba52.sourceforge.net
 
 Source0:           http://liba52.sourceforge.net/files/%{pkg_name}-%{version}.tar.gz
+
+Source100:         checksum.sha512
 
 Patch0:            %{pkg_name}-%{version}-fPIC.patch
 
@@ -87,6 +93,8 @@ to build programs that use it.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{pkg_name}-%{version}
 %patch0 -p1 -b .fPIC
 
@@ -107,9 +115,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -129,5 +139,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 0.7.4-1
+- Fixed problems with executing ldconfig
+
 * Sat Jun 14 2008 Axel Thimm <Axel.Thimm@ATrpms.net> - 0.7.4-0
 - Updated to latest version

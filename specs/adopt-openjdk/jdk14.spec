@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   14.0.1
-%define jdk_minor   7
+%define jdk_major   14.0.2
+%define jdk_minor   12
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1450
+%define alt_priority 1452
 
 ################################################################################
 
@@ -39,6 +39,9 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jdk = 1:14
 Provides:           java = 1:14
@@ -107,5 +110,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 14.0.2.12-0
+- Updated to the latest version
+
 * Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 14.0.1.7-0
 - Initial build for kaos repository

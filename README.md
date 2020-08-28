@@ -5,13 +5,13 @@ This repository contains spec files and patches used for building RPM packages f
 ### Installation
 
 ```bash
-[sudo] yum install -y https://yum.kaos.st/get/$(uname -r).rpm
+sudo yum install -y https://yum.kaos.st/get/$(uname -r).rpm
 ```
 
 For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) and [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository packages. You could install this packages by next command:
 
 ```
-[sudo] yum install -y epel-release centos-release-scl
+sudo yum install -y epel-release centos-release-scl
 ```
 
 ### End-of-support schedule
@@ -32,6 +32,6 @@ For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) an
 
 ### License
 
-[EKOL](https://essentialkaos.com/ekol)
+[Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
 <p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.st/ekgh.svg"/></a></p>

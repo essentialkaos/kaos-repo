@@ -44,7 +44,7 @@
 Summary:            A minimalistic plugin API for video effects
 Name:               frei0r
 Version:            1.7.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            GPLv2+
 Group:              System Environment/Libraries
 URL:                https://frei0r.dyne.org
@@ -95,9 +95,11 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -112,6 +114,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-1
+- Fixed problems with executing ldconfig
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - This release includes three new filters, code cleanups and several
   bugfixes improving stability of existing plugins.

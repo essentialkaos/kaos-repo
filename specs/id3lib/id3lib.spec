@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -33,13 +37,15 @@
 Summary:            Library for manipulating ID3v1 and ID3v2 tags
 Name:               id3lib
 Version:            3.8.3
-Release:            33%{?dist}
+Release:            34%{?dist}
 License:            LGPLv2+
 Group:              System Environment/Libraries
 URL:                http://id3lib.sourceforge.net
 
-Source0:            http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:            https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:            %{name}-no_date_footer.hml
+
+Source100:          checksum.sha512
 
 Patch0:             %{name}-dox.patch
 Patch1:             %{name}-%{version}-autoreconf.patch
@@ -85,6 +91,8 @@ This package provides files needed to develop with the id3lib library.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %patch0 -p0
@@ -143,9 +151,11 @@ install -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -169,5 +179,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-34
+- Fixed problems with executing ldconfig
+
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-33
 - Initial build for kaos repo

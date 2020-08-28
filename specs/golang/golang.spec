@@ -58,13 +58,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.14
+%global go_api 1.15
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.14.3
+Version:           1.15
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -80,7 +80,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.4.2
+BuildRequires:     golang >= 1.12
 
 Requires:          git
 Requires:          %{name}-bin
@@ -224,19 +224,6 @@ BuildArch:         noarch
 
 %description pkg-linux-arm
 Golang compiler toolchain to compile for linux arm
-
-################################################################################
-
-%package pkg-darwin-386
-
-Summary:           Golang compiler toolchain to compile for darwin 386
-Group:             Development/Languages
-Requires:          go = %{version}-%{release}
-
-BuildArch:         noarch
-
-%description pkg-darwin-386
-Golang compiler toolchain to compile for darwin 386
 
 ################################################################################
 
@@ -439,6 +426,10 @@ pushd src
         fi
       fi
 
+      if [[ "${goos}" == "darwin" && "${goarch}" == "386" ]] ; then
+        continue
+      fi
+
       CC="gcc" \
       CC_FOR_TARGET="gcc" \
         GOOS=${goos} \
@@ -480,9 +471,16 @@ pushd %{buildroot}%{goroot}
           continue
         fi
       fi
-      file_list=${cwd}/pkg-${goos}-${goarch}.list
+
+      if [[ "${goos}" == "darwin" && "${goarch}" == "386" ]] ; then
+        continue
+      fi
+
+      file_list="${cwd}/pkg-${goos}-${goarch}.list"
+
       rm -f $file_list
       touch $file_list
+
       find pkg/${goos}_${goarch}/ -type d -printf '%%%dir %{goroot}/%p\n' >> $file_list
       find pkg/${goos}_${goarch}/ ! -type d -printf '%{goroot}/%p\n' >> $file_list
     done
@@ -739,9 +737,6 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_arm/cgo
 %{goroot}/pkg/tool/linux_arm/fix
 
-%files pkg-darwin-386 -f pkg-darwin-386.list
-%defattr(-,root,root,-)
-
 %files pkg-darwin-amd64 -f pkg-darwin-amd64.list
 %defattr(-,root,root,-)
 
@@ -784,6 +779,21 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Wed Aug 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15-0
+- Updated to the latest stable release
+
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.7-0
+- Updated to the latest stable release
+
+* Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.6-0
+- Updated to the latest stable release
+
+* Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.5-0
+- Updated to the latest stable release
+
+* Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.4-0
+- Updated to the latest stable release
+
 * Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.3-0
 - Updated to the latest stable release
 

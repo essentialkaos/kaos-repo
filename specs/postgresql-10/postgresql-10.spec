@@ -65,7 +65,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        10
-%define minorver        13
+%define minorver        14
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          10
@@ -1108,6 +1108,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 10.14-0
+- Updated to the latest stable release
+
 * Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 10.13-0
 - Updated to the latest stable release
 - Spec improvements

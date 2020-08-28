@@ -48,12 +48,12 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           23
 %define ver_min           0
-%define ver_patch         1
+%define ver_patch         3
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define libre_ver         3.1.2
+%define libre_ver         3.1.3
 
 ################################################################################
 
@@ -84,7 +84,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
-BuildRequires:     lksctp-tools-devel
+BuildRequires:     lksctp-tools-devel autoconf
 
 BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
@@ -1046,5 +1046,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.3-0
+- Updated to the latest release
+
 * Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.1-0
 - Initial build for kaos repository

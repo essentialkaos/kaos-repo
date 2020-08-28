@@ -9,13 +9,13 @@
 ################################################################################
 
 %define jdk_major   10.0.2
-%define jdk_minor   13
+%define jdk_minor   13.1
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1000
+%define alt_priority 1001
 
 ################################################################################
 
@@ -23,12 +23,12 @@ Summary:            OpenJDK Runtime Environment (JRE 10)
 Name:               jre10
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            1%{?dist}
+Release:            0%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
 
-Source0:            https://github.com/AdoptOpenJDK/openjdk10-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}.1/OpenJDK10U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
+Source0:            https://github.com/AdoptOpenJDK/openjdk10-binaries/releases/download/jdk-%{jdk_major}%2B%{jdk_minor}/OpenJDK10U-jre_x64_linux_hotspot_%{jdk_major}_13.tar.gz
 Source1:            java.sh
 
 Source100:          checksum.sha512
@@ -39,6 +39,9 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jre = 1:10
 Provides:           java = 1:10
@@ -63,7 +66,7 @@ for free.
 %prep
 %{crc_check}
 
-%setup -qn jdk-%{jdk_major}+%{jdk_minor}-jre
+%setup -qn jdk-%{jdk_major}+13-jre
 
 %build
 
@@ -107,6 +110,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 10.0.2.13.1-0
+- Updated to the latest version
+
 * Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 10.0.2.13-1
 - Fixed bug with removing previous version from alternatives
 

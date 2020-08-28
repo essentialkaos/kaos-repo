@@ -23,7 +23,7 @@ Summary:            OpenJDK Runtime Environment (JRE 9)
 Name:               jre9
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            1%{?dist}
+Release:            2%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -39,6 +39,9 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jre = 1:9
 Provides:           java = 1:9
@@ -107,6 +110,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 9.0.4.11-2
+- Rebuilt with disabled automatic dependency processing
+
 * Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 9.0.4.11-1
 - Fixed bug with removing previous version from alternatives
 
