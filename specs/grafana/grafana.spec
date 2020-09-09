@@ -48,7 +48,7 @@
 
 Summary:              Metrics dashboard and graph editor
 Name:                 grafana
-Version:              6.7.4
+Version:              7.1.5
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Applications/System
@@ -66,7 +66,7 @@ Patch1:               001-%{name}-clickhouse-alerting.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc systemd golang >= 1.13
+BuildRequires:        make gcc systemd golang >= 1.14
 
 Requires(post):       systemd
 Requires(preun):      systemd
@@ -178,7 +178,7 @@ fi
 %{_sbindir}/%{name}-server
 %{_sbindir}/%{name}-cli
 %dir %{_sysconfdir}/%{name}
-%dir %{_sharedstatedir}/%{name}
+%dir %attr(-,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}
 %dir %{service_home}
 %dir %{service_home}/conf
 %attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}
@@ -188,7 +188,6 @@ fi
 %{_tmpfilesdir}/%{name}.conf
 %{_unitdir}/%{name}-server.service
 %{service_home}/public
-%attr(-,%{service_user},%{service_group}) %{_sharedstatedir}/%{name}
 %attr(-,root,%{service_group}) %{service_home}/conf/*
 %{_mandir}/man1/%{name}-server.1*
 %{_mandir}/man1/%{name}-cli.1*
@@ -196,6 +195,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 09 2020 Gleb Goncharov <g.goncharov@essentialkaos.com> - 7.1.5-0
+- Updated to the latest release
+
 * Wed Jun 03 2020 Anton Novojilov <andy@essentialkaos.com> - 6.7.4-0
 - Updated to the latest release
 
