@@ -49,7 +49,7 @@
 Summary:              Metrics dashboard and graph editor
 Name:                 grafana
 Version:              7.1.5
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              ASL 2.0
 Group:                Applications/System
 URL:                  https://grafana.org
@@ -62,7 +62,6 @@ Source10:             %{name}-tmpfiles.conf
 Source100:            checksum.sha512
 
 Patch0:               000-%{name}-fhs-fix.patch
-Patch1:               001-%{name}-clickhouse-alerting.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -90,7 +89,6 @@ Graphite, InfluxDB & OpenTSDB.
 %setup -q -T -D -a 1
 
 %patch0 -p1
-%patch1 -p1
 
 %build
 mkdir -p %{_builddir}/src/github.com/%{name}
@@ -195,7 +193,10 @@ fi
 ################################################################################
 
 %changelog
-* Wed Sep 09 2020 Gleb Goncharov <g.goncharov@essentialkaos.com> - 7.1.5-0
+* Wed Sep 16 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 7.1.5-1
+- Updated to the latest release
+
+* Wed Sep 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 7.1.5-0
 - Updated to the latest release
 
 * Wed Jun 03 2020 Anton Novojilov <andy@essentialkaos.com> - 6.7.4-0

@@ -45,7 +45,7 @@
 Summary:              Clickhouse datasource for Grafana
 Name:                 grafana-plugin-clickhouse-datasource
 Version:              2.1.0
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              MIT
 Group:                Applications/System
 URL:                  https://github.com/Vertamedia/clickhouse-grafana
@@ -58,7 +58,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 Requires:             grafana
 
-BuildRequires:        git nodejs zlib >= 1.2.11
+BuildRequires:        git nodejs golang >= 1.14 zlib >= 1.2.11
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -75,14 +75,15 @@ database.
 
 %setup -qn %{short_name}-%{version}
 
-# Enable alerting support
-sed -i 's/\"alerting\": false/\"alerting\": true/g' src/plugin.json
-
 %build
 npm install
 npm run build:prod
 
+GOOS=linux GOARCH=amd64 go build -o dist/vertamedia-clickhouse-plugin_linux_amd64 .
+
 rm -rf node_modules/
+rm -f dist/vertamedia-clickhouse-plugin_windows_amd64.exe
+rm -f dist/vertamedia-clickhouse-plugin_darwin_amd64
 
 %install
 rm -rf %{buildroot}
@@ -104,6 +105,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 16 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.1.0-1
+- Updated to the latest release
+
 * Wed Sep 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.1.0-0
 - Updated to the latest release
 
