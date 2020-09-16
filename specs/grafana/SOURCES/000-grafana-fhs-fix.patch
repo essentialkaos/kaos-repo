@@ -840,9 +840,6 @@ new mode 100644
 diff --git a/public/app/plugins/datasource/graphite/partials/query.editor.html b/public/app/plugins/datasource/graphite/partials/query.editor.html
 old mode 100755
 new mode 100644
-diff --git a/public/app/plugins/datasource/stackdriver/partials/query.editor.html b/public/app/plugins/datasource/stackdriver/partials/query.editor.html
-old mode 100755
-new mode 100644
 diff --git a/public/app/plugins/panel/graph/graph.ts b/public/app/plugins/panel/graph/graph.ts
 old mode 100755
 new mode 100644

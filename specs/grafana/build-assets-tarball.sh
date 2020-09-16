@@ -124,7 +124,7 @@ usage() {
 # Echo: Yes
 checkDeps() {
   for p in "$@" ; do
-    if ! type "$p" >/dev/null ; then
+    if ! type "$p" &> /dev/null ; then
       printErrorAndExit "unable to find program: $p"
       return 1
     fi
