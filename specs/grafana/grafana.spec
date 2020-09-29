@@ -49,7 +49,7 @@
 Summary:              Metrics dashboard and graph editor
 Name:                 grafana
 Version:              7.1.5
-Release:              1%{?dist}
+Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Applications/System
 URL:                  https://grafana.org
