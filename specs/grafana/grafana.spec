@@ -193,9 +193,6 @@ fi
 ################################################################################
 
 %changelog
-* Wed Sep 16 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 7.1.5-1
-- Updated to the latest release
-
 * Wed Sep 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 7.1.5-0
 - Updated to the latest release
 
