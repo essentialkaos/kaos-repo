@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   265
-%define jdk_minor   b01
+%define jdk_major   272
+%define jdk_minor   b10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 853
+%define alt_priority 854
 
 ################################################################################
 
@@ -113,6 +113,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.272.b10-0
+- Updated to the latest version
+
 * Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.265.b01-0
 - Updated to the latest version
 

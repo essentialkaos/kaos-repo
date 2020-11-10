@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   11.0.8
-%define jdk_minor   10
+%define jdk_major   11.0.9
+%define jdk_minor   11
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1154
+%define alt_priority 1155
 
 ################################################################################
 
@@ -23,12 +23,12 @@ Summary:            OpenJDK Runtime Environment (JDK 11)
 Name:               jdk11
 Epoch:              1
 Version:            %{jdk_major}.%{jdk_minor}
-Release:            0%{?dist}
+Release:            1%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
 
-Source0:            https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK11U-jdk_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
+Source0:            https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}.1/OpenJDK11U-jdk_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:            java.sh
 
 Source100:          checksum.sha512
@@ -112,6 +112,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.9.11-0
+- Updated to the latest version
+
 * Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.8.10-0
 - Updated to the latest version
 
