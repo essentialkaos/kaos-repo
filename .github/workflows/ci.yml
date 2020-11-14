@@ -19,7 +19,9 @@ jobs:
         uses: docker://essentialkaos/perfecto:centos7
 
       - name: Download perfecto-docker
-        run: wget https://kaos.sh/perfecto/perfecto-docker
+        run: |
+          wget https://kaos.sh/perfecto/perfecto-docker
+          chmod +x perfecto-docker
 
       - name: Run Perfecto check
         run: ./perfecto-docker -A PF20 $(find specs -name '*.spec' | sort | tr '\n' ' ')
