@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master]
+
+jobs:
+  Perfecto:
+    name: Perfecto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Fetch Perfecto docker image
+        uses: docker://essentialkaos/perfecto:centos7
+
+      - name: Download perfecto-docker
+        run: wget https://kaos.sh/perfecto/perfecto-docker
+
+      - name: Run Perfecto check
+        run: ./perfecto-docker -A PF20 $(find specs -name '*.spec' | sort | tr '\n' ' ')
