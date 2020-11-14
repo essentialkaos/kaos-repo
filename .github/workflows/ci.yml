@@ -30,7 +30,7 @@ jobs:
           chmod +x perfecto-docker
 
       - name: Run Perfecto check
-        run: ./perfecto-docker -A PF20 $(git diff --name-status master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
+        run: ./perfecto-docker -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
 
   Bibop:
     name: Bibop
