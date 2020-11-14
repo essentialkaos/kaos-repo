@@ -15,13 +15,30 @@ jobs:
       - name: Code checkout
         uses: actions/checkout@v2
 
-      - name: Fetch Perfecto docker image
+      - name: Run Perfecto docker image
         uses: docker://essentialkaos/perfecto:centos7
 
-      - name: Download perfecto-docker
+      - name: Install perfecto-docker
         run: |
           wget https://kaos.sh/perfecto/perfecto-docker
           chmod +x perfecto-docker
 
       - name: Run Perfecto check
         run: ./perfecto-docker -A PF20 $(find specs -name '*.spec' | sort | tr '\n' ' ')
+
+  Bibop:
+    name: Bibop
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Install bibop and bibop-massive
+        run: |
+          wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
+          wget https://kaos.sh/bibop/bibop-massive
+          chmod +x bibop bibop-massive
+
+      - name: Run bibop recipes validation
+        run: ./bibop-massive -V tests
