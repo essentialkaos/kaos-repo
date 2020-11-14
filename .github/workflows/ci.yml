@@ -52,5 +52,5 @@ jobs:
 
       - name: Run bibop recipes validation
         env:
-          TERM: screen-256color
+          TERM: xterm-256color
         run: bibop-massive -V tests
