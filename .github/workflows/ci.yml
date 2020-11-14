@@ -51,4 +51,6 @@ jobs:
           chmod +x bibop bibop-massive
 
       - name: Run bibop recipes validation
+        env:
+          TERM: screen-256color
         run: bibop-massive -V tests
