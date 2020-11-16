@@ -26,6 +26,8 @@ jobs:
           chmod +x perfecto-docker
 
       - name: Run Perfecto check
+        env:
+          IMAGE: essentialkaos/perfecto:slim
         run: ./perfecto-docker -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
 
   Bibop:
