@@ -1,9 +1,9 @@
 diff -urN 4.0.1.orig/ui/include/classes/core/CConfigFile.php 4.0.1/ui/include/classes/core/CConfigFile.php
 --- 4.0.1.orig/ui/include/classes/core/CConfigFile.php	2018-10-29 19:00:25.270221980 +0200
 +++ 4.0.1/ui/include/classes/core/CConfigFile.php	2018-10-29 19:00:54.666586770 +0200
-@@ -24,7 +24,7 @@
- 	const CONFIG_NOT_FOUND = 1;
+@@ -25,7 +25,7 @@
  	const CONFIG_ERROR = 2;
+ 	const CONFIG_VAULT_ERROR = 3;
  
 -	const CONFIG_FILE_PATH = '/conf/zabbix.conf.php';
 +	const CONFIG_FILE_PATH = '/etc/zabbix/web/zabbix.conf.php';
@@ -21,7 +21,7 @@ diff -urN 4.0.1.orig/ui/include/classes/core/ZBase.php 4.0.1/ui/include/classes/
 +		require_once '/etc/zabbix/web/maintenance.inc.php';
  
  		if (defined('ZBX_DENY_GUI_ACCESS')) {
- 			$user_ip = (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+			if (!isset($ZBX_GUI_ACCESS_IP_RANGE) || !in_array(CWebUser::getIp(), $ZBX_GUI_ACCESS_IP_RANGE)) {
 @@ -289,7 +289,7 @@
  	 * Load zabbix config file.
  	 */
@@ -35,7 +35,7 @@ diff -urN 4.0.1.orig/ui/include/classes/setup/CSetupWizard.php 4.0.1/ui/include/
 --- 4.0.1.orig/ui/include/classes/setup/CSetupWizard.php	2018-10-29 19:00:25.274222030 +0200
 +++ 4.0.1/ui/include/classes/setup/CSetupWizard.php	2018-10-29 19:00:36.450360730 +0200
 @@ -336,7 +336,7 @@
- 	function stage5() {
+
  		$this->setConfig('ZBX_CONFIG_FILE_CORRECT', true);
  
 -		$config_file_name = APP::getInstance()->getRootDir().CConfigFile::CONFIG_FILE_PATH;
