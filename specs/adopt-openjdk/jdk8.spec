@@ -8,22 +8,22 @@
 
 ################################################################################
 
-%define jdk_major   265
+%define jdk_major   275
 %define jdk_minor   b01
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 853
+%define alt_priority 855
 
 ################################################################################
 
 Summary:            OpenJDK Runtime Environment (JDK 8)
 Name:               jdk8
 Epoch:              1
-Version:            1.8.0.%{jdk_major}.%{jdk_minor}
-Release:            0%{?dist}
+Version:            1.8.0.%{jdk_major}
+Release:            %{jdk_minor}%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -113,6 +113,12 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Sat Dec 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.275-b01
+- Updated to the latest version
+
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.272-b10
+- Updated to the latest version
+
 * Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.265.b01-0
 - Updated to the latest version
 

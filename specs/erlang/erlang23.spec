@@ -47,13 +47,13 @@
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           23
-%define ver_min           0
-%define ver_patch         3
+%define ver_min           1
+%define ver_patch         2
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define libre_ver         3.1.3
+%define libre_ver         3.2.2
 
 ################################################################################
 
@@ -1046,6 +1046,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 23.1.2-0
+- Updated to the latest release
+
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.3-0
 - Updated to the latest release
 

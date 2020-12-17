@@ -50,12 +50,12 @@
 %define service_user      %{name}
 %define service_group     %{name}
 %define service_home      %{_sharedstatedir}/%{name}
-%define major_version     5.0
+%define major_version     5.2
 
 ################################################################################
 
 Name:                 zabbix
-Version:              5.0.1
+Version:              5.2.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
@@ -86,7 +86,6 @@ Source100:            checksum.sha512
 
 Patch0:               config.patch
 Patch1:               fping3-sourceip-option.patch
-Patch2:               shadow-global-auto_increment-variables.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -391,7 +390,6 @@ Zabbix web frontend for PostgreSQL.
 
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 # remove .htaccess files
 rm -f ui/app/.htaccess
@@ -1165,6 +1163,31 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 27 2020 Andrey Kulikov <avk@brewkeeper.net> - 5.2.1-0
+- Added template "Apache Kafka by JMX"
+- Improved LLD rule processing after reconnecting to proxy
+- Added "Template DB Apache Cassandra by JMX"
+- Fixed refresh of monitoring problems and monitoring hosts pages when refresh
+  interval is set to zero
+- Fixed dashboard widget to be updated continuously when 'No refresh' interval
+  is specified
+- Fixed active Zabbix Agent v2 5.0 doesn't work with Server v5.2.0
+- Fixed compilation error on Solaris 10
+- Fixed API role.update rules validation
+- Fixed fatal error when updating only discovered triggers and their properties
+- Fixed being able to delete interfaces on discovered hosts
+- Fixed build failing to compile for Zabbix agent 2 on ARM/v7 and ARM/v6
+- Changed trigger of the net.if.speed item in the Windows network module
+  template
+- Removed recovery mode NONE in trigger "Operating system description has
+  changed"
+- Fixed "Something impossible" bug in server and proxy when diaginfo is
+  requested
+- Updated the list of item keys and their descriptions
+- Fixed template "Ceph by Zabbix Agent2" pool discovery
+- Changed Fan, Temperature, Voltage LLD rules in Template Net Arista
+- Fixed "Template Net TP-LINK" readme
+
 * Mon Jun 15 2020 Andrey Kulikov <avk@brewkeeper.net> - 5.0.1-0
 - Added patch that fixes (ZBX-17801)
 - Added Spiceworks integration guide
