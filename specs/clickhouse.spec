@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v20.3.8.53-lts
+# rpmbuilder:tag          v20.8.11.17-lts
 
 ################################################################################
 
@@ -61,7 +61,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           20.3.8.53
+Version:           20.8.11.17
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -75,10 +75,11 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     devtoolset-9-gcc-c++ devtoolset-9-binutils
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
-BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
+BuildRequires:     unixODBC-devel readline-devel
+BuildRequires:     cyrus-sasl-devel
 
 Requires:          openssl libicu libtool-ltdl unixODBC readline
-Requires:          lz4 librdkafka
+Requires:          cyrus-sasl
 
 Requires(pre):     shadow-utils
 Requires(post):    systemd
@@ -164,11 +165,9 @@ mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-            -DENABLE_EMBEDDED_COMPILER=0 \
             -DENABLE_TESTS=OFF \
-            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
-            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
-            -DGLIBC_COMPATIBILITY=OFF \
+            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=True \
+            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=True \
             -DCMAKE_BUILD_TYPE:STRING=Release \
             $CMAKE_OPTIONS
   %{__make} %{?_smp_mflags}
@@ -299,12 +298,14 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}-server/server-test.xml
 %{_bindir}/%{name}-test
 %{_bindir}/%{name}-test-server
-%{_bindir}/%{name}-performance-test
 %{_datadir}/%{name}-test
 
 ################################################################################
 
 %changelog
+* Mon Jan 11 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 20.8.11.17-0
+- Updated to the latest stable release
+
 * Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.53-0
 - Updated to the latest stable release
 
