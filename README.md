@@ -18,8 +18,8 @@ sudo yum install -y epel-release centos-release-scl
 
 | CentOS/RHEL version | Updates     | Repository removal |
 |---------------------|-------------|--------------------|
-| `6.x`               | 1 Jan 2020  | 31 Dec 2020        |
-| `7.x`               | 1 Jan 2022  | 31 Dec 2022        |
+| `6.x`               | 1 Jan 2020  | 1 Jun 2020         |
+| `7.x`               | 1 Jan 2022  | 6 Jun 2022         |
 | `8.x`               | —           | —                  |
 
 
@@ -27,8 +27,8 @@ sudo yum install -y epel-release centos-release-scl
 
 | Branch                 | Status |
 |------------------------|--------|
-| `master` (_Stable_)    | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=master)](https://travis-ci.org/essentialkaos/kaos-repo) |
-| `develop` (_Unstable_) | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=develop)](https://travis-ci.org/essentialkaos/kaos-repo) |
+| `master` (_Stable_)    | [![CI](https://github.com/essentialkaos/kaos-repo/workflows/CI/badge.svg?branch=master)](https://github.com/essentialkaos/kaos-repo/actions) |
+| `develop` (_Unstable_) | [![CI](https://github.com/essentialkaos/kaos-repo/workflows/CI/badge.svg?branch=develop)](https://github.com/essentialkaos/kaos-repo/actions) |
 
 ### License
 
