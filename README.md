@@ -27,8 +27,8 @@ sudo yum install -y epel-release centos-release-scl
 
 | Branch                 | Status |
 |------------------------|--------|
-| `master` (_Stable_)    | [![CI](https://github.com/essentialkaos/kaos-repo/workflows/CI/badge.svg?branch=master)](https://github.com/essentialkaos/kaos-repo/actions) |
-| `develop` (_Unstable_) | [![CI](https://github.com/essentialkaos/kaos-repo/workflows/CI/badge.svg?branch=develop)](https://github.com/essentialkaos/kaos-repo/actions) |
+| `master` (_Stable_)    | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=master)](https://travis-ci.org/essentialkaos/kaos-repo) |
+| `develop` (_Unstable_) | [![Build Status](https://travis-ci.org/essentialkaos/kaos-repo.svg?branch=develop)](https://travis-ci.org/essentialkaos/kaos-repo) |
 
 ### License
 
