@@ -37,7 +37,7 @@
 %define pkg_name          loki
 %define service_user      loki
 %define service_group     loki
-%define service_home      %{_datadir}/%{name}
+%define service_home      %{_sharedstatedir}/%{name}
 
 ################################################################################
 
@@ -97,8 +97,8 @@ install -dm 0755 %{buildroot}%{_sysconfdir}
 install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
 install -dm 0755 %{buildroot}%{_unitdir}
-install -dm 0755 %{buildroot}%{_datadir}
-install -dm 0755 %{buildroot}%{_datadir}/%{name}
+install -dm 0755 %{buildroot}%{_sharedstatedir}
+install -dm 0755 %{buildroot}%{_sharedstatedir}/%{name}
 
 # Service files
 install -pm 0644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
@@ -148,7 +148,7 @@ fi
 %{_bindir}/%{name}
 %{_bindir}/logcli
 %dir %{_sysconfdir}/%{name}
-%attr(0755, %{service_user}, %{service_group}) %{_datadir}/%{name}
+%attr(0755, %{service_user}, %{service_group}) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.yaml
 %{_unitdir}/%{name}.service
