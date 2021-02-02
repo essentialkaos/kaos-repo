@@ -45,7 +45,7 @@ Summary:          Promtail: log shipper for Loki
 Name:             promtail
 Version:          2.1.0
 Release:          0%{?dist}
-Group:            System/Monitoring
+Group:            Development/Tools
 License:          Apache-2.0
 URL:              https://grafana.com/loki
 
