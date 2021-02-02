@@ -1,0 +1,13 @@
+# Bibop recipe for duf
+# See more: https://kaos.sh/bibop
+
+pkg duf
+
+fast-finish yes
+
+command "-" "Check environment"
+  app duf
+
+command "duf --version" "Check version info"
+  exit 0
+  output-contains "duf"
