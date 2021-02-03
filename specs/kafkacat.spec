@@ -38,7 +38,7 @@
 
 Summary:              Generic non-JVM producer and consumer for Apache Kafka
 Name:                 kafkacat
-Version:              1.5.0
+Version:              1.6.0
 Release:              0%{?dist}
 License:              2-clause BSD
 Group:                Development/Libraries
@@ -98,6 +98,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 30 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.6.0-0
+- Transactional Producer support (see below).
+- Honour -k <key> when producing files (#197).
+- Honour -o <offset> in -G high-level consumer mode (#231).
+- Added -m <seconds> argument to set metadata/query/transaction timeouts.
+- Allow schema.registry.url to be configured in config file and
+  not only by -r (#220).
+- Print broker-id message was produced to (if -v), or was consumed
+  from (if -J).
+
 * Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
 - Confluent Schema-Registry and Apache Avro support: consumer can now
   deserialize Avro messages (-s avro)
