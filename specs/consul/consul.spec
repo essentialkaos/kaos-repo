@@ -181,8 +181,8 @@ install -dm 755 %{buildroot}%{_initrddir}
 %else
 install -dm 755 %{buildroot}%{_unitdir}
 %endif
-install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}-server
-install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}-client
+install -dm 755 %{buildroot}%{_logdir}/%{name}-server
+install -dm 755 %{buildroot}%{_logdir}/%{name}-client
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/sysconfig/%{name}-client
@@ -289,7 +289,7 @@ fi
 %else
 %{_unitdir}/%{name}-client.service
 %endif
-%attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}-client/
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-client/
 %config(noreplace) %{_sysconfdir}/%{name}/client/config.json
 
 %files server
@@ -301,7 +301,7 @@ fi
 %else
 %{_unitdir}/%{name}-server.service
 %endif
-%attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}-server/
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-server/
 %config(noreplace) %{_sysconfdir}/%{name}/server/config.json
 
 ################################################################################
