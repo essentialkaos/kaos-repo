@@ -57,7 +57,7 @@
 
 Summary:           Tool for managing secrets and protecting sensitive data
 Name:              vault
-Version:           1.3.2
+Version:           1.6.2
 Release:           0%{?dist}
 Group:             Applications/Communications
 License:           MPLv2
@@ -77,7 +77,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.13
+BuildRequires:     golang >= 1.15.3
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -318,6 +318,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Feb 1 2021 Andrey Kulikov <avk@brewkeeper.net> - 1.6.2-0
+- Updated to the latest stable release
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
 - Updated to the latest stable release
 
