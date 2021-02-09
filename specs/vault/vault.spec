@@ -192,8 +192,8 @@ install -dm 755 %{buildroot}%{_initrddir}
 %else
 install -dm 755 %{buildroot}%{_unitdir}
 %endif
-install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}-server
-install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}-agent
+install -dm 755 %{buildroot}%{_logdir}/%{name}-server
+install -dm 755 %{buildroot}%{_logdir}/%{name}-agent
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/sysconfig/%{name}-agent
@@ -300,7 +300,7 @@ fi
 %else
 %{_unitdir}/%{name}-agent.service
 %endif
-%attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}-agent/
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-agent/
 %config(noreplace) %{_sysconfdir}/%{name}/agent/config.hcl
 
 %files server
@@ -312,7 +312,7 @@ fi
 %else
 %{_unitdir}/%{name}-server.service
 %endif
-%attr(-,%{service_user},%{service_group}) %dir %{_localstatedir}/log/%{name}-server/
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-server/
 %config(noreplace) %{_sysconfdir}/%{name}/server/config.hcl
 
 ################################################################################
