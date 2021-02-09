@@ -53,7 +53,7 @@
 
 Summary:           Tool for service discovery, monitoring and configuration
 Name:              consul
-Version:           1.6.2
+Version:           1.9.2
 Release:           0%{?dist}
 Group:             Applications/Communications
 License:           MPLv2
@@ -154,8 +154,6 @@ mv .src src
 
 %build
 export GOPATH=$(pwd)
-export XC_OS=$(go env GOOS)
-export XC_ARCH=$(go env GOARCH)
 export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
 export GIT_IMPORT="github.com/hashicorp/consul/version"
@@ -163,10 +161,9 @@ export GOLDFLAGS="-X $GIT_IMPORT.GitDescribe=%{version}"
 
 pushd src/github.com/hashicorp/%{name}
   %{__make} %{?_smp_mflags} tools || :
-  $GOPATH/bin/gox -osarch="${XC_OS}/${XC_ARCH}" \
-                  -ldflags "${GOLDFLAGS}" \
-                  -tags="consul" \
-                  -output "$GOPATH/%{name}" .
+  go build -ldflags "${GOLDFLAGS}" \
+           -tags="consul" \
+           -o "$GOPATH/%{name}" main.go
 popd
 
 %install
@@ -310,6 +307,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Feb 1 2021 Andrey Kulikov <avk@brewkeeper.net> - 1.9.2-0
+- Updated to the latest stable release
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.6.2-0
 - Updated to the latest stable release
 
