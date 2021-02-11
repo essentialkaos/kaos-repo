@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -37,13 +41,15 @@
 
 Summary:           GEOS is a C++ port of the Java Topology Suite
 Name:              geos
-Version:           3.6.2
+Version:           3.9.1
 Release:           0%{?dist}
 License:           LGPLv2
 Group:             Applications/Engineering
-URL:               http://trac.osgeo.org/geos
+URL:               https://trac.osgeo.org/geos
 
-Source0:           http://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
+Source0:           https://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
+
+Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -77,35 +83,19 @@ use GEOS
 
 ################################################################################
 
-%package python
-Summary:           Python modules for GEOS
-Group:             Development/Libraries
-Requires:          %{name} = %{version}-%{release}
-
-%description python
-Python module to build applications using GEOS and python
-
-################################################################################
-
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
-
-# fix python path on 64bit
-sed -i -e 's|\/lib\/python|$libdir\/python|g' configure
-sed -i -e 's|.get_python_lib(0|.get_python_lib(1|g' configure
-
 # disable internal libtool to avoid hardcoded r-path
 for makefile in `find . -type f -name 'Makefile.in'` ; do
   sed -i 's|@LIBTOOL@|%{_bindir}/libtool|g' $makefile
 done
 
 %configure --disable-static \
-           --disable-dependency-tracking \
-           --enable-python
-
-touch swig/python/geos_wrap.cxx
+           --disable-dependency-tracking
 
 %{__make} %{?_smp_mflags}
 cd doc
@@ -133,7 +123,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING NEWS README TODO
+%doc AUTHORS COPYING NEWS README.md
 %{_libdir}/lib%{name}-%{version}.so
 %{_libdir}/lib%{name}_c.so.*
 %exclude %{_libdir}/*.a
@@ -147,25 +137,19 @@ rm -rf %{buildroot}
 %{_libdir}/lib%{name}_c.so
 %exclude %{_libdir}/*.la
 %exclude %{_libdir}/*.a
-
-%files python
-%defattr(-,root,root,-)
-%dir %{python_sitearch}/%{name}
-%exclude %{python_sitearch}/%{name}/_%{name}.a
-%exclude %{python_sitearch}/%{name}/_%{name}.la
-%{python_sitearch}/%{name}.pth
-%{python_sitearch}/%{name}/*.py
-%{python_sitearch}/%{name}/*.py?
-%{python_sitearch}/%{name}/_%{name}.so
+%{_libdir}/pkgconfig/geos.pc
 
 ################################################################################
 
 %changelog
+* Thu Feb 11 2021 Anton Novojilov <andy@essentialkaos.com> - 3.9.1-0
+- Updated to the latest release
+
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 3.6.2-0
-- Updated to latest release
+- Updated to the latest release
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 3.6.1-0
-- Updated to latest release
+- Updated to the latest release
 
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 3.5.0-0
 - Updated to latest release
