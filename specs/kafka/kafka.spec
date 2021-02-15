@@ -66,7 +66,7 @@
 
 Summary:             A high-throughput distributed messaging system
 Name:                kafka
-Version:             2.4.0
+Version:             2.7.0
 Release:             0%{?dist}
 License:             APL v2
 Group:               Applications/Databases
@@ -84,7 +84,8 @@ Source100:           checksum.sha512
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:           noarch
 
-BuildRequires:       jdk11 maven gradle which
+BuildRequires:       jdk11
+BuildRequires:       maven gradle which
 
 %if 0%{?rhel} <= 6
 Requires:            kaosv
@@ -92,7 +93,7 @@ Requires:            kaosv
 Requires:            systemd
 %endif
 
-Requires:            java
+Requires:            jdk11
 
 %if 0%{?rhel} <= 6
 Requires(post):      %{__chkconfig} initscripts
@@ -242,6 +243,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Feb 15 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.7.0-0
+- Updated to the latest release
+
 * Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
 - Updated to the latest release
 
