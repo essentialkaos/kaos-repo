@@ -83,6 +83,12 @@ command "-" "Check symlinks linker and pkgconfig configs"
   exist {LIBDIR}/pkgconfig/libpgtypes.pc
   exist {LIBDIR}/pkgconfig/libpq.pc
 
+  link /etc/ld.so.conf.d/postgresql-pgdg-libs.conf {install_dir}/share/postgresql-{verison}-libs.conf
+  link {LIBDIR}/pkgconfig/libecpg_compat.pc {install_dir}/lib/pkgconfig/libecpg_compat.pc
+  link {LIBDIR}/pkgconfig/libecpg.pc {install_dir}/lib/pkgconfig/libecpg.pc
+  link {LIBDIR}/pkgconfig/libpgtypes.pc {install_dir}/lib/pkgconfig/libpgtypes.pc
+  link {LIBDIR}/pkgconfig/libpq.pc {install_dir}/lib/pkgconfig/libpq.pc
+
 command "service {service_name} initdb" "Database initialization"
   exit 0
   exist {data_dir}/data/PG_VERSION
