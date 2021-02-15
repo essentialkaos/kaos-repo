@@ -76,6 +76,13 @@ command "-" "Check development environment"
   exist {install_dir}/include/libpq-fe.h
   exist {install_dir}/include/pgtypes.h
 
+command "-" "Check symlinks linker and pkgconfig configs"
+  exist /etc/ld.so.conf.d/postgresql-pgdg-libs.conf
+  exist {LIBDIR}/pkgconfig/libecpg_compat.pc
+  exist {LIBDIR}/pkgconfig/libecpg.pc
+  exist {LIBDIR}/pkgconfig/libpgtypes.pc
+  exist {LIBDIR}/pkgconfig/libpq.pc
+
 command "service {service_name} initdb" "Database initialization"
   exit 0
   exist {data_dir}/data/PG_VERSION
