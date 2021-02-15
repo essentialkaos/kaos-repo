@@ -49,7 +49,7 @@
 
 Summary:              A powerful build system for the JVM
 Name:                 gradle
-Version:              6.5.1
+Version:              6.8.2
 Release:              0%{?dist}
 License:              ASL 2.0
 Group:                Development/Tools
@@ -61,9 +61,9 @@ Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        jdk11 git
+BuildRequires:        jdk13 git
 
-Requires:             java
+Requires:             jdk13
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -121,6 +121,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Feb 15 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.8.2-0
+- Updated to the latest stable release
+
 * Sat Jul 11 2020 Anton Novojilov <andy@essentialkaos.com> - 6.5.1-0
 - Updated to the latest stable release
 
