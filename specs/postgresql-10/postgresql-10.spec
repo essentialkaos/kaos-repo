@@ -912,9 +912,6 @@ rm -rf %{buildroot}
 %if %plperl
 %{install_dir}/lib/hstore_plperl.so
 %endif
-%if %plpython
-%{install_dir}/lib/hstore_plpython2.so
-%endif
 %{install_dir}/lib/passwordcheck.so
 %{install_dir}/lib/pg_freespacemap.so
 %{install_dir}/lib/pg_stat_statements.so
@@ -923,9 +920,6 @@ rm -rf %{buildroot}
 %{install_dir}/lib/sslinfo.so
 %{install_dir}/lib/lo.so
 %{install_dir}/lib/ltree.so
-%if %plpython
-%{install_dir}/lib/ltree_plpython2.so
-%endif
 %{install_dir}/lib/moddatetime.so
 %{install_dir}/lib/pageinspect.so
 %{install_dir}/lib/pgcrypto.so
