@@ -17,4 +17,4 @@ command "-" "Check shared libraries"
 
   link {LIBDIR}/psqlodbcw.so {pg_lib}/psqlodbcw.so
   link {LIBDIR}/psqlodbca.so {pg_lib}/psqlodbca.so
-  link {LIBDIR}/psqlodbc.so {pg_lib}/psqlodbc.so
+  link {LIBDIR}/psqlodbc.so {pg_lib}/psqlodbcw.so
