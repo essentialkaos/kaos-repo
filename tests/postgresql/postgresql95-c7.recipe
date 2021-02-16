@@ -6,7 +6,6 @@ pkg postgresql95-server postgresql95-libs postgresql95-devel
 require-root yes
 
 var verison       9.5
-var short_version 95
 var service_name  postgresql-9.5
 var service_user  postgres
 var service_group postgres
@@ -84,7 +83,7 @@ command "-" "Check symlinks linker and pkgconfig configs"
   exist {LIBDIR}/pkgconfig/libpgtypes.pc
   exist {LIBDIR}/pkgconfig/libpq.pc
 
-  link /etc/ld.so.conf.d/postgresql-pgdg-libs.conf {install_dir}/share/postgresql-{short_version}-libs.conf
+  link /etc/ld.so.conf.d/postgresql-pgdg-libs.conf {install_dir}/share/postgresql-{version}-libs.conf
   link {LIBDIR}/pkgconfig/libecpg_compat.pc {install_dir}/lib/pkgconfig/libecpg_compat.pc
   link {LIBDIR}/pkgconfig/libecpg.pc {install_dir}/lib/pkgconfig/libecpg.pc
   link {LIBDIR}/pkgconfig/libpgtypes.pc {install_dir}/lib/pkgconfig/libpgtypes.pc
