@@ -35,11 +35,11 @@
 ################################################################################
 
 %define short_name    psqlodbc
-%define pg_comb_ver   95
-%define pg_ver        9.5
+%define pg_comb_ver   13
+%define pg_ver        13
 
-%define maj_ver       11
-%define min_ver       01
+%define maj_ver       13
+%define min_ver       00
 %define patch         0000
 
 %define pkg_ver       %{maj_ver}.%{min_ver}.%{patch}
@@ -51,7 +51,7 @@
 Summary:              PostgreSQL %{pg_ver} ODBC driver
 Name:                 postgresql%{pg_comb_ver}-odbc
 Version:              %{pkg_ver}
-Release:              1%{?dist}
+Release:              0%{?dist}
 License:              LGPLv2+
 Group:                Applications/Databases
 URL:                  https://odbc.postgresql.org
@@ -101,6 +101,8 @@ autoconf
 autoheader
 
 %build
+export PG_CONFIG=%{pg_dir}/bin/pg_config
+
 ./configure --with-unixodbc \
             --disable-dependency-tracking \
             --disable-static \
@@ -128,9 +130,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %post
-%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbcw.so psqlodbcw  %{pg_dir}/lib/psqlodbcw.so %{pg_comb_ver}
-%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbca.so psqlodbca  %{pg_dir}/lib/psqlodbca.so %{pg_comb_ver}
-%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbc.so  psqlodbc   %{pg_dir}/lib/psqlodbc.so  %{pg_comb_ver}
+%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbcw.so psqlodbcw  %{pg_dir}/lib/psqlodbcw.so %{pg_comb_ver}0
+%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbca.so psqlodbca  %{pg_dir}/lib/psqlodbca.so %{pg_comb_ver}0
+%{_sbindir}/update-alternatives --install %{_libdir}/psqlodbc.so  psqlodbc   %{pg_dir}/lib/psqlodbc.so  %{pg_comb_ver}0
 
 %postun
 if [[ $1 -eq 0 ]] ; then
@@ -152,8 +154,5 @@ fi
 ################################################################################
 
 %changelog
-* Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 11.01.0000-1
-- Fixed minor bug with removing link to psqlodbcw.so
-
-* Tue Jun 04 2019 Anton Novojilov <andy@essentialkaos.com> - 11.01.0000-0
+* Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 13.00.0000-0
 - Initial build
