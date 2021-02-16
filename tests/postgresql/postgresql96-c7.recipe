@@ -5,7 +5,7 @@ pkg postgresql96-server postgresql96-libs postgresql96-devel
 
 require-root yes
 
-var verison       9.6
+var version       9.6
 var service_name  postgresql-9.6
 var service_user  postgres
 var service_group postgres
@@ -118,7 +118,7 @@ command "systemctl status {service_name}" "Check status of PostgreSQL server"
 
 command "postgres:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
   exit 0
-  output-contains "PostgreSQL {verison}"
+  output-contains "PostgreSQL {version}"
 
 command "systemctl restart {service_name}" "Restart PostgreSQL server"
   wait {delay}
