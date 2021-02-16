@@ -1,9 +1,9 @@
-# Bibop recipe for ODBC driver for PostgreSQL 9.6
+# Bibop recipe for ODBC driver for PostgreSQL 12
 # See more: https://kaos.sh/bibop
 
-pkg postgresql96-odbc
+pkg postgresql12-odbc
 
-var pg_ver 9.6
+var pg_ver 12
 var pg_dir /usr/pgsql-{pg_ver}
 var pg_lib {pg_dir}/lib
 
