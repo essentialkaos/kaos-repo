@@ -1,7 +1,7 @@
-# Bibop recipe for HAProxy 1.9
+# Bibop recipe for HAProxy 2.3
 # See more: https://kaos.sh/bibop
 
-pkg haproxy-1.9.*
+pkg haproxy-2.3.*
 
 require-root yes
 unsafe-actions yes
