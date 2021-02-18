@@ -10,6 +10,7 @@ var postgres_version 13
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
+var bin_dir  /usr/pgsql-{postgres_version}/bin
 
 var extension_dir {data_dir}/extension
 
