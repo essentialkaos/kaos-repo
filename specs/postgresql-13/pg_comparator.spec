@@ -45,6 +45,7 @@
 
 %define pg_ver            13
 %define pg_maj_ver        13
+%define pg_low_fullver    13.0
 %define pg_dir            %{_prefix}/pgsql-13
 %define realname          pg_comparator
 
@@ -66,14 +67,22 @@ Patch0:            %{realname}-Makefile.patch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make gcc
-BuildRequires:     postgresql%{pg_maj_ver}-devel
+BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+
+%if 0%{?rhel} == 8
+BuildRequires:     llvm-devel >= 8.0.1 clang-devel >= 8.0.1
+%endif
+%if 0%{?rhel} == 7
+BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+%endif
 
 Requires:          perl(Getopt::Long), perl(Time::HiRes)
 Requires:          postgresql%{pg_maj_ver}
 
 Requires(post):    %{_sbindir}/update-alternatives
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
