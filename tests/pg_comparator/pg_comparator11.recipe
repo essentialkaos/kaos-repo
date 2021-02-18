@@ -19,6 +19,7 @@ command "-" "Check library"
 
 command "-" "Check binary"
   app pg_comparator
+  link /usr/bin/pg_comparator {bin_dir}/pg_comparator
 
 command "-" "Check SQL files"
   exist {extension_dir}/pgcmp--3.0.sql

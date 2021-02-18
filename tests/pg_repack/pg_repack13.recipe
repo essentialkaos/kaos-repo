@@ -1,12 +1,12 @@
-# Bibop recipe for pg_repack for PostgreSQL 9.3
+# Bibop recipe for pg_repack for PostgreSQL 13
 # See more: https://kaos.sh/bibop
 
-pkg pg_repack93
+pkg pg_repack13
 
 fast-finish yes
 
-var repack_version   1.4.5
-var postgres_version 9.3
+var repack_version   1.4.6
+var postgres_version 13
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
@@ -19,6 +19,7 @@ command "-" "Check library"
 
 command "-" "Check binary"
   app pg_repack
+  link /usr/bin/pg_repack {bin_dir}/pg_repack
 
 command "-" "Check SQL files"
   exist {extension_dir}/pg_repack--{repack_version}.sql
