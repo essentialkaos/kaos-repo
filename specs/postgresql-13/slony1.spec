@@ -75,10 +75,10 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+BuildRequires:     make gcc byacc flex chrpath
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
-BuildRequires:     make gcc byacc flex chrpath
 
 Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.16
 Requires:          systemd

@@ -72,7 +72,7 @@ BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 Requires:          postgresql%{pg_maj_ver}
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -107,7 +107,7 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc COPYRIGHT doc/pg_repack.rst
 %attr (755,root,root) %{pg_dir}/bin/pg_repack
 %attr (755,root,root) %{pg_dir}/lib/pg_repack.so
