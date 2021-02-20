@@ -179,6 +179,7 @@ export CFLAGS="%{optflags} -fpic"
     --bindir=%{install_dir}/bin \
     --sbindir=%{install_dir}/sbin \
     --libdir=%{install_dir}/lib \
+    --includedir=%{install_dir}/include \
     --datadir=%{install_dir}/share  \
     --datarootdir=%{install_dir}/share  \
     --disable-static \
@@ -280,11 +281,6 @@ find %{buildroot}%{perl_vendorarch}/auto -name '*.so' -exec chmod 0755 {} \;
 mkdir %{buildroot}%{perl_vendorarch}/Geo
 cp -rp swig/perl/lib/* %{buildroot}%{perl_vendorarch}/Geo/
 find %{buildroot}%{perl_vendorarch}/Geo/ -name '*.dox' -delete
-
-# Move headers
-mkdir -p %{buildroot}%{install_inc_dir}
-mv %{buildroot}%{_includedir}/*.h %{buildroot}%{install_inc_dir}/
-rm -rf %{buildroot}%{_includedir}
 
 # Move Python package
 mv %{buildroot}%{install_dir}/%{_lib}/python* \
