@@ -53,6 +53,7 @@
 %define pg_dir            %{_prefix}/pgsql-%{pg_maj_ver}
 %define gdal_dir          %{_prefix}/gdal3
 %define realname          postgis
+%define pkgname           %{realname}-%{maj_ver}
 %define fullname          %{realname}31
 
 %define __perl_requires   filter-requires-perl-Pg.sh
@@ -81,12 +82,11 @@ BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 BuildRequires:     geos-devel >= 3.6 chrpath make pcre-devel hdf5-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
 BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
+BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 %if %raster
 BuildRequires:     gdal3-devel
 %endif
-
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 Requires:          postgresql%{pg_maj_ver} geos >= 3.6 proj hdf5 json-c pcre
 Requires:          %{fullname}_%{pg_maj_ver}-client = %{version}-%{release}
@@ -150,7 +150,7 @@ The postgis-utils package provides the utilities for PostGIS.
 cp -p %{SOURCE1} .
 
 %build
-# We need the below for GDAL:
+# We need the below for GDAL
 export LD_LIBRARY_PATH=%{pg_dir}/lib
 
 # perfecto:absolve
@@ -184,7 +184,7 @@ rm -rf %{buildroot}
 %{make_install}
 %{make_install} -C extensions
 
-mkdir -p %{buildroot}%{pg_dir}/bin/%{realname}-%{maj_ver}
+mkdir -p %{buildroot}%{pg_dir}/bin/%{pkgname}
 
 chrpath --delete %{buildroot}%{pg_dir}/bin/pgsql2shp
 chrpath --delete %{buildroot}%{pg_dir}/bin/shp2pgsql
@@ -193,7 +193,7 @@ chrpath --delete %{buildroot}%{pg_dir}/bin/raster2pgsql
 mv %{buildroot}%{pg_dir}/bin/pgsql2shp \
    %{buildroot}%{pg_dir}/bin/shp2pgsql \
    %{buildroot}%{pg_dir}/bin/raster2pgsql \
-   %{buildroot}%{pg_dir}/bin/%{realname}-%{maj_ver}/
+   %{buildroot}%{pg_dir}/bin/%{pkgname}/
 
 %if %utils
 install -dm 755 %{buildroot}%{_datadir}/%{name}
@@ -203,18 +203,18 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 %{__ldconfig}
 
-%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp postgis-pgsql2shp       %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql postgis-shp2pgsql       %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{realname}-%{maj_ver}/raster2pgsql %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp    postgis-pgsql2shp    %{pg_dir}/bin/%{pkgname}/pgsql2shp    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql    postgis-shp2pgsql    %{pg_dir}/bin/%{pkgname}/shp2pgsql    %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{pkgname}/raster2pgsql %{pg_maj_ver}0
 
 %postun
 %{__ldconfig}
 
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
-  %{_sbindir}/update-alternatives --remove postgis-pgsql2shp     %{pg_dir}/bin/%{realname}-%{maj_ver}/pgsql2shp
-  %{_sbindir}/update-alternatives --remove postgis-shp2pgsql     %{pg_dir}/bin/%{realname}-%{maj_ver}/shp2pgsql
-  %{_sbindir}/update-alternatives --remove postgis-raster2pgsql  %{pg_dir}/bin/%{realname}-%{maj_ver}/raster2pgsql
+  %{_sbindir}/update-alternatives --remove postgis-pgsql2shp     %{pg_dir}/bin/%{pkgname}/pgsql2shp
+  %{_sbindir}/update-alternatives --remove postgis-shp2pgsql     %{pg_dir}/bin/%{pkgname}/shp2pgsql
+  %{_sbindir}/update-alternatives --remove postgis-raster2pgsql  %{pg_dir}/bin/%{pkgname}/raster2pgsql
 fi
 
 %clean
@@ -225,42 +225,61 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING CREDITS NEWS TODO README.%{realname} doc/html loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/legacy_gist.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/legacy_minimal.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/legacy.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_comments.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_restore.pl
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/postgis_upgrade.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/raster_comments.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/sfcgal_comments.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/spatial_ref_sys.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/topology_comments.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/topology.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/topology_upgrade.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_legacy.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_postgis.sql
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/uninstall_topology.sql
-%{pg_dir}/share/extension/%{realname}*
-%{pg_dir}/share/extension/address_standardizer*
-%attr(755,root,root) %{pg_dir}/lib/address_standardizer-%{lib_ver}.so
-%attr(755,root,root) %{pg_dir}/lib/postgis-%{lib_ver}.so
-%attr(755,root,root) %{pg_dir}/lib/postgis_topology-%{lib_ver}.so
+%{pg_dir}/share/contrib/%{pkgname}/legacy_gist.sql
+%{pg_dir}/share/contrib/%{pkgname}/legacy_minimal.sql
+%{pg_dir}/share/contrib/%{pkgname}/legacy.sql
+%{pg_dir}/share/contrib/%{pkgname}/postgis_comments.sql
+%{pg_dir}/share/contrib/%{pkgname}/postgis_restore.pl
+%{pg_dir}/share/contrib/%{pkgname}/postgis.sql
+%{pg_dir}/share/contrib/%{pkgname}/postgis_upgrade.sql
+%{pg_dir}/share/contrib/%{pkgname}/raster_comments.sql
+%{pg_dir}/share/contrib/%{pkgname}/sfcgal_comments.sql
+%{pg_dir}/share/contrib/%{pkgname}/spatial_ref_sys.sql
+%{pg_dir}/share/contrib/%{pkgname}/topology_comments.sql
+%{pg_dir}/share/contrib/%{pkgname}/topology.sql
+%{pg_dir}/share/contrib/%{pkgname}/topology_upgrade.sql
+%{pg_dir}/share/contrib/%{pkgname}/uninstall_legacy.sql
+%{pg_dir}/share/contrib/%{pkgname}/uninstall_postgis.sql
+%{pg_dir}/share/contrib/%{pkgname}/uninstall_topology.sql
+%{pg_dir}/share/extension/address_standardizer*.control
+%{pg_dir}/share/extension/address_standardizer*.sql
+%{pg_dir}/share/extension/postgis*.control
+%{pg_dir}/share/extension/postgis*.sql
+%{pg_dir}/lib/address_standardizer-%{lib_ver}.so
+%{pg_dir}/lib/postgis-%{lib_ver}.so
+%{pg_dir}/lib/postgis_topology-%{lib_ver}.so
 %if %raster
-%attr(755,root,root) %{pg_dir}/lib/postgis_raster-%{lib_ver}.so
-%{pg_dir}/share/contrib/%{realname}-%{maj_ver}/*rtpostgis*.sql
+%{pg_dir}/share/contrib/%{pkgname}/rtpostgis.sql
+%{pg_dir}/share/contrib/%{pkgname}/rtpostgis_legacy.sql
+%{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade.sql
+%{pg_dir}/share/contrib/%{pkgname}/uninstall_rtpostgis.sql
+%{pg_dir}/lib/postgis_raster-%{lib_ver}.so
 %endif
 %{pg_dir}/lib/bitcode/*
 
 %files client
-%defattr(644,root,root)
-%attr(755,root,root) %{pg_dir}/bin/*
+%defattr(755,root,root)
+%{pg_dir}/bin/%{pkgname}/pgsql2shp
+%{pg_dir}/bin/%{pkgname}/raster2pgsql
+%{pg_dir}/bin/%{pkgname}/shp2pgsql
 
 %if %utils
 %files utils
 %defattr(-,root,root)
 %doc utils/README
-%attr(755,root,root) %{_datadir}/%{name}/*.pl
+%{_datadir}/%{name}/create_extension_unpackage.pl
+%{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
+%{_datadir}/%{name}/create_undef.pl
+%{_datadir}/%{name}/create_unpackaged.pl
+%{_datadir}/%{name}/postgis_proc_upgrade.pl
+%{_datadir}/%{name}/postgis_restore.pl
+%{_datadir}/%{name}/profile_intersects.pl
+%{_datadir}/%{name}/read_scripts_version.pl
+%{_datadir}/%{name}/repo_revision.pl
+%{_datadir}/%{name}/test_estimation.pl
+%{_datadir}/%{name}/test_geography_estimation.pl
+%{_datadir}/%{name}/test_geography_joinestimation.pl
+%{_datadir}/%{name}/test_joinestimation.pl
 %endif
 
 %files docs
