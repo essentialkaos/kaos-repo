@@ -46,22 +46,24 @@
 %{!?utils:%define utils 1}
 %{!?raster:%define raster 1}
 
-%define maj_ver           2.5
+%define maj_ver           3.1
+%define lib_ver           3
 %define pg_maj_ver        9.6
 %define pg_low_fullver    9.6.0
 %define pg_comb_ver       96
 %define pg_dir            %{_prefix}/pgsql-%{pg_maj_ver}
+%define gdal_dir          %{_prefix}/gdal3
 %define realname          postgis
 %define pkgname           %{realname}-%{maj_ver}
-%define fullname          %{realname}25
+%define fullname          %{realname}31
 
 %define __perl_requires   filter-requires-perl-Pg.sh
 
 ################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
-Name:              %{realname}25_%{pg_comb_ver}
-Version:           2.5.5
+Name:              %{fullname}_%{pg_comb_ver}
+Version:           3.1.1
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -73,8 +75,6 @@ Source2:           filter-requires-perl-Pg.sh
 
 Source100:         checksum.sha512
 
-Patch0:            %{fullname}-gdalfpic.patch
-
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     postgresql%{pg_comb_ver}-devel = %{pg_low_fullver}
@@ -82,10 +82,10 @@ BuildRequires:     postgresql%{pg_comb_ver}-libs = %{pg_low_fullver}
 
 BuildRequires:     geos-devel >= 3.6 chrpath make pcre-devel hdf5-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
 
 %if %raster
-BuildRequires:     gdal-devel >= 1.9.0
+BuildRequires:     gdal3-devel
 %endif
 
 Requires:          postgresql%{pg_comb_ver} geos >= 3.6 proj hdf5 json-c pcre
@@ -93,8 +93,7 @@ Requires:          %{fullname}_%{pg_comb_ver}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
 
-Conflicts:         %{realname}24
-Conflicts:         %{realname}2
+Conflicts:         %{realname}30
 
 Provides:          %{realname} = %{version}-%{release}
 
@@ -118,18 +117,6 @@ Requires:          %{name} = %{version}-%{release}
 %description client
 The postgis-client package contains the client tools and their libraries
 of PostGIS.
-
-################################################################################
-
-%package devel
-Summary:           Development headers and libraries for PostGIS
-Group:             Development/Libraries
-Requires:          %{name} = %{version}-%{release}
-
-%description devel
-The postgis-devel package contains the header files and libraries
-needed to compile C or C++ applications which will directly interact
-with PostGIS.
 
 ################################################################################
 
@@ -162,19 +149,21 @@ The postgis-utils package provides the utilities for PostGIS.
 # Copy .pdf file to top directory before installing
 cp -p %{SOURCE1} .
 
-%patch0 -p0
-
 %build
 # We need the below for GDAL
 export LD_LIBRARY_PATH=%{pg_dir}/lib
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export LIBGDAL_CFLAGS=""
 
-%configure --with-pgconfig=%{pg_dir}/bin/pg_config \
+%configure \
+           --with-pgconfig=%{pg_dir}/bin/pg_config \
+           --with-gdalconfig=%{gdal_dir}/bin/gdal-config \
 %if !%raster
            --without-raster \
 %endif
+           --without-protobuf \
            --disable-rpath \
            --libdir=%{pg_dir}/lib
 
@@ -232,21 +221,18 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING CREDITS NEWS TODO README.%{realname} doc/html loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
-%{pg_dir}/share/contrib/%{pkgname}/legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy_gist.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy_minimal.sql
-%{pg_dir}/share/contrib/%{pkgname}/postgis.sql
+%{pg_dir}/share/contrib/%{pkgname}/legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_comments.sql
-%{pg_dir}/share/contrib/%{pkgname}/postgis_for_extension.sql
-%{pg_dir}/share/contrib/%{pkgname}/postgis_proc_set_search_path.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_restore.pl
+%{pg_dir}/share/contrib/%{pkgname}/postgis.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_upgrade.sql
-%{pg_dir}/share/contrib/%{pkgname}/postgis_upgrade_for_extension.sql
 %{pg_dir}/share/contrib/%{pkgname}/raster_comments.sql
 %{pg_dir}/share/contrib/%{pkgname}/sfcgal_comments.sql
 %{pg_dir}/share/contrib/%{pkgname}/spatial_ref_sys.sql
-%{pg_dir}/share/contrib/%{pkgname}/topology.sql
 %{pg_dir}/share/contrib/%{pkgname}/topology_comments.sql
+%{pg_dir}/share/contrib/%{pkgname}/topology.sql
 %{pg_dir}/share/contrib/%{pkgname}/topology_upgrade.sql
 %{pg_dir}/share/contrib/%{pkgname}/uninstall_legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/uninstall_postgis.sql
@@ -255,21 +241,15 @@ rm -rf %{buildroot}
 %{pg_dir}/share/extension/address_standardizer*.sql
 %{pg_dir}/share/extension/postgis*.control
 %{pg_dir}/share/extension/postgis*.sql
-%{pg_dir}/lib/address_standardizer.so
-%{pg_dir}/lib/postgis-%{maj_ver}.so
-%{pg_dir}/lib/postgis_topology-%{maj_ver}.so
-%{pg_dir}/lib/liblwgeom.so
-%{pg_dir}/lib/liblwgeom-%{maj_ver}.so.0
-%{pg_dir}/lib/liblwgeom-%{maj_ver}.so.0.0.0
+%{pg_dir}/lib/address_standardizer-%{lib_ver}.so
+%{pg_dir}/lib/postgis-%{lib_ver}.so
+%{pg_dir}/lib/postgis_topology-%{lib_ver}.so
 %if %raster
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis.sql
-%{pg_dir}/share/contrib/%{pkgname}/rtpostgis_for_extension.sql
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_legacy.sql
-%{pg_dir}/share/contrib/%{pkgname}/rtpostgis_proc_set_search_path.sql
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade.sql
-%{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade_for_extension.sql
 %{pg_dir}/share/contrib/%{pkgname}/uninstall_rtpostgis.sql
-%{pg_dir}/lib/rtpostgis-%{maj_ver}.so
+%{pg_dir}/lib/postgis_raster-%{lib_ver}.so
 %endif
 
 %files client
@@ -278,26 +258,19 @@ rm -rf %{buildroot}
 %{pg_dir}/bin/%{pkgname}/raster2pgsql
 %{pg_dir}/bin/%{pkgname}/shp2pgsql
 
-%files devel
-%defattr(644,root,root)
-%{_includedir}/liblwgeom.h
-%{_includedir}/liblwgeom_topo.h
-%{pg_dir}/lib/liblwgeom*.a
-%{pg_dir}/lib/liblwgeom*.la
-
 %if %utils
 %files utils
 %defattr(-,root,root)
 %doc utils/README
+%{_datadir}/%{name}/create_extension_unpackage.pl
 %{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
 %{_datadir}/%{name}/create_undef.pl
 %{_datadir}/%{name}/create_unpackaged.pl
-%{_datadir}/%{name}/postgis_proc_set_search_path.pl
 %{_datadir}/%{name}/postgis_proc_upgrade.pl
 %{_datadir}/%{name}/postgis_restore.pl
 %{_datadir}/%{name}/profile_intersects.pl
 %{_datadir}/%{name}/read_scripts_version.pl
-%{_datadir}/%{name}/svn_repo_revision.pl
+%{_datadir}/%{name}/repo_revision.pl
 %{_datadir}/%{name}/test_estimation.pl
 %{_datadir}/%{name}/test_geography_estimation.pl
 %{_datadir}/%{name}/test_geography_joinestimation.pl
@@ -312,11 +285,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sun Feb 21 2021 Anton Novojilov <andy@essentialkaos.com> - 2.5.5-0
-- Updated to the latest stable release
-
-* Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 2.5.3-0
-- Updated to the latest stable release
-
-* Fri Oct 25 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
+* Sat Feb 20 2021 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
 - Initial build
