@@ -78,9 +78,9 @@ command "-" "Check client binaries"
   app raster2pgsql
   app shp2pgsql
 
-  link /bin/pgsql2shp {bin_dir}/pgsql2shp
-  link /bin/shp2pgsql {bin_dir}/shp2pgsql
-  link /bin/raster2pgsql {bin_dir}/raster2pgsql
+  link /bin/pgsql2shp {bin_dir}/postgis-{postgis_major_version}/pgsql2shp
+  link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
+  link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
 
 command "-" "Check utilities"
   exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
