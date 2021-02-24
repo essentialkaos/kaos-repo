@@ -86,6 +86,7 @@ BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
 
 %if %raster
 BuildRequires:     gdal3-devel
+Requires:          gdal3
 %endif
 
 Requires:          postgresql%{pg_comb_ver} geos >= 3.6 proj hdf5 json-c pcre
@@ -199,15 +200,15 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 %{__ldconfig}
 
-%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp    postgis-pgsql2shp    %{pg_dir}/bin/%{pkgname}/pgsql2shp    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql    postgis-shp2pgsql    %{pg_dir}/bin/%{pkgname}/shp2pgsql    %{pg_maj_ver}0
-%{_sbindir}/update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{pkgname}/raster2pgsql %{pg_maj_ver}0
+%{_sbindir}/update-alternatives --install %{_bindir}/pgsql2shp    postgis-pgsql2shp    %{pg_dir}/bin/%{pkgname}/pgsql2shp    %{pg_comb_ver}
+%{_sbindir}/update-alternatives --install %{_bindir}/shp2pgsql    postgis-shp2pgsql    %{pg_dir}/bin/%{pkgname}/shp2pgsql    %{pg_comb_ver}
+%{_sbindir}/update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{pkgname}/raster2pgsql %{pg_comb_ver}
 
 %postun
 %{__ldconfig}
 
 if [[ $1 -eq 0 ]] ; then
-  # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
+  # Only remove these links if the package is completely removed from the system
   %{_sbindir}/update-alternatives --remove postgis-pgsql2shp     %{pg_dir}/bin/%{pkgname}/pgsql2shp
   %{_sbindir}/update-alternatives --remove postgis-shp2pgsql     %{pg_dir}/bin/%{pkgname}/shp2pgsql
   %{_sbindir}/update-alternatives --remove postgis-raster2pgsql  %{pg_dir}/bin/%{pkgname}/raster2pgsql
@@ -262,19 +263,19 @@ rm -rf %{buildroot}
 %files utils
 %defattr(-,root,root)
 %doc utils/README
-%{_datadir}/%{name}/create_extension_unpackage.pl
-%{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
-%{_datadir}/%{name}/create_undef.pl
-%{_datadir}/%{name}/create_unpackaged.pl
-%{_datadir}/%{name}/postgis_proc_upgrade.pl
-%{_datadir}/%{name}/postgis_restore.pl
-%{_datadir}/%{name}/profile_intersects.pl
-%{_datadir}/%{name}/read_scripts_version.pl
-%{_datadir}/%{name}/repo_revision.pl
-%{_datadir}/%{name}/test_estimation.pl
-%{_datadir}/%{name}/test_geography_estimation.pl
-%{_datadir}/%{name}/test_geography_joinestimation.pl
-%{_datadir}/%{name}/test_joinestimation.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_extension_unpackage.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_undef.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_unpackaged.pl
+%attr(755,root,root) %{_datadir}/%{name}/postgis_proc_upgrade.pl
+%attr(755,root,root) %{_datadir}/%{name}/postgis_restore.pl
+%attr(755,root,root) %{_datadir}/%{name}/profile_intersects.pl
+%attr(755,root,root) %{_datadir}/%{name}/read_scripts_version.pl
+%attr(755,root,root) %{_datadir}/%{name}/repo_revision.pl
+%attr(755,root,root) %{_datadir}/%{name}/test_estimation.pl
+%attr(755,root,root) %{_datadir}/%{name}/test_geography_estimation.pl
+%attr(755,root,root) %{_datadir}/%{name}/test_geography_joinestimation.pl
+%attr(755,root,root) %{_datadir}/%{name}/test_joinestimation.pl
 %endif
 
 %files docs
