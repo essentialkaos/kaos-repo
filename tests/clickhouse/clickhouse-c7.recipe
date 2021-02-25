@@ -71,6 +71,13 @@ command "-" "Check service user"
   user-shell {user} /sbin/nologin
   user-home {user} {data_dir}
 
+command "-" "Check linking with librdkafka and LZ4"
+  !lib-linked /usr/bin/clickhouse-client librdkafka.so.1
+  !lib-linked /usr/bin/clickhouse-client librdkafka.so.1
+
+  !lib-linked /usr/bin/clickhouse-server liblz4.so.1
+  !lib-linked /usr/bin/clickhouse-server liblz4.so.1
+
 command "-" "Server users configuration update"
   backup {server_users_config}
 
