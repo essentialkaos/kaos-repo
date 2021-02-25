@@ -11,7 +11,7 @@ command "-" "Check configuration file"
   exist {config}
 
   mode {config} 644
-  owner {config} root:rott
+  owner {config} root:root
 
 command "-" "Check binary"
   app multitail
