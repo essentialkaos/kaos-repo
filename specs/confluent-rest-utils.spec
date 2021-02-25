@@ -56,7 +56,7 @@
 
 Summary:            Utilities and a small framework for building REST services
 Name:               confluent-rest-utils
-Version:            5.4.0
+Version:            6.0.0
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Tools
@@ -68,9 +68,9 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           java >= 1.8.0
+Requires:           jdk11
 
-BuildRequires:      jdk8 maven git
+BuildRequires:      jdk11 maven git
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -122,5 +122,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Feb 15 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.0.0-0
+- Updated to the latest release
+
 * Wed Jan 15 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 5.4.0-0
 - Initial build
