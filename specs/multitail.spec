@@ -45,22 +45,25 @@
 Summary:          View one or multiple files like tail but with multiple windows
 Name:             multitail
 Version:          6.5.0
-Release:          0%{?dist}
+Release:          1%{?dist}
 License:          GPL
 Group:            Applications/Text
-URL:              https://www.vanheusden.com/%{name}/
+URL:              https://www.vanheusden.com/multitail/
 
-Source0:          https://www.vanheusden.com/%{name}/%{name}-%{version}.tgz
+Source:           https://www.vanheusden.com/multitail/%{name}-%{version}.tgz
 
 Source100:        checksum.sha512
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:    make gcc ncurses-devel
+
 Requires:         ncurses
 
 Provides:         %{name} = %{version}-%{release}
 Provides:         %{shortname} = %{version}-%{release}
+
+################################################################################
 
 %description
 MultiTail lets you view one or multiple files like the original tail
@@ -79,6 +82,10 @@ given regular expressions and deleting and adding windows.
 %setup -q
 
 %build
+# Fix path to configuration file and save old Makefile
+cp -p Makefile Makefile.old
+sed -i "s#^CONFIG_FILE=.*#CONFIG_FILE=%{_sysconfdir}/%{name}.conf#" Makefile
+
 %{__make} %{?_smp_mflags}
 
 %install
@@ -88,6 +95,10 @@ install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_mandir}/man1/
 install -dm 755 %{buildroot}%{_sysconfdir}
 install -dm 755 %{buildroot}%{_loc_datarootdir}/%{name}
+
+# Restore original Makefile
+rm -f Makefile
+mv Makefile.old Makefile
 
 %{make_install} PREFIX="%{_prefix}"
 
@@ -109,17 +120,20 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc readme.txt license.txt
-%doc %{_mandir}/man1/%{name}.1*
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %{_bindir}/%{name}
 %{_bindir}/%{shortname}
 %{_loc_datarootdir}/%{name}/*
+%{_mandir}/man1/%{name}.1*
 
 ################################################################################
 
 %changelog
+* Thu Feb 25 2021 Anton Novojilov <andy@essentialkaos.com> - 6.5.0-1
+- Fixed path to configuration file
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 6.5.0-0
 - Updated to the lastes stable release
 
