@@ -31,6 +31,10 @@ command "-" "Check libraries"
   mode {lib_dir}/postgis_raster-{postgis_lib_version}.so 755
   mode {lib_dir}/postgis_topology-{postgis_lib_version}.so 755
 
+command "-" "Check linking with GDAL library"
+  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.28
+  !lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.1
+
 command "-" "Check bitcode"
   dir {lib_dir}/bitcode/address_standardizer-{postgis_lib_version}
   dir {lib_dir}/bitcode/postgis-{postgis_lib_version}

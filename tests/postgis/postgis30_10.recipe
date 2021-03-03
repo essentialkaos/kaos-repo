@@ -31,6 +31,10 @@ command "-" "Check libraries"
   mode {lib_dir}/postgis_raster-{postgis_lib_version}.so 755
   mode {lib_dir}/postgis_topology-{postgis_lib_version}.so 755
 
+command "-" "Check linking with GDAL library"
+  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.28
+  !lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.1
+
 command "-" "Check data directories"
   exist {contrib_dir}
   dir {contrib_dir}

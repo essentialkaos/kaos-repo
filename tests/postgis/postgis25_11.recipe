@@ -39,6 +39,9 @@ command "-" "Check GEOM library"
   lib-header liblwgeom
   lib-header liblwgeom_topo
 
+command "-" "Check linking with GDAL library"
+  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.1
+
 command "-" "Check bitcode"
   dir {lib_dir}/bitcode/address_standardizer
   dir {lib_dir}/bitcode/postgis-{postgis_major_version}
