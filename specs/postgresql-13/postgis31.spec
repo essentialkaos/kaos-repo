@@ -79,8 +79,9 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
-BuildRequires:     geos-devel >= 3.6 chrpath make pcre-devel hdf5-devel
+BuildRequires:     geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
+BuildRequires:     libgeotiff-devel libpng-devel libtiff-devel
 BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
@@ -89,7 +90,7 @@ BuildRequires:     gdal3-devel
 Requires:          gdal3
 %endif
 
-Requires:          postgresql%{pg_maj_ver} geos >= 3.6 proj hdf5 json-c pcre
+Requires:          postgresql%{pg_maj_ver} geos >= 3.9 proj hdf5 json-c pcre
 Requires:          %{fullname}_%{pg_maj_ver}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
@@ -146,6 +147,11 @@ The postgis-utils package provides the utilities for PostGIS.
 %{crc_check}
 
 %setup -qn %{realname}-%{version}
+
+if %{__ldconfig} -p | grep -q 'gdal.so.1' ; then
+  echo "!! GDAL 1.x is installed. Please remove package before build. !!"
+  exit 1
+fi
 
 # Copy .pdf file to top directory before installing
 cp -p %{SOURCE1} .

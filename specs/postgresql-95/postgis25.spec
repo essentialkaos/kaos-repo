@@ -80,7 +80,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     postgresql%{pg_comb_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_comb_ver}-libs = %{pg_low_fullver}
 
-BuildRequires:     geos-devel >= 3.6 chrpath make pcre-devel hdf5-devel
+BuildRequires:     geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
 BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-libstdc++-devel
 
@@ -89,7 +89,7 @@ BuildRequires:     gdal-devel >= 1.9.0
 Requires:          gdal >= 1.9.0
 %endif
 
-Requires:          postgresql%{pg_comb_ver} geos >= 3.6 proj hdf5 json-c pcre
+Requires:          postgresql%{pg_comb_ver} geos >= 3.9 proj hdf5 json-c pcre
 Requires:          %{fullname}_%{pg_comb_ver}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
