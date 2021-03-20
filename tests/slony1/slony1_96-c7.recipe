@@ -1,11 +1,11 @@
-# Bibop recipe for Slony 1 for PostgreSQL 9.3
+# Bibop recipe for Slony 1 for PostgreSQL 9.6
 # See more: https://kaos.sh/bibop
 
 pkg slony1-96
 
 require-root yes
 
-var slony_version 2.2.6
+var slony_version 2.2.10
 
 var postgres_version      9.6
 var postgres_version_comb 96

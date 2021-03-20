@@ -1,0 +1,169 @@
+# Bibop recipe for GDAL 3
+# See more: https://kaos.sh/bibop
+
+pkg gdal3 gdal3-devel gdal3-perl gdal3-python
+
+fast-finish yes
+
+var bin_dir   /usr/gdal3/bin
+var inc_dir   /usr/gdal3/include
+var lib_dir   /usr/gdal3/lib
+var perl_dir  {LIBDIR}/perl5/vendor_perl
+
+command "-" "Check apps"
+  exist {bin_dir}/gdal-config
+  exist {bin_dir}/gdal_contour
+  exist {bin_dir}/gdal_create
+  exist {bin_dir}/gdal_grid
+  exist {bin_dir}/gdal_rasterize
+  exist {bin_dir}/gdal_translate
+  exist {bin_dir}/gdal_viewshed
+  exist {bin_dir}/gdaladdo
+  exist {bin_dir}/gdalbuildvrt
+  exist {bin_dir}/gdaldem
+  exist {bin_dir}/gdalenhance
+  exist {bin_dir}/gdalinfo
+  exist {bin_dir}/gdallocationinfo
+  exist {bin_dir}/gdalmanage
+  exist {bin_dir}/gdalmdiminfo
+  exist {bin_dir}/gdalmdimtranslate
+  exist {bin_dir}/gdalsrsinfo
+  exist {bin_dir}/gdaltindex
+  exist {bin_dir}/gdaltransform
+  exist {bin_dir}/gdalwarp
+  exist {bin_dir}/gnmanalyse
+  exist {bin_dir}/gnmmanage
+  exist {bin_dir}/nearblack
+  exist {bin_dir}/ogr2ogr
+  exist {bin_dir}/ogrinfo
+  exist {bin_dir}/ogrlineref
+  exist {bin_dir}/ogrtindex
+  exist {bin_dir}/testepsg
+
+  mode {bin_dir}/gdal-config 755
+  mode {bin_dir}/gdal_contour 755
+  mode {bin_dir}/gdal_create 755
+  mode {bin_dir}/gdal_grid 755
+  mode {bin_dir}/gdal_rasterize 755
+  mode {bin_dir}/gdal_translate 755
+  mode {bin_dir}/gdal_viewshed 755
+  mode {bin_dir}/gdaladdo 755
+  mode {bin_dir}/gdalbuildvrt 755
+  mode {bin_dir}/gdaldem 755
+  mode {bin_dir}/gdalenhance 755
+  mode {bin_dir}/gdalinfo 755
+  mode {bin_dir}/gdallocationinfo 755
+  mode {bin_dir}/gdalmanage 755
+  mode {bin_dir}/gdalmdiminfo 755
+  mode {bin_dir}/gdalmdimtranslate 755
+  mode {bin_dir}/gdalsrsinfo 755
+  mode {bin_dir}/gdaltindex 755
+  mode {bin_dir}/gdaltransform 755
+  mode {bin_dir}/gdalwarp 755
+  mode {bin_dir}/gnmanalyse 755
+  mode {bin_dir}/gnmmanage 755
+  mode {bin_dir}/nearblack 755
+  mode {bin_dir}/ogr2ogr 755
+  mode {bin_dir}/ogrinfo 755
+  mode {bin_dir}/ogrlineref 755
+  mode {bin_dir}/ogrtindex 755
+  mode {bin_dir}/testepsg 755
+
+command "-" "Check Python apps"
+  exist {bin_dir}/epsg_tr.py
+  exist {bin_dir}/esri2wkt.py
+  exist {bin_dir}/gcps2vec.py
+  exist {bin_dir}/gcps2wld.py
+  exist {bin_dir}/gdal2tiles.py
+  exist {bin_dir}/gdal2xyz.py
+  exist {bin_dir}/gdal_auth.py
+  exist {bin_dir}/gdal_calc.py
+  exist {bin_dir}/gdal_edit.py
+  exist {bin_dir}/gdal_fillnodata.py
+  exist {bin_dir}/gdal_merge.py
+  exist {bin_dir}/gdal_pansharpen.py
+  exist {bin_dir}/gdal_polygonize.py
+  exist {bin_dir}/gdal_proximity.py
+  exist {bin_dir}/gdal_retile.py
+  exist {bin_dir}/gdal_sieve.py
+  exist {bin_dir}/gdalchksum.py
+  exist {bin_dir}/gdalcompare.py
+  exist {bin_dir}/gdalident.py
+  exist {bin_dir}/gdalimport.py
+  exist {bin_dir}/gdalmove.py
+  exist {bin_dir}/mkgraticule.py
+  exist {bin_dir}/ogrmerge.py
+  exist {bin_dir}/pct2rgb.py
+  exist {bin_dir}/rgb2pct.py
+
+  mode {bin_dir}/epsg_tr.py 755
+  mode {bin_dir}/esri2wkt.py 755
+  mode {bin_dir}/gcps2vec.py 755
+  mode {bin_dir}/gcps2wld.py 755
+  mode {bin_dir}/gdal2tiles.py 755
+  mode {bin_dir}/gdal2xyz.py 755
+  mode {bin_dir}/gdal_auth.py 755
+  mode {bin_dir}/gdal_calc.py 755
+  mode {bin_dir}/gdal_edit.py 755
+  mode {bin_dir}/gdal_fillnodata.py 755
+  mode {bin_dir}/gdal_merge.py 755
+  mode {bin_dir}/gdal_pansharpen.py 755
+  mode {bin_dir}/gdal_polygonize.py 755
+  mode {bin_dir}/gdal_proximity.py 755
+  mode {bin_dir}/gdal_retile.py 755
+  mode {bin_dir}/gdal_sieve.py 755
+  mode {bin_dir}/gdalchksum.py 755
+  mode {bin_dir}/gdalcompare.py 755
+  mode {bin_dir}/gdalident.py 755
+  mode {bin_dir}/gdalimport.py 755
+  mode {bin_dir}/gdalmove.py 755
+  mode {bin_dir}/mkgraticule.py 755
+  mode {bin_dir}/ogrmerge.py 755
+  mode {bin_dir}/pct2rgb.py 755
+  mode {bin_dir}/rgb2pct.py 755
+
+command "-" "Check linker configuration file"
+  exist /etc/ld.so.conf.d/gdal3-libs.conf
+  mode /etc/ld.so.conf.d/gdal3-libs.conf 644
+
+command "-" "Check shared libs"
+  lib-loaded libgdal.so.*
+
+command "-" "Check headers"
+  exist {inc_dir}/gdal.h
+
+command "-" "Check pkg-config"
+  lib-config gdal3
+
+command "-" "Check Perl installation"
+  exist {perl_dir}/Geo/Geo/GDAL.pm
+  exist {perl_dir}/Geo/Geo/GNM.pm
+  exist {perl_dir}/Geo/Geo/OGR.pm
+  exist {perl_dir}/Geo/Geo/OSR.pm
+  exist {perl_dir}/Geo/Geo/GDAL/Const.pm
+
+  exist {perl_dir}/auto/Geo/GDAL/GDAL.so
+  exist {perl_dir}/auto/Geo/GDAL/Const/Const.so
+  exist {perl_dir}/auto/Geo/GNM/GNM.so
+  exist {perl_dir}/auto/Geo/OGR/OGR.so
+  exist {perl_dir}/auto/Geo/OSR/OSR.so
+
+  mode {perl_dir}/Geo/Geo/GDAL.pm 644
+  mode {perl_dir}/Geo/Geo/GNM.pm 644
+  mode {perl_dir}/Geo/Geo/OGR.pm 644
+  mode {perl_dir}/Geo/Geo/OSR.pm 644
+  mode {perl_dir}/Geo/Geo/GDAL/Const.pm 644
+
+  mode {perl_dir}/auto/Geo/GDAL/GDAL.so 755
+  mode {perl_dir}/auto/Geo/GDAL/Const/Const.so 755
+  mode {perl_dir}/auto/Geo/GNM/GNM.so 755
+  mode {perl_dir}/auto/Geo/OGR/OGR.so 755
+  mode {perl_dir}/auto/Geo/OSR/OSR.so 755
+
+command "-" "Check Python 2 installation"
+  exist {PYTHON2_SITEARCH}/osgeo
+  dir {PYTHON2_SITEARCH}/osgeo
+
+  exist {PYTHON2_SITEARCH}/osgeo/__init__.py
+
+  python-module osgeo

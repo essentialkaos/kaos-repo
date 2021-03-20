@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -45,6 +49,7 @@
 
 %define pg_ver            10
 %define pg_maj_ver        10
+%define pg_low_fullver    10.0
 %define pg_dir            %{_prefix}/pgsql-10
 %define realname          pg_comparator
 
@@ -53,7 +58,7 @@
 
 Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
 Name:              %{realname}%{pg_maj_ver}
-Version:           2.3.1
+Version:           2.3.2
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Tools
@@ -66,14 +71,15 @@ Patch0:            %{realname}-Makefile.patch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make gcc
-BuildRequires:     postgresql%{pg_maj_ver}-devel
+BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
 Requires:          perl(Getopt::Long), perl(Time::HiRes)
 Requires:          postgresql%{pg_maj_ver}
 
 Requires(post):    %{_sbindir}/update-alternatives
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -121,5 +127,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
+- Updated to the latest stable release
+
 * Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
 - Initial build

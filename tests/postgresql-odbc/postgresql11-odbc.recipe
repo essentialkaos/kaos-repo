@@ -14,3 +14,7 @@ command "-" "Check shared libraries"
 
   mode {pg_lib}/psqlodbcw.so 755
   mode {pg_lib}/psqlodbca.so 755
+
+  link {LIBDIR}/psqlodbcw.so {pg_lib}/psqlodbcw.so
+  link {LIBDIR}/psqlodbca.so {pg_lib}/psqlodbca.so
+  link {LIBDIR}/psqlodbc.so {pg_lib}/psqlodbcw.so

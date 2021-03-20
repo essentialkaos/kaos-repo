@@ -1,0 +1,94 @@
+#!/bin/bash
+
+# redis        init script for starting up the Slony-I
+#
+# chkconfig:   - 64 36
+# description: Starts and stops the Slon daemon that handles
+#              Slony-I replication.
+
+###############################################################################
+
+source /etc/init.d/kaosv
+
+###############################################################################
+
+PG_MAJOR_VERSION="{{PG_MAJOR_VERSION}}"
+PG_HIGH_VERSION="{{PG_HIGH_VERSION}}"
+
+###############################################################################
+
+kv[prog_name]="slony1"
+
+kv.readSysconfig "${kv[prog_name]}-${PG_MAJOR_VERSION}"
+
+binary=${BINARY:-/usr/pgsql-$PG_HIGH_VERSION/bin/slon}
+conf_file=${CONF_FILE:-/etc/slony1-$PG_MAJOR_VERSION/slon.conf}
+pid_dir=${PID_DIR:-/var/run/slony1-$PG_MAJOR_VERSION}
+log_dir=${LOG_DIR:-/var/log/slony1-$PG_MAJOR_VERSION}
+user=${USER:-postgres}
+
+conninfo="${SLONCONNINFO}"
+clustername="${SLONCLUSTERNAME:-sloncluster}"
+
+[[ -z "$conninfo" ]] && conninfo="host=/tmp port=5432 user=slony"
+
+kv[user]="$user"
+kv[pid_file]="$pid_dir/slon_${PG_MAJOR_VERSION}.pid"
+kv[log]="$log_dir/slonystartup.log"
+
+###############################################################################
+
+kv.addHandler "start" "preStartServiceHandler" "pre"
+kv.addHandler "start" "startServiceHandler"
+kv.addHandler "stop"  "stopServiceHandler"
+
+kv.disableOutputRedirect "start" "pre"
+
+###############################################################################
+
+preStartServiceHandler() {
+  local has_errors=""
+
+  [[ ! -f $binary ]] && has_errors=true && kv.error "File <$binary> does not exist"
+  [[ ! -x $binary ]] && has_errors=true && kv.error "File <$binary> is not executable"
+
+  [[ ! -f $conf_file ]] && has_errors=true && kv.error "Configuration file <$conf_file> does not exist."
+  [[ ! -r $conf_file ]] && has_errors=true && kv.error "Configuration file <$conf_file> is not readable."
+
+  if ! kv.hasUser "$user" ; then
+    has_errors=true && kv.error "User <$user> not found"
+  fi
+
+  [[ -n "$has_errors" ]] && kv.exit $ACTION_ERROR
+
+  if kv.isRoot ; then
+    if [[ ! -d $log_dir ]] ; then
+      mkdir -p $log_dir
+      chown $user: $log_dir
+    fi
+  fi
+
+  return $ACTION_OK
+}
+
+startServiceHandler() {
+  kv.run "$binary -f $conf_file -p ${kv[pid_file]} $clustername \"$conninfo\" &"
+
+  [[ $? -ne $ACTION_OK ]] && return $ACTION_ERROR
+
+  kv.getStartStatus
+
+  return $?
+}
+
+stopServiceHandler() {
+  kv.sendSignal "$SIGNAL_TERM"
+
+  kv.getStopStatus
+
+  return $?
+}
+
+###############################################################################
+
+kv.go $@

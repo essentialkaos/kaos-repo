@@ -65,7 +65,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        10
-%define minorver        15
+%define minorver        16
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          10
@@ -768,7 +768,14 @@ chown -R -h %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/nu
 %{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}00
 
 %post libs
+# Create link to linker configuration file
 %{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}00
+# Create links to pkgconfig configuration files
+%{__updalt} --install %{_libdir}/pkgconfig/libpq.pc           %{shortname}-pkgconfig-libpq           %{install_dir}/lib/pkgconfig/libpq.pc          %{pkgver}00
+%{__updalt} --install %{_libdir}/pkgconfig/libpgtypes.pc      %{shortname}-pkgconfig-libpgtypes      %{install_dir}/lib/pkgconfig/libpgtypes.pc     %{pkgver}00
+%{__updalt} --install %{_libdir}/pkgconfig/libecpg.pc         %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc        %{pkgver}00
+%{__updalt} --install %{_libdir}/pkgconfig/libecpg_compat.pc  %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc %{pkgver}00
+# Update shared libs cache
 %{__ldconfig}
 
 # Drop alternatives entries for common binaries and man files
@@ -805,7 +812,14 @@ fi
 
 %postun libs
 if [[ $1 -eq 0 ]] ; then
+  # Remove link to linker configuration file
   %{__updalt} --remove %{shortname}-ld-conf %{install_dir}/share/%{service_name}-libs.conf
+  # Remove links to pkgconfig configuration files
+  %{__updalt} --remove %{shortname}-pkgconfig-libpq           %{install_dir}/lib/pkgconfig/libpq.pc
+  %{__updalt} --remove %{shortname}-pkgconfig-libpgtypes      %{install_dir}/lib/pkgconfig/libpgtypes.pc
+  %{__updalt} --remove %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc
+  %{__updalt} --remove %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc
+  # Update shared libs cache
   %{__ldconfig}
 fi
 
@@ -898,9 +912,6 @@ rm -rf %{buildroot}
 %if %plperl
 %{install_dir}/lib/hstore_plperl.so
 %endif
-%if %plpython
-%{install_dir}/lib/hstore_plpython2.so
-%endif
 %{install_dir}/lib/passwordcheck.so
 %{install_dir}/lib/pg_freespacemap.so
 %{install_dir}/lib/pg_stat_statements.so
@@ -909,9 +920,6 @@ rm -rf %{buildroot}
 %{install_dir}/lib/sslinfo.so
 %{install_dir}/lib/lo.so
 %{install_dir}/lib/ltree.so
-%if %plpython
-%{install_dir}/lib/ltree_plpython2.so
-%endif
 %{install_dir}/lib/moddatetime.so
 %{install_dir}/lib/pageinspect.so
 %{install_dir}/lib/pgcrypto.so
@@ -1108,6 +1116,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Feb 15 2021 Anton Novojilov <andy@essentialkaos.com> - 10.16-0
+- Updated to the latest stable release
+
 * Tue Dec 29 2020 Anton Novojilov <andy@essentialkaos.com> - 10.15-0
 - Updated to the latest stable release
 

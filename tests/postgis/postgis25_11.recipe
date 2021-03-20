@@ -6,7 +6,7 @@ pkg postgresql11-server postgis25_11 postgis25_11-client postgis25_11-devel post
 fast-finish yes
 
 var postgis_major_version 2.5
-var postgis_version       2.5.3
+var postgis_version       2.5.5
 var postgres_version      11
 var pkg_ver               25_11
 
@@ -20,8 +20,6 @@ var contrib_dir   {data_dir}/contrib/postgis-{postgis_major_version}
 var extension_dir {data_dir}/extension
 
 command "-" "Check libraries"
-  lib-loaded liblwgeom-{postgis_major_version}.so.*
-
   exist {lib_dir}/address_standardizer.so
   exist {lib_dir}/postgis-{postgis_major_version}.so
   exist {lib_dir}/postgis_topology-{postgis_major_version}.so
@@ -32,11 +30,25 @@ command "-" "Check libraries"
   mode {lib_dir}/postgis_topology-{postgis_major_version}.so 755
   mode {lib_dir}/rtpostgis-{postgis_major_version}.so 755
 
+command "-" "Check GEOM library"
+  lib-loaded liblwgeom-{postgis_major_version}.so.*
+
   exist {lib_dir}/liblwgeom.a
   exist {lib_dir}/liblwgeom.la
 
   lib-header liblwgeom
   lib-header liblwgeom_topo
+
+command "-" "Check bitcode"
+  dir {lib_dir}/bitcode/address_standardizer
+  dir {lib_dir}/bitcode/postgis-{postgis_major_version}
+  dir {lib_dir}/bitcode/postgis_topology-{postgis_major_version}
+  dir {lib_dir}/bitcode/rtpostgis-{postgis_major_version}
+
+  exist {lib_dir}/bitcode/address_standardizer.index.bc
+  exist {lib_dir}/bitcode/postgis-{postgis_major_version}.index.bc
+  exist {lib_dir}/bitcode/postgis_topology-{postgis_major_version}.index.bc
+  exist {lib_dir}/bitcode/rtpostgis-{postgis_major_version}.index.bc
 
 command "-" "Check data directories"
   exist {contrib_dir}
@@ -65,6 +77,10 @@ command "-" "Check client binaries"
   app pgsql2shp
   app raster2pgsql
   app shp2pgsql
+
+  link /bin/pgsql2shp {bin_dir}/postgis-{postgis_major_version}/pgsql2shp
+  link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
+  link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
 
 command "-" "Check utilities"
   exist {utils_dir}/create_spatial_ref_sys_config_dump.pl

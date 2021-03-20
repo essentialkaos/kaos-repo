@@ -6,6 +6,7 @@ pkg pg_comparator95
 fast-finish yes
 
 var postgres_version 9.5
+var pgcmp_version    3.1
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
@@ -19,7 +20,8 @@ command "-" "Check library"
 
 command "-" "Check binary"
   app pg_comparator
+  link /usr/bin/pg_comparator {bin_dir}/pg_comparator
 
 command "-" "Check SQL files"
-  exist {extension_dir}/pgcmp--3.0.sql
+  exist {extension_dir}/pgcmp--{pgcmp_version}.sql
   exist {extension_dir}/pgcmp.control

@@ -1,11 +1,13 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v20.8.11.17-lts
+# rpmbuilder:tag          v21.1.2.15-stable
 
 ################################################################################
 
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+%global _python_bytecompile_errors_terminate_build 0
 
 ################################################################################
 
@@ -61,7 +63,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           20.8.11.17
+Version:           21.1.2.15
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -73,7 +75,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     devtoolset-9-gcc-c++ devtoolset-9-binutils
+BuildRequires:     devtoolset-10-gcc-c++ devtoolset-10-binutils
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
 BuildRequires:     unixODBC-devel readline-devel
 BuildRequires:     cyrus-sasl-devel
@@ -159,15 +161,17 @@ This package contains test suite for ClickHouse DBMS.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-10/root/usr/bin:$PATH"
 
 mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+            -DENABLE_EMBEDDED_COMPILER=1 \
             -DENABLE_TESTS=OFF \
             -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=True \
             -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=True \
+            -DGLIBC_COMPATIBILITY=OFF \
             -DCMAKE_BUILD_TYPE:STRING=Release \
             $CMAKE_OPTIONS
   %{__make} %{?_smp_mflags}
@@ -271,6 +275,7 @@ fi
 %{_bindir}/%{name}-client
 %{_bindir}/%{name}-compressor
 %{_bindir}/%{name}-extract-from-config
+%{_bindir}/%{name}-git-import
 %{_bindir}/%{name}-local
 %attr(0755, %{service_user}, %{service_group}) %{_sysconfdir}/%{name}-client/conf.d
 
@@ -294,15 +299,15 @@ fi
 
 %files test
 %defattr(-, root, root, -)
-%config(noreplace) %{_sysconfdir}/%{name}-client/client-test.xml
-%config(noreplace) %{_sysconfdir}/%{name}-server/server-test.xml
 %{_bindir}/%{name}-test
-%{_bindir}/%{name}-test-server
 %{_datadir}/%{name}-test
 
 ################################################################################
 
 %changelog
+* Wed Feb 03 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 21.1.2.15-0
+- Updated to the latest stable release
+
 * Mon Jan 11 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 20.8.11.17-0
 - Updated to the latest stable release
 

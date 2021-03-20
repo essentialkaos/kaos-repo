@@ -1,0 +1,125 @@
+# Bibop recipe for PostGIS 3.0 for PostgreSQL 13
+# See more: https://kaos.sh/bibop
+
+pkg postgresql13-server postgis30_13 postgis30_13-client postgis30_13-utils
+
+fast-finish yes
+
+var postgis_lib_version   3
+var postgis_major_version 3.0
+var postgis_version       3.0.3
+var postgres_version      13
+var pkg_ver               30_13
+
+var data_dir /usr/pgsql-{postgres_version}/share
+var lib_dir  /usr/pgsql-{postgres_version}/lib
+var bin_dir  /usr/pgsql-{postgres_version}/bin
+
+var utils_dir /usr/share/postgis{pkg_ver}
+
+var contrib_dir   {data_dir}/contrib/postgis-{postgis_major_version}
+var extension_dir {data_dir}/extension
+
+command "-" "Check libraries"
+  exist {lib_dir}/address_standardizer-{postgis_lib_version}.so
+  exist {lib_dir}/postgis-{postgis_lib_version}.so
+  exist {lib_dir}/postgis_raster-{postgis_lib_version}.so
+  exist {lib_dir}/postgis_topology-{postgis_lib_version}.so
+
+  mode {lib_dir}/address_standardizer-{postgis_lib_version}.so 755
+  mode {lib_dir}/postgis-{postgis_lib_version}.so 755
+  mode {lib_dir}/postgis_raster-{postgis_lib_version}.so 755
+  mode {lib_dir}/postgis_topology-{postgis_lib_version}.so 755
+
+command "-" "Check linking with GDAL library"
+  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.28
+  !lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.1
+
+command "-" "Check bitcode"
+  dir {lib_dir}/bitcode/address_standardizer-{postgis_lib_version}
+  dir {lib_dir}/bitcode/postgis-{postgis_lib_version}
+  dir {lib_dir}/bitcode/postgis_raster-{postgis_lib_version}
+  dir {lib_dir}/bitcode/postgis_topology-{postgis_lib_version}
+
+  exist {lib_dir}/bitcode/address_standardizer-{postgis_lib_version}.index.bc
+  exist {lib_dir}/bitcode/postgis-{postgis_lib_version}.index.bc
+  exist {lib_dir}/bitcode/postgis_raster-{postgis_lib_version}.index.bc
+  exist {lib_dir}/bitcode/postgis_topology-{postgis_lib_version}.index.bc
+
+command "-" "Check data directories"
+  exist {contrib_dir}
+  dir {contrib_dir}
+  mode {contrib_dir} 755
+
+  exist {extension_dir}
+  dir {extension_dir}
+  mode {extension_dir} 755
+
+command "-" "Check SQL files"
+  exist {contrib_dir}/legacy.sql
+  exist {contrib_dir}/legacy_gist.sql
+  exist {contrib_dir}/legacy_minimal.sql
+  exist {contrib_dir}/postgis.sql
+  exist {contrib_dir}/postgis_comments.sql
+  exist {contrib_dir}/postgis_proc_set_search_path.sql
+  exist {contrib_dir}/postgis_restore.pl
+  exist {contrib_dir}/postgis_upgrade.sql
+  exist {contrib_dir}/raster_comments.sql
+  exist {contrib_dir}/rtpostgis.sql
+  exist {contrib_dir}/rtpostgis_legacy.sql
+  exist {contrib_dir}/rtpostgis_proc_set_search_path.sql
+  exist {contrib_dir}/rtpostgis_upgrade.sql
+  exist {contrib_dir}/sfcgal_comments.sql
+  exist {contrib_dir}/spatial_ref_sys.sql
+  exist {contrib_dir}/topology.sql
+  exist {contrib_dir}/topology_comments.sql
+  exist {contrib_dir}/topology_upgrade.sql
+  exist {contrib_dir}/uninstall_legacy.sql
+  exist {contrib_dir}/uninstall_postgis.sql
+  exist {contrib_dir}/uninstall_rtpostgis.sql
+  exist {contrib_dir}/uninstall_topology.sql
+
+  exist {extension_dir}/address_standardizer--{postgis_version}.sql
+  exist {extension_dir}/postgis--{postgis_version}.sql
+  exist {extension_dir}/postgis_raster--{postgis_version}.sql
+  exist {extension_dir}/postgis_tiger_geocoder--{postgis_version}.sql
+  exist {extension_dir}/postgis_topology--{postgis_version}.sql
+
+command "-" "Check client binaries"
+  app pgsql2shp
+  app raster2pgsql
+  app shp2pgsql
+
+  link /bin/pgsql2shp {bin_dir}/postgis-{postgis_major_version}/pgsql2shp
+  link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
+  link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
+
+command "-" "Check utilities"
+  exist {utils_dir}/create_extension_unpackage.pl
+  exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
+  exist {utils_dir}/create_undef.pl
+  exist {utils_dir}/create_unpackaged.pl
+  exist {utils_dir}/postgis_proc_set_search_path.pl
+  exist {utils_dir}/postgis_proc_upgrade.pl
+  exist {utils_dir}/postgis_restore.pl
+  exist {utils_dir}/profile_intersects.pl
+  exist {utils_dir}/read_scripts_version.pl
+  exist {utils_dir}/repo_revision.pl
+  exist {utils_dir}/test_estimation.pl
+  exist {utils_dir}/test_geography_estimation.pl
+  exist {utils_dir}/test_geography_joinestimation.pl
+  exist {utils_dir}/test_joinestimation.pl
+
+  mode {utils_dir}/create_spatial_ref_sys_config_dump.pl 755
+  mode {utils_dir}/create_undef.pl 755
+  mode {utils_dir}/create_unpackaged.pl 755
+  mode {utils_dir}/postgis_proc_set_search_path.pl 755
+  mode {utils_dir}/postgis_proc_upgrade.pl 755
+  mode {utils_dir}/postgis_restore.pl 755
+  mode {utils_dir}/profile_intersects.pl 755
+  mode {utils_dir}/read_scripts_version.pl 755
+  mode {utils_dir}/repo_revision.pl 755
+  mode {utils_dir}/test_estimation.pl 755
+  mode {utils_dir}/test_geography_estimation.pl 755
+  mode {utils_dir}/test_geography_joinestimation.pl 755
+  mode {utils_dir}/test_joinestimation.pl 755
