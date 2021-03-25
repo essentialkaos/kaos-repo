@@ -59,9 +59,9 @@
 ################################################################################
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
-Name:              %{realname}25_%{pg_maj_ver}
+Name:              %{fullname}_%{pg_maj_ver}
 Version:           2.5.5
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               https://www.postgis.net
@@ -139,6 +139,17 @@ Group:             Applications/Databases
 
 %description docs
 The postgis-docs package includes PDF documentation of PostGIS.
+
+################################################################################
+
+%package scripts
+Summary:           Installing and upgrading scripts for PostGIS
+Group:             Applications/Databases
+Requires:          %{name} = %{version}-%{release}
+
+%description scripts
+This package postgis-scripts contains the SQL scripts for installing PostGIS
+in a PostgreSQL database, and for upgrading from earlier PostGIS versions.
 
 ################################################################################
 
@@ -232,6 +243,31 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING CREDITS NEWS TODO README.%{realname} doc/html loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
+%{pg_dir}/lib/address_standardizer.so
+%{pg_dir}/lib/postgis-%{maj_ver}.so
+%{pg_dir}/lib/postgis_topology-%{maj_ver}.so
+%{pg_dir}/lib/liblwgeom.so
+%{pg_dir}/lib/liblwgeom-%{maj_ver}.so.0
+%{pg_dir}/lib/liblwgeom-%{maj_ver}.so.0.0.0
+%if %raster
+%{pg_dir}/lib/rtpostgis-%{maj_ver}.so
+%endif
+
+%files client
+%defattr(755,root,root)
+%{pg_dir}/bin/%{pkgname}/pgsql2shp
+%{pg_dir}/bin/%{pkgname}/raster2pgsql
+%{pg_dir}/bin/%{pkgname}/shp2pgsql
+
+%files devel
+%defattr(644,root,root)
+%{_includedir}/liblwgeom.h
+%{_includedir}/liblwgeom_topo.h
+%{pg_dir}/lib/liblwgeom*.a
+%{pg_dir}/lib/liblwgeom*.la
+
+%files scripts
+%defattr(644,root,root)
 %{pg_dir}/share/contrib/%{pkgname}/legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy_gist.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy_minimal.sql
@@ -255,12 +291,6 @@ rm -rf %{buildroot}
 %{pg_dir}/share/extension/address_standardizer*.sql
 %{pg_dir}/share/extension/postgis*.control
 %{pg_dir}/share/extension/postgis*.sql
-%{pg_dir}/lib/address_standardizer.so
-%{pg_dir}/lib/postgis-%{maj_ver}.so
-%{pg_dir}/lib/postgis_topology-%{maj_ver}.so
-%{pg_dir}/lib/liblwgeom.so
-%{pg_dir}/lib/liblwgeom-%{maj_ver}.so.0
-%{pg_dir}/lib/liblwgeom-%{maj_ver}.so.0.0.0
 %if %raster
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis.sql
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_for_extension.sql
@@ -269,21 +299,7 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade.sql
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade_for_extension.sql
 %{pg_dir}/share/contrib/%{pkgname}/uninstall_rtpostgis.sql
-%{pg_dir}/lib/rtpostgis-%{maj_ver}.so
 %endif
-
-%files client
-%defattr(755,root,root)
-%{pg_dir}/bin/%{pkgname}/pgsql2shp
-%{pg_dir}/bin/%{pkgname}/raster2pgsql
-%{pg_dir}/bin/%{pkgname}/shp2pgsql
-
-%files devel
-%defattr(644,root,root)
-%{_includedir}/liblwgeom.h
-%{_includedir}/liblwgeom_topo.h
-%{pg_dir}/lib/liblwgeom*.a
-%{pg_dir}/lib/liblwgeom*.la
 
 %if %utils
 %files utils
@@ -312,6 +328,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.5.5-1
+- Updated for compatibility with other major versions
+
 * Sun Feb 21 2021 Anton Novojilov <andy@essentialkaos.com> - 2.5.5-0
 - Updated to the latest stable release
 

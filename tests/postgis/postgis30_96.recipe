@@ -1,7 +1,7 @@
 # Bibop recipe for PostGIS 3.0 for PostgreSQL 9.6
 # See more: https://kaos.sh/bibop
 
-pkg postgresql96-server postgis30_96 postgis30_96-client postgis30_96-utils
+pkg postgresql96-server postgis30_96 postgis30_96-client postgis30_96-scripts postgis30_96-utils
 
 fast-finish yes
 
@@ -83,7 +83,7 @@ command "-" "Check client binaries"
   link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
   link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
 
-command "-" "Check utilities"
+command "-" "Check scripts"
   exist {utils_dir}/create_extension_unpackage.pl
   exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
   exist {utils_dir}/create_undef.pl

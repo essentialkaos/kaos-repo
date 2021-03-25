@@ -1,0 +1,36 @@
+# Bibop recipe for PostGIS 2.5 + PostGIS 3.0 for PostgreSQL 10
+# See more: https://kaos.sh/bibop
+
+pkg postgresql10-server postgis25_10 postgis25_10-client postgis31_10 postgis31_10-client
+
+fast-finish yes
+
+var postgres_version 10
+var postgis_min_ver  2.5
+var postgis_max_ver  3.1
+
+var data_dir /usr/pgsql-{postgres_version}/share
+var lib_dir  /usr/pgsql-{postgres_version}/lib
+var bin_dir  /usr/pgsql-{postgres_version}/bin
+
+command "-" "Check Postgis {postgis_min_ver}"
+  exist {lib_dir}/address_standardizer.so
+  exist {lib_dir}/postgis-{postgis_min_ver}.so
+  exist {lib_dir}/postgis_topology-{postgis_min_ver}.so
+  exist {lib_dir}/rtpostgis-{postgis_min_ver}.so
+
+  mode {lib_dir}/address_standardizer.so 755
+  mode {lib_dir}/postgis-{postgis_min_ver}.so 755
+  mode {lib_dir}/postgis_topology-{postgis_min_ver}.so 755
+  mode {lib_dir}/rtpostgis-{postgis_min_ver}.so 755
+
+command "-" "Check Postgis {postgis_max_ver}"
+  exist {lib_dir}/address_standardizer-{postgis_max_ver}.so
+  exist {lib_dir}/postgis-{postgis_max_ver}.so
+  exist {lib_dir}/postgis_raster-{postgis_max_ver}.so
+  exist {lib_dir}/postgis_topology-{postgis_max_ver}.so
+
+  mode {lib_dir}/address_standardizer-{postgis_max_ver}.so 755
+  mode {lib_dir}/postgis-{postgis_max_ver}.so 755
+  mode {lib_dir}/postgis_raster-{postgis_max_ver}.so 755
+  mode {lib_dir}/postgis_topology-{postgis_max_ver}.so 755

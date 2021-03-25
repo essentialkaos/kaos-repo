@@ -63,7 +63,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
 Name:              %{fullname}_%{pg_maj_ver}
 Version:           3.1.1
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               https://www.postgis.net
@@ -127,6 +127,17 @@ Group:             Applications/Databases
 
 %description docs
 The postgis-docs package includes PDF documentation of PostGIS.
+
+################################################################################
+
+%package scripts
+Summary:           Installing and upgrading scripts for PostGIS
+Group:             Applications/Databases
+Requires:          %{name} = %{version}-%{release}
+
+%description scripts
+This package postgis-scripts contains the SQL scripts for installing PostGIS
+in a PostgreSQL database, and for upgrading from earlier PostGIS versions.
 
 ################################################################################
 
@@ -227,6 +238,21 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING CREDITS NEWS TODO README.%{realname} doc/html loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
+%{pg_dir}/lib/address_standardizer-%{lib_ver}.so
+%{pg_dir}/lib/postgis-%{lib_ver}.so
+%{pg_dir}/lib/postgis_topology-%{lib_ver}.so
+%if %raster
+%{pg_dir}/lib/postgis_raster-%{lib_ver}.so
+%endif
+
+%files client
+%defattr(755,root,root)
+%{pg_dir}/bin/%{pkgname}/pgsql2shp
+%{pg_dir}/bin/%{pkgname}/raster2pgsql
+%{pg_dir}/bin/%{pkgname}/shp2pgsql
+
+%files scripts
+%defattr(644,root,root)
 %{pg_dir}/share/contrib/%{pkgname}/legacy_gist.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy_minimal.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy.sql
@@ -247,22 +273,12 @@ rm -rf %{buildroot}
 %{pg_dir}/share/extension/address_standardizer*.sql
 %{pg_dir}/share/extension/postgis*.control
 %{pg_dir}/share/extension/postgis*.sql
-%{pg_dir}/lib/address_standardizer-%{lib_ver}.so
-%{pg_dir}/lib/postgis-%{lib_ver}.so
-%{pg_dir}/lib/postgis_topology-%{lib_ver}.so
 %if %raster
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis.sql
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade.sql
 %{pg_dir}/share/contrib/%{pkgname}/uninstall_rtpostgis.sql
-%{pg_dir}/lib/postgis_raster-%{lib_ver}.so
 %endif
-
-%files client
-%defattr(755,root,root)
-%{pg_dir}/bin/%{pkgname}/pgsql2shp
-%{pg_dir}/bin/%{pkgname}/raster2pgsql
-%{pg_dir}/bin/%{pkgname}/shp2pgsql
 
 %if %utils
 %files utils
@@ -291,5 +307,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-1
+- Updated for compatibility with other major versions
+
 * Sat Feb 20 2021 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
 - Initial build

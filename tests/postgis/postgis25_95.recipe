@@ -1,7 +1,7 @@
 # Bibop recipe for PostGIS 2.5 for PostgreSQL 9.5
 # See more: https://kaos.sh/bibop
 
-pkg postgresql95-server postgis25_95 postgis25_95-client postgis25_95-devel postgis25_95-utils
+pkg postgresql95-server postgis25_95 postgis25_95-client postgis25_95-scripts postgis25_95-devel postgis25_95-utils
 
 fast-finish yes
 
@@ -71,7 +71,7 @@ command "-" "Check client binaries"
   link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
   link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
 
-command "-" "Check utilities"
+command "-" "Check scripts"
   exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
   exist {utils_dir}/create_undef.pl
   exist {utils_dir}/create_unpackaged.pl
