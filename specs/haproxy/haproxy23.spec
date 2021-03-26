@@ -56,7 +56,7 @@
 
 %define lua_ver           5.4.2
 %define pcre_ver          8.44
-%define openssl_ver       1.1.1j
+%define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
 
@@ -64,7 +64,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.3.5
+Version:           2.3.8
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -281,6 +281,160 @@ fi
 ################################################################################
 
 %changelog
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.8-0
+- MINOR: time: export the global_now variable
+- BUG/MINOR: freq_ctr/threads: make use of the last updated global time
+- BUG/MEDIUM: mux-fcgi: Fix locking of idle_conns lock in the FCGI I/O callback
+- MINOR: time: also provide a global, monotonic global_now_ms timer
+- BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable
+- BUG/MINOR: protocol: add missing support of dgram unix socket.
+- MINOR/BUG: mworker/cli: do not use the unix_bind prefix for the master
+  CLI socket
+- MEDIUM: lua: Use a per-thread counter to track some non-reentrant parts of lua
+- BUG/MEDIUM: debug/lua: Don't dump the lua stack if not dumpable
+- BUG/MINOR: ssl: Prevent disk access when using "add ssl crt-list"
+- BUILD: ssl: guard ecdh functions with SSL_CTX_set_tmp_ecdh macro
+- MINOR: lua: Slightly improve function dumping the lua traceback
+- BUG/MEDIUM: debug/lua: Use internal hlua function to dump the lua traceback
+- BUG/MEDIUM: lua: Always init the lua stack before referencing the context
+- MINOR: fd: make fd_clr_running() return the remaining running mask
+- MINOR: fd: remove the unneeded running bit from fd_insert()
+- BUG/MEDIUM: fd: do not wait on FD removal in fd_delete()
+- CLEANUP: fd: remove unused fd_set_running_excl()
+- BUG/MEDIUM: fd: Take the fd_mig_lock when closing if no DWCAS is available.
+- BUG/MEDIUM: thread: Fix a deadlock if an isolated thread is marked as harmless
+- MINOR: tools: make url2ipv4 return the exact number of bytes parsed
+- BUG/MINOR: http_fetch: make hdr_ip() reject trailing characters
+
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.7-0
+- BUG/MINOR: backend: fix condition for reuse on mode HTTP
+- BUG/MINOR: hlua: Don't strip last non-LWS char in hlua_pushstrippedstring()
+- BUG/MINOR: ssl: don't truncate the file descriptor to 16 bits in debug mode
+- REORG: atomic: reimplement pl_cpu_relax() from atomic-ops.h
+- BUG/MINOR: mt-list: always perform a cpu_relax call on failure
+- MINOR: atomic: add armv8.1-a atomics variant for cas-dw
+- MINOR: atomic: implement a more efficient arm64 __ha_cas_dw() using pairs
+- BUG/MEDIUM: session: NULL dereference possible when accessing the listener
+- MINOR: tasks: refine the default run queue depth
+- MINOR: listener: refine the default MAX_ACCEPT from 64 to 4
+- OPTIM: server: switch the actconn list to an mt-list
+- MINOR: server: move actconns to the per-thread structure
+- MINOR: lb/api: let callers of take_conn/drop_conn tell if they have the lock
+- OPTIM: lb-first: do not take the server lock on take_conn/drop_conn
+- OPTIM: lb-leastconn: do not take the server lock on take_conn/drop_conn
+- OPTIM: lb-leastconn: do not unlink the server if it did not change
+- MINOR: dynbuf: make the buffer wait queue per thread
+- MINOR: dynbuf: use regular lists instead of mt_lists for buffer_wait
+- MINOR: dynbuf: pass offer_buffers() the number of buffers instead of
+  a threshold
+- MINOR: stream: add an "epoch" to figure which streams appeared when
+- MINOR: cli/streams: make "show sess" dump all streams till the new epoch
+- MINOR: streams: use one list per stream instead of a global one
+- MEDIUM: streams: do not use the streams lock anymore
+- MEDIUM: pools: add CONFIG_HAP_NO_GLOBAL_POOLS and CONFIG_HAP_GLOBAL_POOLS
+- MINOR: pools: double the local pool cache size to 1 MB
+- MEDIUM: backend: use a trylock when trying to grab an idle connection
+- MINOR: task: limit the number of subsequent heavy tasks with flag TASK_HEAVY
+- MINOR: ssl: mark the SSL handshake tasklet as heavy
+- BUG/MEDIUM: ssl: properly remove the TASK_HEAVY flag at end of handshake
+- MINOR: task: add an application specific flag to the state: TASK_F_USR1
+- MEDIUM: muxes: mark idle conns tasklets with TASK_F_USR1
+- MINOR: xprt: add new xprt_set_idle and xprt_set_used methods
+- MEDIUM: ssl: implement xprt_set_used and xprt_set_idle to relax context checks
+- MEDIUM: task: remove the tasks_run_queue counter and have one per thread
+- MINOR: task: give the scheduler a bit more flexibility in the runqueue size
+- OPTIM: task: automatically adjust the default runqueue-depth to the threads
+- BUG/MEDIUM: stick-tables: fix ref counter in table entry using multiple
+  http tracksc.
+- BUILD: atomic/arm64: force the register pairs to use in __ha_cas_dw()
+- BUG/MEDIUM: filters: Set CF_FL_ANALYZE on channels when filters are attached
+- BUG/MINOR: tcpcheck: Update .health threshold of agent inside an agent-check
+- BUG/MINOR: proxy/session: Be sure to have a listener to increment its counters
+- BUG/MINOR: session: Add some forgotten tests on session's listener
+- BUG/MINOR: tcpcheck: Fix double free on error path when parsing tcp/http-check
+- CLEANUP: tcp-rules: add missing actions in the tcp-request error message
+- Revert "BUG/MINOR: resolvers: Only renew TTL for SRV records with
+  an additional record"
+- BUG/MINOR: resolvers: Consider server to have no IP on DNS resolution error
+- BUG/MINOR: resolvers: Reset server address on DNS error only on status change
+- BUG/MINOR: resolvers: Unlink DNS resolution to set RMAINT on SRV resolution
+- BUG/MEDIUM: resolvers: Don't set an address-less server as UP
+- BUG/MEDIUM: resolvers: Fix the loop looking for an existing ADD item
+- MINOR: resolvers: new function find_srvrq_answer_record()
+- BUG/MINOR; resolvers: Ignore DNS resolution for expired SRV item
+- BUG/MEDIUM: resolvers: Trigger a DNS resolution if an ADD item is obsolete
+- MINOR: resolvers: Use a function to remove answers attached to a resolution
+- MINOR: resolvers: Purge answer items when a SRV resolution triggers an error
+- MINOR: resolvers: Add function to change the srv status based on
+  SRV resolution
+- MINOR: resolvers: Directly call srvrq_update_srv_state() when possible
+- BUG/MEDIUM: resolvers: Don't release resolution from a requester callbacks
+- BUG/MEDIUM: resolvers: Skip DNS resolution at startup if SRV resolution is set
+- MINOR: resolvers: Use milliseconds for cached items in resolver responses
+- MINOR: resolvers: Don't try to match immediatly renewed ADD items
+- BUG/MINOR: resolvers: Add missing case-insensitive comparisons
+  of DNS hostnames
+
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.6-0
+- MINOR: check: do not ignore a connection header for http-check send
+- BUILD: ssl: fix typo in HAVE_SSL_CTX_ADD_SERVER_CUSTOM_EXT macro
+- BUILD: ssl: guard SSL_CTX_add_server_custom_ext with special macro
+- BUILD: ssl: guard SSL_CTX_set_msg_callback with
+  SSL_CTRL_SET_MSG_CALLBACK macro
+- BUG/MINOR: intops: fix mul32hi()'s off-by-one
+- BUG/MINOR: http-ana: Don't increment HTTP error counter on internal errors
+- BUG/MEDIUM: mux-h1: Always set CS_FL_EOI for response in MSG_DONE state
+- BUG/MINOR: server: re-align state file fields number
+- BUG/MINOR: tools: Fix a memory leak on error path in parse_dotted_uints()
+- BUG/MINOR: backend: hold correctly lock when killing idle conn
+- BUG/MINOR: server: Fix server-state-file-name directive
+- CLEANUP: deinit: release global and per-proxy server-state variables on deinit
+- BUG/MEDIUM: config: don't pick unset values from last defaults section
+- BUG/MINOR: stats: revert the change on ST_CONVDONE
+- BUG/MINOR: cfgparse: do not mention "addr:port" as supported on proxy lines
+- BUG/MINOR: server: Don't call fopen() with server-state filepath set to NULL
+- DOC: tune: explain the origin of block size for ssl.cachesize
+- CLEANUP: channel: fix comment in ci_putblk.
+- BUG/MINOR: server: Remove RMAINT from admin state when loading server state
+- BUG/MINOR: session: atomically increment the tracked sessions counter
+- BUG/MINOR: checks: properly handle wrapping time in __health_adjust()
+- BUG/MEDIUM: checks: don't needlessly take the server lock in health_adjust()
+- BUG/MINOR: sample: Always consider zero size string samples as unsafe
+- BUILD: ssl: introduce fine guard for OpenSSL specific SCTL functions
+- DOC: explain the relation between pool-low-conn and tune.idle-pool.shared
+- BUG/MEDIUM: lists: Avoid an infinite loop in MT_LIST_TRY_ADDQ().
+- BUG/MEDIUM: spoe: Resolve the sink if a SPOE logs in a ring buffer
+- BUG/MINOR: http-rules: Always replace the response status on a return action
+- BUG/MINOR: server: Init params before parsing a new server-state line
+- BUG/MINOR: server: Be sure to cut the last parsed field of a server-state line
+- BUG/MEDIUM: mux-h1: Fix handling of responses to CONNECT other than 200-ok
+- BUG/MINOR: ssl/cli: potential null pointer dereference in "set ssl cert"
+- MINOR: Configure the `cpp` userdiff driver for *.[ch] in .gitattributes
+- BUG/MINOR: sample: secure convs that accept base64 string and var name as args
+- BUG/MEDIUM: vars: make functions vars_get_by_{name,desc} thread-safe
+- BUG/MEDIUM: proxy: use thread-safe stream killing on hard-stop
+- BUG/MEDIUM: cli/shutdown sessions: make it thread-safe
+- BUG/MINOR: proxy: wake up all threads when sending the hard-stop signal
+- BUG/MINOR: fd: properly wait for !running_mask in fd_set_running_excl()
+- BUG/MINOR: resolvers: Fix condition to release received ARs if not assigned
+- BUG/MINOR: resolvers: Only renew TTL for SRV records with an additional record
+- BUG/MINOR: resolvers: new callback to properly handle SRV record errors
+- BUG/MEDIUM: resolvers: Reset server address and port for obselete SRV records
+- BUG/MEDIUM: resolvers: Reset address for unresolved servers
+- BUG/MINOR: ssl: potential null pointer dereference in ckchs_dup()
+- CLEANUP: muxes: Remove useless if condition in show_fd function
+- BUG/MINOR: stats: fix compare of no-maint url suffix
+- BUG/MINOR: mux-h1: Immediately report H1C errors from h1_snd_buf()
+- BUG/MINOR: http-ana: Only consider dst address to process originalto option
+- BUG/MINOR: tcp-act: Don't forget to set the original port for
+  IPv4 set-dst rule
+- BUG/MINOR: connection: Use the client's dst family for adressless servers
+- BUG/MEDIUM: spoe: Kill applets if there are pending connections
+  and nbthread > 1
+- DOC: spoe: Add a note about fragmentation support in HAProxy
+- BUG/MINOR: mux-h2: Fix typo in scheme adjustment
+- BUG/MINOR: http-ana: Don't increment HTTP error counter on read error/timeout
+
 * Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.5-0
 - BUG/MINOR: init: Use a dynamic buffer to set HAPROXY_CFGFILES env variable
 - MINOR: config: Add failifnotcap() to emit an alert on proxy capabilities

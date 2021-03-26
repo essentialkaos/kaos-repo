@@ -56,7 +56,7 @@
 
 %define lua_ver           5.3.6
 %define pcre_ver          8.44
-%define openssl_ver       1.1.1j
+%define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
 
@@ -64,7 +64,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.28
+Version:           1.8.29
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -278,6 +278,51 @@ fi
 ################################################################################
 
 %changelog
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.29-0
+- BUG/MINOR: sample: Memory leak of sample_expr structure in case of error
+- BUILD/MINOR: lua: define _GNU_SOURCE for LLONG_MAX
+- BUG/MINOR: config: fix leak on proxy.conn_src.bind_hdr_name
+- DOC: management: fix "show resolvers" alphabetical ordering
+- BUG/MINOR: stick-table: Always call smp_fetch_src() with a valid arg list
+- BUG/MINOR: xxhash: make sure armv6 uses memcpy()
+- CLEANUP: remove unused src/cfgparse-listen.c
+- BUG/MINOR: server: re-align state file fields number
+- BUG/MINOR: server: Fix server-state-file-name directive
+- CLEANUP: deinit: release global and per-proxy server-state variables on deinit
+- BUG/MEDIUM: config: don't pick unset values from last defaults section
+- BUG/MINOR: server: Don't call fopen() with server-state filepath set to NULL
+- CLEANUP: channel: fix comment in ci_putblk.
+- BUG/MINOR: server: Remove RMAINT from admin state when loading server state
+- BUG/MINOR: session: atomically increment the tracked sessions counter
+- BUG/MINOR: checks: properly handle wrapping time in __health_adjust()
+- BUG/MINOR: sample: Always consider zero size string samples as unsafe
+- BUG/MINOR: server: Init params before parsing a new server-state line
+- BUG/MINOR: server: Be sure to cut the last parsed field of a server-state line
+- BUG/MEDIUM: proxy: use thread-safe stream killing on hard-stop
+- BUG/MEDIUM: cli/shutdown sessions: make it thread-safe
+- BUG/MINOR: http-ana: Only consider dst address to process originalto option
+- BUG/MINOR: tcp-act: Don't forget to set the original port for
+  IPv4 set-dst rule
+- BUG/MINOR: connection: Use the client's dst family for adressless servers
+- BUG/MEDIUM: spoe: Kill applets if there are pending connections and
+  nbthread > 1
+- BUG/MAJOR: spoe: Be sure to remove all references on a released spoe applet
+- BUG/MEDIUM: spoe: Explicitly wakeup SPOE stream if waiting for more data
+- DOC: spoe: Add a note about fragmentation support in HAProxy
+- BUG/MEDIUM: dns: Consider the fact that dns answers are case-insensitive
+- BUG/MINOR: hlua: Don't strip last non-LWS char in hlua_pushstrippedstring()
+- BUG/MINOR: ssl: don't truncate the file descriptor to 16 bits in debug mode
+- BUG/MEDIUM: session: NULL dereference possible when accessing the listener
+- BUG/MEDIUM: filters: Set CF_FL_ANALYZE on channels when filters are attached
+- BUG/MINOR: proxy/session: Be sure to have a listener to increment its counters
+- CLEANUP: tcp-rules: add missing actions in the tcp-request error message
+- BUG/MINOR: resolvers: Consider server to have no IP on DNS resolution error
+- BUG/MINOR: resolvers: Add missing case-insensitive comparisons
+  of DNS hostnames
+- MINOR: time: export the global_now variable
+- OPTIM: freq-ctr: don't take the date lock for most updates
+- BUG/MINOR: freq_ctr/threads: make use of the last updated global time
+
 * Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.28-0
 - BUG/MINOR: config: copy extra cookie attributes from dfl proxy
 - BUG/MINOR: http-fetch: Extract cookie value even when no cookie name

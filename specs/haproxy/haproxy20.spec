@@ -56,7 +56,7 @@
 
 %define lua_ver           5.4.2
 %define pcre_ver          8.44
-%define openssl_ver       1.1.1j
+%define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
 
@@ -64,7 +64,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.0.20
+Version:           2.0.21
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -281,6 +281,74 @@ fi
 ################################################################################
 
 %changelog
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.21-0
+- BUG/MINOR: sample: check alloc_trash_chunk return value in concat()
+- BUG/MINOR: sample: Memory leak of sample_expr structure in case of error
+- BUG/MINOR: init: Use a dynamic buffer to set HAPROXY_CFGFILES env variable
+- BUG/MINOR: peers: Wrong "new_conn" value for "show peers" CLI command.
+- BUG/MINOR: mworker: define _GNU_SOURCE for strsignal()
+- BUG/MEDIUM: mux-h2: fix read0 handling on partial frames
+- BUILD/MINOR: lua: define _GNU_SOURCE for LLONG_MAX
+- BUG/MEDIUM: stats: add missing INF_BUILD_INFO definition
+- BUG/MEDIUM: filters/htx: Fix data forwarding when payload length is unknown
+- BUG/MINOR: config: fix leak on proxy.conn_src.bind_hdr_name
+- DOC: management: fix "show resolvers" alphabetical ordering
+- BUG/MINOR: stick-table: Always call smp_fetch_src() with a valid arg list
+- BUG/MEDIUM: ssl: check a connection's status before computing a handshake
+- BUG/MINOR: xxhash: make sure armv6 uses memcpy()
+- BUILD: Makefile: move REGTESTST_TYPE default setting
+- BUG/MEDIUM: mux-h2: handle remaining read0 cases
+- BUG/MEDIUM: mux-h2: do not quit the demux loop before setting END_REACHED
+- BUG/MEDIUM: mux-h2: Be sure to enter in demux loop even if dbuf is empty
+- BUG/MEDIUM: mux-h1: Always set CS_FL_EOI for response in MSG_DONE state
+- BUG/MINOR: server: re-align state file fields number
+- BUG/MINOR: tools: Fix a memory leak on error path in parse_dotted_uints()
+- BUG/MINOR: backend: hold correctly lock when killing idle conn
+- BUG/MINOR: server: Fix server-state-file-name directive
+- CLEANUP: deinit: release global and per-proxy server-state variables on deinit
+- BUG/MEDIUM: config: don't pick unset values from last defaults section
+- BUG/MINOR: cfgparse: do not mention "addr:port" as supported on proxy lines
+- BUG/MINOR: server: Don't call fopen() with server-state filepath set to NULL
+- CLEANUP: channel: fix comment in ci_putblk.
+- BUG/MINOR: server: Remove RMAINT from admin state when loading server state
+- BUG/MINOR: session: atomically increment the tracked sessions counter
+- BUG/MINOR: checks: properly handle wrapping time in __health_adjust()
+- BUG/MINOR: sample: Always consider zero size string samples as unsafe
+- BUG/MINOR: server: Init params before parsing a new server-state line
+- BUG/MINOR: server: Be sure to cut the last parsed field of a server-state line
+- BUG/MEDIUM: mux-h1: Fix handling of responses to CONNECT other than 200-ok
+- BUG/MINOR: sample: secure convs that accept base64 string and var name as args
+- BUG/MEDIUM: vars: make functions vars_get_by_{name,desc} thread-safe
+- BUG/MEDIUM: proxy: use thread-safe stream killing on hard-stop
+- BUG/MEDIUM: cli/shutdown sessions: make it thread-safe
+- BUG/MINOR: proxy: wake up all threads when sending the hard-stop signal
+- BUG/MINOR: resolvers: new callback to properly handle SRV record errors
+- BUG/MEDIUM: resolvers: Reset server address and port for obselete SRV records
+- BUG/MEDIUM: resolvers: Reset address for unresolved servers
+- BUG/MINOR: mux-h1: Immediately report H1C errors from h1_snd_buf()
+- BUG/MINOR: http-ana: Only consider dst address to process originalto option
+- BUG/MINOR: tcp-act: Don't forget to set the original port
+  for IPv4 set-dst rule
+- BUG/MINOR: connection: Use the client's dst family for adressless servers
+- BUG/MEDIUM: spoe: Kill applets if there are pending connections
+  and nbthread > 1
+- DOC: spoe: Add a note about fragmentation support in HAProxy
+- BUG/MINOR: http-ana: Don't increment HTTP error counter on read error/timeout
+- BUG/MEDIUM: dns: Consider the fact that dns answers are case-insensitive
+- BUG/MINOR: hlua: Don't strip last non-LWS char in hlua_pushstrippedstring()
+- BUG/MINOR: ssl: don't truncate the file descriptor to 16 bits in debug mode
+- BUG/MEDIUM: session: NULL dereference possible when accessing the listener
+- BUG/MEDIUM: filters: Set CF_FL_ANALYZE on channels when filters are attached
+- BUG/MINOR: proxy/session: Be sure to have a listener to increment its counters
+- BUG/MINOR: session: Add some forgotten tests on session's listener
+- CLEANUP: tcp-rules: add missing actions in the tcp-request error message
+- BUG/MINOR: resolvers: Consider server to have no IP on DNS resolution error
+- BUG/MINOR: resolvers: Reset server address on DNS error only on status change
+- BUG/MINOR: resolvers: Add missing case-insensitive comparisons
+  of DNS hostnames
+- MINOR: time: export the global_now variable
+- BUG/MINOR: freq_ctr/threads: make use of the last updated global time
+
 * Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.20-0
 - BUG/MINOR: pattern: a sample marked as const could be written
 - BUG/MINOR: lua: set buffer size during map lookups
