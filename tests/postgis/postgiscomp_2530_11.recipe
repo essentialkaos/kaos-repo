@@ -7,13 +7,11 @@ fast-finish yes
 
 var postgres_version 11
 var postgis_min_ver  2.5
-var postgis_max_ver  3.0
+var postgis_max_ver  3
 
-var data_dir /usr/pgsql-{postgres_version}/share
-var lib_dir  /usr/pgsql-{postgres_version}/lib
-var bin_dir  /usr/pgsql-{postgres_version}/bin
+var lib_dir /usr/pgsql-{postgres_version}/lib
 
-command "-" "Check Postgis {postgis_min_ver}"
+command "-" "Check PostGIS 2.x"
   exist {lib_dir}/address_standardizer.so
   exist {lib_dir}/postgis-{postgis_min_ver}.so
   exist {lib_dir}/postgis_topology-{postgis_min_ver}.so
@@ -24,7 +22,7 @@ command "-" "Check Postgis {postgis_min_ver}"
   mode {lib_dir}/postgis_topology-{postgis_min_ver}.so 755
   mode {lib_dir}/rtpostgis-{postgis_min_ver}.so 755
 
-command "-" "Check Postgis {postgis_max_ver}"
+command "-" "Check PostGIS 3.x"
   exist {lib_dir}/address_standardizer-{postgis_max_ver}.so
   exist {lib_dir}/postgis-{postgis_max_ver}.so
   exist {lib_dir}/postgis_raster-{postgis_max_ver}.so
