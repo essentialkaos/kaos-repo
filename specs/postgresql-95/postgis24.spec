@@ -62,7 +62,7 @@
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_comb_ver}
 Name:              %{fullname}_%{pg_comb_ver}
 Version:           2.4.9
-Release:           1%{?dist}
+Release:           2%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               https://www.postgis.net
@@ -89,7 +89,7 @@ BuildRequires:     gdal-devel >= 1.9.0
 Requires:          gdal >= 1.9.0
 %endif
 
-Requires:          postgresql%{pg_comb_ver} geos >= 3.6 proj hdf5 json-c pcre
+Requires:          postgresql%{pg_comb_ver} geos >= 3.9 proj hdf5 json-c pcre
 Requires:          %{fullname}_%{pg_comb_ver}-client = %{version}-%{release}
 
 Requires(post):    %{_sbindir}/update-alternatives
@@ -307,6 +307,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Mar 27 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.9-2
+- Fixed minimal required GEOS version
+
 * Thu Mar 25 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.9-1
 - Updated to the latest stable release
 
