@@ -6,12 +6,13 @@ pkg postgresql12-server postgresql12-libs postgresql12-devel
 require-root yes
 
 var version       12
-var service_name  postgresql-12
+var service_name  postgresql-{version}
 var service_user  postgres
 var service_group postgres
-var install_dir   /usr/pgsql-12
-var data_dir      /var/lib/pgsql/12
-var pid_file      /var/run/postgresql12.pid
+var install_dir   /usr/pgsql-{version}
+var state_dir     /var/lib/pgsql
+var data_dir      {state_dir}/{version}
+var pid_file      /var/run/postgresql{version}.pid
 
 var delay 5
 
@@ -63,6 +64,13 @@ command "-" "Check binaries"
   mode {install_dir}/bin/pg_restore 755
   mode {install_dir}/bin/postgres 755
   mode {install_dir}/bin/psql 755
+
+command "-" "Check bash_profile"
+  exist {install_dir}/share/bash_profile
+  mode {install_dir}/share/bash_profile 700
+  owner {install_dir}/share/bash_profile {service_user}:{service_group}
+
+  link {state_dir}/.bash_profile {install_dir}/share/bash_profile
 
 command "-" "Check development environment"
   exist {install_dir}/lib/libecpg_compat.so

@@ -6,11 +6,12 @@ pkg postgresql96-server postgresql96-libs postgresql96-devel
 require-root yes
 
 var version       9.6
-var service_name  postgresql-9.6
+var service_name  postgresql-{version}
 var service_user  postgres
 var service_group postgres
-var install_dir   /usr/pgsql-9.6
-var data_dir      /var/lib/pgsql/9.6
+var install_dir   /usr/pgsql-{version}
+var state_dir     /var/lib/pgsql
+var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql96.pid
 
 var delay 5
@@ -63,6 +64,13 @@ command "-" "Check binaries"
   mode {install_dir}/bin/pg_restore 755
   mode {install_dir}/bin/postgres 755
   mode {install_dir}/bin/psql 755
+
+command "-" "Check bash_profile"
+  exist {install_dir}/share/bash_profile
+  mode {install_dir}/share/bash_profile 700
+  owner {install_dir}/share/bash_profile {service_user}:{service_group}
+
+  link {state_dir}/.bash_profile {install_dir}/share/bash_profile
 
 command "-" "Check development environment"
   exist {install_dir}/lib/libecpg_compat.so
