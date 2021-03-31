@@ -19,6 +19,8 @@ jobs:
 
       - name: Run Perfecto docker image
         uses: docker://essentialkaos/perfecto:slim
+        with:
+          args: --version
 
       - name: Install perfecto-docker
         run: |
