@@ -46,13 +46,16 @@
 
 ################################################################################
 
-%define hp_user           %{name}
+%define orig_name         haproxy
+%define major_ver         18
+
+%define hp_user           %{orig_name}
 %define hp_user_id        188
-%define hp_group          %{name}
+%define hp_group          %{orig_name}
 %define hp_group_id       188
-%define hp_homedir        %{_localstatedir}/lib/%{name}
-%define hp_confdir        %{_sysconfdir}/%{name}
-%define hp_datadir        %{_datadir}/%{name}
+%define hp_homedir        %{_localstatedir}/lib/%{orig_name}
+%define hp_confdir        %{_sysconfdir}/%{orig_name}
+%define hp_datadir        %{_datadir}/%{orig_name}
 
 %define lua_ver           5.3.6
 %define pcre_ver          8.44
@@ -62,7 +65,7 @@
 
 ################################################################################
 
-Name:              haproxy
+Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.8.29
 Release:           0%{?dist}
@@ -70,12 +73,12 @@ License:           GPLv2+
 URL:               https://haproxy.1wt.eu
 Group:             System Environment/Daemons
 
-Source0:           https://www.haproxy.org/download/1.8/src/%{name}-%{version}.tar.gz
-Source1:           %{name}.init
-Source2:           %{name}.cfg
-Source3:           %{name}.logrotate
-Source4:           %{name}.sysconfig
-Source5:           %{name}.service
+Source0:           https://www.haproxy.org/download/1.8/src/%{orig_name}-%{version}.tar.gz
+Source1:           %{orig_name}.init
+Source2:           %{orig_name}.cfg
+Source3:           %{orig_name}.logrotate
+Source4:           %{orig_name}.sysconfig
+Source5:           %{orig_name}.service
 
 Source10:          https://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          https://ftp.pcre.org/pub/pcre/pcre-%{pcre_ver}.tar.gz
@@ -116,7 +119,7 @@ possibility not to expose fragile web servers to the net.
 %prep
 %{crc_check}
 
-%setup -q
+%setup -qn %{orig_name}-%{version}
 
 tar xzvf %{SOURCE10}
 tar xzvf %{SOURCE11}
@@ -209,19 +212,17 @@ rm -rf %{buildroot}
 %{__make} install-bin DESTDIR=%{buildroot} PREFIX=%{_prefix}
 %{__make} install-man DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
-install -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-install -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{name}.cfg
-install -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-install -pDm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{orig_name}
+install -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{orig_name}.cfg
+install -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{orig_name}
+install -pDm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/%{orig_name}
 
 install -dm 0755 %{buildroot}%{hp_homedir}
 install -dm 0755 %{buildroot}%{hp_datadir}
 install -dm 0755 %{buildroot}%{_bindir}
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
-%endif
 
 install -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
 install -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
@@ -243,13 +244,13 @@ fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
-  %{__sysctl} enable %{name}.service &>/dev/null || :
+  %{__sysctl} enable %{orig_name}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]]; then
-  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
-  %{__sysctl} stop %{name}.service &>/dev/null || :
+  %{__sysctl} --no-reload disable %{orig_name}.service &>/dev/null || :
+  %{__sysctl} stop %{orig_name}.service &>/dev/null || :
 fi
 
 %postun
@@ -264,15 +265,15 @@ fi
 %doc CHANGELOG LICENSE README doc/* examples/*.cfg
 %dir %{hp_datadir}
 %dir %{hp_confdir}
-%config(noreplace) %{hp_confdir}/%{name}.cfg
-%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%config(noreplace) %{hp_confdir}/%{orig_name}.cfg
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{orig_name}
+%config(noreplace) %{_sysconfdir}/sysconfig/%{orig_name}
 %{hp_datadir}/*
-%{_initrddir}/%{name}
-%{_unitdir}/%{name}.service
-%{_sbindir}/%{name}
+%{_initrddir}/%{orig_name}
+%{_unitdir}/%{orig_name}.service
+%{_sbindir}/%{orig_name}
 %{_bindir}/halog
-%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/%{orig_name}.1.gz
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
 
 ################################################################################
