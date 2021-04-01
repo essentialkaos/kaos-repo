@@ -7,6 +7,8 @@
 %global __provides_exclude_from ^(%{python2_sitearch}|%{python3_sitearch})/.*\.so$
 %global __provides_exclude_from ^%{python3_sitearch}/.*\.so$
 
+%global libcurl_min_ver %(rpm -q --quiet libcurl-devel && rpm -q --qf '%{VERSION}' libcurl-devel || echo "7")
+
 ################################################################################
 
 %define _posixroot        /
@@ -65,7 +67,7 @@
 Summary:           A translator library for raster and vector geospatial data formats
 Name:              %{fullname}
 Version:           3.2.1
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           MIT
 Group:             Development/Libraries
 URL:               https://www.gdal.org
@@ -87,9 +89,14 @@ BuildRequires:     libgeotiff-devel libjpeg-turbo-devel libpng-devel
 BuildRequires:     hdf-devel hdf5-devel libtiff-devel
 BuildRequires:     libtool netcdf-devel blas-devel lapack-devel
 BuildRequires:     ruby-devel sqlite-devel >= 3 swig
-BuildRequires:     unixODBC-devel libcurl-devel zlib-devel xerces-c-devel
+BuildRequires:     unixODBC-devel zlib-devel xerces-c-devel
 BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker
 BuildRequires:     freexl-devel postgresql%{pg_short_ver}-devel
+BuildRequires:     libcurl-devel >= %{libcurl_min_ver}
+
+Requires:          geos libstdc++ expat libgeotiff libjpeg libpng hdf hdf5
+Requires:          libtiff netcdf blas lapack sqlite unixODBC zlib xerces-c
+Requires:          proj freexl libcurl >= %{libcurl_min_ver}
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -111,9 +118,10 @@ Group:             Development/Libraries
 Requires:          %{name} = %{version}-%{release}
 
 Requires:          expat-devel geos-devel >= 3 hdf-devel hdf5-devel
-Requires:          netcdf-devel libcurl-devel libstdc++-devel
+Requires:          netcdf-devel libstdc++-devel
 Requires:          postgresql%{pg_short_ver}-devel sqlite-devel >= 3
 Requires:          unixODBC-devel freexl-devel xerces-c-devel
+Requires:          libcurl-devel >= %{libcurl_min_ver}
 
 %description devel
 Development Libraries for the GDAL file format library
@@ -461,5 +469,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-1
+- Minor spec improvements
+
 * Sat Feb 13 2021 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-0
 - Initial build
