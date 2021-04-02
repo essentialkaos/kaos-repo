@@ -64,7 +64,7 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.16.2
+Version:           1.16.3
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -779,212 +779,215 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 1.16.3-0
+- https://github.com/golang/go/issues?q=milestone:Go1.16.3+label:CherryPickApproved
+
 * Fri Mar 12 2021 Anton Novojilov <andy@essentialkaos.com> - 1.16.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.16.2+label:CherryPickApproved
 
 * Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.16-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.16
 
 * Wed Feb 10 2021 Anton Novojilov <andy@essentialkaos.com> - 1.15.8-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.8+label:CherryPickApproved
 
 * Wed Jan 20 2021 Anton Novojilov <andy@essentialkaos.com> - 1.15.7-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.7+label:CherryPickApproved
 
 * Tue Dec 08 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15.6-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.6+label:CherryPickApproved
 
 * Mon Dec 07 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15.5-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.5+label:CherryPickApproved
 
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.4+label:CherryPickApproved
 
 * Mon Oct 26 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.3+label:CherryPickApproved
 
 * Mon Oct 26 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.2+label:CherryPickApproved
 
 * Thu Sep 03 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.15.1+label:CherryPickApproved
 
 * Wed Aug 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.15-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.15
 
 * Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.7-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.7+label:CherryPickApproved
 
 * Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.6-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.6+label:CherryPickApproved
 
 * Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.5-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.5+label:CherryPickApproved
 
 * Wed Jul 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.4+label:CherryPickApproved
 
 * Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.3+label:CherryPickApproved
 
 * Thu Apr 09 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.2+label:CherryPickApproved
 
 * Fri Mar 20 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.14.1+label:CherryPickApproved
 
 * Wed Feb 26 2020 Anton Novojilov <andy@essentialkaos.com> - 1.14-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.14
 
 * Wed Jan 29 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.7-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.6-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.5-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Fri Nov 01 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Sat Oct 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Sat Oct 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Thu Sep 26 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.13.1+label:CherryPickApproved
 
 * Wed Sep 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.13-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.13
 
 * Tue Aug 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.9-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.9+label:CherryPickApproved
 
 * Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.8-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.8+label:CherryPickApproved
 
 * Tue Jul 09 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.7-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.7+label:CherryPickApproved
 
 * Wed Jun 12 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.6-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.6+label:CherryPickApproved
 
 * Wed May 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.5-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.5+label:CherryPickApproved
 
 * Wed May 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.4+label:CherryPickApproved
 
 * Tue Apr 09 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.3+label:CherryPickApproved
 
 * Sat Apr 06 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.2+label:CherryPickApproved
 
 * Fri Mar 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.12.1+label:CherryPickApproved
 
 * Tue Feb 26 2019 Anton Novojilov <andy@essentialkaos.com> - 1.12-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.12
 
 * Thu Jan 24 2019 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.11.5+label:CherryPickApproved
 
 * Sat Dec 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.11.4+label:CherryPickApproved
 
 * Sat Dec 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.11.3+label:CherryPickApproved
 
 * Sat Nov 03 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.11.2+label:CherryPickApproved
 
 * Tue Oct 02 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.11.1+label:CherryPickApproved
 
 * Tue Oct 02 2018 Anton Novojilov <andy@essentialkaos.com> - 1.11-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.11
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.10.3+label:CherryPickApproved
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.10.2+label:CherryPickApproved
 
 * Fri Mar 30 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.10.1+label:CherryPickApproved
 
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-1
 - Added missing tools (buildid, test2json)
 
 * Sat Feb 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.10
 
 * Thu Feb 08 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.9.4+label:CherryPickApproved
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.9.3+label:CherryPickApproved
 
 * Thu Oct 26 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.9.2+label:CherryPickApproved
 
 * Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.9.1+label:CherryPickApproved
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.9-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.9
 
 * Thu May 25 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.18.3+label:CherryPickApproved
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.18.1+label:CherryPickApproved
 
 * Fri Mar 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-1
 - Improved spec
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.8
 
 * Mon Dec 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.7.4+label:CherryPickApproved
 
 * Thu Oct 20 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.7.3+label:CherryPickApproved
 
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.7.1+label:CherryPickApproved
 
 * Tue Aug 23 2016 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.7
 
 * Fri Jul 22 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.6.3+label:CherryPickApproved
 
 * Thu Apr 21 2016 Gleb Goncharov <yum@gongled.ru> - 1.6.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.6.2+label:CherryPickApproved
 
 * Fri Feb 19 2016 Anton Novojilov <andy@essentialkaos.com> - 1.6-0
-- Updated to the latest stable release
+- https://golang.org/doc/go1.6
 
 * Thu Feb 18 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-1
 - Improved spec
 
 * Fri Jan 15 2016 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.5.3+label:CherryPickApproved
 
 * Fri Dec 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.5.2+label:CherryPickApproved
 
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-1
 - Added git to dependencies
 
 * Thu Oct 22 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
-- Updated to the latest stable release
+- https://github.com/golang/go/issues?q=milestone:Go1.5.1+label:CherryPickApproved
 
 * Tue Sep 01 2015 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
 - Initial build
