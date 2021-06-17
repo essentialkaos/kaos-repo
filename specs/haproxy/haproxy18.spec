@@ -58,7 +58,7 @@
 %define hp_datadir        %{_datadir}/%{orig_name}
 
 %define lua_ver           5.3.6
-%define pcre_ver          8.44
+%define pcre_ver          8.45
 %define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
@@ -67,7 +67,7 @@
 
 Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.29
+Version:           1.8.30
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -279,6 +279,16 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.30-0
+- MINOR: time: also provide a global, monotonic global_now_ms timer
+- BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable
+- BUG/MEDIUM: time: make sure to always initialize the global tick
+- MINOR: tools: make url2ipv4 return the exact number of bytes parsed
+- BUG/MINOR: http_fetch: make hdr_ip() reject trailing characters
+- BUG/MINOR: tcp: fix silent-drop workaround for IPv6
+- BUILD: tcp: use IPPROTO_IPV6 instead of SOL_IPV6 on FreeBSD/MacOS
+- BUG/MINOR: http_fetch: make hdr_ip() resistant to empty fields
+
 * Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.29-0
 - BUG/MINOR: sample: Memory leak of sample_expr structure in case of error
 - BUILD/MINOR: lua: define _GNU_SOURCE for LLONG_MAX

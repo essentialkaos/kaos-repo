@@ -15,6 +15,7 @@ var delay 3
 
 command "-" "Check environment"
   app haproxy
+  app halog
   
   service-present {service_name}
   

@@ -57,8 +57,8 @@
 %define hp_confdir        %{_sysconfdir}/%{orig_name}
 %define hp_datadir        %{_datadir}/%{orig_name}
 
-%define lua_ver           5.4.2
-%define pcre_ver          8.44
+%define lua_ver           5.4.3
+%define pcre_ver          8.45
 %define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
@@ -67,7 +67,7 @@
 
 Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.0.21
+Version:           2.0.22
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -279,6 +279,33 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-0
+- MINOR: time: also provide a global, monotonic global_now_ms timer
+- BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable
+- MINOR/BUG: mworker/cli: do not use the unix_bind prefix for the master
+  CLI socket
+- MINOR: lua: Slightly improve function dumping the lua traceback
+- BUG/MEDIUM: debug/lua: Use internal hlua function to dump the lua traceback
+- BUG/MEDIUM: lua: Always init the lua stack before referencing the context
+- BUG/MEDIUM: time: make sure to always initialize the global tick
+- BUG/MEDIUM: thread: Fix a deadlock if an isolated thread is marked as harmless
+- MINOR: tools: make url2ipv4 return the exact number of bytes parsed
+- BUG/MINOR: http_fetch: make hdr_ip() reject trailing characters
+- BUG/MEDIUM: mux-h1: make h1_shutw_conn() idempotent
+- BUG/MINOR: stats: Apply proper styles in HTML status page.
+- BUG/MINOR: tcp: fix silent-drop workaround for IPv6
+- BUILD: tcp: use IPPROTO_IPV6 instead of SOL_IPV6 on FreeBSD/MacOS
+- BUG/MINOR: http_fetch: make hdr_ip() resistant to empty fields
+- BUG/MAJOR: dns: fix null pointer dereference in snr_update_srv_status
+- BUG/MAJOR: dns: disabled servers through SRV records never recover
+- BUG/MINOR: resolvers: Unlink DNS resolution to set RMAINT on SRV resolution
+- MINOR: resolvers: Use a function to remove answers attached to a resolution
+- MINOR: resolvers: Purge answer items when a SRV resolution triggers an error
+- MINOR: resolvers: Add function to change the srv status based on
+  SRV resolution
+- MINOR: resolvers: Directly call srvrq_update_srv_state() when possible
+- BUG/MEDIUM: resolvers: Don't release resolution from a requester callbacks
+
 * Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.21-0
 - BUG/MINOR: sample: check alloc_trash_chunk return value in concat()
 - BUG/MINOR: sample: Memory leak of sample_expr structure in case of error

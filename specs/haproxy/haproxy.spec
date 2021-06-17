@@ -54,8 +54,8 @@
 %define hp_confdir        %{_sysconfdir}/%{name}
 %define hp_datadir        %{_datadir}/%{name}
 
-%define lua_ver           5.4.2
-%define pcre_ver          8.44
+%define lua_ver           5.4.3
+%define pcre_ver          8.45
 %define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
@@ -64,13 +64,13 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.3.8
+Version:           2.4.1
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
 Group:             System Environment/Daemons
 
-Source0:           https://www.haproxy.org/download/2.3/src/%{name}-%{version}.tar.gz
+Source0:           https://www.haproxy.org/download/2.4/src/%{name}-%{version}.tar.gz
 Source1:           %{name}.init
 Source2:           %{name}.cfg
 Source3:           %{name}.logrotate
@@ -199,9 +199,7 @@ use_regparm="USE_REGPARM=1"
                           ADDLIB="-ldl -lrt -lpthread" \
                           ${use_regparm}
 
-pushd contrib/halog
-  %{__make} halog
-popd
+%{__make} admin/halog/halog
 
 %install
 rm -rf %{buildroot}
@@ -221,7 +219,7 @@ install -dm 0755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
 
-install -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
+install -pm 0755 ./admin/halog/halog %{buildroot}%{_bindir}/halog
 install -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
 
 for file in $(find . -type f -name '*.txt') ; do
@@ -276,6 +274,174 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.1-0
+- BUG/MEDIUM: ebtree: Invalid read when looking for dup entry
+- BUG/MAJOR: server: prevent deadlock when using 'set maxconn server'
+- BUILD/MINOR: opentracing: fixed build when using clang
+- BUG/MEDIUM: filters: Exec pre/post analysers only one time per filter
+- BUG/MINOR: http-comp: Preserve HTTP_MSGF_COMPRESSIONG flag on the response
+- Revert "MEDIUM: http-ana: Deal with L7 retries in HTTP analysers"
+- BUG/MINOR: http-ana: Send the right error if max retries is reached
+  on L7 retry
+- BUG/MINOR: http-ana: Handle L7 retries on refused early data before K/A aborts
+- MINOR: http-ana: Perform L7 retries because of status codes
+  in response analyser
+- MINOR: cfgparse: Fail when encountering extra arguments in macro
+- DOC: intro: Fix typo in starter guide
+- BUG/MINOR: server: Missing calloc return value check in srv_parse_source
+- BUG/MINOR: peers: Missing calloc return value check in peers_register_table
+- BUG/MINOR: ssl: Missing calloc return value check in ssl_init_single_engine
+- BUG/MINOR: http: Missing calloc return value check in parse_http_req_capture
+- BUG/MINOR: proxy: Missing calloc return value check in proxy_parse_declare
+- BUG/MINOR: proxy: Missing calloc return value check in proxy_defproxy_cpy
+- BUG/MINOR: http: Missing calloc return value check while parsing
+  tcp-request/tcp-response
+- BUG/MINOR: http: Missing calloc return value check while parsing
+  tcp-request rule
+- BUG/MINOR: compression: Missing calloc return value check
+  in comp_append_type/algo
+- BUG/MINOR: worker: Missing calloc return value check in
+  mworker_env_to_proc_list
+- BUG/MINOR: http: Missing calloc return value check while parsing redirect rule
+- BUG/MINOR: http: Missing calloc return value check in make_arg_list
+- BUG/MINOR: proxy: Missing calloc return value check in chash_init_server_tree
+- CLEANUP: http-ana: Remove useless if statement about L7 retries
+- BUG/MINOR: vars: Be sure to have a session to get checks variables
+- DOC/MINOR: move uuid in the configuration to the right alphabetical order
+- BUG/MAJOR: stream-int: Release SI endpoint on server side ASAP on retry
+- MINOR: errors: allow empty va_args for diag variadic macro
+- DOC: use the req.ssl_sni in examples
+- BUILD: make tune.ssl.keylog available again
+- BUG/MINOR: ssl: OCSP stapling does not work if expire too far in the future
+- Revert "BUG/MINOR: opentracing: initialization after establishing daemon mode"
+- BUG/MEDIUM: opentracing: initialization before establishing daemon
+  and/or chroot mode
+- BUG/MEDIUM: compression: Fix loop skipping unused blocks to get the next block
+- BUG/MEDIUM: compression: Properly get the next block to iterate on payload
+- BUG/MEDIUM: compression: Add a flag to know the filter is still
+  processing data
+- BUG/MINOR: pools: fix a possible memory leak in the lockless pool_flush()
+- BUG/MINOR: pools: make DEBUG_UAF always write to the to-be-freed location
+- MINOR: pools: do not maintain the lock during pool_flush()
+- MINOR: pools: call malloc_trim() under thread isolation
+- MEDIUM: pools: use a single pool_gc() function for locked and lockless
+- BUG/MAJOR: pools: fix possible race with free() in the lockless variant
+- CLEANUP: pools: remove now unused seq and pool_free_list
+- BUG/MAJOR: htx: Fix htx_defrag() when an HTX block is expanded
+- BUG/MINOR: mux-fcgi: Expose SERVER_SOFTWARE parameter by default
+- CLEANUP: l7-retries: do not test the buffer before calling b_alloc()
+- BUG/MINOR: resolvers: answser item list was randomly purged or errors
+- MEDIUM: resolvers: add a ref on server to the used A/AAAA answer item
+- MEDIUM: resolvers: add a ref between servers and srv request or used
+  SRV record
+- BUG/MAJOR: resolvers: segfault using server template without SRV RECORDs
+- DOC: lua: Add a warning about buffers modification in HTTP
+- BUG/MINOR: stick-table: insert srv in used_name tree even with fixed id
+- BUG/MEDIUM: server: extend thread-isolate over much of CLI 'add server'
+- BUG/MEDIUM: server: clear dynamic srv on delete from proxy id/name trees
+- BUG/MEDIUM: server: do not forget to generate the dynamic servers ids
+- BUG/MINOR: server: do not keep an invalid dynamic server in px ids tree
+- BUG/MEDIUM: server: do not auto insert a dynamic server in px addr_node
+- BUG/MEDIUM: shctx: use at least thread-based locking on USE_PRIVATE_CACHE
+- BUG/MINOR: ssl: use atomic ops to update global shctx stats
+- BUG/MINOR: mworker: fix typo in chroot error message
+- CLEANUP: global: remove unused definition of stopping_task[]
+- BUG/MAJOR: queue: set SF_ASSIGNED when setting strm->target on dequeue
+- MINOR: backend: only skip LB when there are actual connections
+- BUG/MINOR: mux-h1: do not skip the error response on bad requests
+- BUG/MINOR: server: explicitly set "none" init-addr for dynamic servers
+- MINOR: connection: add helper conn_append_debug_info()
+- MINOR: mux-h2/trace: report a few connection-level info during h2_init()
+- CLEANUP: mux-h2/traces: better align user messages
+- BUG/MINOR: stats: make "show stat typed desc" work again
+- MINOR: mux-h2: obey http-ignore-probes during the preface
+- BUG/MINOR: mux-h2/traces: bring back the lost "rcvd H2 REQ" trace
+- BUG/MINOR: mux-h2/traces: bring back the lost "sent H2 REQ/RES" traces
+
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- BUG/MINOR: http_fetch: fix possible uninit sockaddr in fetch_url_ip/port
+- CLEANUP: cli/activity: Remove double spacing in set profiling command
+- CI: Build VTest with clang
+- CI: extend spellchecker whitelist, add "ists" as well
+- CLEANUP: assorted typo fixes in the code and comments
+- BUG/MINOR: memprof: properly account for differences for realloc()
+- MINOR: memprof: also report the method used by each call
+- MINOR: memprof: also report the totals and delta alloc-free
+- CLEANUP: pattern: remove the unused and dangerous pat_ref_reload()
+- BUG/MINOR: http_act: Fix normalizer names in error messages
+- MINOR: uri_normalizer: Add `fragment-strip` normalizer
+- MINOR: uri_normalizer: Add `fragment-encode` normalizer
+- IMPORT: slz: use the generic function for the last bytes of the crc32
+- IMPORT: slz: do not produce the crc32_fast table when CRC is natively
+  supported
+- BUILD/MINOR: opentracing: fixed compilation with filter enabled
+- BUILD: makefile: add a few popular ARMv8 CPU targets
+- BUG/MEDIUM: stick_table: fix crash when using tcp smp_fetch_src
+- REGTESTS: stick-table: add src_conn_rate test
+- CLEANUP: stick-table: remove a leftover of an old keyword declaration
+- BUG/MINOR: stats: fix lastchk metric that got accidently lost
+- EXAMPLES: add a "basic-config-edge" example config
+- EXAMPLES: add a trivial config for quick testing
+- DOC: management: Correct example reload command in the document
+- Revert "CI: Build VTest with clang"
+- MINOR: activity/cli: optionally support sorting by address on "show profiling"
+- DEBUG: ssl: export ssl_sock_close() to see its symbol resolved in profiling
+- BUG/MINOR: lua/vars: prevent get_var() from allocating a new name
+- DOC: config: Fix configuration example for mqtt
+- BUG/MAJOR: config: properly initialize cpu_map.thread[] up to MAX_THREADS
+- BUILD: config: avoid a build warning on numa_detect_topology() without threads
+- DOC: update min requirements in INSTALL
+- IMPORT: slz: use inttypes.h instead of stdint.h
+- BUILD: sample: use strtoll() instead of atoll()
+- MINOR: version: mention that it's LTS now.
+
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.10-0
+- BUILD: backend: fix build breakage in idle conn locking fix
+- BUG/MINOR: tcp: fix silent-drop workaround for IPv6
+- BUILD: tcp: use IPPROTO_IPV6 instead of SOL_IPV6 on FreeBSD/MacOS
+- BUG/MINOR: ssl: Fix update of default certificate
+- BUG/MINOR: ssl: Prevent removal of crt-list line if the instance is
+  a default one
+- BUG/MINOR: http_fetch: make hdr_ip() resistant to empty fields
+- BUG/MINOR: ssl: Add missing free on SSL_CTX in ckch_inst_free
+- REGTESTS: ssl: "set ssl cert" and multi-certificates bundle
+- DOC: Explicitly state only IPv4 are supported by forwardfor/originalto options
+- REGTESTS: ssl: mark set_ssl_cert_bundle.vtc as broken
+- CONTRIB: halog: fix issue with array of type char
+- BUG/MINOR: tools: fix parsing "us" unit for timers
+- DOC: clarify that compression works for HTTP/2
+- MINOR: No longer rely on deprecated sample fetches for predefined ACLs
+- BUG/MEDIUM: sample: Fix adjusting size in field converter
+- DOC: ssl: Certificate hot update only works on fronted certificates
+- BUG/MEDIUM: threads: Ignore current thread to end its harmless period
+- BUG/MINOR: checks: Set missing id to the dummy checks frontend
+- MINOR: logs: Add support of checks as session origin to format lf strings
+- BUG/MINOR: connection: Fix fc_http_major and bc_http_major for TCP connections
+- MINOR: connection: Make bc_http_major compatible with tcp-checks
+- BUG/MINOR: ssl-samples: Fix ssl_bc_* samples when called from a health-check
+- BUG/MINOR: http-fetch: Make method smp safe if headers were already forwarded
+- BUG/MINOR: http_htx: Remove BUG_ON() from http_get_stline() function
+- BUG/MINOR: logs: Report the true number of retries if there was no connection
+- BUG/MINOR: mux-h1: Release idle server H1 connection if data are received
+- BUG/MINOR: server: free srv.lb_nodes in free_server
+- BUG/MAJOR: mux-h2: Properly detect too large frames when decoding headers
+- BUG/MEDIUM: mux-h2: Fix dfl calculation when merging CONTINUATION frames
+- BUG/MEDIUM: config: fix cpu-map notation with both process and threads
+- BUG/MINOR: mworker/init: don't reset nb_oldpids in non-mworker cases
+- BUG/MINOR: mworker: don't use oldpids[] anymore for reload
+- BUG/MEDIUM: mux-h2: Properly handle shutdowns when received with data
+- BUG/MINOR: peers: remove useless table check if initial resync is finished
+- BUG/MEDIUM: peers: re-work connection to new process during reload.
+- BUG/MEDIUM: peers: re-work refcnt on table to protect against flush
+
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.9-0
+- BUG/MEDIUM: mux-h1: make h1_shutw_conn() idempotent
+- MEDIUM: backend: use a trylock to grab a connection on high FD counts as well
+- BUG/MINOR: payload: Wait for more data if buffer is empty
+  in payload/payload_lv
+- BUG/MINOR: stats: Apply proper styles in HTML status page.
+- BUG/MEDIUM: time: make sure to always initialize the global tick
+
 * Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.8-0
 - MINOR: time: export the global_now variable
 - BUG/MINOR: freq_ctr/threads: make use of the last updated global time

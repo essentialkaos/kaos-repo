@@ -57,8 +57,8 @@
 %define hp_confdir        %{_sysconfdir}/%{orig_name}
 %define hp_datadir        %{_datadir}/%{orig_name}
 
-%define lua_ver           5.4.2
-%define pcre_ver          8.44
+%define lua_ver           5.4.3
+%define pcre_ver          8.45
 %define openssl_ver       1.1.1k
 %define ncurses_ver       6.2
 %define readline_ver      8.1
@@ -67,7 +67,7 @@
 
 Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.2.11
+Version:           2.2.14
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -279,6 +279,85 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.14-0
+- DOC: Explicitly state only IPv4 are supported by forwardfor/originalto options
+- REGTESTS: ssl: mark set_ssl_cert_bundle.vtc as broken
+- CONTRIB: halog: fix issue with array of type char
+- BUG/MINOR: tools: fix parsing "us" unit for timers
+- DOC: clarify that compression works for HTTP/2
+- MINOR: No longer rely on deprecated sample fetches for predefined ACLs
+- BUG/MEDIUM: sample: Fix adjusting size in field converter
+- DOC: ssl: Certificate hot update only works on fronted certificates
+- BUG/MEDIUM: threads: Ignore current thread to end its harmless period
+- BUG/MINOR: checks: Set missing id to the dummy checks frontend
+- MINOR: logs: Add support of checks as session origin to format lf strings
+- BUG/MINOR: connection: Fix fc_http_major and bc_http_major for TCP connections
+- MINOR: connection: Make bc_http_major compatible with tcp-checks
+- BUG/MINOR: ssl-samples: Fix ssl_bc_* samples when called from a health-check
+- BUG/MINOR: http-fetch: Make method smp safe if headers were already forwarded
+- BUG/MINOR: http_htx: Remove BUG_ON() from http_get_stline() function
+- BUG/MINOR: logs: Report the true number of retries if there was no connection
+- BUG/MINOR: mux-h1: Release idle server H1 connection if data are received
+- BUG/MINOR: server: free srv.lb_nodes in free_server
+- BUG/MAJOR: mux-h2: Properly detect too large frames when decoding headers
+- BUG/MEDIUM: mux-h2: Fix dfl calculation when merging CONTINUATION frames
+- BUG/MEDIUM: config: fix cpu-map notation with both process and threads
+- BUG/MINOR: mworker/init: don't reset nb_oldpids in non-mworker cases
+- BUG/MINOR: mworker: don't use oldpids[] anymore for reload
+- BUG/MEDIUM: mux-h2: Properly handle shutdowns when received with data
+- BUG/MINOR: peers: remove useless table check if initial resync is finished
+- BUG/MEDIUM: peers: re-work connection to new process during reload.
+- BUG/MEDIUM: peers: re-work refcnt on table to protect against flush
+- BUG/MINOR: mux-fcgi: Don't send normalized uri to FCGI application
+- BUG/MINOR: htx: Preserve HTX flags when draining data from an HTX message
+- BUG/MINOR: applet: Notify the other side if data were consumed by an applet
+- BUG/MEDIUM: peers: initialize resync timer to get an initial full resync
+- BUG/MEDIUM: peers: register last acked value as origin receiving a resync req
+- BUG/MEDIUM: peers: stop considering ack messages teaching a full resync
+- BUG/MEDIUM: peers: reset starting point if peers appears longly disconnected
+- BUG/MEDIUM: peers: reset commitupdate value in new conns
+- BUG/MEDIUM: peers: re-work updates lookup during the sync on the fly
+- BUG/MEDIUM: peers: reset tables stage flags stages on new conns
+- MINOR: peers: add informative flags about resync process for debugging
+
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.13-0
+- BUG/MEDIUM: ssl: ckch_inst->ctx not assigned with multi-bundle certificates
+- REGTESTS: ssl: "set ssl cert" and multi-certificates bundle
+
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.12-0
+- MINOR: time: also provide a global, monotonic global_now_ms timer
+- BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable
+- MINOR/BUG: mworker/cli: do not use the unix_bind prefix for the master
+  CLI socket
+- MEDIUM: lua: Use a per-thread counter to track some non-reentrant parts of lua
+- BUG/MEDIUM: debug/lua: Don't dump the lua stack if not dumpable
+- BUG/MINOR: ssl: Prevent disk access when using "add ssl crt-list"
+- BUILD: ssl: guard ecdh functions with SSL_CTX_set_tmp_ecdh macro
+- MINOR: lua: Slightly improve function dumping the lua traceback
+- BUG/MEDIUM: debug/lua: Use internal hlua function to dump the lua traceback
+- BUG/MEDIUM: lua: Always init the lua stack before referencing the context
+- MINOR: fd: make fd_clr_running() return the remaining running mask
+- MINOR: fd: remove the unneeded running bit from fd_insert()
+- BUG/MEDIUM: fd: do not wait on FD removal in fd_delete()
+- CLEANUP: fd: remove unused fd_set_running_excl()
+- BUG/MEDIUM: fd: Take the fd_mig_lock when closing if no DWCAS is available.
+- BUG/MEDIUM: thread: Fix a deadlock if an isolated thread is marked as harmless
+- MINOR: tools: make url2ipv4 return the exact number of bytes parsed
+- BUG/MINOR: http_fetch: make hdr_ip() reject trailing characters
+- BUG/MEDIUM: mux-h1: make h1_shutw_conn() idempotent
+- BUG/MINOR: payload: Wait for more data if buffer is empty
+  in payload/payload_lv
+- BUG/MINOR: stats: Apply proper styles in HTML status page.
+- BUG/MEDIUM: time: make sure to always initialize the global tick
+- BUG/MINOR: tcp: fix silent-drop workaround for IPv6
+- BUILD: tcp: use IPPROTO_IPV6 instead of SOL_IPV6 on FreeBSD/MacOS
+- BUG/MINOR: ssl: Fix update of default certificate
+- BUG/MINOR: ssl: Prevent removal of crt-list line if the instance is
+  a default one
+- BUG/MINOR: http_fetch: make hdr_ip() resistant to empty fields
+- BUG/MINOR: ssl: Add missing free on SSL_CTX in ckch_inst_free
+- REGTESTS: ssl: add missing file simple.crt-list from previous SSL fix
+
 * Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.11-0
 - BUG/MEDIUM: lists: Avoid an infinite loop in MT_LIST_TRY_ADDQ().
 - BUG/MINOR: hlua: Don't strip last non-LWS char in hlua_pushstrippedstring()
