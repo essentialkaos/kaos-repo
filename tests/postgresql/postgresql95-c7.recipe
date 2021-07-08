@@ -5,12 +5,13 @@ pkg postgresql95-server postgresql95-libs postgresql95-devel
 
 require-root yes
 
-var verison       9.5
-var service_name  postgresql-9.5
+var version       9.5
+var service_name  postgresql-{version}
 var service_user  postgres
 var service_group postgres
-var install_dir   /usr/pgsql-9.5
-var data_dir      /var/lib/pgsql/9.5
+var install_dir   /usr/pgsql-{version}
+var state_dir     /var/lib/pgsql
+var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql95.pid
 
 var delay 5
@@ -64,6 +65,13 @@ command "-" "Check binaries"
   mode {install_dir}/bin/postgres 755
   mode {install_dir}/bin/psql 755
 
+command "-" "Check bash_profile"
+  exist {install_dir}/share/bash_profile
+  mode {install_dir}/share/bash_profile 700
+  owner {install_dir}/share/bash_profile {service_user}:{service_group}
+
+  link {state_dir}/.bash_profile {install_dir}/share/bash_profile
+
 command "-" "Check development environment"
   exist {install_dir}/lib/libecpg_compat.so
   exist {install_dir}/lib/libecpg.so
@@ -75,6 +83,19 @@ command "-" "Check development environment"
   exist {install_dir}/lib/pkgconfig/libpq.pc
   exist {install_dir}/include/libpq-fe.h
   exist {install_dir}/include/pgtypes.h
+
+command "-" "Check symlinks linker and pkgconfig configs"
+  exist /etc/ld.so.conf.d/postgresql-pgdg-libs.conf
+  exist {LIBDIR}/pkgconfig/libecpg_compat.pc
+  exist {LIBDIR}/pkgconfig/libecpg.pc
+  exist {LIBDIR}/pkgconfig/libpgtypes.pc
+  exist {LIBDIR}/pkgconfig/libpq.pc
+
+  link /etc/ld.so.conf.d/postgresql-pgdg-libs.conf {install_dir}/share/postgresql-{version}-libs.conf
+  link {LIBDIR}/pkgconfig/libecpg_compat.pc {install_dir}/lib/pkgconfig/libecpg_compat.pc
+  link {LIBDIR}/pkgconfig/libecpg.pc {install_dir}/lib/pkgconfig/libecpg.pc
+  link {LIBDIR}/pkgconfig/libpgtypes.pc {install_dir}/lib/pkgconfig/libpgtypes.pc
+  link {LIBDIR}/pkgconfig/libpq.pc {install_dir}/lib/pkgconfig/libpq.pc
 
 command "service {service_name} initdb" "Database initialization"
   exit 0
@@ -105,7 +126,7 @@ command "systemctl status {service_name}" "Check status of PostgreSQL server"
 
 command "postgres:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
   exit 0
-  output-contains "PostgreSQL {verison}"
+  output-contains "PostgreSQL {version}"
 
 command "systemctl restart {service_name}" "Restart PostgreSQL server"
   wait {delay}

@@ -9,6 +9,7 @@ command "-" "Check environment"
   app ffmpeg
 
 command "ffmpeg -i" "Check basic info"
-  expect "ffmpeg version"
+  wait-output 1
+  output-contains "ffmpeg version"
   output-contains "--enable-libfdk_aac"
   output-contains "--enable-libvo-amrwbenc"

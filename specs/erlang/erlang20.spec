@@ -54,7 +54,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           20
 %define ver_min           3
-%define ver_patch         8.25
+%define ver_patch         8.26
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 
@@ -91,7 +91,7 @@ BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 BuildRequires:     lksctp-tools-devel
 
-BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
 Requires:          tk tcl
 
@@ -825,7 +825,7 @@ export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
@@ -1199,6 +1199,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.26-0
+- Updated to the latest release
+- Using DevToolSet 7 for build
+
 * Fri Jan 24 2020 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.25-0
 - Updated to the latest release
 
@@ -1232,7 +1236,7 @@ rm -rf %{buildroot}
 - Updated to the latest release
 
 * Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-1
-- Using GCC from devtoolset-3 for build
+- Using GCC from devtoolset-7 for build
 
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 20.3-0
 - Updated to latest stable release

@@ -1,0 +1,9 @@
+diff -urN gdal-3.2.1-orig/swig/perl/GNUmakefile gdal-3.2.1/swig/perl/GNUmakefile
+--- gdal-3.2.1-orig/swig/perl/GNUmakefile	2020-12-29 15:15:47.000000000 +0300
++++ gdal-3.2.1/swig/perl/GNUmakefile	2021-02-13 15:55:17.000000000 +0300
+@@ -64,3 +64,5 @@
+ 
+ .FORCE:
+ 	perl parse-for-doxygen.pl > all.pm; doxygen; rm -f all.pm
++
++.PHONY: generate

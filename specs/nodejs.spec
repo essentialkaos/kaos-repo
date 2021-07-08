@@ -36,7 +36,7 @@
 
 Summary:            Platform for server side programming on JavaScript
 Name:               nodejs
-Version:            12.15.0
+Version:            12.16.3
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
@@ -51,7 +51,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 Requires:           zlib
 
 BuildRequires:      make python openssl-devel zlib-devel
-BuildRequires:      devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
+BuildRequires:      devtoolset-9-gcc-c++ devtoolset-9-libstdc++-devel
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{shortname} = %{version}-%{release}
@@ -89,7 +89,7 @@ This package provides the header files for nodejs.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 
 %{_configure} --prefix=%{_prefix} \
               --shared-zlib \
@@ -101,7 +101,7 @@ export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 rm -rf %{buildroot}
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 
 %{make_install}
 
@@ -129,6 +129,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 12.16.3-0
+- Updated to the latest stable release
+- Using GCC from devtoolset-9 for build
+
 * Thu Feb 06 2020 Anton Novojilov <andy@essentialkaos.com> - 12.15.0-0
 - Updated to the latest stable release
 

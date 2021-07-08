@@ -47,9 +47,6 @@
 
 ################################################################################
 
-%define beta 0
-
-%{?beta:%define __os_install_post /usr/lib/rpm/brp-compress}
 %{!?kerbdir:%define kerbdir "/usr"}
 %{!?test:%define test 1}
 %{!?plpython:%define plpython 1}
@@ -66,22 +63,11 @@
 %{!?runselftest:%define runselftest 0}
 %{!?uuid:%define uuid 1}
 %{!?ldap:%define ldap 1}
-
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%{!?systemd_enabled:%global systemd_enabled 0}
-%{!?sdt:%global sdt 0}
-%{!?selinux:%global selinux 0}
-%{!?llvm:%global llvm 0}
-%else
-%{!?systemd_enabled:%global systemd_enabled 1}
 %{!?llvm:%global llvm 1}
-%{!?sdt:%global sdt 1}
-%{!?selinux:%global selinux 1}
-%endif
 
 %define majorver        12
-%define minorver        1
-%define rel             0
+%define minorver        6
+%define rel             1
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
 %define realname        postgresql
@@ -120,6 +106,7 @@ Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
 Source11:          %{realname}.service
+Source12:          bash_profile
 
 Source100:         checksum.sha512
 
@@ -131,11 +118,7 @@ Patch4:            %{realname}-var-run-socket.patch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make gcc gcc-c++ perl glibc-devel bison flex >= 2.5.31
-BuildRequires:     readline-devel zlib-devel >= 1.0.4
-
-%if 0%{?rhel} > 7
-BuildRequires:     perl-generators
-%endif
+BuildRequires:     readline-devel zlib-devel >= 1.0.4 perl-generators
 
 %if %plperl
 BuildRequires:     perl-ExtUtils-Embed perl-ExtUtils-MakeMaker
@@ -192,21 +175,14 @@ BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
 
+BuildRequires:     systemd systemd-devel
+
 Requires:          %{__ldconfig} initscripts
 Requires:          %{name}-libs = %{version}
-
-%if %{systemd_enabled}
-BuildRequires:     systemd systemd-devel
 
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-Requires(post):    chkconfig
-Requires(preun):   chkconfig
-Requires(preun):   initscripts
-Requires(postun):  initscripts
-%endif
 
 Requires(post):    %{__updalt}
 Requires(postun):  %{__updalt}
@@ -256,7 +232,7 @@ Group:             Applications/Databases
 Requires:          %{__useradd} %{__chkconfig}
 Requires:          %{name} = %{version}-%{release}
 Requires:          %{name}-libs = %{version}-%{release}
-Requires:          glibc kaosv >= 2.15 numactl
+Requires:          glibc kaosv >= 2.16 numactl
 
 Provides:          %{realname}-server = %{version}-%{release}
 
@@ -330,7 +306,10 @@ Group:             Applications/Databases
 
 Requires:          %{name}-server%{?_isa} = %{version}-%{release}
 
-%if 0%{?rhel} && 0%{?rhel} == 7
+%if 0%{?rhel} == 8
+Requires:          llvm >= 6.0
+%endif
+%if 0%{?rhel} == 7
 Requires:          llvm5.0 >= 5.0
 %endif
 
@@ -448,23 +427,13 @@ CFLAGS="${CFLAGS} -I%{_includedir}/et" ; export CFLAGS
 
 CFLAGS=$(echo "$CFLAGS" | xargs -n 1 | grep -v ffast-math | xargs -n 100)
 CFLAGS="$CFLAGS -DLINUX_OOM_SCORE_ADJ=0"
-
-%if 0%{?rhel}
-  LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
-%endif
-
-%if %icu
-%if 0%{?rhel} && 0%{?rhel} <= 6
-  ICU_CFLAGS='-I%{_includedir}' ; export ICU_CFLAGS
-  ICU_LIBS='-L%{_libdir} -licui18n -licuuc -licudata' ; export ICU_LIBS
-%endif
-%endif
+LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
 
 export CFLAGS
 export LIBNAME=%{_lib}
 
 %if %llvm
-%if 0%{?rhel} && 0%{?rhel} == 7
+%if 0%{?rhel} == 7
 # perfecto:absolve
 export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
 export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
@@ -476,17 +445,11 @@ export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
   --includedir=%{install_dir}/include \
   --mandir=%{install_dir}/share/man \
   --datadir=%{install_dir}/share \
-%if %beta
-  --enable-debug \
-  --enable-cassert \
-%endif
 %if %icu
   --with-icu \
 %endif
 %if %llvm
-%if 0%{?rhel} && 0%{?rhel} == 7
   --with-llvm \
-%endif
 %endif
 %if %plperl
   --with-perl \
@@ -622,8 +585,6 @@ sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_initddir}/%{service
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_initddir}/%{service_name}
 
-%if %{systemd_enabled}
-
 # Installing and updating systemd config
 install -d %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE11} %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
@@ -634,8 +595,6 @@ sed -i 's/{{PKG_VERSION}}/%{majorver}/g' %{buildroot}%{_unitdir}/postgresql-%{ma
 sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
-
-%endif
 
 ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{majorver}
 
@@ -764,6 +723,10 @@ cat postgres-%{majorver}.lang \
     pg_controldata-%{majorver}.lang \
     plpgsql-%{majorver}.lang > pg_server.lst
 
+# Install bash profile
+install -pm 700 %{SOURCE12} %{buildroot}%{install_dir}/share/
+sed -i "s#{{PGDATA}}#%{_sharedstatedir}/%{shortname}/%{majorver}/data/#" \
+       %{buildroot}%{install_dir}/share/bash_profile
 
 ################################################################################
 
@@ -774,19 +737,12 @@ if [[ $1 -eq 1 ]] ; then
               %{__useradd} -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
 fi
 
-touch %{_logdir}/%{shortname}
-chown %{username}:%{groupname} %{_logdir}/%{shortname}
-chmod 0700 %{_logdir}/%{shortname}
-
 %post server
 if [[ $1 -eq 1 ]] ; then
-%if %{systemd_enabled}
   %{__systemctl} daemon-reload %{service_name}.service &>/dev/null || :
   %{__systemctl} preset %{service_name}.service &>/dev/null || :
   systemd-tmpfiles --create &>/dev/null || :
-%else
-  %{__chkconfig} --add %{service_name} &>/dev/null || :
-%endif
+
   %{__ldconfig}
 fi
 
@@ -798,32 +754,23 @@ if [[ -f %{_rundir}/postmaster-%{majorver}.pid ]] ; then
   rm -f %{_lockdir}/%{realname}-%{majorver}
 fi
 
-# postgres' .bash_profile.
-# We now don't install .bash_profile as we used to in pre 9.0. Instead, use cat,
-# so that package manager will be happy during upgrade to new major version.
-# perfecto:absolve 3
-echo "[[ -f /etc/profile ]] && source /etc/profile
-PGDATA=/var/lib/pgsql/%{majorver}/data
-export PGDATA" > %{_sharedstatedir}/%{shortname}/.bash_profile
+# Removing bash_profile generated by previous versions of packages
+if [[ ! -L %{_sharedstatedir}/%{shortname}/.bash_profile ]] ; then
+  rm -f %{_sharedstatedir}/%{shortname}/.bash_profile
+fi
 
-chown %{username}: %{_sharedstatedir}/%{shortname}/.bash_profile
+%{__updalt} --install %{_sharedstatedir}/%{shortname}/.bash_profile %{shortname}-bash_profile %{install_dir}/share/bash_profile %{pkgver}00
 
 %preun server
 if [[ $1 -eq 0 ]] ; then
-%if %{systemd_enabled}
+  %{__updalt} --remove %{shortname}-bash_profile %{install_dir}/share/bash_profile
   %{__systemctl} --no-reload disable %{service_name}.service &>/dev/null || :
   %{__systemctl} stop %{service_name}.service &>/dev/null || :
-%else
-  %{__service} %{service_name} stop &>/dev/null || :
-  %{__chkconfig} --del %{service_name} &>/dev/null || :
-%endif
 fi
 
 %postun server
-%{__ldconfig}
-%if %{systemd_enabled}
 %{__systemctl} daemon-reload &>/dev/null || :
-%endif
+%{__ldconfig}
 
 %if %plperl
 %post plperl
@@ -851,7 +798,7 @@ fi
 
 %if %test
 %post test
-chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
+chown -R -h %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
 %endif
 
 # Create alternatives entries for common binaries and man files
@@ -884,7 +831,14 @@ chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null 
 %{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}00
 
 %post libs
+# Create link to linker configuration file
 %{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}00
+# Create links to pkgconfig configuration files
+%{__updalt} --install %{_libdir}/pkgconfig/libpq.pc           %{shortname}-pkgconfig-libpq           %{install_dir}/lib/pkgconfig/libpq.pc          %{pkgver}00
+%{__updalt} --install %{_libdir}/pkgconfig/libpgtypes.pc      %{shortname}-pkgconfig-libpgtypes      %{install_dir}/lib/pkgconfig/libpgtypes.pc     %{pkgver}00
+%{__updalt} --install %{_libdir}/pkgconfig/libecpg.pc         %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc        %{pkgver}00
+%{__updalt} --install %{_libdir}/pkgconfig/libecpg_compat.pc  %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc %{pkgver}00
+# Update shared libs cache
 %{__ldconfig}
 
 # Drop alternatives entries for common binaries and man files
@@ -921,7 +875,14 @@ fi
 
 %postun libs
 if [[ $1 -eq 0 ]] ; then
+  # Remove link to linker configuration file
   %{__updalt} --remove %{shortname}-ld-conf %{install_dir}/share/%{service_name}-libs.conf
+  # Remove links to pkgconfig configuration files
+  %{__updalt} --remove %{shortname}-pkgconfig-libpq           %{install_dir}/lib/pkgconfig/libpq.pc
+  %{__updalt} --remove %{shortname}-pkgconfig-libpgtypes      %{install_dir}/lib/pkgconfig/libpgtypes.pc
+  %{__updalt} --remove %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc
+  %{__updalt} --remove %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc
+  # Update shared libs cache
   %{__ldconfig}
 fi
 
@@ -1017,12 +978,6 @@ rm -rf %{buildroot}
 %{install_dir}/share/extension/jsonb_plperl*.sql
 %{install_dir}/share/extension/jsonb_plperl*.control
 %endif
-%if %plpython
-%{install_dir}/lib/hstore_plpython2.so
-%{install_dir}/lib/jsonb_plpython2.so
-%{install_dir}/share/extension/*_plpythonu*
-%{install_dir}/share/extension/*_plpython2u*
-%endif
 %{install_dir}/lib/passwordcheck.so
 %{install_dir}/lib/pg_freespacemap.so
 %{install_dir}/lib/pg_stat_statements.so
@@ -1031,9 +986,6 @@ rm -rf %{buildroot}
 %{install_dir}/lib/sslinfo.so
 %{install_dir}/lib/lo.so
 %{install_dir}/lib/ltree.so
-%if %plpython
-%{install_dir}/lib/ltree_plpython2.so
-%endif
 %{install_dir}/lib/moddatetime.so
 %{install_dir}/lib/pageinspect.so
 %{install_dir}/lib/pgcrypto.so
@@ -1125,9 +1077,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %config(noreplace) %{_initddir}/%{service_name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
-%if %{systemd_enabled}
 %config(noreplace) %{_unitdir}/postgresql-%{majorver}.service
-%endif
 %attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{majorver}
 %if %pam
@@ -1167,6 +1117,8 @@ rm -rf %{buildroot}
 %{install_dir}/lib/plpgsql.so
 %dir %{install_dir}/share/extension
 %{install_dir}/share/extension/plpgsql*
+
+%config(noreplace) %attr(700,%{username},%{groupname}) %{install_dir}/share/bash_profile
 
 %dir %{install_dir}/lib
 %dir %{install_dir}/share
@@ -1225,7 +1177,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{install_dir}/lib/plpython*.so
 %{install_dir}/lib/hstore_plpython2.so
+%{install_dir}/lib/jsonb_plpython2.so
 %{install_dir}/lib/ltree_plpython2.so
+%{install_dir}/share/extension/jsonb_plpython*
 %{install_dir}/share/extension/plpython2u*
 %{install_dir}/share/extension/plpythonu*
 %endif
@@ -1240,6 +1194,25 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-1
+- Changed bash_profile installation routine
+
+* Mon Feb 15 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-0
+- Updated to the latest stable release
+
+* Tue Dec 29 2020 Anton Novojilov <andy@essentialkaos.com> - 12.5-0
+- Updated to the latest stable release
+
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 12.4-0
+- Updated to the latest stable release
+
+* Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 12.3-0
+- Updated to the latest stable release
+- Spec improvements
+
+* Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 12.2-1
+- Fixed bug in init script
+
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 12.1-0
 - Updated to the latest stable release
 

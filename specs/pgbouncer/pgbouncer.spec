@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -47,7 +51,7 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.12.0
+Version:           1.13.0
 Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
@@ -59,29 +63,21 @@ Source2:           %{name}.sysconfig
 Source3:           %{name}.logrotate
 Source4:           %{name}.service
 
+Source100:         checksum.sha512
+
 Patch0:            %{name}-ini.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc openssl-devel
+BuildRequires:     make gcc openssl-devel libevent-devel
 
-Requires:          openssl kaosv >= 2.15
-
-%if 0%{?rhel} >= 7
-BuildRequires:     libevent-devel
-Requires:          libevent
+Requires:          kaosv >= 2.15 openssl libevent
 
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-BuildRequires:     libevent2-devel
-Requires:          libevent2
 
-Requires(post):    chkconfig
-Requires(preun):   chkconfig initscripts
-Requires(postun):  initscripts
-%endif
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -92,6 +88,8 @@ pgbouncer uses libevent for low-level socket handling.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
@@ -140,14 +138,8 @@ rm -rf %{buildroot}
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__sysctl} enable %{name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
 fi
-
-chown -R %{username}:%{groupname} %{_sysconfdir}/%{name}
 
 %pre
 %{__getent} group %{groupname} >/dev/null || %{__groupadd} -r %{groupname}
@@ -156,35 +148,27 @@ chown -R %{username}:%{groupname} %{_sysconfdir}/%{name}
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
   %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__sysctl} stop %{name}.service &>/dev/null || :
-%else
-  %{__service} %{name} stop &>/dev/null || :
-  %{__chkconfig} --del %{name} &>/dev/null || :
-%endif
 fi
 
 %postun
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__sysctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYRIGHT NEWS.md
+%attr(-,%{username},%{groupname}) %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.ini
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/*
 %{_initrddir}/%{name}
-%if 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
-%endif
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man5/%{name}.*
 %{_sysconfdir}/%{name}/mkauth.py*
@@ -193,6 +177,22 @@ fi
 ################################################################################
 
 %changelog
+* Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.0-0
+- Add configuration setting tcp_user_timeout, to set the corresponding socket
+  option.
+- client_tls_protocols and server_tls_protocols now default to secure, which
+  means only TLS 1.2 and TLS 1.3 are enabled. Older versions are still
+  supported, they are just not turned on by default.
+- Add support for systemd service notifications. Right now, this allows using
+  Type=notify service units. More integration is planned for future versions.
+- Fix multiline log messages
+- Handle null user names returned from auth_query properly
+- Numerous fixes and improvements in the test suite
+- The tests no longer try to use sudo by default. This can now be activated
+  explicitly by setting the environment variable USE_SUDO.
+- The libevent API use was updated to use version 2 style interfaces and to
+  no longer use deprecated interfaces from version 1.
+
 * Wed Feb 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
 - Add a setting to turn on the SO_REUSEPORT socket option. On some operating
   systems, this allows running multiple PgBouncer instances on the same host

@@ -41,6 +41,12 @@ command "-" "Check environment"
   exist {sentinel_logrotate}
   mode {sentinel_logrotate} 644
 
+  exist /var/lib/{service_name}
+  owner /var/lib/{service_name} {service_user}
+
+  exist /var/run/{service_name}
+  owner /var/run/{service_name} {service_user}
+
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}
 

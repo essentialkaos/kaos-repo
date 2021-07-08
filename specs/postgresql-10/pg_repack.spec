@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -49,7 +53,7 @@
 
 Summary:           Reorganize tables in PostgreSQL databases without any locks
 Name:              %{realname}%{pg_maj_ver}
-Version:           1.4.5
+Version:           1.4.6
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -65,7 +69,7 @@ BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
 Requires:          postgresql%{pg_maj_ver}
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -100,7 +104,7 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc COPYRIGHT doc/pg_repack.rst
 %attr (755,root,root) %{pg_dir}/bin/pg_repack
 %attr (755,root,root) %{pg_dir}/lib/pg_repack.so
@@ -110,6 +114,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
+- Updated to the latest stable release
+
 * Tue Jan 21 2020 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
 - Updated to the latest stable release
 

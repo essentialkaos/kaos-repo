@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -37,19 +41,21 @@
 %define __chkconfig       %{_sbin}/chkconfig
 %define __ldconfig        %{_sbin}/ldconfig
 
-%define _pyinclude        %{_includedir}/python2.6
+%define _pyinclude        %{_includedir}/python2.7
 
 ################################################################################
 
-Summary:           GDAL/OGR - a translator library for raster and vector geospatial data formats
+Summary:           A translator library for raster and vector geospatial data formats
 Name:              gdal
 Version:           1.11.5
-Release:           2%{?dist}
+Release:           3%{?dist}
 License:           MIT and BSD-3-Clause
 Group:             Development/Libraries
 URL:               https://www.gdal.org
 
 Source0:           https://download.osgeo.org/%{name}/%{version}/%{name}-%{version}.tar.gz
+
+Source100:         checksum.sha512
 
 Patch0:            %{name}-python_install.patch
 Patch1:            %{name}-perl.patch
@@ -102,7 +108,7 @@ Summary:           Perl bindings for GDAL
 Group:             Development/Languages
 Requires:          %{name} = %{version}-%{release}
 
-Requires:          perl perl-base perl-ExtUtils-MakeMaker
+Requires:          perl perl-ExtUtils-MakeMaker
 
 %description perl
 Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
@@ -120,6 +126,8 @@ The GDAL python modules provide support to handle multiple GIS file formats.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %patch0 -p1
@@ -130,11 +138,9 @@ rm -rf man
 %build
 export PYTHON_INCLUDES=-I%{_pyinclude}
 
-%if 0%{?fedora} > 18 || 0%{?rhel} > 6
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
-%endif
 
 export CFLAGS="%{optflags} -fpic"
 
@@ -396,6 +402,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Aug 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-3
+- Fixed dependencies for CentOS 7+
+- Fixed path to Python headers
+
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-2
 - Rebuilt with latest version of netcdf
 - Removed libspatialite support

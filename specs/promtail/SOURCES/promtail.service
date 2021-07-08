@@ -1,0 +1,16 @@
+[Unit]
+Description=Promtail instance
+Documentation=https://github.com/grafana/loki/blob/master/docs/promtail.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/sysconfig/promtail
+User=loki
+Group=loki
+Restart=always
+ExecStart=/usr/bin/promtail -config.file=${CONF_FILE}
+ExecReload=/bin/kill -HUP $MAINPID
+LimitNOFILE=10000
+TimeoutStopSec=20

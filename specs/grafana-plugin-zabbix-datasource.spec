@@ -40,7 +40,7 @@
 
 Summary:              Zabbix datasource for Grafana
 Name:                 grafana-plugin-zabbix-datasource
-Version:              3.10.2
+Version:              4.0.1
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/System
@@ -52,7 +52,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 Requires:             grafana
 
-BuildRequires:        git nodejs
+BuildRequires:        git nodejs nodejs-yarn golang >= 1.14 gcc
 
 Provides:             %{name} = %{version}-%{release}
 
@@ -68,8 +68,8 @@ database.
 %setup -qn %{short_name}-%{version}
 
 %build
-npm install
-npm run build
+%{__make} install
+%{__make} build
 
 rm -rf node_modules/
 
@@ -92,5 +92,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 4.0.1-0
+- Updated to the latest release
+
+* Thu Jul 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.12.2-0
+- Updated to the latest release
+
 * Tue Jul 09 2019 Gleb Goncharov <g.goncharov@fun-box.ru> - 3.10.2-0
 - Initial build

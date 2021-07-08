@@ -9,6 +9,8 @@ KillSignal=SIGTERM
 User=redis
 Group=redis
 PIDFile=/var/run/redis/redis.pid
+TimeoutStartSec=15
+TimeoutStopSec=90
 
 [Install]
 WantedBy=multi-user.target

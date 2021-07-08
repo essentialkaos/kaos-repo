@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -55,30 +59,31 @@
 
 Summary:           A "master to multiple slaves" replication system with cascading and failover
 Name:              %{realname}-%{pg_maj_ver}
-Version:           2.2.6
-Release:           2%{?dist}
+Version:           2.2.10
+Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
-URL:               http://main.slony.info
+URL:               https://www.slony.info
 
-Source0:           http://main.slony.info/downloads/%{maj_ver}/source/%{realname}-%{version}.tar.bz2
+Source0:           https://www.slony.info/downloads/%{maj_ver}/source/%{realname}-%{version}.tar.bz2
 Source2:           filter-requires-perl-Pg.sh
 Source3:           %{realname}.init
 Source4:           %{realname}.sysconfig
 Source5:           %{realname}.service
 
+Source100:         checksum.sha512
+
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+BuildRequires:     make gcc byacc flex chrpath
 BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
 BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
-BuildRequires:     make gcc byacc flex chrpath
 
-Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.10
-
-%if 0%{?rhel} >= 7
+Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.16
 Requires:          systemd
-%endif
+
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -96,6 +101,8 @@ operation is that all nodes are available.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{realname}-%{version}
 
 %build
@@ -139,12 +146,10 @@ chmod 644 COPYRIGHT UPGRADING SAMPLE RELEASE
 install -dm 755 %{buildroot}%{_initrddir}
 install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{realname}-%{pg_maj_ver}
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
-sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
-%endif
 
+sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_unitdir}/%{realname}-%{pg_maj_ver}.service
 sed -i 's/{{PG_MAJOR_VERSION}}/%{pg_maj_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 sed -i 's/{{PG_HIGH_VERSION}}/%{pg_high_ver}/g' %{buildroot}%{_initddir}/%{realname}-%{pg_maj_ver}
 
@@ -168,30 +173,19 @@ rm -rf %{buildroot}
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__sysctl} enable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{realname}-%{pg_maj_ver} &>/dev/null || :
-%endif
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
   %{__sysctl} --no-reload disable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
   %{__sysctl} stop %{realname}-%{pg_maj_ver}.service &>/dev/null || :
-%else
-  %{__service} %{realname}-%{pg_maj_ver} stop &>/dev/null || :
-  %{__chkconfig} --del %{realname}-%{pg_maj_ver} &>/dev/null || :
-%endif
 fi
 
 %postun
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__sysctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
@@ -206,13 +200,14 @@ fi
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon.conf
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf
 %attr(755,root,root) %{_initrddir}/%{realname}-%{pg_maj_ver}
-%if 0%{?rhel} >= 7
 %attr(755,root,root) %{_unitdir}/%{realname}-%{pg_maj_ver}.service
-%endif
 
 ################################################################################
 
 %changelog
+* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.10-0
+- Updated to the latest stable release
+
 * Wed May 29 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.6-2
 - Improved init script
 - Improved systemd unit

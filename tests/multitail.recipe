@@ -1,0 +1,21 @@
+# Bibop recipe for multitail
+# See more: https://kaos.sh/bibop
+
+pkg multitail
+
+fast-finish yes
+
+var config  /etc/multitail.conf
+
+command "-" "Check configuration file"
+  exist {config}
+
+  mode {config} 644
+  owner {config} root:root
+
+command "-" "Check binary"
+  app multitail
+  app mtl
+
+  # mtl is just link to multitail
+  link /usr/bin/mtl /usr/bin/multitail

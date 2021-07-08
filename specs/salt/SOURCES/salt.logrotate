@@ -1,8 +1,0 @@
-/var/log/salt/*.log {
-    create 640 root root
-    weekly
-    missingok
-    rotate 24
-    compress
-    notifempty
-}

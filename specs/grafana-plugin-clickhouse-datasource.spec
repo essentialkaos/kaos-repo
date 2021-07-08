@@ -44,7 +44,7 @@
 
 Summary:              Clickhouse datasource for Grafana
 Name:                 grafana-plugin-clickhouse-datasource
-Version:              1.9.4
+Version:              2.1.0
 Release:              0%{?dist}
 License:              MIT
 Group:                Applications/System
@@ -104,6 +104,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 09 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 2.1.0-0
+- Updated to the latest release
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
 - Ad Hoc Filters small adjustments for numeric values
 - UI optimizations within Metric builder

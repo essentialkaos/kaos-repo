@@ -19,7 +19,7 @@
 Summary:            VP8/VP9 Video Codec SDK
 Name:               libvpx
 Version:            %{majorver}.%{minorver}.%{patchver}
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
 URL:                https://chromium.googlesource.com/webm/libvpx/
@@ -96,6 +96,11 @@ rm -rf build/ md5sums.txt lib*/*.a CHANGELOG README
 chmod 755 bin/*
 popd
 
+mv %{buildroot}%{_bindir}/examples/* %{buildroot}%{_bindir}/
+mv %{buildroot}%{_bindir}/tools/* %{buildroot}%{_bindir}/
+
+rm -rf %{buildroot}%{_bindir}/examples/ %{buildroot}%{_bindir}/tools/
+
 %clean
 rm -rf %{buildroot}
 
@@ -120,11 +125,28 @@ rm -rf %{buildroot}
 
 %files utils
 %defattr(-,root,root,-)
-%{_bindir}/*
+%{_bindir}/decode_to_md5
+%{_bindir}/decode_with_drops
+%{_bindir}/postproc
+%{_bindir}/set_maps
+%{_bindir}/simple_decoder
+%{_bindir}/simple_encoder
+%{_bindir}/tiny_ssim
+%{_bindir}/twopass_encoder
+%{_bindir}/vp8cx_set_ref
+%{_bindir}/vp9_lossless_encoder
+%{_bindir}/vp9_spatial_svc_encoder
+%{_bindir}/vp9cx_set_ref
+%{_bindir}/vpx_temporal_svc_encoder
+%{_bindir}/vpxdec
+%{_bindir}/vpxenc
 
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-1
+- Fixed installation directory for some utilities
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
 - Updated to the latest stable release
 

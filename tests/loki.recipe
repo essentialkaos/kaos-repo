@@ -1,0 +1,27 @@
+# Bibop recipe for loki
+# See more: https://kaos.sh/bibop
+
+pkg loki
+
+require-root yes
+
+var service_name loki
+
+command "-" "Check environment"
+  app loki
+
+  exist /etc/sysconfig/loki
+  exist /etc/loki/loki.yaml
+
+  service-present {service_name}
+
+command "systemctl start {service_name}.service" "Start daemon"
+  wait 3
+  service-works {service_name}
+
+command "systemctl status {service_name}.service" "Check daemon status"
+  expect "active (running)"
+
+command "systemctl stop {service_name}.service" "Stop daemon"
+  wait 3
+  !service-works {service_name}

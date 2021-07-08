@@ -1,19 +1,11 @@
 <icecast>
     <limits>
         <clients>100</clients>
-        <sources>2</sources>
-        <threadpool>5</threadpool>
+        <sources>5</sources>
         <queue-size>524288</queue-size>
         <client-timeout>30</client-timeout>
         <header-timeout>15</header-timeout>
         <source-timeout>10</source-timeout>
-        <!-- If enabled, this will provide a burst of data when a client 
-             first connects, thereby significantly reducing the startup 
-             time for listeners that do substantial buffering. However,
-             it also significantly increases latency between the source
-             client and listening client.  For low-latency setups, you
-             might want to disable this. -->
-        <burst-on-connect>1</burst-on-connect>
         <!-- same as burst-on-connect, but this allows for being more
              specific on how much to burst. Most people won't need to
              change from the default 64k. Applies to all mountpoints  -->
@@ -53,7 +45,7 @@
     <!-- You may have multiple <listener> elements -->
     <listen-socket>
         <port>8000</port>
-        <bind-address>127.0.0.1</bind-address>
+        <bind-address>0.0.0.0</bind-address>
         <!-- <shoutcast-mount>/stream</shoutcast-mount> -->
     </listen-socket>
     <!--

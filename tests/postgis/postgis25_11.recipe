@@ -1,12 +1,12 @@
 # Bibop recipe for PostGIS 2.5 for PostgreSQL 11
 # See more: https://kaos.sh/bibop
 
-pkg postgresql11-server postgis25_11 postgis25_11-client postgis25_11-devel postgis25_11-utils
+pkg postgresql11-server postgis25_11 postgis25_11-client postgis25_11-scripts postgis25_11-devel postgis25_11-utils
 
 fast-finish yes
 
 var postgis_major_version 2.5
-var postgis_version       2.5.3
+var postgis_version       2.5.5
 var postgres_version      11
 var pkg_ver               25_11
 
@@ -20,8 +20,6 @@ var contrib_dir   {data_dir}/contrib/postgis-{postgis_major_version}
 var extension_dir {data_dir}/extension
 
 command "-" "Check libraries"
-  lib-loaded liblwgeom-{postgis_major_version}.so.*
-
   exist {lib_dir}/address_standardizer.so
   exist {lib_dir}/postgis-{postgis_major_version}.so
   exist {lib_dir}/postgis_topology-{postgis_major_version}.so
@@ -32,11 +30,25 @@ command "-" "Check libraries"
   mode {lib_dir}/postgis_topology-{postgis_major_version}.so 755
   mode {lib_dir}/rtpostgis-{postgis_major_version}.so 755
 
+command "-" "Check GEOM library"
+  lib-loaded liblwgeom-{postgis_major_version}.so.*
+
   exist {lib_dir}/liblwgeom.a
   exist {lib_dir}/liblwgeom.la
 
   lib-header liblwgeom
   lib-header liblwgeom_topo
+
+command "-" "Check bitcode"
+  dir {lib_dir}/bitcode/address_standardizer
+  dir {lib_dir}/bitcode/postgis-{postgis_major_version}
+  dir {lib_dir}/bitcode/postgis_topology-{postgis_major_version}
+  dir {lib_dir}/bitcode/rtpostgis-{postgis_major_version}
+
+  exist {lib_dir}/bitcode/address_standardizer.index.bc
+  exist {lib_dir}/bitcode/postgis-{postgis_major_version}.index.bc
+  exist {lib_dir}/bitcode/postgis_topology-{postgis_major_version}.index.bc
+  exist {lib_dir}/bitcode/rtpostgis-{postgis_major_version}.index.bc
 
 command "-" "Check data directories"
   exist {contrib_dir}
@@ -66,7 +78,11 @@ command "-" "Check client binaries"
   app raster2pgsql
   app shp2pgsql
 
-command "-" "Check utilities"
+  link /bin/pgsql2shp {bin_dir}/postgis-{postgis_major_version}/pgsql2shp
+  link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
+  link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
+
+command "-" "Check scripts"
   exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
   exist {utils_dir}/create_undef.pl
   exist {utils_dir}/create_unpackaged.pl

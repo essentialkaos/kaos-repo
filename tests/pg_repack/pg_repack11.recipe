@@ -5,11 +5,12 @@ pkg pg_repack11
 
 fast-finish yes
 
-var repack_version   1.4.5
+var repack_version   1.4.6
 var postgres_version 11
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
+var bin_dir  /usr/pgsql-{postgres_version}/bin
 
 var extension_dir {data_dir}/extension
 
@@ -19,6 +20,7 @@ command "-" "Check library"
 
 command "-" "Check binary"
   app pg_repack
+  link /usr/bin/pg_repack {bin_dir}/pg_repack
 
 command "-" "Check SQL files"
   exist {extension_dir}/pg_repack--{repack_version}.sql

@@ -58,7 +58,7 @@
 
 Summary:            Confluent REST Proxy for Kafka
 Name:               confluent-kafka-rest
-Version:            5.4.0
+Version:            6.0.0
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              Development/Tools
@@ -74,7 +74,7 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           java >= 1.8.0
+Requires:           jdk11
 Requires:           confluent-common = %{version}-%{release}
 Requires:           confluent-rest-utils = %{version}-%{release}
 Requires:           logrotate
@@ -84,7 +84,7 @@ Requires:           systemd
 Requires:           kaosv >= 2.15 initscripts
 %endif
 
-BuildRequires:      jdk8 maven git
+BuildRequires:      jdk11 maven git
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -114,7 +114,8 @@ install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sysconfdir}/%{pkg_name}
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
-install -dm 755 %{buildroot}%{_datadir}/java/%{pkg_name}
+install -dm 755 %{buildroot}%{_datadir}/java/%{pkg_name}-bin
+install -dm 755 %{buildroot}%{_datadir}/java/%{pkg_name}-lib
 install -dm 755 %{buildroot}%{_datadir}/doc/%{pkg_name}-%{version}
 install -dm 755 %{buildroot}%{_logdir}/%{pkg_name}
 
@@ -125,7 +126,8 @@ install -dm 755 %{buildroot}%{_initrddir}
 %endif
 
 pushd %{pkg_name}/target/%{pkg_name}-%{version}-package
-  cp -a share/java/%{pkg_name}/*.jar %{buildroot}%{_datadir}/java/%{pkg_name}/
+  cp -a share/java/%{pkg_name}-bin/*.jar %{buildroot}%{_datadir}/java/%{pkg_name}-bin/
+  cp -a share/java/%{pkg_name}-lib/*.jar %{buildroot}%{_datadir}/java/%{pkg_name}-lib/
   cp -a share/doc/%{pkg_name}/* %{buildroot}%{_datadir}/doc/%{pkg_name}-%{version}/
   cp -a bin/* %{buildroot}%{_bindir}
   cp -a etc/%{pkg_name}/* %{buildroot}%{_sysconfdir}/%{pkg_name}/
@@ -185,14 +187,16 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%dir %{_datadir}/java/%{pkg_name}
+%dir %{_datadir}/java/%{pkg_name}-bin
+%dir %{_datadir}/java/%{pkg_name}-lib
 %dir %{_datadir}/doc/%{pkg_name}-%{version}
 %attr(755,%{service_user},%{service_group}) %dir %{_logdir}/%{pkg_name}
 %{_bindir}/%{pkg_name}-run-class
 %{_bindir}/%{pkg_name}-start
 %{_bindir}/%{pkg_name}-stop
 %{_bindir}/%{pkg_name}-stop-service
-%{_datadir}/java/%{pkg_name}/*.jar
+%{_datadir}/java/%{pkg_name}-bin/*.jar
+%{_datadir}/java/%{pkg_name}-lib/*.jar
 %{_datadir}/doc/%{pkg_name}-%{version}/*
 %config(noreplace) %{_sysconfdir}/sysconfig/%{pkg_name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{pkg_name}
@@ -207,5 +211,8 @@ fi
 ################################################################################
 
 %changelog
+* Mon Feb 15 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 6.0.0-0
+- Updated to the latest release
+
 * Wed Jan 15 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 5.4.0-0
 - Initial build

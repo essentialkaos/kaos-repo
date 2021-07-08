@@ -51,7 +51,7 @@
 Summary:              PostgreSQL %{pg_ver} ODBC driver
 Name:                 postgresql%{pg_comb_ver}-odbc
 Version:              %{pkg_ver}
-Release:              0%{?dist}
+Release:              1%{?dist}
 License:              LGPLv2+
 Group:                Applications/Databases
 URL:                  https://odbc.postgresql.org
@@ -135,7 +135,7 @@ rm -rf %{buildroot}
 %postun
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system (vs.just being upgraded)
-  %{_sbindir}/update-alternatives --remove psqlodbcw  %{pg_dir}/lib/psqlodbcw.s
+  %{_sbindir}/update-alternatives --remove psqlodbcw  %{pg_dir}/lib/psqlodbcw.so
   %{_sbindir}/update-alternatives --remove psqlodbca  %{pg_dir}/lib/psqlodbca.so
   %{_sbindir}/update-alternatives --remove psqlodbc   %{pg_dir}/lib/psqlodbc.so
 fi
@@ -152,5 +152,8 @@ fi
 ################################################################################
 
 %changelog
+* Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 11.01.0000-1
+- Fixed minor bug with removing link to psqlodbcw.so
+
 * Tue Jun 04 2019 Anton Novojilov <andy@essentialkaos.com> - 11.01.0000-0
 - Initial build

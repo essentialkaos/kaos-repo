@@ -42,19 +42,13 @@
 #define __cputoolize true
 %define _disable_ld_no_undefined 1
 
-%if 0%{?rhel} >= 7
-%{!?systemd_enabled:%global systemd_enabled 1}
-%else
-%{!?systemd_enabled:%global systemd_enabled 0}
-%endif
-
 ################################################################################
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           3
-%define ver_patch         8.12
+%define ver_patch         8.18
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -88,9 +82,9 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
-BuildRequires:     lksctp-tools-devel
+BuildRequires:     lksctp-tools-devel autoconf
 
-BuildRequires:     devtoolset-3-gcc-c++ devtoolset-3-binutils
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
 Requires:          tk tcl
 
@@ -212,13 +206,11 @@ Obsoletes: %{name}_otp = %{version}-%{release}
 Obsoletes: %{name}-gs_apps = %{version}-%{release}
 Obsoletes: %{name}-otp_libs = %{version}-%{release}
 
-%if %{systemd_enabled}
 BuildRequires:     systemd systemd-devel
 
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%endif
 
 %description -n %{name}-base
 Erlang architecture independent files
@@ -734,7 +726,7 @@ export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
@@ -771,9 +763,7 @@ ERL_TOP=`pwd`; export ERL_TOP
   --enable-smp-support \
   --enable-builtin-zlib \
   --enable-sctp \
-  %if %{systemd_enabled}
   --enable-systemd \
-  %endif
   --with-ssl \
   --disable-erlang-mandir \
   --disable-dynamic-ssl-lib \
@@ -787,13 +777,11 @@ rm -rf %{buildroot}
 
 %{make_install} INSTALL_PREFIX=%{buildroot}
 
-%if %{systemd_enabled}
 install -d %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/epmd.service
 install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/epmd.socket
 install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/epmd@.service
 install -pm 644 %{SOURCE6} %{buildroot}%{_unitdir}/epmd@.socket
-%endif
 
 # clean up
 find %{buildroot}%{_libdir}/erlang -perm 0775 | xargs chmod 755
@@ -839,33 +827,25 @@ rm -rf %{buildroot}%{_mandir}/man3/crypto.3.*
 rm -rf %{buildroot}%{_mandir}/man3/zlib.3.*
 
 %pre -n %{name}-base
-%if %{systemd_enabled}
 getent group epmd &> /dev/null || groupadd -r epmd &>/dev/null || :
 getent passwd epmd &> /dev/null || \
   useradd -r -g epmd -d /dev/null -s /sbin/nologin \
           -c "Erlang Port Mapper Daemon" epmd &>/dev/null || :
-%endif
 
 %post -n %{name}-base
 %{_libdir}/erlang/Install -minimal %{_libdir}/erlang &>/dev/null || :
-%if %{systemd_enabled}
 %{__sysctl} enable epmd.service &>/dev/null || :
-%endif
 
 %preun -n %{name}-base
-%if %{systemd_enabled}
 if [[ $1 -eq 0 ]] ; then
   %{__sysctl} --no-reload disable epmd.service &>/dev/null || :
   %{__sysctl} stop epmd.service &>/dev/null || :
 fi
-%endif
 
 %postun -n %{name}-base
-%if %{systemd_enabled}
 if [[ $1 -ge 1 ]] ; then
   %{__sysctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 %clean
 rm -rf %{buildroot}
@@ -886,12 +866,10 @@ rm -rf %{buildroot}
 %dir %{_libdir}/erlang/bin
 %dir %{_libdir}/erlang/lib
 %dir %{_libdir}/erlang/misc
-%if %{systemd_enabled}
 %{_unitdir}/epmd.service
 %{_unitdir}/epmd.socket
 %{_unitdir}/epmd@.service
 %{_unitdir}/epmd@.socket
-%endif
 %{_bindir}/*
 %{_libdir}/erlang/Install
 %{_libdir}/erlang/bin/ct_run
@@ -1080,6 +1058,19 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.18-0
+- Updated to the latest release
+
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.17-0
+- Updated to the latest release
+
+* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.16-0
+- Updated to the latest release
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.14-0
+- Updated to the latest release
+- Using DevToolSet 7 for build
+
 * Fri Jan 24 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.12-0
 - Updated to the latest release
 

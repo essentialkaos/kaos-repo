@@ -1,22 +1,29 @@
 ################################################################################
 
-%{!?_without_check: %define _with_check 1}
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%global _vpath_srcdir   .
+%global _vpath_builddir %{_target_platform}
 
 ################################################################################
 
 Summary:         The Oil Run-time Compiler
 Name:            orc
-Version:         0.4.26
+Version:         0.4.31
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
-URL:             http://code.entropywave.com/orc/
+URL:             https://gitlab.freedesktop.org/gstreamer/orc
 
 Source0:         https://gstreamer.freedesktop.org/src/%{name}/%{name}-%{version}.tar.xz
 
+Source100:       checksum.sha512
+
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc libtool chrpath
+BuildRequires:   meson gcc gtk-doc
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -70,35 +77,20 @@ The Orc compiler, to produce optimized code.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
-%configure --disable-static \
-           --disable-gtk-doc \
-           --enable-user-codemem
-
-%{__make} %{?_smp_mflags}
+%meson
+%meson_build
 
 %install
 rm -rf %{buildroot}
 
-%{make_install} INSTALL="install -p"
+%meson_install
 
-# Remove unneeded files.
-find %{buildroot}%{_libdir} -name \*.a -or -name \*.la -delete
-
-rm -rf %{buildroot}%{_libdir}/orc
-
-touch -r stamp-h1 %{buildroot}%{_includedir}/%{name}-0.4/orc/orc-stdint.h
-
-chrpath --delete %{buildroot}%{_bindir}/orcc
-chrpath --delete %{buildroot}%{_bindir}/orc-bugreport
-chrpath --delete %{buildroot}%{_libdir}/liborc-*.so.*
-
-%check
-%if %{?_with_check:1}%{?_without_check:0}
-%{__make} check
-%endif
+rm -f %{buildroot}%{_libdir}/*.a
 
 %post
 /sbin/ldconfig
@@ -115,19 +107,20 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc COPYING README
 %{_libdir}/liborc-*.so.*
-%{_bindir}/orc-bugreport
+%{_bindir}/%{name}-bugreport
 
 %files doc
 %defattr(-,root,root,-)
-%doc %{_datadir}/gtk-doc/html/orc/
+%doc %{_datadir}/gtk-doc/html/%{name}/
 
 %files devel
 %defattr(-,root,root,-)
 %doc examples/*.c
 %{_includedir}/%{name}-0.4/
 %{_libdir}/liborc-*.so
-%{_libdir}/pkgconfig/orc-0.4.pc
-%{_datadir}/aclocal/orc.m4
+%{_libdir}/pkgconfig/%{name}-0.4.pc
+%{_libdir}/pkgconfig/%{name}-test-0.4.pc
+%{_datadir}/aclocal/%{name}.m4
 
 %files compiler
 %defattr(-,root,root,-)
@@ -136,5 +129,52 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Feb 14 2020 Anton Novojilov <andy@essentialkaos.com> - 0.4.31-0
+- Fix OrcTargetPowerPCFlags enum typedef to revert API change on macOS/iOS
+- Fixes for various PowerPC issues
+- Enable flush-to-zero mode for float programs on ARM/neon
+- Fix some opcodes to support x2/x4 processing on PowerPC
+
+* Fri Feb 14 2020 Anton Novojilov <andy@essentialkaos.com> - 0.4.30-0
+- Don't always generate static library but default to shared-only
+- Work around false positives in Microsoft UWP certification kit
+- Add endbr32/endbr64 instructions on x86/x86-64 for indirect branch tracking
+- Fix gtk-doc build when orc is used as a meson subproject
+- Switch float comparison in tests to ULP method to fix spurious failures
+- Fix flushing of ARM icache when using dual map
+- Use float constants/parameters when testing float opcodes
+- Add support for Hygon Dhyana processor
+- Fix PPC/PPC64 CPU family detection
+- Add little-endian PPC support
+- Fix compiler warnings with clang
+- Mark exec mapping writable in debug mode for allowing breakpoints
+- Various codegen refactorings
+- autotools support has been dropped in favour of Meson as build system
+- Fix PPC CPU feature detection and add support for VSX/v2.07
+- Add double/int64 support for PPC
+
+* Fri Feb 14 2020 Anton Novojilov <andy@essentialkaos.com> - 0.4.29-0
+- PowerPC: Support ELFv2 ABI and ppc64le
+- Mips backend: only enable if the DSPr2 ASE is present
+- Windows and MSVC build fixes
+- orccpu-arm: Allow 'cpuinfo' fallback on non-android
+- pkg-config file for orc-test library
+- orcc: add --decorator command line argument to add function decorators
+  in header files
+- meson: Make orcc detectable from other subprojects
+- meson: add options to disable tests, docs, benchmarks, examples, tools, etc.
+- meson: misc. other fixes
+
+* Fri Feb 14 2020 Anton Novojilov <andy@essentialkaos.com> - 0.4.28-0
+- Numerous undefined behaviour fixes
+- Ability to disable tests
+- Fix meson dist behaviour
+
+* Fri Feb 14 2020 Anton Novojilov <andy@essentialkaos.com> - 0.4.27-0
+- sse: preserve non volatile sse registers, needed for MSVC
+- x86: don't hard-code register size to zero in orc_x86_emit_*() functions
+- Fix incorrect asm generation on 64-bit Windows when building with MSVC
+- Support build using the Meson build system
+
 * Fri Mar 24 2017 Anton Novojilov <andy@essentialkaos.com> - 0.4.26-0
 - Initial build for kaos repository

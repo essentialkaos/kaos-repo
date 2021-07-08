@@ -45,7 +45,7 @@
 
 Summary:            Powerful image loading and rendering library
 Name:               imlib2
-Version:            1.6.1
+Version:            1.7.0
 Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
@@ -309,9 +309,11 @@ rm -f %{buildroot}%{_libdir}/%{name}/loaders/*.a
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -401,6 +403,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
+- Updated to the latest stable release
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - Updated to the latest stable release
 

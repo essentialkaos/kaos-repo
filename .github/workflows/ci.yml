@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master]
+
+jobs:
+  Perfecto:
+    name: Perfecto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Run Perfecto docker image
+        uses: docker://essentialkaos/perfecto:centos7
+        with:
+          args: --version
+
+      - name: Install perfecto-docker
+        run: |
+          wget https://kaos.sh/perfecto/perfecto-docker
+          chmod +x perfecto-docker
+
+      - name: Run Perfecto check
+        env:
+          IMAGE: essentialkaos/perfecto:centos7
+        run: ./perfecto-docker -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
+
+  Bibop:
+    name: Bibop
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup PATH
+        run: |
+          echo "${{ github.workspace }}" >> "$GITHUB_PATH"
+
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Install bibop and bibop-massive
+        run: |
+          wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
+          wget https://kaos.sh/bibop/bibop-massive
+          chmod +x bibop bibop-massive
+
+      - name: Run bibop recipes validation
+        env:
+          TERM: xterm-256color
+        run: bibop-massive -V tests

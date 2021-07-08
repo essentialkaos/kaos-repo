@@ -1,7 +1,7 @@
 # Bibop recipe for HAProxy 2.0
 # See more: https://kaos.sh/bibop
 
-pkg haproxy-2.0.*
+pkg haproxy20
 
 require-root yes
 unsafe-actions yes
@@ -15,6 +15,7 @@ var delay 3
 
 command "-" "Check environment"
   app haproxy
+  app halog
   
   service-present {service_name}
   

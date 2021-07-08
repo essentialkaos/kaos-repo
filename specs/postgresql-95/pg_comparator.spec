@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -45,6 +49,7 @@
 
 %define pg_ver            9.5
 %define pg_maj_ver        95
+%define pg_low_fullver    9.5.0
 %define pg_dir            %{_prefix}/pgsql-9.5
 %define realname          pg_comparator
 
@@ -53,7 +58,7 @@
 
 Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
 Name:              %{realname}%{pg_maj_ver}
-Version:           2.3.1
+Version:           2.3.2
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Tools
@@ -66,14 +71,22 @@ Patch0:            %{realname}-Makefile.patch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make gcc
-BuildRequires:     postgresql%{pg_maj_ver}-devel
+BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+
+%if 0%{?rhel} == 8
+BuildRequires:     llvm-devel >= 8.0.1 clang-devel >= 8.0.1
+%endif
+%if 0%{?rhel} == 7
+BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+%endif
 
 Requires:          perl(Getopt::Long), perl(Time::HiRes)
 Requires:          postgresql%{pg_maj_ver}
 
 Requires(post):    %{_sbindir}/update-alternatives
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -121,6 +134,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
+- Updated to the latest stable release
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
 - Updated to latest release
 

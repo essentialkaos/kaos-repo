@@ -34,13 +34,13 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
-%define patch_level       78
+%define patch_level       23
 
 ################################################################################
 
 Summary:            Use ImageMagick to create, edit, compose, or convert bitmap images
 Name:               ImageMagick
-Version:            6.9.10
+Version:            6.9.11
 Release:            %{patch_level}%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Applications/Multimedia
@@ -392,6 +392,9 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 ################################################################################
 
 %changelog
+* Fri Jul 10 2020 Anton Novojilov <andy@essentialkaos.com> - 6.9.11-23
+- Updated to the latest release
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 6.9.10-78
 - Updated to the latest release
 
