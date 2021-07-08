@@ -67,7 +67,7 @@
 
 Name:              haproxy%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.4.1
+Version:           2.4.2
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -277,6 +277,47 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jul 08 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.2-0
+- BUG/MINOR: server-state: load SRV resolution only if params match the config
+- BUG/MINOR: server: Forbid to set fqdn on the CLI if SRV resolution is enabled
+- BUG/MEDIUM: server/cli: Fix ABBA deadlock when fqdn is set from the CLI
+- MINOR: resolvers: Clean server in a dedicated function when removing
+  a SRV item
+- MINOR: resolvers: Remove server from named_servers tree when removing
+  a SRV item
+- BUG/MEDIUM: resolvers: Add a task on servers to check SRV resolution status
+- BUG/MINOR: resolvers: Use resolver's lock in resolv_srvrq_expire_task()
+- BUG/MINOR: server/cli: Fix locking in function processing "set server" command
+- BUG/MINOR: cache: Correctly handle existing-but-empty 'accept-encoding' header
+- BUG/MAJOR: server: fix deadlock when changing maxconn via agent-check
+- REGTESTS: fix maxconn update with agent-check
+- MINOR: tcp-act: Add set-src/set-src-port for "tcp-request content" rules
+- DOC: config: Add missing actions in "tcp-request session" documentation
+- CLEANUP: dns: Remove a forgotten debug message
+- BUG/MINOR: resolvers: Always attach server on matching record on resolution
+- BUG/MINOR: resolvers: Reset server IP when no ip is found in the response
+- MINOR: resolvers: Reset server IP on error in resolv_get_ip_from_response()
+- BUG/MINOR: checks: return correct error code for srv_parse_agent_check
+- BUILD: Makefile: fix linkage for Haiku.
+- BUG/MINOR: tcpcheck: Fix numbering of implicit HTTP send/expect rules
+- BUG/MINOR: mqtt: Fix parser for string with more than 127 characters
+- BUG/MINOR: mqtt: Support empty client ID in CONNECT message
+- BUG/MEDIUM: resolvers: Make 1st server of a template take part to
+  SRV resolution
+- DOC: config: use CREATE USER for mysql-check
+- BUG/MINOR: stick-table: fix several printf sign errors dumping tables
+- BUG/MINOR: peers: fix data_type bit computation more than 32 data_types
+- DOC: stick-table: add missing documentation about gpt0 stored type
+- BUG/MEDIUM: sock: make sure to never miss early connection failures
+- BUG/MINOR: cli: fix server name output in "show fd"
+- Revert "MINOR: tcp-act: Add set-src/set-src-port for "tcp-request
+  content" rules"
+- MINOR: http: implement http_get_scheme
+- MEDIUM: http: implement scheme-based normalization
+- MEDIUM: h1-htx: apply scheme-based normalization on h1 requests
+- MEDIUM: h2: apply scheme-based normalization on h2 requests
+- REGTESTS: add http scheme-based normalization test
+
 * Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.1-0
 - BUG/MEDIUM: ebtree: Invalid read when looking for dup entry
 - BUG/MAJOR: server: prevent deadlock when using 'set maxconn server'
