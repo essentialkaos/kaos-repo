@@ -290,7 +290,6 @@ Summary:  The Erlang LDAP library
 License:  MPL
 Requires: %{name}-asn1 = %{version}-%{release}
 Requires: %{name}-base = %{version}-%{release}
-Requires: %{name}-hipe = %{version}-%{release}
 Requires: %{name}-ssl = %{version}-%{release}
 Group:    Development/Tools
 
