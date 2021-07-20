@@ -39,7 +39,6 @@
 
 ################################################################################
 
-#define __cputoolize true
 %define _disable_ld_no_undefined 1
 
 ################################################################################
@@ -48,7 +47,7 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           21
 %define ver_min           3
-%define ver_patch         8.18
+%define ver_patch         8.24
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -1058,6 +1057,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jul 20 2021 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.24-0
+- Updated to the latest release
+
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.18-0
 - Updated to the latest release
 

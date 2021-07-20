@@ -1,9 +1,9 @@
-# Bibop recipe for Erlang 20
+# Bibop recipe for Erlang 24
 # See more: https://kaos.sh/bibop
 
-pkg erlang20
+pkg erlang24
 
-var libressl_ver 2.9.2
+var libressl_ver 3.3.3
 
 var epmd_service epmd
 var epmd_port    4369
