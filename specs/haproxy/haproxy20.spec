@@ -67,7 +67,7 @@
 
 Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.0.22
+Version:           2.0.24
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -279,6 +279,134 @@ fi
 ################################################################################
 
 %changelog
+* Wed Aug 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.24-0
+- BUG/MEDIUM: tcp-check: Do not dereference inexisting connection
+- BUILD: add detection of missing important CFLAGS
+- BUG/MEDIUM: mworker: do not register an exit handler if exit is expected
+- BUG/MINOR: mworker: do not export HAPROXY_MWORKER_REEXEC across programs
+- BUG/MINOR: systemd: must check the configuration using -Ws
+- BUG/MINOR: mux-h2: Obey dontlognull option during the preface
+- BUG/MEDIUM: mux-h2: Handle remaining read0 cases on partial frames
+- BUG/MINOR: connection: Add missing error labels to conn_err_code_str
+- BUG/MINOR: server: update last_change on maint->ready transitions too
+- MINOR: spoe: Add a pointer on the filter config in the spoe_agent structure
+- BUG/MEDIUM: spoe: Create a SPOE applet if necessary when the last one
+  is released
+- BUG/MEDIUM: spoe: Fix policy to close applets when SPOE connections are queued
+- DOC: Improve the lua documentation
+- DOC: config: Fix 'http-response send-spoe-group' documentation
+- MINOR: mux-h1/proxy: Add a proxy option to disable clear h2 upgrade
+- DOC/MINOR: fix typo in management document
+- BUG/MAJOR: h2: enforce stricter syntax checks on the :method pseudo-header
+- REGTESTS: add a test to prevent h2 desync attacks
+
+* Wed Aug 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.23-0
+- DOC: Explicitly state only IPv4 are supported by forwardfor/originalto options
+- BUG/MINOR: tools: fix parsing "us" unit for timers
+- DOC: clarify that compression works for HTTP/2
+- BUG/MEDIUM: sample: Fix adjusting size in field converter
+- BUG/MEDIUM: threads: Ignore current thread to end its harmless period
+- BUG/MINOR: http-fetch: Make method smp safe if headers were already forwarded
+- BUG/MINOR: http_htx: Remove BUG_ON() from http_get_stline() function
+- BUG/MINOR: logs: Report the true number of retries if there was no connection
+- BUG/MINOR: mux-h1: Release idle server H1 connection if data are received
+- BUG/MINOR: server: free srv.lb_nodes in free_server
+- BUG/MAJOR: mux-h2: Properly detect too large frames when decoding headers
+- BUG/MEDIUM: mux-h2: Fix dfl calculation when merging CONTINUATION frames
+- BUG/MEDIUM: config: fix cpu-map notation with both process and threads
+- BUG/MINOR: mworker/init: don't reset nb_oldpids in non-mworker cases
+- BUG/MINOR: mworker: don't use oldpids[] anymore for reload
+- BUG/MEDIUM: mux-h2: Properly handle shutdowns when received with data
+- BUG/MINOR: peers: remove useless table check if initial resync is finished
+- BUG/MEDIUM: peers: re-work connection to new process during reload.
+- BUG/MEDIUM: peers: re-work refcnt on table to protect against flush
+- BUG/MINOR: htx: Preserve HTX flags when draining data from an HTX message
+- BUG/MINOR: applet: Notify the other side if data were consumed by an applet
+- BUG/MEDIUM: peers: initialize resync timer to get an initial full resync
+- BUG/MEDIUM: peers: register last acked value as origin receiving a resync req
+- BUG/MEDIUM: peers: stop considering ack messages teaching a full resync
+- BUG/MEDIUM: peers: reset starting point if peers appears longly disconnected
+- BUG/MEDIUM: peers: reset commitupdate value in new conns
+- BUG/MEDIUM: peers: re-work updates lookup during the sync on the fly
+- BUG/MEDIUM: peers: reset tables stage flags stages on new conns
+- MINOR: peers: add informative flags about resync process for debugging
+- MINOR: hlua: Add error message relative to the Channel manipulation and
+  HTTP mode
+- BUG/MINOR: hlua: Don't rely on top of the stack when using Lua buffers
+- BUG/MEDIUM: cli: prevent memory leak on write errors
+- BUG/MINOR: stream: Decrement server current session counter on L7 retry
+- BUG/MINOR: stream: properly clear the previous error mask on L7 retries
+- BUG/MINOR: stream: Reset stream final state and si error type on L7 retry
+- BUG/MINOR: http_fetch: fix possible uninit sockaddr in fetch_url_ip/port
+- MINOR: channel: Rely on HTX version if appropriate in channel_may_recv()
+- BUG/MINOR: stream-int: Don't block reads in si_update_rx() if chn may receive
+- MEDIUM: mux-h1: Don't block reads when waiting for the other side
+- REGTESTS: Add script to test abortonclose option
+- BUG/MEDIUM: ebtree: Invalid read when looking for dup entry
+- BUG/MAJOR: server: prevent deadlock when using 'set maxconn server'
+- BUG/MEDIUM: filters: Exec pre/post analysers only one time per filter
+- BUG/MINOR: http-comp: Preserve HTTP_MSGF_COMPRESSIONG flag on the response
+- BUG/MINOR: http-ana: Handle L7 retries on refused early data before K/A aborts
+- BUG/MINOR: server: Missing calloc return value check in srv_parse_source
+- BUG/MINOR: peers: Missing calloc return value check in peers_register_table
+- BUG/MINOR: ssl: Missing calloc return value check in ssl_init_single_engine
+- BUG/MINOR: http: Missing calloc return value check in parse_http_req_capture
+- BUG/MINOR: proxy: Missing calloc return value check in proxy_parse_declare
+- BUG/MINOR: proxy: Missing calloc return value check in proxy_defproxy_cpy
+- BUG/MINOR: http: Missing calloc return value check while parsing
+  tcp-request/tcp-response
+- BUG/MINOR: http: Missing calloc return value check while parsing
+  tcp-request rule
+- BUG/MINOR: compression: Missing calloc return value check in
+  comp_append_type/algo
+- BUG/MINOR: worker: Missing calloc return value check in
+  mworker_env_to_proc_list
+- BUG/MINOR: http: Missing calloc return value check while parsing redirect rule
+- BUG/MINOR: http: Missing calloc return value check in make_arg_list
+- BUG/MINOR: proxy: Missing calloc return value check in chash_init_server_tree
+- BUG/MINOR: ssl: OCSP stapling does not work if expire too far in the future
+- BUG/MEDIUM: compression: Add a flag to know the filter is still
+  processing data
+- BUG/MEDIUM: dns: reset file descriptor if send returns an error
+- BUG/MAJOR: htx: Fix htx_defrag() when an HTX block is expanded
+- DOC: lua: Add a warning about buffers modification in HTTP
+- BUG/MINOR: stick-table: insert srv in used_name tree even with fixed id
+- BUG/MEDIUM: shctx: use at least thread-based locking on USE_PRIVATE_CACHE
+- BUG/MINOR: ssl: use atomic ops to update global shctx stats
+- BUG/MINOR: mworker: fix typo in chroot error message
+- BUG/MAJOR: queue: set SF_ASSIGNED when setting strm->target on dequeue
+- MINOR: mux-h2: obey http-ignore-probes during the preface
+- BUG/MEDIUM: dns: send messages on closed/reused fd if fd was detected broken
+- BUG/MEDIUM: spoe: Register pre/post analyzers in start_analyze
+  callback function
+- BUG/MAJOR: server: fix deadlock when changing maxconn via agent-check
+- MINOR: tcp-act: Add set-src/set-src-port for "tcp-request content" rules
+- DOC: config: Add missing actions in "tcp-request session" documentation
+- BUG/MINOR: resolvers: answser item list was randomly purged or errors
+- BUG/MEDIUM: server/cli: Fix ABBA deadlock when fqdn is set from the CLI
+- BUG/MINOR: server/cli: Fix locking in function processing "set server" command
+- BUG/MEDIUM: sock: make sure to never miss early connection failures
+- BUG/MINOR: cli: fix server name output in "show fd"
+- BUG/MINOR: stick-table: fix several printf sign errors dumping tables
+- DOC: stick-table: add missing documentation about gpt0 stored type
+- DOC: peers: fix the protocol tag name in the doc
+- DOC: config: use CREATE USER for mysql-check
+- BUG/MINOR: resolvers: Reset server IP when no ip is found in the response
+- MINOR: resolvers: Reset server IP on error in resolv_get_ip_from_response()
+- BUG/MINOR: peers: fix data_type bit computation more than 32 data_types
+- Revert "MINOR: tcp-act: Add set-src/set-src-port for "tcp-request
+  content" rules"
+- MINOR: pools/debug: slightly relax DEBUG_DONT_SHARE_POOLS
+- BUG/MINOR: pools: fix a possible memory leak in the lockless pool_flush()
+- MINOR: pools: do not maintain the lock during pool_flush()
+- BUG/MEDIUM: pools: Always update free_list in pool_gc().
+- MEDIUM: memory: make pool_gc() run under thread isolation
+- MEDIUM: pools: use a single pool_gc() function for locked and lockless
+- BUG/MAJOR: pools: fix possible race with free() in the lockless variant
+- CLEANUP: pools: remove now unused seq and pool_free_list
+- BUG/MINOR: server-state: load SRV resolution only if params match the config
+- BUG/MINOR: server: Forbid to set fqdn on the CLI if SRV resolution is enabled
+
 * Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.22-0
 - MINOR: time: also provide a global, monotonic global_now_ms timer
 - BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable

@@ -64,7 +64,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.4.2
+Version:           2.4.3
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -274,6 +274,57 @@ fi
 ################################################################################
 
 %changelog
+* Wed Aug 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.3-0
+- BUILD: http_htx: fix ci compilation error with isdigit for Windows
+- MINOR: mux_h2: define config to disable h2 websocket support
+- BUG/MINOR: ssl: Default-server configuration ignored by server
+- BUILD: add detection of missing important CFLAGS
+- BUILD: lua: silence a build warning with TCC
+- BUG/MEDIUM: mworker: do not register an exit handler if exit is expected
+- BUG/MINOR: mworker: do not export HAPROXY_MWORKER_REEXEC across programs
+- BUILD/MINOR: memprof fix macOs build.
+- BUG/MEDIUM: ssl_sample: fix segfault for srv samples on invalid request
+- BUG/MINOR: stats: Add missing agent stats on servers
+- BUG/MINOR: check: fix the condition to validate a port-less server
+- BUG/MINOR: resolvers: Use a null-terminated string to lookup in servers tree
+- BUG/MINOR: systemd: must check the configuration using -Ws
+- BUG/MINOR: mux-h1: Obey dontlognull option for empty requests
+- BUG/MINOR: mux-h2: Obey dontlognull option during the preface
+- BUG/MINOR: mux-h1: Be sure to swap H1C to splice mode when rcv_pipe()
+  is called
+- BUG/MEDIUM: mux-h2: Handle remaining read0 cases on partial frames
+- BUG/MINOR: connection: Add missing error labels to conn_err_code_str
+- BUG/MEDIUM: connection: close a rare race between idle conn close and takeover
+- BUG/MEDIUM: pollers: clear the sleeping bit after waking up, not before
+- BUG/MINOR: select: fix excess number of dead/skip reported
+- BUG/MINOR: poll: fix abnormally high skip_fd counter
+- BUG/MINOR: pollers: always program an update for migrated FDs
+- BUG/MINOR: fd: protect fd state harder against a concurrent takeover
+- DOC: internals: document the FD takeover process
+- BUILD: opentracing: fixed build when using pkg-config utility
+- BUG/MINOR: server: remove srv from px list on CLI 'add server' error
+- BUG/MINOR: server: update last_change on maint->ready transitions too
+- MINOR: server: unmark deprecated on enable health/agent cli
+- ADMIN: dyncookie: implement a simple dynamic cookie calculator
+- MINOR: spoe: Add a pointer on the filter config in the spoe_agent structure
+- BUG/MEDIUM: spoe: Create a SPOE applet if necessary when the last one
+  is released
+- BUG/MINOR: buffer: fix buffer_dump() formatting
+- BUG/MINOR: tcpcheck: Properly detect pending HTTP data in output buffer
+- DOC: Improve the lua documentation
+- DOC: config: Fix 'http-response send-spoe-group' documentation
+- BUG/MEDIUM: spoe: Fix policy to close applets when SPOE connections are queued
+- BUG/MEDIUM: cfgcheck: verify existing log-forward listeners during
+  config check
+- CLEANUP: assorted typo fixes in the code and comments
+- DOC/MINOR: fix typo in management document
+- MINOR: http: add a new function http_validate_scheme() to validate a scheme
+- BUG/MAJOR: h2: verify early that non-http/https schemes match the valid syntax
+- BUG/MAJOR: h2: verify that :path starts with a '/' before concatenating it
+- BUG/MAJOR: h2: enforce stricter syntax checks on the :method pseudo-header
+- BUG/MEDIUM: h2: give :authority precedence over Host
+- REGTESTS: add a test to prevent h2 desync attacks
+
 * Thu Jul 08 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.2-0
 - BUG/MINOR: server-state: load SRV resolution only if params match the config
 - BUG/MINOR: server: Forbid to set fqdn on the CLI if SRV resolution is enabled
