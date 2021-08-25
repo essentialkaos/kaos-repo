@@ -8,22 +8,22 @@
 
 ################################################################################
 
-%define jdk_major   232
-%define jdk_minor   b09
+%define jdk_major   292
+%define jdk_minor   b10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 852
+%define alt_priority 857
 
 ################################################################################
 
 Summary:            OpenJDK Runtime Environment (JDK 8)
 Name:               jdk8
 Epoch:              1
-Version:            1.8.0.%{jdk_major}.%{jdk_minor}
-Release:            0%{?dist}
+Version:            1.8.0.%{jdk_major}
+Release:            %{jdk_minor}%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -39,6 +39,9 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jdk = 1:1.8.0
 Provides:           jdk-lts = 1:1.8.0
@@ -97,10 +100,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 
 %{_sbindir}/update-alternatives --install $deps
 
-%postun
-if [[ $1 -eq 0 ]] ; then
-  %{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
-fi
+%preun
+%{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
 
 ################################################################################
 
@@ -112,6 +113,30 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jul 14 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.292-b10
+- Updated to the latest version
+
+* Fri Jan 29 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.282-b08
+- Updated to the latest version
+
+* Sat Dec 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.275-b01
+- Updated to the latest version
+
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.272-b10
+- Updated to the latest version
+
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.265.b01-0
+- Updated to the latest version
+
+* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.252.b09-0
+- Updated to the latest version
+
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.242.b08-0
+- Updated to the latest version
+
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-1
+- Fixed bug with removing previous version from alternatives
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-0
 - Updated to the latest version
 

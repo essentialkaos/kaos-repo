@@ -64,7 +64,7 @@ Summary:              NFS utilities and supporting clients and daemons for the k
 Name:                 nfs-utils
 Epoch:                1
 Version:              1.3.4
-Release:              3%{?dist}
+Release:              4%{?dist}
 License:              MIT and GPLv2 and GPLv2+ and BSD
 Group:                System Environment/Daemons
 URL:                  https://sourceforge.net/projects/nfs
@@ -245,9 +245,6 @@ fi
 %systemd_post nfs-config
 %systemd_post nfs-server
 
-# Make sure statd used the correct uid/gid.
-chown -R rpcuser:rpcuser %{rpcuser_home}/statd
-
 %preun
 if [[ $1 -eq 0 ]] ; then
   %systemd_preun nfs-client.target
@@ -309,6 +306,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-4
+- Removed unsafe owner change
+
 * Wed Feb 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-3
 - Rebuilt with the latest version of libevent
 

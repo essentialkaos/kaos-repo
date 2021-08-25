@@ -4,29 +4,23 @@
 
 ################################################################################
 
-%ifarch %ix86
-  %define optflags -O2 -g -march=i686
-%endif
-
-################################################################################
-
 %define _smp_mflags -j1
 
 ################################################################################
 
 Summary:         Data Acquisition Library
 Name:            daq
-Version:         2.0.6
-Release:         1%{?dist}
+Version:         2.0.7
+Release:         0%{?dist}
 License:         GPL
 Group:           Development/Libraries
-URL:             http://www.snort.org
+URL:             https://www.snort.org
 
 Source0:         https://www.snort.org/downloads/snort/%{name}-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   autoconf automake make gcc libtool flex
+BuildRequires:   autoconf automake >= 1.16 make gcc libtool flex
 BuildRequires:   libpcap-devel libdnet-devel bison zlib-devel
 
 Provides:        %{name} = %{version}-%{release}
@@ -53,6 +47,9 @@ Header files and static libraries for Data Acquisition Library.
 
 %build
 
+# Change hardcoded automake version to 1.16.x
+sed -i "s/am__api_version='1.15'/am__api_version='1.16'/" configure
+
 %configure --prefix=%{_prefix} \
            --enable-static
 
@@ -63,7 +60,8 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
 %clean
 rm -rf %{buildroot}
@@ -101,15 +99,19 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 2.0.7-0
+- Updated to the latest version
+- Removed unsafe owner change
+
 * Tue Sep 06 2016 Anton Novojilov <andy@essentialkaos.com> - 2.0.6-1
 - Added post install ldconfig execution
 - Fixed mutlithread build problems
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.0.6-0
-- Updated to latest version
+- Updated to the latest version
 
 * Wed Dec 17 2014 Anton Novojilov <andy@essentialkaos.com> - 2.0.4-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Oct 03 2014 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-0
 - Initial build

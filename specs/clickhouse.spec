@@ -1,11 +1,13 @@
 ################################################################################
 
 # rpmbuilder:github       yandex/ClickHouse
-# rpmbuilder:tag          v19.17.5.18-stable
+# rpmbuilder:tag          v21.1.2.15-stable
 
 ################################################################################
 
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+%global _python_bytecompile_errors_terminate_build 0
 
 ################################################################################
 
@@ -61,7 +63,7 @@
 
 Summary:           Yandex ClickHouse DBMS
 Name:              clickhouse
-Version:           19.17.5.18
+Version:           21.1.2.15
 Release:           0%{?dist}
 License:           APL 2.0
 Group:             Applications/Databases
@@ -73,12 +75,13 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     centos-release-scl devtoolset-8
+BuildRequires:     devtoolset-10-gcc-c++ devtoolset-10-binutils
 BuildRequires:     cmake3 openssl-devel libicu-devel libtool-ltdl-devel
-BuildRequires:     unixODBC-devel readline-devel librdkafka-devel lz4-devel
+BuildRequires:     unixODBC-devel readline-devel
+BuildRequires:     cyrus-sasl-devel
 
 Requires:          openssl libicu libtool-ltdl unixODBC readline
-Requires:          lz4 librdkafka
+Requires:          cyrus-sasl
 
 Requires(pre):     shadow-utils
 Requires(post):    systemd
@@ -100,7 +103,7 @@ system that allows generating analytical data reports in real time.
 Summary:           ClickHouse client binary
 Group:             Applications/Databases
 
-Requires:          %{name}-server = %{version}-%{release}
+Requires:          %{name}-common-static = %{version}-%{release}
 
 %description client
 This package contains client binary for ClickHouse DBMS.
@@ -158,16 +161,16 @@ This package contains test suite for ClickHouse DBMS.
 
 %build
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-8/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-10/root/usr/bin:$PATH"
 
 mkdir -p build
 
 pushd build
   cmake3 .. -DCMAKE_INSTALL_PREFIX=%{_prefix} \
-            -DENABLE_EMBEDDED_COMPILER=0 \
+            -DENABLE_EMBEDDED_COMPILER=1 \
             -DENABLE_TESTS=OFF \
-            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=False \
-            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=False \
+            -DUSE_INTERNAL_LZ4_LIBRARY:BOOL=True \
+            -DUSE_INTERNAL_RDKAFKA_LIBRARY:BOOL=True \
             -DGLIBC_COMPATIBILITY=OFF \
             -DCMAKE_BUILD_TYPE:STRING=Release \
             $CMAKE_OPTIONS
@@ -206,8 +209,8 @@ install -pm 644 debian/%{name}-server.cron.d \
 install -pm 644 debian/%{name}.limits \
                 %{buildroot}%{_sysconfdir}/security/limits.d/%{name}.conf
 
-install -pm 644 dbms/programs/server/config.xml \
-                dbms/programs/server/users.xml \
+install -pm 644 programs/server/config.xml \
+                programs/server/users.xml \
                 %{buildroot}%{_sysconfdir}/%{name}-server/
 
 install -dm 755 %{buildroot}%{_unitdir}
@@ -272,6 +275,7 @@ fi
 %{_bindir}/%{name}-client
 %{_bindir}/%{name}-compressor
 %{_bindir}/%{name}-extract-from-config
+%{_bindir}/%{name}-git-import
 %{_bindir}/%{name}-local
 %attr(0755, %{service_user}, %{service_group}) %{_sysconfdir}/%{name}-client/conf.d
 
@@ -295,16 +299,27 @@ fi
 
 %files test
 %defattr(-, root, root, -)
-%config(noreplace) %{_sysconfdir}/%{name}-client/client-test.xml
-%config(noreplace) %{_sysconfdir}/%{name}-server/server-test.xml
 %{_bindir}/%{name}-test
-%{_bindir}/%{name}-test-server
-%{_bindir}/%{name}-performance-test
 %{_datadir}/%{name}-test
 
 ################################################################################
 
 %changelog
+* Wed Feb 03 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 21.1.2.15-0
+- Updated to the latest stable release
+
+* Mon Jan 11 2021 Gleb Goncharov <g.goncharov@fun-box.ru> - 20.8.11.17-0
+- Updated to the latest stable release
+
+* Fri May 15 2020 Anton Novojilov <andy@essentialkaos.com> - 20.3.8.53-0
+- Updated to the latest stable release
+
+* Wed Mar 25 2020 Anton Novojilov <andy@essentialkaos.com> - 19.17.9.60-0
+- Updated to the latest stable release
+
+* Tue Mar 24 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 19.17.5.18-1
+- Removed dependency of clickhouse-client from clickhouse-server
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 19.17.5.18-0
 - Updated to the latest stable release
 

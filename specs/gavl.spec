@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -36,12 +40,14 @@
 Summary:            GMerlin Audio Video Library
 Name:               gavl
 Version:            1.4.0
-Release:            0%{?dist}
+Release:            1%{?dist}
 License:            GPLv2+
 Group:              System Environment/Libraries
 URL:                http://gmerlin.sourceforge.net/gavl_frame.html
 
-Source0:            http://downloads.sourceforge.net/gmerlin/%{name}-%{version}.tar.gz
+Source0:            https://downloads.sourceforge.net/gmerlin/%{name}-%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -69,14 +75,20 @@ This is the package containing the header files for gavl library.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
+%if 0%{?rhel} >= 7
+  sed -i 's/INCLUDES/AM_CPPFLAGS/g' configure.ac
+%endif
+
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
-%{__automake}
+%{__automake} --add-missing
 
 %configure --disable-static
 
@@ -93,9 +105,11 @@ rm -Rf %{buildroot}%{_docdir}/%{name}
 %clean
 rm -rf %{buildroot}
 
-%post -p /sbin/ldconfig
+%post
+/sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -115,5 +129,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-1
+- Fixed problems with executing ldconfig
+
 * Wed Apr 13 2016 Gleb Goncharov <yum@gongled.me> - 1.4.0-0
 - Initial build

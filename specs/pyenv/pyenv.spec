@@ -39,7 +39,7 @@
 
 Summary:         Simple Python version management utility
 Name:            pyenv
-Version:         1.2.16
+Version:         1.2.20
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -84,7 +84,6 @@ from the source codes.
 
 %prep
 %{crc_check}
-
 %setup -qn %{name}-%{version}
 
 %patch0 -p1
@@ -138,6 +137,33 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Sep 08 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.2.20-0
+- python-build: Add CPython 3.8.5
+- python-build: Add CPython 3.8.4
+- python-build: Add CPython 3.7.8
+- python-build: Add CPython 3.6.11
+- pyenv-install: Make grep detection more robust
+- python-build: Fix has_tar_xz_support function on FreeBSD
+
+* Tue Sep 08 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.2.19-0
+- python-build: Add CPython 3.8.3
+- python-build: Add CPython 2.7.18
+- python-build: Add CPython 3.10-dev
+- python-build: Add anaconda3-2020.02
+- python-build: Add stackless 3.7.5
+
+* Tue Sep 08 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.2.18-0
+- python-build: Update download URLs for old OpenSSL releases
+- python-build: Prevent brew: command not found messages that are not errors
+
+* Tue Sep 08 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.2.17-0
+- python-build: Add CPython 3.8.2
+- python-build: Add CPython 3.7.7
+- python-build: Add Miniconda versions newer than 4.3.30
+- python-build: Add Micropython 1.12
+- python-build: Add Add CPython 3.9.0a4
+- pyenv: Fix sed illegal byte sequence error
+
 * Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.2.16-0
 - python-build: Add CPython 3.8.1
 - python-build: Add CPython 3.7.6

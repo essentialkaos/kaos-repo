@@ -25,14 +25,15 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-bisect--helper
   exist {lib_exec_dir}/git-blame
   exist {lib_exec_dir}/git-branch
+  exist {lib_exec_dir}/git-bugreport
   exist {lib_exec_dir}/git-bundle
   exist {lib_exec_dir}/git-cat-file
   exist {lib_exec_dir}/git-check-attr
   exist {lib_exec_dir}/git-check-ignore
   exist {lib_exec_dir}/git-check-mailmap
+  exist {lib_exec_dir}/git-check-ref-format
   exist {lib_exec_dir}/git-checkout
   exist {lib_exec_dir}/git-checkout-index
-  exist {lib_exec_dir}/git-check-ref-format
   exist {lib_exec_dir}/git-cherry
   exist {lib_exec_dir}/git-cherry-pick
   exist {lib_exec_dir}/git-clean
@@ -52,9 +53,9 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-diff
   exist {lib_exec_dir}/git-diff-files
   exist {lib_exec_dir}/git-diff-index
+  exist {lib_exec_dir}/git-diff-tree
   exist {lib_exec_dir}/git-difftool
   exist {lib_exec_dir}/git-difftool--helper
-  exist {lib_exec_dir}/git-diff-tree
   exist {lib_exec_dir}/git-env--helper
   exist {lib_exec_dir}/git-fast-export
   exist {lib_exec_dir}/git-fast-import
@@ -63,6 +64,7 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-filter-branch
   exist {lib_exec_dir}/git-fmt-merge-msg
   exist {lib_exec_dir}/git-for-each-ref
+  exist {lib_exec_dir}/git-for-each-repo
   exist {lib_exec_dir}/git-format-patch
   exist {lib_exec_dir}/git-fsck
   exist {lib_exec_dir}/git-fsck-objects
@@ -80,13 +82,13 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-init-db
   exist {lib_exec_dir}/git-instaweb
   exist {lib_exec_dir}/git-interpret-trailers
-  exist {lib_exec_dir}/git-legacy-stash
   exist {lib_exec_dir}/git-log
   exist {lib_exec_dir}/git-ls-files
   exist {lib_exec_dir}/git-ls-remote
   exist {lib_exec_dir}/git-ls-tree
   exist {lib_exec_dir}/git-mailinfo
   exist {lib_exec_dir}/git-mailsplit
+  exist {lib_exec_dir}/git-maintenance
   exist {lib_exec_dir}/git-merge
   exist {lib_exec_dir}/git-merge-base
   exist {lib_exec_dir}/git-merge-file
@@ -97,9 +99,9 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-merge-recursive
   exist {lib_exec_dir}/git-merge-resolve
   exist {lib_exec_dir}/git-merge-subtree
+  exist {lib_exec_dir}/git-merge-tree
   exist {lib_exec_dir}/git-mergetool
   exist {lib_exec_dir}/git-mergetool--lib
-  exist {lib_exec_dir}/git-merge-tree
   exist {lib_exec_dir}/git-mktag
   exist {lib_exec_dir}/git-mktree
   exist {lib_exec_dir}/git-multi-pack-index
@@ -110,7 +112,6 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-pack-objects
   exist {lib_exec_dir}/git-pack-redundant
   exist {lib_exec_dir}/git-pack-refs
-  exist {lib_exec_dir}/git-parse-remote
   exist {lib_exec_dir}/git-patch-id
   exist {lib_exec_dir}/git-prune
   exist {lib_exec_dir}/git-prune-packed
@@ -136,20 +137,20 @@ command "-" "Check tools"
   exist {lib_exec_dir}/git-rerere
   exist {lib_exec_dir}/git-reset
   exist {lib_exec_dir}/git-restore
-  exist {lib_exec_dir}/git-revert
   exist {lib_exec_dir}/git-rev-list
   exist {lib_exec_dir}/git-rev-parse
+  exist {lib_exec_dir}/git-revert
   exist {lib_exec_dir}/git-rm
   exist {lib_exec_dir}/git-send-pack
-  exist {lib_exec_dir}/git-shell
   exist {lib_exec_dir}/git-sh-i18n
   exist {lib_exec_dir}/git-sh-i18n--envsubst
+  exist {lib_exec_dir}/git-sh-setup
+  exist {lib_exec_dir}/git-shell
   exist {lib_exec_dir}/git-shortlog
   exist {lib_exec_dir}/git-show
   exist {lib_exec_dir}/git-show-branch
   exist {lib_exec_dir}/git-show-index
   exist {lib_exec_dir}/git-show-ref
-  exist {lib_exec_dir}/git-sh-setup
   exist {lib_exec_dir}/git-sparse-checkout
   exist {lib_exec_dir}/git-stage
   exist {lib_exec_dir}/git-stash
@@ -187,14 +188,15 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-bisect--helper 755
   mode {lib_exec_dir}/git-blame 755
   mode {lib_exec_dir}/git-branch 755
+  mode {lib_exec_dir}/git-bugreport 755
   mode {lib_exec_dir}/git-bundle 755
   mode {lib_exec_dir}/git-cat-file 755
   mode {lib_exec_dir}/git-check-attr 755
   mode {lib_exec_dir}/git-check-ignore 755
   mode {lib_exec_dir}/git-check-mailmap 755
+  mode {lib_exec_dir}/git-check-ref-format 755
   mode {lib_exec_dir}/git-checkout 755
   mode {lib_exec_dir}/git-checkout-index 755
-  mode {lib_exec_dir}/git-check-ref-format 755
   mode {lib_exec_dir}/git-cherry 755
   mode {lib_exec_dir}/git-cherry-pick 755
   mode {lib_exec_dir}/git-clean 755
@@ -214,9 +216,9 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-diff 755
   mode {lib_exec_dir}/git-diff-files 755
   mode {lib_exec_dir}/git-diff-index 755
+  mode {lib_exec_dir}/git-diff-tree 755
   mode {lib_exec_dir}/git-difftool 755
   mode {lib_exec_dir}/git-difftool--helper 755
-  mode {lib_exec_dir}/git-diff-tree 755
   mode {lib_exec_dir}/git-env--helper 755
   mode {lib_exec_dir}/git-fast-export 755
   mode {lib_exec_dir}/git-fast-import 755
@@ -225,6 +227,7 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-filter-branch 755
   mode {lib_exec_dir}/git-fmt-merge-msg 755
   mode {lib_exec_dir}/git-for-each-ref 755
+  mode {lib_exec_dir}/git-for-each-repo 755
   mode {lib_exec_dir}/git-format-patch 755
   mode {lib_exec_dir}/git-fsck 755
   mode {lib_exec_dir}/git-fsck-objects 755
@@ -242,13 +245,13 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-init-db 755
   mode {lib_exec_dir}/git-instaweb 755
   mode {lib_exec_dir}/git-interpret-trailers 755
-  mode {lib_exec_dir}/git-legacy-stash 755
   mode {lib_exec_dir}/git-log 755
   mode {lib_exec_dir}/git-ls-files 755
   mode {lib_exec_dir}/git-ls-remote 755
   mode {lib_exec_dir}/git-ls-tree 755
   mode {lib_exec_dir}/git-mailinfo 755
   mode {lib_exec_dir}/git-mailsplit 755
+  mode {lib_exec_dir}/git-maintenance 755
   mode {lib_exec_dir}/git-merge 755
   mode {lib_exec_dir}/git-merge-base 755
   mode {lib_exec_dir}/git-merge-file 755
@@ -259,9 +262,9 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-merge-recursive 755
   mode {lib_exec_dir}/git-merge-resolve 755
   mode {lib_exec_dir}/git-merge-subtree 755
+  mode {lib_exec_dir}/git-merge-tree 755
   mode {lib_exec_dir}/git-mergetool 755
   mode {lib_exec_dir}/git-mergetool--lib 644
-  mode {lib_exec_dir}/git-merge-tree 755
   mode {lib_exec_dir}/git-mktag 755
   mode {lib_exec_dir}/git-mktree 755
   mode {lib_exec_dir}/git-multi-pack-index 755
@@ -272,7 +275,6 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-pack-objects 755
   mode {lib_exec_dir}/git-pack-redundant 755
   mode {lib_exec_dir}/git-pack-refs 755
-  mode {lib_exec_dir}/git-parse-remote 644
   mode {lib_exec_dir}/git-patch-id 755
   mode {lib_exec_dir}/git-prune 755
   mode {lib_exec_dir}/git-prune-packed 755
@@ -298,20 +300,20 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-rerere 755
   mode {lib_exec_dir}/git-reset 755
   mode {lib_exec_dir}/git-restore 755
-  mode {lib_exec_dir}/git-revert 755
   mode {lib_exec_dir}/git-rev-list 755
   mode {lib_exec_dir}/git-rev-parse 755
+  mode {lib_exec_dir}/git-revert 755
   mode {lib_exec_dir}/git-rm 755
   mode {lib_exec_dir}/git-send-pack 755
-  mode {lib_exec_dir}/git-shell 755
   mode {lib_exec_dir}/git-sh-i18n 644
   mode {lib_exec_dir}/git-sh-i18n--envsubst 755
+  mode {lib_exec_dir}/git-sh-setup 644
+  mode {lib_exec_dir}/git-shell 755
   mode {lib_exec_dir}/git-shortlog 755
   mode {lib_exec_dir}/git-show 755
   mode {lib_exec_dir}/git-show-branch 755
   mode {lib_exec_dir}/git-show-index 755
   mode {lib_exec_dir}/git-show-ref 755
-  mode {lib_exec_dir}/git-sh-setup 644
   mode {lib_exec_dir}/git-sparse-checkout 755
   mode {lib_exec_dir}/git-stage 755
   mode {lib_exec_dir}/git-stash 755
@@ -338,8 +340,58 @@ command "-" "Check tools"
   mode {lib_exec_dir}/git-worktree 755
   mode {lib_exec_dir}/git-write-tree 755
 
+command "-" "Check merge tools"
+  exist {lib_exec_dir}/mergetools/araxis
+  exist {lib_exec_dir}/mergetools/bc
+  exist {lib_exec_dir}/mergetools/codecompare
+  exist {lib_exec_dir}/mergetools/deltawalker
+  exist {lib_exec_dir}/mergetools/diffmerge
+  exist {lib_exec_dir}/mergetools/diffuse
+  exist {lib_exec_dir}/mergetools/ecmerge
+  exist {lib_exec_dir}/mergetools/emerge
+  exist {lib_exec_dir}/mergetools/examdiff
+  exist {lib_exec_dir}/mergetools/guiffy
+  exist {lib_exec_dir}/mergetools/gvimdiff
+  exist {lib_exec_dir}/mergetools/kdiff3
+  exist {lib_exec_dir}/mergetools/kompare
+  exist {lib_exec_dir}/mergetools/meld
+  exist {lib_exec_dir}/mergetools/nvimdiff
+  exist {lib_exec_dir}/mergetools/opendiff
+  exist {lib_exec_dir}/mergetools/p4merge
+  exist {lib_exec_dir}/mergetools/smerge
+  exist {lib_exec_dir}/mergetools/tkdiff
+  exist {lib_exec_dir}/mergetools/tortoisemerge
+  exist {lib_exec_dir}/mergetools/vimdiff
+  exist {lib_exec_dir}/mergetools/winmerge
+  exist {lib_exec_dir}/mergetools/xxdiff
+
+  mode {lib_exec_dir}/mergetools/araxis 644
+  mode {lib_exec_dir}/mergetools/bc 644
+  mode {lib_exec_dir}/mergetools/codecompare 644
+  mode {lib_exec_dir}/mergetools/deltawalker 644
+  mode {lib_exec_dir}/mergetools/diffmerge 644
+  mode {lib_exec_dir}/mergetools/diffuse 644
+  mode {lib_exec_dir}/mergetools/ecmerge 644
+  mode {lib_exec_dir}/mergetools/emerge 644
+  mode {lib_exec_dir}/mergetools/examdiff 644
+  mode {lib_exec_dir}/mergetools/guiffy 644
+  mode {lib_exec_dir}/mergetools/gvimdiff 644
+  mode {lib_exec_dir}/mergetools/kdiff3 644
+  mode {lib_exec_dir}/mergetools/kompare 644
+  mode {lib_exec_dir}/mergetools/meld 644
+  mode {lib_exec_dir}/mergetools/nvimdiff 644
+  mode {lib_exec_dir}/mergetools/opendiff 644
+  mode {lib_exec_dir}/mergetools/p4merge 644
+  mode {lib_exec_dir}/mergetools/smerge 644
+  mode {lib_exec_dir}/mergetools/tkdiff 644
+  mode {lib_exec_dir}/mergetools/tortoisemerge 644
+  mode {lib_exec_dir}/mergetools/vimdiff 644
+  mode {lib_exec_dir}/mergetools/winmerge 644
+  mode {lib_exec_dir}/mergetools/xxdiff 644
+
 command "git --version" "Check version info"
-  expect "git version"
+  wait-output 5.0
+  output-match "git version 2\.[0-9]+.[0-9]+"
   exit 0
 
 command "git clone {repo}" "Clone repository"

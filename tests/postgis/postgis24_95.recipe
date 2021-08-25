@@ -1,12 +1,12 @@
 # Bibop recipe for PostGIS 2.4 for PostgreSQL 9.5
 # See more: https://kaos.sh/bibop
 
-pkg postgresql95-server postgis24_95 postgis24_95-client postgis24_95-devel postgis24_95-utils
+pkg postgresql95-server postgis24_95 postgis24_95-client postgis24_95-scripts postgis24_95-devel postgis24_95-utils
 
 fast-finish yes
 
 var postgis_major_version 2.4
-var postgis_version       2.4.8
+var postgis_version       2.4.9
 var postgres_version      9.5
 var pkg_ver               24_95
 
@@ -20,8 +20,6 @@ var contrib_dir   {data_dir}/contrib/postgis-{postgis_major_version}
 var extension_dir {data_dir}/extension
 
 command "-" "Check libraries"
-  lib-loaded liblwgeom-{postgis_major_version}.so.*
-
   exist {lib_dir}/address_standardizer.so
   exist {lib_dir}/postgis-{postgis_major_version}.so
   exist {lib_dir}/postgis_topology-{postgis_major_version}.so
@@ -31,6 +29,9 @@ command "-" "Check libraries"
   mode {lib_dir}/postgis-{postgis_major_version}.so 755
   mode {lib_dir}/postgis_topology-{postgis_major_version}.so 755
   mode {lib_dir}/rtpostgis-{postgis_major_version}.so 755
+
+command "-" "Check GEOM library"
+  lib-loaded liblwgeom-{postgis_major_version}.so.*
 
   exist {lib_dir}/liblwgeom.a
   exist {lib_dir}/liblwgeom.la
@@ -59,7 +60,6 @@ command "-" "Check SQL files"
   exist {extension_dir}/address_standardizer.sql
   exist {extension_dir}/postgis--{postgis_version}.sql
   exist {extension_dir}/postgis_tiger_geocoder--{postgis_version}.sql
-  exist {extension_dir}/postgis_tiger_geocoder.sql
   exist {extension_dir}/postgis_topology--{postgis_version}.sql
 
 command "-" "Check client binaries"
@@ -67,7 +67,11 @@ command "-" "Check client binaries"
   app raster2pgsql
   app shp2pgsql
 
-command "-" "Check utilities"
+  link /bin/pgsql2shp {bin_dir}/postgis-{postgis_major_version}/pgsql2shp
+  link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
+  link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
+
+command "-" "Check scripts"
   exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
   exist {utils_dir}/create_undef.pl
   exist {utils_dir}/create_unpackaged.pl

@@ -46,36 +46,39 @@
 
 ################################################################################
 
-%define hp_user           %{name}
-%define hp_user_id        188
-%define hp_group          %{name}
-%define hp_group_id       188
-%define hp_homedir        %{_localstatedir}/lib/%{name}
-%define hp_confdir        %{_sysconfdir}/%{name}
-%define hp_datadir        %{_datadir}/%{name}
+%define orig_name         haproxy
+%define major_ver         18
 
-%define lua_ver           5.3.5
-%define pcre_ver          8.43
-%define openssl_ver       1.1.1d
-%define ncurses_ver       6.1
-%define readline_ver      8.0
+%define hp_user           %{orig_name}
+%define hp_user_id        188
+%define hp_group          %{orig_name}
+%define hp_group_id       188
+%define hp_homedir        %{_localstatedir}/lib/%{orig_name}
+%define hp_confdir        %{_sysconfdir}/%{orig_name}
+%define hp_datadir        %{_datadir}/%{orig_name}
+
+%define lua_ver           5.3.6
+%define pcre_ver          8.45
+%define openssl_ver       1.1.1k
+%define ncurses_ver       6.2
+%define readline_ver      8.1
 
 ################################################################################
 
-Name:              haproxy
+Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           1.8.23
+Version:           1.8.30
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
 Group:             System Environment/Daemons
 
-Source0:           https://www.haproxy.org/download/1.8/src/%{name}-%{version}.tar.gz
-Source1:           %{name}.init
-Source2:           %{name}.cfg
-Source3:           %{name}.logrotate
-Source4:           %{name}.sysconfig
-Source5:           %{name}.service
+Source0:           https://www.haproxy.org/download/1.8/src/%{orig_name}-%{version}.tar.gz
+Source1:           %{orig_name}.init
+Source2:           %{orig_name}.cfg
+Source3:           %{orig_name}.logrotate
+Source4:           %{orig_name}.sysconfig
+Source5:           %{orig_name}.service
 
 Source10:          https://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:          https://ftp.pcre.org/pub/pcre/pcre-%{pcre_ver}.tar.gz
@@ -90,20 +93,12 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     make zlib-devel
 BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
 
-Requires:          setup >= 2.8.14-14 kaosv >= 2.15
+Requires:          setup >= 2.8.14-14 kaosv >= 2.16
 
-%if 0%{?rhel} >= 7
 Requires(pre):     shadow-utils
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
-%else
-Requires(pre):     shadow-utils
-Requires(post):    chkconfig
-Requires(preun):   chkconfig
-Requires(preun):   initscripts
-Requires(postun):  initscripts
-%endif
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -124,7 +119,7 @@ possibility not to expose fragile web servers to the net.
 %prep
 %{crc_check}
 
-%setup -q
+%setup -qn %{orig_name}-%{version}
 
 tar xzvf %{SOURCE10}
 tar xzvf %{SOURCE11}
@@ -217,19 +212,17 @@ rm -rf %{buildroot}
 %{__make} install-bin DESTDIR=%{buildroot} PREFIX=%{_prefix}
 %{__make} install-man DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
-install -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-install -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{name}.cfg
-install -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-install -pDm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pDm 0755 %{SOURCE1} %{buildroot}%{_initrddir}/%{orig_name}
+install -pDm 0644 %{SOURCE2} %{buildroot}%{hp_confdir}/%{orig_name}.cfg
+install -pDm 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{orig_name}
+install -pDm 0644 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/%{orig_name}
 
 install -dm 0755 %{buildroot}%{hp_homedir}
 install -dm 0755 %{buildroot}%{hp_datadir}
 install -dm 0755 %{buildroot}%{_bindir}
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
-%endif
 
 install -pm 0755 ./contrib/halog/halog %{buildroot}%{_bindir}/halog
 install -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
@@ -251,55 +244,356 @@ fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
-  %{__sysctl} enable %{name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
+  %{__sysctl} enable %{orig_name}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]]; then
-%if 0%{?rhel} >= 7
-  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
-  %{__sysctl} stop %{name}.service &>/dev/null || :
-%else
-  %{__service} %{name} stop &>/dev/null || :
-  %{__chkconfig} --del %{name} &>/dev/null || :
-%endif
+  %{__sysctl} --no-reload disable %{orig_name}.service &>/dev/null || :
+  %{__sysctl} stop %{orig_name}.service &>/dev/null || :
 fi
 
 %postun
-%if 0%{?rhel} >= 7
 if [[ $1 -ge 1 ]] ; then
   %{__sysctl} daemon-reload &>/dev/null || :
 fi
-%endif
 
 ################################################################################
 
 %files
 %defattr(-, root, root, -)
-%doc CHANGELOG LICENSE README doc/*
-%doc examples/*.cfg
+%doc CHANGELOG LICENSE README doc/* examples/*.cfg
 %dir %{hp_datadir}
 %dir %{hp_confdir}
-%config(noreplace) %{hp_confdir}/%{name}.cfg
-%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%config(noreplace) %{hp_confdir}/%{orig_name}.cfg
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{orig_name}
+%config(noreplace) %{_sysconfdir}/sysconfig/%{orig_name}
 %{hp_datadir}/*
-%{_initrddir}/%{name}
-%if 0%{?rhel} >= 7
-%{_unitdir}/%{name}.service
-%endif
-%{_sbindir}/%{name}
+%{_initrddir}/%{orig_name}
+%{_unitdir}/%{orig_name}.service
+%{_sbindir}/%{orig_name}
 %{_bindir}/halog
-%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/%{orig_name}.1.gz
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
 
 ################################################################################
 
 %changelog
+* Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.30-0
+- MINOR: time: also provide a global, monotonic global_now_ms timer
+- BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable
+- BUG/MEDIUM: time: make sure to always initialize the global tick
+- MINOR: tools: make url2ipv4 return the exact number of bytes parsed
+- BUG/MINOR: http_fetch: make hdr_ip() reject trailing characters
+- BUG/MINOR: tcp: fix silent-drop workaround for IPv6
+- BUILD: tcp: use IPPROTO_IPV6 instead of SOL_IPV6 on FreeBSD/MacOS
+- BUG/MINOR: http_fetch: make hdr_ip() resistant to empty fields
+
+* Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.29-0
+- BUG/MINOR: sample: Memory leak of sample_expr structure in case of error
+- BUILD/MINOR: lua: define _GNU_SOURCE for LLONG_MAX
+- BUG/MINOR: config: fix leak on proxy.conn_src.bind_hdr_name
+- DOC: management: fix "show resolvers" alphabetical ordering
+- BUG/MINOR: stick-table: Always call smp_fetch_src() with a valid arg list
+- BUG/MINOR: xxhash: make sure armv6 uses memcpy()
+- CLEANUP: remove unused src/cfgparse-listen.c
+- BUG/MINOR: server: re-align state file fields number
+- BUG/MINOR: server: Fix server-state-file-name directive
+- CLEANUP: deinit: release global and per-proxy server-state variables on deinit
+- BUG/MEDIUM: config: don't pick unset values from last defaults section
+- BUG/MINOR: server: Don't call fopen() with server-state filepath set to NULL
+- CLEANUP: channel: fix comment in ci_putblk.
+- BUG/MINOR: server: Remove RMAINT from admin state when loading server state
+- BUG/MINOR: session: atomically increment the tracked sessions counter
+- BUG/MINOR: checks: properly handle wrapping time in __health_adjust()
+- BUG/MINOR: sample: Always consider zero size string samples as unsafe
+- BUG/MINOR: server: Init params before parsing a new server-state line
+- BUG/MINOR: server: Be sure to cut the last parsed field of a server-state line
+- BUG/MEDIUM: proxy: use thread-safe stream killing on hard-stop
+- BUG/MEDIUM: cli/shutdown sessions: make it thread-safe
+- BUG/MINOR: http-ana: Only consider dst address to process originalto option
+- BUG/MINOR: tcp-act: Don't forget to set the original port for
+  IPv4 set-dst rule
+- BUG/MINOR: connection: Use the client's dst family for adressless servers
+- BUG/MEDIUM: spoe: Kill applets if there are pending connections and
+  nbthread > 1
+- BUG/MAJOR: spoe: Be sure to remove all references on a released spoe applet
+- BUG/MEDIUM: spoe: Explicitly wakeup SPOE stream if waiting for more data
+- DOC: spoe: Add a note about fragmentation support in HAProxy
+- BUG/MEDIUM: dns: Consider the fact that dns answers are case-insensitive
+- BUG/MINOR: hlua: Don't strip last non-LWS char in hlua_pushstrippedstring()
+- BUG/MINOR: ssl: don't truncate the file descriptor to 16 bits in debug mode
+- BUG/MEDIUM: session: NULL dereference possible when accessing the listener
+- BUG/MEDIUM: filters: Set CF_FL_ANALYZE on channels when filters are attached
+- BUG/MINOR: proxy/session: Be sure to have a listener to increment its counters
+- CLEANUP: tcp-rules: add missing actions in the tcp-request error message
+- BUG/MINOR: resolvers: Consider server to have no IP on DNS resolution error
+- BUG/MINOR: resolvers: Add missing case-insensitive comparisons
+  of DNS hostnames
+- MINOR: time: export the global_now variable
+- OPTIM: freq-ctr: don't take the date lock for most updates
+- BUG/MINOR: freq_ctr/threads: make use of the last updated global time
+
+* Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.28-0
+- BUG/MINOR: config: copy extra cookie attributes from dfl proxy
+- BUG/MINOR: http-fetch: Extract cookie value even when no cookie name
+- BUG/MINOR: http-fetch: Fix calls w/o parentheses of the cookie sample fetches
+- MINOR: spoe: Don't close connection in sync mode on processing timeout
+- DOC: config: Move req.hdrs and req.hdrs_bin in L7 samples fetches section
+- BUG/MINOR: lua: lua-load doesn't check its parameters
+- BUG/MINOR: lua: Post init register function are not executed beyond
+  the first one
+- BUG/MINOR: lua: Some lua init operation are processed unsafe
+- MINOR: actions: Export actions lookup functions
+- MINOR: actions: add a function returning a service pointer from its name
+- MINOR: cli: add a function to look up a CLI service description
+- BUG/MINOR: lua: warn when registering action, conv, sf, cli or applet
+  multiple times
+- DOC/MINOR: Fix formatting in Management Guide
+- DOC: email change of the DeviceAtlas maintainer
+- BUG/MINOR: tools: make parse_time_err() more strict on the timer validity
+- BUG/MINOR: tools: Reject size format not starting by a digit
+- BUG/MEDIUM: lb-leastconn: Reposition a server using the right eweight
+- CLEANUP: lua: Remove declaration of an inexistant function
+- CLEANUP: stream: remove an obsolete debugging test
+- BUG/MEDIUM: mworker: fix again copy_argv()
+- BUILD: Makefile: have "make clean" destroy .o/.a/.s in contrib subdirs as well
+- CONTRIB: halog: fix build issue caused by %%L printf format
+- CONTRIB: halog: mark the has_zero* functions unused
+- CONTRIB: halog: fix signed/unsigned build warnings on counts and timestamps
+- BUILD: plock: remove dead code that causes a warning in gcc 11
+- BUILD: hpack: hpack-tbl-t.h uses VAR_ARRAY but does not include compiler.h
+- MINOR: atomic: don't use ; to separate instruction on aarch64.
+- BUG/MINOR: cfgparse: Fail if the strdup() for `rule->be.name` for
+  `use_backend` fails
+- SCRIPTS: improve announce-release to support different tag and versions
+- SCRIPTS: make announce release support preparing announces before tag exists
+- BUG/MINOR: srv: do not init address if backend is disabled
+- DOC: fix some spelling issues over multiple files
+- SCRIPTS: announce-release: fix typo in help message
+
+* Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.27-0
+- BUG/MINOR: dns: ignore trailing dot
+- BUG/MEDIUM: mux-h2: Don't fail if nothing is parsed for a legacy chunk
+  response
+- BUG/MEDIUM: map/lua: Return an error if a map is loaded during runtime
+- BUG/MINOR: lua: Check argument type to convert it to IPv4/IPv6 arg validation
+- BUG/MINOR: lua: Check argument type to convert it to IP mask in arg validation
+- BUG/MINOR: stats: use strncmp() instead of memcmp() on health states
+- BUG/MINOR: reload: do not fail when no socket is sent
+- BUG/MINOR: startup: haproxy -s cause 100% cpu
+- BUG/MEDIUM: ssl: check OCSP calloc in ssl_sock_load_ocsp()
+- BUG/MINOR: threads: work around a libgcc_s issue with chrooting
+- BUILD: thread: limit the libgcc_s workaround to glibc only
+- MINOR: Commit .gitattributes
+- CLEANUP: Update .gitignore
+- BUILD: threads: better workaround for late loading of libgcc_s
+- BUG/MEDIUM: pattern: Renew the pattern expression revision when it is pruned
+- BUG/MEDIUM: pattern: fix memory leak in regex pattern functions
+- BUG/MEDIUM: ssl: does not look for all SNIs before chosing a certificate
+- BUG/MINOR: ssl: verifyhost is case sensitive
+- BUG/MEDIUM: h2: report frame bits only for handled types
+- BUG/MINOR: config: Fix memory leak on config parse listen
+- BUG/MEDIUM: listeners: do not pause foreign listeners
+- DOC: agent-check: fix typo in "fail" word expected reply
+- REGTESTS: add a few load balancing tests
+- REGTEST: fix host part in balance-uri-path-only.vtc
+- REGTEST: make abns_socket.vtc require 1.8
+- REGTEST: make map_regm_with_backref require 1.7
+- DOC: ssl: crt-list negative filters are only a hint
+- MINOR: counters: fix a typo in comment
+- BUG/MINOR: stats: fix validity of the json schema
+- MINOR: hlua: Display debug messages on stderr only in debug mode
+- BUG/MEDIUM: spoe: Unset variable instead of set it if no data provided
+- BUG/MEDIUM: lb: Always lock the server when calling server_{take,drop}_conn
+- BUG/MINOR: queue: properly report redistributed connections
+- BUG/MEDIUM: server: support changing the slowstart value from state-file
+- BUG/MAJOR: mux-h2: Don't try to send data if we know it is no longer possible
+- BUG/MINOR: extcheck: add missing checks on extchk_setenv()
+- BUG/MINOR: server: fix srv downtime calcul on starting
+- BUG/MINOR: server: fix down_time report for stats
+- BUG/MINOR: lua: initialize sample before using it
+- BUG/MINOR: cache: Inverted variables in http_calc_maxage function
+- BUG/MEDIUM: filters: Don't try to init filters for disabled proxies
+- BUG/MINOR: server: Set server without addr but with dns in RMAINT on startup
+- MINOR: server: Copy configuration file and line for server templates
+- BUG/MINOR: filters: Skip disabled proxies during startup only
+
+* Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.26-0
+- BUILD: chunk: properly declare pool_head_trash as extern
+- BUILD: cache: avoid a build warning with some compilers/linkers
+- BUG/MINOR: ssl: default settings for ssl server options are not used
+- BUG/MINOR: tools: fix the i386 version of the div64_32 function
+- DOC: option logasap does not depend on mode
+- BUG/MINOR: check: Update server address and port to execute an external check
+- BUG/MINOR: checks: Respect the no-check-ssl option
+- BUG/MINOR: checks/server: use_ssl member must be signed
+- BUG/MINOR: checks: chained expect will not properly wait for enough data
+- BUG/MEDIUM: capture: capture-req/capture-res converters crash without a stream
+- BUG/MEDIUM: capture: capture.{req,res}.* crash without a stream
+- BUG/MEDIUM: http: the "http_first_req" sample fetch could crash without
+  a steeam
+- BUG/MEDIUM: http: the "unique-id" sample fetch could crash without a steeam
+- BUG/MEDIUM: shctx: really check the lock's value while waiting
+- BUG/MEDIUM: shctx: bound the number of loops that can happen around the lock
+- REGTEST: ssl: test the client certificate authentication
+- BUG/MINOR: sample: Set the correct type when a binary is converted to a string
+- BUG/MINOR: config: Make use_backend and use-server post-parsing less obscur
+- BUG/MEDIUM: http_ana: make the detection of NTLM variants safer
+- BUG/MINOR: cfgparse: Abort parsing the current line if an invalid \x sequence
+  is encountered
+- BUG/MINOR: pollers: remove uneeded free in global init
+- BUILD: select: only declare existing local labels to appease clang
+- SCRIPTS: publish-release: pass -n to gzip to remove timestamp
+- BUG/MINOR: peers: fix internal/network key type mapping.
+- BUG/MEDIUM: lua: Reset analyse expiration timeout before executing
+  a lua action
+- BUG/MEDIUM: hlua: Lock pattern references to perform set/add/del operations
+- BUG/MINOR: logs: prevent double line returns in some events.
+- BUG/MEDIUM: logs: fix trailing zeros on log message.
+- BUG/MINOR: proto-http: Fix detection of NTLM for the legacy HTTP version
+- BUG/MEDIUM: mworker: fix the copy of options in copy_argv()
+- BUG/MINOR: init: -x can have a parameter starting with a dash
+- BUG/MEDIUM: mworker: fix the reload with an -- option
+- BUG/MINOR: mworker: fix a memleak when execvp() failed
+- BUG/MEDIUM: pattern: fix thread safety of pattern matching
+- BUG/MINOR: ssl: fix ssl-{min,max}-ver with openssl < 1.1.0
+- BUG/MINOR: tcp-rules: tcp-response must check the buffer's fullness
+- BUG/MEDIUM: ebtree: use a byte-per-byte memcmp() to compare memory blocks
+- BUG/MINOR: spoe: add missing key length check before checking key names
+- BUG/MINOR: systemd: Wait for network to be online
+- BUG/MINOR: spoe: correction of setting bits for analyzer
+- BUG/MEDIUM: fetch: Fix hdr_ip misparsing IPv4 addresses due to missing NUL
+- MINOR: cli: make "show sess" stop at the last known session
+- DOC: ssl: add "allow-0rtt" and "ciphersuites" in crt-list
+- BUG/MEDIUM: pattern: Add a trailing \0 to match strings only if possible
+- BUG/MINOR: proxy: fix dump_server_state()'s misuse of the trash
+- BUG/MINOR: proxy: always initialize the trash in show servers state
+- BUG/MINOR: http_act: don't check capture id in backend (2)
+- BUG/MINOR: sample: Free str.area in smp_check_const_bool
+- BUG/MINOR: sample: Free str.area in smp_check_const_meth
+- BUG/MEDIUM: channel: Be aware of SHUTW_NOW flag when output data are peeked
+- BUILD: ebtree: fix build on libmusl after recent introduction of eb_memcmp()
+- BUG/MINOR: cfgparse: don't increment linenum on incomplete lines
+- BUG/MEDIUM: mux-h2: Emit an error if the response chunk formatting
+  is incomplete
+- BUG/MEDIUM: dns: Release answer items when a DNS resolution is freed
+- BUG/MINOR: tcp-rules: Set the inspect-delay when a tcp-response action yields
+- SCRIPTS: announce-release: add the link to the wiki in the announce messages
+- SCRIPTS: git-show-backports: make -m most only show the left branch
+- SCRIPTS: git-show-backports: emit the shell command to backport a commit
+- DOC: Improve documentation on http-request set-src
+- BUG/MINOR: http: make url_decode() optionally convert '+' to SP
+- MINOR: checks: Add a way to send custom headers and payload during http checks
+- BUG/MINOR: checks: Compute the right HTTP request length for HTTP
+  health checks
+- BUG/MINOR: checks: Remove a warning about http health checks
+- BUG/MINOR: threads: fix multiple use of argument inside HA_ATOMIC_CAS()
+- BUG/MINOR: threads: fix multiple use of argument inside
+  HA_ATOMIC_UPDATE_{MIN,MAX}()
+- BUG/MINOR: pools: use %%u not %%d to report pool stats in "show pools"
+- MEDIUM: map: make the "clear map" operation yield
+- BUG/MEDIUM: server/checks: Init server check during config validity check
+- BUG/MEDIUM: checks: Always initialize checks before starting them
+- BUG/MINOR: checks: Respect check-ssl param when a port or an addr is specified
+- BUG/MINOR: server: Fix server_finalize_init() to avoid unused variable
+
+* Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.25-0
+- BUG/MINOR: namespace: avoid closing fd when socket failed in my_socketat
+- SCRIPTS: announce-release: use mutt -H instead of -i to include the draft
+- CONTRIB: debug: add the possibility to decode the value as certain types only
+- CONTRIB: debug: support reporting multiple values at once
+- CONTRIB: debug: also support reading values from stdin
+- BUG/MEDIUM: shctx: make sure to keep all blocks aligned
+- MINOR: compiler: move CPU capabilities definition from config.h and complete
+  them
+- BUG/MEDIUM: ebtree: don't set attribute packed without unaligned access
+  support
+- BUILD: fix recent build failure on unaligned archs
+- MINOR: compiler: add new alignment macros
+- BUILD: ebtree: improve architecture-specific alignment
+- BUG/MINOR: sample: fix the json converter's endian-sensitivity
+- BUG/MINOR: sample: Make sure to return stable IDs in the unique-id fetch
+- BUG/MAJOR: list: fix invalid element address calculation
+- DOC: fix incorrect indentation of http_auth_*
+- BUG/MAJOR: proxy_protocol: Properly validate TLV lengths
+- REGTEST: make the PROXY TLV validation depend on version 2.2
+- BUG/MINOR: lua: Ignore the reserve to know if a channel is full or not
+- BUG/MINOR: http-rules: Preserve FLT_END analyzers on reject action
+- BUG/MINOR: http-rules: Fix a typo in the reject action function
+- BUG/MINOR: rules: Preserve FLT_END analyzers on silent-drop action
+- BUG/MINOR: rules: Increment be_counters if backend is assigned for a
+  silent-drop
+- DOC: fix typo about no-tls-tickets
+- DOC: improve description of no-tls-tickets
+- DOC: ssl: clarify security implications of TLS tickets
+- DOC: proxy_protocol: Reserve TLV type 0x05 as PP2_TYPE_UNIQUE_ID
+- DOC: assorted typo fixes in the documentation
+- BUG/MINOR: peers: init bind_proc to 1 if it wasn't initialized
+- BUG/MINOR: peers: avoid an infinite loop with peers_fe is NULL
+- BUG/MINOR: stats: Fix color of draining servers on stats page
+- DOC: internals: Fix spelling errors in filters.txt
+- BUG/MEDIUM: http: unbreak redirects in legacy mode
+- MINOR: http-rules: Add a flag on redirect rules to know the rule direction
+- BUG/MINOR: http_ana: make sure redirect flags don't have overlapping bits
+- MINOR: http-rules: Handle the rule direction when a redirect is evaluated
+- BUG/MINOR: http-ana: Reset request analysers on error when waiting for
+  response
+- BUG/CRITICAL: hpack: never index a header into the headroom after wrapping
+
+* Wed Feb 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.24-0
+- DOC: clarify matching strings on binary fetches
+- BUG/MEDIUM: listener/thread: fix a race when pausing a listener
+- BUG/MINOR: ssl: certificate choice can be unexpected with openssl >= 1.1.1
+- BUG/MINOR: proxy: make soft_stop() also close FDs in LI_PAUSED state
+- BUG/MINOR: listener/threads: always use atomic ops to clear the FD events
+- BUG/MINOR: listener: also clear the error flag on a paused listener
+- BUG/MEDIUM: listener/threads: fix a remaining race in the listener's accept()
+- DOC: document the listener state transitions
+- BUG/MAJOR: dns: add minimalist error processing on the Rx path
+- BUG/MEDIUM: proto_udp/threads: recv() and send() must not be exclusive.
+- BUG/MEDIUM: kqueue: Make sure we report read events even when no data.
+- DOC: listeners: add a few missing transitions
+- BUILD/MINOR: ssl: shut up a build warning about format truncation
+- BUILD/MINOR: tools: shut up the format truncation warning in get_gmt_offset()
+- BUILD: do not disable -Wformat-truncation anymore
+- DOC: remove references to the outdated architecture.txt
+- BUG/MINOR: log: fix minor resource leaks on logformat error path
+- BUG/MINOR: mworker: properly pass SIGTTOU/SIGTTIN to workers
+- BUG/MINOR: listener: do not immediately resume on transient error
+- BUG/MINOR: server: make "agent-addr" work on default-server line
+- BUG/MINOR: listener: fix off-by-one in state name check
+- BUILD/MINOR: unix sockets: silence an absurd gcc warning about strncpy()
+- BUG/MINOR: sample: fix the closing bracket and LF in the debug converter
+- BUG/MINOR: sample: always check converters' arguments
+- BUG/MEDIUM: ssl: Don't set the max early data we can receive too early.
+- BUG/MEDIUM: session: do not report a failure when rejecting a session
+- BUG/MEDIUM: mworker: remain in mworker mode during reload
+- BUG/MAJOR: hashes: fix the signedness of the hash inputs
+- BUG/MEDIUM: cli: _getsocks must send the peers sockets
+- BUG/MINOR: stream: don't mistake match rules for store-request rules
+- BUG/MINOR: pattern: handle errors from fgets when trying to load patterns
+- BUG/MINOR: dns: Make dns_query_id_seed unsigned
+- BUG/MINOR: http-rules: Remove buggy deinit functions for HTTP rules
+- BUG/MINOR: stick-table: Use MAX_SESS_STKCTR as the max track ID during parsing
+- BUG/MINOR: tcp-rules: Fix memory releases on error path during action parsing
+- MINOR: proxy/http-ana: Add support of extra attributes for the cookie
+  directive
+- BUG/MINOR: http_act: don't check capture id in backend
+- BUG/MINOR: dns: allow srv record weight set to 0
+- BUG/MEDIUM: pipe: fix a use-after-free in case of pipe creation error
+- BUG/MINOR: connection: fix ip6 dst_port copy in make_proxy_line_v2
+- MINOR: acl: Warn when an ACL is named 'or'
+- SCRIPTS: announce-release: place the send command in the mail's header
+- SCRIPTS: announce-release: allow the user to force to overwrite old files
+- BUG/MINOR: unix: better catch situations where the unix socket path length is
+  close to the limit
+- BUG/MINOR: dns: allow 63 char in hostname
+- BUG/MEDIUM: listener: only consider running threads when resuming listeners
+- BUG/MINOR: tcp: avoid closing fd when socket failed in tcp_bind_listener
+- BUG/MINOR: tcp: don't try to set defaultmss when value is negative
+- SCRIPTS: make announce-release executable again
+
 * Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.23-0
 - MINOR: tcp: avoid confusion in time parsing init
 - BUG/MINOR: cli: don't call the kw->io_release if kw->parse failed

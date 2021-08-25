@@ -36,7 +36,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.10.0
+Version:            1.12.2
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -48,9 +48,9 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang21 git
+BuildRequires:      erlang22 git
 
-Requires:           erlang >= 21
+Requires:           erlang >= 22
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
@@ -104,6 +104,42 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.2-0
+- Updated to the latest release
+
+* Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.1-0
+- Updated to the latest release
+
+* Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
+- Updated to the latest release
+
+* Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.11.4-0
+- Updated to the latest release
+
+* Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.11.3-0
+- Updated to the latest release
+
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.2-0
+- Updated to the latest release
+
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.1-0
+- Updated to the latest release
+
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
+- Updated to the latest release
+
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.4-0
+- Updated to the latest release
+
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.3-0
+- Updated to the latest release
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
+- Updated to the latest release
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
+- Updated to the latest release
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
 - Updated to the latest release
 

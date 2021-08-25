@@ -1,17 +1,17 @@
 ################################################################################
 
 # rpmbuilder:svn      svn://svn.mplayerhq.hu/nut/src/trunk
-# rpmbuilder:revision r690
+# rpmbuilder:revision r694
 
 ################################################################################
 
 Summary:            Library for creating and demuxing NUT files
 Name:               libnut
 Version:            0.0.0
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            MIT
 Group:              Development/Libraries
-URL:                http://mplayerhq.hu
+URL:                https://mplayerhq.hu
 
 Source0:            %{name}-%{version}.tar.gz
 
@@ -97,6 +97,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 0.0.0-2
+- Updated to the latest version (r694)
+
 * Fri May 13 2016 Gleb Goncharov <inbox@gongled.ru> - 0.0.0-1
 - Updated to latest version (r690)
 

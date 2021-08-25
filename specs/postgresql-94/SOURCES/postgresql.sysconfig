@@ -1,9 +1,0 @@
-# Sysconfig for postgresql service
-
-PG_ENGINE=""
-PG_POSTMASTER=""
-PG_DATA=""
-PG_LOG=""
-PG_UPLOG=""
-TIMEOUT=""
-DISABLE_AUTO_NUMA=""

@@ -39,7 +39,7 @@
 Summary:           Hyper fast MPEG1/MPEG4/H263/RV and AC3/MPEG audio encoder
 Name:              %{source_name}-kaos
 Version:           4.2.2
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv3
 Group:             System Environment/Libraries
 URL:               https://ffmpeg.org
@@ -61,7 +61,7 @@ BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
 BuildRequires:     openjpeg2-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
-Requires:          opencore-amr librtmp orc libvpx x264
+Requires:          opencore-amr librtmp orc libvpx x264 openssl
 Requires:          libxvidcore libva opus vo-amrwbenc openjpeg2
 
 Conflicts:         %{source_name}
@@ -95,6 +95,7 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --mandir=%{_mandir} \
   --enable-shared \
   --enable-runtime-cpudetect \
+  --enable-openssl \
   --enable-gpl \
   --enable-version3 \
   --enable-nonfree \
@@ -157,6 +158,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Apr 17 2020 Anton Novojilov <andy@essentialkaos.com> - 4.2.2-1
+- OpenSSL enabled
+
 * Wed Feb 05 2020 Anton Novojilov <andy@essentialkaos.com> - 4.2.2-0
 - Updated to version 4.2.2
 

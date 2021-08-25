@@ -8,22 +8,22 @@
 
 ################################################################################
 
-%define jdk_major   11.0.6
-%define jdk_minor   10
+%define jdk_major   11.0.11
+%define jdk_minor   9
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1102
+%define alt_priority 1108
 
 ################################################################################
 
 Summary:            OpenJDK Runtime Environment (JRE 11)
 Name:               jre11
 Epoch:              1
-Version:            %{jdk_major}.%{jdk_minor}
-Release:            0%{?dist}
+Version:            %{jdk_major}
+Release:            %{jdk_minor}%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:                https://adoptopenjdk.net
@@ -39,6 +39,9 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+
+AutoProv:           no
+AutoReqProv:        no
 
 Provides:           jre = 1:11
 Provides:           jre-lts = 1:11
@@ -97,10 +100,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 
 %{_sbindir}/update-alternatives --install $deps
 
-%postun
-if [[ $1 -eq 0 ]] ; then
-  %{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
-fi
+%preun
+%{_sbindir}/update-alternatives --remove java %{jdk_bin_dir}/java
 
 ################################################################################
 
@@ -111,6 +112,27 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jul 14 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.11-9
+- Updated to the latest version
+
+* Fri Jan 29 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.10-9
+- Updated to the latest version
+
+* Sat Dec 12 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.9.1-1
+- Updated to the latest version
+
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.9-11
+- Updated to the latest version
+
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.8.10-0
+- Updated to the latest version
+
+* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.7.10-0
+- Updated to the latest version
+
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.6.10-1
+- Fixed bug with removing previous version from alternatives
+
 * Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.6.10-0
 - Updated to the latest version
 

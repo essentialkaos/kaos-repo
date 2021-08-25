@@ -49,7 +49,7 @@
 
 Summary:                  High Performance, Distributed Memory Object Cache
 Name:                     memcached
-Version:                  1.5.20
+Version:                  1.6.2
 Release:                  0%{?dist}
 Group:                    System Environment/Daemons
 License:                  BSD
@@ -228,6 +228,59 @@ fi
 ################################################################################
 
 %changelog
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.6.2-0
+- Fixes a remote DoS (segfault) in parsing of the binary protocol header that
+  was introduced in 1.6.0
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- tls: handle accept errors properly
+- ssl_errors stat
+- Add touch,gat expiration test
+- Add negative expiration time case to expiration test
+- Fix to handle negative exptime as common function
+- Fix a bunch of flaky tests
+- Fix compile error with DTrace probes
+- Allow missing syscall on ARM for seccomp
+- fix multiple definition of 'crc32c' (GCC 10)
+- Add stdio.h,stddef.h to storage.c (OS X compile error)
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
+- extstore: enable by default
+- meta: arithmetic command (ma) for incr/decr
+- network: transient static read buffer for conns
+- network: response stacking for all commands
+- meta: indicate refcount overflow
+- meta: fix refleak in mget
+- fix: all new connections were counted as rejected
+- timedrun: proper signal handler initialization
+- restart: fix potential double free
+- stats_prefix: fix test failure due to non-determinism
+- fix bug where sasl will load config the wrong path
+- meta: make return codes more generic
+- config.h for util.c, fix htonll comp. failure
+- hash: fix build failure against gcc-10
+- fix memory leaks in unit tests
+- fix make order in BUILD instructions
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.5.22-0
+- slabs: fix crash in page mover
+- slabs: fix for skipping completed items
+
+* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.5.21-0
+- configuration option to disable watch commands (-W)
+- Adding missing defaults to the --help output
+- stats: Fix stats delimiter unit tests
+- Allow compilation with ASAN
+- restart: add error handling if mmap fails
+- For text auth token mode, use alternative bcmp implementation
+- memcached-tool: Fix up tabular output for the 'stats' command.
+- linux_priv.c: add termios.h include to fix powerpc(64) builds
+- Update the build documentation in BUILD file
+- Update documentation for --max-item-size
+- Fix build issue due to improper pthread_t comparison
+- Ensure t/whitespace.t test is skipped when outside a memcached git checkout
+- Allocating large chunk of slabs for FreeBSD
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.20-0
 - Security fix: Don't allow UDP with binprot SASL
 - Remove multiple double-initializations of condition variables and mutexes

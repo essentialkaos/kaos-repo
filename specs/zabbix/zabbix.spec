@@ -50,18 +50,19 @@
 %define service_user      %{name}
 %define service_group     %{name}
 %define service_home      %{_sharedstatedir}/%{name}
+%define major_version     5.2
 
 ################################################################################
 
 Name:                 zabbix
-Version:              4.4.5
+Version:              5.2.1
 Release:              0%{?dist}
 Summary:              The Enterprise-class open source monitoring solution
 Group:                Applications/Internet
 License:              GPLv2+
 URL:                  https://www.zabbix.com
 
-Source0:              https://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/%{version}/%{name}-%{version}.tar.gz
+Source0:              https://cdn.zabbix.com/zabbix/sources/stable/%{major_version}/zabbix-%{version}.tar.gz
 Source1:              %{name}-web22.conf
 Source2:              %{name}-web24.conf
 Source3:              %{name}-logrotate.in
@@ -78,18 +79,21 @@ Source21:             %{name}-server.service
 Source22:             %{name}-proxy.service
 Source23:             %{name}-tmpfiles.conf
 
+Source24:             %{name}-agent.init
+Source25:             %{name}-agent2.service
+
 Source100:            checksum.sha512
 
 Patch0:               config.patch
-Patch1:               fonts-config.patch
+Patch1:               fping3-sourceip-option.patch
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc mysql-devel postgresql96-devel net-snmp-devel
+BuildRequires:        make gcc mysql-devel postgresql10-devel net-snmp-devel
 BuildRequires:        openldap-devel openssl-devel iksemel-devel unixODBC-devel
 BuildRequires:        libxml2-devel curl-devel >= 7.13.1 sqlite-devel
 BuildRequires:        OpenIPMI-devel >= 2 libssh2-devel >= 1.0.0
-BuildRequires:        pcre-devel zlib-devel
+BuildRequires:        pcre-devel zlib-devel golang
 
 %if 0%{?rhel} >= 7
 Requires:             libevent
@@ -128,7 +132,31 @@ Requires(postun):     %{__service}
 BuildRequires:        libxml2-devel
 
 %description agent
-Zabbix agent to be installed on monitored systems.
+Old implementation of zabbix agent.
+To be installed on monitored systems.
+
+################################################################################
+
+%package agent2
+Summary:              New Zabbix Agent
+Group:                Applications/Internet
+
+Requires:             logrotate
+Requires(pre):        %{_sbindir}/useradd
+%if 0%{?rhel} >= 7
+Requires(post):       systemd
+Requires(preun):      systemd
+Requires(preun):      systemd
+%else
+Requires(post):       %{__chkconfig}
+Requires(preun):      %{__chkconfig}
+Requires(preun):      %{__service}
+Requires(postun):     %{__service}
+%endif
+
+%description agent2
+New implementation of zabbix agent.
+To be installed on monitored systems.
 
 ################################################################################
 
@@ -221,7 +249,7 @@ Requires(preun):      %{__service}
 Requires(postun):     %{__service}
 %endif
 
-BuildRequires:        java-devel >= 1.8.0 pcre-devel zlib-devel
+BuildRequires:        jdk8 pcre-devel zlib-devel
 
 %description java-gateway
 Zabbix java gateway.
@@ -364,14 +392,14 @@ Zabbix web frontend for PostgreSQL.
 %patch1 -p1
 
 # remove .htaccess files
-rm -f frontends/php/app/.htaccess
-rm -f frontends/php/conf/.htaccess
-rm -f frontends/php/include/.htaccess
-rm -f frontends/php/local/.htaccess
+rm -f ui/app/.htaccess
+rm -f ui/conf/.htaccess
+rm -f ui/include/.htaccess
+rm -f ui/local/.htaccess
 
 # remove translation source files and scripts
-find frontends/php/locale -name '*.po' -delete
-find frontends/php/locale -name '*.sh' -delete
+find ui/locale -name '*.po' | xargs rm -f
+find ui/locale -name '*.sh' | xargs rm -f
 
 # traceroute command path for global script
 sed -i -e 's|/usr/bin/traceroute|/bin/traceroute|' database/mysql/data.sql
@@ -383,7 +411,7 @@ sed -i -e 's|/tmp/zabbix_java.log|%{_localstatedir}/log/zabbix/zabbix_java_gatew
 
 %build
 
-export PATH="/usr/pgsql-9.6/bin:$PATH"
+export PATH="/usr/pgsql-10/bin:$PATH"
 
 build_flags="
         --enable-dependency-tracking
@@ -391,6 +419,7 @@ build_flags="
         --libdir=%{_libdir}/%{name}
         --mandir=%{_mandir}
         --enable-agent
+        --enable-agent2
         --enable-proxy
         --enable-ipv6
         --enable-java
@@ -428,7 +457,7 @@ mv src/zabbix_proxy/zabbix_proxy src/zabbix_proxy/zabbix_proxy_sqlite3
 rm -rf %{buildroot}
 
 # install
-%{make_install}
+%{make_install} GOBIN=%{buildroot}%{_sbindir}
 
 # clean unnecessary binaries
 rm -f %{buildroot}%{_sbindir}/zabbix_server
@@ -451,6 +480,7 @@ install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/web
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/alertscripts
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/externalscripts
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_agentd.d
+install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_agent2.d
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_server.d
 install -dm 755 %{buildroot}%{_sysconfdir}/zabbix/zabbix_proxy.d
 
@@ -460,6 +490,7 @@ install -dm 755 %{buildroot}%{_localstatedir}/log/zabbix
 install -dm 755 %{buildroot}%{_localstatedir}/run/zabbix
 
 install -dm 755 %{buildroot}%{_docdir}/zabbix-agent-%{version}
+install -dm 755 %{buildroot}%{_docdir}/zabbix-agent2-%{version}
 install -dm 755 %{buildroot}%{_docdir}/zabbix-server-mysql-%{version}
 install -dm 755 %{buildroot}%{_docdir}/zabbix-server-pgsql-%{version}
 install -dm 755 %{buildroot}%{_docdir}/zabbix-proxy-mysql-%{version}
@@ -492,15 +523,13 @@ install -pm 755 src/zabbix_sender/zabbix_sender %{buildroot}%{_bindir}/
 cp man/zabbix_get.man %{buildroot}%{_mandir}/man1/zabbix_get.1
 cp man/zabbix_sender.man %{buildroot}%{_mandir}/man1/zabbix_sender.1
 cp man/zabbix_agentd.man %{buildroot}%{_mandir}/man8/zabbix_agentd.8
+cp man/zabbix_agent2.man %{buildroot}%{_mandir}/man8/zabbix_agent2.8
 cp man/zabbix_server.man %{buildroot}%{_mandir}/man8/zabbix_server.8
 cp man/zabbix_proxy.man %{buildroot}%{_mandir}/man8/zabbix_proxy.8
 
-# rename font for plots
-mv frontends/php/assets/fonts/DejaVuSans.ttf frontends/php/assets/fonts/graphfont.ttf
-
 # install frontend files
-find frontends/php -name '*.orig' -delete
-cp -a frontends/php/* %{buildroot}%{_datadir}/zabbix
+find ui -name '*.orig' -delete
+cp -a ui/* %{buildroot}%{_datadir}/zabbix
 
 # install frontend configuration files
 touch %{buildroot}%{_sysconfdir}/zabbix/web/zabbix.conf.php
@@ -521,6 +550,14 @@ cat conf/zabbix_agentd.conf | sed \
         -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
         -e '/^# Include=$/a \\nInclude=%{_sysconfdir}/zabbix/zabbix_agentd.d/' \
         > %{buildroot}%{_sysconfdir}/zabbix/zabbix_agentd.conf
+
+# perfecto:absolve 6
+cat src/go/conf/zabbix_agent2.conf | sed \
+        -e '/^# PidFile=/a \\nPidFile=%{_localstatedir}/run/zabbix/zabbix_agent2.pid' \
+        -e 's|^LogFile=.*|LogFile=%{_localstatedir}/log/zabbix/zabbix_agent2.log|g' \
+        -e '/^# LogFileSize=.*/a \\nLogFileSize=0' \
+        -e '/^# Include=$/a \\nInclude=%{_sysconfdir}/zabbix/zabbix_agent2.d/*.conf' \
+        > %{buildroot}%{_sysconfdir}/zabbix/zabbix_agent2.conf
 
 # perfecto:absolve 12
 cat conf/zabbix_server.conf | sed \
@@ -558,6 +595,9 @@ cat %{SOURCE3} | sed \
         -e 's|COMPONENT|agentd|g' \
         > %{buildroot}%{_sysconfdir}/logrotate.d/zabbix-agent
 cat %{SOURCE3} | sed \
+        -e 's|COMPONENT|agentd2|g' \
+        > %{buildroot}%{_sysconfdir}/logrotate.d/zabbix-agent2
+cat %{SOURCE3} | sed \
         -e 's|COMPONENT|proxy|g' \
         > %{buildroot}%{_sysconfdir}/logrotate.d/zabbix-proxy
 cat %{SOURCE3} | sed \
@@ -570,16 +610,19 @@ install -pDm 644 %{SOURCE20} %{buildroot}%{_unitdir}/zabbix-agent.service
 install -pDm 644 %{SOURCE21} %{buildroot}%{_unitdir}/zabbix-server.service
 install -pDm 644 %{SOURCE22} %{buildroot}%{_unitdir}/zabbix-proxy.service
 install -pDm 644 %{SOURCE13} %{buildroot}%{_unitdir}/zabbix-java-gateway.service
+install -pDm 644 %{SOURCE25} %{buildroot}%{_unitdir}/zabbix-agent2.service
 %else
 install -pDm 755 %{SOURCE4} %{buildroot}%{_sysconfdir}/init.d/zabbix-java-gateway
 install -pDm 755 %{SOURCE10} %{buildroot}%{_sysconfdir}/init.d/zabbix-agent
 install -pDm 755 %{SOURCE11} %{buildroot}%{_sysconfdir}/init.d/zabbix-server
 install -pDm 755 %{SOURCE12} %{buildroot}%{_sysconfdir}/init.d/zabbix-proxy
+install -pDm 755 %{SOURCE24} %{buildroot}%{_sysconfdir}/init.d/zabbix-agent2
 %endif
 
 # install systemd-tmpfiles conf
 %if 0%{?rhel} >= 7
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-agent.conf
+install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-agent2.conf
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-server.conf
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-proxy.conf
 install -pDm 644 %{SOURCE23} %{buildroot}%{_libdir32}/tmpfiles.d/zabbix-java-gateway.conf
@@ -624,6 +667,12 @@ rm -rf %{buildroot}
         -g %{service_group} -d %{service_home} %{service_user}
 exit 0
 
+%pre agent2
+%{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
+%{__getent} passwd %{service_user} >/dev/null || \
+        %{__useradd} -s /sbin/nologin -M -r -c "Zabbix Monitoring System" \
+        -g %{service_group} -d %{service_home} %{service_user}
+exit 0
 
 %pre server-mysql
 %{__getent} group %{service_group} >/dev/null || %{__groupadd} -r %{service_group}
@@ -679,6 +728,12 @@ exit 0
 %{__chkconfig} --add zabbix-agent &>/dev/null || :
 %endif
 
+%post agent2
+%if 0%{?rhel} >= 7
+%systemd_post zabbix-agent2.service
+%else
+%{__chkconfig} --add zabbix-agent2 &>/dev/null || :
+%endif
 
 %post server-mysql
 %if 0%{?rhel} >= 7
@@ -754,8 +809,19 @@ if [[ $1 -eq 0 ]] ; then
 %{__chkconfig} --del zabbix-agent
 %endif
 fi
+
 exit 0
 
+%preun agent2
+if [[ $1 -eq 0 ]] ; then
+%if 0%{?rhel} >= 7
+%systemd_preun zabbix-agent2.service
+%else
+%{__service} zabbix-agent2 stop &>/dev/null || :
+%{__chkconfig} --del zabbix-agent2
+%endif
+fi
+exit 0
 
 %preun server-mysql
 if [[ $1 -eq 0 ]] ; then
@@ -848,6 +914,14 @@ if [[ $1 -ge 1 ]] ; then
 fi
 %endif
 
+%postun agent2
+%if 0%{?rhel} >= 7
+%systemd_postun_with_restart zabbix-agent2.service
+%else
+if [[ $1 -ge 1 ]] ; then
+%{__service} zabbix-agent2 try-restart &>/dev/null || :
+fi
+%endif
 
 %postun server-mysql
 %if 0%{?rhel} >= 7
@@ -928,6 +1002,23 @@ fi
 %{_libdir32}/tmpfiles.d/zabbix-agent.conf
 %else
 %{_sysconfdir}/init.d/zabbix-agent
+%endif
+
+%files agent2
+%defattr(-,root,root,-)
+%doc AUTHORS ChangeLog COPYING NEWS README
+%dir %{_sysconfdir}/zabbix/zabbix_agent2.d
+%config(noreplace) %{_sysconfdir}/zabbix/zabbix_agent2.conf
+%config(noreplace) %{_sysconfdir}/logrotate.d/zabbix-agent2
+%attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/log/zabbix
+%attr(0755,%{service_user},%{service_group}) %dir %{_localstatedir}/run/zabbix
+%{_sbindir}/zabbix_agent2
+%{_mandir}/man8/zabbix_agent2.8*
+%if 0%{?rhel} >= 7
+%{_unitdir}/zabbix-agent2.service
+%{_libdir32}/tmpfiles.d/zabbix-agent2.conf
+%else
+%{_sysconfdir}/init.d/zabbix-agent2
 %endif
 
 %files js
@@ -1072,6 +1163,74 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 27 2020 Andrey Kulikov <avk@brewkeeper.net> - 5.2.1-0
+- Added template "Apache Kafka by JMX"
+- Improved LLD rule processing after reconnecting to proxy
+- Added "Template DB Apache Cassandra by JMX"
+- Fixed refresh of monitoring problems and monitoring hosts pages when refresh
+  interval is set to zero
+- Fixed dashboard widget to be updated continuously when 'No refresh' interval
+  is specified
+- Fixed active Zabbix Agent v2 5.0 doesn't work with Server v5.2.0
+- Fixed compilation error on Solaris 10
+- Fixed API role.update rules validation
+- Fixed fatal error when updating only discovered triggers and their properties
+- Fixed being able to delete interfaces on discovered hosts
+- Fixed build failing to compile for Zabbix agent 2 on ARM/v7 and ARM/v6
+- Changed trigger of the net.if.speed item in the Windows network module
+  template
+- Removed recovery mode NONE in trigger "Operating system description has
+  changed"
+- Fixed "Something impossible" bug in server and proxy when diaginfo is
+  requested
+- Updated the list of item keys and their descriptions
+- Fixed template "Ceph by Zabbix Agent2" pool discovery
+- Changed Fan, Temperature, Voltage LLD rules in Template Net Arista
+- Fixed "Template Net TP-LINK" readme
+
+* Mon Jun 15 2020 Andrey Kulikov <avk@brewkeeper.net> - 5.0.1-0
+- Added patch that fixes (ZBX-17801)
+- Added Spiceworks integration guide
+- Increased max configuration cache size limit to 64GB
+- Added LLD for perf_counter; thanks to Ryan Armstrong for the patch
+- Added media "OTRS"
+- Added win perf_instance.discovery and perf_instance_en.discovery to agent2
+- Added agent2 PostgreSQL plugin and template
+- Added two way functionality for acknowledgement, close and annotation
+  with SIGNL4
+- Added component version item to server and proxy remote monitoring templates
+- Fixed lld override validation and visualization; fixed discover control in
+  prototype edit forms
+- Added double.sql file to source distribution tarball
+- Reverted fix graph line interruptions when discarding values with heartbeat
+- Fixed 4-byte utf-8 sequence handling in embedded scripts
+- Fixed issue with trigger for service status
+- Fixed unreachable poller being too busy due to snmp checks being attempted
+  twice at a time
+- Fixed latest data all applications expansion with every refresh
+- Fixed a failing query when updating existing host prototypes
+- Fixed selected menu item appearance upon opening screens of any host
+- Fixed error message box position
+- Fixed markup in user media popup
+- Increased timescaledb chunk interval for trends and trends_uint to 1 month
+- Fixed javascript preprocessing output variable initialization to not trigger
+  false positive memory allocation warning
+- Implemented host preselection in filter graph fields in
+  monitoring -> hosts -> graphs section
+- Fixed notification window location
+- Fix invalid memory size in evaluate_macro_function()
+- Fixed agent request parameter type parsing
+- Fixed web.page.get,web.page,web.page.regexp keys on zabbix agent2 not to
+  verify server's certificate chain and host name
+- Fixed element of filters is not focused on several pages
+- Fixed start time data loading in maintenance edit form
+- Fixed acknowledge option in context menu on problems page
+- Fixed log level check in case of debuglevel=0
+- Fixed runtime error in action operations
+- Removed unused code left from mbedtls support
+- Fixed server crashes on regexp preprocessing
+- Shadow global auto_increment variables for mysql
+
 * Mon Feb 03 2020 Anton Novojilov <andy@essentialkaos.com> - 4.4.5-0
 - Added zabbix_js command line utility for embedded javascript testing
 - Added new key vfs.fs.get to collect mounted filesystems information and
