@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack github.com/linkedin/Burrow
-# rpmbuilder:tag    v1.2.2
+# rpmbuilder:tag    v1.3.6
 
 ################################################################################
 
@@ -11,7 +11,7 @@
 
 Summary:         Kafka Consumer Lag Checking
 Name:            Burrow
-Version:         1.2.2
+Version:         1.3.6
 Release:         0%{?dist}
 Group:           Applications/Databases
 License:         ASL 2.0
@@ -82,6 +82,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Aug 25 2021 Ivan Burashev <vanche93@yandex.ru> - 1.3.6-0
+- Fix goreleaser github action
+- Update base alpine image from 3.12 to 3.13
+
 * Tue May 21 2019 Andrey Kulikov <avk@brewkeeper.net> - 1.2.2-0
 - More fixes to binary release process
 
