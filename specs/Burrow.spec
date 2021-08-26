@@ -17,7 +17,7 @@ Group:           Applications/Databases
 License:         ASL 2.0
 URL:             https://github.com/linkedin/Burrow
 
-Source0:         https://github.com/linkedin/%{name}/archive/v%{version}.tar.gz
+Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -41,8 +41,7 @@ that can send status out via email or HTTP calls to another service.
 %setup -qn %{name}-%{version}
 mkdir -p .src
 mv * .src/
-mkdir -p src/github.com/linkedin
-mv .src src/github.com/linkedin/%{name}
+mv .src src
 cp -r src/github.com/linkedin/%{name}/CHANGELOG.md \
       src/github.com/linkedin/%{name}/LICENSE \
       src/github.com/linkedin/%{name}/NOTICE \
