@@ -21,7 +21,7 @@ Source0:         %{name}-%{version}.tar.bz2
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   golang >= 1.9
+BuildRequires:   golang >= 1.15
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -68,6 +68,10 @@ install -Dpm 755 src/github.com/linkedin/%{name}/%{name} \
                 %{buildroot}%{_bindir}/burrow
 
 %clean
+# Fix permissions for files and directories in modules dir
+find pkg -type d -exec chmod 0755 {} \;
+find pkg -type f -exec chmod 0644 {} \;
+
 rm -rf %{buildroot}
 
 ################################################################################
