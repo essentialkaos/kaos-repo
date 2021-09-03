@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   11.0.11
-%define jdk_minor   9
+%define jdk_major   11.0.12
+%define jdk_minor   7
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1108
+%define alt_priority 1109
 
 ################################################################################
 
@@ -26,9 +26,9 @@ Version:            %{jdk_major}
 Release:            %{jdk_minor}%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
-URL:                https://adoptopenjdk.net
+URL:                https://adoptium.net
 
-Source0:            https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK11U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
+Source0:            https://github.com/adoptium/temurin11-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK11U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:            java.sh
 
 Source100:          checksum.sha512
@@ -55,13 +55,9 @@ Provides:           %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-Java™ is the world's leading programming language and platform. AdoptOpenJDK
-uses infrastructure, build and test scripts to produce prebuilt binaries from
-OpenJDK™ class libraries and a choice of either the OpenJDK HotSpot or Eclipse
-OpenJ9 VM.
-
-All AdoptOpenJDK binaries and scripts are open source licensed and available
-for free.
+Java™ is the world's leading programming language and platform. The Adoptium
+Working Group promotes and supports high-quality, TCK certified runtimes and
+associated technology for use across the Java™ ecosystem.
 
 ################################################################################
 
@@ -112,6 +108,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Fri Sep 03 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.12-7
+- Updated to the latest version
+
 * Wed Jul 14 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.11-9
 - Updated to the latest version
 

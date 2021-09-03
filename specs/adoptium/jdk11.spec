@@ -8,27 +8,27 @@
 
 ################################################################################
 
-%define jdk_major   292
-%define jdk_minor   b10
+%define jdk_major   11.0.12
+%define jdk_minor   7
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 807
+%define alt_priority 1159
 
 ################################################################################
 
-Summary:            OpenJDK Runtime Environment (JRE 8)
-Name:               jre8
+Summary:            OpenJDK Runtime Environment (JDK 11)
+Name:               jdk11
 Epoch:              1
-Version:            1.8.0.%{jdk_major}
+Version:            %{jdk_major}
 Release:            %{jdk_minor}%{?dist}
 Group:              Development/Languages
 License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
-URL:                https://adoptopenjdk.net
+URL:                https://adoptium.net
 
-Source0:            https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u%{jdk_major}-%{jdk_minor}/OpenJDK8U-jre_x64_linux_hotspot_8u%{jdk_major}%{jdk_minor}.tar.gz
+Source0:            https://github.com/adoptium/temurin11-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK11U-jdk_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:            java.sh
 
 Source100:          checksum.sha512
@@ -43,39 +43,35 @@ Conflicts:          java-11-openjdk-headless
 AutoProv:           no
 AutoReqProv:        no
 
-Provides:           jre = 1:1.8.0
-Provides:           jre-lts = 1:1.8.0
-Provides:           java = 1:1.8.0
-Provides:           jre-1.8.0 = 1:%{version}-%{release}
-Provides:           jre-lts-1.8.0 = 1:%{version}-%{release}
-Provides:           java-1.8.0 = 1:%{version}-%{release}
+Provides:           jdk = 1:11
+Provides:           jdk-lts = 1:11
+Provides:           java = 1:11
+Provides:           jdk-%{jdk_major} = 1:%{version}-%{release}
+Provides:           jdk-lts-%{jdk_major} = 1:%{version}-%{release}
+Provides:           java-%{jdk_major} = 1:%{version}-%{release}
 
 Provides:           %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-Java™ is the world's leading programming language and platform. AdoptOpenJDK
-uses infrastructure, build and test scripts to produce prebuilt binaries from
-OpenJDK™ class libraries and a choice of either the OpenJDK HotSpot or Eclipse
-OpenJ9 VM.
-
-All AdoptOpenJDK binaries and scripts are open source licensed and available
-for free.
+Java™ is the world's leading programming language and platform. The Adoptium
+Working Group promotes and supports high-quality, TCK certified runtimes and
+associated technology for use across the Java™ ecosystem.
 
 ################################################################################
 
 %prep
 %{crc_check}
 
-%setup -qn jdk8u%{jdk_major}-%{jdk_minor}-jre
+%setup -qn jdk-%{jdk_major}+%{jdk_minor}
 
 %build
 
 %install
 rm -rf %{buildroot}
 
-rm -rf release
+rm -rf demo release
 
 mkdir -p %{buildroot}%{install_dir}
 cp -a * %{buildroot}%{install_dir}/
@@ -107,41 +103,43 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 
 %files
 %defattr(-, root, root, -)
-%doc ASSEMBLY_EXCEPTION LICENSE THIRD_PARTY_README
 %{install_dir}
 
 ################################################################################
 
 %changelog
-* Wed Jul 14 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.292-b10
+* Fri Sep 03 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.12-7
 - Updated to the latest version
 
-* Fri Jan 29 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.282-b08
+* Wed Jul 14 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.11-9
 - Updated to the latest version
 
-* Sat Dec 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.275-b01
+* Fri Jan 29 2021 Anton Novojilov <andy@essentialkaos.com> - 11.0.10-9
 - Updated to the latest version
 
-* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.272-b10
+* Sat Dec 12 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.9.1-1
 - Updated to the latest version
 
-* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.265.b01-0
+* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.9-11
 - Updated to the latest version
 
-* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.252.b09-0
+* Mon Aug 10 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.8.10-0
 - Updated to the latest version
 
-* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.242.b08-0
+* Sun May 24 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.7.10-0
 - Updated to the latest version
 
-* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-1
+* Sat Feb 22 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.6.10-1
 - Fixed bug with removing previous version from alternatives
 
-* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.232.b09-0
+* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.6.10-0
 - Updated to the latest version
 
-* Thu Aug 08 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.222.b10-0
+* Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.5.10-0
 - Updated to the latest version
 
-* Sun Jul 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.212.b04-0
+* Thu Aug 08 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.4.11-0
+- Updated to the latest version
+
+* Sun Jul 14 2019 Anton Novojilov <andy@essentialkaos.com> - 11.0.3.7-0
 - Initial build for kaos repository
