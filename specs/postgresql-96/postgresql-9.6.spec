@@ -70,8 +70,8 @@
 %endif
 
 %define majorver        9.6
-%define minorver        21
-%define rel             1
+%define minorver        23
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          96
 %define realname        postgresql
@@ -1102,6 +1102,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 9.6.23-0
+- Updated to the latest stable release
+
+* Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 9.6.22-0
+- Updated to the latest stable release
+
 * Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 9.6.21-1
 - Changed bash_profile installation routine
 

@@ -66,8 +66,8 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        12
-%define minorver        6
-%define rel             1
+%define minorver        8
+%define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
 %define realname        postgresql
@@ -1194,6 +1194,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 12.8-0
+- Updated to the latest stable release
+
+* Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 12.7-0
+- Updated to the latest stable release
+
 * Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-1
 - Changed bash_profile installation routine
 
