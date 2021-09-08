@@ -64,7 +64,7 @@
 
 Name:              haproxy
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.4.3
+Version:           2.4.4
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -274,6 +274,30 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 08 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.4-0
+- BUG/MEDIUM: h2: match absolute-path not path-absolute for :path
+- REGTESTS: http_upgrade: fix incorrect expectation on TCP->H1->H2
+- REGTESTS: abortonclose: after retries, 503 is expected, not close
+- MINOR: hlua: take the global Lua lock inside a global function
+- BUG/MINOR: stick-table: fix the sc-set-gpt* parser when using expressions
+- BUG/MEDIUM: base64: check output boundaries within base64{dec,urldec}
+- BUG/MINOR: base64: base64urldec() ignores padding in output size check
+- MINOR: compiler: implement an ONLY_ONCE() macro
+- BUG/MINOR: lua: use strlcpy2() not strncpy() to copy sample keywords
+- BUG/MINOR: time: fix idle time computation for long sleeps
+- MINOR: time: add report_idle() to report process-wide idle time
+- BUG/MINOR: ebtree: remove dependency on incorrect macro for bits per long
+- BUG/MINOR threads: Use get_(local|gm)time instead of (local|gm)time
+- BUG/MINOR: tools: Fix loop condition in dump_text()
+- CLEANUP: Add missing include guard to signal.h
+- BUG/MINOR: vars: fix set-var/unset-var exclusivity in the keyword parser
+- DOC: configuration: remove wrong tcp-request examples in tcp-response
+- BUG/MINOR: config: reject configs using HTTP with bufsize >= 256 MB
+- CLEANUP: htx: remove comments about "must be < 256 MB"
+- BUG/MAJOR: htx: fix missing header name length check in htx_add_header/trailer
+- Revert "BUG/MINOR: stream-int: Don't block reads in si_update_rx() if chn
+  may receive"
+
 * Wed Aug 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.4.3-0
 - BUILD: http_htx: fix ci compilation error with isdigit for Windows
 - MINOR: mux_h2: define config to disable h2 websocket support

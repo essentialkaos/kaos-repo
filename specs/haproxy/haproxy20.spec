@@ -67,7 +67,7 @@
 
 Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
-Version:           2.0.24
+Version:           2.0.25
 Release:           0%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
@@ -279,6 +279,25 @@ fi
 ################################################################################
 
 %changelog
+* Wed Sep 08 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.25-0
+- BUG/MEDIUM: sock: really fix detection of early connection failures in for 2.3
+- REGTESTS: abortonclose: after retries, 503 is expected, not close
+- BUG/MEDIUM: base64: check output boundaries within base64{dec,urldec}
+- MINOR: compiler: implement an ONLY_ONCE() macro
+- BUG/MINOR: lua: use strlcpy2() not strncpy() to copy sample keywords
+- BUG/MINOR: ebtree: remove dependency on incorrect macro for bits per long
+- BUG/MINOR threads: Use get_(local|gm)time instead of (local|gm)time
+- BUG/MINOR: tools: Fix loop condition in dump_text()
+- CLEANUP: Add missing include guard to signal.h
+- DOC: configuration: remove wrong tcp-request examples in tcp-response
+- BUG/MINOR: config: reject configs using HTTP with bufsize >= 256 MB
+- CLEANUP: htx: remove comments about "must be < 256 MB"
+- BUG/MAJOR: htx: fix missing header name length check in htx_add_header/trailer
+- Revert "BUG/MINOR: stream-int: Don't block reads in si_update_rx() if chn
+  may receive"
+- MINOR: action: Use a generic function to check validity of an action rule list
+- REGTESTS: mark http_abortonclose as broken
+
 * Wed Aug 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.0.24-0
 - BUG/MEDIUM: tcp-check: Do not dereference inexisting connection
 - BUILD: add detection of missing important CFLAGS
