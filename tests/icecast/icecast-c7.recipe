@@ -14,16 +14,16 @@ var delay 3
 
 command "-" "Check environment"
   app icecast
-  
+
   service-present {service_name}
-  
+
   user-exist {service_user}
-  
+
   exist {service_config}
   mode {service_config} 640
   exist {logrotate_config}
   mode {logrotate_config} 644
-  
+
   exist /var/log/{service_name}
   owner /var/log/{service_name} {service_user}
 

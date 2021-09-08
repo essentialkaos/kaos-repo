@@ -15,7 +15,7 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/raven/scripts
   exist {PYTHON2_SITELIB}/raven/transport
   exist {PYTHON2_SITELIB}/raven/utils
-  
+
   dir {PYTHON2_SITELIB}/raven
   dir {PYTHON2_SITELIB}/raven/conf
   dir {PYTHON2_SITELIB}/raven/contrib
@@ -38,7 +38,7 @@ command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/raven/scripts
   exist {PYTHON3_SITELIB}/raven/transport
   exist {PYTHON3_SITELIB}/raven/utils
-  
+
   dir {PYTHON3_SITELIB}/raven
   dir {PYTHON3_SITELIB}/raven/conf
   dir {PYTHON3_SITELIB}/raven/contrib

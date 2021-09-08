@@ -27,7 +27,7 @@ command "-" "Check environment"
 
   service-present redis
   service-present sentinel
-  
+
   user-exist {service_user}
   group-exist {service_group}
 

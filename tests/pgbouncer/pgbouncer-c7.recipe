@@ -15,7 +15,7 @@ var delay 3
 command "-" "Check environment"
   app pgbouncer
   service-present {service_name}
-  
+
   exist {service_config}
   owner {service_config} {service_user}
   mode {service_config} 644

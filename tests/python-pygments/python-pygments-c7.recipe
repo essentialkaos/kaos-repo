@@ -11,7 +11,7 @@ command "-" "Check Python 2 installation"
   exist {PYTHON2_SITELIB}/pygments/formatters
   exist {PYTHON2_SITELIB}/pygments/lexers
   exist {PYTHON2_SITELIB}/pygments/styles
-  
+
   dir {PYTHON2_SITELIB}/pygments
   dir {PYTHON2_SITELIB}/pygments/filters
   dir {PYTHON2_SITELIB}/pygments/formatters
@@ -28,7 +28,7 @@ command "-" "Check Python 3 installation"
   exist {PYTHON3_SITELIB}/pygments/formatters
   exist {PYTHON3_SITELIB}/pygments/lexers
   exist {PYTHON3_SITELIB}/pygments/styles
-  
+
   dir {PYTHON3_SITELIB}/pygments
   dir {PYTHON3_SITELIB}/pygments/filters
   dir {PYTHON3_SITELIB}/pygments/formatters
