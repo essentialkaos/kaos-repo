@@ -56,7 +56,7 @@
 
 %define lua_ver           5.4.3
 %define pcre_ver          8.45
-%define openssl_ver       1.1.1k
+%define openssl_ver       1.1.1l
 %define ncurses_ver       6.2
 %define readline_ver      8.1
 

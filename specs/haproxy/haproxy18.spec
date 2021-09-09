@@ -59,7 +59,7 @@
 
 %define lua_ver           5.3.6
 %define pcre_ver          8.45
-%define openssl_ver       1.1.1k
+%define openssl_ver       1.1.1l
 %define ncurses_ver       6.2
 %define readline_ver      8.1
 
@@ -68,7 +68,7 @@
 Name:              %{orig_name}%{major_ver}
 Summary:           TCP/HTTP reverse proxy for high availability environments
 Version:           1.8.30
-Release:           0%{?dist}
+Release:           1%{?dist}
 License:           GPLv2+
 URL:               https://haproxy.1wt.eu
 Group:             System Environment/Daemons
@@ -279,6 +279,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Sep 09 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.30-1
+- OpenSSL updated to 1.1.1l
+
 * Thu Jun 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.30-0
 - MINOR: time: also provide a global, monotonic global_now_ms timer
 - BUG/MEDIUM: freq_ctr/threads: use the global_now_ms variable
