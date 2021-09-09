@@ -64,7 +64,7 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.17
+Version:           1.17.1
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -779,6 +779,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Fri Sep 10 2021 Anton Novojilov <andy@essentialkaos.com> - 1.17.1-0
+- https://github.com/golang/go/issues?q=milestone:Go1.17.1+label:CherryPickApproved
+
 * Tue Aug 17 2021 Anton Novojilov <andy@essentialkaos.com> - 1.17-0
 - https://golang.org/doc/go1.17
 
