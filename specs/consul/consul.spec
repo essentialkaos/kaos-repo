@@ -57,10 +57,10 @@
 
 Summary:           Tool for service discovery, monitoring and configuration
 Name:              consul
-Version:           1.9.2
+Version:           1.10.2
 Release:           0%{?dist}
 Group:             Applications/Communications
-License:           MPLv2
+License:           MPL-2.0
 URL:               https://www.consul.io
 
 Source0:           https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
@@ -75,7 +75,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.15
+BuildRequires:     golang >= 1.17
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -138,8 +138,8 @@ mv .src src
 
 %build
 export GOPATH=$(pwd)
-export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
+export GO111MODULE=auto
 export GIT_IMPORT="github.com/hashicorp/consul/version"
 export GOLDFLAGS="-X $GIT_IMPORT.GitDescribe=%{version}"
 
@@ -225,26 +225,29 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/%{name}
 %attr(0755,%{service_user},%{service_group}) %{service_home}
+%{_bindir}/%{name}
 
 %files client
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/client/config.json
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-client/
 %{_sysconfdir}/sysconfig/%{name}-client
 %{_unitdir}/%{name}-client.service
-%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-client/
-%config(noreplace) %{_sysconfdir}/%{name}/client/config.json
 
 %files server
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/server/config.json
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-server
 %{_sysconfdir}/sysconfig/%{name}-server
 %{_unitdir}/%{name}-server.service
-%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-server/
-%config(noreplace) %{_sysconfdir}/%{name}/server/config.json
 
 ################################################################################
 
 %changelog
+* Wed Sep 22 2021 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
+- Updated to the latest stable release
+
 * Mon Feb 1 2021 Andrey Kulikov <avk@brewkeeper.net> - 1.9.2-0
 - Updated to the latest stable release
 

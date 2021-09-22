@@ -17,6 +17,8 @@ var server_config  /etc/vault/server/config.hcl
 var agent_log_dir /var/log/vault-agent
 var agent_config  /etc/vault/agent/config.hcl
 
+var vault_port 8200
+
 var delay 3
 
 command "-" "Check environment"
@@ -42,12 +44,12 @@ command "-" "Check environment"
   owner {agent_log_dir} {service_user}:{service_group}
 
 command "-" "Prepare test environment"
-  env-set VAULT_ADDR "http://127.0.0.1:8200"
+  env-set VAULT_ADDR "http://127.0.0.1:{vault_port}"
 
 command "systemctl start {server_service}" "Start Vault daemon"
   wait {delay}
   service-works {server_service}
-  connect tcp :8200
+  connect tcp :{vault_port}
 
 command "vault status" "Check Vault status"
   expect "Sealed             true"
@@ -58,4 +60,4 @@ command "systemctl status {server_service}" "Check status of Vault daemon"
 command "systemctl stop {server_service}" "Stop Vault daemon"
   wait {delay}
   !service-works {server_service}
-  !connect tcp :8000
+  !connect tcp :{vault_port}

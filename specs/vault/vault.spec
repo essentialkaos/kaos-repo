@@ -57,27 +57,25 @@
 
 Summary:           Tool for managing secrets and protecting sensitive data
 Name:              vault
-Version:           1.6.2
+Version:           1.8.2
 Release:           0%{?dist}
 Group:             Applications/Communications
-License:           MPLv2
+License:           MPL-2.0
 URL:               https://www.vaultproject.io
 
 Source0:           https://github.com/hashicorp/%{name}/archive/v%{version}.tar.gz
 Source1:           %{name}-agent.sysconfig
 Source2:           %{name}-server.sysconfig
-Source3:           %{name}-agent.init
-Source4:           %{name}-server.init
-Source5:           %{name}-agent.service
-Source6:           %{name}-server.service
-Source7:           %{name}-agent.conf
-Source8:           %{name}-server.conf
+Source3:           %{name}-agent.service
+Source4:           %{name}-server.service
+Source5:           %{name}-agent.conf
+Source6:           %{name}-server.conf
 
 Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.15.3
+BuildRequires:     golang >= 1.16
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -95,22 +93,11 @@ Group:              Applications/Communications
 
 Requires:           %{name} = %{version}-%{release}
 
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-Requires:           kaosv
-
-Requires(pre):      shadow-utils
-Requires(post):     chkconfig
-Requires(preun):    chkconfig
-Requires(preun):    initscripts
-Requires(postun):   initscripts
-%else
 Requires:           systemd
-
 BuildRequires:      systemd
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
-%endif
 
 %description agent
 Vault Agent is a client daemon that can perform useful tasks.
@@ -123,22 +110,11 @@ Group:              Applications/Communications
 
 Requires:           %{name} = %{version}-%{release}
 
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-Requires:           kaosv
-
-Requires(pre):      shadow-utils
-Requires(post):     chkconfig
-Requires(preun):    chkconfig
-Requires(preun):    initscripts
-Requires(postun):   initscripts
-%else
 Requires:           systemd
-
 BuildRequires:      systemd
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
-%endif
 
 %description server
 The Vault server provides an API which clients interact with and manages the
@@ -162,8 +138,8 @@ mv .src src
 export GOPATH=$(pwd)
 export XC_OS=$(go env GOOS)
 export XC_ARCH=$(go env GOARCH)
-export GO15VENDOREXPERIMENT=1
 export CGO_ENABLED=0
+export GO111MODULE=auto
 export GIT_IMPORT="github.com/hashicorp/%{name}/version"
 export GOLDFLAGS="-X $GIT_IMPORT.GitDescribe=%{version}"
 
@@ -187,26 +163,17 @@ install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/agent
 install -dm 755 %{buildroot}%{_rundir}/%{name}-agent
 install -dm 755 %{buildroot}%{_rundir}/%{name}-server
 install -dm 755 %{buildroot}%{service_home}
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-install -dm 755 %{buildroot}%{_initrddir}
-%else
 install -dm 755 %{buildroot}%{_unitdir}
-%endif
 install -dm 755 %{buildroot}%{_logdir}/%{name}-server
 install -dm 755 %{buildroot}%{_logdir}/%{name}-agent
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/sysconfig/%{name}-agent
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}-server
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-install -pm 755 %{SOURCE3} %{buildroot}%{_initrddir}/%{name}-agent
-install -pm 755 %{SOURCE4} %{buildroot}%{_initrddir}/%{name}-server
-%else
-install -pm 644 %{SOURCE5} %{buildroot}%{_unitdir}/
-install -pm 644 %{SOURCE6} %{buildroot}%{_unitdir}/
-%endif
-install -pm 644 %{SOURCE7} %{buildroot}%{_sysconfdir}/%{name}/agent/config.hcl
-install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/%{name}/server/config.hcl
+install -pm 644 %{SOURCE3} %{buildroot}%{_unitdir}/
+install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/
+install -pm 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/%{name}/agent/config.hcl
+install -pm 644 %{SOURCE6} %{buildroot}%{_sysconfdir}/%{name}/server/config.hcl
 
 %clean
 # Fix permissions for files and directories in modules dir
@@ -220,104 +187,72 @@ rm -rf %{buildroot}
 %pre
 getent group %{service_group} >/dev/null || groupadd -r %{service_group}
 getent passwd %{service_user} >/dev/null || \
-    useradd -r -M -g %{service_group} -d %{service_home} \
-            -s /sbin/nologin %{service_user}
+  useradd -r -M -g %{service_group} -d %{service_home} \
+          -s /sbin/nologin %{service_user}
 exit 0
 
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-
 %post agent
 if [[ $1 -eq 1 ]] ; then
-    %{__chkconfig} --add %{name}-agent
+  %{__systemctl} enable %{name}-agent.service &>/dev/null || :
 fi
 
 %preun agent
 if [[ $1 -eq 0 ]] ; then
-    %{__service} %{name}-agent stop &>/dev/null || :
-    %{__chkconfig} --del %{name}-agent
-fi
-
-%post server
-if [[ $1 -eq 1 ]] ; then
-    %{__chkconfig} --add %{name}-server
-fi
-
-%preun server
-if [[ $1 -eq 0 ]] ; then
-    %{__service} %{name}-server stop &>/dev/null || :
-    %{__chkconfig} --del %{name}-server
-fi
-
-%else
-
-%post agent
-if [[ $1 -eq 1 ]] ; then
-    %{__systemctl} enable %{name}-agent.service &>/dev/null || :
-fi
-
-%preun agent
-if [[ $1 -eq 0 ]] ; then
-    %{__systemctl} --no-reload disable %{name}-agent.service &>/dev/null || :
-    %{__systemctl} stop %{name}-agent.service &>/dev/null || :
+  %{__systemctl} --no-reload disable %{name}-agent.service &>/dev/null || :
+  %{__systemctl} stop %{name}-agent.service &>/dev/null || :
 fi
 
 %postun agent
 if [[ $1 -ge 1 ]] ; then
-    %{__systemctl} daemon-reload &>/dev/null || :
+  %{__systemctl} daemon-reload &>/dev/null || :
 fi
 
 %post server
 if [[ $1 -eq 1 ]] ; then
-    %{__systemctl} enable %{name}-server.service &>/dev/null || :
+  %{__systemctl} enable %{name}-server.service &>/dev/null || :
 fi
 
 %preun server
 if [[ $1 -eq 0 ]] ; then
-    %{__systemctl} --no-reload disable %{name}-server.service &>/dev/null || :
-    %{__systemctl} stop %{name}-server.service &>/dev/null || :
+  %{__systemctl} --no-reload disable %{name}-server.service &>/dev/null || :
+  %{__systemctl} stop %{name}-server.service &>/dev/null || :
 fi
 
 %postun server
 if [[ $1 -ge 1 ]] ; then
-    %{__systemctl} daemon-reload &>/dev/null || :
+  %{__systemctl} daemon-reload &>/dev/null || :
 fi
-
-%endif
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/%{name}
 %attr(0755,%{service_user},%{service_group}) %{service_home}
+%{_bindir}/%{name}
 
 %files agent
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/agent/config.hcl
 %{_sysconfdir}/sysconfig/%{name}-agent
 %attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-agent
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-%{_initrddir}/%{name}-agent
-%else
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-agent
 %{_unitdir}/%{name}-agent.service
-%endif
-%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-agent/
-%config(noreplace) %{_sysconfdir}/%{name}/agent/config.hcl
+
 
 %files server
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/server/config.hcl
 %{_sysconfdir}/sysconfig/%{name}-server
 %attr(-,%{service_user},%{service_group}) %dir %{_rundir}/%{name}-server
-%if ! (0%{?rhel} >= 7 || 0%{?fedora} >= 15)
-%{_initrddir}/%{name}-server
-%else
+%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-server
 %{_unitdir}/%{name}-server.service
-%endif
-%attr(-,%{service_user},%{service_group}) %dir %{_logdir}/%{name}-server/
-%config(noreplace) %{_sysconfdir}/%{name}/server/config.hcl
 
 ################################################################################
 
 %changelog
+* Wed Sep 22 2021 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
+- Updated to the latest stable release
+
 * Mon Feb 1 2021 Andrey Kulikov <avk@brewkeeper.net> - 1.6.2-0
 - Updated to the latest stable release
 
