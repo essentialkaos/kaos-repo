@@ -112,7 +112,7 @@ listDeletions() {
 
     app_name=$(getNameFromSpec "$spec")
 
-    echo "- \`$app_name\` removed"
+    echo "- \`$app_name\`"
   done < <(getChanges "$TYPE_DEL")
 
   echo ""
