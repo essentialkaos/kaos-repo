@@ -39,7 +39,7 @@
 %define pg_ver        13
 
 %define maj_ver       13
-%define min_ver       00
+%define min_ver       02
 %define patch         0000
 
 %define pkg_ver       %{maj_ver}.%{min_ver}.%{patch}
@@ -154,5 +154,8 @@ fi
 ################################################################################
 
 %changelog
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 13.02.0000-0
+- Updated to the latest stable release
+
 * Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 13.00.0000-0
-- Initial build
+- Initial build for kaos-repo
