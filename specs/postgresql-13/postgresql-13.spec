@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        13
-%define minorver        4
+%define minorver        5
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          13
@@ -1195,6 +1195,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 17 2021 Anton Novojilov <andy@essentialkaos.com> - 13.5-0
+- Updated to the latest stable release
+
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 13.4-0
 - Updated to the latest stable release
 
