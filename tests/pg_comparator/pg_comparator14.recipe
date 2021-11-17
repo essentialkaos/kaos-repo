@@ -1,11 +1,11 @@
-# Bibop recipe for pg_comparator for PostgreSQL 9.6
+# Bibop recipe for pg_comparator for PostgreSQL 14
 # See more: https://kaos.sh/bibop
 
-pkg pg_comparator96
+pkg pg_comparator14
 
 fast-finish yes
 
-var postgres_version 9.6
+var postgres_version 14
 var pgcmp_version    3.1
 
 var data_dir /usr/pgsql-{postgres_version}/share

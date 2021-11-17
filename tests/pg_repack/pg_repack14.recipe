@@ -1,12 +1,12 @@
-# Bibop recipe for pg_repack for PostgreSQL 9.6
+# Bibop recipe for pg_repack for PostgreSQL 14
 # See more: https://kaos.sh/bibop
 
-pkg pg_repack96
+pkg pg_repack14
 
 fast-finish yes
 
 var repack_version   1.4.6
-var postgres_version 9.6
+var postgres_version 14
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
