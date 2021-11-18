@@ -51,7 +51,7 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.13.0
+Version:           1.16.1
 Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
@@ -71,13 +71,13 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc openssl-devel libevent-devel
 
-Requires:          kaosv >= 2.15 openssl libevent
+Requires:          kaosv >= 2.16 openssl libevent
 
 Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Provides:         %{name} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -177,6 +177,95 @@ fi
 ################################################################################
 
 %changelog
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.16.1-0
+- Make PgBouncer acting as a server reject extraneous data after an SSL or
+  GSS encryption handshake.
+
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
+- Support hot reloading of TLS settings. When the configuration file is
+  reloaded, changed TLS settings automatically take effect.
+- Add support for abstract Unix-domain sockets. Prefix a Unix-domain socket
+  path with @ to use a socket in the abstract namespace. This matches
+  the corresponding PostgreSQL 14 feature.
+- The maximum lengths of passwords and user names have been increased to 996
+  and 128, respectively. Various cloud services require this.
+- The minimum pool size can now be set per database, similar to the regular
+  pool size and the reserve pool size.
+- The number of pending query cancellations is shown in 'SHOW POOLS'.
+- Configuration parsing now has tighter error handling in many places. Where
+  previously it might have logged an error and proceeded, those configuration
+  errors would now result in startup failures. This is what always should have
+  happened, but some code didn’t do this right. Some users might discover
+  that their configurations have been faulty all along and will not work
+  anymore.
+- Query cancel handling has been fixed. Under some circumstances, cancel
+  requests would seemingly get stuck for a long time. This should no longer
+  happen. In fact, cancel requests can now exceed the pool size by a factor
+  of two, so they really shouldn’t get stuck anymore.
+- Mixed use of md5 and scram via hba has been fixed.
+- The build with c-ares on Windows has been fixed.
+- The dreaded "FIXME: query end, but query_start == 0" messages have been
+  fixed. We now know why they happen, and you shouldn’t see them anymore.
+- Fix reloading of 'default_pool_size', 'min_pool_size', and 'res_pool_size'.
+  Reloading these settings previously didn’t work.
+- Cirrus CI is now used instead of Travis CI.
+- As usual, many tests have been added.
+- The "unclean server" log message has been clarified a bit. It now says
+  "client disconnect while server was not ready" or "client disconnect before
+  everything was sent to the server". The former can happen if the client
+  connection is closed when the server has a transaction block open, which
+  confused some users.
+- You can no longer use "pgbouncer" as a database name. This name is reserved
+  for the admin console, and using it as a normal database name never really
+  worked right. This is now explicitly prohibited.
+- Errors sent to clients before the connection is closed are now labeled as
+  FATAL instead of just ERROR. Some clients were confused otherwise.
+- Fix compiler warnings with GCC 11.
+
+
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.15.0-0
+- Improve authentication failure reporting. The authentication failure messages
+  sent to the client now only state that authentication failed but give no
+  further details. Details are available in the PgBouncer log. Also, if the
+  requested user does not exist, the authentication is still processed to the
+  end and will result in the same generic failure message. All this prevents
+  clients from probing the PgBouncer instance for user names and other
+  authentication-related insights. This is similar to how PostgreSQL behaves.
+- Don’t log anything if client disconnects immediately. This avoids log spam
+  when monitoring systems just open a TCP/IP connection but don’t send anything
+  before disconnecting.
+- Use systemd journal for logging when in use. When we detect that stderr is
+  going to the systemd journal, we use systemd native functions for log output.
+  This avoids printing duplicate timestamp and pid, thus making the log a
+  bit cleaner. Also, this adds metadata such as the severity to the logs, so
+  that if the journal gets sent on to syslog, the messages have useful
+  metadata attached.
+- A subset of the test suite can now be run under Windows.
+- 'SHOW CONFIG' now also shows the default values of the settings.
+- Fix the so_reuseport option on FreeBSD. The original code in PgBouncer
+  1.12.0 didn’t actually work on FreeBSD.
+- Repair compilation on systems with older systemd versions. This was
+  broken in 1.14.0.
+- The makefile target to build Windows binary zip packages has been repaired.
+- Long command-line options now also work on Windows.
+- Fix the behavior of the global auth_user setting. The old behavior was
+  confusing and fragile as it depended on the order in the configuration file.
+  This is no longer the case.
+- Improve test stability and portability.
+- Modernize Autoconf-related code.
+- Disable deprecation compiler warnings from OpenSSL 3.0.0.
+
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.14.0-0
+- Add SCRAM authentication pass-through. This allows using encrypted SCRAM
+  secrets in PgBouncer (either in userlist.txt or from auth_query) for
+  logging into servers.
+- Add support for systemd socket activation. This is especially useful to let
+  systemd handle the creation of the Unix-domain sockets on systems where
+  access to /var/run/postgresql is restricted.
+- Add support for Unix-domain sockets on Windows.
+- Add an alternative smaller sample configuration file pgbouncer-minimal.ini
+  for testing or deployment.
+
 * Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 1.13.0-0
 - Add configuration setting tcp_user_timeout, to set the corresponding socket
   option.
