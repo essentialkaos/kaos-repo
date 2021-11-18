@@ -4,6 +4,7 @@
 pkg postgresql13-server postgresql13-libs postgresql13-devel
 
 require-root yes
+unsafe-actions yes
 
 var version       13
 var service_name  postgresql-{version}
@@ -145,3 +146,7 @@ command "systemctl stop {service_name}" "Stop PostgreSQL server"
   wait {delay}
   !service-works {service_name}
   !connect tcp :5432
+
+command:teardown "-" "Data cleanup"
+  cleanup {data_dir}/data
+  cleanup {data_dir}/backups
