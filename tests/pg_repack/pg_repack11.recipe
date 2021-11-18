@@ -5,7 +5,7 @@ pkg pg_repack11
 
 fast-finish yes
 
-var repack_version   1.4.6
+var repack_version   1.4.7
 var postgres_version 11
 
 var data_dir /usr/pgsql-{postgres_version}/share

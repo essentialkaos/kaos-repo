@@ -32,6 +32,13 @@ command "-" "Check environment"
   exist /etc/init.d/{service_name}
   mode /etc/init.d/{service_name} 755
 
+command "-" "Check configuration files for external systems"
+  exist /etc/pam.d/postgresql{version}
+  mode /etc/pam.d/postgresql{version} 644
+
+  exist /usr/lib/tmpfiles.d/postgresql-{version}.conf
+  mode /usr/lib/tmpfiles.d/postgresql-{version}.conf 644
+
 command "-" "Check data directory"
   exist {data_dir}/backups
   exist {data_dir}/data

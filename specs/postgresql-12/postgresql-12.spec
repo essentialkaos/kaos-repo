@@ -107,6 +107,7 @@ Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
 Source11:          %{realname}.service
 Source12:          bash_profile
+Source13:          %{realname}-tmpfiles.d.conf
 
 Source100:         checksum.sha512
 
@@ -603,6 +604,9 @@ install -d %{buildroot}%{_sysconfdir}/pam.d
 install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{majorver}
 %endif
 
+install -dm 755 %{buildroot}%{_tmpfilesdir}
+install -pm 644 %{SOURCE13} %{buildroot}%{_tmpfilesdir}/%{realname}-%{majorver}.conf
+
 # Create the directory for sockets
 install -dm 755 %{buildroot}%{_rundir}/%{realname}
 
@@ -1077,7 +1081,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %config(noreplace) %{_initddir}/%{service_name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
-%config(noreplace) %{_unitdir}/postgresql-%{majorver}.service
+%config(noreplace) %{_unitdir}/%{realname}-%{majorver}.service
+%config(noreplace) %{_tmpfilesdir}/%{realname}-%{majorver}.conf
 %attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{majorver}
 %if %pam

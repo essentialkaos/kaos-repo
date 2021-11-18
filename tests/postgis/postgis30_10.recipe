@@ -7,7 +7,7 @@ fast-finish yes
 
 var postgis_lib_version   3
 var postgis_major_version 3.0
-var postgis_version       3.0.3
+var postgis_version       3.0.4
 var postgres_version      10
 var pkg_ver               30_10
 

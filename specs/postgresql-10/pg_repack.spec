@@ -53,7 +53,7 @@
 
 Summary:           Reorganize tables in PostgreSQL databases without any locks
 Name:              %{realname}%{pg_maj_ver}
-Version:           1.4.6
+Version:           1.4.7
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -114,6 +114,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.7-0
+- Updated to the latest stable release
+
 * Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
 - Updated to the latest stable release
 

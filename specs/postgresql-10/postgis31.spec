@@ -62,8 +62,8 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
 Name:              %{fullname}_%{pg_maj_ver}
-Version:           3.1.1
-Release:           1%{?dist}
+Version:           3.1.4
+Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
 URL:               https://www.postgis.net
@@ -307,8 +307,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 3.1.4-0
+- Updated to the latest stable version
+
 * Fri Mar 26 2021 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-1
 - Updated for compatibility with other major versions
 
 * Sat Feb 20 2021 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
-- Initial build
+- Initial build for kaos-repo
