@@ -22,7 +22,7 @@ sudo yum install -y epel-release centos-release-scl
 
 If you want to add a new package to the repository, be ready to look after it. It's physically impossible to maintain and keep fresh a large number of packages, especially if you don't use them somewhere.
 
-Also, bibop tests are mandatory for all new packages. It's the only way to test if the package is okay and does not affect other packages in the repository. bibop recipe syntax is easy to learn, so don't be afraid of it.
+Also, [bibop](https://kaos.sh/bibop) tests are mandatory for all new packages. It's the only way to test if the package is okay and does not affect other packages in the repository. bibop recipe syntax is [easy to learn](https://github.com/essentialkaos/bibop/blob/master/COOKBOOK.md#readme), so don't be afraid of it.
 
 Also, please read our main [Contributing Guidelines](https://kaos.sh/contributing-guidelines#contributing-guidelines).
 
@@ -40,8 +40,8 @@ Security is our first priority. We can't keep an outdated package in our reposit
 
 | Branch | Status |
 |------------|--------|
-| `master` | [![CI](https://kaos.sh/w/bibop/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:master) |
-| `develop` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:develop) |
+| `master` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:master) |
+| `develop` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=develop)](https://kaos.sh/w/kaos-repo/ci?query=branch:develop) |
 
 ### License
 
