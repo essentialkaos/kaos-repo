@@ -1,6 +1,6 @@
 <p align="center"><a href="#readme"><img src="https://gh.kaos.st/kaos-repo.svg"/></a></p>
 
-<p align="center"><a href="#installation">Installation</a> • <a href="#contributing-guidelines">Contributing Guidelines</a> • <a href="#deletion-policy">Deletion policy</a> • <a href="#end-of-support-schedule">End-of-support schedule</a> • <a href="#perfecto-and-bibop-check-status">perfecto and bibop check status</a> • <a href="#license">License</a></p>
+<p align="center"><a href="#installation">Installation</a> • <a href="#contributing-guidelines">Contributing Guidelines</a> • <a href="#deletion-policy">Deletion Policy</a> • <a href="#end-of-support-schedule">EoS Schedule</a> • <a href="#perfecto-and-bibop-check-status">CI status</a> • <a href="#license">License</a></p>
 
 <br/>
 
@@ -26,11 +26,11 @@ Also, bibop tests are mandatory for all new packages. It's the only way to test 
 
 Also, please read our main [Contributing Guidelines](https://kaos.sh/contributing-guidelines#contributing-guidelines).
 
-### Deletion policy
+### Deletion Policy
 
 Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (especially with known vulnerabilities) of software, it would be deleted from the repository.
 
-### End-of-support schedule
+### End-of-Support Schedule
 
 | CentOS/RHEL version | Updates     | Repository removal |
 |---------------------|-------------|--------------------|
@@ -40,7 +40,8 @@ Security is our first priority. We can't keep an outdated package in our reposit
 
 | Branch | Status |
 |------------|--------|
-| `master` | [![CI](https://kaos.sh/w/bibop/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:master) kaos-repo| `develop` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:develop) |
+| `master` | [![CI](https://kaos.sh/w/bibop/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:master) |
+| `develop` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:develop) |
 
 ### License
 
