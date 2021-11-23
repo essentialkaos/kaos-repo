@@ -8,8 +8,8 @@
 
 ### TODO's:
 
-- [ ] Run [`perfecto`](https://github.com/essentialkaos/perfecto) check on your spec file
-- [ ] Write [`bibop`](https://github.com/essentialkaos/bibop) tests
+- [ ] Run [`perfecto`](https://kaos.sh/perfecto) check on your spec file
+- [ ] Write [`bibop`](https://kaos.sh/bibop) tests
 - [ ] Enable "Allow edits from maintainers" for this PR
 - [ ] Update the messages below
 

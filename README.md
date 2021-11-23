@@ -23,12 +23,11 @@ sudo yum install -y epel-release centos-release-scl
 | `8.x`               | —           | —                  |
 
 
-### [_perfecto_](https://github.com/essentialkaos/perfecto) check status
+### [_perfecto_](https://kaos.sh/perfecto) and [bibop](https://kaos.sh/bibop) check status
 
-| Branch                 | Status |
-|------------------------|--------|
-| `master` (_Stable_)    | [![CI](https://github.com/essentialkaos/kaos-repo/workflows/CI/badge.svg?branch=master)](https://github.com/essentialkaos/kaos-repo/actions) |
-| `develop` (_Unstable_) | [![CI](https://github.com/essentialkaos/kaos-repo/workflows/CI/badge.svg?branch=develop)](https://github.com/essentialkaos/kaos-repo/actions) |
+| Branch | Status |
+|------------|--------|
+| `master` | [![CI](https://kaos.sh/w/bibop/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:master) kaos-repo| `develop` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:develop) |
 
 ### License
 
