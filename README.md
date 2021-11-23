@@ -1,5 +1,9 @@
 <p align="center"><a href="#readme"><img src="https://gh.kaos.st/kaos-repo.svg"/></a></p>
 
+<p align="center"><a href="#installation">Installation</a> • <a href="#contributing-guidelines">Contributing Guidelines</a> • <a href="#deletion-policy">Deletion policy</a> • <a href="#end-of-support-schedule">End-of-support schedule</a> • <a href="#perfecto-and-bibop-check-status">perfecto and bibop check status</a> • <a href="#license">License</a></p>
+
+<br/>
+
 This repository contains spec files and patches used for building RPM packages for [ESSENTIAL KAOS Public YUM Repository](https://yum.kaos.st).
 
 ### Installation
@@ -14,14 +18,23 @@ For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) an
 sudo yum install -y epel-release centos-release-scl
 ```
 
+### Contributing Guidelines
+
+If you want to add a new package to the repository, be ready to look after it. It's physically impossible to maintain and keep fresh a large number of packages, especially if you don't use them somewhere.
+
+Also, bibop tests are mandatory for all new packages. It's the only way to test if the package is okay and does not affect other packages in the repository. bibop recipe syntax is easy to learn, so don't be afraid of it.
+
+Also, please read our main [Contributing Guidelines](https://kaos.sh/contributing-guidelines#contributing-guidelines).
+
+### Deletion policy
+
+Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (especially with known vulnerabilities) of software, it would be deleted from the repository.
+
 ### End-of-support schedule
 
 | CentOS/RHEL version | Updates     | Repository removal |
 |---------------------|-------------|--------------------|
-| `6.x`               | 1 Jan 2020  | 31 Dec 2020        |
 | `7.x`               | 1 Jan 2022  | 31 Dec 2022        |
-| `8.x`               | —           | —                  |
-
 
 ### [_perfecto_](https://kaos.sh/perfecto) and [bibop](https://kaos.sh/bibop) check status
 
