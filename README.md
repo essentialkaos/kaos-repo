@@ -22,13 +22,13 @@ sudo yum install -y epel-release centos-release-scl
 
 If you want to add a new package to the repository, be ready to look after it. It's physically impossible to maintain and keep fresh a large number of packages, especially if you don't use them somewhere.
 
-Also, [bibop](https://kaos.sh/bibop) tests are mandatory for all new packages. It's the only way to test if the package is okay and does not affect other packages in the repository. bibop recipe syntax is [easy to learn](https://github.com/essentialkaos/bibop/blob/master/COOKBOOK.md#readme), so don't be afraid of it.
+Also, [bibop](https://kaos.sh/bibop) tests are mandatory for all new packages. It's the only way to test if the package is okay and does not affect other packages in the repository. `bibop` recipe syntax is [easy to learn](https://github.com/essentialkaos/bibop/blob/master/COOKBOOK.md#readme), so don't be afraid of it.
 
-Also, please read our main [Contributing Guidelines](https://kaos.sh/contributing-guidelines#contributing-guidelines).
+Please find a minute to check out our main [Contributing Guidelines](https://kaos.sh/contributing-guidelines#contributing-guidelines).
 
 ### Deletion Policy
 
-Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (especially with known vulnerabilities) of software, it would be deleted from the repository.
+Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (_especially with known vulnerabilities_) of software, it would be deleted from the repository.
 
 ### End-of-Support Schedule
 
