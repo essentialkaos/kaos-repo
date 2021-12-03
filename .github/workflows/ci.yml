@@ -49,6 +49,8 @@ jobs:
           wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
           wget https://kaos.sh/bibop/bibop-massive
           chmod +x bibop bibop-massive
+          bibop -v
+          bibop-massive -v
 
       - name: Run bibop recipes validation
         env:
