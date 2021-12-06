@@ -1,7 +1,7 @@
 ################################################################################
 
 ARCH := $(shell getconf LONG_BIT)
-LIB_NAME := hiredis
+LIB_NAME := dirac
 
 ################################################################################
 
@@ -10,7 +10,7 @@ LIB_NAME := hiredis
 ################################################################################
 
 all:
-	$(CC) -o test_$(ARCH) -l $(LIB_NAME) test.c
+	$(CC) -o test_$(ARCH) -l $(LIB_NAME)_encoder -l $(LIB_NAME)_decoder -I /usr/include/$(LIB_NAME) test.c
 
 clean:
 	rm -f test_64
