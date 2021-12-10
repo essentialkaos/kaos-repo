@@ -2,17 +2,17 @@
 
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.3
+Version:         1.5.3
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
-URL:             http://goaccess.io
+URL:             https://goaccess.io
 
-Source0:         http://tar.goaccess.io/goaccess-%{version}.tar.gz
+Source0:         https://tar.goaccess.io/goaccess-%{version}.tar.gz
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc GeoIP-devel glib2-devel ncurses-devel
+BuildRequires:   make gcc GeoIP-devel glib2-devel ncurses-devel openssl-devel
 
 Requires:        GeoIP
 
@@ -31,7 +31,7 @@ for system administrators that require a visual server report on the fly.
 %setup -q
 
 %build
-%configure --enable-debug --enable-geoip --enable-utf8
+%configure --enable-utf8 --with-openssl --enable-geoip=legacy
 
 %{__make} %{?_smp_mflags}
 
@@ -48,6 +48,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING README TODO
 %config(noreplace) %{_sysconfdir}/%{name}/browsers.list
+%config(noreplace) %{_sysconfdir}/%{name}/podcast.list
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %{_datadir}/locale/*/LC_MESSAGES/goaccess.mo
 %{_bindir}/%{name}
@@ -56,6 +57,246 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
+- Added additional crawlers to the default list.
+- Added Italian translation (i18n).
+- Added 'macOS 12' to the list of OS.
+- Fixed buffer overflow caused by an excessive number of invalid requests with
+  multiple logs.
+- Fixed visualization issue on the HTML report for panels with disabled chart.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
+- Added .avi to the list of static requests/extensions.
+- Changed label from 'Init. Proc. Time' to 'Log Parsing Time'.
+- Fixed issue where lengthy static-file extension wouldn't account certain valid
+  requests.
+- Fixed possible buffer underflow when checking static-file extension.
+- Fixed segfault when attempting to parse an invalid JSON log while using a JSON
+  log format.
+- Fixed segfault when ignoring a status code and processing a line > '4096'
+  chars.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
+- Changed official deb repo so it now builds '--with-getline' in order to
+  support request lines longer than 4096.
+- Ensure there's no tail delay if the log file hasn't changed.
+- Fixed data race when writing to a self-pipe and attempting to stop the WS
+  server.
+- Fixed inability to close expanded panel when pressing 'q' on TUI.
+- Fixed possible data race during parsing spinner label assignment.
+- Increased the maximum number of files to monitor from '512' to '3072'.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.5-0
+- Added a Docker container based isolated build environment (Debian).
+- Added Dark Mode detection to the HTML report.
+- Added the ability for the WebSocket server to bind to a Unix-domain socket.
+- Added the ability to parse IPs enclosed within brackets (e.g., IPv6).
+- Changed categorization of requests containing 'CFNetwork' to 'iOS' when
+  applicable.
+- Changed command line option from '--hide-referer' to '--hide-referrer'.
+- Changed command line option from '--ignore-referer' to '--ignore-referrer'.
+- Fixed a potential division by zero.
+- Fixed inablity to parse IPv6 when using a 'CADDY' log format.
+- Fixed issue where a 'BSD' OS could be displayed as Linux with certain
+  user-agents.
+- Fixed memory leak when a JSON value contained an empty string(e.g., JSON/CADDY
+  format).
+- Fixed possible buffer overflow on a WS packet coming from the browser.
+- Refactored a substancial part of the storage codebase for upcoming
+  filtering/search capabilities (issue #117).
+- Refactored DB storage to minimize memory consumption up to '35%'.
+- Updated default 'AWS Elastic Load Balancing' log format.
+- Updated German translation.
+- Updated page size to 24 on the HTML report.
+- Updated UNIX OS catergories.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
+- Added additional feed reader clients.
+- Added additional browsers and bots to the main list.
+- Added command line option '--unknowns-log' to log unknown browsers and OSs.
+- Added 'Referer' to the pre-defined 'Caddy JSON' log format.
+- Added support for real-time piping as non-root user.
+- Added the ability to Handle case when IPv4 is encoded as IPv6 in
+  GeoIP1/legacy.
+- Ensure we capture linux (lowercase) when extracting an OS.
+- Fixed a regression in parsing Google Cloud Storage or possibly other non-JSON
+  formats.
+- Fixed inability to parse escaped formats.
+- Fixed issue when using '%%s' with 'strptime(3)' under musl libc. This
+  addresses mostly the Docker image.
+- Fixed possible buffer over-read for certain log-format patterns.
+- Fixed segfault when attempting to process a malformed JSON string.
+- Fixed segfault when setting an empty log-format from the TUI dialog.
+- Fixed sorting on hits and visitors when larger than INT_MAX.
+- Updated CloudFront pre-defined log-format to reflect the latest fields.
+- Updated 'Dockerfile' image to use 'alpine:3.13' instead of edge due to
+  compatibility issue with the GNU coreutils.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
+- Fixed build issue due to initial declarations only allowed in C99 mode
+  (e.g., CentOS7).
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
+- Added 'Caddy' to the list of pre-defined log formats.
+- Added command line option '--no-strict-status' to disable status validation.
+- Added native support to parse JSON logs.
+- Added the ability to process timestamps in milliseconds using '%%*'.
+- Ensure TUI/CSV/HTML reports are able to output 'uint64_t' data.
+- Ensure we allow UI render if the rate at which data is being read is greater
+  than '8192' req/s.
+- Ensure we don't re-render Term/HTML output if no data was read/piped.
+- Fixed build configure to work on NetBSD.
+- Fixed issue where it would send data via socket each second when managed by
+  systemd.
+- Fixed issue where parser was unable to parse syslog date with padding.
+- Fixed issue where some items under browsers.list were not tab separated.
+- Fixed issue where the format parser was unable to properly parse logs
+  delimited by a pipe.
+- Fixed issue where T.X. Amount metrics were not shown when data was piped.
+- Fixed issue where XFF parser could swallow an additional field.
+- Fixed memory leak when using '%x' as date/time specifier.
+- Replaced select(2) with poll(2) as it is more efficient and a lot faster than
+  select(2).
+- Updated Swedish i18n.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
+- Added the ability to set how often goaccess will parse data and output to the
+  HTML report via '--html-refresh=<secs>'.
+- Changed how TLS is parsed so the Cypher uses a separate specifier. It now
+  uses '%K' for the TLS version and '%k' for the Cypher.
+- Fixed issue where real-time output would double count a rotated log. This was
+  due to the change of inode upon rotating the log.
+- Updated man page to reflect proper way of 'tail -f' a remote access log.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
+- Added the ability to show 'Encryption Settings' such as 'TLSv1.2' and Cipher
+  Suites on its own panel.
+- Added the ability to show 'MIME Types' such as 'application/javascript' on its
+  own panel.
+- Changed Debian build to use mmdb instead of libgeoip (legacy).
+- Ensure the HTML report defaults to widescreen if viewport is larger
+  than '2560px'.
+- Fixed inability to properly process multiple logs in real-time.
+- Fixed issue where named PIPEs were not properly seed upon generating
+  filename.
+- Fixed issue where served time metrics were not shown when data was piped.
+- Removed unnecessary padding from SVG charts. Improves readability on mobile.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.1-0
+- Added addtional browsers and bots to the main list.
+- Added 'Android 11' to the list of OSs.
+- Added 'macOS 11.0 Big Sur' to the list of OSs.
+- Added 'average' to each panel overall metrics.
+- Added '.dmg', '.xz', and '.zst' to the static list.
+- Added extra check to ensure restoring from disk verifies the content of the
+  log against previous runs.
+- Added Russian translation (i18n).
+- Added Ukrainian translation (i18n).
+- Added support for HTTP status code '308'.
+- Added the ability for 'get_home ()' to return NULL on error, instead of
+  terminating the process. Great if using through systemd.
+- Added the ability to read lowercase predefined log formats. For
+  instance, '--log-format=COMBINED' or '--log-format=combined'.
+- Changed how FIFOs are created and avoid using predictable filenames
+  under '/tmp'.
+- Changed '--ignore-referer' to use whole referrer instead of referring site.
+- Ensure Cache Status can be parsed without sensitivity to case.
+- Ensure restored data enforces '--keep-last' if used by truncating
+  accordingly.
+- Fixed a few memory leaks when restoring from disk.
+- Fixed blank time distribution panel when using timestamps.
+- Fixed build issue due to lack of 'mmap' on 'Win'/'Cygwin'/'MinGW'.
+- Fixed crash in mouse enabled mode.
+- Fixed double free on data restore.
+- Fixed inability to keep processing a log when using '--keep-last'.
+- Fixed inability to properly parse truncated logs.
+- Fixed inability to properly count certain requests when restoring from disk.
+- Fixed issue where it would not parse subsequent requests coming from stdin
+  (tail).
+- Fixed issue where log truncation could prevent accurate number counting.
+- Fixed issue where parsed date range was not rendered with '--date-spec'.
+- Fixed issue where parser would stop regardless of a valid '--num-test' value.
+- Fixed issue where restoring from disk would increment 'MAX.TS'.
+- Fixed possible incremental issue when log rotation occurs.
+- Fixed possible XSS when getting real-time data into the HTML report.
+- Fixed potential memory leak when failing to get root node.
+- Fixed real-time hits count issue for certain scenarios.
+- Fixed segfault in 'Docker' due to a bad allocation when generating FIFOs.
+- Fixed 'Unknown' Operating Systems with 'W3C' format.
+- Removed unnecessary include from parser.c so it builds in macOS.
+- Updated each panel overall UI to be more streamlined.
+- Updated French translation.
+- Updated German translation.
+- Updated Spanish translation.
+- Updated sigsegv handler.
+
+* Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4-0
+- Added a caching storage mechanism to improve parsing raw data and data
+  rendering.
+- Added a mechanism to avoid counting duplicate data when restoring persisted
+  data from disk.
+- Added additional option to the HTML report to set a maximum number of items
+  per page to 3.
+- Added a list of podcast-related user agents under '%%sysconfdir%%'.
+- Added 'Android 10' to the list of Android codenames.
+- Added a 'widescreen' layout to the HTML report (e.g., 4K TV/KPI Dashboard).
+- Added 'Beaker', 'Brave', and 'Firefox Focus' to the list of browsers
+- Added command line option --user-name=username to avoid running GoAccess as
+  root when outputting a real-time report.
+- Added 'DuckDuckGo' and 'MSNBot' browsers to the browsers.list.
+- Added 'facebookexternalhit' to the default crawler list.
+- Added German translation (DE).
+- Added Kubernetes Nginx Ingress Log Format to the default config file.
+- Added 'macOS Catalina' to the list of OSX codenames.
+- Added minor CSS updates to HTML report.
+- Added missing header '<sys/socket.h>' to fix FreeBSD build
+- Added new 'Edg' token to the list of browsers.
+- Added '--no-ip-validation' command line to disable client IP validation
+- Added '--persist' and '--restore' options to persist to disk and restore a
+  dump from disk.
+- Added Portuguese translation (pt-BR)
+- Added Swedish translation (SV)
+- Added the ability to parse server cache status and a new panel to display
+  those metrics.
+- Changed accumulated time to work by default on '--persist' and '--restore'.
+- Changed back how the hits and visitors percentage is calculated to be more
+  intuitive.
+- Changed Geo Location panel display default to show only if database file is
+  provided ('LIBMAXMINDDB').
+- Changed initial processing time from secs to HH:MM:SS in HTML output.
+- Changed '--max-items' for the static HTML report to allow no limit on output
+  entries.
+- Changed required 'gettext' version to 0.19
+- Changed to ignore 'SIGPIPE' with 'SIG_IGN'
+- Changed version to 10.15 for 'macOS Catalina'.
+- Ensure proper escaping on default AWSELB log format.
+- Ensure valid requests counter is not affected on duplicate entries when
+  restoring data.
+- Fixed issue preventing Ctrl-C (SIGINT) for the curses interface to stop the
+  program.
+- Fixed issue where HTML report wouldn't update the tables when changing per
+  page option.
+- Fixed issue where it wouldn't find either the user's or global config file.
+- Fixed issue where changing the number of items per page in the HTML report
+  would not automatically refresh the tables.
+- Fixed issue where last updated label was not updated in real-time.
+- Fixed issue where overall date range wasn't showing the right start/end parse
+  dates.
+- Fixed issue where tailing a file could potentially re-parse part of the log.
+- Fixed memory leak when fetching country/continent while using 'LIBMAXMINDDB'.
+- Fixed several '-Wcast-qual' warnings.
+- Fixed unwanted added characters to the HTML output.
+- Fixed websocket issue returning a 400 due to request header size.
+- Increased 'MAX_LINE_CONF' so a JSON string can be properly parsed from the
+  config file.
+- Removed deprecated option '--geoip-city-data' from config file.
+- Removed unnecessary dependency from snapcraft.yaml.
+- Removed Vagrantfile per #1410
+- Removed some old browsers from the default curated list.
+- Replaced TokyoCabinet storage for a non-dependency in-memory persistent
+  storage.
+- Updated Dockerfile.
+
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3-0
 - Added ability to store accumulated processing time into DB_GEN_STATS tcb file
   via '--accumulated-time' command line option.
