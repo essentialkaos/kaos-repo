@@ -46,10 +46,6 @@ Group:           Development/Libraries
 
 Requires:        %{name} = %{version}-%{release}
 
-%if 0%{?fedora} < 11 || 0%{?rhel} < 6
-Requires:        pkgconfig
-%endif
-
 Provides:        geoip-devel = %{version}-%{release}
 Obsoletes:       geoip-devel < %{version}-%{release}
 
