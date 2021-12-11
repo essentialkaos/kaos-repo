@@ -14,7 +14,7 @@ Version:         1.6.12
 Release:         1%{?dist}
 Group:           Development/Libraries
 License:         LGPLv2+
-URL:             http://www.maxmind.com/app/c
+URL:             https://www.maxmind.com/app/c
 
 Source0:         https://github.com/maxmind/geoip-api-c/releases/download/v%{version}/%{name}-%{version}.tar.gz
 Source100:       checksum.sha512
