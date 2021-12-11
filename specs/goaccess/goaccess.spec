@@ -10,11 +10,14 @@ URL:             https://goaccess.io
 
 Source0:         https://tar.goaccess.io/goaccess-%{version}.tar.gz
 
+Patch1:          webkaos-formats.patch
+
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc GeoIP-devel glib2-devel ncurses-devel openssl-devel
+BuildRequires:   make gcc libmaxminddb-devel glib2-devel ncurses-devel
+BuildRequires:   openssl-devel gettext-devel gettext-devel
 
-Requires:        GeoIP
+Requires:        openssl libmaxminddb
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -30,8 +33,13 @@ for system administrators that require a visual server report on the fly.
 %prep
 %setup -q
 
+%patch1 -p1
+
 %build
-%configure --enable-utf8 --with-openssl --enable-geoip=legacy
+%configure --enable-utf8 \
+           --with-openssl \
+           --with-getline \
+           --enable-geoip=mmdb
 
 %{__make} %{?_smp_mflags}
 
