@@ -47,12 +47,12 @@
 %define eprefix           %{_prefix}%{_lib32}
 %define ver_maj           23
 %define ver_min           3
-%define ver_patch         4.5
+%define ver_patch         4.10
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
 
-%define libre_ver         3.4.0
+%define libre_ver         3.4.2
 
 ################################################################################
 
@@ -1045,6 +1045,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 22 2021 Anton Novojilov <andy@essentialkaos.com> - 23.3.4.10-0
+- Updated to the latest release
+- LibreSSL updated to 3.4.2
+
 * Thu Sep 30 2021 Anton Novojilov <andy@essentialkaos.com> - 23.3.4.5-0
 - Updated to the latest release
 - LibreSSL updated to 3.4.0
