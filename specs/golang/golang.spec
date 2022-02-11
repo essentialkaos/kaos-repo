@@ -64,7 +64,7 @@
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.17.5
+Version:           1.17.7
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -434,7 +434,7 @@ pushd src
   for goos in darwin freebsd linux netbsd openbsd plan9 windows ; do
     for goarch in 386 amd64 arm ; do
       if [[ "${goarch}" == "arm" ]] ; then
-        if [[ "${goos}" == "windows" || "${goos}" == "plan9" || "${goos}" = "openbsd" ]] ; then
+        if [[ "${goos}" == "windows" || "${goos}" == "plan9" || "${goos}" == "openbsd" ]] ; then
           continue
         fi
       fi
@@ -451,7 +451,7 @@ pushd src
       CC_FOR_TARGET="gcc" \
         GOOS=${goos} \
         GOARCH=${goarch} \
-        ./make.bash --no-clean
+        ./make.bash
     done
   done
 popd
@@ -803,6 +803,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Fri Feb 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.17.7-0
+- https://github.com/golang/go/issues?q=milestone:Go1.17.7+label:CherryPickApproved
+
+* Fri Feb 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.17.6-0
+- https://github.com/golang/go/issues?q=milestone:Go1.17.6+label:CherryPickApproved
+
 * Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.17.5-0
 - https://github.com/golang/go/issues?q=milestone:Go1.17.5+label:CherryPickApproved
 
