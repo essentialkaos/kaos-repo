@@ -13,9 +13,9 @@ diff -urN goaccess-1.5.3-orig/config/goaccess.conf goaccess-1.5.3/config/goacces
 +# -- WEBKAOS | extended
 +#log-format [%^] %h - [%d:%t %^] "%r" %s %b "%~h" "%R" %v %T %^ %^ - %^
 +# -- WEBKAOS | reflog
-+#log-format [%^] %h - %e [%d:%t %^] "%r" %s $bytes_sent "%R" "%u"
++#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%R" "%u"
 +# -- WEBKAOS | timed_combined
-+#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%~h" %v "%R" "%u" %T %^
++#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%^" %v "%R" "%u" %T %^
 +# -- WEBKAOS | vhost_ip_full_format
 +#log-format [%^] %h - %e [%d:%t %^] %v %^ %r %s %b "%R" "%u" "%~h" %T %^
 +

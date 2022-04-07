@@ -58,13 +58,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.17
+%global go_api 1.18
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.17.7
+Version:           1.18
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -80,7 +80,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.16
+BuildRequires:     golang >= 1.17
 
 Requires:          git
 Requires:          %{name}-bin
@@ -803,6 +803,12 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 ################################################################################
 
 %changelog
+* Fri Apr 01 2022 Anton Novojilov <andy@essentialkaos.com> - 1.18-0
+- https://go.dev/doc/go1.18
+
+* Fri Mar 04 2022 Anton Novojilov <andy@essentialkaos.com> - 1.17.8-0
+- https://github.com/golang/go/issues?q=milestone:Go1.17.8+label:CherryPickApproved
+
 * Fri Feb 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.17.7-0
 - https://github.com/golang/go/issues?q=milestone:Go1.17.7+label:CherryPickApproved
 
