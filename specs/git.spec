@@ -11,7 +11,7 @@
 
 Summary:          Core git tools
 Name:             git
-Version:          2.30.2
+Version:          2.35.1
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -284,6 +284,33 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.35.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.1.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.35.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.0.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.34.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.34.1.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.34.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.34.0.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.33.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.33.1.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.33.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.33.0.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.32.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.32.0.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.31.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.31.1.txt
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.31.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.31.0.txt
+
 * Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.30.2-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.2.txt
 
