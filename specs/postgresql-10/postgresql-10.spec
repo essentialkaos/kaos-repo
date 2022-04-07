@@ -65,7 +65,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        10
-%define minorver        19
+%define minorver        20
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          10
@@ -1127,14 +1127,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 10.20-0
+- https://www.postgresql.org/docs/10/release-10-20.html
+
 * Wed Nov 17 2021 Anton Novojilov <andy@essentialkaos.com> - 10.19-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/10/release-10-19.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 10.18-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/10/release-10-18.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 10.17-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/10/release-10-17.html
 
 * Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 10.16-1
 - Changed bash_profile installation routine

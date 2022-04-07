@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        11
-%define minorver        14
+%define minorver        15
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          11
@@ -1188,29 +1188,32 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 11.15-0
+- https://www.postgresql.org/docs/11/release-11-15.html
+
 * Wed Nov 17 2021 Anton Novojilov <andy@essentialkaos.com> - 11.14-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-14.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 11.13-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-13.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 11.12-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-12.html
 
 * Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 11.11-1
 - Changed bash_profile installation routine
 
 * Mon Feb 15 2021 Anton Novojilov <andy@essentialkaos.com> - 11.11-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-11.html
 
 * Tue Dec 29 2020 Anton Novojilov <andy@essentialkaos.com> - 11.10-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-10.html
 
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 11.9-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-9.html
 
 * Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 11.8-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/11/release-11-8.html
 - Spec improvements
 
 * Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 11.6-1

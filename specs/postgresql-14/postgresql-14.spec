@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        14
-%define minorver        1
+%define minorver        2
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          14
@@ -1208,8 +1208,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 14.2-0
+- https://www.postgresql.org/docs/14/release-14-2.html
+
 * Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 14.1-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/14/release-14-1.html
 
 * Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 14.0-0
 - Initial build for kaos-repo

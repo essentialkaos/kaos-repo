@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        13
-%define minorver        5
+%define minorver        6
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          13
@@ -1200,23 +1200,26 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 13.6-0
+- https://www.postgresql.org/docs/13/release-13-6.html
+
 * Wed Nov 17 2021 Anton Novojilov <andy@essentialkaos.com> - 13.5-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/13/release-13-5.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 13.4-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/13/release-13-4.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 13.3-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/13/release-13-3.html
 
 * Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 13.2-1
 - Changed bash_profile installation routine
 
 * Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 13.2-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/13/release-13-2.html
 
 * Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 13.1-0
-- Updated to 13.1
+- https://www.postgresql.org/docs/13/release-13-1.html
 
 * Tue Feb 16 2021 Anton Novojilov <andy@essentialkaos.com> - 13.0-0
 - Initial build

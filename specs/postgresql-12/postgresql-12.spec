@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        12
-%define minorver        9
+%define minorver        10
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
@@ -1199,29 +1199,32 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 12.10-0
+- https://www.postgresql.org/docs/12/release-12-10.html
+
 * Wed Nov 17 2021 Anton Novojilov <andy@essentialkaos.com> - 12.9-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-9.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 12.8-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-8.html
 
 * Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 12.7-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-7.html
 
 * Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-1
 - Changed bash_profile installation routine
 
 * Mon Feb 15 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-6.html
 
 * Tue Dec 29 2020 Anton Novojilov <andy@essentialkaos.com> - 12.5-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-5.html
 
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 12.4-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-4.html
 
 * Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 12.3-0
-- Updated to the latest stable release
+- https://www.postgresql.org/docs/12/release-12-3.html
 - Spec improvements
 
 * Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 12.2-1
