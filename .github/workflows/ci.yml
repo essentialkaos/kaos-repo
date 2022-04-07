@@ -27,7 +27,7 @@ jobs:
       - name: Check specs with Perfecto
         uses: essentialkaos/perfecto-action@v1
         with:
-          files: $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
+          files: $(cd "${{ github.workspace }}" ; git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
           absolve: PF20
 
   Bibop:
