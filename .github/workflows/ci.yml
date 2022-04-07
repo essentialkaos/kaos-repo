@@ -31,6 +31,7 @@ jobs:
         with:
           files: $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
           absolve: PF20
+          format: tiny
           image: centos7
 
   Bibop:
