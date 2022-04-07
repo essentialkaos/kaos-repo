@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Code checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -42,7 +42,7 @@ jobs:
           echo "${{ github.workspace }}" >> "$GITHUB_PATH"
 
       - name: Code checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install bibop and bibop-massive
         run: |
