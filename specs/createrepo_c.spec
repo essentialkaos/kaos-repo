@@ -161,11 +161,8 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DSHARE_INSTALL_PREFIX:PATH=%{_datadir} \
       -DPYTHON_LIBRARY:PATH=%{python3_lib} \
       -DPYTHON_INCLUDE_DIR:PATH=%{python3_inc} \
-%if 0%{?rhel} >= 7
+      -DENABLE_DRPM:BOOL=ON \
       -DWITH_ZCHUNK:BOOL=ON \
-%else
-      -DWITH_ZCHUNK:BOOL=OFF \
-%endif
       -DBUILD_SHARED_LIBS:BOOL=ON .
 
 %{__make} %{?_smp_mflags} RPM_OPT_FLAGS="%{optflags}"

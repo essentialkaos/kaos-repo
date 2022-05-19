@@ -17,17 +17,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1
-        env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        if: ${{ env.DOCKERHUB_USERNAME != '' }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Perfecto docker image
-        uses: docker://essentialkaos/perfecto:centos7
+        uses: docker://ghcr.io/essentialkaos/perfecto:centos7
         with:
           args: --version
 
@@ -38,7 +36,7 @@ jobs:
 
       - name: Run Perfecto check
         env:
-          IMAGE: essentialkaos/perfecto:centos7
+          IMAGE: ghcr.io/essentialkaos/perfecto:centos7
         run: ./perfecto-docker -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
 
   Bibop:

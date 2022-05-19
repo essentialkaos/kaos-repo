@@ -65,7 +65,7 @@
 %{!?ldap:%define ldap 1}
 
 %define majorver        10
-%define minorver        20
+%define minorver        21
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          10
@@ -1127,6 +1127,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu May 19 2022 Anton Novojilov <andy@essentialkaos.com> - 10.21-0
+- https://www.postgresql.org/docs/10/release-10-21.html
+
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 10.20-0
 - https://www.postgresql.org/docs/10/release-10-20.html
 

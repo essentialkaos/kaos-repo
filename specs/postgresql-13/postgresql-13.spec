@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        13
-%define minorver        6
+%define minorver        7
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          13
@@ -1200,6 +1200,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu May 19 2022 Anton Novojilov <andy@essentialkaos.com> - 13.7-0
+- https://www.postgresql.org/docs/13/release-13-7.html
+
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 13.6-0
 - https://www.postgresql.org/docs/13/release-13-6.html
 
