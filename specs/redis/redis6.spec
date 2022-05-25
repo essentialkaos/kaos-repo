@@ -44,46 +44,49 @@
 
 ################################################################################
 
+%define realname   redis
 %define major_ver  6
 
 ################################################################################
 
 Summary:            A persistent key-value database
-Name:               redis
+Name:               redis%{major_ver}
 Version:            6.2.7
 Release:            0%{?dist}
 License:            BSD
 Group:              Applications/Databases
 URL:                https://redis.io
 
-Source0:            https://github.com/antirez/%{name}/archive/%{version}.tar.gz
-Source1:            %{name}.logrotate
-Source3:            %{name}.sysconfig
+Source0:            https://github.com/redis/%{realname}/archive/%{version}.tar.gz
+Source1:            %{realname}.logrotate
+Source3:            %{realname}.sysconfig
 Source4:            sentinel.logrotate
 Source5:            sentinel.init
 Source6:            sentinel.sysconfig
-Source7:            %{name}.service
+Source7:            %{realname}.service
 Source8:            sentinel.service
-Source9:            %{name}-limit-systemd
+Source9:            %{realname}-limit-systemd
 Source10:           sentinel-limit-systemd
 
 Source100:          checksum.sha512
 
-Patch0:             %{name}-%{major_ver}-config.patch
+Patch0:             %{realname}-%{major_ver}-config.patch
 Patch1:             sentinel-%{major_ver}-config.patch
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:          %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      make tcl systemd-devel
 BuildRequires:      devtoolset-7-gcc
 
-Requires:           %{name}-cli >= %{version}
+Requires:           %{realname}-cli >= %{version}
 Requires:           logrotate
 
 Requires(pre):      shadow-utils
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
+
+Conflicts:          redis redis5 redis7
 
 ################################################################################
 
@@ -110,7 +113,7 @@ Client for working with Redis from console
 %prep
 %{crc_check}
 
-%setup -qn %{name}-%{version}
+%setup -qn %{realname}-%{version}
 
 %patch0 -p1
 %patch1 -p1
@@ -131,34 +134,34 @@ install -dm 755 %{buildroot}%{_sysconfdir}
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 
-install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/logrotate.d/%{realname}
 install -pm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/sentinel
-install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{realname}
 install -pm 644 %{SOURCE6} %{buildroot}%{_sysconfdir}/sysconfig/sentinel
 
-install -pm 640 %{name}.conf %{buildroot}%{_sysconfdir}/
+install -pm 640 %{realname}.conf %{buildroot}%{_sysconfdir}/
 install -pm 640 sentinel.conf %{buildroot}%{_sysconfdir}/
 
-install -dm 755 %{buildroot}%{_localstatedir}/lib/%{name}
-install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
-install -dm 755 %{buildroot}%{_localstatedir}/run/%{name}
+install -dm 755 %{buildroot}%{_localstatedir}/lib/%{realname}
+install -dm 755 %{buildroot}%{_localstatedir}/log/%{realname}
+install -dm 755 %{buildroot}%{_localstatedir}/run/%{realname}
 
 install -dm 755 %{buildroot}%{_unitdir}
-install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/%{name}.service.d
+install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/%{realname}.service.d
 install -dm 755 %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d
 install -pm 644 %{SOURCE7} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
-install -pm 644 %{SOURCE9} %{buildroot}%{_sysconfdir}/systemd/system/%{name}.service.d/limit.conf
+install -pm 644 %{SOURCE9} %{buildroot}%{_sysconfdir}/systemd/system/%{realname}.service.d/limit.conf
 install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
 
-chmod 755 %{buildroot}%{_bindir}/%{name}-*
+chmod 755 %{buildroot}%{_bindir}/%{realname}-*
 
-rm -f %{buildroot}%{_bindir}/%{name}-sentinel
+rm -f %{buildroot}%{_bindir}/%{realname}-sentinel
 
 install -dm 755 %{buildroot}%{_sbindir}
 
-ln -sf %{_bindir}/%{name}-server %{buildroot}%{_bindir}/%{name}-sentinel
-ln -sf %{_bindir}/%{name}-server %{buildroot}%{_sbindir}/%{name}-server
+ln -sf %{_bindir}/%{realname}-server %{buildroot}%{_bindir}/%{realname}-sentinel
+ln -sf %{_bindir}/%{realname}-server %{buildroot}%{_sbindir}/%{realname}-server
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
@@ -167,21 +170,21 @@ ln -sf %{_bindir}/%{name}-server %{buildroot}%{_sbindir}/%{name}-server
 %endif
 
 %pre
-getent group %{name} &> /dev/null || groupadd -r %{name} &> /dev/null
-getent passwd %{name} &> /dev/null || \
-useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
-        -c 'Redis Server' %{name} &> /dev/null
+getent group %{realname} &> /dev/null || groupadd -r %{realname} &> /dev/null
+getent passwd %{realname} &> /dev/null || \
+useradd -r -g %{realname} -d %{_sharedstatedir}/%{realname} -s /sbin/nologin \
+        -c 'Redis Server' %{realname} &> /dev/null
 
 %post
 if [[ $1 -eq 1 ]] ; then
-  %{__sysctl} enable %{name}.service &>/dev/null || :
+  %{__sysctl} enable %{realname}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
+  %{__sysctl} --no-reload disable %{realname}.service &>/dev/null || :
   %{__sysctl} --no-reload disable sentinel.service &>/dev/null || :
-  %{__sysctl} stop %{name}.service &>/dev/null || :
+  %{__sysctl} stop %{realname}.service &>/dev/null || :
   %{__sysctl} stop sentinel.service &>/dev/null || :
 fi
 
@@ -197,33 +200,33 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
 
-%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{realname}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%config(noreplace) %{_sysconfdir}/sysconfig/%{realname}
 %config(noreplace) %{_sysconfdir}/sysconfig/sentinel
 
-%attr(-,%{name},%{name}) %config(noreplace) %{_sysconfdir}/*.conf
+%attr(-,%{realname},%{realname}) %config(noreplace) %{_sysconfdir}/*.conf
 
-%dir %attr(0755,%{name},root) %{_localstatedir}/lib/%{name}
-%dir %attr(0755,%{name},root) %{_localstatedir}/log/%{name}
-%dir %attr(0755,%{name},root) %{_localstatedir}/run/%{name}
+%dir %attr(0755,%{realname},root) %{_localstatedir}/lib/%{realname}
+%dir %attr(0755,%{realname},root) %{_localstatedir}/log/%{realname}
+%dir %attr(0755,%{realname},root) %{_localstatedir}/run/%{realname}
 
-%{_unitdir}/%{name}.service
+%{_unitdir}/%{realname}.service
 %{_unitdir}/sentinel.service
-%{_sysconfdir}/systemd/system/%{name}.service.d/limit.conf
+%{_sysconfdir}/systemd/system/%{realname}.service.d/limit.conf
 %{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
 
-%{_bindir}/%{name}-server
-%{_bindir}/%{name}-sentinel
-%{_bindir}/%{name}-benchmark
-%{_bindir}/%{name}-check-aof
-%{_bindir}/%{name}-check-rdb
-%{_sbindir}/%{name}-server
+%{_bindir}/%{realname}-server
+%{_bindir}/%{realname}-sentinel
+%{_bindir}/%{realname}-benchmark
+%{_bindir}/%{realname}-check-aof
+%{_bindir}/%{realname}-check-rdb
+%{_sbindir}/%{realname}-server
 
 %files cli
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
-%{_bindir}/%{name}-cli
+%{_bindir}/%{realname}-cli
 
 ################################################################################
 
@@ -288,41 +291,17 @@ rm -rf %{buildroot}
 * Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.5-0
 - https://github.com/redis/redis/blob/6.0.5/00-RELEASENOTES
 
-* Thu Jun 04 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.4-0
+* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.4-0
 - https://github.com/redis/redis/blob/6.0.4/00-RELEASENOTES
 
-* Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.3-0
+* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.3-0
 - https://github.com/redis/redis/blob/6.0.3/00-RELEASENOTES
 
-* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.2-0
+* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.2-0
 - https://github.com/redis/redis/blob/6.0.2/00-RELEASENOTES
 
-* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.1-0
+* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.1-0
 - https://github.com/redis/redis/blob/6.0.1/00-RELEASENOTES
 
-* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 6.0.0-0
+* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.0-0
 - https://github.com/redis/redis/blob/6.0.0/00-RELEASENOTES
-
-* Thu Jan 23 2020 Anton Novojilov <andy@essentialkaos.com> - 5.0.7-0
-- https://github.com/redis/redis/blob/5.0.7/00-RELEASENOTES
-
-* Thu Jan 23 2020 Anton Novojilov <andy@essentialkaos.com> - 5.0.6-0
-- https://github.com/redis/redis/blob/5.0.6/00-RELEASENOTES
-
-* Thu May 16 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.5-0
-- https://github.com/redis/redis/blob/5.0.5/00-RELEASENOTES
-
-* Thu May 16 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.4-0
-- https://github.com/redis/redis/blob/5.0.4/00-RELEASENOTES
-
-* Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 5.0.3-0
-- https://github.com/redis/redis/blob/5.0.3/00-RELEASENOTES
-
-* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
-- https://github.com/redis/redis/blob/5.0.2/00-RELEASENOTES
-
-* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
-- https://github.com/redis/redis/blob/5.0.1/00-RELEASENOTES
-
-* Wed Nov 28 2018 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
-- https://github.com/redis/redis/blob/5.0.0/00-RELEASENOTES
