@@ -78,7 +78,7 @@ BuildRoot:          %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_
 BuildRequires:      make tcl systemd-devel
 BuildRequires:      devtoolset-7-gcc
 
-Requires:           %{realname}-cli >= %{version}
+Requires:           %{name}-cli >= %{version}
 Requires:           logrotate
 
 Requires(pre):      shadow-utils
