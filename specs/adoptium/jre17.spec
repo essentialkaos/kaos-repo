@@ -20,7 +20,7 @@
 ################################################################################
 
 Summary:            OpenJDK Runtime Environment (JRE 17)
-Name:               jre11
+Name:               jre17
 Epoch:              1
 Version:            %{jdk_major}
 Release:            %{jdk_minor}%{?dist}
