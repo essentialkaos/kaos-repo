@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major   11.0.14.1
-%define jdk_minor   1
+%define jdk_major   11.0.15
+%define jdk_minor   10
 
 %define install_dir %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir %{install_dir}/bin
 %define jdk_man_dir %{install_dir}/man/man1
 
-%define alt_priority 1161
+%define alt_priority 1162
 
 ################################################################################
 
@@ -39,6 +39,7 @@ Conflicts:          java-1.6.0-openjdk-headless
 Conflicts:          java-1.7.0-openjdk-headless
 Conflicts:          java-1.8.0-openjdk-headless
 Conflicts:          java-11-openjdk-headless
+Conflicts:          java-17-openjdk-headless
 
 AutoProv:           no
 AutoReqProv:        no
@@ -108,6 +109,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Tue Jun 28 2022 Anton Novojilov <andy@essentialkaos.com> - 11.0.15-10
+- Updated to the latest version
+
 * Tue Feb 15 2022 Anton Novojilov <andy@essentialkaos.com> - 11.0.14.1-1
 - Updated to the latest version
 
