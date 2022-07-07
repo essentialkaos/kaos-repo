@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _root             /root
 %define _bin              /bin
 %define _sbin             /sbin
@@ -24,21 +28,23 @@
 
 ################################################################################
 
-Summary:         ESSENTIAL KAOS Public Repo
+Summary:         ESSENTIAL KAOS Public YUM Repository
 Name:            kaos-repo
-Version:         9.2
+Version:         10.0
 Release:         0%{?dist}
-License:         EKOL
+License:         Apache License, Version 2.0
 Vendor:          ESSENTIALKAOS
 Group:           Development/Tools
-URL:             https://github.com/essentialkaos/kaos-repo
+URL:             https://kaos.sh/kaos-repo
 
-Source0:         %{name}-%{version}.tar.bz2
+Source0:         RPM-GPG-KEY-ESSENTIALKAOS
+Source1:         kaos-release.repo
+Source2:         kaos-testing.repo
+
+Source100:       checksum.sha512
 
 BuildArch:       noarch
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Requires:        yum-plugin-priorities
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -46,12 +52,12 @@ Provides:        %{name} = %{version}-%{release}
 
 %description
 This package contains yum configuration files for access to ESSENTIAL KAOS
-repository.
+YUM repository.
 
 ################################################################################
 
 %prep
-%setup -q
+%{crc_check}
 
 %build
 %install
@@ -60,11 +66,13 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_sysconfdir}/yum.repos.d
 install -dm 755 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
 
-install -pm 644 *.repo \
-                %{buildroot}%{_sysconfdir}/yum.repos.d/
-
-install -pm 644 RPM-GPG-KEY-ESSENTIALKAOS \
+install -pm 644 %{SOURCE0} \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
+
+install -pm 644 %{SOURCE1} \
+                %{buildroot}%{_sysconfdir}/yum.repos.d/
+install -pm 644 %{SOURCE2} \
+                %{buildroot}%{_sysconfdir}/yum.repos.d/
 
 %post
 if [[ -f %{fm_config} ]] ; then
@@ -106,6 +114,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 07 2022 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
+- Removed yum-plugin-priorities from required dependencies
+- Spec improvements
+
 * Wed May 29 2019 Anton Novojilov <andy@essentialkaos.com> - 9.2-0
 - Added obsoletes check in priorities plugin
 
