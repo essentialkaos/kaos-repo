@@ -1,7 +1,7 @@
 # Bibop recipe for Golang
 # See more: https://kaos.sh/bibop
 
-pkg golang
+pkg golang golang-pkg-bin-linux-amd64 golang-pkg-darwin-amd64 golang-pkg-darwin-arm64 golang-pkg-freebsd-386 golang-pkg-freebsd-amd64 golang-pkg-freebsd-arm golang-pkg-freebsd-arm64 golang-pkg-linux-386 golang-pkg-linux-amd64 golang-pkg-linux-arm golang-pkg-linux-arm64 golang-pkg-netbsd-386 golang-pkg-netbsd-amd64 golang-pkg-netbsd-arm golang-pkg-netbsd-arm64 golang-pkg-openbsd-386 golang-pkg-openbsd-amd64 golang-pkg-openbsd-arm golang-pkg-openbsd-arm64 golang-pkg-plan9-386 golang-pkg-plan9-amd64 golang-pkg-plan9-arm golang-pkg-windows-386 golang-pkg-windows-amd64 golang-pkg-windows-arm golang-pkg-windows-arm64
 
 fast-finish yes
 
@@ -19,3 +19,92 @@ command "go run test.go" "Execute basic script"
 command "go run test-cgo.go" "Execute basic script with cgo"
   exit 0
   output-contains "42"
+
+# Linux
+
+command "GOOS=linux GOARCH=386 go build -o test_linux_386 test.go" "Compile Linux/386"
+  exit 0
+
++command "GOOS=linux GOARCH=amd64 go build -o test_linux_amd64 test.go" "Compile Linux/amd64"
+  exit 0
+
++command "GOOS=linux GOARCH=arm go build -o test_linux_arm test.go" "Compile Linux/arm"
+  exit 0
+
++command "GOOS=linux GOARCH=arm64 go build -o test_linux_arm64 test.go" "Compile Linux/arm64"
+  exit 0
+
+# FreeBSD
+
+command "GOOS=freebsd GOARCH=386 go build -o test_freebsd_386 test.go" "Compile FreeBSD/386"
+  exit 0
+
++command "GOOS=freebsd GOARCH=amd64 go build -o test_freebsd_amd64 test.go" "Compile FreeBSD/amd64"
+  exit 0
+
++command "GOOS=freebsd GOARCH=arm go build -o test_freebsd_arm test.go" "Compile FreeBSD/arm"
+  exit 0
+
++command "GOOS=freebsd GOARCH=arm64 go build -o test_freebsd_arm64 test.go" "Compile FreeBSD/arm64"
+  exit 0
+
+# NetBSD
+
+command "GOOS=netbsd GOARCH=386 go build -o test_netbsd_386 test.go" "Compile NetBSD/386"
+  exit 0
+
++command "GOOS=netbsd GOARCH=amd64 go build -o test_netbsd_amd64 test.go" "Compile NetBSD/amd64"
+  exit 0
+
++command "GOOS=netbsd GOARCH=arm go build -o test_netbsd_arm test.go" "Compile NetBSD/arm"
+  exit 0
+
++command "GOOS=netbsd GOARCH=arm64 go build -o test_netbsd_arm64 test.go" "Compile NetBSD/arm64"
+  exit 0
+
+# Darwin
+
+command "GOOS=darwin GOARCH=amd64 go build -o test_darwin_amd64 test.go" "Compile macOS/amd64"
+  exit 0
+
++command "GOOS=darwin GOARCH=arm64 go build -o test_darwin_arm64 test.go" "Compile macOS/arm64"
+  exit 0
+
+# OpenBSD
+
+command "GOOS=openbsd GOARCH=386 go build -o test_openbsd_386 test.go" "Compile OpenBSD/386"
+  exit 0
+
++command "GOOS=openbsd GOARCH=amd64 go build -o test_openbsd_amd64 test.go" "Compile OpenBSD/amd64"
+  exit 0
+
++command "GOOS=openbsd GOARCH=arm go build -o test_openbsd_arm test.go" "Compile OpenBSD/arm"
+  exit 0
+
++command "GOOS=openbsd GOARCH=arm64 go build -o test_openbsd_arm64 test.go" "Compile OpenBSD/arm64"
+  exit 0
+
+# Plan9
+
+command "GOOS=plan9 GOARCH=386 go build -o test_plan9_386 test.go" "Compile Plan9/386"
+  exit 0
+
++command "GOOS=plan9 GOARCH=amd64 go build -o test_plan9_amd64 test.go" "Compile Plan9/amd64"
+  exit 0
+
++command "GOOS=plan9 GOARCH=arm go build -o test_plan9_arm test.go" "Compile Plan9/arm"
+  exit 0
+
+# Windows
+
+command "GOOS=windows GOARCH=386 go build -o test_windows_386 test.go" "Compile Windows/386"
+  exit 0
+
++command "GOOS=windows GOARCH=amd64 go build -o test_windows_amd64 test.go" "Compile Windows/amd64"
+  exit 0
+
++command "GOOS=windows GOARCH=arm go build -o test_windows_arm test.go" "Compile Windows/arm"
+  exit 0
+
++command "GOOS=windows GOARCH=arm64 go build -o test_windows_arm64 test.go" "Compile Windows/arm64"
+  exit 0

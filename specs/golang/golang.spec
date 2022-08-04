@@ -71,6 +71,7 @@ Group:             Development/Languages
 URL:               https://golang.org
 
 Source0:           https://storage.googleapis.com/%{name}/go%{version}.src.tar.gz
+Source1:           dist.list
 
 Source10:          %{name}-gdbinit
 Source11:          %{name}-prelink.conf
@@ -185,6 +186,31 @@ Golang compiler tool for Linux ARM architecture.
 
 ################################################################################
 
+%ifarch %{arm64}
+
+%package pkg-bin-linux-arm64
+
+Summary:           Golang compiler tool for Linux ARM64
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+Requires:          golang-pkg-linux-arm64 = %{version}-%{release}
+Requires(post):    golang-pkg-linux-arm64 = %{version}-%{release}
+
+Requires:          glibc gcc
+
+Provides:          golang-bin = arm
+Provides:          go(API)(go) = %{go_api}
+
+Requires(post):    %{_sbindir}/update-alternatives
+Requires(postun):  %{_sbindir}/update-alternatives
+
+%description pkg-bin-linux-arm64
+Golang compiler tool for Linux ARM64 architecture.
+
+%endif
+
+################################################################################
+
 %package pkg-linux-386
 
 Summary:           Golang compiler toolchain to compile for Linux i386
@@ -227,6 +253,20 @@ Golang compiler toolchain to compile for Linux ARM architecture.
 
 ################################################################################
 
+%package pkg-linux-arm64
+
+Summary:           Golang compiler toolchain to compile for Linux ARM64
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+Provides:          go(API)(cgo) = %{go_api}
+
+BuildArch:         noarch
+
+%description pkg-linux-arm64
+Golang compiler toolchain to compile for Linux ARM64 architecture.
+
+################################################################################
+
 %package pkg-darwin-amd64
 
 Summary:           Golang compiler toolchain to compile for macOS AMD64
@@ -240,7 +280,7 @@ Golang compiler toolchain to compile for macOS AMD64 architecture.
 
 ################################################################################
 
-%package pkg-darwin-arm
+%package pkg-darwin-arm64
 
 Summary:           Golang compiler toolchain to compile for macOS ARM
 Group:             Development/Languages
@@ -248,7 +288,7 @@ Requires:          go = %{version}-%{release}
 
 BuildArch:         noarch
 
-%description pkg-darwin-arm
+%description pkg-darwin-arm64
 Golang compiler toolchain to compile for macOS ARM architecture.
 
 ################################################################################
@@ -279,6 +319,32 @@ Golang compiler toolchain to compile for Windows AMD64 architecture.
 
 ################################################################################
 
+%package pkg-windows-arm
+
+Summary:           Golang compiler toolchain to compile for Windows ARM
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-windows-arm
+Golang compiler toolchain to compile for Windows ARM architecture.
+
+################################################################################
+
+%package pkg-windows-arm64
+
+Summary:           Golang compiler toolchain to compile for Windows ARM64
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-windows-arm64
+Golang compiler toolchain to compile for Windows ARM64 architecture.
+
+################################################################################
+
 %package pkg-plan9-386
 
 Summary:           Golang compiler toolchain to compile for Plan9 i386
@@ -302,6 +368,19 @@ BuildArch:         noarch
 
 %description pkg-plan9-amd64
 Golang compiler toolchain to compile for Plan9 AMD64 architecture.
+
+################################################################################
+
+%package pkg-plan9-arm
+
+Summary:           Golang compiler toolchain to compile for Plan9 ARM
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-plan9-arm
+Golang compiler toolchain to compile for Plan9 ARM architecture.
 
 ################################################################################
 
@@ -344,6 +423,19 @@ Golang compiler toolchain to compile for FreeBSD ARM architecture.
 
 ################################################################################
 
+%package pkg-freebsd-arm64
+
+Summary:           Golang compiler toolchain to compile for FreeBSD ARM64
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-freebsd-arm64
+Golang compiler toolchain to compile for FreeBSD ARM64 architecture.
+
+################################################################################
+
 %package pkg-netbsd-386
 
 Summary:           Golang compiler toolchain to compile for NetBSD i386
@@ -372,7 +464,7 @@ Golang compiler toolchain to compile for NetBSD AMD64 architecture.
 
 %package pkg-netbsd-arm
 
-Summary:           Golang compiler toolchain to compile for NetBSD arm
+Summary:           Golang compiler toolchain to compile for NetBSD ARM
 Group:             Development/Languages
 Requires:          go = %{version}-%{release}
 
@@ -380,6 +472,19 @@ BuildArch:         noarch
 
 %description pkg-netbsd-arm
 Golang compiler toolchain to compile for NetBSD ARM architecture.
+
+################################################################################
+
+%package pkg-netbsd-arm64
+
+Summary:           Golang compiler toolchain to compile for NetBSD ARM64
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-netbsd-arm64
+Golang compiler toolchain to compile for NetBSD ARM64 architecture.
 
 ################################################################################
 
@@ -409,6 +514,32 @@ Golang compiler toolchain to compile for OpenBSD AMD64 architecture.
 
 ################################################################################
 
+%package pkg-openbsd-arm
+
+Summary:           Golang compiler toolchain to compile for OpenBSD ARM
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-openbsd-arm
+Golang compiler toolchain to compile for OpenBSD ARM architecture.
+
+################################################################################
+
+%package pkg-openbsd-arm64
+
+Summary:           Golang compiler toolchain to compile for OpenBSD ARM64
+Group:             Development/Languages
+Requires:          go = %{version}-%{release}
+
+BuildArch:         noarch
+
+%description pkg-openbsd-arm64
+Golang compiler toolchain to compile for OpenBSD ARM64 architecture.
+
+################################################################################
+
 %pretrans -p <lua>
 for _,d in pairs({"api", "doc", "include", "lib", "src"}) do
   path = "%{goroot}/" .. d
@@ -424,36 +555,20 @@ end
 %setup -qn go
 
 %build
-
 export GOROOT_FINAL=%{goroot}
 export GOHOSTOS=linux
 export GOHOSTARCH=%{gohostarch}
 export GOROOT_BOOTSTRAP=%{_libdir32}/%{name}
 
 pushd src
-  for goos in darwin freebsd linux netbsd openbsd plan9 windows ; do
-    for goarch in 386 amd64 arm ; do
-      if [[ "${goarch}" == "arm" ]] ; then
-        if [[ "${goos}" == "windows" || "${goos}" == "plan9" || "${goos}" == "openbsd" ]] ; then
-          continue
-        fi
-      fi
+  while read -r dist ; do
+    goos="${dist%/*}"
+    goarch="${dist#*/}"
 
-      if [[ "${goos}" == "darwin" ]] ; then
-        if [[ "${goarch}" == "386" ]] ; then
-          continue
-        elif [[ "${goarch}" == "arm" ]] ; then
-          goarch="arm64"
-        fi
-      fi
-
-      CC="gcc" \
-      CC_FOR_TARGET="gcc" \
-        GOOS=${goos} \
-        GOARCH=${goarch} \
-        ./make.bash
-    done
-  done
+    CC="gcc" CC_FOR_TARGET="gcc" \
+    GOOS=${goos} GOARCH=${goarch} \
+    ./make.bash
+  done < %{SOURCE1}
 popd
 
 %install
@@ -481,31 +596,18 @@ pushd %{buildroot}%{goroot}
   find src/ -type d -printf '%%%dir %{goroot}/%p\n' >> $src_list
   find src/ ! -type d -printf '%{goroot}/%p\n' >> $src_list
 
-  for goos in darwin freebsd linux netbsd openbsd plan9 windows ; do
-    for goarch in 386 amd64 arm ; do
-      if [[ "${goarch}" == "arm" ]] ; then
-        if [[ "${goos}" == "windows" || "${goos}" == "plan9" || "${goos}" == "openbsd" ]] ; then
-          continue
-        fi
-      fi
+  while read -r dist ; do
+    goos="${dist%/*}"
+    goarch="${dist#*/}"
 
-      if [[ "${goos}" == "darwin" ]] ; then
-        if [[ "${goarch}" == "386" ]] ; then
-          continue
-        elif [[ "${goarch}" == "arm" ]] ; then
-          goarch="arm64"
-        fi
-      fi
+    file_list="${cwd}/pkg-${goos}-${goarch}.list"
 
-      file_list="${cwd}/pkg-${goos}-${goarch}.list"
+    rm -f $file_list
+    touch $file_list
 
-      rm -f $file_list
-      touch $file_list
-
-      find pkg/${goos}_${goarch}/ -type d -printf '%%%dir %{goroot}/%p\n' >> $file_list
-      find pkg/${goos}_${goarch}/ ! -type d -printf '%{goroot}/%p\n' >> $file_list
-    done
-  done
+    find pkg/${goos}_${goarch}/ -type d -printf '%%%dir %{goroot}/%p\n' >> $file_list
+    find pkg/${goos}_${goarch}/ ! -type d -printf '%{goroot}/%p\n' >> $file_list
+  done < %{SOURCE1}
 popd
 
 rm -rfv %{buildroot}%{goroot}/lib/time
@@ -519,9 +621,10 @@ mkdir -p %{buildroot}%{gopath}/src/code.google.com/p/
 pushd %{buildroot}%{goroot}/bin/
   rm -rf darwin_* windows_* freebsd_* netbsd_* openbsd_* plan9_*
   case "%{gohostarch}" in
-    amd64) rm -rf linux_386 linux_arm   ;;
-    386)   rm -rf linux_arm linux_amd64 ;;
-    arm)   rm -rf linux_386 linux_amd64 ;;
+    amd64)   rm -rf linux_386 linux_arm linux_arm64 ;;
+    386)     rm -rf linux_arm linux_arm64 linux_amd64 ;;
+    arm)     rm -rf linux_386 linux_amd64 linux_arm64 ;;
+    arm64)   rm -rf linux_386 linux_amd64 linux_arm ;;
   esac
 popd
 
@@ -574,6 +677,16 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 
 ################################################################################
 
+%ifarch %{arm}
+
+%post pkg-bin-linux-arm64
+
+touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/cgo.a
+
+%endif
+
+################################################################################
+
 %ifarch %{ix86}
 
 %posttrans pkg-bin-linux-386
@@ -599,6 +712,17 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %ifarch %{arm}
 
 %posttrans pkg-bin-linux-arm
+
+# Rebuild outdated runtime
+%{_bindir}/go install std
+
+%endif
+
+################################################################################
+
+%ifarch %{arm64}
+
+%posttrans pkg-bin-linux-arm64
 
 # Rebuild outdated runtime
 %{_bindir}/go install std
@@ -728,6 +852,34 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_arm/vet
 %endif
 
+%ifarch %{arm64}
+%files pkg-bin-linux-arm64
+%defattr(-,root,root,-)
+
+%{goroot}/bin/
+%{_bindir}/go
+%{_bindir}/gofmt
+%{goroot}/pkg/linux_arm64/runtime/cgo.a
+
+%dir %{goroot}/pkg/tool/linux_arm64
+%{goroot}/pkg/tool/linux_arm64/addr2line
+%{goroot}/pkg/tool/linux_arm64/api
+%{goroot}/pkg/tool/linux_arm64/asm
+%{goroot}/pkg/tool/linux_arm64/buildid
+%{goroot}/pkg/tool/linux_arm64/compile
+%{goroot}/pkg/tool/linux_arm64/cover
+%{goroot}/pkg/tool/linux_arm64/dist
+%{goroot}/pkg/tool/linux_arm64/doc
+%{goroot}/pkg/tool/linux_arm64/link
+%{goroot}/pkg/tool/linux_arm64/nm
+%{goroot}/pkg/tool/linux_arm64/objdump
+%{goroot}/pkg/tool/linux_arm64/pack
+%{goroot}/pkg/tool/linux_arm64/pprof
+%{goroot}/pkg/tool/linux_arm64/test2json
+%{goroot}/pkg/tool/linux_arm64/trace
+%{goroot}/pkg/tool/linux_arm64/vet
+%endif
+
 %files pkg-linux-386 -f pkg-linux-386.list
 %defattr(-,root,root,-)
 
@@ -758,22 +910,20 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %{goroot}/pkg/tool/linux_arm/cgo
 %{goroot}/pkg/tool/linux_arm/fix
 
+%files pkg-linux-arm64 -f pkg-linux-arm64.list
+%defattr(-,root,root,-)
+
+%{goroot}/pkg/linux_arm64/
+%ifarch %{arm64}
+%exclude %{goroot}/pkg/linux_arm64/runtime/cgo.a
+%endif
+%{goroot}/pkg/tool/linux_arm64/cgo
+%{goroot}/pkg/tool/linux_arm64/fix
+
 %files pkg-darwin-amd64 -f pkg-darwin-amd64.list
 %defattr(-,root,root,-)
 
-%files pkg-darwin-arm -f pkg-darwin-arm64.list
-%defattr(-,root,root,-)
-
-%files pkg-windows-386 -f pkg-windows-386.list
-%defattr(-,root,root,-)
-
-%files pkg-windows-amd64 -f pkg-windows-amd64.list
-%defattr(-,root,root,-)
-
-%files pkg-plan9-386 -f pkg-plan9-386.list
-%defattr(-,root,root,-)
-
-%files pkg-plan9-amd64 -f pkg-plan9-amd64.list
+%files pkg-darwin-arm64 -f pkg-darwin-arm64.list
 %defattr(-,root,root,-)
 
 %files pkg-freebsd-386 -f pkg-freebsd-386.list
@@ -785,6 +935,9 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %files pkg-freebsd-arm -f pkg-freebsd-arm.list
 %defattr(-,root,root,-)
 
+%files pkg-freebsd-arm64 -f pkg-freebsd-arm64.list
+%defattr(-,root,root,-)
+
 %files pkg-netbsd-386 -f pkg-netbsd-386.list
 %defattr(-,root,root,-)
 
@@ -794,10 +947,40 @@ touch -r %{goroot}/pkg/linux_arm/runtime.a %{goroot}/pkg/linux_arm/runtime/cgo.a
 %files pkg-netbsd-arm -f pkg-netbsd-arm.list
 %defattr(-,root,root,-)
 
+%files pkg-netbsd-arm64 -f pkg-netbsd-arm64.list
+%defattr(-,root,root,-)
+
 %files pkg-openbsd-386 -f pkg-openbsd-386.list
 %defattr(-,root,root,-)
 
 %files pkg-openbsd-amd64 -f pkg-openbsd-amd64.list
+%defattr(-,root,root,-)
+
+%files pkg-openbsd-arm -f pkg-openbsd-arm.list
+%defattr(-,root,root,-)
+
+%files pkg-openbsd-arm64 -f pkg-openbsd-arm64.list
+%defattr(-,root,root,-)
+
+%files pkg-plan9-386 -f pkg-plan9-386.list
+%defattr(-,root,root,-)
+
+%files pkg-plan9-amd64 -f pkg-plan9-amd64.list
+%defattr(-,root,root,-)
+
+%files pkg-plan9-arm -f pkg-plan9-arm.list
+%defattr(-,root,root,-)
+
+%files pkg-windows-386 -f pkg-windows-386.list
+%defattr(-,root,root,-)
+
+%files pkg-windows-amd64 -f pkg-windows-amd64.list
+%defattr(-,root,root,-)
+
+%files pkg-windows-arm -f pkg-windows-arm.list
+%defattr(-,root,root,-)
+
+%files pkg-windows-arm64 -f pkg-windows-arm64.list
 %defattr(-,root,root,-)
 
 ################################################################################
