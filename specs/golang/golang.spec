@@ -58,13 +58,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api 1.18
+%global go_api 1.19
 
 ################################################################################
 
 Summary:           The Go Programming Language
 Name:              golang
-Version:           1.18.5
+Version:           1.19
 Release:           0%{?dist}
 License:           BSD
 Group:             Development/Languages
@@ -81,7 +81,7 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     golang >= 1.17
+BuildRequires:     golang >= 1.18
 
 Requires:          git
 Requires:          %{name}-bin
@@ -734,7 +734,7 @@ touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/c
 %files
 %defattr(-,root,root,-)
 
-%doc AUTHORS CONTRIBUTORS LICENSE PATENTS
+%doc CONTRIBUTING.md README.md SECURITY.md LICENSE PATENTS
 %doc %{goroot}/VERSION
 %doc %{goroot}/doc/*
 
@@ -882,8 +882,6 @@ touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/c
 
 %files pkg-linux-386 -f pkg-linux-386.list
 %defattr(-,root,root,-)
-
-%{goroot}/pkg/linux_386/
 %ifarch %{ix86}
 %exclude %{goroot}/pkg/linux_386/runtime/cgo.a
 %endif
@@ -892,8 +890,6 @@ touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/c
 
 %files pkg-linux-amd64 -f pkg-linux-amd64.list
 %defattr(-,root,root,-)
-
-%{goroot}/pkg/linux_amd64/
 %ifarch x86_64
 %exclude %{goroot}/pkg/linux_amd64/runtime/cgo.a
 %endif
@@ -902,8 +898,6 @@ touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/c
 
 %files pkg-linux-arm -f pkg-linux-arm.list
 %defattr(-,root,root,-)
-
-%{goroot}/pkg/linux_arm/
 %ifarch %{arm}
 %exclude %{goroot}/pkg/linux_arm/runtime/cgo.a
 %endif
@@ -912,8 +906,6 @@ touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/c
 
 %files pkg-linux-arm64 -f pkg-linux-arm64.list
 %defattr(-,root,root,-)
-
-%{goroot}/pkg/linux_arm64/
 %ifarch %{arm64}
 %exclude %{goroot}/pkg/linux_arm64/runtime/cgo.a
 %endif
@@ -986,6 +978,9 @@ touch -r %{goroot}/pkg/linux_arm64/runtime.a %{goroot}/pkg/linux_arm64/runtime/c
 ################################################################################
 
 %changelog
+* Wed Aug 17 2022 Anton Novojilov <andy@essentialkaos.com> - 1.19-0
+- https://go.dev/doc/go1.19
+
 * Tue Aug 02 2022 Anton Novojilov <andy@essentialkaos.com> - 1.18.5-0
 - https://github.com/golang/go/issues?q=milestone:Go1.18.5+label:CherryPickApproved
 

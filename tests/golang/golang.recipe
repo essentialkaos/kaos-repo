@@ -5,8 +5,14 @@ pkg golang golang-pkg-bin-linux-amd64 golang-pkg-darwin-amd64 golang-pkg-darwin-
 
 fast-finish yes
 
+var cache_dir "{WORKDIR}/.build-cache"
+
 command "-" "Check environment"
   app go
+  app gofmt
+
+command "-" "Configure build cache"
+  env-set GOCACHE {cache_dir}
 
 command "go version" "Check version info"
   exit 0
