@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        11
-%define minorver        16
+%define minorver        17
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          11
@@ -1188,6 +1188,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 18 2022 Anton Novojilov <andy@essentialkaos.com> - 11.17-0
+- https://www.postgresql.org/docs/11/release-11-17.html
+
 * Thu May 19 2022 Anton Novojilov <andy@essentialkaos.com> - 11.16-0
 - https://www.postgresql.org/docs/11/release-11-16.html
 
