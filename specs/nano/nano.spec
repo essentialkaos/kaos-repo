@@ -38,20 +38,20 @@
 
 ################################################################################
 
-%define ek_theme_version  1.3.0
+%define ek_theme_version  1.4.0
 
 ################################################################################
 
 Summary:             A small text editor
 Name:                nano
-Version:             4.7
+Version:             6.4
 Release:             0%{?dist}
 License:             GPLv3+
 Group:               Applications/Editors
 URL:                 https://www.nano-editor.org
 
-Source0:             https://www.nano-editor.org/dist/v4/%{name}-%{version}.tar.xz
-Source1:             https://github.com/essentialkaos/blackhole-theme-nano/archive/v%{ek_theme_version}.tar.gz
+Source0:             https://www.nano-editor.org/dist/v6/%{name}-%{version}.tar.xz
+Source1:             https://kaos.sh/blackhole-theme-nano/%{ek_theme_version}.tar.gz
 
 Source100:           checksum.sha512
 
@@ -84,6 +84,7 @@ tar xzvf %{SOURCE1}
 
 %build
 %configure
+
 %{__make} %{?_smp_mflags}
 
 %install
@@ -145,6 +146,218 @@ fi
 ################################################################################
 
 %changelog
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 6.4-0
+- The file browser does not crash when moving up to the root folder.
+- Softwrapping very long lines is done more efficiently.
+- Invoking the formatter does not blink the screen.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 6.3-0
+- For multiline regexes, text is now colored as soon as a start match
+  is found, also when there is no end match at all.
+- The colorizing of any line is stopped after two thousand bytes,
+  to avoid frustrating delays.
+- When environment variable NO_COLOR is set, the two default colors
+  (yellow for the spotlight, red for error messages) are suppressed
+  when no interface colors are specified in a nanorc file.
+- Full justification and piping the whole buffer through a command
+  now keep the cursor at the same line number.
+- Utility xsel can be used to copy a marked region to the system's
+  clipboard.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2-0
+- The file browser clears the prompt bar also when using --minibar.
+- Linting now works also with a newer 'pyflakes'.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 6.1-0
+- The behavior of ^K at a prompt has been enhanced: when there
+  is text after the cursor, just this text is erased. (In the usual
+  situation, however, when the cursor is at the end of the answer,
+  the behavior is as before: the whole answer is erased.)
+- At a prompt, M-6 copies the current answer into the cutbuffer.
+- Large external pastes into nano are handled more quickly.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0-0
+- Option --zero hides the title bar, status bar and help lines, and
+  uses all rows of the terminal as editing area. The title bar and
+  status bar can be toggled with M-Z.
+- Colors can now be specified also as three-digit hexadecimal numbers,
+  in the format #rgb. This picks from the 216 index colors (that most
+  terminals know) the color that is nearest to the given values.
+- For users who dislike numbers, there are fourteen new color names:
+  rosy, beet, plum, sea, sky, slate, teal, sage, brown, ocher, sand,
+  tawny, brick, and crimson.
+- Suspension is enabled by default, invokable with ^T^Z. The options
+  -z, --suspendable, and 'set suspendable' are obsolete and ignored.
+  (In case you want to be able to suspend nano with a single keystroke,
+  you can put 'bind ^Z suspend main' in your nanorc.)
+- When automatic hard-wrapping is in effect, pasting just a few words
+  (without a line break) will now hard-wrap the line when needed.
+- Toggling Append or Prepend clears the current filename.
+- The word count as shown by M-D is now affected by option --wordbounds;
+  with it, nano counts words as 'wc' does; without it (the new default),
+  words are counted in a more human way: seeing punctuation as space.
+- The YAML syntax file is now actually included in the tarball.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.9-0
+- The extension of a filename is added to the name of a corresponding
+  temporary file, so that spell checking a C file, for example, will check
+  only the comments and strings (when using 'aspell').
+- The process number is added to the name of an emergency save file,
+  so that when multiple nanos die they will not fight over a filename.
+- Undoing a cutting operation will restore an anchor that was located
+  in the cut area to its original line.
+- When using --locking, saving a new buffer will create a lock file.
+- Syntax highlighting for YAML files has been added.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.8-0
+- After a search, the spotlighting is dropped after 1.5 seconds (0.8
+  seconds with --quick) to avoid the idea that the text is selected.
+- A + and a space before a filename on the command line will put
+  the cursor at the end of the corresponding buffer.
+- Linter messages no longer include filename and line/column numbers.
+- Color name "grey" or "gray" can be used instead of "lightblack".
+- The color of the minibar can be chosen with 'set minicolor'.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.7-0
+- The output of --constantshow (without --minibar) is more stable.
+- When opening multiple buffers and there is an error message, this
+  message is shown again upon first switch to the relevant buffer.
+- The position and size of the indicator now follow actual lines,
+  instead of visual lines when in softwrap mode, meaning that the
+  size of the indicator can change when scrolling in softwrap mode.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.6.1-0
+- Search matches are properly colorized in softwrap mode too.
+- Option 'highlightcolor' has been renamed to 'spotlightcolor'.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.6-0
+- A search match gets highlighted (in black on yellow by default),
+  in addition to placing the cursor at the start of the match.
+- The color combination can be changed with 'set highlightcolor'.
+- By default the cursor is hidden until the next keystroke, but
+  it can be forced on with --showcursor / 'set showcursor'.
+- Option --markmatch / 'set markmatch' has been removed.
+- Cursor position and character code are displayed in the minibar
+  only when option --constantshow / 'set constantshow' is used,
+  and their display can be toggled with M-C.
+- The state flags are displayed in the minibar only when option
+  --stateflags / 'set stateflags' is used.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.5-0
+- Option 'set minibar' makes nano suppress the title bar and instead
+  show a bar with basic editing information at the bottom: file name
+  (plus an asterisk when the buffer is modified), the cursor position
+  (line,column), the character under the cursor (U+xxxx), the flags
+  that --stateflags normally shows, plus the percentage of the buffer
+  that is above the cursor.
+- With 'set promptcolor' the color combination of the prompt bar can
+  be changed, to allow contrasting it with the mini bar (which always
+  has the same color as the title bar).
+- Option 'set markmatch' highlights the result of a successful search
+  by putting the mark at the end of the match, making the match more
+  visible. It also suppresses the cursor until the next keystroke.
+  (If you dislike the hiding of the cursor, use 'set showcursor'.)
+- The bindable toggle 'nowrap' has been renamed to 'breaklonglines',
+  to match the corresponding option, like for all other toggles.
+- Support for Slang has been removed.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.4-0
+- Moving the cursor now skips over combining characters (and
+  other zero-width characters). Deleting a character deletes
+  also any succeeding zero-width characters, but backspacing
+  deletes just one character at a time.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.3-0
+- Option 'set stateflags' makes nano show the state of auto-indenting,
+  the mark, hard-wrapping, macro recording, and soft-wrapping in the
+  title bar. The flags take the place of "Modified", and a modified
+  buffer is instead indicated by an asterisk (*) after its name.
+- Nano no longer by default tries using libmagic to determine the type
+  of a file (when neither filename nor first line gave a clue), because
+  in most cases it is a waste of time. It requires using the option
+  --magic or -! or 'set magic' to make nano try libmagic.
+- The color of the indicator can be changed with 'set scrollercolor'.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.2-0
+- Making certain replacements after a large paste does not crash.
+- Hitting a toggle at the Search prompt does not clear the answer.
+- Using --positionlog does not complain at the first start.
+- A macro containing a Search command will not sometimes fail.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.1-0
+- M-Bsp (Alt+Backspace) deletes a word backwards, like in Bash.
+- M-[ has become bindable. (Be careful, though: as it is the
+  starting combination of many escape sequences, avoid gluing
+  it together with other keystrokes, like in a macro.)
+- With --indicator and --softwrap, the first keystroke in an
+  empty buffer does not crash.
+- Invoking the formatter while text is marked does not crash.
+- In UTF-8 locales, an anchor is shown as a diamond.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0-0
+- With --indicator (or -q or 'set indicator') nano will show a kind
+  of scrollbar on the righthand side of the screen to indicate where
+  in the buffer the viewport is located and how much it covers.
+- With <Alt+Insert> any line can be "tagged" with an anchor, and
+  <Alt+PageUp> and <Alt+PageDown> will jump to the nearest anchor.
+- When using line numbers, an anchor is shown as "+" in the margin.
+- The Execute Command prompt is now directly accessible from the
+  main menu (with ^T, replacing the Spell Checker). The Linter,
+- Formatter, Spell Checker, Full Justification, Suspension, and
+  Cut-Till-End functions are available in this menu too.
+- On terminals that support at least 256 colors, nine new color
+  names are available: pink, purple, mauve, lagoon, mint, lime,
+  peach, orange, and latte. These do not have lighter versions.
+- For the color names red, green, blue, yellow, cyan, magenta,
+  white, and black, the prefix 'light' gives a brighter color.
+- Prefix 'bright' is deprecated, as it means both bold AND light.
+- All color names can be preceded with "bold," and/or "italic,"
+  (in that order) to get a bold and/or italic typeface.
+- With --bookstyle (or -O or 'set bookstyle') nano considers any
+  line that begins with whitespace as the start of a paragraph.
+- Refreshing the screen with ^L now works in every menu.
+- In the main menu, ^L also centers the line with the cursor.
+- Toggling the help lines with M-X now works in all menus except
+  in the help viewer and the linter.
+- At a filename prompt, the first <Tab> lists the possibilities,
+  and these are listed near the bottom instead of near the top.
+- Bindable function 'curpos' has been renamed to 'location'.
+- Long option --tempfile has been renamed to --saveonexit.
+- Short option -S is now a synonym of --softwrap.
+- The New Buffer toggle (M-F) has become non-persistent. Options
+  -multibuffer and 'set multibuffer' still make it default to on.
+- Backup files will retain their group ownership (when possible).
+- Data is synced to disk before "... lines written" is shown.
+- The raw escape sequences for F13 to F16 are no longer recognized.
+- Distro-specific syntaxes, and syntaxes of less common languages,
+  have been moved down to subdirectory syntax/extra/. The affected
+  distros and others may wish to move wanted syntaxes one level up.
+- Syntaxes for Markdown, Haskell, and Ada were added.
+
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 4.9.3-0
+- When justifying a selection, the new paragraph and the
+  succeeding one get the appropriate first-line indent.
+- Trying to justify an empty selection does not crash.
+- Redoing the insertion of an empty file does not crash.
+- On the BSDs and macOS, ^H has become rebindable again
+  (in most terminal emulators, not on the console).
+- DOS line endings in nanorc files are accepted.
+- Option --suspend / 'set suspend' has been renamed to
+  the more logical --suspendable / 'set suspendable'.
+
+* Thu Aug 18 2022 Anton Novojilov <andy@essentialkaos.com> - 4.8-0
+- When something is pasted into nano, auto-indentation is suppressed,
+  and the paste can be undone as a whole with a single M-U.
+- When a lock file is encountered during startup, pressing ^C/Cancel
+  quits nano. (Pressing 'No' just skips the file and continues.)
+- Shift+Meta+letter key combos can be bound with 'bind Sh-M-letter'.
+- Making any such binding dismisses the default behavior of ignoring
+- Shift for all Meta+letter keystrokes.
+- The configuration option --with-slang (to be avoided when possible)
+  can now be used only together with --enable-tiny.
+- A custom nanorc file can be specified on the command line, with
+  -f filename or --rcfile=filename.
+
 * Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 4.7-0
 - build: add the uploading of PDF and cheatsheet to the release script
 - build: avoid three compiler warnings when using gcc-9.2 or newer

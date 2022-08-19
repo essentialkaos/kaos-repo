@@ -1,28 +1,35 @@
-diff -urN nano-4.5-orig/doc/sample.nanorc.in nano-4.5/doc/sample.nanorc.in
---- nano-4.5-orig/doc/sample.nanorc.in	2019-10-04 12:38:05.000000000 +0300
-+++ nano-4.5/doc/sample.nanorc.in	2020-01-17 14:59:09.000000000 +0300
-@@ -66,7 +66,7 @@
+diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
+--- nano-6.0-orig/doc/sample.nanorc.in	2021-11-29 13:35:25.000000000 +0300
++++ nano-6.0/doc/sample.nanorc.in	2022-08-19 12:36:51.000000000 +0300
+@@ -62,13 +62,13 @@
+ # set historylog
+ 
+ ## Display a "scrollbar" on the righthand side of the edit window.
+-# set indicator
++set indicator
+ 
+ ## Scroll the buffer contents per half-screen instead of per line.
  # set jumpyscrolling
  
- ## Display line numbers to the left of the text.
+ ## Display line numbers to the left (and any anchors in the margin).
 -# set linenumbers
 +set linenumbers
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -76,7 +76,7 @@
- ## The opening and closing brackets that can be found by bracket
- ## searches.  They cannot contain blank characters.  The former set must
- ## come before the latter set, and both must be in the same order.
+@@ -81,7 +81,7 @@
+ ## The opening and closing brackets that are found by a matching-bracket
+ ## search.  This may not contain blank characters.  The opening brackets
+ ## must come before the closing ones, and they must be in the same order.
 -# set matchbrackets "(<[{)>]}"
 +set matchbrackets "(<[{)>]}"
  
- ## Enable mouse support, if available for your system.  When enabled,
- ## mouse clicks can be used to place the cursor, set the mark (with a
-@@ -150,17 +150,17 @@
+ ## Suppress the title bar and show the filename plus a cursor-position
+ ## percentage in the space of the status bar.
+@@ -157,18 +157,18 @@
  # set smarthome
  
- ## Enable soft line wrapping (AKA full-line display).
+ ## Spread overlong lines over multiple screen lines.
 -# set softwrap
 +set softwrap
  
@@ -31,17 +38,18 @@ diff -urN nano-4.5-orig/doc/sample.nanorc.in nano-4.5/doc/sample.nanorc.in
 -# set speller "aspell -x -c"
 +set speller "hunspell"
  
- ## Allow nano to be suspended.
- # set suspend
+ ## Use the end of the title bar for some state flags: I = auto-indenting,
+ ## M = mark, L = hard-wrapping long lines, R = recording, S = soft-wrapping.
+ # set stateflags
  
  ## Use this tab size instead of the default; it must be greater than 0.
 -# set tabsize 8
 +set tabsize 2
  
- ## Convert typed tabs to spaces.
+ ## Convert each typed tab to the fitting number of spaces.
  # set tabstospaces
-@@ -215,6 +215,11 @@
- # set keycolor brightmagenta
+@@ -228,6 +228,12 @@
+ # set keycolor lightmagenta
  # set functioncolor magenta
  
 +set titlecolor brightwhite,blue
@@ -49,14 +57,16 @@ diff -urN nano-4.5-orig/doc/sample.nanorc.in nano-4.5/doc/sample.nanorc.in
 +set errorcolor brightwhite,red
 +set selectedcolor brightwhite,magenta
 +set numbercolor brightblack
++set scrollercolor brightblack
  
- ## Setup of syntax coloring.
- ##
-@@ -259,6 +264,7 @@
- 
- ## To include all existing syntax definitions, you can do:
+ ## === Syntax coloring ===
+ ## For all details, see 'man nanorc', section SYNTAX HIGHLIGHTING.
+@@ -235,6 +241,8 @@
+ ## To include most of the existing syntax definitions, you can do:
  # include "@PKGDATADIR@/*.nanorc"
+ 
 +include "/usr/share/nano/*.nanorc"
- 
- 
- ## If <Tab> should always produce four spaces when editing a Python file,
++
+ ## Or you can select just the ones you need.  For example:
+ # include "@PKGDATADIR@/html.nanorc"
+ # include "@PKGDATADIR@/python.nanorc"
