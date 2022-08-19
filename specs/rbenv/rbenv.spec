@@ -39,7 +39,7 @@
 
 Summary:         Simple Ruby version management utility
 Name:            rbenv
-Version:         1.1.2
+Version:         1.2.0
 Release:         0%{?dist}
 License:         MIT
 Group:           Development/Tools
@@ -106,6 +106,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+%doc LICENSE README.md
 %{_loc_prefix}/%{name}
 %{profile}
 %{_bindir}/%{name}
@@ -113,6 +114,24 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Have shims survive upgrades via Homebrew
+- Improve init: warn about missing shell and name the shell explicitly
+  in the template
+- Sort 'rbenv versions' output semantically
+- Remove misleading 'set by $(rbenv-version-origin)' message when system
+  ruby is in use
+- Output more information in RBENV_DEBUG mode
+- Improve compatibility with bash 'set -u' (nounset) mode
+- Remove fish completion script
+- Speed up rehash
+- Disallow path segments and directory traversal in .ruby-version files
+- Avoid 'type: write error: broken pipe' warning
+- Fix fish shell initialization
+- Avoid unintentional globbing in bash completion
+- Strip '-<suffix>' when detecting the shell
+- Supply 'head -n' flag explicitly
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.1.2-0
 - Fix rehash mechanism for versions of bash that complain about
   clobbering /dev/null
