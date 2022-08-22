@@ -1,14 +1,19 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:         Real-time web log analyzer and interactive viewer
 Name:            goaccess
-Version:         1.5.3
+Version:         1.6.2
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         GPLv2+
 URL:             https://goaccess.io
 
 Source0:         https://tar.goaccess.io/goaccess-%{version}.tar.gz
+Source100:       checksum.sha512
 
 Patch1:          webkaos-formats.patch
 
@@ -31,6 +36,8 @@ for system administrators that require a visual server report on the fly.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %patch1 -p1
@@ -65,6 +72,78 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.6.2-0
+- Added `Android 12` to the list of OSs.
+- Added `macOS 12 Ventura` to the list of OSs.
+- Fixed implicit declaration build issue due to `timegm(3)` on `BSDs`
+  and `macOS`.
+- Fixed issue where timezone conversion would be performed twice on
+  a given date.
+
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Added a `--ping-interval=<secs>` in an attempt to keep the WebSocket
+  connection opened.
+- Added support for timezone conversion via `--datetime-format=<format>`
+  and `--tz=<timezone>`.
+- Added the ability to reconnect to the WebSocket server after 1 sec with
+  exponential backoff (x20).
+- Fixed issue where an invalid client connection would stall data out to
+  clients via the WebSocket server.
+- Fixed an issue where real-time data would be parsed multiple times under
+  `Cygwin`.
+
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.6-0
+- Changed slightly how the XFF field is specified. See man page for details.
+- Ensure city is displayed with the DBIP City Lite database.
+- Ensure no 'cleaning up resources' message is displayed if `--no-progress`
+  is passed.
+- Ensure the maximum number of items per panel defaults to 1440 (24hrs) when
+  passing `--date-spec=min`.
+- Fixed issue when parsing a delimited XFF field followed by a host IP.
+- Fixed issue where some data was buffered on the WebSocket server before it
+  was sent to each client.
+- Fixed issue where the WebSocket server would fail with POLLNVAL consuming
+  100% CPU.
+- Fixed segfault when attempting to open an unresolved IP on mac/BSDs.
+
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.7-0
+- Updated Caddy's JSON format. This should address CADDY's v2.5.0 change.
+- Updated Chinese translation (i18n).
+- Updated GeoIP module so it defaults to native language name (i18n) or
+  fall-back to English.
+- Updated Russian translation (i18n).
+- Updated Ukrainian translation (i18n).
+
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.6-0
+- Added `--anonymize-level=<1|2|3>` option to specify IP anonymization level.
+- Added minute specificity to the Visitors panel via `--date-spec=min`.
+- Added the ability to toggle on/off panels on the HTML report.
+- Changed stderr to stdout on non-error output when exiting goaccess.
+
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.5-0
+- Added mechanism to automatically parse additional bots.
+- Changed area chart interpolation to 'monotone'. This should avoid the issue
+  where the interpolated curve has a bend into the negative space.
+- Changed build to use debugging symbols even for release builds.
+- Changed order on which we verify bots to be the first thing we check. This
+  adds a slight improvement on parsing time.
+- Ensure we initialize DNS resolver conditions and mutexes before they're used.
+- Fixed possible buffer over-read for cases where a '\0' could be reached early
+  when parsing a log line.
+- Fixed possible data race on UI spinner thread.
+- Fixed regression where a lot of robots were not detected by GoAccess.
+
+* Mon Aug 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.4-0
+- Added AWS ALB to the predefined logs format list --log-format=AWSALB.
+- Ensure we lock our pipe/websocket writer before broadcasting message.
+- Ensure we require a valid host token even when we're not validating the IP.
+- Ensure we simply update the TUI once after tailing multiple files.
+- Ensure we simply update the UI once after tailing multiple files.
+- Fixed buffer overflow when checking if an HTTP code was a 404 on an empty
+  status code.
+- Optimized terminal and HTML UI output when tailing multiple files.
+- Updated DB PATH error message to be more descriptive.
+
 * Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
 - Added additional crawlers to the default list.
 - Added Italian translation (i18n).
