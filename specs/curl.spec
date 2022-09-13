@@ -38,22 +38,7 @@
 
 ################################################################################
 
-%{!?_without_nss: %{!?_with_nss: %define _with_nss --with-nss}}
-%{?_with_nss:    %define is_nss_enabled 1}
-%{?_without_nss: %define is_nss_enabled 0}
-
-%define is_nss_supported  1
 %define use_threads_posix 1
-
-%if 0%{?is_nss_supported} && 0%{?is_nss_enabled}
-%define use_nss 1
-%define ssl_provider nss
-%define ssl_version_req >= 3.14.0
-%else
-%define use_nss 0
-%define ssl_provider openssl
-%define ssl_version_req %{nil}
-%endif
 
 # Require at least the version of libssh2/c-ares that we were built against,
 # to ensure that we have the necessary symbols available (#525002, #642796)
@@ -64,7 +49,7 @@
 
 Summary:           Utility for getting files from remote servers
 Name:              curl
-Version:           7.76.0
+Version:           7.84.0
 Release:           0%{?dist}
 License:           MIT
 Group:             Applications/Internet
@@ -76,27 +61,25 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc libidn-devel krb5-devel
+BuildRequires:     make gcc libidn2-devel krb5-devel
 BuildRequires:     pkgconfig zlib-devel openldap-devel
-BuildRequires:     libmetalink-devel libssh2-devel >= 1.2 groff
+BuildRequires:     libgsasl-devel libssh2-devel >= 1.2 groff
 BuildRequires:     openssh-clients openssh-server stunnel perl python
 BuildRequires:     perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(vars)
 BuildRequires:     perl(File::Basename) perl(File::Copy) perl(File::Spec)
 BuildRequires:     perl(IPC::Open2) perl(MIME::Base64) perl(warnings)
 BuildRequires:     perl(strict) perl(Time::Local) perl(Time::HiRes)
-BuildRequires:     libnghttp2-devel nghttp2 libpsl-devel
-BuildRequires:     %{ssl_provider}-devel %{ssl_version_req}
+BuildRequires:     libnghttp2-devel nghttp2 libpsl-devel libzstd-devel
+BuildRequires:     libzstd-devel brotli-devel librtmp-devel
+BuildRequires:     openssl-devel
 
 %if ! %{use_threads_posix}
 BuildRequires:     c-ares-devel >= 1.6.0
 %endif
 
-Requires:          c-ares libmetalink >= 0.1.3 libnghttp2 >= 1.16.0
+Requires:          c-ares libnghttp2 >= 1.16.0
 Requires:          libcurl%{?_isa} = %{version}-%{release}
-
-%if ! %{use_nss}
 Requires:          %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
-%endif
 
 Provides:          webclient = %{version}-%{release}
 Provides:          %{name} = %{version}-%{release}
@@ -117,13 +100,8 @@ resume, proxy tunneling and a busload of other useful tricks.
 Summary:           A library for getting files from web servers
 Group:             System Environment/Libraries
 
-%if 0%{?rhel} > 7
-BuildRequires:     nss-pem
-%endif
-
 Requires:          libssh2%{?_isa} >= %{libssh2_version}
-Requires:          libmetalink >= 0.1.3 libnghttp2 >= 1.16.0
-Requires:          nss-pem
+Requires:          libnghttp2 >= 1.16.0
 
 %if ! %{use_threads_posix}
 Requires:          c-ares%{?_isa} >= %{cares_version}
@@ -140,17 +118,16 @@ resume, HTTP proxy tunneling and more.
 ################################################################################
 
 %package -n libcurl-devel
-Summary:              Files needed for building applications with libcurl
-Group:                Development/Libraries
+Summary:           Files needed for building applications with libcurl
+Group:             Development/Libraries
 
-Requires:             libcurl%{?_isa} = %{version}-%{release}
-Requires:             %{ssl_provider}-devel %{ssl_version_req}
-Requires:             libssh2-devel
+Requires:          libcurl%{?_isa} = %{version}-%{release}
+Requires:          openssl-devel libssh2-devel
 
-Provides:             curl-devel = %{version}-%{release}
-Provides:             curl-devel%{?_isa} = %{version}-%{release}
+Provides:          curl-devel = %{version}-%{release}
+Provides:          curl-devel%{?_isa} = %{version}-%{release}
 
-Obsoletes:            curl-devel < %{version}-%{release}
+Obsoletes:         curl-devel < %{version}-%{release}
 
 %description -n libcurl-devel
 The libcurl-devel package includes header files and libraries necessary for
@@ -165,19 +142,14 @@ documentation of the library, too.
 %setup -qn curl-%{version}
 
 %build
-%if ! 0%{?use_nss}
 export CPPFLAGS="$(pkg-config --cflags openssl)"
-%endif
 
-[ -x %{_usr}/kerberos/bin/krb5-config ] && KRB5_PREFIX="=%{_usr}/kerberos"
+if [[ -x %{_usr}/kerberos/bin/krb5-config ]] ; then
+  KRB5_PREFIX="=%{_usr}/kerberos"
+fi
 
 %configure \
-%if 0%{?use_nss}
-        --without-ssl \
-        --with-nss \
-%else
         --with-ssl \
-%endif
         --with-ca-bundle=%{_sysconfdir}/pki/tls/certs/ca-bundle.crt \
 %if 0%{?use_threads_posix}
         --enable-threaded-resolver \
@@ -188,9 +160,11 @@ export CPPFLAGS="$(pkg-config --cflags openssl)"
         --enable-ipv6 \
         --enable-ldaps \
         --with-gssapi${KRB5_PREFIX} \
-        --with-libidn \
-        --with-libmetalink \
+        --with-libidn2 \
         --with-nghttp2 \
+        --with-brotli \
+        --with-zstd \
+        --with-librtmp \
         --with-libpsl \
         --with-libssh2 \
         --enable-manual \
@@ -239,7 +213,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc docs/examples/*.c docs/examples/Makefile.example docs/INTERNALS.md
 %doc docs/CHECKSRC.md docs/CONTRIBUTE.md docs/libcurl/ABI.md docs/CODE_STYLE.md
-%doc docs/CIPHERS.md docs/DYNBUF.md docs/ECH.md
+%doc docs/CIPHERS.md docs/DYNBUF.md
 %{_bindir}/curl-config
 %{_includedir}/curl/
 %{_libdir}/*.so
@@ -252,6 +226,39 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.84.0-0
+- Changes: https://curl.se/changes.html#7_84_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.83.1-0
+- Changes: https://curl.se/changes.html#7_83_1
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.83.0-0
+- Changes: https://curl.se/changes.html#7_83_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.82.0-0
+- Changes: https://curl.se/changes.html#7_82_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.81.0-0
+- Changes: https://curl.se/changes.html#7_81_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.80.0-0
+- Changes: https://curl.se/changes.html#7_80_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.79.1-0
+- Changes: https://curl.se/changes.html#7_79_1
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.79.0-0
+- Changes: https://curl.se/changes.html#7_79_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.78.0-0
+- Changes: https://curl.se/changes.html#7_78_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.77.0-0
+- Changes: https://curl.se/changes.html#7_77_0
+
+* Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.76.1-0
+- Changes: https://curl.se/changes.html#7_76_1
+
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.76.0-0
 - Changes: https://curl.se/changes.html#7_76_0
 
