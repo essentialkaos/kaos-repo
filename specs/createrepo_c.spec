@@ -4,13 +4,8 @@
 
 ################################################################################
 
-%if 0%{?rhel} >= 7
 %global python_base python36
 %global __python3   %{_bindir}/python3.6
-%else
-%global python_base python34
-%global __python3   %{_bindir}/python3.4
-%endif
 
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
@@ -79,13 +74,9 @@ BuildRequires:      gcc cmake doxygen bzip2-devel expat-devel file-devel
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
 BuildRequires:      rpm-devel >= 4.8.0-28 libmodulemd-devel libyaml-devel
-
-%if 0%{?rhel} == 6
-Requires:           rpm >= 4.8.0-28
-%else
 BuildRequires:      bash-completion zchunk pkgconfig(zck) >= 0.9.11
+
 Requires:           rpm >= 4.9.0
-%endif
 
 Requires:           %{name}-libs = %{version}-%{release}
 
