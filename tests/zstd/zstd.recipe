@@ -1,0 +1,43 @@
+# Bibop recipe for zstd
+# See more: https://kaos.sh/bibop
+
+pkg zstd libzstd libzstd-devel libzstd-static
+
+fast-finish yes
+
+command "-" "Check environment"
+  app unzstd
+  app zstd
+  app zstdcat
+  app zstdgrep
+  app zstdless
+  app zstdmt
+
+command "-" "Check shared libs"
+  lib-loaded libzstd.so.*
+
+command "-" "Check static libs"
+  exist /usr/lib64/libzstd.a
+  mode /usr/lib64/libzstd.a 644
+
+command "-" "Check headers"
+  lib-header zdict.h
+  lib-header zstd.h
+  lib-header zstd_errors.h
+
+command "-" "Check pkg-config"
+  lib-config libzstd
+
+command "zstd -o test.zst sample" "Check compress"
+  exit 0
+  exist test.zst
+  !empty test.zst
+
+command "unzstd test.zst" "Check uncompress"
+  exit 0
+  exist test
+  !empty test
+
+command "-" "Compare uncompressed result with sample"
+  checksum-read sample sample_checksum
+  checksum test {sample_checksum}

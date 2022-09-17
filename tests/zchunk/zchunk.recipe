@@ -32,6 +32,6 @@ command "unzck test.zck" "Check uncompress"
   exist test
   !empty test
 
-command "-" "Compare uncompressed result"
+command "-" "Compare uncompressed result with sample"
   checksum-read sample sample_checksum
   checksum test {sample_checksum}
