@@ -1,0 +1,37 @@
+# Bibop recipe for zchunk
+# See more: https://kaos.sh/bibop
+
+pkg zchunk zchunk-devel zchunk-libs
+
+fast-finish yes
+
+command "-" "Check apps"
+  app zck
+  app zck_delta_size
+  app zck_gen_zdict
+  app zck_read_header
+  app zckdl
+  app unzck
+
+command "-" "Check shared libs"
+  lib-loaded libzck.so.*
+
+command "-" "Check headers"
+  lib-header zck.h
+
+command "-" "Check pkg-config"
+  lib-config zck
+
+command "zck -o test.zck sample" "Check compress"
+  exit 0
+  exist test.zck
+  !empty test.zck
+
+command "unzck test.zck" "Check uncompress"
+  exit 0
+  exist test
+  !empty test
+
+command "-" "Compare uncompressed result"
+  checksum-read sample sample_checksum
+  checksum test {sample_checksum}
