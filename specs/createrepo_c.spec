@@ -58,7 +58,7 @@
 
 Summary:            Creates a common metadata repository
 Name:               createrepo_c
-Version:            0.15.4
+Version:            0.20.1
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
@@ -70,13 +70,13 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc cmake doxygen bzip2-devel expat-devel file-devel
+BuildRequires:      gcc cmake doxygen bzip2-devel file-devel xz
 BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
-BuildRequires:      rpm-devel >= 4.8.0-28 libmodulemd-devel libyaml-devel
-BuildRequires:      bash-completion zchunk pkgconfig(zck) >= 0.9.11
+BuildRequires:      rpm-devel libmodulemd-devel libyaml-devel zchunk-devel
+BuildRequires:      bash-completion
 
-Requires:           rpm >= 4.9.0
+Requires:           rpm
 
 Requires:           %{name}-libs = %{version}-%{release}
 
@@ -122,7 +122,7 @@ These development files are for easy manipulation with a repodata.
 Summary:            Python bindings for the createrepo_c library
 Group:              Development/Languages
 
-BuildRequires:      %{python_base}-devel %{python_base}-libs %{python_base}-nose
+BuildRequires:      %{python_base}-devel %{python_base}-libs
 
 Requires:           %{python_base}
 
@@ -183,9 +183,7 @@ rm -rf %{buildroot}
 %{_bindir}/mergerepo_c
 %{_bindir}/modifyrepo_c
 %{_bindir}/sqliterepo_c
-%if 0%{?rhel} >= 7
 %{_datadir}/bash-completion/completions/*
-%endif
 
 %files libs
 %defattr(-,root,root,-)
@@ -207,68 +205,134 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.20.0...0.20.1
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.20.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.19.0...0.20.0
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.19.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.18.0...0.19.0
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.18.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.7...0.18.0
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.7-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.6...0.17.7
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.6-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.5...0.17.6
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.5-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.4...0.17.5
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.4-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.3...0.17.4
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.3-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.2...0.17.3
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.2-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.1...0.17.2
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.1-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.17.0...0.17.1
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.16.2...0.17.0
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.16.2-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.16.1...0.16.2
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.16.1-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.16.0...0.16.1
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.16.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.11...0.16.0
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.11-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.10...0.15.11
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.10-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.9...0.15.10
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.9-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.8...0.15.9
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.8-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.7...0.15.8
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.7-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.6...0.15.7
+
+* Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.6-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.5...0.15.6
+
+* Sun Sep 18 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.5-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.4...0.15.5
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.4-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.3...0.15.4
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.3-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.2...0.15.3
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.2-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.1...0.15.2
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.1-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.15.0...0.15.1
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.15.0-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.14.3...0.15.0
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.3-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.14.2...0.14.3
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.2-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.14.0...0.14.2
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.14.0-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.13.2...0.14.0
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.2-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.13.1...0.13.2
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.1-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.13.0...0.13.1
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.13.0-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.12.2...0.13.0
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.2-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.12.1...0.12.2
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.1-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/createrepo_c/compare/0.12.0...0.12.1
 
 * Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-1
 - Updated for compatibility with Python 3.6
 
 * Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 0.12.0-0
-- Updated to 0.12.0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.11.1...0.12.0
 
 * Fri Aug 31 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.1-0
-- Updated to 0.11.1
+- https://github.com/rpm-software-management/createrepo_c/compare/0.11.0...0.11.1
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 0.11.0-0
-- Updated to 0.11.0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.10.0...0.11.0
 
 * Wed Feb 24 2016 Anton Novojilov <andy@essentialkaos.com> - 0.10.0-0
-- Updated to 0.10.0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.9.1...0.10.0
 
 * Sat Nov 21 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
-- Updated to 0.9.1
+- https://github.com/rpm-software-management/createrepo_c/compare/0.9.0...0.9.1
 
 * Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.0-0
-- Updated to 0.9.0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.8.1...0.9.0
 
 * Tue May 12 2015 Anton Novojilov <andy@essentialkaos.com> - 0.8.1-0
-- Updated to 0.8.1
+- https://github.com/rpm-software-management/createrepo_c/compare/0.7.7...0.8.1
 
 * Thu Mar 12 2015 Anton Novojilov <andy@essentialkaos.com> - 0.7.7-0
 - Initial build
