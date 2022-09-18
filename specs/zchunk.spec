@@ -60,6 +60,7 @@ Summary:         Headers for building against zchunk
 Group:           Development/Libraries
 
 Requires:        %{name}-libs = %{version}-%{release}
+Requires:        pkgconfig(libzstd)
 
 %description devel
 zchunk is a compressed file format that splits the file into independent
