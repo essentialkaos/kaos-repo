@@ -5,10 +5,19 @@ pkg goaccess
 
 fast-finish yes
 
+var config /etc/goaccess/goaccess.conf
+
 command "-" "Check environment"
   app goaccess
 
+command "-" "Check configuration file"
+  exist {config}
+  mode {config} 644
+  owner {config} root:root
+
 command "goaccess --version" "Check version info"
   exit 0
-  output-contains "--enable-debug"
   output-contains "--enable-utf8"
+  output-contains "--enable-geoip=mmdb"
+  output-contains "--with-getline"
+  output-contains "--with-openssl"

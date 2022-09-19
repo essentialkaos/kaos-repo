@@ -7,6 +7,8 @@ pkg librtmp librtmp-devel rtmpdump
 
 fast-finish yes
 
+var lib_linking_flags "-lrtmp"
+
 command "-" "Check apps"
   app rtmpdump
   app rtmpgw
@@ -26,3 +28,118 @@ command "-" "Check headers"
 command "-" "Check pkg-config"
   lib-config librtmp
 
+command "-" "Check symbols exported by librtmp.so"
+  lib-exported librtmp.so AMF3CD_AddProp
+  lib-exported librtmp.so AMF3CD_GetProp
+  lib-exported librtmp.so AMF3_Decode
+  lib-exported librtmp.so AMF3Prop_Decode
+  lib-exported librtmp.so AMF3ReadInteger
+  lib-exported librtmp.so AMF3ReadString
+  lib-exported librtmp.so AMF_AddProp
+  lib-exported librtmp.so AMF_CountProp
+  lib-exported librtmp.so AMF_Decode
+  lib-exported librtmp.so AMF_DecodeArray
+  lib-exported librtmp.so AMF_DecodeBoolean
+  lib-exported librtmp.so AMF_DecodeInt16
+  lib-exported librtmp.so AMF_DecodeInt24
+  lib-exported librtmp.so AMF_DecodeInt32
+  lib-exported librtmp.so AMF_DecodeLongString
+  lib-exported librtmp.so AMF_DecodeNumber
+  lib-exported librtmp.so AMF_DecodeString
+  lib-exported librtmp.so AMF_Dump
+  lib-exported librtmp.so AMF_Encode
+  lib-exported librtmp.so AMF_EncodeArray
+  lib-exported librtmp.so AMF_EncodeBoolean
+  lib-exported librtmp.so AMF_EncodeEcmaArray
+  lib-exported librtmp.so AMF_EncodeInt16
+  lib-exported librtmp.so AMF_EncodeInt24
+  lib-exported librtmp.so AMF_EncodeInt32
+  lib-exported librtmp.so AMF_EncodeNamedBoolean
+  lib-exported librtmp.so AMF_EncodeNamedNumber
+  lib-exported librtmp.so AMF_EncodeNamedString
+  lib-exported librtmp.so AMF_EncodeNumber
+  lib-exported librtmp.so AMF_EncodeString
+  lib-exported librtmp.so AMF_GetProp
+  lib-exported librtmp.so AMFProp_Decode
+  lib-exported librtmp.so AMFProp_Dump
+  lib-exported librtmp.so AMFProp_Encode
+  lib-exported librtmp.so AMFProp_GetBoolean
+  lib-exported librtmp.so AMFProp_GetName
+  lib-exported librtmp.so AMFProp_GetNumber
+  lib-exported librtmp.so AMFProp_GetObject
+  lib-exported librtmp.so AMFProp_GetString
+  lib-exported librtmp.so AMFProp_GetType
+  lib-exported librtmp.so AMFProp_IsValid
+  lib-exported librtmp.so AMFProp_Reset
+  lib-exported librtmp.so AMFProp_SetName
+  lib-exported librtmp.so AMF_Reset
+  lib-exported librtmp.so HTTP_get
+  lib-exported librtmp.so RTMP_Alloc
+  lib-exported librtmp.so RTMP_ClientPacket
+  lib-exported librtmp.so RTMP_Close
+  lib-exported librtmp.so RTMP_Connect
+  lib-exported librtmp.so RTMP_Connect0
+  lib-exported librtmp.so RTMP_Connect1
+  lib-exported librtmp.so RTMP_ConnectStream
+  lib-exported librtmp.so RTMP_debuglevel
+  lib-exported librtmp.so RTMP_DefaultFlashVer
+  lib-exported librtmp.so RTMP_DeleteStream
+  lib-exported librtmp.so RTMP_DropRequest
+  lib-exported librtmp.so RTMP_EnableWrite
+  lib-exported librtmp.so RTMP_FindFirstMatchingProperty
+  lib-exported librtmp.so RTMP_FindPrefixProperty
+  lib-exported librtmp.so RTMP_Free
+  lib-exported librtmp.so RTMP_GetDuration
+  lib-exported librtmp.so RTMP_GetNextMediaPacket
+  lib-exported librtmp.so RTMP_GetTime
+  lib-exported librtmp.so RTMP_HashSWF
+  lib-exported librtmp.so RTMP_Init
+  lib-exported librtmp.so RTMP_IsConnected
+  lib-exported librtmp.so RTMP_IsTimedout
+  lib-exported librtmp.so RTMP_LibVersion
+  lib-exported librtmp.so RTMP_Log
+  lib-exported librtmp.so RTMP_LogGetLevel
+  lib-exported librtmp.so RTMP_LogHex
+  lib-exported librtmp.so RTMP_LogHexString
+  lib-exported librtmp.so RTMP_LogPrintf
+  lib-exported librtmp.so RTMP_LogSetCallback
+  lib-exported librtmp.so RTMP_LogSetLevel
+  lib-exported librtmp.so RTMP_LogSetOutput
+  lib-exported librtmp.so RTMP_LogStatus
+  lib-exported librtmp.so RTMPPacket_Alloc
+  lib-exported librtmp.so RTMPPacket_Dump
+  lib-exported librtmp.so RTMPPacket_Free
+  lib-exported librtmp.so RTMPPacket_Reset
+  lib-exported librtmp.so RTMP_ParsePlaypath
+  lib-exported librtmp.so RTMP_ParseURL
+  lib-exported librtmp.so RTMP_Pause
+  lib-exported librtmp.so RTMPProtocolStrings
+  lib-exported librtmp.so RTMPProtocolStringsLower
+  lib-exported librtmp.so RTMP_Read
+  lib-exported librtmp.so RTMP_ReadPacket
+  lib-exported librtmp.so RTMP_ReconnectStream
+  lib-exported librtmp.so RTMP_SendChunk
+  lib-exported librtmp.so RTMP_SendClientBW
+  lib-exported librtmp.so RTMP_SendCreateStream
+  lib-exported librtmp.so RTMP_SendCtrl
+  lib-exported librtmp.so RTMP_SendPacket
+  lib-exported librtmp.so RTMP_SendPause
+  lib-exported librtmp.so RTMP_SendSeek
+  lib-exported librtmp.so RTMP_SendServerBW
+  lib-exported librtmp.so RTMP_Serve
+  lib-exported librtmp.so RTMP_SetBufferMS
+  lib-exported librtmp.so RTMP_SetOpt
+  lib-exported librtmp.so RTMP_SetupStream
+  lib-exported librtmp.so RTMP_SetupURL
+  lib-exported librtmp.so RTMPSockBuf_Close
+  lib-exported librtmp.so RTMPSockBuf_Fill
+  lib-exported librtmp.so RTMPSockBuf_Send
+  lib-exported librtmp.so RTMP_Socket
+  lib-exported librtmp.so RTMP_TLS_Accept
+  lib-exported librtmp.so RTMP_TLS_AllocServerContext
+  lib-exported librtmp.so RTMP_TLS_FreeServerContext
+  lib-exported librtmp.so RTMP_TLS_Init
+  lib-exported librtmp.so RTMP_ToggleStream
+  lib-exported librtmp.so RTMP_UpdateBufferMS
+  lib-exported librtmp.so RTMP_UserInterrupt
+  lib-exported librtmp.so RTMP_Write

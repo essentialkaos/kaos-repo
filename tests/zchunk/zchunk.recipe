@@ -1,9 +1,11 @@
 # Bibop recipe for zchunk
 # See more: https://kaos.sh/bibop
 
-pkg zchunk zchunk-devel zchunk-libs
+pkg gcc zchunk zchunk-devel zchunk-libs
 
 fast-finish yes
+
+var lib_linker_flags "-lzck"
 
 command "-" "Check apps"
   app zck
@@ -22,6 +24,59 @@ command "-" "Check headers"
 command "-" "Check pkg-config"
   lib-config zck
 
+command "-" "Check symbols exported by libzck.so"
+  lib-exported libzck.so zck_get_data_digest
+  lib-exported libzck.so zck_get_data_length
+  lib-exported libzck.so zck_get_error
+  lib-exported libzck.so zck_get_fd
+  lib-exported libzck.so zck_get_first_chunk
+  lib-exported libzck.so zck_get_flags
+  lib-exported libzck.so zck_get_full_digest_size
+  lib-exported libzck.so zck_get_full_hash_type
+  lib-exported libzck.so zck_get_header_digest
+  lib-exported libzck.so zck_get_header_length
+  lib-exported libzck.so zck_get_lead_length
+  lib-exported libzck.so zck_get_length
+  lib-exported libzck.so zck_get_min_download_size
+  lib-exported libzck.so zck_get_missing_range
+  lib-exported libzck.so zck_get_next_chunk
+  lib-exported libzck.so zck_get_range
+  lib-exported libzck.so zck_get_range_char
+  lib-exported libzck.so zck_get_range_count
+  lib-exported libzck.so zck_get_src_chunk
+  lib-exported libzck.so zck_hash_name_from_type
+  lib-exported libzck.so zck_header_cb
+  lib-exported libzck.so zck_init_adv_read
+  lib-exported libzck.so zck_init_read
+  lib-exported libzck.so zck_init_write
+  lib-exported libzck.so zck_is_detached_header
+  lib-exported libzck.so zck_is_error
+  lib-exported libzck.so zck_missing_chunks
+  lib-exported libzck.so zck_range_free
+  lib-exported libzck.so zck_read
+  lib-exported libzck.so zck_read_header
+  lib-exported libzck.so zck_read_lead
+  lib-exported libzck.so zck_reset_failed_chunks
+  lib-exported libzck.so zck_set_fd
+  lib-exported libzck.so zck_set_ioption
+  lib-exported libzck.so zck_set_log_callback
+  lib-exported libzck.so zck_set_log_fd
+  lib-exported libzck.so zck_set_log_level
+  lib-exported libzck.so zck_set_soption
+  lib-exported libzck.so zck_validate_checksums
+  lib-exported libzck.so zck_validate_data_checksum
+  lib-exported libzck.so zck_validate_lead
+  lib-exported libzck.so zck_write
+  lib-exported libzck.so zck_write_chunk_cb
+  lib-exported libzck.so zck_write_zck_header_cb
+
+command "gcc -o test_bin {lib_linker_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
+
 command "zck -o test.zck sample" "Check compress"
   exit 0
   exist test.zck
@@ -32,6 +87,6 @@ command "unzck test.zck" "Check uncompress"
   exist test
   !empty test
 
-command "-" "Compare uncompressed result with sample"
++command "-" "Compare uncompressed result with sample"
   checksum-read sample sample_checksum
   checksum test {sample_checksum}

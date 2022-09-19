@@ -5,31 +5,28 @@ pkg gcc faac faac-devel
 
 fast-finish yes
 
-var lib_name faac
+var lib_linking_flags "-lfaac"
 
 command "-" "Check environment"
   app faac
 
 command "-" "Check shared libs"
-  lib-loaded lib{lib_name}.so.*
+  lib-loaded libfaac.so.*
 
 command "-" "Check headers"
-  lib-header {lib_name}.h
-  lib-header {lib_name}cfg.h
+  lib-header faac.h
+  lib-header faaccfg.h
 
 command "-" "Check symbols exported by libfaac.so"
-  lib-exported lib{lib_name}.so.0 {lib_name}EncClose
-  lib-exported lib{lib_name}.so.0 {lib_name}EncEncode
-  lib-exported lib{lib_name}.so.0 {lib_name}EncGetCurrentConfiguration
-  lib-exported lib{lib_name}.so.0 {lib_name}EncGetDecoderSpecificInfo
-  lib-exported lib{lib_name}.so.0 {lib_name}EncGetVersion
-  lib-exported lib{lib_name}.so.0 {lib_name}EncOpen
-  lib-exported lib{lib_name}.so.0 {lib_name}EncSetConfiguration
+  lib-exported libfaac.so faacEncClose
+  lib-exported libfaac.so faacEncEncode
+  lib-exported libfaac.so faacEncGetCurrentConfiguration
+  lib-exported libfaac.so faacEncGetDecoderSpecificInfo
+  lib-exported libfaac.so faacEncGetVersion
+  lib-exported libfaac.so faacEncOpen
+  lib-exported libfaac.so faacEncSetConfiguration
 
-command "./test_{ARCH_BITS}" "Check prebuilt binary"
-  exit 0
-
-command "gcc -o test_bin -l {lib_name} test.c" "Compile binary"
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
   exit 0
   exist test_bin
 

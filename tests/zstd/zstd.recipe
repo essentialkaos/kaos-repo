@@ -5,6 +5,8 @@ pkg zstd libzstd libzstd-devel libzstd-static
 
 fast-finish yes
 
+var lib_linking_flags "-lzstd"
+
 command "-" "Check environment"
   app unzstd
   app zstd
@@ -27,6 +29,194 @@ command "-" "Check headers"
 
 command "-" "Check pkg-config"
   lib-config libzstd
+
+command "-" "Check symbols exported by libzstd.so"
+  lib-exported libzstd.so ZDICT_addEntropyTablesFromBuffer
+  lib-exported libzstd.so ZDICT_finalizeDictionary
+  lib-exported libzstd.so ZDICT_getDictHeaderSize
+  lib-exported libzstd.so ZDICT_getDictID
+  lib-exported libzstd.so ZDICT_getErrorName
+  lib-exported libzstd.so ZDICT_isError
+  lib-exported libzstd.so ZDICT_optimizeTrainFromBuffer_cover
+  lib-exported libzstd.so ZDICT_optimizeTrainFromBuffer_fastCover
+  lib-exported libzstd.so ZDICT_trainFromBuffer
+  lib-exported libzstd.so ZDICT_trainFromBuffer_cover
+  lib-exported libzstd.so ZDICT_trainFromBuffer_fastCover
+  lib-exported libzstd.so ZDICT_trainFromBuffer_legacy
+  lib-exported libzstd.so ZSTD_adjustCParams
+  lib-exported libzstd.so ZSTD_CCtx_getParameter
+  lib-exported libzstd.so ZSTD_CCtx_loadDictionary
+  lib-exported libzstd.so ZSTD_CCtx_loadDictionary_advanced
+  lib-exported libzstd.so ZSTD_CCtx_loadDictionary_byReference
+  lib-exported libzstd.so ZSTD_CCtxParams_getParameter
+  lib-exported libzstd.so ZSTD_CCtxParams_init
+  lib-exported libzstd.so ZSTD_CCtxParams_init_advanced
+  lib-exported libzstd.so ZSTD_CCtxParams_reset
+  lib-exported libzstd.so ZSTD_CCtxParams_setParameter
+  lib-exported libzstd.so ZSTD_CCtx_refCDict
+  lib-exported libzstd.so ZSTD_CCtx_refPrefix
+  lib-exported libzstd.so ZSTD_CCtx_refPrefix_advanced
+  lib-exported libzstd.so ZSTD_CCtx_refThreadPool
+  lib-exported libzstd.so ZSTD_CCtx_reset
+  lib-exported libzstd.so ZSTD_CCtx_setParameter
+  lib-exported libzstd.so ZSTD_CCtx_setParametersUsingCCtxParams
+  lib-exported libzstd.so ZSTD_CCtx_setPledgedSrcSize
+  lib-exported libzstd.so ZSTD_checkCParams
+  lib-exported libzstd.so ZSTD_compress
+  lib-exported libzstd.so ZSTD_compress2
+  lib-exported libzstd.so ZSTD_compress_advanced
+  lib-exported libzstd.so ZSTD_compressBegin
+  lib-exported libzstd.so ZSTD_compressBegin_advanced
+  lib-exported libzstd.so ZSTD_compressBegin_usingCDict
+  lib-exported libzstd.so ZSTD_compressBegin_usingCDict_advanced
+  lib-exported libzstd.so ZSTD_compressBegin_usingDict
+  lib-exported libzstd.so ZSTD_compressBlock
+  lib-exported libzstd.so ZSTD_compressBound
+  lib-exported libzstd.so ZSTD_compressCCtx
+  lib-exported libzstd.so ZSTD_compressContinue
+  lib-exported libzstd.so ZSTD_compressEnd
+  lib-exported libzstd.so ZSTD_compressSequences
+  lib-exported libzstd.so ZSTD_compressStream
+  lib-exported libzstd.so ZSTD_compressStream2
+  lib-exported libzstd.so ZSTD_compressStream2_simpleArgs
+  lib-exported libzstd.so ZSTD_compress_usingCDict
+  lib-exported libzstd.so ZSTD_compress_usingCDict_advanced
+  lib-exported libzstd.so ZSTD_compress_usingDict
+  lib-exported libzstd.so ZSTD_copyCCtx
+  lib-exported libzstd.so ZSTD_copyDCtx
+  lib-exported libzstd.so ZSTD_cParam_getBounds
+  lib-exported libzstd.so ZSTD_createCCtx
+  lib-exported libzstd.so ZSTD_createCCtx_advanced
+  lib-exported libzstd.so ZSTD_createCCtxParams
+  lib-exported libzstd.so ZSTD_createCDict
+  lib-exported libzstd.so ZSTD_createCDict_advanced
+  lib-exported libzstd.so ZSTD_createCDict_advanced2
+  lib-exported libzstd.so ZSTD_createCDict_byReference
+  lib-exported libzstd.so ZSTD_createCStream
+  lib-exported libzstd.so ZSTD_createCStream_advanced
+  lib-exported libzstd.so ZSTD_createDCtx
+  lib-exported libzstd.so ZSTD_createDCtx_advanced
+  lib-exported libzstd.so ZSTD_createDDict
+  lib-exported libzstd.so ZSTD_createDDict_advanced
+  lib-exported libzstd.so ZSTD_createDDict_byReference
+  lib-exported libzstd.so ZSTD_createDStream
+  lib-exported libzstd.so ZSTD_createDStream_advanced
+  lib-exported libzstd.so ZSTD_createThreadPool
+  lib-exported libzstd.so ZSTD_CStreamInSize
+  lib-exported libzstd.so ZSTD_CStreamOutSize
+  lib-exported libzstd.so ZSTD_DCtx_getParameter
+  lib-exported libzstd.so ZSTD_DCtx_loadDictionary
+  lib-exported libzstd.so ZSTD_DCtx_loadDictionary_advanced
+  lib-exported libzstd.so ZSTD_DCtx_loadDictionary_byReference
+  lib-exported libzstd.so ZSTD_DCtx_refDDict
+  lib-exported libzstd.so ZSTD_DCtx_refPrefix
+  lib-exported libzstd.so ZSTD_DCtx_refPrefix_advanced
+  lib-exported libzstd.so ZSTD_DCtx_reset
+  lib-exported libzstd.so ZSTD_DCtx_setFormat
+  lib-exported libzstd.so ZSTD_DCtx_setMaxWindowSize
+  lib-exported libzstd.so ZSTD_DCtx_setParameter
+  lib-exported libzstd.so ZSTD_decodingBufferSize_min
+  lib-exported libzstd.so ZSTD_decompress
+  lib-exported libzstd.so ZSTD_decompressBegin
+  lib-exported libzstd.so ZSTD_decompressBegin_usingDDict
+  lib-exported libzstd.so ZSTD_decompressBegin_usingDict
+  lib-exported libzstd.so ZSTD_decompressBlock
+  lib-exported libzstd.so ZSTD_decompressBound
+  lib-exported libzstd.so ZSTD_decompressContinue
+  lib-exported libzstd.so ZSTD_decompressDCtx
+  lib-exported libzstd.so ZSTD_decompressStream
+  lib-exported libzstd.so ZSTD_decompressStream_simpleArgs
+  lib-exported libzstd.so ZSTD_decompress_usingDDict
+  lib-exported libzstd.so ZSTD_decompress_usingDict
+  lib-exported libzstd.so ZSTD_defaultCLevel
+  lib-exported libzstd.so ZSTD_dParam_getBounds
+  lib-exported libzstd.so ZSTD_DStreamInSize
+  lib-exported libzstd.so ZSTD_DStreamOutSize
+  lib-exported libzstd.so ZSTD_endStream
+  lib-exported libzstd.so ZSTD_estimateCCtxSize
+  lib-exported libzstd.so ZSTD_estimateCCtxSize_usingCCtxParams
+  lib-exported libzstd.so ZSTD_estimateCCtxSize_usingCParams
+  lib-exported libzstd.so ZSTD_estimateCDictSize
+  lib-exported libzstd.so ZSTD_estimateCDictSize_advanced
+  lib-exported libzstd.so ZSTD_estimateCStreamSize
+  lib-exported libzstd.so ZSTD_estimateCStreamSize_usingCCtxParams
+  lib-exported libzstd.so ZSTD_estimateCStreamSize_usingCParams
+  lib-exported libzstd.so ZSTD_estimateDCtxSize
+  lib-exported libzstd.so ZSTD_estimateDDictSize
+  lib-exported libzstd.so ZSTD_estimateDStreamSize
+  lib-exported libzstd.so ZSTD_estimateDStreamSize_fromFrame
+  lib-exported libzstd.so ZSTD_findDecompressedSize
+  lib-exported libzstd.so ZSTD_findFrameCompressedSize
+  lib-exported libzstd.so ZSTD_flushStream
+  lib-exported libzstd.so ZSTD_frameHeaderSize
+  lib-exported libzstd.so ZSTD_freeCCtx
+  lib-exported libzstd.so ZSTD_freeCCtxParams
+  lib-exported libzstd.so ZSTD_freeCDict
+  lib-exported libzstd.so ZSTD_freeCStream
+  lib-exported libzstd.so ZSTD_freeDCtx
+  lib-exported libzstd.so ZSTD_freeDDict
+  lib-exported libzstd.so ZSTD_freeDStream
+  lib-exported libzstd.so ZSTD_freeThreadPool
+  lib-exported libzstd.so ZSTD_generateSequences
+  lib-exported libzstd.so ZSTD_getBlockSize
+  lib-exported libzstd.so ZSTD_getCParams
+  lib-exported libzstd.so ZSTD_getDecompressedSize
+  lib-exported libzstd.so ZSTD_getDictID_fromCDict
+  lib-exported libzstd.so ZSTD_getDictID_fromDDict
+  lib-exported libzstd.so ZSTD_getDictID_fromDict
+  lib-exported libzstd.so ZSTD_getDictID_fromFrame
+  lib-exported libzstd.so ZSTD_getErrorCode
+  lib-exported libzstd.so ZSTD_getErrorName
+  lib-exported libzstd.so ZSTD_getErrorString
+  lib-exported libzstd.so ZSTD_getFrameContentSize
+  lib-exported libzstd.so ZSTD_getFrameHeader
+  lib-exported libzstd.so ZSTD_getFrameHeader_advanced
+  lib-exported libzstd.so ZSTD_getFrameProgression
+  lib-exported libzstd.so ZSTD_getParams
+  lib-exported libzstd.so ZSTD_initCStream
+  lib-exported libzstd.so ZSTD_initCStream_advanced
+  lib-exported libzstd.so ZSTD_initCStream_srcSize
+  lib-exported libzstd.so ZSTD_initCStream_usingCDict
+  lib-exported libzstd.so ZSTD_initCStream_usingCDict_advanced
+  lib-exported libzstd.so ZSTD_initCStream_usingDict
+  lib-exported libzstd.so ZSTD_initDStream
+  lib-exported libzstd.so ZSTD_initDStream_usingDDict
+  lib-exported libzstd.so ZSTD_initDStream_usingDict
+  lib-exported libzstd.so ZSTD_initStaticCCtx
+  lib-exported libzstd.so ZSTD_initStaticCDict
+  lib-exported libzstd.so ZSTD_initStaticCStream
+  lib-exported libzstd.so ZSTD_initStaticDCtx
+  lib-exported libzstd.so ZSTD_initStaticDDict
+  lib-exported libzstd.so ZSTD_initStaticDStream
+  lib-exported libzstd.so ZSTD_insertBlock
+  lib-exported libzstd.so ZSTD_isError
+  lib-exported libzstd.so ZSTD_isFrame
+  lib-exported libzstd.so ZSTD_isSkippableFrame
+  lib-exported libzstd.so ZSTD_maxCLevel
+  lib-exported libzstd.so ZSTD_mergeBlockDelimiters
+  lib-exported libzstd.so ZSTD_minCLevel
+  lib-exported libzstd.so ZSTD_nextInputType
+  lib-exported libzstd.so ZSTD_nextSrcSizeToDecompress
+  lib-exported libzstd.so ZSTD_readSkippableFrame
+  lib-exported libzstd.so ZSTD_resetCStream
+  lib-exported libzstd.so ZSTD_resetDStream
+  lib-exported libzstd.so ZSTD_sizeof_CCtx
+  lib-exported libzstd.so ZSTD_sizeof_CDict
+  lib-exported libzstd.so ZSTD_sizeof_CStream
+  lib-exported libzstd.so ZSTD_sizeof_DCtx
+  lib-exported libzstd.so ZSTD_sizeof_DDict
+  lib-exported libzstd.so ZSTD_sizeof_DStream
+  lib-exported libzstd.so ZSTD_toFlushNow
+  lib-exported libzstd.so ZSTD_versionNumber
+  lib-exported libzstd.so ZSTD_versionString
+  lib-exported libzstd.so ZSTD_writeSkippableFrame
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
 
 command "zstd -o test.zst sample" "Check compress"
   exit 0
