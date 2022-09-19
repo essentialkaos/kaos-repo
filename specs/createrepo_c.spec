@@ -109,6 +109,9 @@ Summary:            Library for repodata manipulation
 Group:              Development/Libraries
 
 Requires:           pkgconfig >= 1:0.14
+Requires:           pkgconfig(glib-2.0) pkgconfig(rpm) pkgconfig(libcurl)
+Requires:           pkgconfig(sqlite3) pkgconfig(sqlite3) pkgconfig(libxml-2.0)
+Requires:           pkgconfig(openssl)
 Requires:           %{name}-libs =  %{version}-%{release}
 
 %description devel
