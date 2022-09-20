@@ -1,0 +1,195 @@
+# Bibop recipe for zlib
+# See more: https://kaos.sh/bibop
+
+pkg zlib zlib-devel zlib-static minizip minizip-devel
+
+var zlib_linking_flags "-lz"
+var minizip_linking_flags "-lminizip"
+
+command "-" "Check shared library"
+  lib-loaded libz.so.*
+
+command "-" "Check headers and package configs"
+  lib-header zlib
+  lib-header zconf
+  lib-config zlib
+
+command "-" "Check static library"
+  exist /usr/lib64/libz.a
+
+command "-" "Check minizip library"
+  lib-loaded libminizip.so.*
+
+command "-" "Check minizip headers and package configs"
+  lib-header minizip
+  lib-config minizip
+
+command "-" "Check symbols exported by libz.so"
+  lib-exported libz.so adler32
+  lib-exported libz.so adler32_combine
+  lib-exported libz.so adler32_combine64
+  lib-exported libz.so adler32_z
+  lib-exported libz.so compress
+  lib-exported libz.so compress2
+  lib-exported libz.so compressBound
+  lib-exported libz.so crc32
+  lib-exported libz.so crc32_combine
+  lib-exported libz.so crc32_combine64
+  lib-exported libz.so crc32_z
+  lib-exported libz.so deflate
+  lib-exported libz.so deflateBound
+  lib-exported libz.so deflateCopy
+  lib-exported libz.so deflateEnd
+  lib-exported libz.so deflateGetDictionary
+  lib-exported libz.so deflateInit_
+  lib-exported libz.so deflateInit2_
+  lib-exported libz.so deflateParams
+  lib-exported libz.so deflatePending
+  lib-exported libz.so deflatePrime
+  lib-exported libz.so deflateReset
+  lib-exported libz.so deflateResetKeep
+  lib-exported libz.so deflateSetDictionary
+  lib-exported libz.so deflateSetHeader
+  lib-exported libz.so deflateTune
+  lib-exported libz.so get_crc_table
+  lib-exported libz.so gzbuffer
+  lib-exported libz.so gzclearerr
+  lib-exported libz.so gzclose
+  lib-exported libz.so gzclose_r
+  lib-exported libz.so gzclose_w
+  lib-exported libz.so gzdirect
+  lib-exported libz.so gzdopen
+  lib-exported libz.so gzeof
+  lib-exported libz.so gzerror
+  lib-exported libz.so gzflush
+  lib-exported libz.so gzfread
+  lib-exported libz.so gzfwrite
+  lib-exported libz.so gzgetc
+  lib-exported libz.so gzgetc_
+  lib-exported libz.so gzgets
+  lib-exported libz.so gzoffset
+  lib-exported libz.so gzoffset64
+  lib-exported libz.so gzopen
+  lib-exported libz.so gzopen64
+  lib-exported libz.so gzprintf
+  lib-exported libz.so gzputc
+  lib-exported libz.so gzputs
+  lib-exported libz.so gzread
+  lib-exported libz.so gzrewind
+  lib-exported libz.so gzseek
+  lib-exported libz.so gzseek64
+  lib-exported libz.so gzsetparams
+  lib-exported libz.so gztell
+  lib-exported libz.so gztell64
+  lib-exported libz.so gzungetc
+  lib-exported libz.so gzvprintf
+  lib-exported libz.so gzwrite
+  lib-exported libz.so inflate
+  lib-exported libz.so inflateBack
+  lib-exported libz.so inflateBackEnd
+  lib-exported libz.so inflateBackInit_
+  lib-exported libz.so inflateCodesUsed
+  lib-exported libz.so inflateCopy
+  lib-exported libz.so inflateEnd
+  lib-exported libz.so inflateGetDictionary
+  lib-exported libz.so inflateGetHeader
+  lib-exported libz.so inflateInit_
+  lib-exported libz.so inflateInit2_
+  lib-exported libz.so inflateMark
+  lib-exported libz.so inflatePrime
+  lib-exported libz.so inflateReset
+  lib-exported libz.so inflateReset2
+  lib-exported libz.so inflateResetKeep
+  lib-exported libz.so inflateSetDictionary
+  lib-exported libz.so inflateSync
+  lib-exported libz.so inflateSyncPoint
+  lib-exported libz.so inflateUndermine
+  lib-exported libz.so inflateValidate
+  lib-exported libz.so uncompress
+  lib-exported libz.so uncompress2
+  lib-exported libz.so zError
+  lib-exported libz.so zlibCompileFlags
+  lib-exported libz.so zlibVersion
+
+command "-" "Check symbols exported by libminizip.so"
+  lib-exported libminizip.so call_zopen64
+  lib-exported libminizip.so call_zseek64
+  lib-exported libminizip.so call_ztell64
+  lib-exported libminizip.so fill_fopen64_filefunc
+  lib-exported libminizip.so fill_fopen_filefunc
+  lib-exported libminizip.so fill_zlib_filefunc64_32_def_from_filefunc32
+  lib-exported libminizip.so LoadCentralDirectoryRecord
+  lib-exported libminizip.so unzClose
+  lib-exported libminizip.so unzCloseCurrentFile
+  lib-exported libminizip.so unz_copyright
+  lib-exported libminizip.so unzeof
+  lib-exported libminizip.so unzGetCurrentFileInfo
+  lib-exported libminizip.so unzGetCurrentFileInfo64
+  lib-exported libminizip.so unzGetCurrentFileZStreamPos64
+  lib-exported libminizip.so unzGetFilePos
+  lib-exported libminizip.so unzGetFilePos64
+  lib-exported libminizip.so unzGetGlobalComment
+  lib-exported libminizip.so unzGetGlobalInfo
+  lib-exported libminizip.so unzGetGlobalInfo64
+  lib-exported libminizip.so unzGetLocalExtrafield
+  lib-exported libminizip.so unzGetOffset
+  lib-exported libminizip.so unzGetOffset64
+  lib-exported libminizip.so unzGoToFilePos
+  lib-exported libminizip.so unzGoToFilePos64
+  lib-exported libminizip.so unzGoToFirstFile
+  lib-exported libminizip.so unzGoToNextFile
+  lib-exported libminizip.so unzLocateFile
+  lib-exported libminizip.so unzOpen
+  lib-exported libminizip.so unzOpen2
+  lib-exported libminizip.so unzOpen2_64
+  lib-exported libminizip.so unzOpen64
+  lib-exported libminizip.so unzOpenCurrentFile
+  lib-exported libminizip.so unzOpenCurrentFile2
+  lib-exported libminizip.so unzOpenCurrentFile3
+  lib-exported libminizip.so unzOpenCurrentFilePassword
+  lib-exported libminizip.so unzReadCurrentFile
+  lib-exported libminizip.so unzRepair
+  lib-exported libminizip.so unzSetOffset
+  lib-exported libminizip.so unzSetOffset64
+  lib-exported libminizip.so unzStringFileNameCompare
+  lib-exported libminizip.so unztell
+  lib-exported libminizip.so unztell64
+  lib-exported libminizip.so Write_EndOfCentralDirectoryRecord
+  lib-exported libminizip.so Write_GlobalComment
+  lib-exported libminizip.so Write_LocalFileHeader
+  lib-exported libminizip.so Write_Zip64EndOfCentralDirectoryLocator
+  lib-exported libminizip.so Write_Zip64EndOfCentralDirectoryRecord
+  lib-exported libminizip.so zipClose
+  lib-exported libminizip.so zipCloseFileInZip
+  lib-exported libminizip.so zipCloseFileInZipRaw
+  lib-exported libminizip.so zipCloseFileInZipRaw64
+  lib-exported libminizip.so zip_copyright
+  lib-exported libminizip.so zipOpen
+  lib-exported libminizip.so zipOpen2
+  lib-exported libminizip.so zipOpen2_64
+  lib-exported libminizip.so zipOpen3
+  lib-exported libminizip.so zipOpen64
+  lib-exported libminizip.so zipOpenNewFileInZip
+  lib-exported libminizip.so zipOpenNewFileInZip2
+  lib-exported libminizip.so zipOpenNewFileInZip2_64
+  lib-exported libminizip.so zipOpenNewFileInZip3
+  lib-exported libminizip.so zipOpenNewFileInZip3_64
+  lib-exported libminizip.so zipOpenNewFileInZip4
+  lib-exported libminizip.so zipOpenNewFileInZip4_64
+  lib-exported libminizip.so zipOpenNewFileInZip64
+  lib-exported libminizip.so zipRemoveExtraInfoBlock
+  lib-exported libminizip.so zipWriteInFileInZip
+
+command "gcc -o test_zlib_bin {zlib_linking_flags} test-zlib.c" "Compile binary"
+  exit 0
+  exist test_zlib_bin
+
++command "./test_zlib_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_minizip_bin {minizip_linking_flags} test-minizip.c" "Compile binary"
+  exit 0
+  exist test_minizip_bin
+
++command "./test_minizip_bin" "Execute built binary"
+  exit 0

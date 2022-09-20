@@ -1,0 +1,39 @@
+# Bibop recipe for xvidcore
+# See more: https://kaos.sh/bibop
+
+pkg libxvidcore libxvidcore-devel xvidcore
+
+fast-finish yes
+
+var lib_linking_flags "-lxvidcore"
+
+command "-" "Check shared libs"
+  lib-loaded libxvidcore.so.*
+
+command "-" "Check static libs"
+  exist /usr/lib64/libxvidcore.a
+  mode /usr/lib64/libxvidcore.a 644
+
+command "-" "Check headers"
+  lib-header xvid.h
+
+command "-" "Check symbols exported by libxvidcore.so"
+  lib-exported libxvidcore.so xvid_decore
+  lib-exported libxvidcore.so xvid_encore
+  lib-exported libxvidcore.so xvid_global
+  lib-exported libxvidcore.so xvid_plugin_2pass1
+  lib-exported libxvidcore.so xvid_plugin_2pass2
+  lib-exported libxvidcore.so xvid_plugin_dump
+  lib-exported libxvidcore.so xvid_plugin_lumimasking
+  lib-exported libxvidcore.so xvid_plugin_psnr
+  lib-exported libxvidcore.so xvid_plugin_psnrhvsm
+  lib-exported libxvidcore.so xvid_plugin_single
+  lib-exported libxvidcore.so xvid_plugin_ssim
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
+

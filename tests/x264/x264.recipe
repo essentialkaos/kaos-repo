@@ -1,0 +1,91 @@
+# Bibop recipe for x264
+# See more: https://kaos.sh/bibop
+
+pkg x264 x264-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lx264"
+
+command "-" "Check binary"
+  app x264
+
+command "-" "Check shared libs"
+  lib-loaded libx264.so.*
+
+command "-" "Check headers"
+  lib-header x264
+  lib-header x264_config
+
+command "-" "Check pkg-config"
+  lib-config x264
+
+command "-" "Check symbols exported by libx264.so"
+  lib-exported libx264.so x264_10_frame_pop
+  lib-exported libx264.so x264_10_frame_push
+  lib-exported libx264.so x264_10_frame_shift
+  lib-exported libx264.so x264_10_frame_unshift
+  lib-exported libx264.so x264_10_threadpool_delete
+  lib-exported libx264.so x264_10_threadpool_init
+  lib-exported libx264.so x264_10_threadpool_run
+  lib-exported libx264.so x264_10_threadpool_wait
+  lib-exported libx264.so x264_10_trellis_bnode_0
+  lib-exported libx264.so x264_10_trellis_bnode_1
+  lib-exported libx264.so x264_10_trellis_coef0_0
+  lib-exported libx264.so x264_10_trellis_coef0_1
+  lib-exported libx264.so x264_10_trellis_coef1
+  lib-exported libx264.so x264_10_trellis_coefn
+  lib-exported libx264.so x264_8_frame_pop
+  lib-exported libx264.so x264_8_frame_push
+  lib-exported libx264.so x264_8_frame_shift
+  lib-exported libx264.so x264_8_frame_unshift
+  lib-exported libx264.so x264_8_threadpool_delete
+  lib-exported libx264.so x264_8_threadpool_init
+  lib-exported libx264.so x264_8_threadpool_run
+  lib-exported libx264.so x264_8_threadpool_wait
+  lib-exported libx264.so x264_8_trellis_bnode_0
+  lib-exported libx264.so x264_8_trellis_bnode_1
+  lib-exported libx264.so x264_8_trellis_coef0_0
+  lib-exported libx264.so x264_8_trellis_coef0_1
+  lib-exported libx264.so x264_8_trellis_coef1
+  lib-exported libx264.so x264_8_trellis_coefn
+  lib-exported libx264.so x264_chroma_format
+  lib-exported libx264.so x264_cpu_detect
+  lib-exported libx264.so x264_cpu_names
+  lib-exported libx264.so x264_cpu_num_processors
+  lib-exported libx264.so x264_encoder_close
+  lib-exported libx264.so x264_encoder_delayed_frames
+  lib-exported libx264.so x264_encoder_encode
+  lib-exported libx264.so x264_encoder_headers
+  lib-exported libx264.so x264_encoder_intra_refresh
+  lib-exported libx264.so x264_encoder_invalidate_reference
+  lib-exported libx264.so x264_encoder_maximum_delayed_frames
+  lib-exported libx264.so x264_encoder_open_159
+  lib-exported libx264.so x264_encoder_parameters
+  lib-exported libx264.so x264_encoder_reconfig
+  lib-exported libx264.so x264_free
+  lib-exported libx264.so x264_levels
+  lib-exported libx264.so x264_log_default
+  lib-exported libx264.so x264_log_internal
+  lib-exported libx264.so x264_malloc
+  lib-exported libx264.so x264_mdate
+  lib-exported libx264.so x264_nal_encode
+  lib-exported libx264.so x264_param2string
+  lib-exported libx264.so x264_param_apply_fastfirstpass
+  lib-exported libx264.so x264_param_apply_profile
+  lib-exported libx264.so x264_param_default
+  lib-exported libx264.so x264_param_default_preset
+  lib-exported libx264.so x264_param_parse
+  lib-exported libx264.so x264_picture_alloc
+  lib-exported libx264.so x264_picture_clean
+  lib-exported libx264.so x264_picture_init
+  lib-exported libx264.so x264_reduce_fraction
+  lib-exported libx264.so x264_reduce_fraction64
+  lib-exported libx264.so x264_slurp_file
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

@@ -1,0 +1,5 @@
+#include <xvid.h>
+
+int main() {
+  return 0;
+}
