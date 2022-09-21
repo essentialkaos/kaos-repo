@@ -1,0 +1,169 @@
+# Bibop recipe for Libva 2
+# See more: https://kaos.sh/bibop
+
+pkg libva2 libva2-devel
+
+fast-finish yes
+
+var lib_name libva
+var lib_version 2
+
+var lib_linking_flags "-lva-drm -lva"
+var glx_linking_flags "-lva-glx -lva"
+var x11_linking_flags "-lva-x11 -lva"
+
+command "-" "Check shared libs"
+  lib-loaded {lib_name}.so.{lib_version}
+  lib-loaded {lib_name}-x11.so.{lib_version}
+  lib-loaded {lib_name}-glx.so.{lib_version}
+  lib-loaded {lib_name}-drm.so.{lib_version}
+
+command "-" "Check headers"
+  lib-header va
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}
+  lib-config {lib_name}-x11
+  lib-config {lib_name}-glx
+  lib-config {lib_name}-drm
+
+command "-" "Check symbols exported by libva-drm.so"
+  lib-exported libva-drm.so vaGetDisplayDRM
+
+command "-" "Check symbols exported by libva-glx.so"
+  lib-exported libva-glx.so vaCopySurfaceGLX
+  lib-exported libva-glx.so vaCreateSurfaceGLX
+  lib-exported libva-glx.so vaDestroySurfaceGLX
+  lib-exported libva-glx.so vaGetDisplayGLX
+
+command "-" "Check symbols exported by libva.so"
+  lib-exported libva.so vaAcquireBufferHandle
+  lib-exported libva.so vaAssociateSubpicture
+  lib-exported libva.so vaBeginPicture
+  lib-exported libva.so vaBufferInfo
+  lib-exported libva.so vaBufferSetNumElements
+  lib-exported libva.so vaBufferTypeStr
+  lib-exported libva.so vaConfigAttribTypeStr
+  lib-exported libva.so vaCreateBuffer
+  lib-exported libva.so vaCreateBuffer2
+  lib-exported libva.so vaCreateConfig
+  lib-exported libva.so vaCreateContext
+  lib-exported libva.so vaCreateImage
+  lib-exported libva.so vaCreateMFContext
+  lib-exported libva.so vaCreateSubpicture
+  lib-exported libva.so vaCreateSurfaces
+  lib-exported libva.so vaCreateSurfaces
+  lib-exported libva.so vaDeassociateSubpicture
+  lib-exported libva.so vaDeriveImage
+  lib-exported libva.so vaDestroyBuffer
+  lib-exported libva.so vaDestroyConfig
+  lib-exported libva.so vaDestroyContext
+  lib-exported libva.so vaDestroyImage
+  lib-exported libva.so vaDestroySubpicture
+  lib-exported libva.so vaDestroySurfaces
+  lib-exported libva.so vaDisplayIsValid
+  lib-exported libva.so vaEndPicture
+  lib-exported libva.so vaEntrypointStr
+  lib-exported libva.so va_errorMessage
+  lib-exported libva.so vaErrorStr
+  lib-exported libva.so vaExportSurfaceHandle
+  lib-exported libva.so va_FoolBufferInfo
+  lib-exported libva.so va_FoolCheckContinuity
+  lib-exported libva.so va_FoolCreateBuffer
+  lib-exported libva.so va_FoolCreateConfig
+  lib-exported libva.so va_FoolEnd
+  lib-exported libva.so va_FoolInit
+  lib-exported libva.so va_FoolMapBuffer
+  lib-exported libva.so vaGetConfigAttributes
+  lib-exported libva.so vaGetDisplayAttributes
+  lib-exported libva.so vaGetImage
+  lib-exported libva.so vaGetLibFunc
+  lib-exported libva.so va_infoMessage
+  lib-exported libva.so vaInitialize
+  lib-exported libva.so vaLockSurface
+  lib-exported libva.so vaMapBuffer
+  lib-exported libva.so vaMaxNumConfigAttributes
+  lib-exported libva.so vaMaxNumDisplayAttributes
+  lib-exported libva.so vaMaxNumEntrypoints
+  lib-exported libva.so vaMaxNumImageFormats
+  lib-exported libva.so vaMaxNumProfiles
+  lib-exported libva.so vaMaxNumSubpictureFormats
+  lib-exported libva.so vaMFAddContext
+  lib-exported libva.so vaMFReleaseContext
+  lib-exported libva.so vaMFSubmit
+  lib-exported libva.so va_newDisplayContext
+  lib-exported libva.so va_newDriverContext
+  lib-exported libva.so va_parseConfig
+  lib-exported libva.so vaProfileStr
+  lib-exported libva.so vaPutImage
+  lib-exported libva.so vaQueryConfigAttributes
+  lib-exported libva.so vaQueryConfigEntrypoints
+  lib-exported libva.so vaQueryConfigProfiles
+  lib-exported libva.so vaQueryDisplayAttributes
+  lib-exported libva.so vaQueryImageFormats
+  lib-exported libva.so vaQueryProcessingRate
+  lib-exported libva.so vaQuerySubpictureFormats
+  lib-exported libva.so vaQuerySurfaceAttributes
+  lib-exported libva.so vaQuerySurfaceError
+  lib-exported libva.so vaQuerySurfaceStatus
+  lib-exported libva.so vaQueryVendorString
+  lib-exported libva.so vaQueryVideoProcFilterCaps
+  lib-exported libva.so vaQueryVideoProcFilters
+  lib-exported libva.so vaQueryVideoProcPipelineCaps
+  lib-exported libva.so vaReleaseBufferHandle
+  lib-exported libva.so vaRenderPicture
+  lib-exported libva.so vaSetDisplayAttributes
+  lib-exported libva.so vaSetDriverName
+  lib-exported libva.so vaSetErrorCallback
+  lib-exported libva.so vaSetImagePalette
+  lib-exported libva.so vaSetInfoCallback
+  lib-exported libva.so vaSetSubpictureChromakey
+  lib-exported libva.so vaSetSubpictureGlobalAlpha
+  lib-exported libva.so vaSetSubpictureImage
+  lib-exported libva.so vaStatusStr
+  lib-exported libva.so vaSyncSurface
+  lib-exported libva.so vaTerminate
+  lib-exported libva.so va_TracePutSurface
+  lib-exported libva.so va_TraceStatus
+  lib-exported libva.so vaUnlockSurface
+  lib-exported libva.so vaUnmapBuffer
+
+command "-" "Check symbols exported by libva-x11.so"
+  lib-exported libva-x11.so VA_DRI2Authenticate
+  lib-exported libva-x11.so VA_DRI2Connect
+  lib-exported libva-x11.so VA_DRI2CopyRegion
+  lib-exported libva-x11.so VA_DRI2CreateDrawable
+  lib-exported libva-x11.so VA_DRI2DestroyDrawable
+  lib-exported libva-x11.so VA_DRI2GetBuffers
+  lib-exported libva-x11.so VA_DRI2QueryExtension
+  lib-exported libva-x11.so VA_DRI2QueryVersion
+  lib-exported libva-x11.so VA_DRI2SwapBuffers
+  lib-exported libva-x11.so va_dri_free_drawable
+  lib-exported libva-x11.so va_dri_free_drawable_hashtable
+  lib-exported libva-x11.so va_dri_get_drawable
+  lib-exported libva-x11.so va_dri_get_rendering_buffer
+  lib-exported libva-x11.so va_dri_swap_buffer
+  lib-exported libva-x11.so vaGetDisplay
+  lib-exported libva-x11.so va_isDRI2Connected
+  lib-exported libva-x11.so vaPutSurface
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_glx_bin {glx_linking_flags} test_glx.c" "Compile binary"
+  exit 0
+  exist test_glx_bin
+
++command "./test_glx_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_x11_bin {x11_linking_flags} test_x11.c" "Compile binary"
+  exit 0
+  exist test_x11_bin
+
++command "./test_x11_bin" "Execute built binary"
+  exit 0
