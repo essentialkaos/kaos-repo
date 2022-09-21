@@ -11,7 +11,7 @@
 
 Summary:         The Oil Run-time Compiler
 Name:            orc
-Version:         0.4.31
+Version:         0.4.32
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
@@ -92,6 +92,9 @@ rm -rf %{buildroot}
 
 rm -f %{buildroot}%{_libdir}/*.a
 
+sed -i 's#<orc/#<orc-0.4/orc/#g' %{buildroot}%{_includedir}/%{name}-0.4/orc/*.h
+sed -i 's#<orc/#<orc-0.4/orc/#g' %{buildroot}%{_includedir}/%{name}-0.4/orc-test/*.h
+
 %post
 /sbin/ldconfig
 
@@ -129,6 +132,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 21 2022 Anton Novojilov <andy@essentialkaos.com> - 0.4.32-0
+- Add support for JIT code generation in Universal Windows Platform apps
+- Minor Meson build system fixes and improvements
+
 * Fri Feb 14 2020 Anton Novojilov <andy@essentialkaos.com> - 0.4.31-0
 - Fix OrcTargetPowerPCFlags enum typedef to revert API change on macOS/iOS
 - Fixes for various PowerPC issues

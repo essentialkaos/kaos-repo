@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -35,17 +39,19 @@
 
 Summary:            Adaptive Multi-Rate Floating-point (AMR) Speech Codec
 Name:               opencore-amr
-Version:            0.1.5
+Version:            0.1.6
 Release:            0%{?dist}
 License:            ASL 2.0
 Group:              System Environment/Libraries
-URL:                http://opencore-amr.sourceforge.net
+URL:                https://sourceforge.net/projects/opencore-amr/
 
-Source0:            http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:            https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.6.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc gcc-c++ make
+BuildRequires:      make gcc gcc-c++
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -71,6 +77,8 @@ This is the package containing the header files for opencore-amr libraries.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -83,14 +91,14 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-%clean
-rm -rf %{buildroot}
-
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -99,8 +107,6 @@ rm -rf %{buildroot}
 %doc ChangeLog LICENSE README
 %{_libdir}/lib%{name}nb.so.*
 %{_libdir}/lib%{name}wb.so.*
-%{_pkgconfigdir}/%{name}nb.pc
-%{_pkgconfigdir}/%{name}wb.pc
 
 %files devel
 %defattr(-,root,root,-)
@@ -110,12 +116,18 @@ rm -rf %{buildroot}
 %{_libdir}/lib%{name}wb.so
 %{_libdir}/lib%{name}nb.la
 %{_libdir}/lib%{name}wb.la
+%{_pkgconfigdir}/%{name}nb.pc
+%{_pkgconfigdir}/%{name}wb.pc
 
 ################################################################################
 
 %changelog
+* Wed Sep 21 2022 Anton Novojilov <andy@essentialkaos.com> - 0.1.6-0
+- Fixed an infinite loop when decoding some AMR-NB samples
+- Fixed noise spikes when decoding non-voice frames for both AMR-NB and AMR-WB
+
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.5-0
-- Updated to latest version
+- Fix an autotools issue with cross compiling from the 0.1.4 release
 
 * Sat Mar 17 2012 Paulo Roma <roma@lcg.ufrj.br> - 0.1.3-0
 - Updated to latest version

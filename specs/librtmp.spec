@@ -47,7 +47,7 @@
 Summary:            RTMPDump Real-Time Messaging Protocol API
 Name:               librtmp
 Version:            2.4
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            LGPL
 Group:              System Environment/Libraries
 URL:                https://rtmpdump.mplayerhq.hu
@@ -82,6 +82,7 @@ Summary:            Development files for librtmp
 Group:              Development/Libraries
 License:            LGPL
 
+Requires:           pkgconfig(openssl)
 Requires:           %{name} = %{version}-%{release}
 
 %description devel
@@ -121,14 +122,14 @@ rm -rf %{buildroot}
   incdir=%{_includedir}/librtmp \
   libdir=%{_libdir}
 
-%clean
-rm -rf %{buildroot}
-
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -137,13 +138,13 @@ rm -rf %{buildroot}
 %doc ChangeLog COPYING README
 %{_mandir}/man3/%{name}.3*
 %{_libdir}/%{name}.so*
-%{_pkgconfigdir}/%{name}.pc
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/librtmp/*.h
 %{_libdir}/%{name}.a
 %{_libdir}/%{name}.so
+%{_pkgconfigdir}/%{name}.pc
 
 %files -n rtmpdump
 %defattr(-,root,root,-)
@@ -157,6 +158,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Sep 20 2022 Anton Novojilov <andy@essentialkaos.com> - 2.4-2
+- Fixed dependencies for devel package
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 2.4-1
 - Rebuilt with the latest version of zlib
 

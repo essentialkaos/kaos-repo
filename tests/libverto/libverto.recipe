@@ -1,38 +1,33 @@
 # Bibop recipe for libverto
 # See more: https://kaos.sh/bibop
 
-pkg libverto libverto-devel libverto-glib libverto-glib-devel libverto-libevent libverto-libevent-devel libverto-tevent libverto-tevent-devel
+pkg libverto libverto-devel libverto-glib libverto-glib-devel libverto-libevent libverto-libevent-devel
 
 fast-finish yes
 
 var main_linking_flags "-lverto"
 var glib_linking_flags "-lverto-glib -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include"
 var libevent_linking_flags "-lverto-libevent"
-var tevent_linking_flags "-lverto-tevent"
 
 command "-" "Check shared libs"
   lib-loaded libverto.so.*
   lib-loaded libverto-glib.so.*
   lib-loaded libverto-libevent.so.*
-  lib-loaded libverto-tevent.so.*
 
   lib-exist libverto.so
   lib-exist libverto-glib.so
   lib-exist libverto-libevent.so
-  lib-exist libverto-tevent.so
 
 command "-" "Check headers"
   lib-header verto
   lib-header verto-module
   lib-header verto-glib
   lib-header verto-libevent
-  lib-header verto-tevent
 
 command "-" "Check pkg-config"
   lib-config libverto
   lib-config libverto-glib
   lib-config libverto-libevent
-  lib-config libverto-tevent
 
 command "-" "Check symbols exported by libverto.so"
   lib-exported libverto.so verto_add_child
@@ -81,12 +76,6 @@ command "-" "Check symbols exported by libverto-libevent.so"
   lib-exported libverto-libevent.so verto_module_table_libevent
   lib-exported libverto-libevent.so verto_new_libevent
 
-command "-" "Check symbols exported by libverto-tevent.so"
-  lib-exported libverto-tevent.so verto_convert_tevent
-  lib-exported libverto-tevent.so verto_default_tevent
-  lib-exported libverto-tevent.so verto_module_table_tevent
-  lib-exported libverto-tevent.so verto_new_tevent
-
 command "gcc -o test_bin {main_linking_flags} test.c" "Compile binary"
   exit 0
   exist test_bin
@@ -106,11 +95,4 @@ command "gcc -o test_libevent_bin {libevent_linking_flags} test-libevent.c" "Com
   exist test_libevent_bin
 
 +command "./test_libevent_bin" "Execute built binary"
-  exit 0
-
-command "gcc -o test_tevent_bin {tevent_linking_flags} test-tevent.c" "Compile binary"
-  exit 0
-  exist test_tevent_bin
-
-+command "./test_tevent_bin" "Execute built binary"
   exit 0

@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -39,12 +43,14 @@
 Summary:           Open source video codec
 Name:              dirac
 Version:           1.0.2
-Release:           15%{?dist}
+Release:           16%{?dist}
 License:           MPLv1.1
 Group:             System Environment/Libraries
 URL:               http://dirac.sourceforge.net/overview.html
 
-Source0:           http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:           https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+
+Source100:         checksum.sha512
 
 Patch0:            %{name}-%{version}-backports.patch
 Patch1:            0001-Fix-uninitialised-memory-read-that-causes-the-encode.patch
@@ -54,11 +60,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 BuildRequires:     make gcc gcc-c++ cppunit-devel doxygen graphviz-devel
 BuildRequires:     dvipdfm chrpath
 
-%if 0%{?rhel} >= 7
 BuildRequires:     tex-latex-bin
-%else
-BuildRequires:     tetex tetex-latex
-%endif
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -103,6 +105,8 @@ This package contains documentation files for dirac.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %patch0 -p0
@@ -135,11 +139,11 @@ sed -i.rpath 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 %{__make} %{?_smp_mflags}
 
-
 %install
 rm -rf %{buildroot}
 
 %{make_install} INSTALL="install -p"
+
 find %{buildroot} -name '*.la' -exec rm -f {} ';'
 
 # Move doc in docdir macro
@@ -151,6 +155,8 @@ mv %{buildroot}%{_bindir}/dirac_create_dirac_testfile.pl \
 
 sed -i -e 's|"RGBtoYUV"|"dirac_RGBtoYUV"|g' %{buildroot}%{_bindir}/create_dirac_testfile.pl
 sed -i -e 's|/home/guest/dirac-0.5.0/util/conversion|%{_bindir}|' %{buildroot}%{_bindir}/create_dirac_testfile.pl
+
+sed -i 's#<libdirac_#<dirac/libdirac_#g' %{buildroot}%{_includedir}/dirac/libdirac_*/*
 
 chrpath --delete %{buildroot}%{_bindir}/%{name}*
 
@@ -190,5 +196,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Sep 22 2022 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-16
+- Fixed path in header files
+
 * Tue Feb 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-15
 - Initial build for kaos repository
