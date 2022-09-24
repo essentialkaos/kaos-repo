@@ -37,13 +37,14 @@
 Summary:            Library for manipulating ID3v1 and ID3v2 tags
 Name:               id3lib
 Version:            3.8.3
-Release:            34%{?dist}
+Release:            35%{?dist}
 License:            LGPLv2+
 Group:              System Environment/Libraries
-URL:                http://id3lib.sourceforge.net
+URL:                https://id3lib.sourceforge.net
 
 Source0:            https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Source1:            %{name}-no_date_footer.hml
+Source2:            id3.pc
 
 Source100:          checksum.sha512
 
@@ -52,10 +53,10 @@ Patch1:             %{name}-%{version}-autoreconf.patch
 Patch2:             %{name}-%{version}-io_helpers-163101.patch
 Patch3:             %{name}-%{version}-mkstemp.patch
 Patch4:             %{name}-%{version}-includes.patch
-Patch5:             http://launchpadlibrarian.net/33114077/%{name}-vbr_buffer_overflow.diff
-Patch6:             http://anonscm.debian.org/viewvc/collab-maint/deb-maint/%{name}/trunk/debian/patches/20-create-manpages.patch
-Patch7:             http://anonscm.debian.org/viewvc/collab-maint/deb-maint/%{name}/trunk/debian/patches/60-fix_make_check.patch
-Patch8:             http://anonscm.debian.org/viewvc/collab-maint/deb-maint/%{name}/trunk/debian/patches/60-%{name}-missing-nullpointer-check.patch
+Patch5:             %{name}-vbr_buffer_overflow.diff
+Patch6:             20-create-manpages.patch
+Patch7:             60-fix_make_check.patch
+Patch8:             60-%{name}-missing-nullpointer-check.patch
 Patch9:             %{name}-%{version}-fix-utf16-stringlists.patch
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -143,13 +144,13 @@ rm -f %{buildroot}%{_libdir}/libid3.la
 
 install -m 644 doc/man/*.1 %{buildroot}%{_mandir}/man1
 
+install -dm 755 %{buildroot}%{_libdir}/pkgconfig
+install -pm 644 %{SOURCE2} %{buildroot}%{_libdir}/pkgconfig/id3.pc
+
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
 %endif
-
-%clean
-rm -rf %{buildroot}
 
 %post
 /sbin/ldconfig
@@ -157,16 +158,19 @@ rm -rf %{buildroot}
 %postun
 /sbin/ldconfig
 
+%clean
+rm -rf %{buildroot}
+
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog HISTORY NEWS README THANKS TODO __doc/doc/
-%{_libdir}/libid3-3.8.so.*
+%doc AUTHORS COPYING ChangeLog HISTORY NEWS README THANKS __doc/doc/
 %{_bindir}/id3convert
 %{_bindir}/id3cp
 %{_bindir}/id3info
 %{_bindir}/id3tag
+%{_libdir}/libid3-3.8.so.*
 %{_mandir}/man1/*
 
 %files devel
@@ -175,10 +179,14 @@ rm -rf %{buildroot}
 %{_includedir}/id3.h
 %{_includedir}/id3/
 %{_libdir}/libid3.so
+%{_libdir}/pkgconfig/id3.pc
 
 ################################################################################
 
 %changelog
+* Sun Sep 25 2022 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-35
+- Package improvements
+
 * Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 3.8.3-34
 - Fixed problems with executing ldconfig
 

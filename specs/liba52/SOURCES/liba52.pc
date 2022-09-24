@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib64
+includedir=/usr/include
+
+Name: liba52
+Description: A decoding library for ATSC A/52 streams.
+Version: 0.7.5-cvs
+Libs: -L${libdir} -la52
+Cflags: -I${includedir}/a52dec
