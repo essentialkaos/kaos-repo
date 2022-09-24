@@ -1,0 +1,95 @@
+# Bibop recipe for id3lib
+# See more: https://kaos.sh/bibop
+
+pkg id3lib id3lib-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lid3 -lz"
+
+command "-" "Check apps"
+  app id3convert
+  app id3cp
+  app id3info
+  app id3tag
+
+command "-" "Check shared libs"
+  lib-loaded libid3-3.8.so.*
+
+command "-" "Check headers"
+  lib-header id3
+  lib-header id3.h
+
+command "-" "Check pkg-config"
+  lib-config id3
+
+command "-" "Check symbols exported by libid3-3.8.so"
+  lib-exported libid3-3.8.so.3 ID3Field_AddASCII
+  lib-exported libid3-3.8.so.3 ID3Field_AddUNICODE
+  lib-exported libid3-3.8.so.3 ID3Field_Clear
+  lib-exported libid3-3.8.so.3 ID3Field_FromFile
+  lib-exported libid3-3.8.so.3 ID3Field_GetASCII
+  lib-exported libid3-3.8.so.3 ID3Field_GetASCIIItem
+  lib-exported libid3-3.8.so.3 ID3Field_GetBINARY
+  lib-exported libid3-3.8.so.3 ID3Field_GetINT
+  lib-exported libid3-3.8.so.3 ID3Field_GetNumTextItems
+  lib-exported libid3-3.8.so.3 ID3Field_GetUNICODE
+  lib-exported libid3-3.8.so.3 ID3Field_GetUNICODEItem
+  lib-exported libid3-3.8.so.3 ID3Field_SetASCII
+  lib-exported libid3-3.8.so.3 ID3Field_SetBINARY
+  lib-exported libid3-3.8.so.3 ID3Field_SetINT
+  lib-exported libid3-3.8.so.3 ID3Field_SetUNICODE
+  lib-exported libid3-3.8.so.3 ID3Field_Size
+  lib-exported libid3-3.8.so.3 ID3Field_ToFile
+  lib-exported libid3-3.8.so.3 ID3Frame_Clear
+  lib-exported libid3-3.8.so.3 ID3Frame_Delete
+  lib-exported libid3-3.8.so.3 ID3Frame_GetCompression
+  lib-exported libid3-3.8.so.3 ID3Frame_GetField
+  lib-exported libid3-3.8.so.3 ID3Frame_GetID
+  lib-exported libid3-3.8.so.3 ID3Frame_New
+  lib-exported libid3-3.8.so.3 ID3Frame_NewID
+  lib-exported libid3-3.8.so.3 ID3Frame_SetCompression
+  lib-exported libid3-3.8.so.3 ID3Frame_SetID
+  lib-exported libid3-3.8.so.3 ID3LIB_BINARY_AGE
+  lib-exported libid3-3.8.so.3 ID3LIB_FULL_NAME
+  lib-exported libid3-3.8.so.3 ID3LIB_INTERFACE_AGE
+  lib-exported libid3-3.8.so.3 ID3LIB_MAJOR_VERSION
+  lib-exported libid3-3.8.so.3 ID3LIB_MINOR_VERSION
+  lib-exported libid3-3.8.so.3 ID3LIB_NAME
+  lib-exported libid3-3.8.so.3 ID3LIB_PATCH_VERSION
+  lib-exported libid3-3.8.so.3 ID3Tag_AddFrame
+  lib-exported libid3-3.8.so.3 ID3Tag_AddFrames
+  lib-exported libid3-3.8.so.3 ID3Tag_AttachFrame
+  lib-exported libid3-3.8.so.3 ID3Tag_Clear
+  lib-exported libid3-3.8.so.3 ID3TagConstIterator_Delete
+  lib-exported libid3-3.8.so.3 ID3TagConstIterator_GetNext
+  lib-exported libid3-3.8.so.3 ID3Tag_CreateConstIterator
+  lib-exported libid3-3.8.so.3 ID3Tag_CreateIterator
+  lib-exported libid3-3.8.so.3 ID3Tag_Delete
+  lib-exported libid3-3.8.so.3 ID3Tag_FindFrameWithASCII
+  lib-exported libid3-3.8.so.3 ID3Tag_FindFrameWithID
+  lib-exported libid3-3.8.so.3 ID3Tag_FindFrameWithINT
+  lib-exported libid3-3.8.so.3 ID3Tag_FindFrameWithUNICODE
+  lib-exported libid3-3.8.so.3 ID3Tag_HasChanged
+  lib-exported libid3-3.8.so.3 ID3Tag_HasTagType
+  lib-exported libid3-3.8.so.3 ID3TagIterator_Delete
+  lib-exported libid3-3.8.so.3 ID3TagIterator_GetNext
+  lib-exported libid3-3.8.so.3 ID3Tag_Link
+  lib-exported libid3-3.8.so.3 ID3Tag_LinkWithFlags
+  lib-exported libid3-3.8.so.3 ID3Tag_New
+  lib-exported libid3-3.8.so.3 ID3Tag_NumFrames
+  lib-exported libid3-3.8.so.3 ID3Tag_Parse
+  lib-exported libid3-3.8.so.3 ID3Tag_RemoveFrame
+  lib-exported libid3-3.8.so.3 ID3Tag_SetExtendedHeader
+  lib-exported libid3-3.8.so.3 ID3Tag_SetPadding
+  lib-exported libid3-3.8.so.3 ID3Tag_SetUnsync
+  lib-exported libid3-3.8.so.3 ID3Tag_Strip
+  lib-exported libid3-3.8.so.3 ID3Tag_Update
+  lib-exported libid3-3.8.so.3 ID3Tag_UpdateByTagType
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with id3"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

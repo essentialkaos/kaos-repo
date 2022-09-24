@@ -1,0 +1,263 @@
+# Bibop recipe for lame
+# See more: https://kaos.sh/bibop
+
+pkg lame lame-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lmp3lame"
+
+command "-" "Check environment"
+  app lame
+  app mp3rtp
+
+command "-" "Check shared libs"
+  lib-loaded libmp3lame.so.*
+
+command "-" "Check headers"
+  lib-header lame
+
+command "-" "Check pkg-config"
+  lib-config lame
+
+command "-" "Check symbols exported by libmp3lame.so"
+  lib-exported libmp3lame.so get_lame_os_bitness
+  lib-exported libmp3lame.so get_lame_short_version
+  lib-exported libmp3lame.so get_lame_url
+  lib-exported libmp3lame.so get_lame_version
+  lib-exported libmp3lame.so get_lame_version_numerical
+  lib-exported libmp3lame.so get_lame_very_short_version
+  lib-exported libmp3lame.so get_psy_version
+  lib-exported libmp3lame.so hip_decode
+  lib-exported libmp3lame.so hip_decode1
+  lib-exported libmp3lame.so hip_decode1_headers
+  lib-exported libmp3lame.so hip_decode1_headersB
+  lib-exported libmp3lame.so hip_decode_exit
+  lib-exported libmp3lame.so hip_decode_headers
+  lib-exported libmp3lame.so hip_decode_init
+  lib-exported libmp3lame.so hip_set_debugf
+  lib-exported libmp3lame.so hip_set_errorf
+  lib-exported libmp3lame.so hip_set_msgf
+  lib-exported libmp3lame.so id3tag_add_v2
+  lib-exported libmp3lame.so id3tag_genre_list
+  lib-exported libmp3lame.so id3tag_init
+  lib-exported libmp3lame.so id3tag_pad_v2
+  lib-exported libmp3lame.so id3tag_set_album
+  lib-exported libmp3lame.so id3tag_set_albumart
+  lib-exported libmp3lame.so id3tag_set_artist
+  lib-exported libmp3lame.so id3tag_set_comment
+  lib-exported libmp3lame.so id3tag_set_comment_latin1
+  lib-exported libmp3lame.so id3tag_set_comment_ucs2
+  lib-exported libmp3lame.so id3tag_set_comment_utf16
+  lib-exported libmp3lame.so id3tag_set_fieldvalue
+  lib-exported libmp3lame.so id3tag_set_fieldvalue_ucs2
+  lib-exported libmp3lame.so id3tag_set_fieldvalue_utf16
+  lib-exported libmp3lame.so id3tag_set_genre
+  lib-exported libmp3lame.so id3tag_set_pad
+  lib-exported libmp3lame.so id3tag_set_textinfo_latin1
+  lib-exported libmp3lame.so id3tag_set_textinfo_ucs2
+  lib-exported libmp3lame.so id3tag_set_textinfo_utf16
+  lib-exported libmp3lame.so id3tag_set_title
+  lib-exported libmp3lame.so id3tag_set_track
+  lib-exported libmp3lame.so id3tag_set_year
+  lib-exported libmp3lame.so id3tag_space_v1
+  lib-exported libmp3lame.so id3tag_v1_only
+  lib-exported libmp3lame.so id3tag_v2_only
+  lib-exported libmp3lame.so lame_bitrate_block_type_hist
+  lib-exported libmp3lame.so lame_bitrate_hist
+  lib-exported libmp3lame.so lame_bitrate_kbps
+  lib-exported libmp3lame.so lame_bitrate_stereo_mode_hist
+  lib-exported libmp3lame.so lame_block_type_hist
+  lib-exported libmp3lame.so lame_close
+  lib-exported libmp3lame.so lame_decode
+  lib-exported libmp3lame.so lame_decode1
+  lib-exported libmp3lame.so lame_decode1_headers
+  lib-exported libmp3lame.so lame_decode1_headersB
+  lib-exported libmp3lame.so lame_decode_exit
+  lib-exported libmp3lame.so lame_decode_headers
+  lib-exported libmp3lame.so lame_decode_init
+  lib-exported libmp3lame.so lame_encode_buffer
+  lib-exported libmp3lame.so lame_encode_buffer_float
+  lib-exported libmp3lame.so lame_encode_buffer_ieee_double
+  lib-exported libmp3lame.so lame_encode_buffer_ieee_float
+  lib-exported libmp3lame.so lame_encode_buffer_int
+  lib-exported libmp3lame.so lame_encode_buffer_interleaved
+  lib-exported libmp3lame.so lame_encode_buffer_interleaved_ieee_double
+  lib-exported libmp3lame.so lame_encode_buffer_interleaved_ieee_float
+  lib-exported libmp3lame.so lame_encode_buffer_interleaved_int
+  lib-exported libmp3lame.so lame_encode_buffer_long
+  lib-exported libmp3lame.so lame_encode_buffer_long2
+  lib-exported libmp3lame.so lame_encode_finish
+  lib-exported libmp3lame.so lame_encode_flush
+  lib-exported libmp3lame.so lame_encode_flush_nogap
+  lib-exported libmp3lame.so lame_get_allow_diff_short
+  lib-exported libmp3lame.so lame_get_analysis
+  lib-exported libmp3lame.so lame_get_athaa_loudapprox
+  lib-exported libmp3lame.so lame_get_athaa_sensitivity
+  lib-exported libmp3lame.so lame_get_athaa_type
+  lib-exported libmp3lame.so lame_get_ATHlower
+  lib-exported libmp3lame.so lame_get_ATHonly
+  lib-exported libmp3lame.so lame_get_ATHshort
+  lib-exported libmp3lame.so lame_get_ATHtype
+  lib-exported libmp3lame.so lame_get_AudiophileGain
+  lib-exported libmp3lame.so lame_get_bitrate
+  lib-exported libmp3lame.so lame_get_brate
+  lib-exported libmp3lame.so lame_get_bWriteVbrTag
+  lib-exported libmp3lame.so lame_get_compression_ratio
+  lib-exported libmp3lame.so lame_get_copyright
+  lib-exported libmp3lame.so lame_get_cwlimit
+  lib-exported libmp3lame.so lame_get_decode_only
+  lib-exported libmp3lame.so lame_get_decode_on_the_fly
+  lib-exported libmp3lame.so lame_get_disable_reservoir
+  lib-exported libmp3lame.so lame_get_emphasis
+  lib-exported libmp3lame.so lame_get_encoder_delay
+  lib-exported libmp3lame.so lame_get_encoder_padding
+  lib-exported libmp3lame.so lame_get_error_protection
+  lib-exported libmp3lame.so lame_get_experimentalX
+  lib-exported libmp3lame.so lame_get_experimentalY
+  lib-exported libmp3lame.so lame_get_experimentalZ
+  lib-exported libmp3lame.so lame_get_exp_nspsytune
+  lib-exported libmp3lame.so lame_get_extension
+  lib-exported libmp3lame.so lame_get_findPeakSample
+  lib-exported libmp3lame.so lame_get_findReplayGain
+  lib-exported libmp3lame.so lame_get_force_ms
+  lib-exported libmp3lame.so lame_get_force_short_blocks
+  lib-exported libmp3lame.so lame_get_frameNum
+  lib-exported libmp3lame.so lame_get_framesize
+  lib-exported libmp3lame.so lame_get_free_format
+  lib-exported libmp3lame.so lame_get_highpassfreq
+  lib-exported libmp3lame.so lame_get_highpasswidth
+  lib-exported libmp3lame.so lame_get_id3v1_tag
+  lib-exported libmp3lame.so lame_get_id3v2_tag
+  lib-exported libmp3lame.so lame_get_in_samplerate
+  lib-exported libmp3lame.so lame_get_interChRatio
+  lib-exported libmp3lame.so lame_get_lametag_frame
+  lib-exported libmp3lame.so lame_get_lowpassfreq
+  lib-exported libmp3lame.so lame_get_lowpasswidth
+  lib-exported libmp3lame.so lame_get_maximum_number_of_samples
+  lib-exported libmp3lame.so lame_get_mf_samples_to_encode
+  lib-exported libmp3lame.so lame_get_mode
+  lib-exported libmp3lame.so lame_get_mode_automs
+  lib-exported libmp3lame.so lame_get_msfix
+  lib-exported libmp3lame.so lame_get_noATH
+  lib-exported libmp3lame.so lame_get_noclipGainChange
+  lib-exported libmp3lame.so lame_get_noclipScale
+  lib-exported libmp3lame.so lame_get_nogap_currentindex
+  lib-exported libmp3lame.so lame_get_nogap_total
+  lib-exported libmp3lame.so lame_get_no_short_blocks
+  lib-exported libmp3lame.so lame_get_num_channels
+  lib-exported libmp3lame.so lame_get_num_samples
+  lib-exported libmp3lame.so lame_get_ogg
+  lib-exported libmp3lame.so lame_get_original
+  lib-exported libmp3lame.so lame_get_out_samplerate
+  lib-exported libmp3lame.so lame_get_padding_type
+  lib-exported libmp3lame.so lame_get_PeakSample
+  lib-exported libmp3lame.so lame_get_quality
+  lib-exported libmp3lame.so lame_get_quant_comp
+  lib-exported libmp3lame.so lame_get_quant_comp_short
+  lib-exported libmp3lame.so lame_get_RadioGain
+  lib-exported libmp3lame.so lame_get_ReplayGain_decode
+  lib-exported libmp3lame.so lame_get_ReplayGain_input
+  lib-exported libmp3lame.so lame_get_samplerate
+  lib-exported libmp3lame.so lame_get_scale
+  lib-exported libmp3lame.so lame_get_scale_left
+  lib-exported libmp3lame.so lame_get_scale_right
+  lib-exported libmp3lame.so lame_get_size_mp3buffer
+  lib-exported libmp3lame.so lame_get_strict_ISO
+  lib-exported libmp3lame.so lame_get_totalframes
+  lib-exported libmp3lame.so lame_get_useTemporal
+  lib-exported libmp3lame.so lame_get_VBR
+  lib-exported libmp3lame.so lame_get_VBR_hard_min
+  lib-exported libmp3lame.so lame_get_VBR_max_bitrate_kbps
+  lib-exported libmp3lame.so lame_get_VBR_mean_bitrate_kbps
+  lib-exported libmp3lame.so lame_get_VBR_min_bitrate_kbps
+  lib-exported libmp3lame.so lame_get_VBR_q
+  lib-exported libmp3lame.so lame_get_VBR_quality
+  lib-exported libmp3lame.so lame_get_version
+  lib-exported libmp3lame.so lame_get_write_id3tag_automatic
+  lib-exported libmp3lame.so lame_init
+  lib-exported libmp3lame.so lame_init_bitstream
+  lib-exported libmp3lame.so lame_init_params
+  lib-exported libmp3lame.so lame_mp3_tags_fid
+  lib-exported libmp3lame.so lame_print_config
+  lib-exported libmp3lame.so lame_print_internals
+  lib-exported libmp3lame.so lame_set_allow_diff_short
+  lib-exported libmp3lame.so lame_set_analysis
+  lib-exported libmp3lame.so lame_set_asm_optimizations
+  lib-exported libmp3lame.so lame_set_athaa_loudapprox
+  lib-exported libmp3lame.so lame_set_athaa_sensitivity
+  lib-exported libmp3lame.so lame_set_athaa_type
+  lib-exported libmp3lame.so lame_set_ATHlower
+  lib-exported libmp3lame.so lame_set_ATHonly
+  lib-exported libmp3lame.so lame_set_ATHshort
+  lib-exported libmp3lame.so lame_set_ATHtype
+  lib-exported libmp3lame.so lame_set_brate
+  lib-exported libmp3lame.so lame_set_bWriteVbrTag
+  lib-exported libmp3lame.so lame_set_compression_ratio
+  lib-exported libmp3lame.so lame_set_copyright
+  lib-exported libmp3lame.so lame_set_cwlimit
+  lib-exported libmp3lame.so lame_set_debugf
+  lib-exported libmp3lame.so lame_set_decode_only
+  lib-exported libmp3lame.so lame_set_decode_on_the_fly
+  lib-exported libmp3lame.so lame_set_disable_reservoir
+  lib-exported libmp3lame.so lame_set_emphasis
+  lib-exported libmp3lame.so lame_set_errorf
+  lib-exported libmp3lame.so lame_set_error_protection
+  lib-exported libmp3lame.so lame_set_experimentalX
+  lib-exported libmp3lame.so lame_set_experimentalY
+  lib-exported libmp3lame.so lame_set_experimentalZ
+  lib-exported libmp3lame.so lame_set_exp_nspsytune
+  lib-exported libmp3lame.so lame_set_extension
+  lib-exported libmp3lame.so lame_set_findPeakSample
+  lib-exported libmp3lame.so lame_set_findReplayGain
+  lib-exported libmp3lame.so lame_set_force_ms
+  lib-exported libmp3lame.so lame_set_force_short_blocks
+  lib-exported libmp3lame.so lame_set_free_format
+  lib-exported libmp3lame.so lame_set_highpassfreq
+  lib-exported libmp3lame.so lame_set_highpasswidth
+  lib-exported libmp3lame.so lame_set_in_samplerate
+  lib-exported libmp3lame.so lame_set_interChRatio
+  lib-exported libmp3lame.so lame_set_lowpassfreq
+  lib-exported libmp3lame.so lame_set_lowpasswidth
+  lib-exported libmp3lame.so lame_set_mode
+  lib-exported libmp3lame.so lame_set_mode_automs
+  lib-exported libmp3lame.so lame_set_msfix
+  lib-exported libmp3lame.so lame_set_msgf
+  lib-exported libmp3lame.so lame_set_noATH
+  lib-exported libmp3lame.so lame_set_nogap_currentindex
+  lib-exported libmp3lame.so lame_set_nogap_total
+  lib-exported libmp3lame.so lame_set_no_short_blocks
+  lib-exported libmp3lame.so lame_set_num_channels
+  lib-exported libmp3lame.so lame_set_num_samples
+  lib-exported libmp3lame.so lame_set_ogg
+  lib-exported libmp3lame.so lame_set_original
+  lib-exported libmp3lame.so lame_set_out_samplerate
+  lib-exported libmp3lame.so lame_set_padding_type
+  lib-exported libmp3lame.so lame_set_preset
+  lib-exported libmp3lame.so lame_set_preset_expopts
+  lib-exported libmp3lame.so lame_set_quality
+  lib-exported libmp3lame.so lame_set_quant_comp
+  lib-exported libmp3lame.so lame_set_quant_comp_short
+  lib-exported libmp3lame.so lame_set_ReplayGain_decode
+  lib-exported libmp3lame.so lame_set_ReplayGain_input
+  lib-exported libmp3lame.so lame_set_scale
+  lib-exported libmp3lame.so lame_set_scale_left
+  lib-exported libmp3lame.so lame_set_scale_right
+  lib-exported libmp3lame.so lame_set_strict_ISO
+  lib-exported libmp3lame.so lame_set_useTemporal
+  lib-exported libmp3lame.so lame_set_VBR
+  lib-exported libmp3lame.so lame_set_VBR_hard_min
+  lib-exported libmp3lame.so lame_set_VBR_max_bitrate_kbps
+  lib-exported libmp3lame.so lame_set_VBR_mean_bitrate_kbps
+  lib-exported libmp3lame.so lame_set_VBR_min_bitrate_kbps
+  lib-exported libmp3lame.so lame_set_VBR_q
+  lib-exported libmp3lame.so lame_set_VBR_quality
+  lib-exported libmp3lame.so lame_set_write_id3tag_automatic
+  lib-exported libmp3lame.so lame_stereo_mode_hist
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with lame"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
