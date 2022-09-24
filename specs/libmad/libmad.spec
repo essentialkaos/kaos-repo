@@ -4,22 +4,28 @@
 
 ################################################################################
 
+%define realname mad
+
+################################################################################
+
 Summary:         MPEG audio decoding library
-Name:            libmad
+Name:            lib%{realname}
 Version:         0.15.1b
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         GPL
 Group:           System Environment/Libraries
 URL:             https://www.underbit.com/products/mad/
 
-Source0:         ftp://ftp.mars.org/pub/mpeg/%{name}-%{version}.tar.gz
+Source0:         https://downloads.sourceforge.net/project/%{realname}/%{name}/%{version}/%{name}-%{version}.tar.gz
+Source1:         %{realname}.pc
+
 Source100:       checksum.sha512
 
 Patch0:          %{name}-gcc44-compatibily.patch
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc-c++
+BuildRequires:   make autoconf automake gcc-c++
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -39,6 +45,7 @@ backward compatible with such streams) nor does it currently support AAC.
 %package devel
 Summary:        Header and library for developing programs that will use libmad
 Group:          Development/Libraries
+
 Requires:       %{name} = %{version} pkgconfig
 
 %description devel
@@ -71,6 +78,9 @@ rm -rf %{buildroot}
 
 %{make_install}
 
+install -dm 755 %{buildroot}%{_libdir}/pkgconfig
+install -pm 644 %{SOURCE1} %{buildroot}%{_libdir}/pkgconfig/%{realname}.pc
+
 %post
 /sbin/ldconfig
 
@@ -84,18 +94,23 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-, root, root, -)
-%doc CHANGES COPYING COPYRIGHT CREDITS README TODO
-%{_libdir}/*.so.*
+%doc CHANGES COPYING COPYRIGHT CREDITS README
+%{_libdir}/%{name}.so.*
 
 %files devel
 %defattr(-, root, root, -)
-%exclude %{_libdir}/*.la
-%{_libdir}/*.a
-%{_libdir}/*.so
-%{_includedir}/*
+%exclude %{_libdir}/%{name}.la
+%{_libdir}/%{name}.a
+%{_libdir}/%{name}.so
+%{_includedir}/%{realname}.h
+%{_libdir}/pkgconfig/%{realname}.pc
 
 ################################################################################
 
 %changelog
+* Sat Sep 24 2022 Anton Novojilov <andy@essentialkaos.com> - 0.15.1b-1
+- Added package config file
+- Minor package improvements
+
 * Tue Mar 24 2015 Anton Novojilov <andy@essentialkaos.com> - 0.15.1b-0
 - Initial build

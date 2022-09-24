@@ -4,24 +4,24 @@
 
 ################################################################################
 
-Summary:              GeoTIFF format library
-Name:                 libgeotiff
-Version:              1.5.1
-Release:              0%{?dist}
-License:              MIT
-Group:                System Environment/Libraries
-URL:                  https://trac.osgeo.org/geotiff/
+Summary:           GeoTIFF format library
+Name:              libgeotiff
+Version:           1.7.1
+Release:           0%{?dist}
+License:           MIT
+Group:             System Environment/Libraries
+URL:               https://trac.osgeo.org/geotiff/
 
-Source0:              https://download.osgeo.org/geotiff/%{name}/%{name}-%{version}.tar.gz
+Source0:           https://download.osgeo.org/geotiff/%{name}/%{name}-%{version}.tar.gz
 
-Source100:            checksum.sha512
+Source100:         checksum.sha512
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc gcc-c++ doxygen chrpath
-BuildRequires:        libtiff-devel libjpeg-devel zlib-devel proj-devel >= 6
+BuildRequires:     make gcc gcc-c++ doxygen chrpath
+BuildRequires:     libtiff-devel libjpeg-devel zlib-devel proj-devel >= 6
 
-Provides:             %{name} = %{version}-%{release}
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -34,11 +34,11 @@ raster imagery.
 ################################################################################
 
 %package devel
-Summary:            Development library and header for the GeoTIFF file format library
-Group:              Development/Libraries
+Summary:           Development library and header for the GeoTIFF file format library
+Group:             Development/Libraries
 
-Requires:           pkgconfig libtiff-devel
-Requires:           %{name} = %{version}-%{release}
+Requires:          pkgconfig libtiff-devel proj-devel
+Requires:          %{name} = %{version}-%{release}
 
 %description devel
 The GeoTIFF library provides support for development of geotiff image format.
@@ -51,10 +51,10 @@ The GeoTIFF library provides support for development of geotiff image format.
 %setup -qn %{name}-%{version}
 
 %build
-# disable -g flag removal
-sed -i 's| \| sed \"s\/-g \/\/\"||g' configure
 
-# use gcc -shared instead of ld -shared to build with -fstack-protector
+# Disable -g flag removal
+sed -i 's| \| sed \"s\/-g \/\/\"||g' configure
+# Use gcc -shared instead of ld -shared to build with -fstack-protector
 sed -i 's|LD_SHARED=@LD_SHARED@|LD_SHARED=@CC@ -shared|' Makefile.in
 
 %configure \
@@ -72,10 +72,10 @@ rm -rf %{buildroot}
 
 %{make_install} INSTALL="install -p"
 
-# install manualy some file
+# Install manualy some file
 install -p -m 755 bin/makegeo %{buildroot}%{_bindir}
 
-# install pkgconfig file
+# Create pkgconfig file
 cat > %{name}.pc <<EOF
 prefix=%{_prefix}
 exec_prefix=%{_prefix}
@@ -92,7 +92,7 @@ EOF
 install -dm 755 %{buildroot}%{_libdir}/pkgconfig/
 install -pm 644 %{name}.pc %{buildroot}%{_libdir}/pkgconfig/
 
-#clean up junks
+# Clean up junks
 rm -rf %{buildroot}%{_libdir}/*.a
 rm -rf %{buildroot}%{_libdir}/*.la
 
@@ -104,14 +104,14 @@ pushd docs
   doxygen .
 popd
 
-%clean
-rm -rf %{buildroot}
-
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -137,6 +137,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Sep 24 2022 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
+- https://github.com/OSGeo/libgeotiff/releases/tag/1.7.1
+
 * Thu Dec 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - Updated to the latest stable release
 
@@ -147,4 +150,4 @@ rm -rf %{buildroot}
 - Updated to the latest stable release
 
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Initial build for EK repository
+- Initial build for kaos repository

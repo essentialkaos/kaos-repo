@@ -34,15 +34,19 @@
 
 ################################################################################
 
+%define realname   fdk-aac
+
+################################################################################
+
 Summary:           Fraunhofer FDK AAC codec library
-Name:              libfdk-aac
-Version:           2.0.1
+Name:              lib%{realname}
+Version:           2.0.2
 Release:           0%{?dist}
 License:           Copyright Fraunhofer-Gesellschaft zur Förderung der angewandten Forschung e.V.
 Group:             System Environment/Libraries
 URL:               https://github.com/mstorsjo/fdk-aac
 
-Source0:           https://github.com/mstorsjo/fdk-aac/archive/v%{version}.tar.gz
+Source0:           https://github.com/mstorsjo/%{realname}/archive/v%{version}.tar.gz
 
 Source100:         checksum.sha512
 
@@ -62,10 +66,22 @@ Modified library of Fraunhofer AAC decoder and encoder.
 
 ################################################################################
 
+%package devel
+Summary:             Header files and libraries for FDK AAC codec library
+Group:               Development/Libraries
+
+Requires:            %{name} = %{version}
+
+%description devel
+The %{name}-devel package contains the header files and
+libraries to develop applications using Fraunhofer FDK AAC codec.
+
+################################################################################
+
 %prep
 %{crc_check}
 
-%setup -qn fdk-aac-%{version}
+%setup -qn %{realname}-%{version}
 
 %build
 autoreconf -fiv
@@ -95,13 +111,26 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc NOTICE
-%{_includedir}/*
-%{_libdir}/*
+%doc NOTICE OWNERS
+%{_libdir}/%{name}.so.*
+
+%files devel
+%defattr(-,root,root,-)
+%exclude %{_libdir}/%{name}.la
+%{_includedir}/%{realname}/*
+%{_libdir}/%{name}.so
+%{_libdir}/%{name}.a
+%{_libdir}/pkgconfig/%{realname}.pc
 
 ################################################################################
 
 %changelog
+* Sat Sep 24 2022 Anton Novojilov <andy@essentialkaos.com> - 2.0.2-0
+- Minor upstream updates
+- Lots of upstream and local fuzzing fixes
+- Added CMake project files
+- Removed the MSVC specific makefile
+
 * Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.1-0
 - Minor release with a number of crash/fuzz fixes, primarily for the decoder
 
