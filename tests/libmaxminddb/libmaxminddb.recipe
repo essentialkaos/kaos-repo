@@ -1,0 +1,48 @@
+# Bibop recipe for libmaxminddb
+# See more: https://kaos.sh/bibop
+
+pkg libmaxminddb libmaxminddb-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lmaxminddb"
+
+command "-" "Check environment"
+  app mmdblookup
+
+command "-" "Check shared libs"
+  lib-loaded libmaxminddb.so.*
+
+command "-" "Check static libs"
+  exist /usr/lib64/libmaxminddb.a
+  mode /usr/lib64/libmaxminddb.a 644
+
+command "-" "Check headers"
+  lib-header maxminddb.h
+  lib-header maxminddb_config.h
+
+command "-" "Check pkg-config"
+  lib-config libmaxminddb
+
+command "-" "Check symbols exported by libmaxminddb.so"
+  lib-exported libmaxminddb.so MMDB_aget_value
+  lib-exported libmaxminddb.so MMDB_close
+  lib-exported libmaxminddb.so MMDB_dump_entry_data_list
+  lib-exported libmaxminddb.so MMDB_free_entry_data_list
+  lib-exported libmaxminddb.so MMDB_get_entry_data_list
+  lib-exported libmaxminddb.so MMDB_get_metadata_as_entry_data_list
+  lib-exported libmaxminddb.so MMDB_get_value
+  lib-exported libmaxminddb.so MMDB_lib_version
+  lib-exported libmaxminddb.so MMDB_lookup_sockaddr
+  lib-exported libmaxminddb.so MMDB_lookup_string
+  lib-exported libmaxminddb.so MMDB_open
+  lib-exported libmaxminddb.so MMDB_read_node
+  lib-exported libmaxminddb.so MMDB_strerror
+  lib-exported libmaxminddb.so MMDB_vget_value
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

@@ -1,0 +1,48 @@
+# Bibop recipe for libpsl
+# See more: https://kaos.sh/bibop
+
+pkg libpsl libpsl-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lpsl"
+
+command "-" "Check shared libs"
+  lib-loaded libpsl.so.*
+
+command "-" "Check headers"
+  lib-header libpsl.h
+
+command "-" "Check pkg-config"
+  lib-config libpsl
+
+command "-" "Check symbols exported by libpsl.so"
+  lib-exported libpsl.so psl_builtin
+  lib-exported libpsl.so psl_builtin_filename
+  lib-exported libpsl.so psl_builtin_file_time
+  lib-exported libpsl.so psl_builtin_outdated
+  lib-exported libpsl.so psl_builtin_sha1sum
+  lib-exported libpsl.so psl_check_version_number
+  lib-exported libpsl.so psl_dist_filename
+  lib-exported libpsl.so psl_free
+  lib-exported libpsl.so psl_free_string
+  lib-exported libpsl.so psl_get_version
+  lib-exported libpsl.so psl_is_cookie_domain_acceptable
+  lib-exported libpsl.so psl_is_public_suffix
+  lib-exported libpsl.so psl_is_public_suffix2
+  lib-exported libpsl.so psl_latest
+  lib-exported libpsl.so psl_load_file
+  lib-exported libpsl.so psl_load_fp
+  lib-exported libpsl.so psl_registrable_domain
+  lib-exported libpsl.so psl_str_to_utf8lower
+  lib-exported libpsl.so psl_suffix_count
+  lib-exported libpsl.so psl_suffix_exception_count
+  lib-exported libpsl.so psl_suffix_wildcard_count
+  lib-exported libpsl.so psl_unregistrable_domain
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

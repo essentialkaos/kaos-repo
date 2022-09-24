@@ -1,0 +1,44 @@
+# Bibop recipe for libfdk-aac
+# See more: https://kaos.sh/bibop
+
+pkg libfdk-aac libfdk-aac-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lfdk-aac"
+
+command "-" "Check shared libs"
+  lib-loaded libfdk-aac.so.*
+
+command "-" "Check headers"
+  lib-header fdk-aac
+
+command "-" "Check pkg-config"
+  lib-config fdk-aac
+
+command "-" "Check symbols exported by libfdk-aac.so"
+  lib-exported libfdk-aac.so aacDecoder_AncDataGet
+  lib-exported libfdk-aac.so aacDecoder_AncDataInit
+  lib-exported libfdk-aac.so aacDecoder_Close
+  lib-exported libfdk-aac.so aacDecoder_ConfigRaw
+  lib-exported libfdk-aac.so aacDecoder_DecodeFrame
+  lib-exported libfdk-aac.so aacDecoder_Fill
+  lib-exported libfdk-aac.so aacDecoder_GetFreeBytes
+  lib-exported libfdk-aac.so aacDecoder_GetLibInfo
+  lib-exported libfdk-aac.so aacDecoder_GetStreamInfo
+  lib-exported libfdk-aac.so aacDecoder_Open
+  lib-exported libfdk-aac.so aacDecoder_SetParam
+  lib-exported libfdk-aac.so aacEncClose
+  lib-exported libfdk-aac.so aacEncEncode
+  lib-exported libfdk-aac.so aacEncGetLibInfo
+  lib-exported libfdk-aac.so aacEncInfo
+  lib-exported libfdk-aac.so aacEncoder_GetParam
+  lib-exported libfdk-aac.so aacEncoder_SetParam
+  lib-exported libfdk-aac.so aacEncOpen
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

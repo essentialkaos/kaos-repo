@@ -1,0 +1,235 @@
+# Bibop recipe for libmemcached
+# See more: https://kaos.sh/bibop
+
+pkg libmemcached libmemcached-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lmemcached -lmemcachedutil"
+
+command "-" "Check shared libs"
+  lib-loaded libhashkit.so.2
+  lib-loaded libmemcached.so.11
+  lib-loaded libmemcachedprotocol.so.0
+  lib-loaded libmemcachedutil.so.2
+
+command "-" "Check headers"
+  lib-header libmemcached-1.0
+  lib-header libhashkit-1.0
+  lib-header libmemcachedprotocol-0.0
+  lib-header libmemcachedutil-1.0
+
+command "-" "Check pkg-config"
+  lib-config libmemcached
+
+command "-" "Check symbols exported by libhashkit.so"
+  lib-exported libhashkit.so hashkit_clone
+  lib-exported libhashkit.so hashkit_compare
+  lib-exported libhashkit.so hashkit_create
+  lib-exported libhashkit.so hashkit_decrypt
+  lib-exported libhashkit.so hashkit_digest
+  lib-exported libhashkit.so hashkit_encrypt
+  lib-exported libhashkit.so hashkit_free
+  lib-exported libhashkit.so hashkit_get_distribution_function
+  lib-exported libhashkit.so hashkit_get_function
+  lib-exported libhashkit.so hashkit_key
+  lib-exported libhashkit.so hashkit_set_custom_distribution_function
+  lib-exported libhashkit.so hashkit_set_custom_function
+  lib-exported libhashkit.so hashkit_set_distribution_function
+  lib-exported libhashkit.so hashkit_set_function
+  lib-exported libhashkit.so hashkit_strerror
+  lib-exported libhashkit.so hashkit_string_c_str
+  lib-exported libhashkit.so hashkit_string_free
+  lib-exported libhashkit.so hashkit_string_length
+  lib-exported libhashkit.so libhashkit_crc32
+  lib-exported libhashkit.so libhashkit_digest
+  lib-exported libhashkit.so libhashkit_fnv1_32
+  lib-exported libhashkit.so libhashkit_fnv1_64
+  lib-exported libhashkit.so libhashkit_fnv1a_32
+  lib-exported libhashkit.so libhashkit_fnv1a_64
+  lib-exported libhashkit.so libhashkit_has_algorithm
+  lib-exported libhashkit.so libhashkit_hsieh
+  lib-exported libhashkit.so libhashkit_jenkins
+  lib-exported libhashkit.so libhashkit_md5
+  lib-exported libhashkit.so libhashkit_md5_signature
+  lib-exported libhashkit.so libhashkit_murmur
+  lib-exported libhashkit.so libhashkit_murmur3
+  lib-exported libhashkit.so libhashkit_one_at_a_time
+  lib-exported libhashkit.so libhashkit_string_hash
+
+command "-" "Check symbols exported by libmemcachedprotocol.so"
+  lib-exported libmemcachedprotocol.so memcached_binary_protocol_get_callbacks
+  lib-exported libmemcachedprotocol.so memcached_binary_protocol_get_pedantic
+  lib-exported libmemcachedprotocol.so memcached_binary_protocol_get_raw_response_handler
+  lib-exported libmemcachedprotocol.so memcached_binary_protocol_set_callbacks
+  lib-exported libmemcachedprotocol.so memcached_binary_protocol_set_pedantic
+  lib-exported libmemcachedprotocol.so memcached_protocol_client_destroy
+  lib-exported libmemcachedprotocol.so memcached_protocol_client_set_verbose
+  lib-exported libmemcachedprotocol.so memcached_protocol_client_work
+  lib-exported libmemcachedprotocol.so memcached_protocol_create_client
+  lib-exported libmemcachedprotocol.so memcached_protocol_create_instance
+  lib-exported libmemcachedprotocol.so memcached_protocol_destroy_instance
+
+command "-" "Check symbols exported by libmemcachedutil.so"
+  lib-exported libmemcachedutil.so libmemcached_util_flush
+  lib-exported libmemcachedutil.so libmemcached_util_getpid
+  lib-exported libmemcachedutil.so libmemcached_util_getpid2
+  lib-exported libmemcachedutil.so libmemcached_util_ping
+  lib-exported libmemcachedutil.so libmemcached_util_ping2
+  lib-exported libmemcachedutil.so libmemcached_util_version_check
+  lib-exported libmemcachedutil.so memcached_pool
+  lib-exported libmemcachedutil.so memcached_pool_behavior_get
+  lib-exported libmemcachedutil.so memcached_pool_behavior_set
+  lib-exported libmemcachedutil.so memcached_pool_create
+  lib-exported libmemcachedutil.so memcached_pool_destroy
+  lib-exported libmemcachedutil.so memcached_pool_fetch
+  lib-exported libmemcachedutil.so memcached_pool_pop
+  lib-exported libmemcachedutil.so memcached_pool_push
+  lib-exported libmemcachedutil.so memcached_pool_release
+
+command "-" "Check symbols exported by libmemcached.so"
+  lib-exported libmemcached.so libmemcached_check_configuration
+  lib-exported libmemcached.so libmemcached_string_behavior
+  lib-exported libmemcached.so libmemcached_string_distribution
+  lib-exported libmemcached.so libmemcached_string_hash
+  lib-exported libmemcached.so memcached
+  lib-exported libmemcached.so memcached_add
+  lib-exported libmemcached.so memcached_add_by_key
+  lib-exported libmemcached.so memcached_analyze
+  lib-exported libmemcached.so memcached_analyze_free
+  lib-exported libmemcached.so memcached_append
+  lib-exported libmemcached.so memcached_append_by_key
+  lib-exported libmemcached.so memcached_autoeject
+  lib-exported libmemcached.so memcached_behavior_get
+  lib-exported libmemcached.so memcached_behavior_get_distribution
+  lib-exported libmemcached.so memcached_behavior_get_distribution_hash
+  lib-exported libmemcached.so memcached_behavior_get_key_hash
+  lib-exported libmemcached.so memcached_behavior_set
+  lib-exported libmemcached.so memcached_behavior_set_distribution
+  lib-exported libmemcached.so memcached_behavior_set_distribution_hash
+  lib-exported libmemcached.so memcached_behavior_set_key_hash
+  lib-exported libmemcached.so memcached_bucket_set
+  lib-exported libmemcached.so memcached_callback_get
+  lib-exported libmemcached.so memcached_callback_set
+  lib-exported libmemcached.so memcached_cas
+  lib-exported libmemcached.so memcached_cas_by_key
+  lib-exported libmemcached.so memcached_clone
+  lib-exported libmemcached.so memcached_create
+  lib-exported libmemcached.so memcached_decrement
+  lib-exported libmemcached.so memcached_decrement_by_key
+  lib-exported libmemcached.so memcached_decrement_with_initial
+  lib-exported libmemcached.so memcached_decrement_with_initial_by_key
+  lib-exported libmemcached.so memcached_delete
+  lib-exported libmemcached.so memcached_delete_by_key
+  lib-exported libmemcached.so memcached_destroy_sasl_auth_data
+  lib-exported libmemcached.so memcached_dump
+  lib-exported libmemcached.so memcached_error
+  lib-exported libmemcached.so memcached_error_print
+  lib-exported libmemcached.so memcached_exist
+  lib-exported libmemcached.so memcached_exist_by_key
+  lib-exported libmemcached.so memcached_fetch
+  lib-exported libmemcached.so memcached_fetch_execute
+  lib-exported libmemcached.so memcached_fetch_result
+  lib-exported libmemcached.so memcached_flush
+  lib-exported libmemcached.so memcached_flush_buffers
+  lib-exported libmemcached.so memcached_free
+  lib-exported libmemcached.so memcached_generate_hash
+  lib-exported libmemcached.so memcached_generate_hash_value
+  lib-exported libmemcached.so memcached_get
+  lib-exported libmemcached.so memcached_get_by_key
+  lib-exported libmemcached.so memcached_get_hashkit
+  lib-exported libmemcached.so memcached_get_memory_allocators
+  lib-exported libmemcached.so memcached_get_memory_allocators_context
+  lib-exported libmemcached.so memcached_get_sasl_callbacks
+  lib-exported libmemcached.so memcached_get_user_data
+  lib-exported libmemcached.so memcached_increment
+  lib-exported libmemcached.so memcached_increment_by_key
+  lib-exported libmemcached.so memcached_increment_with_initial
+  lib-exported libmemcached.so memcached_increment_with_initial_by_key
+  lib-exported libmemcached.so memcached_instance_next_retry
+  lib-exported libmemcached.so memcached_last_error
+  lib-exported libmemcached.so memcached_last_error_errno
+  lib-exported libmemcached.so memcached_last_error_message
+  lib-exported libmemcached.so memcached_lib_version
+  lib-exported libmemcached.so memcached_mget
+  lib-exported libmemcached.so memcached_mget_by_key
+  lib-exported libmemcached.so memcached_mget_execute
+  lib-exported libmemcached.so memcached_mget_execute_by_key
+  lib-exported libmemcached.so memcached_prepend
+  lib-exported libmemcached.so memcached_prepend_by_key
+  lib-exported libmemcached.so memcached_push
+  lib-exported libmemcached.so memcached_query_id
+  lib-exported libmemcached.so memcached_quit
+  lib-exported libmemcached.so memcached_replace
+  lib-exported libmemcached.so memcached_replace_by_key
+  lib-exported libmemcached.so memcached_reset
+  lib-exported libmemcached.so memcached_reset_last_disconnected_server
+  lib-exported libmemcached.so memcached_result_cas
+  lib-exported libmemcached.so memcached_result_create
+  lib-exported libmemcached.so memcached_result_flags
+  lib-exported libmemcached.so memcached_result_free
+  lib-exported libmemcached.so memcached_result_key_length
+  lib-exported libmemcached.so memcached_result_key_value
+  lib-exported libmemcached.so memcached_result_length
+  lib-exported libmemcached.so memcached_result_reset
+  lib-exported libmemcached.so memcached_result_set_expiration
+  lib-exported libmemcached.so memcached_result_set_flags
+  lib-exported libmemcached.so memcached_result_set_value
+  lib-exported libmemcached.so memcached_result_take_value
+  lib-exported libmemcached.so memcached_result_value
+  lib-exported libmemcached.so memcached_server_add
+  lib-exported libmemcached.so memcached_server_add_udp
+  lib-exported libmemcached.so memcached_server_add_udp_with_weight
+  lib-exported libmemcached.so memcached_server_add_unix_socket
+  lib-exported libmemcached.so memcached_server_add_unix_socket_with_weight
+  lib-exported libmemcached.so memcached_server_add_with_weight
+  lib-exported libmemcached.so memcached_server_by_key
+  lib-exported libmemcached.so memcached_server_count
+  lib-exported libmemcached.so memcached_server_cursor
+  lib-exported libmemcached.so memcached_server_error
+  lib-exported libmemcached.so memcached_server_error_reset
+  lib-exported libmemcached.so memcached_server_error_return
+  lib-exported libmemcached.so memcached_server_free
+  lib-exported libmemcached.so memcached_server_get_last_disconnect
+  lib-exported libmemcached.so memcached_server_instance_by_position
+  lib-exported libmemcached.so memcached_server_list_append
+  lib-exported libmemcached.so memcached_server_list_append_with_weight
+  lib-exported libmemcached.so memcached_server_list_count
+  lib-exported libmemcached.so memcached_server_list_free
+  lib-exported libmemcached.so memcached_server_major_version
+  lib-exported libmemcached.so memcached_server_micro_version
+  lib-exported libmemcached.so memcached_server_minor_version
+  lib-exported libmemcached.so memcached_server_name
+  lib-exported libmemcached.so memcached_server_port
+  lib-exported libmemcached.so memcached_server_push
+  lib-exported libmemcached.so memcached_server_response_count
+  lib-exported libmemcached.so memcached_servers_parse
+  lib-exported libmemcached.so memcached_server_srcport
+  lib-exported libmemcached.so memcached_servers_reset
+  lib-exported libmemcached.so memcached_server_type
+  lib-exported libmemcached.so memcached_set
+  lib-exported libmemcached.so memcached_set_by_key
+  lib-exported libmemcached.so memcached_set_encoding_key
+  lib-exported libmemcached.so memcached_set_hashkit
+  lib-exported libmemcached.so memcached_set_memory_allocators
+  lib-exported libmemcached.so memcached_set_sasl_auth_data
+  lib-exported libmemcached.so memcached_set_sasl_callbacks
+  lib-exported libmemcached.so memcached_set_user_data
+  lib-exported libmemcached.so memcached_stat
+  lib-exported libmemcached.so memcached_stat_execute
+  lib-exported libmemcached.so memcached_stat_free
+  lib-exported libmemcached.so memcached_stat_get_keys
+  lib-exported libmemcached.so memcached_stat_get_value
+  lib-exported libmemcached.so memcached_stat_servername
+  lib-exported libmemcached.so memcached_strerror
+  lib-exported libmemcached.so memcached_touch
+  lib-exported libmemcached.so memcached_touch_by_key
+  lib-exported libmemcached.so memcached_verbosity
+  lib-exported libmemcached.so memcached_version
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

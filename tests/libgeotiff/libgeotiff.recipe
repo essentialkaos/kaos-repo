@@ -1,0 +1,118 @@
+# Bibop recipe for GeoTIFF format library
+# See more: https://kaos.sh/bibop
+
+pkg libgeotiff libgeotiff-devel
+
+fast-finish yes
+
+var lib_name libgeotiff
+var lib_linking_flags "-lgeotiff"
+
+command "-" "Check environment"
+  app applygeo
+  app geotifcp
+  app listgeo
+  app makegeo
+
+command "-" "Check shared libs"
+  lib-loaded {lib_name}.so.*
+
+command "-" "Check headers"
+  lib-header {lib_name}
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}
+
+command "-" "Check symbols exported by libgeotiff.so"
+  lib-exported libgeotiff.so atof
+  lib-exported libgeotiff.so gt_CPLAssert
+  lib-exported libgeotiff.so gtCPLCalloc
+  lib-exported libgeotiff.so gtCPLError
+  lib-exported libgeotiff.so gtCPLErrorReset
+  lib-exported libgeotiff.so gtCPLGetLastErrorMsg
+  lib-exported libgeotiff.so gtCPLGetLastErrorNo
+  lib-exported libgeotiff.so gtCPLMalloc
+  lib-exported libgeotiff.so gtCPLReadLine
+  lib-exported libgeotiff.so gtCPLRealloc
+  lib-exported libgeotiff.so gtCPLSetErrorHandler
+  lib-exported libgeotiff.so gtCPLStrdup
+  lib-exported libgeotiff.so gtCSLAddString
+  lib-exported libgeotiff.so gtCSLCount
+  lib-exported libgeotiff.so gtCSLDestroy
+  lib-exported libgeotiff.so gtCSLDuplicate
+  lib-exported libgeotiff.so gtCSLGetField
+  lib-exported libgeotiff.so gtCSLTokenizeString
+  lib-exported libgeotiff.so gtCSLTokenizeStringComplex
+  lib-exported libgeotiff.so GTIFAllocDefn
+  lib-exported libgeotiff.so GTIFAngleStringToDD
+  lib-exported libgeotiff.so GTIFAngleToDD
+  lib-exported libgeotiff.so GTIFAttachPROJContext
+  lib-exported libgeotiff.so GTIFDeaccessCSV
+  lib-exported libgeotiff.so GTIFDecToDMS
+  lib-exported libgeotiff.so GTIFDirectoryInfo
+  lib-exported libgeotiff.so GTIFFree
+  lib-exported libgeotiff.so GTIFFreeDefn
+  lib-exported libgeotiff.so GTIFFreeMemory
+  lib-exported libgeotiff.so GTIFGetDatumInfo
+  lib-exported libgeotiff.so GTIFGetDefn
+  lib-exported libgeotiff.so GTIFGetEllipsoidInfo
+  lib-exported libgeotiff.so GTIFGetGCSInfo
+  lib-exported libgeotiff.so GTIFGetPCSInfo
+  lib-exported libgeotiff.so GTIFGetPMInfo
+  lib-exported libgeotiff.so GTIFGetProj4Defn
+  lib-exported libgeotiff.so GTIFGetPROJContext
+  lib-exported libgeotiff.so GTIFGetProjTRFInfo
+  lib-exported libgeotiff.so GTIFGetUOMAngleInfo
+  lib-exported libgeotiff.so GTIFGetUOMLengthInfo
+  lib-exported libgeotiff.so GTIFGetUserData
+  lib-exported libgeotiff.so GTIFImageToPCS
+  lib-exported libgeotiff.so GTIFImport
+  lib-exported libgeotiff.so GTIFKeyCode
+  lib-exported libgeotiff.so GTIFKeyGet
+  lib-exported libgeotiff.so GTIFKeyInfo
+  lib-exported libgeotiff.so GTIFKeyName
+  lib-exported libgeotiff.so GTIFKeySet
+  lib-exported libgeotiff.so GTIFMapSysToPCS
+  lib-exported libgeotiff.so GTIFMapSysToProj
+  lib-exported libgeotiff.so GTIFNew
+  lib-exported libgeotiff.so GTIFNewEx
+  lib-exported libgeotiff.so GTIFNewSimpleTags
+  lib-exported libgeotiff.so GTIFNewWithMethods
+  lib-exported libgeotiff.so GTIFNewWithMethodsEx
+  lib-exported libgeotiff.so GTIFPCSToImage
+  lib-exported libgeotiff.so GTIFPCSToMapSys
+  lib-exported libgeotiff.so GTIFPrint
+  lib-exported libgeotiff.so GTIFPrintDefn
+  lib-exported libgeotiff.so GTIFPrintDefnEx
+  lib-exported libgeotiff.so GTIFProj4FromLatLong
+  lib-exported libgeotiff.so GTIFProj4ToLatLong
+  lib-exported libgeotiff.so GTIFProjToMapSys
+  lib-exported libgeotiff.so GTIFSetFromProj4
+  lib-exported libgeotiff.so GTIFSetSimpleTagsMethods
+  lib-exported libgeotiff.so GTIFStrtod
+  lib-exported libgeotiff.so GTIFTagCode
+  lib-exported libgeotiff.so GTIFTagName
+  lib-exported libgeotiff.so GTIFTypeCode
+  lib-exported libgeotiff.so GTIFTypeName
+  lib-exported libgeotiff.so GTIFValueCode
+  lib-exported libgeotiff.so GTIFValueName
+  lib-exported libgeotiff.so GTIFValueNameEx
+  lib-exported libgeotiff.so GTIFWriteKeys
+  lib-exported libgeotiff.so gtSetCSVFilenameHook
+  lib-exported libgeotiff.so ST_Create
+  lib-exported libgeotiff.so ST_Destroy
+  lib-exported libgeotiff.so ST_GetKey
+  lib-exported libgeotiff.so ST_SetKey
+  lib-exported libgeotiff.so ST_TagType
+  lib-exported libgeotiff.so XTIFFClientOpen
+  lib-exported libgeotiff.so XTIFFClose
+  lib-exported libgeotiff.so XTIFFFdOpen
+  lib-exported libgeotiff.so XTIFFInitialize
+  lib-exported libgeotiff.so XTIFFOpen
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
