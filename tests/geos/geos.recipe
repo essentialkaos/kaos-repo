@@ -1,0 +1,31 @@
+# Bibop recipe for GEOS
+# See more: https://kaos.sh/bibop
+
+pkg gcc gcc-c++ geos geos-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lgeos_c"
+
+command "-" "Check environment"
+  app geos-config
+  app geosop
+
+command "-" "Check shared libs"
+  lib-loaded libgeos.so.*
+  lib-loaded libgeos_c.so.*
+
+command "-" "Check headers"
+  lib-header geos
+  lib-header geos.h
+  lib-header geos_c.h
+
+command "-" "Check pkg-config"
+  lib-config geos
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with geos_c"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

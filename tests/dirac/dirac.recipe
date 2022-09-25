@@ -61,7 +61,7 @@ command "-" "Check symbols exported by libdirac_decoder.so"
   lib-exported libdirac_decoder.so dirac_parse
   lib-exported libdirac_decoder.so dirac_set_buf
 
-command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with dirac"
   exit 0
   exist test_bin
 

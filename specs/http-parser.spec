@@ -1,18 +1,24 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:         HTTP request/response parser for C
 Name:            http-parser
-Version:         2.9.2
+Version:         2.9.4
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
 URL:             https://github.com/nodejs/http-parser
 
 Source:          https://github.com/nodejs/http-parser/archive/v%{version}/%{name}-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -43,6 +49,8 @@ Development headers and libraries for http-parser.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 cat > CMakeLists.txt << EOF
@@ -96,9 +104,6 @@ rm -rf %{buildroot}
 
 %{make_install} -C %{_target_platform}
 
-%clean
-rm -rf %{buildroot}
-
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 %{__make} %{?_smp_mflags} test
@@ -109,6 +114,9 @@ rm -rf %{buildroot}
 
 %postun
 /sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -127,6 +135,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Sep 25 2022 Anton Novojilov <andy@essentialkaos.com> - 2.9.4-0
+- Updated to the latest stable release
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.9.2-0
 - Updated to the latest stable release
 

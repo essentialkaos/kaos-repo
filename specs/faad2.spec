@@ -4,53 +4,22 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _opt              /opt
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-################################################################################
-
 %define pkg_name   faad
+%define ver_major  2
+%define ver_minor  10
+%define ver_patch  0
 
 ################################################################################
 
-Summary:           Library and frontend for decoding MPEG2/4 AAC
+Summary:           Freeware Advanced Audio (AAC) Decoder including SBR decoding
 Name:              faad2
-Version:           2.8.8
+Version:           %{ver_major}.%{ver_minor}.%{ver_patch}
 Release:           0%{?dist}
 License:           GPLv2
 Group:             Applications/Multimedia
-URL:               https://www.audiocoding.com
+URL:               https://github.com/knik0/faad2
 
-Source0:           https://freefr.dl.sourceforge.net/project/faac/%{name}-src/%{name}-2.8.0/%{name}-%{version}.tar.gz
+Source0:           https://github.com/knik0/%{name}/archive/refs/tags/%{ver_major}_%{ver_minor}_%{ver_patch}.tar.gz
 
 Source100:         checksum.sha512
 
@@ -66,8 +35,11 @@ Provides:          %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-FAAD 2 is a LC, MAIN and LTP profile, MPEG2 and MPEG-4 AAC decoder,
-completely written from scratch.
+Freeware Advanced Audio (AAC) Decoder including SBR decoding
+
+FAAD2 is a HE, LC, MAIN and LTP profile, MPEG2 and MPEG-4 AAC decoder.
+FAAD2 includes code for SBR (HE AAC) decoding.
+FAAD2 is licensed under the GPL.
 
 ################################################################################
 
@@ -96,7 +68,7 @@ Header files from faad2 that are needed to build programs that use it.
 %prep
 %{crc_check}
 
-%setup -q
+%setup -qn %{name}-%{ver_major}_%{ver_minor}_%{ver_patch}
 
 %build
 autoreconf -fi
@@ -104,7 +76,7 @@ autoreconf -fi
 %configure \
   --without-xmms \
   --with-mpeg4ip \
-  --with-mp4v2
+  --with-drm
 
 %{__make} %{?_smp_mflags}
 
@@ -113,39 +85,63 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-%clean
-rm -rf %{buildroot}
-
 %post -n lib%{name}
 /sbin/ldconfig
 
 %postun -n lib%{name}
 /sbin/ldconfig
 
+%clean
+rm -rf %{buildroot}
+
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog NEWS README TODO
+%doc AUTHORS COPYING ChangeLog NEWS README
 %{_bindir}/%{pkg_name}
 %{_mandir}/man1/faad.*
 
 %files -n lib%{name}
 %defattr(-,root,root,-)
-%{_libdir}/*.so.*
+%{_libdir}/libfaad.so.*
+%{_libdir}/libfaad_drm.so.*
 
 %files -n lib%{name}-devel
 %defattr(-,root,root,-)
-%{_includedir}/*.h
-%{_libdir}/*.a
-%{_libdir}/*.so
-%{_libdir}/*.la
+%exclude %{_libdir}/*.la
+%{_includedir}/faad.h
+%{_includedir}/neaacdec.h
+%{_libdir}/libfaad.a
+%{_libdir}/libfaad_drm.a
+%{_libdir}/libfaad.so
+%{_libdir}/libfaad_drm.so
+%{_libdir}/pkgconfig/%{name}.pc
 
 ################################################################################
 
 %changelog
+* Sun Sep 25 2022 Anton Novojilov <andy@essentialkaos.com> - 2.10.0-0
+- updated Visual Studio projects to VS 2019
+- mp4read.c: fix stack-buffer-overflow in stringin()/ftypin()
+- fix heap-buffer-overflow in mp4read.c
+- Remove non-ASCII characters
+- Remove trailing whitespace
+- Check return value of ltp_data.
+- Restrict SBR frame length to 960 and 1024 samples.
+- Support object type 29.
+- Support implicit SBR signaling in frontend.
+- Fix PNS decoding when only right channel is noise.
+- Initialize element_id array with an invalid id.
+- Fix NULL pointer dereferences.
+- Fix infinite loop in adts_parse.
+- Fix infinite loop in huffman_getescape.
+- Check for error after each channel decode.
+- Check for inconsistent number of channels.
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 2.8.8-0
-- Updated to the latest stable release
+- MSVC build fixes
+- fixed a coulple bugs
 
 * Mon Sep 05 2011 Axel Thimm <Axel.Thimm@ATrpms.net> - 2.7-0
 - Initial build
