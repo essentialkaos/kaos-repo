@@ -1,54 +1,25 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _opt              /opt
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ldconfig        %{_sbin}/ldconfig
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
 Summary:            Video Acceleration (VA) API for Linux
 Name:               libva
 Version:            1.8.3
-Release:            1%{?dist}
+Release:            2%{?dist}
 Group:              System Environment/Libraries
 License:            MIT
-URL:                https://github.com/01org/libva
+URL:                https://github.com/intel/libva
 
-Source0:            https://github.com/01org/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
+Source0:            https://github.com/intel/%{name}/releases/download/%{version}/%{name}-%{version}.tar.bz2
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      gcc gcc-c++ make libtool libudev-devel
-BuildRequires:      libdrm-devel >= 2.4.23 libpciaccess-devel mesa-libGL-devel
+BuildRequires:      libdrm-devel libpciaccess-devel mesa-libGL-devel
 BuildRequires:      libXext-devel libXfixes-devel
 
 Conflicts:          libdrm < 2.4.23
@@ -75,6 +46,7 @@ Summary:            Libraries and headers for (VA) API
 Group:              Development/Libraries
 
 Requires:           %{name} = %{version}-%{release}
+Requires:           pkgconfig(x11) pkgconfig(gl)
 
 %description devel
 Libva headers and libraries which provides the VA API video acceleration API.
@@ -82,6 +54,8 @@ Libva headers and libraries which provides the VA API video acceleration API.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -97,39 +71,52 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-%clean
-rm -rf %{buildroot}
-
-################################################################################
-
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
 
+%clean
+rm -rf %{buildroot}
+
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc COPYING NEWS
-%{_libdir}/%{name}*.so*
-%{_pkgconfigdir}/%{name}*.pc
+%{_libdir}/libva-drm.so.*
+%{_libdir}/libva-glx.so.*
+%{_libdir}/libva-tpi.so.*
+%{_libdir}/libva-x11.so.*
+%{_libdir}/libva.so.*
 
 %files devel
 %defattr(-,root,root,-)
+%exclude %{_libdir}/*.la
 %{_includedir}/va/*.h
-%{_libdir}/%{name}*.so
-%{_libdir}/%{name}*.la
+%{_libdir}/libva-drm.so
+%{_libdir}/libva-glx.so
+%{_libdir}/libva-tpi.so
+%{_libdir}/libva-x11.so
+%{_libdir}/libva.so
+%{_libdir}/pkgconfig/libva-drm.pc
+%{_libdir}/pkgconfig/libva-glx.pc
+%{_libdir}/pkgconfig/libva-tpi.pc
+%{_libdir}/pkgconfig/libva-x11.pc
+%{_libdir}/pkgconfig/libva.pc
 
 ################################################################################
 
 %changelog
+* Tue Sep 27 2022 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-2
+- Minor spec improvements
+
 * Fri Sep 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-1
-- Minor spec improvement
+- Minor spec improvements
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.8.3-0
-- Updated to latest version
+- Updated to the latest version
 
 * Fri Apr 15 2016 Gleb Goncharov <yum@gongled.ru> - 1.7.0-0
 - Updated to latest version

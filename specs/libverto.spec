@@ -126,7 +126,7 @@ Summary:         Development files for %{name}-libev
 Group:           Development/Libraries
 Requires:        %{name}-libev = %{version}-%{release}
 Requires:        %{name}-devel = %{version}-%{release}
-Requires:        pkgconfig(libev)
+Requires:        libev-devel
 
 %description libev-devel
 The %{name}-libev-devel package contains libraries and header files for

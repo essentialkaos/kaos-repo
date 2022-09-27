@@ -17,7 +17,7 @@
 Summary:           Yum plugin to give priorities to packages from different repos
 Name:              yum-plugin-priorities
 Version:           1.1.31
-Release:           0%{?dist}
+Release:           100%{?dist}
 License:           GPLv2+
 Group:             System Environment/Base
 URL:               https://github.com/rpm-software-management/yum-utils

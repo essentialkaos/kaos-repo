@@ -42,7 +42,7 @@ Summary:            Development files for libmodulemd
 Group:              Development/Libraries
 
 Requires:           pkgconfig >= 1:0.14
-Requires:           pkgconfig(glib2) pkgconfig(rpm) pkgconfig(yaml-0.1)
+Requires:           pkgconfig(glib-2.0) pkgconfig(rpm) pkgconfig(yaml-0.1)
 
 Requires:           %{name} = %{version}-%{release}
 
