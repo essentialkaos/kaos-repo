@@ -6,7 +6,7 @@
 
 Summary:        A library for making, reading and applying deltarpm packages
 Name:           drpm
-Version:        0.4.1
+Version:        0.5.1
 Release:        0%{?dist}
 License:        LGPLv2+ and BSD
 Group:          Development/Tools
@@ -93,5 +93,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 0.5.1-0
+- https://github.com/rpm-software-management/drpm/releases/tag/0.5.1
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
-- Initial build
+- Initial build for kaos-repo
