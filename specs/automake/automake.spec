@@ -4,8 +4,6 @@
 
 ################################################################################
 
-%global _configure_gnuconfig_hack 0
-
 %global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(Automake::
 %global __provides_exclude %{?__provides_exclude:%__provides_exclude|}^perl\\(Automake::
 
@@ -13,7 +11,7 @@
 
 Summary:          A GNU tool for automatically creating Makefiles
 Name:             automake
-Version:          1.16.2
+Version:          1.16.5
 Release:          0%{?dist}
 License:          GPLv2+ and GFDL and Public Domain and MIT
 Group:            Development/Tools
@@ -92,5 +90,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 1.16.5-0
+- PYTHON_PREFIX and PYTHON_EXEC_PREFIX are now set according to
+  Python's sys.* values only if the new configure option
+  --with-python-sys-prefix is specified. Otherwise, GNU default values
+  are used, as in the past. (The change in 1.16.3 was too incompatible.)
+- consistently depend on install-libLTLIBRARIES.
+- use const for yyerror declaration in bison/yacc tests.
+
 * Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 1.16.2-0
 - Initial build for kaos repository
