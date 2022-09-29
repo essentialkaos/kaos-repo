@@ -1,7 +1,11 @@
 ################################################################################
 
 # rpmbuilder:gopack    github.com/muesli/duf
-# rpmbuilder:tag       v0.4.0
+# rpmbuilder:tag       v0.8.1
+
+################################################################################
+
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
@@ -45,7 +49,7 @@
 
 Summary:         Disk usage utility
 Name:            duf
-Version:         0.4.0
+Version:         0.8.1
 Release:         0%{?dist}
 Group:           Development/Tools
 License:         MIT
@@ -53,7 +57,9 @@ URL:             https://github.com/muesli/duf
 
 Source0:         %{name}-%{version}.tar.bz2
 
-BuildRequires:   golang >= 1.12
+Source100:       checksum.sha512
+
+BuildRequires:   golang >= 1.15
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -73,6 +79,8 @@ Disk Usage/Free Utility with a variety of features:
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -80,8 +88,6 @@ export GOPATH=$(pwd)
 
 # Move all sources to src directory
 mkdir -p .src ; mv * .src ; mv .src src
-
-export PATH="$GOPATH/bin:$PATH"
 
 pushd src/github.com/muesli/%{name}
   go build -ldflags="-X 'main.Version=%{version}' -X main.CommitSHA=HEAD"
@@ -91,15 +97,10 @@ popd
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
-
 install -pm 755 src/github.com/muesli/%{name}/%{name} \
                 %{buildroot}%{_bindir}/
 
 %clean
-# Fix permissions for files and directories in modules dir
-find pkg -type d -exec chmod 0755 {} \;
-find pkg -type f -exec chmod 0644 {} \;
-
 rm -rf %{buildroot}
 
 ################################################################################
@@ -111,5 +112,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 0.8.1-0
+- Updated to the latest stable release
+
 * Fri Oct 23 2020 Gleb Goncharov <g.goncharov@fun-box.ru> - 0.4.0-0
-- Initial build
+- Initial build for kaos-repo
