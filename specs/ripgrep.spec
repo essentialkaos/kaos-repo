@@ -54,22 +54,22 @@ install -dm 755 %{buildroot}%{_datadir}/bash-completion/completions
 install -dm 755 %{buildroot}%{_datarootdir}/fish/vendor_completions.d
 
 install -pm 755 target/release/rg %{buildroot}%{_bindir}/
-install -pm 644 $(find target -name "rg.1" | head -1) \
+install -pm 644 $(find target/release -name "rg.1" | head -1) \
                 %{buildroot}%{_mandir}/man1/
 
-install -pm 644 $(find target -name "rg.bash" | head -1) \
+install -pm 644 $(find target/release -name "rg.bash" | head -1) \
                 %{buildroot}%{_datadir}/bash-completion/completions/rg
 
-install -pm 644 $(find target -name "rg.fish" | head -1) \
+install -pm 644 $(find target/release -name "rg.fish" | head -1) \
                 %{buildroot}%{_datarootdir}/fish/vendor_completions.d/rg.fish
-
-%clean
-rm -rf %{buildroot}
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 cargo test
 %endif
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 
