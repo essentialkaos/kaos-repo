@@ -1,6 +1,24 @@
 diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
 --- nano-6.0-orig/doc/sample.nanorc.in	2021-11-29 13:35:25.000000000 +0300
-+++ nano-6.0/doc/sample.nanorc.in	2022-08-19 12:36:51.000000000 +0300
++++ nano-6.0/doc/sample.nanorc.in	2022-10-09 22:55:48.000000000 +0300
+@@ -19,7 +19,7 @@
+ ## Automatically indent a newly created line to the same number of
+ ## tabs and/or spaces as the preceding line -- or as the next line
+ ## if the preceding line is the beginning of a paragraph.
+-# set autoindent
++set autoindent
+ 
+ ## Back up files to the current filename plus a tilde.
+ # set backup
+@@ -28,7 +28,7 @@
+ # set backupdir ""
+ 
+ ## Use bold text instead of reverse video text.
+-# set boldtext
++set boldtext
+ 
+ ## Treat any line with leading whitespace as the beginning of a paragraph.
+ # set bookstyle
 @@ -62,13 +62,13 @@
  # set historylog
  
@@ -48,20 +66,22 @@ diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
  
  ## Convert each typed tab to the fitting number of spaces.
  # set tabstospaces
-@@ -228,6 +228,12 @@
+@@ -228,6 +228,14 @@
  # set keycolor lightmagenta
  # set functioncolor magenta
  
-+set titlecolor brightwhite,blue
-+set statuscolor brightwhite,green
-+set errorcolor brightwhite,red
-+set selectedcolor brightwhite,magenta
++set titlecolor normal,blue
++set statuscolor normal,green
++set errorcolor normal,red
++set selectedcolor white,magenta
 +set numbercolor brightblack
-+set scrollercolor brightblack
++set scrollercolor lightwhite
++set keycolor lightwhite
++set functioncolor lightwhite
  
  ## === Syntax coloring ===
  ## For all details, see 'man nanorc', section SYNTAX HIGHLIGHTING.
-@@ -235,6 +241,8 @@
+@@ -235,6 +243,8 @@
  ## To include most of the existing syntax definitions, you can do:
  # include "@PKGDATADIR@/*.nanorc"
  

@@ -45,7 +45,7 @@
 Summary:             A small text editor
 Name:                nano
 Version:             6.4
-Release:             0%{?dist}
+Release:             1%{?dist}
 License:             GPLv3+
 Group:               Applications/Editors
 URL:                 https://www.nano-editor.org
@@ -100,8 +100,8 @@ install -pm 0644 doc/sample.nanorc %{buildroot}%{_sysconfdir}/nanorc
 # Create config for root with red title and status
 cp %{buildroot}%{_sysconfdir}/nanorc %{buildroot}%{_root}/.nanorc
 
-sed -i 's/^set titlecolor brightwhite,blue/set titlecolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
-sed -i 's/^set statuscolor brightwhite,green/set statuscolor brightwhite,red/' %{buildroot}%{_root}/.nanorc
+sed -i 's/^set titlecolor normal,blue/set titlecolor normal,red/' %{buildroot}%{_root}/.nanorc
+sed -i 's/^set statuscolor normal,green/set statuscolor normal,red/' %{buildroot}%{_root}/.nanorc
 
 rm -f %{buildroot}%{_datadir}/%{name}/*.nanorc
 cp blackhole-theme-nano-%{ek_theme_version}/*.nanorc \
@@ -146,6 +146,9 @@ fi
 ################################################################################
 
 %changelog
+* Sun Oct 09 2022 Anton Novojilov <andy@essentialkaos.com> - 6.4-1
+- Improved color theme
+
 * Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 6.4-0
 - The file browser does not crash when moving up to the root folder.
 - Softwrapping very long lines is done more efficiently.
