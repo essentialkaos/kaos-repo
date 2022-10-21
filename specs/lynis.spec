@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -30,13 +34,15 @@
 
 Summary:            Security auditing and hardening tool
 Name:               lynis
-Version:            3.0.6
+Version:            3.0.8
 Release:            0%{?dist}
 License:            GPLv3
 Group:              Development/Tools
 URL:                https://cisofy.com/lynis/
 
 Source0:            https://github.com/CISOfy/%{name}/archive/%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildArch:          noarch
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -62,6 +68,8 @@ day to protect their systems.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
@@ -95,6 +103,34 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Oct 22 2022 Anton Novojilov <andy@essentialkaos.com> - 3.0.8-0
+- MALW-3274 - Detect McAfee VirusScan Command Line Scanner
+- PKGS-7346 Check Alpine Package Keeper (apk)
+- PKGS-7395 Check Alpine upgradeable packages
+- EOL for Alpine Linux 3.14 and 3.15
+- AUTH-9408 - Check for pam_faillock as well (replacement for pam_tally2)
+- FILE-7524 - Test enhanced to support symlinks
+- HTTP-6643 - Support ModSecurity version 2 and 3
+- KRNL-5788 - Only run relevant tests and improved logging
+- KRNL-5820 - Additional path for security/limits.conf
+- KRNL-5830 - Check for /var/run/needs_restarting (Slackware)
+- KRNL-5830 - Add a presence check for /boot/vmlinuz
+- PRNT-2308 - Bugfix that prevented test from storing values correctly
+- Extended location of PAM files for AARCH64
+- Some messages in log improved
+
+* Sat Oct 22 2022 Anton Novojilov <andy@essentialkaos.com> - 3.0.7-0
+- MALW-3290 - Show status of malware components
+- OS detection for RHEL 6 and Funtoo Linux
+- Added service manager openrc
+- DBS-1804 - Added alias for MariaDB
+- FINT-4316 - Support for newer Ubuntu versions
+- MALW-3280 - Added Trend Micro malware agent
+- NETW-3200 - Allow unknown number of spaces in modprobe blacklists
+- PKGS-7320 - Support for Garuda Linux and arch-audit
+- Several improvements for busybox shell
+- Russian translation of Lynis extended
+
 * Fri Sep 03 2021 Anton Novojilov <andy@essentialkaos.com> - 3.0.6-0
 - OS detection: Artix Linux, macOS Monterey, NethServer, openSUSE MicroOS
 - Check for outdated translation files
