@@ -1,4 +1,4 @@
-# Bibop recipe for PIP for CentOS 7
+# Bibop recipe for PIP3 for CentOS 7
 # See more: https://kaos.sh/bibop
 
 pkg python36-pip
@@ -22,14 +22,18 @@ command "pip --version" "Check version"
 command "python3 -Im ensurepip" "Check ensurepip command"
   exit 0
 
-command "pip install youtube-dl" "Install youtube-dl"
+command "pip3 install youtube-dl" "Install youtube-dl"
   exit 0
   app youtube-dl
   exist {PYTHON3_SITELIB_LOCAL}/youtube_dl
   dir {PYTHON3_SITELIB_LOCAL}/youtube_dl
   !empty-dir {PYTHON3_SITELIB_LOCAL}/youtube_dl
 
-command "pip uninstall -y youtube-dl" "Unistall youtube-dl"
+command "pip3 list" "Check package listing"
+  exit 0
+  output-match "youtube\-dl +\d+\.\d+\.\d+"
+
+command "pip3 uninstall -y youtube-dl" "Unistall youtube-dl"
   exit 0
   !app youtube-dl
   !exist {PYTHON3_SITELIB_LOCAL}/youtube_dl
