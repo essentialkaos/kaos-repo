@@ -1,0 +1,19 @@
+# Bibop recipe for Ansible
+# See more: https://kaos.sh/bibop
+
+pkg ansible
+
+fast-finish yes
+
+command "-" "Check environment"
+  app ansible
+  exist /etc/ansible/ansible.cfg
+  mode /etc/ansible/ansible.cfg 644
+
+command "-" "Check installed python package"
+  exist "{PYTHON3_SITELIB}/ansible"
+  exist "{PYTHON3_SITELIB}/ansible/release.py"
+
+command "ansible --version" "Check basic ansible info"
+  exit 0
+  output-contains "executable location = /bin/ansible"
