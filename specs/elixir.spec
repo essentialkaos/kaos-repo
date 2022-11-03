@@ -36,7 +36,7 @@
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.13.1
+Version:            1.14.1
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
@@ -48,9 +48,9 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang22 git
+BuildRequires:      erlang23 git
 
-Requires:           erlang >= 22
+Requires:           erlang >= 23
 
 Provides:           %{name} = %{version}-%{release}
 Provides:           %{name}-lang = %{version}-%{release}
@@ -104,159 +104,174 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.14.1
+
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 1.14.0-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.14.0
+
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 1.13.4-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.13.4
+
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 1.13.3-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.13.3
+
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 1.13.2-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.13.2
+
 * Wed Dec 22 2021 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.13.1
 
 * Wed Dec 22 2021 Anton Novojilov <andy@essentialkaos.com> - 1.13.0-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.13.0
 
 * Thu Sep 30 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.3-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.12.3
 
 * Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.2-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.12.2
 
 * Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.1-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.12.1
 
 * Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.12.0
 
 * Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.11.4-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.11.4
 
 * Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 1.11.3-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.11.3
 
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.2-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.11.2
 
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.1-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.11.1
 
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.11.0
 
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.4-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.10.4
 
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.3-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.10.3
 
 * Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.10.2
 
 * Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.10.1
 
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.10.0
 
 * Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.9.4
 
 * Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.9.3
 
 * Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.9.2
 
 * Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
-- Updated to the latest release
+- https://github.com/elixir-lang/elixir/releases/tag/v1.9.1
 - Added CRC check for sources
 
 * Fri Jun 28 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.9.0
 
 * Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.8.2
 
 * Wed Feb 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.8.1
 
 * Sat Jan 19 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.8.0
 
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.4-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.7.4
 
 * Mon Aug 27 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.7.3
 
 * Wed Aug 22 2018 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.7.2-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.7.2
 
 * Wed Aug 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.7.1
 
 * Wed Aug 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.7.0
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.6-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.6.6
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.5-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.6.5
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.4-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.6.4
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.6.1
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.6.0
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.5.3-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.5.3
 
 * Wed Oct 25 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.5.2-1
 - Fixed Erlang OTP version dependency
 
 * Thu Oct 05 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.5.2
 
 * Wed Aug 23 2017 Gleb Goncharov <ggoncharov@fun-box.ru> - 1.5.1-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.5.1
 
 * Wed Aug 23 2017 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.5.0
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.4.5
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.4.4
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.4.3
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.4.2
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.4.0
 
 * Sun Oct 16 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.4-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.3.4
 
 * Sun Sep 25 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.3-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.3.3
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.3.2
 
 * Thu Jun 30 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 1.3.1-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.3.1
 
 * Wed Jun 22 2016 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.3.0
 
 * Tue Feb 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-1
 - Fixed broken links to binary files
 
 * Tue Jan 05 2016 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- Updated to the latest version
+- https://github.com/elixir-lang/elixir/releases/tag/v1.2.0
 
 * Sun Oct 04 2015 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
 - Initial build
