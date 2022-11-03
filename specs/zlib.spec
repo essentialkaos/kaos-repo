@@ -34,7 +34,7 @@
 
 Summary:            The compression and decompression library
 Name:               zlib
-Version:            1.2.11
+Version:            1.2.13
 Release:            0%{?dist}
 License:            zlib and Boost
 Group:              System Environment/Libraries
@@ -196,5 +196,25 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 27 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.13-0
+- Fix a bug when getting a gzip header extra field with inflateGetHeader().
+  This remedies CVE-2022-37434.
+- Fix a bug in block type selection when Z_FIXED used. Now the smallest block
+  type is selected, for better compression.
+- Fix a configure issue that discarded the provided CC definition.
+- Correct incorrect inputs provided to the CRC functions. This mitigates a
+  bug in Java.
+- Repair prototypes and exporting of the new CRC functions.
+- Fix inflateBack to detect invalid input with distances too far.
+
+* Thu Oct 27 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.12-0
+- Fix a deflate bug when using the Z_FIXED strategy that can result in
+  out-of-bound accesses.
+- Fix a deflate bug when the window is full in deflate_stored().
+- Speed up CRC-32 computations by a factor of 1.5 to 3.
+- Use the hardware CRC-32 instruction on ARMv8 processors.
+- Speed up crc32_combine() with powers of x tables.
+- Add crc32_combine_gen() and crc32_combine_op() for fast combines.
+
 * Wed Jun 05 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2.11-0
 - Initial build for kaos repository
