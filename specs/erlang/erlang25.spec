@@ -45,9 +45,9 @@
 
 %define elibdir           %{_libdir}/erlang/lib
 %define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           24
-%define ver_min           3
-%define ver_patch         4.6
+%define ver_maj           25
+%define ver_min           1
+%define ver_patch         2
 %define ver_suffix        %{ver_min}.%{ver_patch}
 %define ver_string        %{ver_maj}.%{ver_suffix}
 %define realname          erlang
@@ -76,8 +76,6 @@ Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre
 
 Source100:         checksum.sha512
 
-Patch0:            %{realname}%{ver_maj}-libressl-compat.patch
-
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
@@ -85,7 +83,7 @@ BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
 BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
 BuildRequires:     lksctp-tools-devel autoconf
 
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
+BuildRequires:     devtoolset-9-gcc-c++ devtoolset-9-binutils
 
 Requires:          tk tcl
 
@@ -694,15 +692,13 @@ a few bugs in the scanner, and improves HTML export.
 
 tar xzvf %{SOURCE10}
 
-%patch0 -p1
-
 %build
 
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 
 export BUILDDIR=$(pwd)
 
@@ -1026,20 +1022,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 24.3.4.6-0
-- Updated to the latest release
-- LibreSSL updated to 3.6.1
-
-* Wed Dec 22 2021 Anton Novojilov <andy@essentialkaos.com> - 24.2.0-0
-- Updated to the latest release
-- LibreSSL updated to 3.4.2
-
-* Thu Sep 30 2021 Anton Novojilov <andy@essentialkaos.com> - 24.1.1-0
-- Updated to the latest release
-- LibreSSL updated to 3.4.0
-
-* Wed Jul 21 2021 Anton Novojilov <andy@essentialkaos.com> - 24.0.3-0
-- Updated to the latest version
-
-* Tue Jul 20 2021 Anton Novojilov <andy@essentialkaos.com> - 24.0.1-0
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 25.1.2-0
 - Initial build for kaos repository
