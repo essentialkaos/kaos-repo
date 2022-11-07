@@ -100,7 +100,7 @@ if [[ -f %{pr_config} ]] ; then
 fi
 
 if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
-  if ! grep -q 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys) ; then
+  if ! grep -q 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys ; then
     echo "%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS" >> %{_sysconfdir}/abrt/gpg_keys
   fi
 fi
