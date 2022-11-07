@@ -28,6 +28,10 @@
 
 ################################################################################
 
+%define key_name RPM-GPG-KEY-ESSENTIALKAOS
+
+################################################################################
+
 Summary:         ESSENTIAL KAOS Public YUM Repository
 Name:            kaos-repo
 Version:         10.0
@@ -37,9 +41,11 @@ Vendor:          ESSENTIALKAOS
 Group:           Development/Tools
 URL:             https://kaos.sh/kaos-repo
 
-Source0:         RPM-GPG-KEY-ESSENTIALKAOS
-Source1:         kaos-release.repo
-Source2:         kaos-testing.repo
+Source0:         kaos-release.repo
+Source1:         kaos-testing.repo
+
+Source10:        %{key_name}-SHA1
+Source11:        %{key_name}-SHA2
 
 Source100:       checksum.sha512
 
@@ -51,7 +57,7 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-This package contains yum configuration files for access to ESSENTIAL KAOS
+This package contains yum/dnf configuration files for access to ESSENTIAL KAOS
 YUM repository.
 
 ################################################################################
@@ -67,12 +73,17 @@ install -dm 755 %{buildroot}%{_sysconfdir}/yum.repos.d
 install -dm 755 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
 
 install -pm 644 %{SOURCE0} \
-                %{buildroot}%{_sysconfdir}/pki/rpm-gpg
-
+                %{buildroot}%{_sysconfdir}/yum.repos.d/
 install -pm 644 %{SOURCE1} \
                 %{buildroot}%{_sysconfdir}/yum.repos.d/
-install -pm 644 %{SOURCE2} \
-                %{buildroot}%{_sysconfdir}/yum.repos.d/
+
+%if 0%{?rhel} >= 8
+install -pm 644 %{SOURCE1} \
+                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
+%else
+install -pm 644 %{SOURCE0} \
+                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
+%endif
 
 %post
 if [[ -f %{fm_config} ]] ; then
@@ -89,7 +100,7 @@ if [[ -f %{pr_config} ]] ; then
 fi
 
 if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
-  if [[ ! $(grep 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys) ]] ; then
+  if ! grep -q 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys) ; then
     echo "%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS" >> %{_sysconfdir}/abrt/gpg_keys
   fi
 fi

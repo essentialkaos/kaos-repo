@@ -1,5 +1,5 @@
 [kaos-release]
-name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+name=ESSENTIAL KAOS Release (Stable) Repo for EL$releasever - $basearch
 baseurl=https://yum.kaos.st/$releasever/release/$basearch
 failovermethod=priority
 priority=1
@@ -9,7 +9,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues
 
 [kaos-release-src]
-name=ESSENTIAL KAOS Release (Stable) Repo for RHEL$releasever/CentOS$releasever - $basearch
+name=ESSENTIAL KAOS Release (Stable) Repo for EL$releasever - $basearch
 baseurl=https://yum.kaos.st/$releasever/release/SRPMS
 failovermethod=priority
 priority=1
