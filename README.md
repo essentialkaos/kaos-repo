@@ -9,7 +9,7 @@ This repository contains spec files and patches used for building RPM packages f
 ### Installation
 
 ```bash
-sudo yum install -y https://yum.kaos.st/get/$(uname -r).rpm
+sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 ```
 
 For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) and [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository packages. You could install this packages by next command:
@@ -34,7 +34,9 @@ Security is our first priority. We can't keep an outdated package in our reposit
 
 | CentOS/RHEL version | Updates     | Repository removal |
 |---------------------|-------------|--------------------|
-| `7.x`               | 1 Jan 2022  | 31 Dec 2022        |
+| `7.x`               | 1 Jan 2023  | 1 Jun 2023         |
+| `8.x`               | 1 Jan 2024  | 1 Jun 2024         |
+| `9.x`               | 1 Jan 2026  | 1 Jun 2026         |
 
 ### [_perfecto_](https://kaos.sh/perfecto) and [bibop](https://kaos.sh/bibop) check status
 
