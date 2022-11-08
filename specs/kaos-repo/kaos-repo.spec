@@ -78,10 +78,10 @@ install -pm 644 %{SOURCE1} \
                 %{buildroot}%{_sysconfdir}/yum.repos.d/
 
 %if 0%{?rhel} >= 8
-install -pm 644 %{SOURCE1} \
+install -pm 644 %{SOURCE11} \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
 %else
-install -pm 644 %{SOURCE0} \
+install -pm 644 %{SOURCE10} \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
 %endif
 
