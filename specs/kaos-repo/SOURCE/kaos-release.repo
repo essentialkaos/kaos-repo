@@ -1,7 +1,6 @@
 [kaos-release]
 name=ESSENTIAL KAOS Release (Stable) Repo for EL$releasever - $basearch
 baseurl=https://yum.kaos.st/$releasever/release/$basearch
-failovermethod=priority
 priority=1
 enabled=1
 gpgcheck=1
@@ -11,7 +10,6 @@ bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues
 [kaos-release-src]
 name=ESSENTIAL KAOS Release (Stable) Repo for EL$releasever - $basearch
 baseurl=https://yum.kaos.st/$releasever/release/SRPMS
-failovermethod=priority
 priority=1
 enabled=0
 gpgcheck=1
