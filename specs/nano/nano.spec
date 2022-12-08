@@ -44,13 +44,13 @@
 
 Summary:             A small text editor
 Name:                nano
-Version:             6.4
-Release:             1%{?dist}
+Version:             7.0
+Release:             0%{?dist}
 License:             GPLv3+
 Group:               Applications/Editors
 URL:                 https://www.nano-editor.org
 
-Source0:             https://www.nano-editor.org/dist/v6/%{name}-%{version}.tar.xz
+Source0:             https://www.nano-editor.org/dist/v7/%{name}-%{version}.tar.xz
 Source1:             https://kaos.sh/blackhole-theme-nano/%{ek_theme_version}.tar.gz
 
 Source100:           checksum.sha512
@@ -59,7 +59,7 @@ Patch0:              %{name}-nanorc.patch
 
 BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:       gcc make automake groff ncurses-devel sed
+BuildRequires:       gcc make automake ncurses-devel sed
 
 Requires(post):      /sbin/install-info
 Requires(preun):     /sbin/install-info
@@ -146,6 +146,17 @@ fi
 ################################################################################
 
 %changelog
+* Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 7.0-0
+- String binds may contain bindable function names between braces.
+  For example, to move the current line down to after the next one:
+  bind ^D "{cut}{down}{paste}{up}" main. Of course, braced function
+  names may be mixed with literal text. If an existing string bind
+  contains a literal {, replace it with {{}.
+- Unicode codes can be entered (via M-V) without leading zeroes,
+  by finishing short codes with <Space> or <Enter>.
+- Word completion (^]) looks for candidates in all open buffers.
+- No regular expression matches the final empty line any more.
+
 * Sun Oct 09 2022 Anton Novojilov <andy@essentialkaos.com> - 6.4-1
 - Improved color theme
 

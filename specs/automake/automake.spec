@@ -28,7 +28,7 @@ BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:         perl(Thread::Queue)
 Requires:         perl(threads)
 
-BuildRequires:    autoconf >= 2.65 make coreutils findutils help2man
+BuildRequires:    autoconf >= 2.65 make coreutils findutils
 BuildRequires:    perl-generators perl-interpreter perl(Thread::Queue)
 BuildRequires:    perl(threads)
 
@@ -69,6 +69,8 @@ cp contrib/multilib/README README.multilib
 rm -rf %{buildroot}
 
 %{make_install}
+
+rm -f %{buildroot}%{_infodir}/dir
 
 %clean
 rm -rf %{buildroot}

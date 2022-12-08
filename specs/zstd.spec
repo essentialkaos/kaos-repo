@@ -18,7 +18,7 @@ Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc gtest-devel
+BuildRequires:   make gcc
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -71,7 +71,7 @@ Static variant of the Zstandard library.
 
 %build
 export CFLAGS="%{optflags}"
-export LDFLAGS="%{build_ldflags}"
+export LDFLAGS="%{__global_ldflags}"
 export PREFIX="%{_prefix}"
 export LIBDIR="%{_libdir}"
 

@@ -50,7 +50,7 @@
 
 Summary:           Cron daemon for executing programs at set times
 Name:              cronie
-Version:           1.5.5
+Version:           1.6.1
 Release:           0%{?dist}
 License:           MIT and BSD and ISC and GPLv2
 Group:             System Environment/Base

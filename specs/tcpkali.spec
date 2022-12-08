@@ -34,9 +34,9 @@ Version:            1.1.1
 Release:            0%{?dist}
 License:            BSD 2-Clause
 Group:              Development/Tools
-URL:                https://github.com/machinezone/tcpkali
+URL:                https://github.com/satori-com/tcpkali
 
-Source0:            https://github.com/machinezone/%{name}/archive/v%{version}.tar.gz
+Source0:            https://github.com/satori-com/%{name}/archive/v%{version}.tar.gz
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 

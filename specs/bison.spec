@@ -72,7 +72,6 @@ Requires(post):       /sbin/install-info
 Requires(preun):      /sbin/install-info
 
 Provides:             bundled(gnulib) = %{name}-%{version}
-
 Provides:             %{name} = %{version}-%{release}
 
 ################################################################################

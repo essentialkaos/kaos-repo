@@ -1,18 +1,28 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
+%{!?_without_check: %define _with_check 1}
+
+################################################################################
+
 Summary:         One-time passcode support using open standards
 Name:            google-authenticator
-Version:         1.02
+Version:         1.09
 Release:         0%{?dist}
 License:         ASL 2.0
 Group:           Development/Tools
-URL:             https://github.com/google/google-authenticator
+URL:             https://github.com/google/google-authenticator-libpam
 
-Source0:         https://github.com/google/%{name}/archive/%{version}.tar.gz
+Source0:         https://github.com/google/%{name}-libpam/archive/refs/tags/%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc libtool m4 pam-devel
+BuildRequires:   make gcc libtool automake pam-devel
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -34,26 +44,26 @@ algorithm specified in RFC 4226 and the Time-based One-time Password
 ################################################################################
 
 %prep
-%setup -q
+%{crc_check}
+
+%setup -qn %{name}-libpam-%{version}
 
 %build
-cd libpam
 ./bootstrap.sh
 %{configure}
-%{__make} CFLAGS="${CFLAGS:-%optflags}" LDFLAGS=-ldl %{?_smp_mflags}
+%{__make} %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 
-install -dm 755 %{buildroot}%{_bindir}
-install -dm 755 %{buildroot}%{_lib}/security
+%{make_install}
 
-cd libpam
+rm -f %{buildroot}%{_libdir}/security/*.la
 
-install -pm 755 .libs/pam_google_authenticator.so \
-                %{buildroot}%{_lib}/security/pam_google_authenticator.so
-
-install -pm 755 %{name} %{buildroot}%{_bindir}/
+%check
+%if %{?_with_check:1}%{?_without_check:0}
+%{__make} check
+%endif
 
 %post
 /sbin/ldconfig
@@ -68,15 +78,21 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc libpam/FILEFORMAT libpam/README.md libpam/totp.html
-/%{_lib}/security/*.so
+%doc FILEFORMAT README.md totp.html
 %{_bindir}/%{name}
+%{_mandir}/man1/%{name}*
+%{_mandir}/man8/pam_google_authenticator*
+%{_libdir}/security/*
+%{_docdir}/%{name}/*
 
 ################################################################################
 
 %changelog
+* Wed Dec 07 2022 Anton Novojilov <andy@essentialkaos.com> - 1.09-0
+- Updated to the latest stable release
+
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.02-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed May 27 2015 Anton Novojilov <andy@essentialkaos.com> - 1.01-0
 - Initial build

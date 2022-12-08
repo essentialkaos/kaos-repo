@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -38,6 +42,8 @@ URL:                https://github.com/hoytech/vmtouch
 
 Source0:            https://github.com/hoytech/%{name}/archive/v%{version}.tar.gz
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:      make gcc
@@ -55,6 +61,8 @@ do whatever you want with it.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build

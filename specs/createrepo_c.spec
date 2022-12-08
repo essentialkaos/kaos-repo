@@ -4,8 +4,19 @@
 
 ################################################################################
 
-%global python_base python36
-%global __python3   %{_bindir}/python3.6
+%if 0%{?rhel} == 7
+%global python_base  python36
+%endif
+
+%if 0%{?rhel} == 8
+%global python_base  python38
+%endif
+
+%if 0%{?rhel} == 9
+%global python_base  python3
+%endif
+
+%global __python3  %{_bindir}/python3
 
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}

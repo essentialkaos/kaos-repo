@@ -1,14 +1,20 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:         Run a command as a Unix daemon
 Name:            daemonize
 Version:         1.7.8
 Release:         0%{?dist}
 Group:           Applications/System
 License:         BSD
-URL:             http://software.clapper.org/daemonize
+URL:             https://software.clapper.org/daemonize
 
 Source0:         https://github.com/bmc/%{name}/archive/release-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -44,6 +50,8 @@ true Unix daemon, you can use daemonize to force it to run as a true daemon.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-release-%{version}
 
 %build
@@ -53,6 +61,7 @@ true Unix daemon, you can use daemonize to force it to run as a true daemon.
 
 %install
 rm -rf %{buildroot}
+
 %{make_install} INSTALL="install -p" install
 
 %clean

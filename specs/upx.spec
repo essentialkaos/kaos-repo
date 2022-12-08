@@ -36,7 +36,7 @@
 
 Summary:           Ultimate Packer for eXecutables
 Name:              upx
-Version:           3.96
+Version:           4.0.1
 Release:           0%{?dist}
 License:           GPLv2+ and Public Domain
 Group:             Applications/Archiving
@@ -48,9 +48,13 @@ Source100:         checksum.sha512
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc gcc-c++ ucl-devel zlib-devel
+%if 0%{?rhel} <= 7
+BuildRequires:     cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils
+%else
+BuildRequires:     cmake gcc-c++
+%endif
 
-Requires:          ucl zlib
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -67,19 +71,22 @@ executables suffer no memory overhead or other drawbacks.
 
 %setup -qn %{name}-%{version}-src
 
-sed -i -e 's/ -O2/ /' -e 's/ -Werror//' src/Makefile
-
-# Disable check_whitespace script
-echo -n > src/stub/scripts/check_whitespace.sh
-
 %build
-%{__make} %{?_smp_mflags} -C src
-%{__make} -C doc
+%if 0%{?rhel} <= 7
+# Use gcc and gcc-c++ from DevToolSet 9
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+%endif
+
+mkdir -p build/release
+cd build/release
+cmake3 ../..
+cmake3 --build .
 
 %install
 rm -rf %{buildroot}
+
 install -Dpm 644 doc/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
-install -Dpm 755 src/%{name}.out %{buildroot}%{_bindir}/%{name}
+install -Dpm 755 build/release/%{name} %{buildroot}%{_bindir}/%{name}
 
 %clean
 rm -rf %{buildroot}
@@ -88,13 +95,27 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc BUGS COPYING LICENSE NEWS PROJECTS README README.1ST THANKS doc/*.txt
+%doc COPYING LICENSE README README.SRC THANKS doc/*.txt
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 
 ################################################################################
 
 %changelog
+* Wed Nov 23 2022 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
+- bug fixes - see https://github.com/upx/upx/milestone/8
+
+* Wed Nov 23 2022 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
+- Switch to semantic versioning
+- SECURITY NOTES: emphasize the security context in the docs
+- Support easy building from source code with CMake
+- Support easy rebuilding the stubs from source with Podman/Docker
+- Add integrated doctest C++ testing framework
+- Add support for EFI files (PE x86; Kornel Pal)
+- win32/pe and win64/pe: set correct SizeOfHeaders in the PE header
+- bug fixes - see https://github.com/upx/upx/milestone/6
+- bug fixes - see https://github.com/upx/upx/milestone/7
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 3.96-0
 - bug fixes
 

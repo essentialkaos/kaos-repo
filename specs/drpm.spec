@@ -20,7 +20,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc cmake >= 2.8.5
 BuildRequires:  rpm-devel openssl-devel zlib-devel bzip2-devel xz-devel
-BuildRequires:  pkgconfig doxygen libcmocka-devel >= 1.0 pkgconfig(libzstd)
+BuildRequires:  pkgconfig pkgconfig(libzstd)
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -52,12 +52,12 @@ mkdir build
 %build
 pushd build
   cmake .. -DWITH_ZSTD:BOOL=ON \
+           -DENABLE_TESTS:BOOL=OFF \
            -DHAVE_LZLIB_DEVEL:BOOL=OFF \
            -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
            -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir}
 
   %{__make} %{?_smp_mflags}
-  %{__make} doc
 popd
 
 %install
@@ -85,7 +85,6 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root,-)
-%doc build/doc/html/
 %{_libdir}/lib%{name}.so
 %{_includedir}/%{name}.h
 %{_libdir}/pkgconfig/%{name}.pc

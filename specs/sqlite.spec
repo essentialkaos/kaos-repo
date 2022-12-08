@@ -4,25 +4,25 @@
 
 ################################################################################
 
-%define tarversion  3350000
+%define tarversion  3400000
 
 ################################################################################
 
 Summary:            Embeddable SQL Database Engine
 Name:               sqlite
-Version:            3.35.0
+Version:            3.40.0
 Release:            0%{?dist}
 License:            Public domain
 Group:              Development/Tools
 URL:                https://www.sqlite.org
 
-Source0:            https://www.sqlite.org/2021/%{name}-autoconf-%{tarversion}.tar.gz
+Source0:            https://www.sqlite.org/2022/%{name}-autoconf-%{tarversion}.tar.gz
 
 Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc readline-devel tcl-devel
+BuildRequires:      make gcc glibc-devel readline-devel tcl-devel
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -83,9 +83,10 @@ database access without running a separate RDBMS process.
 %setup -qn sqlite-autoconf-%{tarversion}
 
 %build
-export CFLAGS="-DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_USE_URI"
+export CFLAGS="-DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_USE_URI -fPIC"
 
-%configure --disable-static
+%configure --disable-static \
+           --enable-threadsafe
 
 %{__make} %{?_smp_mflags}
 
@@ -136,50 +137,53 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 3.40.0-0
+- https://www.sqlite.org/releaselog/3_40_0.html
+
 * Mon Mar 15 2021 Anton Novojilov <andy@essentialkaos.com> - 3.35.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_35_0.html
 
 * Mon Mar 15 2021 Anton Novojilov <andy@essentialkaos.com> - 3.34.1-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_34_1.html
 
 * Mon Mar 15 2021 Anton Novojilov <andy@essentialkaos.com> - 3.34.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_34_0.html
 
 * Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.33.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_33_0.html
 
 * Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.3-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_32_3.html
 
 * Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.2-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_32_2.html
 
 * Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.1-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_32_1.html
 
 * Mon Aug 17 2020 Anton Novojilov <andy@essentialkaos.com> - 3.32.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_32_0.html
 
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 3.31.1-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_31_1.html
 
 * Fri Dec 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.26.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_26_0.html
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 3.24.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_24_0.html
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.22.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_22_0.html
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 3.20.1-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_20_1.html
 
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.19.3-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_19_3.html
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 3.18.0-0
-- Updated to the latest stable release
+- https://www.sqlite.org/releaselog/3_18_0.html
 
 * Thu Mar 23 2017 Anton Novojilov <andy@essentialkaos.com> - 3.17.0-0
 - Initial build for kaos repository

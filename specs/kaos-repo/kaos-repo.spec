@@ -4,27 +4,8 @@
 
 ################################################################################
 
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
-%define fm_config         %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
-%define pr_config         %{_sysconfdir}/yum/pluginconf.d/priorities.conf
+%define fm_config  %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
+%define pr_config  %{_sysconfdir}/yum/pluginconf.d/priorities.conf
 
 ################################################################################
 
@@ -34,7 +15,7 @@
 
 Summary:         ESSENTIAL KAOS Public YUM Repository
 Name:            kaos-repo
-Version:         10.0
+Version:         11.0
 Release:         0%{?dist}
 License:         Apache License, Version 2.0
 Vendor:          ESSENTIALKAOS
@@ -81,6 +62,7 @@ install -pm 644 %{SOURCE1} \
 install -pm 644 %{SOURCE11} \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
 %else
+sed -i '/module_hotfixes/d' %{buildroot}%{_sysconfdir}/yum.repos.d/*.repo
 install -pm 644 %{SOURCE10} \
                 %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
 %endif
@@ -125,6 +107,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Dec 05 2022 Anton Novojilov <andy@essentialkaos.com> - 11.0-0
+- Added EL8/EL9 support
+- Added SHA2 key for EL8+
+
 * Thu Jul 07 2022 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
 - Removed yum-plugin-priorities from required dependencies
 - Spec improvements

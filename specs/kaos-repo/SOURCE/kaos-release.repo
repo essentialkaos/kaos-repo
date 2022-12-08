@@ -4,6 +4,7 @@ baseurl=https://yum.kaos.st/$releasever/release/$basearch
 priority=1
 enabled=1
 gpgcheck=1
+module_hotfixes=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues
 
@@ -13,5 +14,6 @@ baseurl=https://yum.kaos.st/$releasever/release/SRPMS
 priority=1
 enabled=0
 gpgcheck=1
+module_hotfixes=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues

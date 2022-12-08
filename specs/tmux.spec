@@ -22,7 +22,7 @@ Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make byacc autoconf automake gcc
+BuildRequires:        make gcc byacc autoconf automake
 BuildRequires:        ncurses-devel libevent-devel
 
 Provides:             %{name} = %{version}-%{release}
