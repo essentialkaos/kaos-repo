@@ -6,7 +6,7 @@
 
 Summary:         Meta-package that only requires libnghttp2
 Name:            nghttp2
-Version:         1.40.0
+Version:         1.51.0
 Release:         0%{?dist}
 Group:           Applications/Internet
 License:         MIT
@@ -120,44 +120,47 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 08 2022 Anton Novojilov <andy@essentialkaos.com> - 1.51.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.51.0
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.40.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.40.0
 
 * Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 1.39.1-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.39.1
 
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.34.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.34.0
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.33.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.33.0
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.32.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.32.0
 
 * Fri Apr 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.31.1-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.31.1
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.27.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.27.0
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.25.0
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.24.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.24.0
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.22.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.22.0
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.20.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.20.0
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.19.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.19.0
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.18.1-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.18.1
 
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
 - Initial build for kaos repository

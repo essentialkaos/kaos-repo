@@ -10,7 +10,7 @@ Version:         1.5.0
 Release:         0%{?dist}
 License:         (LGPLv2+ or MIT) and GPLv2+ and Public Domain
 Group:           Development/Libraries
-URL:             http://shapelib.maptools.org/
+URL:             http://shapelib.maptools.org
 
 Source0:         https://download.osgeo.org/%{name}/%{name}-%{version}.tar.gz
 

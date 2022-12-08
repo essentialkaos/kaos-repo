@@ -1,5 +1,9 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %define _posixroot        /
 %define _root             /root
 %define _bin              /bin
@@ -26,24 +30,28 @@
 %define _loc_includedir   %{_loc_prefix}/include
 %define _rpmstatedir      %{_sharedstatedir}/rpm-state
 
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:            C library for the Publix Suffix List
 Name:               libpsl
-Version:            0.20.2
+Version:            0.21.1
 Release:            0%{?dist}
 License:            MIT
 Group:              Development/Tools
 URL:                https://rockdaboot.github.io/libpsl
 
-Source0:            https://github.com/rockdaboot/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
+Source0:            https://github.com/rockdaboot/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make autoconf automake gettext-devel glib2-devel gtk-doc
-BuildRequires:      libicu-devel libtool libxslt chrpath
+BuildRequires:      make autoconf automake gettext-devel glib2-devel
+BuildRequires:      libicu-devel libtool libxslt chrpath python3
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -97,14 +105,15 @@ is acceptable for domains and so on.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
 [ -f configure ] || autoreconf -fiv
 %configure --disable-silent-rules \
            --disable-static \
-           --enable-man \
-           --enable-gtk-doc
+           --enable-man
 
 %{__make} %{?_smp_mflags}
 
@@ -145,7 +154,6 @@ rm -rf %{buildroot}
 %{_includedir}/libpsl.h
 %{_libdir}/libpsl.so
 %{_libdir}/pkgconfig/libpsl.pc
-%{_mandir}/man3/libpsl.3*
 
 %files -n psl
 %defattr(-, root, root, -)
@@ -156,11 +164,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.21.1-0
+- https://github.com/rockdaboot/libpsl/releases/tag/0.21.1
+
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.20.2-0
-- Updated to the latest stable release
+- https://github.com/rockdaboot/libpsl/releases/tag/0.20.2
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0
-- Updated to the latest stable release
+- https://github.com/rockdaboot/libpsl/releases/tag/0.17.0
 
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 0.15.0-0
 - Initial build for kaos repo

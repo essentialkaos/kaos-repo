@@ -1,18 +1,24 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:         A C library for parsing and emitting YAML
 Name:            libyaml
-Version:         0.2.2
+Version:         0.2.5
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
-URL:             http://pyyaml.org/wiki/LibYAML
+URL:             https://pyyaml.org/wiki/LibYAML
 
-Source0:         http://pyyaml.org/download/%{name}/yaml-%{version}.tar.gz
+Source0:         https://pyyaml.org/download/%{name}/yaml-%{version}.tar.gz
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -42,6 +48,8 @@ developing applications that use LibYAML.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn yaml-%{version}
 
 %build
@@ -73,7 +81,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE README
+%doc License ReadMe.md
 %{_libdir}/%{name}*.so.*
 
 %files devel
@@ -86,6 +94,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.2.5-0
+- https://github.com/yaml/libyaml/releases/tag/0.2.5
+
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.2.2-0
 - Updated to the latest release
 

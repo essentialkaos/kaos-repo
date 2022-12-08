@@ -1,53 +1,25 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
 Summary:            A portable x86 assembler which uses Intel-like syntax
 Name:               nasm
-Version:            2.14.02
+Version:            2.15.05
 Release:            0%{?dist}
 License:            BSD
 Group:              Development/Languages
-URL:                http://www.nasm.us
+URL:                https://www.nasm.us
 
 Source0:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
 Source1:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
 
+Source100:          checksum.sha512
+
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc perl(Env) asciidoc xmlto
-
-%if 0%{?rhel} <= 6
-BuildRequires:      autoconf268
-%else
-BuildRequires:      autoconf >= 2.69
-%endif
+BuildRequires:      make gcc perl(Env) xmlto
 
 Requires(post):     /sbin/install-info
 Requires(preun):    /sbin/install-info
@@ -75,18 +47,13 @@ include linker, library manager, loader, and information dump.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 tar xjf %{SOURCE1} --strip-components 1
 
 %build
-%if 0%{?rhel} <= 6
-sed -i 's/AC_PREREQ(2.69)/AC_PREREQ(2.68)/' configure.ac
-autoreconf268
-%else
-autoreconf
-%endif
-
 %configure
 
 %{__make} all %{?_smp_mflags}
@@ -118,7 +85,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS CHANGES README TODO
+%doc AUTHORS LICENSE CHANGES README.md
 %{_bindir}/nasm
 %{_bindir}/ndisasm
 %{_mandir}/man1/nasm*
@@ -141,6 +108,11 @@ fi
 ################################################################################
 
 %changelog
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.15.05-0
+- Correct %%ifid $ and %%ifid $$ being treated as true.
+- Add --reproducible option to suppress NASM version numbers and timestamps
+ in output files.
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-0
 - Fix crash due to multiple errors or warnings during the code generation pass
   if a list file is specified

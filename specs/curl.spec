@@ -63,15 +63,20 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc libidn2-devel krb5-devel
 BuildRequires:     pkgconfig zlib-devel openldap-devel
-BuildRequires:     libgsasl-devel libssh2-devel >= 1.2 groff
-BuildRequires:     openssh-clients openssh-server stunnel perl python
+BuildRequires:     libgsasl-devel libssh2-devel >= 1.2
+BuildRequires:     openssh-clients openssh-server stunnel perl
 BuildRequires:     perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(vars)
 BuildRequires:     perl(File::Basename) perl(File::Copy) perl(File::Spec)
 BuildRequires:     perl(IPC::Open2) perl(MIME::Base64) perl(warnings)
 BuildRequires:     perl(strict) perl(Time::Local) perl(Time::HiRes)
 BuildRequires:     libnghttp2-devel nghttp2 libpsl-devel libzstd-devel
-BuildRequires:     libzstd-devel brotli-devel librtmp-devel
-BuildRequires:     openssl-devel
+BuildRequires:     libzstd-devel brotli-devel openssl-devel
+
+%if 0%{?rhel} <= 7
+BuildRequires:     python
+%else
+BuildRequires:     python3
+%endif
 
 %if ! %{use_threads_posix}
 BuildRequires:     c-ares-devel >= 1.6.0
@@ -164,7 +169,6 @@ fi
         --with-nghttp2 \
         --with-brotli \
         --with-zstd \
-        --with-librtmp \
         --with-libpsl \
         --with-libssh2 \
         --enable-manual \

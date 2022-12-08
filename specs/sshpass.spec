@@ -1,42 +1,20 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
 Summary:            Non-interactive SSH authentication utility
 Name:               sshpass
-Version:            1.06
+Version:            1.09
 Release:            0%{?dist}
 License:            GPLv2
 Group:              Development/Tools
-URL:                http://sshpass.sourceforge.net
+URL:                https://sshpass.sourceforge.net
 
-Source0:            http://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:            https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -54,6 +32,8 @@ more secure public key authentication of SSH instead.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -80,5 +60,18 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 1.09-0
+- Explicitly set the controlling TTY
+
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 1.08-0
+- Report when IP key has changed
+- Scrub the environment variable for -e
+
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 1.07-0
+- Pass signals that should terminate to ssh
+- Fix race around signal handling
+- Report IPC errors to stderr
+- Report if can't open -f password file
+
 * Tue Oct 04 2016 Anton Novojilov <andy@essentialkaos.com> - 1.06-0
 - Initial build for kaos repo

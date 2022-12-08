@@ -118,7 +118,6 @@ command "-" "Check symbols exported by libminizip.so"
   lib-exported libminizip.so fill_fopen64_filefunc
   lib-exported libminizip.so fill_fopen_filefunc
   lib-exported libminizip.so fill_zlib_filefunc64_32_def_from_filefunc32
-  lib-exported libminizip.so LoadCentralDirectoryRecord
   lib-exported libminizip.so unzClose
   lib-exported libminizip.so unzCloseCurrentFile
   lib-exported libminizip.so unz_copyright
@@ -154,11 +153,6 @@ command "-" "Check symbols exported by libminizip.so"
   lib-exported libminizip.so unzStringFileNameCompare
   lib-exported libminizip.so unztell
   lib-exported libminizip.so unztell64
-  lib-exported libminizip.so Write_EndOfCentralDirectoryRecord
-  lib-exported libminizip.so Write_GlobalComment
-  lib-exported libminizip.so Write_LocalFileHeader
-  lib-exported libminizip.so Write_Zip64EndOfCentralDirectoryLocator
-  lib-exported libminizip.so Write_Zip64EndOfCentralDirectoryRecord
   lib-exported libminizip.so zipClose
   lib-exported libminizip.so zipCloseFileInZip
   lib-exported libminizip.so zipCloseFileInZipRaw

@@ -57,11 +57,11 @@ BuildRequires:     lame-devel libtheora-devel libvorbis-devel vo-amrwbenc-devel
 BuildRequires:     libxvidcore-devel x264-devel libfdk-aac openjpeg-devel
 BuildRequires:     dirac-devel speex-devel libvpx-devel >= 1.4.0 xavs-devel
 BuildRequires:     libvdpau-devel yasm libva-devel frei0r opencore-amr-devel
-BuildRequires:     opencv-devel librtmp-devel openssl-devel orc-devel
+BuildRequires:     opencv-devel openssl-devel orc-devel
 BuildRequires:     openjpeg2-devel
 
 Requires:          SDL xavs gsm libdc1394 libfdk-aac lame
-Requires:          opencore-amr librtmp orc libvpx x264 openssl
+Requires:          opencore-amr orc libvpx x264 openssl
 Requires:          libxvidcore libva opus vo-amrwbenc openjpeg2
 
 Conflicts:         %{source_name}
@@ -114,7 +114,6 @@ test -f version.h || echo "#define FFMPEG_VERSION \"%{version}-%{release}\"" > v
   --enable-libvo-amrwbenc \
   --enable-libopenjpeg \
   --enable-libopus \
-  --enable-librtmp \
   --enable-libspeex \
   --enable-libtheora \
   --enable-libvorbis \
