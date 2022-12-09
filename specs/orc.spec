@@ -11,7 +11,7 @@
 
 Summary:         The Oil Run-time Compiler
 Name:            orc
-Version:         0.4.32
+Version:         0.4.33
 Release:         0%{?dist}
 Group:           System Environment/Libraries
 License:         BSD
@@ -23,7 +23,7 @@ Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   meson gcc gtk-doc
+BuildRequires:   meson gcc
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -132,6 +132,21 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.4.33-0
+- Add support for aarch64 (64-bit ARM) architecture (not yet enabled on
+  Windows though)
+- aarch32: Implement loadupdb instruction used e.g. for video pixel
+  format packing/unpacking/conversions
+- neon: Fix unsigned only implementation of loadoffb, loadoffw and loadoffl
+- neon: Fix testsuite not passing on arm CPUs
+- orccodemem: Fix use-after-free in error paths
+- orccpu-powerpc: Fix build with kernel < 4.11
+- Add support for macOS Hardened Runtime
+- Enable only SSE and MMX backends for Windows
+- Fix ORC_RESTRICT definition for MSVC
+- pkgconfig: add -DORC_STATIC_COMPILATION flag to .pc file for static-only
+  builds
+
 * Wed Sep 21 2022 Anton Novojilov <andy@essentialkaos.com> - 0.4.32-0
 - Add support for JIT code generation in Universal Windows Platform apps
 - Minor Meson build system fixes and improvements

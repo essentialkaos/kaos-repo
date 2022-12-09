@@ -4,14 +4,18 @@
 
 ################################################################################
 
+# Disable strip on EL9+
+%if 0%{?rhel} >= 9
+%define __os_install_post %{nil}
+%endif
+
 %define path_settings ETC_GITCONFIG=/etc/gitconfig prefix=%{_prefix} mandir=%{_mandir} htmldir=%{_docdir}/%{name}-%{version}
-%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 ################################################################################
 
 Summary:          Core git tools
 Name:             git
-Version:          2.35.1
+Version:          2.38.1
 Release:          0%{?dist}
 License:          GPL
 Group:            Development/Tools
@@ -23,11 +27,17 @@ Source100:        checksum.sha512
 
 BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    gcc make gettext xmlto asciidoc > 6.0.3 lynx
-BuildRequires:    libcurl-devel expat-devel openssl-devel zlib-devel >= 1.2
+BuildRequires:    gcc make gettext xmlto asciidoc > 6.0.3
+BuildRequires:    libcurl-devel expat-devel openssl-devel zlib-devel
 
 Requires:         perl-Git = %{version}-%{release}
 Requires:         zlib rsync less openssh-clients expat expat-devel
+
+%if 0%{?rhel} <= 8
+Requires:         python2
+%else
+Requires:         python3
+%endif
 
 Provides:         git-core = %{version}-%{release}
 
@@ -185,18 +195,28 @@ Perl interface to Git
 %setup -qn %{name}-%{version}
 
 %build
-%{__make} %{?_smp_mflags} CFLAGS="%{optflags}" \
+%if 0%{?rhel} <= 7
+  export CFLAGS="%{optflags} -std=gnu99"
+%else
+  export CFLAGS="%{optflags}"
+%endif
+
+%{__make} %{?_smp_mflags} CFLAGS="$CFLAGS" \
      %{path_settings} \
      all
 
 %install
 rm -rf %{buildroot}
 
-%{__make} %{?_smp_mflags} CFLAGS="%{optflags}" DESTDIR=%{buildroot} \
+%if 0%{?rhel} <= 7
+  export CFLAGS="%{optflags} -std=gnu99"
+%else
+  export CFLAGS="%{optflags}"
+%endif
+
+%{__make} %{?_smp_mflags} CFLAGS="$CFLAGS" DESTDIR=%{buildroot} \
      %{path_settings} \
      INSTALLDIRS=vendor install %{!?_without_docs: install-doc}
-
-test ! -d %{buildroot}%{python_sitelib} || rm -fr %{buildroot}%{python_sitelib}
 
 find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
@@ -205,6 +225,12 @@ find %{buildroot} -type f -name perllocal.pod -exec rm -f {} ';'
 (find %{buildroot}%{_bindir} -type f | grep -vE "archimport|svn|cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@) > bin-man-doc-files
 (find %{buildroot}%{_libexecdir}/git-core -type f | grep -vE "archimport|svn|cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@) >> bin-man-doc-files
 (find %{buildroot}%{_mandir} %{buildroot}/Documentation -type f | grep -vE "archimport|svn|git-cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@ -e 's/$/*/' ) >> bin-man-doc-files
+
+%if 0%{?rhel} <= 8
+  sed -i "s#/usr/bin/python#/usr/bin/python2#" %{buildroot}%{_libexecdir}/git-core/git-p4
+%else
+  sed -i "s#/usr/bin/python#/usr/bin/python3#" %{buildroot}%{_libexecdir}/git-core/git-p4
+%endif
 
 rm -rf %{buildroot}%{_datadir}/locale
 
@@ -219,16 +245,16 @@ rm -rf %{buildroot}
 
 %files -f bin-man-doc-files
 %defattr(-,root,root)
-%{_datadir}/git-core/
 %doc COPYING Documentation/*.txt
 %doc Documentation/howto
 %doc Documentation/technical
+%{_datadir}/git-core/
 %{_sysconfdir}/bash_completion.d
 
 %files svn
 %defattr(-,root,root)
-%{_libexecdir}/git-core/*svn*
 %doc Documentation/*svn*.txt
+%{_libexecdir}/git-core/*svn*
 %{_mandir}/man1/*svn*.1*
 
 %files cvs
@@ -284,6 +310,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.38.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.1.txt
+
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.37.4-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.37.4.txt
+
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.36.3-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.36.3.txt
+
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.35.1-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.1.txt
 
