@@ -4,6 +4,10 @@
 
 ################################################################################
 
+%global rpmmacrodir /usr/lib/rpm/macros.d
+
+################################################################################
+
 Summary:        Small build system with a focus on speed
 Name:           ninja-build
 Version:        1.11.1
@@ -57,10 +61,10 @@ cmake --build build
 rm -rf %{buildroot}
 
 install -dm 0755 %{buildroot}%{_bindir}
-install -dm 0755 %{buildroot}%{_sharedstatedir}/rpm/macros.d
+install -dm 0755 %{buildroot}%{rpmmacrodir}
 
 install -pm 0755 build/ninja %{buildroot}%{_bindir}/ninja
-install -pm 0644 %{SOURCE1} %{buildroot}%{_sharedstatedir}/rpm/macros.d/macros.ninja
+install -pm 0644 %{SOURCE1} %{buildroot}%{rpmmacrodir}/macros.ninja
 
 ln -sf ninja %{buildroot}%{_bindir}/%{name}
 
@@ -74,7 +78,7 @@ rm -rf %{buildroot}
 %doc README.md COPYING
 %{_bindir}/ninja
 %{_bindir}/ninja-build
-%{_sharedstatedir}/rpm/macros.d/macros.ninja
+%{rpmmacrodir}/macros.ninja
 
 ################################################################################
 

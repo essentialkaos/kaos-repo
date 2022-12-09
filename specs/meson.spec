@@ -25,6 +25,10 @@
 
 ################################################################################
 
+%global rpmmacrodir /usr/lib/rpm/macros.d
+
+################################################################################
+
 Summary:        High productivity build system
 Name:           meson
 Version:        0.64.1
@@ -70,9 +74,8 @@ rm -rf %{buildroot}
 
 %py3_install
 
-install -dm 0755 %{buildroot}%{_sharedstatedir}/rpm/macros.d
-install -pm 0644 data/macros.%{name} \
-                 %{buildroot}%{_sharedstatedir}/rpm/macros.d/macros.%{name}
+install -dm 0755 %{buildroot}%{rpmmacrodir}
+install -pm 0644 data/macros.%{name} %{buildroot}%{rpmmacrodir}/macros.%{name}
 
 %clean
 rm -rf %{buildroot}
@@ -89,7 +92,7 @@ rm -rf %{buildroot}
 %dir %{_datadir}/polkit-1
 %dir %{_datadir}/polkit-1/actions
 %{_datadir}/polkit-1/actions/com.mesonbuild.install.policy
-%{_sharedstatedir}/rpm/macros.d/macros.%{name}
+%{rpmmacrodir}/macros.%{name}
 
 ################################################################################
 
@@ -97,5 +100,5 @@ rm -rf %{buildroot}
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.64.1-0
 - https://github.com/mesonbuild/meson/compare/0.64.0...0.64.1
 
-* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.58.2-0
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.61.5-0
 - Initial build
