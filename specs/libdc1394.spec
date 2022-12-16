@@ -116,12 +116,12 @@ for f in grab_color_image grab_gray_image grab_partial_image ; do
   mv %{buildroot}%{_mandir}/man1/$f.1 %{buildroot}%{_mandir}/man1/dc1394_$f.1
 done
 
+%clean
+rm -rf %{buildroot}
+
 %post -p /sbin/ldconfig
 
 %postun -p /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

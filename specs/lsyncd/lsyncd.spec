@@ -4,79 +4,39 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ldconfig        %{_sbin}/ldconfig
-%define __service         %{_sbin}/service
-%define __touch           %{_bin}/touch
-%define __chkconfig       %{_sbin}/chkconfig
-%define __updalt          %{_sbindir}/update-alternatives
-%define __useradd         %{_sbindir}/useradd
-%define __groupadd        %{_sbindir}/groupadd
-%define __getent          %{_bindir}/getent
-%define __systemctl       %{_bindir}/systemctl
+%define __systemctl  %{_bindir}/systemctl
 
 ################################################################################
 
-Summary:              File change monitoring and synchronization daemon
-Name:                 lsyncd
-Version:              2.2.2
-Release:              2%{?dist}
-License:              GPLv2+
-Group:                Applications/Internet
-URL:                  https://github.com/axkibe/lsyncd
+Summary:        File change monitoring and synchronization daemon
+Name:           lsyncd
+Version:        2.3.1
+Release:        0%{?dist}
+License:        GPLv2+
+Group:          Applications/Internet
+URL:            https://github.com/axkibe/lsyncd
 
-Source0:              https://github.com/axkibe/%{name}/archive/release-%{version}.tar.gz
-Source1:              %{name}.service
-Source2:              %{name}.init
-Source3:              %{name}.sysconfig
-Source4:              %{name}.logrotate
-Source5:              %{name}.conf
+Source0:        https://github.com/lsyncd/lsyncd/archive/refs/tags/v%{version}.tar.gz
+Source1:        %{name}.service
+Source2:        %{name}.sysconfig
+Source3:        %{name}.logrotate
+Source4:        %{name}.conf
 
-Source100:            checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make cmake gcc gcc-c++ lua-devel >= 5.1.3 asciidoc
+BuildRequires:  make gcc gcc-c++ lua-devel >= 5.1.3 asciidoc
 
-Requires:             lua rsync >= 3.1.0
-
-%if 0%{?rhel} >= 7
-Requires:             systemd
+%if 0%{?rhel} <= 7
+BuildRequires:  cmake3
 %else
-Requires:             kaosv
+BuildRequires:  cmake
 %endif
 
-Provides:             %{name} = %{version}-%{release}
+Requires:       lua rsync >= 3.1.0 systemd
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -95,13 +55,13 @@ not hamper local file system performance.
 %prep
 %{crc_check}
 
-%setup -qn %{name}-release-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 mkdir build
 pushd build
-  cmake ..
-  %{__make} %{?_smp_mflags}
+  cmake3 .. -DCMAKE_INSTALL_PREFIX:PATH=%{_usr}
+  %{make_build}
 popd
 
 %install
@@ -111,50 +71,36 @@ pushd build
   %{make_install}
 popd
 
-install -dm 755 %{buildroot}%{_loc_mandir}/man1/
+install -dm 755 %{buildroot}%{_mandir}/man1/
+install -pm 644 docs/manpage/%{name}.1 %{buildroot}%{_mandir}/man1/
 
-mv %{buildroot}%{_loc_prefix}/man/%{name}.1* %{buildroot}%{_loc_mandir}/man1/
+install -pDm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pDm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pDm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/
 
-install -pDm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
-install -pDm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-install -pDm 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/
-
-%if 0%{?rhel} >= 7
 install -pDm 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
-%else
-install -pDm 755 %{SOURCE2} %{buildroot}%{_initddir}/%{name}
-%endif
+
+rm -rf %{buildroot}/man1
+rm -rf %{buildroot}%{_prefix}/doc/examples
 
 %clean
 rm -rf %{buildroot}
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} daemon-reload %{name}.service &>/dev/null || :
   %{__systemctl} preset %{name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} --no-reload disable %{name}.service &>/dev/null || :
   %{__systemctl} stop %{name}.service &>/dev/null || :
-%else
-  %{__service} stop %{name} &>/dev/null || :
-%endif
 fi
 
 %postun
 if [[ $1 -ge 1 ]] ; then
-%if 0%{?rhel} >= 7
   %{__systemctl} try-restart %{name}.service &>/dev/null || :
-%else
-  %{__service} restart %{name} &>/dev/null || :
-%endif
 fi
 
 ################################################################################
@@ -165,17 +111,19 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
-%{_loc_bindir}/%{name}
-%{_loc_mandir}/man1/%{name}.1*
-%if 0%{?rhel} >= 7
+%{_bindir}/%{name}
+%{_mandir}/man1/%{name}.1*
 %{_unitdir}/%{name}.service
-%else
-%{_initddir}/%{name}
-%endif
 
 ################################################################################
 
 %changelog
+* Wed Dec 14 2022 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
+- https://github.com/lsyncd/lsyncd/releases/tag/v2.3.1
+
+* Wed Dec 14 2022 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- https://github.com/lsyncd/lsyncd/releases/tag/v2.3.0
+
 * Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.2.2-2
 - Improved init script
 - Added CRC check for all sources

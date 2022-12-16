@@ -98,10 +98,10 @@ rm -rf %{buildroot}
 - https://github.com/yaml/libyaml/releases/tag/0.2.5
 
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.2.2-0
-- Updated to the latest release
+- https://github.com/yaml/libyaml/releases/tag/0.2.2
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 0.2.1-0
-- Updated to the latest release
+- https://github.com/yaml/libyaml/releases/tag/0.2.1
 
 * Tue Nov 21 2017 Anton Novojilov <andy@essentialkaos.com> - 0.1.7-0
 - Initial build for kaos repo

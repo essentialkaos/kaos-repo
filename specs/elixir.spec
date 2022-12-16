@@ -4,45 +4,19 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:            A modern approach to programming for the Erlang VM
 Name:               elixir
-Version:            1.14.1
+Version:            1.14.2
 Release:            0%{?dist}
 License:            ASL 2.0 and ERPL
 Group:              Development/Tools
 URL:                https://elixir-lang.org
 
-Source0:            https://github.com/%{name}-lang/%{name}/archive/v%{version}.tar.gz
+Source0:            https://github.com/elixir-lang/elixir/archive/v%{version}.tar.gz
 
 Source100:          checksum.sha512
 
@@ -72,20 +46,23 @@ fault-tolerant, non-stop applications with hot code swapping.
 %build
 LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags}
 
-%check
-%if %{?_with_check:1}%{?_without_check:0}
-LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags} test
-%endif
-
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_datadir}/%{name}/%{version}
 install -dm 755 %{buildroot}%{_bindir}
+install -dm 755 %{buildroot}%{_mandir}/man1
+
+install -pm 644 man/*.1 %{buildroot}%{_mandir}/man1/
 
 cp -ra bin lib %{buildroot}%{_datadir}/%{name}/%{version}/
 
 ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}%{_bindir}/
+
+%check
+%if %{?_with_check:1}%{?_without_check:0}
+LC_ALL="en_US.UTF-8" %{__make} %{?_smp_mflags} test
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -100,10 +77,14 @@ rm -rf %{buildroot}
 %{_bindir}/iex
 %{_bindir}/mix
 %{_datadir}/%{name}
+%{_mandir}/man1
 
 ################################################################################
 
 %changelog
+* Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 1.14.2-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.14.2
+
 * Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
 - https://github.com/elixir-lang/elixir/releases/tag/v1.14.1
 

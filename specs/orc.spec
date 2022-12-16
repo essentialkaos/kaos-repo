@@ -29,19 +29,6 @@ Provides:        %{name} = %{version}-%{release}
 
 ################################################################################
 
-%package doc
-Summary:         Documentation for Orc
-Group:           Development/Languages
-
-BuildArch:       noarch
-
-Requires:        %{name} = %{version}-%{release}
-
-%description doc
-Documentation for Orc.
-
-################################################################################
-
 %description
 Orc is a library and set of tools for compiling and executing
 very simple programs that operate on arrays of data.  The "language"
@@ -82,13 +69,13 @@ The Orc compiler, to produce optimized code.
 %setup -q
 
 %build
-%meson
-%meson_build
+%{meson} -Dgtk_doc=disabled
+%{meson_build}
 
 %install
 rm -rf %{buildroot}
 
-%meson_install
+%{meson_install}
 
 rm -f %{buildroot}%{_libdir}/*.a
 
@@ -111,10 +98,6 @@ rm -rf %{buildroot}
 %doc COPYING README
 %{_libdir}/liborc-*.so.*
 %{_bindir}/%{name}-bugreport
-
-%files doc
-%defattr(-,root,root,-)
-%doc %{_datadir}/gtk-doc/html/%{name}/
 
 %files devel
 %defattr(-,root,root,-)

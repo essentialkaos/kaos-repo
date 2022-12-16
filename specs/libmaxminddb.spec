@@ -4,54 +4,29 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
-%define __ldconfig        %{_sbin}/ldconfig
-
-################################################################################
-
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:         C library for the MaxMind DB file format
 Name:            libmaxminddb
-Version:         1.6.0
+Version:         1.7.1
 Release:         0%{?dist}
 License:         Apache-2.0
 Group:           Development/Libraries
 URL:             https://github.com/maxmind/libmaxminddb
 
 Source0:         https://github.com/maxmind/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
+
 Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   make gcc chrpath
+
+%if 0%{?rhel} == 9
+BuildRequires:   perl-FindBin
+%endif
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -101,14 +76,14 @@ export LD_LIBRARY_PATH=%{buildroot}%{_libdir}
 %{__make} check
 %endif
 
-%post
-%{__ldconfig}
-
-%postun
-%{__ldconfig}
-
 %clean
 rm -rf %{buildroot}
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
 
 ################################################################################
 
@@ -133,5 +108,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
+- https://github.com/maxmind/libmaxminddb/releases/tag/1.7.1
+
 * Sat Dec 11 2021 Anton Novojilov <andy@essentialkaos.com> - 1.6.0-0
 - Initial build for EK repository

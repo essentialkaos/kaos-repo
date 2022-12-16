@@ -4,10 +4,6 @@
 
 ################################################################################
 
-%global majorver 1
-%global minorver 8
-%global patchver 2
-
 %ifarch %{ix86}
 %global vpxtarget x86-linux-gcc
 %else
@@ -18,8 +14,8 @@
 
 Summary:            VP8/VP9 Video Codec SDK
 Name:               libvpx
-Version:            %{majorver}.%{minorver}.%{patchver}
-Release:            1%{?dist}
+Version:            1.12.0
+Release:            0%{?dist}
 License:            BSD
 Group:              System Environment/Libraries
 URL:                https://chromium.googlesource.com/webm/libvpx/
@@ -29,7 +25,7 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc nasm
+BuildRequires:      make gcc gcc-c++ nasm
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -144,17 +140,20 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
+- https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.12.0
+
 * Tue Aug 11 2020 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-1
 - Fixed installation directory for some utilities
 
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
-- Updated to the latest stable release
+- https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.8.2
 
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.1-0
-- Updated to the latest stable release
+- https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.8.1
 
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
-- Updated to the latest stable release
+- https://chromium.googlesource.com/webm/libvpx/+/refs/tags/v1.8.0
 
 * Wed Jun 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Initial build for kaos repository

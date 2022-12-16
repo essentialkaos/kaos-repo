@@ -4,9 +4,30 @@
 
 ################################################################################
 
+%if 0%{?rhel} == 7
+%global python_base  python36
+%global __python3    %{_bindir}/python3.6
+%endif
+
+%if 0%{?rhel} == 8
+%global python_base  python38
+%global __python3    %{_bindir}/python3.8
+%endif
+
+%if 0%{?rhel} == 9
+%global python_base  python3
+%global __python3    %{_bindir}/python3
+%endif
+
+%global python_ver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(plat_specific=True)" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+
+################################################################################
+
 Summary:           Improved colored diff
 Name:              icdiff
-Version:           1.9.5
+Version:           2.0.5
 Release:           0%{?dist}
 License:           Python 2.6.2
 Group:             Development/Tools
@@ -19,9 +40,10 @@ Source100:         checksum.sha512
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:         noarch
-Requires:          python-setuptools
 
-BuildRequires:     python2-devel python-setuptools
+Requires:          %{python_base}-setuptools
+
+BuildRequires:     %{python_base}-devel %{python_base}-setuptools
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -39,12 +61,12 @@ Improved colored diff.
 %setup -qn %{name}-release-%{version}
 
 %build
-python setup.py build
+%{py3_build}
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{py3_install}
 
 %clean
 rm -rf %{buildroot}
@@ -53,14 +75,19 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc ChangeLog README.md
-%{python_sitelib}/%{name}*
+%doc LICENSE ChangeLog README.md
+%exclude %{python3_sitelib}/__pycache__
+%{python3_sitelib}/%{name}*
 %{_bindir}/git-%{name}
 %{_bindir}/%{name}
 
 ################################################################################
 
 %changelog
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 2.0.5-0
+- Set process exit code to indicate differences
+- Support -P/--permissions option
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.5-0
 - Error handling: unknown encoding
 - pipes: stop printing an error when pipes close

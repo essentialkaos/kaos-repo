@@ -11,7 +11,7 @@
 
 Summary:         Wrapper library for the Video Decode and Presentation API
 Name:            libvdpau
-Version:         1.3
+Version:         1.5
 Release:         0%{?dist}
 Group:           Development/Libraries
 License:         MIT
@@ -26,7 +26,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:   doxygen graphviz libtool libX11-devel meson
 BuildRequires:   libXext-devel xorg-x11-proto-devel gcc gcc-c++
 
-%if 0%{?fedora} >= 18 || 0%{?rhel} >= 7
+%if 0%{?rhel} >= 7
 BuildRequires:   tex(latex)
 %else
 BuildRequires:   tetex-latex
@@ -97,11 +97,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5-0
+- https://gitlab.freedesktop.org/vdpau/libvdpau/-/releases/1.5
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.3-0
-- Updated to the latest stable release
+- https://gitlab.freedesktop.org/vdpau/libvdpau/-/releases/1.3
 
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.2-0
-- Updated to the latest stable release
+- https://gitlab.freedesktop.org/vdpau/libvdpau/-/tags/libvdpau-1.2
 
 * Fri Mar 24 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
 - Initial build for kaos repository

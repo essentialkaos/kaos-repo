@@ -6,7 +6,7 @@
 
 Summary:              A network diagnostic tool
 Name:                 mtr
-Version:              0.93
+Version:              0.95
 Release:              0%{?dist}
 Epoch:                10
 License:              GPLv2+
@@ -75,8 +75,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 0.95-0
+- https://github.com/traviscross/mtr/compare/v0.94...v0.95
+
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 0.94-0
+- https://github.com/traviscross/mtr/compare/v0.93...v0.94
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 0.93-0
-- Updated to the latest release
+- https://github.com/traviscross/mtr/compare/v0.92...v0.93
 
 * Wed Oct 04 2017 Anton Novojilov <andy@essentialkaos.com> - 0.92-0
 - Initial build for kaos repository

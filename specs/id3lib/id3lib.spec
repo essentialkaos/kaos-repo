@@ -4,66 +4,40 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
-Summary:            Library for manipulating ID3v1 and ID3v2 tags
-Name:               id3lib
-Version:            3.8.3
-Release:            35%{?dist}
-License:            LGPLv2+
-Group:              System Environment/Libraries
-URL:                https://id3lib.sourceforge.net
+Summary:        Library for manipulating ID3v1 and ID3v2 tags
+Name:           id3lib
+Version:        3.8.3
+Release:        35%{?dist}
+License:        LGPLv2+
+Group:          System Environment/Libraries
+URL:            https://id3lib.sourceforge.net
 
-Source0:            https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
-Source1:            %{name}-no_date_footer.hml
-Source2:            id3.pc
+Source0:        https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source1:        %{name}-no_date_footer.hml
+Source2:        id3.pc
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-Patch0:             %{name}-dox.patch
-Patch1:             %{name}-%{version}-autoreconf.patch
-Patch2:             %{name}-%{version}-io_helpers-163101.patch
-Patch3:             %{name}-%{version}-mkstemp.patch
-Patch4:             %{name}-%{version}-includes.patch
-Patch5:             %{name}-vbr_buffer_overflow.diff
-Patch6:             20-create-manpages.patch
-Patch7:             60-fix_make_check.patch
-Patch8:             60-%{name}-missing-nullpointer-check.patch
-Patch9:             %{name}-%{version}-fix-utf16-stringlists.patch
+Patch0:         %{name}-dox.patch
+Patch1:         %{name}-%{version}-autoreconf.patch
+Patch2:         %{name}-%{version}-io_helpers-163101.patch
+Patch3:         %{name}-%{version}-mkstemp.patch
+Patch4:         %{name}-%{version}-includes.patch
+Patch5:         %{name}-vbr_buffer_overflow.diff
+Patch6:         20-create-manpages.patch
+Patch7:         60-fix_make_check.patch
+Patch8:         60-%{name}-missing-nullpointer-check.patch
+Patch9:         %{name}-%{version}-fix-utf16-stringlists.patch
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc-c++ autoconf automake libtool zlib-devel doxygen
+BuildRequires:  make gcc-c++ autoconf automake libtool zlib-devel doxygen
 
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

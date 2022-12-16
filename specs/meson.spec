@@ -6,21 +6,21 @@
 
 %if 0%{?rhel} == 7
 %global python_base  python36
-%global __python3  %{_bindir}/python3.6
+%global __python3    %{_bindir}/python3.6
 %endif
 
 %if 0%{?rhel} == 8
 %global python_base  python38
-%global __python3  %{_bindir}/python3.8
+%global __python3    %{_bindir}/python3.8
 %endif
 
 %if 0%{?rhel} == 9
 %global python_base  python3
-%global __python3  %{_bindir}/python3
+%global __python3    %{_bindir}/python3
 %endif
 
-%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
-%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
+%global python_ver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(plat_specific=True)" 2>/dev/null)}
 %{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
 
 ################################################################################
@@ -67,12 +67,12 @@ Valgrind, CCache and the like.
 %setup -q
 
 %build
-%py3_build
+%{py3_build}
 
 %install
 rm -rf %{buildroot}
 
-%py3_install
+%{py3_install}
 
 install -dm 0755 %{buildroot}%{rpmmacrodir}
 install -pm 0644 data/macros.%{name} %{buildroot}%{rpmmacrodir}/macros.%{name}

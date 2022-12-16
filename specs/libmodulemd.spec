@@ -4,6 +4,23 @@
 
 ################################################################################
 
+%if 0%{?rhel} == 7
+%global python_base  python36
+%global __python3    %{_bindir}/python3.6
+%endif
+
+%if 0%{?rhel} == 8
+%global python_base  python38
+%global __python3    %{_bindir}/python3.8
+%endif
+
+%if 0%{?rhel} == 9
+%global python_base  python3
+%global __python3    %{_bindir}/python3
+%endif
+
+################################################################################
+
 %global _vpath_srcdir   .
 %global _vpath_builddir %{_target_platform}
 
@@ -25,7 +42,7 @@ BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -
 BuildRequires:      gcc gcc-c++ meson glib2-doc rpm-devel rpm-libs file-devel
 BuildRequires:      pkgconfig(gobject-2.0) pkgconfig(gobject-introspection-1.0)
 BuildRequires:      pkgconfig(yaml-0.1) pkgconfig(gtk-doc)
-BuildRequires:      valgrind clang python36-gobject-devel epel-rpm-macros
+BuildRequires:      valgrind clang %{python_base}-gobject-devel epel-rpm-macros
 
 Provides:           %{name} = %{version}-%{release}
 
@@ -57,23 +74,22 @@ Development files for libmodulemd.
 %setup -qn modulemd-%{version}
 
 %build
-%meson
-
-%meson_build
+%{meson}
+%{meson_build}
 
 %install
 rm -rf %{buildroot}
 
-%meson_install
+%{meson_install}
+
+%clean
+rm -rf %{buildroot}
 
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

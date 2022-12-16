@@ -1,14 +1,22 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 Summary:         Metalink library written in C
 Name:            libmetalink
 Version:         0.1.3
-Release:         0%{?dist}
+Release:         1%{?dist}
 Group:           System Environment/Libraries
 License:         MIT
 URL:             https://launchpad.net/libmetalink
 
 Source0:         https://launchpad.net/libmetalink/trunk/%{name}-%{version}/+download/%{name}-%{version}.tar.bz2
+
+Patch0:          https://launchpadlibrarian.net/380798344/0001-fix-covscan-issues.patch
+
+Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -36,7 +44,11 @@ Files needed for building applications with libmetalink.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
+
+%patch0 -p1
 
 %build
 %configure --disable-static
@@ -49,14 +61,14 @@ rm -rf %{buildroot}
 
 find %{buildroot} -name *.la -delete
 
+%clean
+rm -rf %{buildroot}
+
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -80,5 +92,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-1
+- Added patch with with fixes for few memory leaks and unchecked allocations
+
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 0.1.3-0
 - Initial build for kaos repository

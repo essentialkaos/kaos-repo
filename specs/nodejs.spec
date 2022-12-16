@@ -34,29 +34,34 @@
 
 ################################################################################
 
-Summary:            Platform for server side programming on JavaScript
-Name:               nodejs
-Version:            12.16.3
-Release:            0%{?dist}
-License:            MIT
-Group:              Development/Tools
-URL:                https://nodejs.org
+Summary:        Platform for server side programming on JavaScript
+Name:           nodejs
+Version:        18.12.1
+Release:        0%{?dist}
+License:        MIT
+Group:          Development/Tools
+URL:            https://nodejs.org
 
-Source0:            https://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
+Source0:        https://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           zlib
+Requires:       zlib
 
-BuildRequires:      make python openssl-devel zlib-devel
-BuildRequires:      devtoolset-9-gcc-c++ devtoolset-9-libstdc++-devel
+BuildRequires:  make python3 openssl-devel zlib-devel
 
-Provides:           %{name} = %{version}-%{release}
-Provides:           %{shortname} = %{version}-%{release}
-Provides:           %{name}(engine) = %{version}-%{release}
-Provides:           npm = %{version}-%{release}
+%if 0%{?rhel} <= 7
+BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-libstdc++-devel
+%else
+BuildRequires:  gcc-c++ libstdc++-devel
+%endif
+
+Provides:       %{name} = %{version}-%{release}
+Provides:       %{shortname} = %{version}-%{release}
+Provides:       %{name}(engine) = %{version}-%{release}
+Provides:       npm = %{version}-%{release}
 
 ################################################################################
 
@@ -88,8 +93,10 @@ This package provides the header files for nodejs.
 %setup -qn %{shortname}-v%{version}
 
 %build
+%if 0%{?rhel} <= 7
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
+%endif
 
 %{_configure} --prefix=%{_prefix} \
               --shared-zlib \
@@ -100,8 +107,10 @@ export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 %install
 rm -rf %{buildroot}
 
+%if 0%{?rhel} <= 7
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
+%endif
 
 %{make_install}
 
@@ -116,6 +125,7 @@ rm -rf %{buildroot}
 %{_bindir}/%{shortname}
 %{_bindir}/npm
 %{_bindir}/npx
+%{_bindir}/corepack
 %{_docdir}/%{shortname}/gdbinit
 %{_docdir}/%{shortname}/lldb*
 %{_mandir}/man1/%{shortname}.1.gz
@@ -129,48 +139,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Fri May 29 2020 Anton Novojilov <andy@essentialkaos.com> - 12.16.3-0
-- Updated to the latest stable release
-- Using GCC from devtoolset-9 for build
-
-* Thu Feb 06 2020 Anton Novojilov <andy@essentialkaos.com> - 12.15.0-0
-- Updated to the latest stable release
-
-* Fri Jan 17 2020 Anton Novojilov <andy@essentialkaos.com> - 12.14.1-0
-- Updated to the latest stable release
-
-* Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 10.16.3-0
-- Updated to the latest stable release
-
-* Fri Mar 01 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.2-0
-- Updated to the latest stable release
-
-* Fri Mar 01 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.1-0
-- Updated to the latest stable release
-
-* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 10.15.0-0
-- Updated to the latest stable release
-
-* Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 10.13.0-0
-- Updated to the latest stable release
-
-* Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 8.12.0-0
-- Updated to the latest stable release
-
-* Thu Jun 21 2018 Anton Novojilov <andy@essentialkaos.com> - 8.11.3-0
-- Updated to the latest stable release
-
-* Tue Apr 03 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-1
-- Using GCC from devtoolset-3 for build
-
-* Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 8.10.0-0
-- Updated to the latest stable release
-
-* Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 8.9.4-0
-- Updated to the latest stable release
-
-* Tue Feb 06 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-1
-- Add nodejs(engine) provides tag
-
-* Thu Nov 16 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 8.9.1-0
-- Initial build for 8.x
+* Thu Dec 15 2022 Anton Novojilov <andy@essentialkaos.com> - 18.12.1-0
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.12.1

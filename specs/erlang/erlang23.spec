@@ -1,6 +1,7 @@
 ################################################################################
 
 # rpmbuilder:qa-rpaths 0x0001,0x0002
+# rpmbuilder:exclude-package jre* jdk*
 
 ################################################################################
 
@@ -8,124 +9,103 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
-%define __sysctl          %{_bindir}/systemctl
+%define _posixroot  /
+%define _lib32      %{_posixroot}lib
+%define __sysctl    %{_bindir}/systemctl
 
 ################################################################################
 
-%define _disable_ld_no_undefined 1
+%define _disable_ld_no_undefined  1
 
 ################################################################################
 
-%define elibdir           %{_libdir}/erlang/lib
-%define eprefix           %{_prefix}%{_lib32}
-%define ver_maj           23
-%define ver_min           3
-%define ver_patch         4.18
-%define ver_suffix        %{ver_min}.%{ver_patch}
-%define ver_string        %{ver_maj}.%{ver_suffix}
-%define realname          erlang
+%define elibdir     %{_libdir}/erlang/lib
+%define eprefix     %{_prefix}%{_lib32}
+%define ver_maj     23
+%define ver_min     3
+%define ver_patch   4.18
+%define ver_suffix  %{ver_min}.%{ver_patch}
+%define ver_string  %{ver_maj}.%{ver_suffix}
+%define realname    erlang
 
-%define libre_ver         3.4.3
+%define libre_ver   3.4.3
 
 ################################################################################
 
-Summary:           General-purpose programming language and runtime environment
-Name:              %{realname}%{ver_maj}
-Version:           %{ver_suffix}
-Release:           0%{?dist}
-Group:             Development/Tools
-License:           MPL
-URL:               https://www.erlang.org
+Summary:        General-purpose programming language and runtime environment
+Name:           %{realname}%{ver_maj}
+Version:        %{ver_suffix}
+Release:        0%{?dist}
+Group:          Development/Tools
+License:        MPL
+URL:            https://www.erlang.org
 
-Source0:           https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
-Source1:           https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
-Source2:           https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
-Source3:           epmd.service
-Source4:           epmd.socket
-Source5:           epmd@.service
-Source6:           epmd@.socket
+Source0:        https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
+Source1:        https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
+Source2:        https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
+Source3:        epmd.service
+Source4:        epmd.socket
+Source5:        epmd@.service
+Source6:        epmd@.socket
 
-Source10:          https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
+Source10:       https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-%{libre_ver}.tar.gz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-Patch0:            %{realname}%{ver_maj}-libressl-compat.patch
+Patch0:         %{realname}%{ver_maj}-libressl-compat.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     ncurses-devel unixODBC-devel tcl-devel make
-BuildRequires:     tk-devel flex bison gd-devel gd-devel wxGTK-devel libxslt
-BuildRequires:     valgrind-devel fop java-1.8.0-openjdk-devel
-BuildRequires:     lksctp-tools-devel autoconf
+BuildRequires:  ncurses-devel unixODBC-devel tcl-devel make
+BuildRequires:  tk-devel flex bison gd-devel gd-devel libxslt
+BuildRequires:  valgrind-devel java-1.8.0-openjdk-devel
+BuildRequires:  lksctp-tools-devel autoconf
 
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-binutils
+%if 0%{?rhel} <= 7
+BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-binutils
+%else
+BuildRequires:  gcc-c++
+%endif
 
-Requires:          tk tcl
+Requires:       tk tcl
 
-Requires:          %{name}-base = %{version}-%{release}
-Requires:          %{name}-common_test = %{version}
-Requires:          %{name}-compiler = %{version}
-Requires:          %{name}-crypto = %{version}
-Requires:          %{name}-debugger = %{version}
-Requires:          %{name}-dialyzer = %{version}
-Requires:          %{name}-diameter = %{version}
-Requires:          %{name}-edoc = %{version}
-Requires:          %{name}-eldap = %{version}
-Requires:          %{name}-erl_docgen = %{version}
-Requires:          %{name}-erl_interface = %{version}
-Requires:          %{name}-et = %{version}
-Requires:          %{name}-eunit = %{version}
-Requires:          %{name}-ftp = %{version}
-Requires:          %{name}-hipe = %{version}
-Requires:          %{name}-inets = %{version}
-Requires:          %{name}-mnesia = %{version}
-Requires:          %{name}-observer = %{version}
-Requires:          %{name}-os_mon = %{version}
-Requires:          %{name}-parsetools = %{version}
-Requires:          %{name}-public_key = %{version}
-Requires:          %{name}-reltool = %{version}
-Requires:          %{name}-runtime_tools = %{version}
-Requires:          %{name}-snmp = %{version}
-Requires:          %{name}-ssh = %{version}
-Requires:          %{name}-ssl = %{version}
-Requires:          %{name}-syntax_tools = %{version}
-Requires:          %{name}-tools = %{version}
-Requires:          %{name}-tftp = %{version}
-Requires:          %{name}-typer = %{version}
-Requires:          %{name}-xmerl = %{version}
+Requires:       %{name}-base = %{version}-%{release}
+Requires:       %{name}-common_test = %{version}
+Requires:       %{name}-compiler = %{version}
+Requires:       %{name}-crypto = %{version}
+Requires:       %{name}-debugger = %{version}
+Requires:       %{name}-dialyzer = %{version}
+Requires:       %{name}-diameter = %{version}
+Requires:       %{name}-edoc = %{version}
+Requires:       %{name}-eldap = %{version}
+Requires:       %{name}-erl_docgen = %{version}
+Requires:       %{name}-erl_interface = %{version}
+Requires:       %{name}-et = %{version}
+Requires:       %{name}-eunit = %{version}
+Requires:       %{name}-ftp = %{version}
+Requires:       %{name}-hipe = %{version}
+Requires:       %{name}-inets = %{version}
+Requires:       %{name}-mnesia = %{version}
+Requires:       %{name}-observer = %{version}
+Requires:       %{name}-os_mon = %{version}
+Requires:       %{name}-parsetools = %{version}
+Requires:       %{name}-public_key = %{version}
+Requires:       %{name}-reltool = %{version}
+Requires:       %{name}-runtime_tools = %{version}
+Requires:       %{name}-snmp = %{version}
+Requires:       %{name}-ssh = %{version}
+Requires:       %{name}-ssl = %{version}
+Requires:       %{name}-syntax_tools = %{version}
+Requires:       %{name}-tools = %{version}
+Requires:       %{name}-tftp = %{version}
+Requires:       %{name}-typer = %{version}
+Requires:       %{name}-xmerl = %{version}
 
-Provides:          %{name} = %{version}-%{release}
-Provides:          %{realname} = %{ver_string}-%{release}
+Provides:       %{name} = %{version}-%{release}
+Provides:       %{realname} = %{ver_string}-%{release}
 
-Conflicts:         erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
-Conflicts:         erlang20 erlang21 erlang22
+Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
+Conflicts:      erlang20 erlang21 erlang22 erlang24 erlang25
 
 ################################################################################
 
@@ -142,47 +122,47 @@ Summary:  Erlang bundle
 License:  MPL
 Group:    Development/Tools
 
-Requires: %{name} = %{version}-%{release}
-Requires: %{name}-base = %{version}-%{release}
-Requires: %{name}-asn1 = %{version}
-Requires: %{name}-common_test = %{version}
-Requires: %{name}-compiler = %{version}
-Requires: %{name}-crypto = %{version}
-Requires: %{name}-debugger = %{version}
-Requires: %{name}-dialyzer = %{version}
-Requires: %{name}-diameter = %{version}
-Requires: %{name}-edoc = %{version}
-Requires: %{name}-eldap = %{version}
-Requires: %{name}-emacs = %{version}
-Requires: %{name}-erl_docgen = %{version}
-Requires: %{name}-erl_interface = %{version}
-Requires: %{name}-et = %{version}
-Requires: %{name}-eunit = %{version}
-Requires: %{name}-ftp = %{version}
-Requires: %{name}-hipe = %{version}
-Requires: %{name}-inets = %{version}
-Requires: %{name}-jinterface = %{version}
-Requires: %{name}-megaco = %{version}
-Requires: %{name}-mnesia = %{version}
-Requires: %{name}-observer = %{version}
-Requires: %{name}-odbc = %{version}
-Requires: %{name}-os_mon = %{version}
-Requires: %{name}-parsetools = %{version}
-Requires: %{name}-public_key = %{version}
-Requires: %{name}-reltool = %{version}
-Requires: %{name}-runtime_tools = %{version}
-Requires: %{name}-snmp = %{version}
-Requires: %{name}-ssh = %{version}
-Requires: %{name}-ssl = %{version}
-Requires: %{name}-syntax_tools = %{version}
-Requires: %{name}-tftp = %{version}
-Requires: %{name}-tools = %{version}
-Requires: %{name}-typer = %{version}
-Requires: %{name}-wx = %{version}
-Requires: %{name}-xmerl = %{version}
+Requires:  %{name} = %{version}-%{release}
+Requires:  %{name}-base = %{version}-%{release}
+Requires:  %{name}-asn1 = %{version}
+Requires:  %{name}-common_test = %{version}
+Requires:  %{name}-compiler = %{version}
+Requires:  %{name}-crypto = %{version}
+Requires:  %{name}-debugger = %{version}
+Requires:  %{name}-dialyzer = %{version}
+Requires:  %{name}-diameter = %{version}
+Requires:  %{name}-edoc = %{version}
+Requires:  %{name}-eldap = %{version}
+Requires:  %{name}-emacs = %{version}
+Requires:  %{name}-erl_docgen = %{version}
+Requires:  %{name}-erl_interface = %{version}
+Requires:  %{name}-et = %{version}
+Requires:  %{name}-eunit = %{version}
+Requires:  %{name}-ftp = %{version}
+Requires:  %{name}-hipe = %{version}
+Requires:  %{name}-inets = %{version}
+Requires:  %{name}-jinterface = %{version}
+Requires:  %{name}-megaco = %{version}
+Requires:  %{name}-mnesia = %{version}
+Requires:  %{name}-observer = %{version}
+Requires:  %{name}-odbc = %{version}
+Requires:  %{name}-os_mon = %{version}
+Requires:  %{name}-parsetools = %{version}
+Requires:  %{name}-public_key = %{version}
+Requires:  %{name}-reltool = %{version}
+Requires:  %{name}-runtime_tools = %{version}
+Requires:  %{name}-snmp = %{version}
+Requires:  %{name}-ssh = %{version}
+Requires:  %{name}-ssl = %{version}
+Requires:  %{name}-syntax_tools = %{version}
+Requires:  %{name}-tftp = %{version}
+Requires:  %{name}-tools = %{version}
+Requires:  %{name}-typer = %{version}
+Requires:  %{name}-wx = %{version}
+Requires:  %{name}-xmerl = %{version}
 
-Obsoletes: %{name}-mnesia_session = %{version}-%{release}
-Obsoletes: %{name}-mnemosyne = %{version}-%{release}
+Obsoletes:  %{name}-mnesia_session = %{version}-%{release}
+Obsoletes:  %{name}-mnemosyne = %{version}-%{release}
 
 %description -n %{name}-stack
 Full Erlang bundle.
@@ -200,13 +180,14 @@ Includes the Erlang/OTP graphical libraries.
 Summary:   Erlang architecture independent files
 License:   MPL
 Group:     Development/Tools
-Requires:  lksctp-tools
-Provides:  %{name}-base = %{version}-%{release}
-Obsoletes: %{name}_otp = %{version}-%{release}
-Obsoletes: %{name}-gs_apps = %{version}-%{release}
-Obsoletes: %{name}-otp_libs = %{version}-%{release}
 
-BuildRequires:     systemd systemd-devel
+Requires:   lksctp-tools
+Provides:   %{name}-base = %{version}-%{release}
+Obsoletes:  %{name}_otp = %{version}-%{release}
+Obsoletes:  %{name}-gs_apps = %{version}-%{release}
+Obsoletes:  %{name}-otp_libs = %{version}-%{release}
+
+BuildRequires:  systemd systemd-devel
 
 Requires(post):    systemd
 Requires(preun):   systemd
@@ -228,8 +209,9 @@ Includes the Erlang/OTP graphical libraries.
 Summary:  Erlang header
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
-Provides: %{name}-devel = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
+Provides:  %{name}-devel = %{version}-%{release}
 
 %description -n %{name}-devel
 Erlang headers.
@@ -240,8 +222,9 @@ This package is used to build some library.
 %package -n %{name}-manpages
 Summary:  Erlang man pages
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-manpages
 Documentation for the Erlang programming language in `man` format. This
@@ -253,8 +236,9 @@ the name of the module you want documentation on.
 %package -n %{name}-dialyzer
 Summary:  Static analysis tool
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-dialyzer
 Dialyzer is a static analysis tool that identifies software discrepancies
@@ -266,8 +250,9 @@ Erlang modules or entire (sets of) applications.
 %package -n %{name}-diameter
 Summary:  An implementation of the Diameter protocol as defined by RFC 3588
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-diameter
 An implementation of the Diameter protocol as defined by RFC 3588.
@@ -277,10 +262,11 @@ An implementation of the Diameter protocol as defined by RFC 3588.
 %package -n %{name}-edoc
 Summary:  The Erlang program documentation generator
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
-Requires: %{name}-syntax_tools
-Requires: %{name}-xmerl
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
+Requires:  %{name}-syntax_tools
+Requires:  %{name}-xmerl
 
 %description -n %{name}-edoc
 This module provides the main user interface to EDoc.
@@ -290,11 +276,12 @@ This module provides the main user interface to EDoc.
 %package -n %{name}-eldap
 Summary:  The Erlang LDAP library
 License:  MPL
-Requires: %{name}-asn1 = %{version}-%{release}
-Requires: %{name}-base = %{version}-%{release}
-Requires: %{name}-hipe = %{version}-%{release}
-Requires: %{name}-ssl = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-asn1 = %{version}-%{release}
+Requires:  %{name}-base = %{version}-%{release}
+Requires:  %{name}-hipe = %{version}-%{release}
+Requires:  %{name}-ssl = %{version}-%{release}
 
 %description -n %{name}-eldap
 Eldap is a module which provides a client API to the Lightweight Directory
@@ -305,9 +292,10 @@ Access Protocol (LDAP).
 %package -n %{name}-emacs
 Summary:  Emacs support for The Erlang language
 License:  GPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
-Requires: emacs
+
+Requires:  %{name}-base = %{version}-%{release}
+Requires:  emacs
 
 %description -n %{name}-emacs
 This module provides Erlang support to Emacs.
@@ -317,8 +305,9 @@ This module provides Erlang support to Emacs.
 %package -n %{name}-jinterface
 Summary:  Low level interface to Java
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-jinterface
 The Jinterface package provides a set of tools for communication with
@@ -331,8 +320,9 @@ Erl_Interface library.
 %package -n %{name}-asn1
 Summary:  Provides support for Abstract Syntax Notation One
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-asn1
 Asn1 application contains modules with compile-time and run-time support for
@@ -343,8 +333,9 @@ ASN.1.
 %package -n %{name}-common_test
 Summary:  Portable framework for automatic testing
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-common_test
 A portable Erlang framework for automatic testing.
@@ -354,8 +345,9 @@ A portable Erlang framework for automatic testing.
 %package -n %{name}-compiler
 Summary:  Byte code compiler for Erlang which produces highly compact code
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-compiler
 Compiler application compiles Erlang code to byte-code. The highly compact
@@ -366,8 +358,9 @@ byte-code is executed by the Erlang emulator.
 %package -n %{name}-crypto
 Summary:  Cryptographical support
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-crypto
 Cryptographical support for erlang.
@@ -377,8 +370,9 @@ Cryptographical support for erlang.
 %package -n %{name}-debugger
 Summary:  Debugger for debugging and testing of Erlang programs
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-debugger
 Debugger is a graphical tool which can be used for debugging and testing
@@ -390,8 +384,9 @@ stepped and variable values can be displayed and changed.
 %package -n %{name}-erl_docgen
 Summary:  Documentation generator
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-erl_docgen
 Documentation generator for erlang.
@@ -401,8 +396,9 @@ Documentation generator for erlang.
 %package -n %{name}-erl_interface
 Summary:  Low level interface to C
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-erl_interface
 Low level interface to C for erlang.
@@ -412,8 +408,9 @@ Low level interface to C for erlang.
 %package -n %{name}-et
 Summary:  Event Tracer
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-et
 The Event Tracer (ET) uses the built-in trace mechanism in Erlang and
@@ -424,8 +421,9 @@ provides tools for collection and graphical viewing of trace data.
 %package -n %{name}-eunit
 Summary:  Erlang support for unit testing
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-eunit
 Erlang support for unit testing.
@@ -435,8 +433,9 @@ Erlang support for unit testing.
 %package -n %{name}-ftp
 Summary:  A File Transfer Protocol client
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-ftp
 This module implements a client for file transfer according to a subset of the
@@ -447,8 +446,9 @@ File Transfer Protocol (FTP).
 %package -n %{name}-hipe
 Summary:  High performance erlang
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-hipe
 High-performance erlang.
@@ -458,8 +458,9 @@ High-performance erlang.
 %package -n %{name}-inviso
 Summary:  Erlang trace tool
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-inviso
 An Erlang trace tool.
@@ -469,8 +470,9 @@ An Erlang trace tool.
 %package -n %{name}-inets
 Summary:  Set of services such as a Web server and a ftp client etc
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-inets
 Inets is a container for Internet clients and servers. Currently a HTTP
@@ -483,8 +485,9 @@ a Web server.
 %package -n %{name}-megaco
 Summary:  Framework for building applications on top of the Megaco/H.248 protocol
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-megaco
 Megaco/H.248 is a protocol for control of elements in a physically decomposed
@@ -495,8 +498,9 @@ multimedia gateway, enabling separation of call control from media conversion.
 %package -n %{name}-mnesia
 Summary:  Heavy duty real-time distributed database
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-mnesia
 Mnesia is a distributed DataBase Management System (DBMS), appropriate for
@@ -508,8 +512,9 @@ continuous operation and exhibit soft real-time properties.
 %package -n %{name}-observer
 Summary:  Observer, tools for tracing and investigation of distributed systems
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-observer
 The OBSERVER application contains tools for tracing and investigation of
@@ -520,8 +525,9 @@ distributed systems.
 %package -n %{name}-odbc
 Summary:  Interface to relational SQL-databases built on ODBC
 License:  MPL
-Requires:   %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:   %{name}-base = %{version}-%{release}
 
 %description -n %{name}-odbc
 The ODBC application is an interface to relational SQL-databases built
@@ -532,8 +538,9 @@ on ODBC (Open Database).
 %package -n %{name}-os_mon
 Summary:  Monitor which allows inspection of the underlying operating system
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-os_mon
 The operating system monitor OS_Mon monitors operating system disk and memory
@@ -544,8 +551,9 @@ usage etc.
 %package -n %{name}-parsetools
 Summary:  Set of parsing and lexical analysis tools
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-parsetools
 The Parsetools application contains utilities for parsing, e.g. the yecc
@@ -558,8 +566,9 @@ a parser as output.
 %package -n %{name}-public_key
 Summary:  Erlang API to public key infrastructure
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-public_key
 Erlang API to public key infrastructure.
@@ -570,7 +579,8 @@ Erlang API to public key infrastructure.
 Summary:  A release management tool for Erlang
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-reltool
 It analyses a given Erlang/OTP installation and determines various
@@ -584,8 +594,9 @@ generation of customized target systems.
 %package -n %{name}-runtime_tools
 Summary:  Runtime tools, tools to include in a production system
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-runtime_tools
 Runtime tools, tools to include in a production system.
@@ -595,8 +606,9 @@ Runtime tools, tools to include in a production system.
 %package -n %{name}-snmp
 Summary:  Simple Network Management Protocol (SNMP) support
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-snmp
 A multilingual Simple Network Management Protocol Extensible Agent, featuring
@@ -607,8 +619,9 @@ a MIB compiler and facilities for implementing SNMP MIBs etc.
 %package -n %{name}-ssh
 Summary:  Secure Shell application with ssh and sftp support
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-ssh
 Secure Shell application with ssh and sftp support.
@@ -618,8 +631,9 @@ Secure Shell application with ssh and sftp support.
 %package -n %{name}-ssl
 Summary:  Interface to UNIX BSD sockets with Secure Sockets Layer
 License:  MPL
-Requires: %{name}-base = %{version}-%{release}
 Group:    Development/Tools
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-ssl
 The SSL application provides secure communication over sockets.
@@ -630,7 +644,8 @@ The SSL application provides secure communication over sockets.
 Summary:  Set of modules for working with Erlang source code
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-syntax_tools
 This package defines an abstract datatype that is compatible with the
@@ -644,7 +659,8 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 Summary:  Trivial FTP
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-tftp
 Trivial FTP.
@@ -655,7 +671,8 @@ Trivial FTP.
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-tools
 The Tools application contains a number of stand-alone tools, which are
@@ -667,7 +684,8 @@ useful when developing Erlang programs.
 Summary:  Type annotator of Erlang code
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-typer
 A type annotator of Erlang code.
@@ -678,7 +696,8 @@ A type annotator of Erlang code.
 Summary:  Graphic system for Erlang
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-wx
 A Graphics System used to write platform independent user interfaces
@@ -690,7 +709,8 @@ for Erlang.
 Summary:  XML processing tools
 License:  MPL
 Group:    Development/Tools
-Requires: %{name}-base = %{version}-%{release}
+
+Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-xmerl
 Implements a set of tools for processing XML documents, as well as working
@@ -711,14 +731,14 @@ tar xzvf %{SOURCE10}
 %patch0 -p1
 
 %build
-
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
-
-# Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
-
 export BUILDDIR=$(pwd)
+
+%if 0%{?rhel} <= 7
+# Use gcc and gcc-c++ from DevToolSet 11
+export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
+%endif
 
 ### Static LibreSSL build start ###
 
@@ -1046,26 +1066,26 @@ rm -rf %{buildroot}
 
 %changelog
 * Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 23.3.4.18-0
-- Updated to the latest release
+- https://github.com/erlang/otp/releases/tag/OTP-23.3.4.18
 - LibreSSL updated to 3.4.3
 
 * Wed Dec 22 2021 Anton Novojilov <andy@essentialkaos.com> - 23.3.4.10-0
-- Updated to the latest release
+- https://github.com/erlang/otp/releases/tag/OTP-23.3.4.10
 - LibreSSL updated to 3.4.2
 
 * Thu Sep 30 2021 Anton Novojilov <andy@essentialkaos.com> - 23.3.4.5-0
-- Updated to the latest release
+- https://github.com/erlang/otp/releases/tag/OTP-23.3.4.5
 - LibreSSL updated to 3.4.0
 
 * Tue Jul 20 2021 Anton Novojilov <andy@essentialkaos.com> - 23.3.4.4-0
-- Updated to the latest release
+- https://github.com/erlang/otp/releases/tag/OTP-23.3.4.4
 - LibreSSL updated to 3.3.3
 
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 23.1.2-0
-- Updated to the latest release
+- - https://github.com/erlang/otp/releases/tag/OTP-23.1.2
 
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.3-0
-- Updated to the latest release
+- - https://github.com/erlang/otp/releases/tag/OTP-23.0.3
 
 * Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.1-0
 - Initial build for kaos repository

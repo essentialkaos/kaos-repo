@@ -18,7 +18,7 @@ Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc gcc-c++ freetype-devel
+BuildRequires:      make gcc gcc-c++ zlib-devel freetype-devel
 
 Requires:           zlib
 

@@ -6,7 +6,7 @@
 
 Summary:         Library providing BSD-compatible functions for portability
 Name:            libbsd
-Version:         0.11.6
+Version:         0.11.7
 Release:         0%{?dist}
 License:         MIT
 Group:           System Environment/Libraries
@@ -85,14 +85,14 @@ rm -rf %{buildroot}
 
 find %{buildroot}%{_libdir} -name '*.la' -delete
 
+%clean
+rm -rf %{buildroot}
+
 %post
 /sbin/ldconfig
 
 %postun
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 0.11.7-0
+- https://gitlab.freedesktop.org/libbsd/libbsd/-/compare/0.11.6...0.11.7
+
 * Sat Sep 24 2022 Anton Novojilov <andy@essentialkaos.com> - 0.11.6-0
 - https://gitlab.freedesktop.org/libbsd/libbsd/-/compare/0.10.0...0.11.6
 
