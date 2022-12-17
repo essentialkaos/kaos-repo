@@ -36,6 +36,10 @@ High performance TCP and WebSocket load generator and sink
 %setup -qn %{name}-%{version}
 
 %build
+%if 0%{?rhel} == 9
+sed -i 's#sys/sysctl.h#linux/sysctl.h#' src/tcpkali_syslimits.c
+%endif
+
 autoreconf -iv
 
 %{_configure} --prefix=%{_prefix}

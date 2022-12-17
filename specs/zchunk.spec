@@ -8,24 +8,24 @@
 
 ################################################################################
 
-Summary:         A file format designed for highly efficient deltas while maintaining good compression
-Name:            zchunk
-Version:         1.2.3
-Release:         0%{?dist}
-License:         BSD and MIT
-Group:           Development/Libraries
-URL:             https://github.com/zchunk/zchunk
+Summary:        A file format designed for highly efficient deltas while maintaining good compression
+Name:           zchunk
+Version:        1.2.3
+Release:        0%{?dist}
+License:        BSD and MIT
+Group:          Development/Libraries
+URL:            https://github.com/zchunk/zchunk
 
-Source0:         https://github.com/zchunk/%{name}/archive/refs/tags/%{version}.tar.gz
+Source0:        https://github.com/zchunk/%{name}/archive/refs/tags/%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   gcc meson epel-rpm-macros
-BuildRequires:   libcurl-devel openssl-devel libzstd-devel
+BuildRequires:  gcc meson epel-rpm-macros
+BuildRequires:  libcurl-devel openssl-devel libzstd-devel
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -40,8 +40,8 @@ downloaded is in fact the file you wanted.
 
 %package libs
 
-Summary:         Zchunk library
-Group:           Development/Libraries
+Summary:  Zchunk library
+Group:    Development/Libraries
 
 %description libs
 zchunk is a compressed file format that splits the file into independent
@@ -56,11 +56,11 @@ This package contains the zchunk library, libzck.
 
 %package devel
 
-Summary:         Headers for building against zchunk
-Group:           Development/Libraries
+Summary:  Headers for building against zchunk
+Group:    Development/Libraries
 
-Requires:        %{name}-libs = %{version}-%{release}
-Requires:        pkgconfig(libzstd) pkgconfig(libcurl) pkgconfig(openssl)
+Requires:  %{name}-libs = %{version}-%{release}
+Requires:  pkgconfig(libzstd) pkgconfig(libcurl) pkgconfig(openssl)
 
 %description devel
 zchunk is a compressed file format that splits the file into independent
@@ -102,14 +102,14 @@ install -pm 0644 contrib/gen_xml_dictionary %{buildroot}%{_libexecdir}/zck_gen_x
 %meson_test
 %endif
 
+%clean
+rm -rf %{buildroot}
+
 %post libs
 /sbin/ldconfig
 
 %postun libs
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

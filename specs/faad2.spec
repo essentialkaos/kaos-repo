@@ -37,8 +37,8 @@ FAAD2 is licensed under the GPL.
 ################################################################################
 
 %package -n libfaad2
-Summary:   Libraries for faad2
-Group:     Development/Libraries
+Summary:  Libraries for faad2
+Group:    Development/Libraries
 
 Requires:  %{name} = %{version}
 
@@ -48,8 +48,8 @@ Libraries from faad2 that are needed to build programs that use it.
 ################################################################################
 
 %package -n libfaad2-devel
-Summary:   Header files for faad2
-Group:     Development/Libraries
+Summary:  Header files for faad2
+Group:    Development/Libraries
 
 Requires:  %{name} = %{version}
 

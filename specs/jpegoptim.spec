@@ -4,25 +4,25 @@
 
 ################################################################################
 
-Summary:           Utility for optimizing/compressing JPEG files
-Name:              jpegoptim
-Version:           1.5.0
-Release:           0%{?dist}
-License:           GPL
-Group:             Applications/Multimedia
-URL:               https://github.com/tjko/jpegoptim
+Summary:        Utility for optimizing/compressing JPEG files
+Name:           jpegoptim
+Version:        1.5.0
+Release:        0%{?dist}
+License:        GPL
+Group:          Applications/Multimedia
+URL:            https://github.com/tjko/jpegoptim
 
-Source:            https://github.com/tjko/jpegoptim/archive/refs/tags/v%{version}.tar.gz
+Source:         https://github.com/tjko/jpegoptim/archive/refs/tags/v%{version}.tar.gz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc libjpeg-turbo-devel
+BuildRequires:  make gcc libjpeg-turbo-devel
 
-Requires:          libjpeg-turbo
+Requires:       libjpeg-turbo
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

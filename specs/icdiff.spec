@@ -25,27 +25,27 @@
 
 ################################################################################
 
-Summary:           Improved colored diff
-Name:              icdiff
-Version:           2.0.5
-Release:           0%{?dist}
-License:           Python 2.6.2
-Group:             Development/Tools
-URL:               https://www.jefftk.com/icdiff
+Summary:        Improved colored diff
+Name:           icdiff
+Version:        2.0.5
+Release:        0%{?dist}
+License:        Python 2.6.2
+Group:          Development/Tools
+URL:            https://www.jefftk.com/icdiff
 
-Source0:           https://github.com/jeffkaufman/%{name}/archive/release-%{version}.tar.gz
+Source0:        https://github.com/jeffkaufman/%{name}/archive/release-%{version}.tar.gz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildArch:         noarch
+BuildArch:      noarch
 
-Requires:          %{python_base}-setuptools
+Requires:       %{python_base}-setuptools
 
-BuildRequires:     %{python_base}-devel %{python_base}-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

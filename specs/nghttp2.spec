@@ -90,14 +90,14 @@ rm -f %{buildroot}%{_datadir}/doc/nghttp2/README.rst
 rm -fr %{buildroot}%{_datadir}/nghttp2
 rm -fr %{buildroot}%{_mandir}/man1
 
+%clean
+rm -rf %{buildroot}
+
 %post -n libnghttp2
 /sbin/ldconfig
 
 %postun -n libnghttp2
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -114,8 +114,8 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.rst
 %{_includedir}/nghttp2
-%{_libdir}/pkgconfig/libnghttp2.pc
 %{_libdir}/libnghttp2.so
+%{_libdir}/pkgconfig/libnghttp2.pc
 
 ################################################################################
 

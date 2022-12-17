@@ -4,90 +4,53 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _opt              /opt
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-################################################################################
-
 %define use_threads_posix 1
 
-# Require at least the version of libssh2/c-ares that we were built against,
-# to ensure that we have the necessary symbols available (#525002, #642796)
-%define libssh2_version %(pkg-config --modversion libssh2 2>/dev/null || echo 0)
-%define cares_version   %(pkg-config --modversion libcares 2>/dev/null || echo 0)
+%define cares_version    %(pkg-config --modversion libcares 2>/dev/null || echo 0)
+%define nghttp2_version  1.51.0
 
 ################################################################################
 
-Summary:           Utility for getting files from remote servers
-Name:              curl
-Version:           7.84.0
-Release:           0%{?dist}
-License:           MIT
-Group:             Applications/Internet
-URL:               https://curl.haxx.se
+Summary:        Utility for getting files from remote servers
+Name:           curl
+Version:        7.86.0
+Release:        0%{?dist}
+License:        MIT
+Group:          Applications/Internet
+URL:            https://curl.haxx.se
 
-Source0:           https://curl.haxx.se/download/%{name}-%{version}.tar.bz2
+Source0:        https://curl.haxx.se/download/%{name}-%{version}.tar.xz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc libidn2-devel krb5-devel
-BuildRequires:     pkgconfig zlib-devel openldap-devel
-BuildRequires:     libgsasl-devel libssh2-devel >= 1.2
-BuildRequires:     openssh-clients openssh-server stunnel perl
-BuildRequires:     perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(vars)
-BuildRequires:     perl(File::Basename) perl(File::Copy) perl(File::Spec)
-BuildRequires:     perl(IPC::Open2) perl(MIME::Base64) perl(warnings)
-BuildRequires:     perl(strict) perl(Time::Local) perl(Time::HiRes)
-BuildRequires:     libnghttp2-devel nghttp2 libpsl-devel libzstd-devel
-BuildRequires:     libzstd-devel brotli-devel openssl-devel
+BuildRequires:  make gcc libidn2-devel krb5-devel
+BuildRequires:  pkgconfig zlib-devel openldap-devel
+BuildRequires:  openssh-clients openssh-server stunnel perl
+BuildRequires:  perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(vars)
+BuildRequires:  perl(File::Basename) perl(File::Copy) perl(File::Spec)
+BuildRequires:  perl(IPC::Open2) perl(MIME::Base64) perl(warnings)
+BuildRequires:  perl(strict) perl(Time::Local) perl(Time::HiRes)
+BuildRequires:  libpsl-devel libzstd-devel libzstd-devel brotli-devel
+BuildRequires:  openssl-devel libnghttp2-devel >= %{nghttp2_version}
 
 %if 0%{?rhel} <= 7
-BuildRequires:     python
+BuildRequires:  python
 %else
-BuildRequires:     python3
+BuildRequires:  python3
 %endif
 
 %if ! %{use_threads_posix}
-BuildRequires:     c-ares-devel >= 1.6.0
+BuildRequires:  c-ares-devel >= 1.6.0
 %endif
 
-Requires:          c-ares libnghttp2 >= 1.16.0
-Requires:          libcurl%{?_isa} = %{version}-%{release}
-Requires:          %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
+Requires:       c-ares libnghttp2 >= %{nghttp2_version}
+Requires:       libcurl%{?_isa} = %{version}-%{release}
+Requires:       %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
 
-Provides:          webclient = %{version}-%{release}
-Provides:          %{name} = %{version}-%{release}
+Provides:       webclient = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -102,14 +65,13 @@ resume, proxy tunneling and a busload of other useful tricks.
 ################################################################################
 
 %package -n libcurl
-Summary:           A library for getting files from web servers
-Group:             System Environment/Libraries
+Summary:  A library for getting files from web servers
+Group:    System Environment/Libraries
 
-Requires:          libssh2%{?_isa} >= %{libssh2_version}
-Requires:          libnghttp2 >= 1.16.0
+Requires:  libnghttp2 >= %{nghttp2_version}
 
 %if ! %{use_threads_posix}
-Requires:          c-ares%{?_isa} >= %{cares_version}
+Requires:  c-ares%{?_isa} >= %{cares_version}
 %endif
 
 %description -n libcurl
@@ -123,16 +85,16 @@ resume, HTTP proxy tunneling and more.
 ################################################################################
 
 %package -n libcurl-devel
-Summary:           Files needed for building applications with libcurl
-Group:             Development/Libraries
+Summary:  Files needed for building applications with libcurl
+Group:    Development/Libraries
 
-Requires:          libcurl%{?_isa} = %{version}-%{release}
-Requires:          openssl-devel libssh2-devel
+Requires:  libcurl%{?_isa} = %{version}-%{release}
+Requires:  openssl-devel libnghttp2-devel >= %{nghttp2_version}
 
-Provides:          curl-devel = %{version}-%{release}
-Provides:          curl-devel%{?_isa} = %{version}-%{release}
+Provides:  curl-devel = %{version}-%{release}
+Provides:  curl-devel%{?_isa} = %{version}-%{release}
 
-Obsoletes:         curl-devel < %{version}-%{release}
+Obsoletes:  curl-devel < %{version}-%{release}
 
 %description -n libcurl-devel
 The libcurl-devel package includes header files and libraries necessary for
@@ -170,7 +132,6 @@ fi
         --with-brotli \
         --with-zstd \
         --with-libpsl \
-        --with-libssh2 \
         --enable-manual \
         --disable-static
 
@@ -230,158 +191,164 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 17 2022 Anton Novojilov <andy@essentialkaos.com> - 7.86.0-0
+- https://curl.se/changes.html#7_86_0
+
+* Sat Dec 17 2022 Anton Novojilov <andy@essentialkaos.com> - 7.85.0-0
+- https://curl.se/changes.html#7_85_0
+
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.84.0-0
-- Changes: https://curl.se/changes.html#7_84_0
+- https://curl.se/changes.html#7_84_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.83.1-0
-- Changes: https://curl.se/changes.html#7_83_1
+- https://curl.se/changes.html#7_83_1
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.83.0-0
-- Changes: https://curl.se/changes.html#7_83_0
+- https://curl.se/changes.html#7_83_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.82.0-0
-- Changes: https://curl.se/changes.html#7_82_0
+- https://curl.se/changes.html#7_82_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.81.0-0
-- Changes: https://curl.se/changes.html#7_81_0
+- https://curl.se/changes.html#7_81_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.80.0-0
-- Changes: https://curl.se/changes.html#7_80_0
+- https://curl.se/changes.html#7_80_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.79.1-0
-- Changes: https://curl.se/changes.html#7_79_1
+- https://curl.se/changes.html#7_79_1
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.79.0-0
-- Changes: https://curl.se/changes.html#7_79_0
+- https://curl.se/changes.html#7_79_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.78.0-0
-- Changes: https://curl.se/changes.html#7_78_0
+- https://curl.se/changes.html#7_78_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.77.0-0
-- Changes: https://curl.se/changes.html#7_77_0
+- https://curl.se/changes.html#7_77_0
 
 * Tue Aug 23 2022 Anton Novojilov <andy@essentialkaos.com> - 7.76.1-0
-- Changes: https://curl.se/changes.html#7_76_1
+- https://curl.se/changes.html#7_76_1
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.76.0-0
-- Changes: https://curl.se/changes.html#7_76_0
+- https://curl.se/changes.html#7_76_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.75.0-0
-- Changes: https://curl.se/changes.html#7_75_0
+- https://curl.se/changes.html#7_75_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.74.0-0
-- Changes: https://curl.se/changes.html#7_74_0
+- https://curl.se/changes.html#7_74_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.73.0-0
-- Changes: https://curl.se/changes.html#7_73_0
+- https://curl.se/changes.html#7_73_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.72.0-0
-- Changes: https://curl.se/changes.html#7_72_0
+- https://curl.se/changes.html#7_72_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.71.1-0
-- Changes: https://curl.se/changes.html#7_71_1
+- https://curl.se/changes.html#7_71_1
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.71.0-0
-- Changes: https://curl.se/changes.html#7_71_0
+- https://curl.se/changes.html#7_71_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.70.0-0
-- Changes: https://curl.se/changes.html#7_70_0
+- https://curl.se/changes.html#7_70_0
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.69.1-0
-- Changes: https://curl.se/changes.html#7_69_1
+- https://curl.se/changes.html#7_69_1
 
 * Fri Apr 02 2021 Anton Novojilov <andy@essentialkaos.com> - 7.69.0-0
-- Changes: https://curl.se/changes.html#7_69_0
+- https://curl.se/changes.html#7_69_0
 
 * Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 7.68.0-0
-- Changes: https://curl.se/changes.html#7_68_0
+- https://curl.se/changes.html#7_68_0
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 7.67.0-0
-- Changes: https://curl.se/changes.html#7_67_0
+- https://curl.se/changes.html#7_67_0
 
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 7.66.0-0
-- Changes: https://curl.se/changes.html#7_66_0
+- https://curl.se/changes.html#7_66_0
 
 * Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.3-0
-- Changes: https://curl.se/changes.html#7_65_3
+- https://curl.se/changes.html#7_65_3
 
 * Sat Aug 17 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.2-0
-- Changes: https://curl.se/changes.html#7_65_2
+- https://curl.se/changes.html#7_65_2
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.1-0
-- Changes: https://curl.se/changes.html#7_65_1
+- https://curl.se/changes.html#7_65_1
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.65.0-0
-- Changes: https://curl.se/changes.html#7_65_0
+- https://curl.se/changes.html#7_65_0
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.64.1-0
-- Changes: https://curl.se/changes.html#7_64_1
+- https://curl.se/changes.html#7_64_1
 
 * Thu Jul 04 2019 Anton Novojilov <andy@essentialkaos.com> - 7.64.0-0
-- Changes: https://curl.se/changes.html#7_64_0
+- https://curl.se/changes.html#7_64_0
 
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 7.63.0-0
-- Changes: https://curl.se/changes.html#7_63_0
+- https://curl.se/changes.html#7_63_0
 
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 7.62.0-0
-- Changes: https://curl.se/changes.html#7_62_0
+- https://curl.se/changes.html#7_62_0
 
 * Wed Sep 05 2018 Anton Novojilov <andy@essentialkaos.com> - 7.61.1-0
-- Changes: https://curl.se/changes.html#7_61_1
+- https://curl.se/changes.html#7_61_1
 
 * Thu Aug 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.61.0-0
-- Changes: https://curl.se/changes.html#7_61_0
+- https://curl.se/changes.html#7_61_0
 
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 7.60.0-0
-- Changes: https://curl.se/changes.html#7_60_0
+- https://curl.se/changes.html#7_60_0
 
 * Fri Mar 16 2018 Anton Novojilov <andy@essentialkaos.com> - 7.59.0-0
-- Changes: https://curl.se/changes.html#7_59_0
+- https://curl.se/changes.html#7_59_0
 
 * Tue Feb 06 2018 Anton Novojilov <andy@essentialkaos.com> - 7.58.0-0
-- Changes: https://curl.se/changes.html#7_58_0
+- https://curl.se/changes.html#7_58_0
 
 * Wed Nov 29 2017 Anton Novojilov <andy@essentialkaos.com> - 7.57.0-0
-- Changes: https://curl.se/changes.html#7_57_0
+- https://curl.se/changes.html#7_57_0
 
 * Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 7.56.1-0
-- Changes: https://curl.se/changes.html#7_56_1
+- https://curl.se/changes.html#7_56_1
 
 * Mon Oct 23 2017 Anton Novojilov <andy@essentialkaos.com> - 7.56.0-0
-- Changes: https://curl.se/changes.html#7_56_0
+- https://curl.se/changes.html#7_56_0
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 7.55.1-0
-- Changes: https://curl.se/changes.html#7_55_1
+- https://curl.se/changes.html#7_55_1
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 7.55.0-0
-- Changes: https://curl.se/changes.html#7_55_0
+- https://curl.se/changes.html#7_55_0
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 7.54.1-0
-- Changes: https://curl.se/changes.html#7_54_1
+- https://curl.se/changes.html#7_54_1
 
 * Tue May 09 2017 Anton Novojilov <andy@essentialkaos.com> - 7.54.0-0
-- Changes: https://curl.se/changes.html#7_54_0
+- https://curl.se/changes.html#7_54_0
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.53.1-0
-- Changes: https://curl.se/changes.html#7_53_1
+- https://curl.se/changes.html#7_53_1
 
 * Tue Mar 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.53.0-0
-- Changes: https://curl.se/changes.html#7_53_0
+- https://curl.se/changes.html#7_53_0
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.52.1-0
-- Changes: https://curl.se/changes.html#7_52_1
+- https://curl.se/changes.html#7_52_1
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 7.52.0-0
-- Changes: https://curl.se/changes.html#7_52_0
+- https://curl.se/changes.html#7_52_0
 
 * Sat Nov 05 2016 Anton Novojilov <andy@essentialkaos.com> - 7.51.0-0
-- Changes: https://curl.se/changes.html#7_51_0
+- https://curl.se/changes.html#7_51_0
 
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.3-0
-- Changes: https://curl.se/changes.html#7_50_3
+- https://curl.se/changes.html#7_50_3
 
 * Thu Sep 08 2016 Anton Novojilov <andy@essentialkaos.com> - 7.50.2-0
-- Changes: https://curl.se/changes.html#7_50_2
+- https://curl.se/changes.html#7_50_2
 
 * Thu Aug 04 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 7.50.1-0
 - Initial build

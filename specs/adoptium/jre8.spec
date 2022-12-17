@@ -4,54 +4,54 @@
 
 ################################################################################
 
-%define __jar_repack %{nil}
+%define __jar_repack  %{nil}
 
 ################################################################################
 
-%define jdk_major   352
-%define jdk_minor   b08
+%define jdk_major  352
+%define jdk_minor  b08
 
-%define install_dir %{_prefix}/java/%{name}-%{version}
-%define jdk_bin_dir %{install_dir}/bin
-%define jdk_man_dir %{install_dir}/man/man1
+%define install_dir  %{_prefix}/java/%{name}-%{version}
+%define jdk_bin_dir  %{install_dir}/bin
+%define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority 813
+%define alt_priority  813
 
 ################################################################################
 
-Summary:            OpenJDK Runtime Environment (JRE 8)
-Name:               jre8
-Epoch:              1
-Version:            1.8.0.%{jdk_major}
-Release:            %{jdk_minor}%{?dist}
-Group:              Development/Languages
-License:            ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
-URL:                https://adoptium.net
+Summary:      OpenJDK Runtime Environment (JRE 8)
+Name:         jre8
+Epoch:        1
+Version:      1.8.0.%{jdk_major}
+Release:      %{jdk_minor}%{?dist}
+Group:        Development/Languages
+License:      ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
+URL:          https://adoptium.net
 
-Source0:            https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u%{jdk_major}-%{jdk_minor}/OpenJDK8U-jre_x64_linux_hotspot_8u%{jdk_major}%{jdk_minor}.tar.gz
-Source1:            java.sh
+Source0:      https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u%{jdk_major}-%{jdk_minor}/OpenJDK8U-jre_x64_linux_hotspot_8u%{jdk_major}%{jdk_minor}.tar.gz
+Source1:      java.sh
 
-Source100:          checksum.sha512
+Source100:    checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:    %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Conflicts:          java-1.6.0-openjdk-headless
-Conflicts:          java-1.7.0-openjdk-headless
-Conflicts:          java-1.8.0-openjdk-headless
-Conflicts:          java-11-openjdk-headless
-Conflicts:          java-17-openjdk-headless
+Conflicts:    java-1.6.0-openjdk-headless
+Conflicts:    java-1.7.0-openjdk-headless
+Conflicts:    java-1.8.0-openjdk-headless
+Conflicts:    java-11-openjdk-headless
+Conflicts:    java-17-openjdk-headless
 
-AutoProv:           no
-AutoReqProv:        no
+AutoProv:     no
+AutoReqProv:  no
 
-Provides:           jre = 1:1.8.0
-Provides:           jre-lts = 1:1.8.0
-Provides:           java = 1:1.8.0
-Provides:           jre-1.8.0 = 1:%{version}-%{release}
-Provides:           jre-lts-1.8.0 = 1:%{version}-%{release}
-Provides:           java-1.8.0 = 1:%{version}-%{release}
+Provides:     jre = 1:1.8.0
+Provides:     jre-lts = 1:1.8.0
+Provides:     java = 1:1.8.0
+Provides:     jre-1.8.0 = 1:%{version}-%{release}
+Provides:     jre-lts-1.8.0 = 1:%{version}-%{release}
+Provides:     java-1.8.0 = 1:%{version}-%{release}
 
-Provides:           %{name} = %{version}-%{release}
+Provides:     %{name} = %{version}-%{release}
 
 ################################################################################
 
