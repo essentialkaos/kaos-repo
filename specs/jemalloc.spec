@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:            General-purpose scalable concurrent malloc implementation
-Name:               jemalloc
-Version:            5.3.0
-Release:            0%{?dist}
-Group:              System Environment/Libraries
-License:            BSD
-URL:                https://jemalloc.net
+Summary:        General-purpose scalable concurrent malloc implementation
+Name:           jemalloc
+Version:        5.3.0
+Release:        0%{?dist}
+Group:          System Environment/Libraries
+License:        BSD
+URL:            https://jemalloc.net
 
-Source0:            https://github.com/jemalloc/jemalloc/releases/download/%{version}/%{name}-%{version}.tar.bz2
+Source0:        https://github.com/jemalloc/jemalloc/releases/download/%{version}/%{name}-%{version}.tar.bz2
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc make libxslt
+BuildRequires:  gcc make libxslt
 
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -34,12 +34,25 @@ This distribution is the stand-alone "portable" implementation of jemalloc.
 
 ################################################################################
 
+%package binaries
+
+Summary:   Binaries files for jemalloc
+Group:     Development/Libraries
+
+Requires:  %{name} = %{version}-%{release}
+
+%description binaries
+The jemalloc-binaries package contains binaries for developing applications
+that use jemalloc.
+
+################################################################################
+
 %package devel
 
-Summary:        Development files for jemalloc
-Group:          Development/Libraries
+Summary:   Development files for jemalloc
+Group:     Development/Libraries
 
-Requires:       %{name} = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 The jemalloc-devel package contains libraries and header files for
@@ -81,10 +94,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
+%defattr(-,root,root,-)
 %doc COPYING README VERSION
 %doc doc/jemalloc.html
-%defattr(-,root,root,-)
 %{_libdir}/lib%{name}.so.*
+
+%files binaries
+%defattr(-,root,root,-)
 %{_bindir}/%{name}.sh
 %{_bindir}/jeprof
 

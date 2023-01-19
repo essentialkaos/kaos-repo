@@ -44,7 +44,7 @@
 
 Summary:             A small text editor
 Name:                nano
-Version:             7.0
+Version:             7.1
 Release:             0%{?dist}
 License:             GPLv3+
 Group:               Applications/Editors
@@ -146,6 +146,10 @@ fi
 ################################################################################
 
 %changelog
+* Sun Dec 25 2022 Anton Novojilov <andy@essentialkaos.com> - 7.1-0
+- When --autoindent and --breaklonglines are combined, pressing
+  <Enter> at a specific position no longer eats characters.
+
 * Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 7.0-0
 - String binds may contain bindable function names between braces.
   For example, to move the current line down to after the next one:

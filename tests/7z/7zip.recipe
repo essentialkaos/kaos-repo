@@ -1,0 +1,21 @@
+# Bibop recipe for 7zip
+# See more: https://kaos.sh/bibop
+
+pkg 7zip
+
+fast-finish yes
+
+command "-" "Check environment"
+  app 7z
+  app 7zz
+  app 7zzs
+
+command "7z x test.7z" "Unpack test file"
+  exit 0
+  exist test.txt
+  !empty test.txt
+
+command "7z a -mx=1 test2.7z test.txt" "Pack test file"
+  exit 0
+  exist test2.7z
+  !empty test2.7z

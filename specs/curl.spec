@@ -7,7 +7,7 @@
 %define use_threads_posix 1
 
 %define cares_version    %(pkg-config --modversion libcares 2>/dev/null || echo 0)
-%define nghttp2_version  1.51.0
+%define nghttp2_version  %(pkg-config --modversion libnghttp2 2>/dev/null || echo 0)
 
 ################################################################################
 
@@ -36,7 +36,7 @@ BuildRequires:  libpsl-devel libzstd-devel libzstd-devel brotli-devel
 BuildRequires:  openssl-devel libnghttp2-devel >= %{nghttp2_version}
 
 %if 0%{?rhel} <= 7
-BuildRequires:  python
+BuildRequires:  python epel-release
 %else
 BuildRequires:  python3
 %endif
