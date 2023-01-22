@@ -8,7 +8,6 @@ fast-finish yes
 command "-" "Check environment"
   app 7z
   app 7zz
-  app 7zzs
 
 command "7z x test.7z" "Unpack test file"
   exit 0
