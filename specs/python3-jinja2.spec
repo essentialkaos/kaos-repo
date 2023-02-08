@@ -4,29 +4,21 @@
 
 ################################################################################
 
-%if 0%{?rhel} >= 7
-%global python_base python36
-%global __python3   %{_bindir}/python3.6
-%else
-%global python_base python34
-%global __python3   %{_bindir}/python3.4
-%endif
-
-%global pythonver %(%{__python3} -c "import sys; print sys.version[:3]" 2>/dev/null || echo 0.0)
-%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+%global python_ver %(%{__python3} -c "import sys; print('{0}.{1}'.format(sys.version_info.major,sys.version_info.minor))" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" 2>/dev/null)}
 
 ################################################################################
 
-%define package_name      jinja2
+%define package_name  jinja2
 
 # Fix for https://github.com/pallets/jinja/issues/653
-%global _python_bytecompile_errors_terminate_build 0
+%global _python_bytecompile_errors_terminate_build  0
 
 ################################################################################
 
 Summary:        Sandboxed template engine
-Name:           %{python_base}-jinja2
+Name:           python3-jinja2
 Version:        2.10.3
 Release:        0%{?dist}
 License:        BSD
@@ -41,11 +33,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildArch:      noarch
 
-BuildRequires:  %{python_base}-devel %{python_base}-setuptools
+BuildRequires:  python3-devel python3-setuptools
 
-Requires:       %{python_base} %{python_base}-markupsafe
+Requires:       python3 python3-markupsafe
 
-Provides:       %{name} = %{verion}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -63,12 +55,12 @@ templates and python code.
 %setup -qn jinja-%{version}
 
 %build
-%{__python3} setup.py build
+%{py3_build}
 
 %install
 rm -rf %{buildroot}
 
-%{__python3} setup.py install --prefix=%{_prefix} --root=%{buildroot}
+%{py3_install}
 
 %clean
 rm -rf %{buildroot}

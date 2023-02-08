@@ -4,69 +4,37 @@
 
 ################################################################################
 
-%{!?python_sitelib: %global python_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+%global python_ver %(%{__python3} -c "import sys; print('{0}.{1}'.format(sys.version_info.major,sys.version_info.minor))" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" 2>/dev/null)}
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+%global pkgname  certifi
 
 ################################################################################
 
-%global pkgname certifi
+Summary:        Python package for providing Mozilla's CA Bundle
+Name:           python3-%{pkgname}
+Version:        2022.12.07
+Release:        0%{?dist}
+License:        MPLv2.0
+Group:          Development/Libraries
+URL:            https://github.com/certifi/python-certifi
 
-################################################################################
+Source0:        https://github.com/certifi/python-%{pkgname}/archive/%{version}.tar.gz
 
-Summary:            Python package for providing Mozilla's CA Bundle
-Name:               python-%{pkgname}
-Version:            2019.11.28
-Release:            0%{?dist}
-License:            MPLv2.0
-Group:              Development/Libraries
-URL:                https://github.com/certifi/python-certifi
+Source100:      checksum.sha512
 
-Source0:            https://github.com/certifi/%{name}/archive/%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source100:          checksum.sha512
+BuildArch:      noarch
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  python3-devel python3-setuptools
 
-BuildArch:          noarch
+Requires:       python3 ca-certificates
 
-BuildRequires:      python-setuptools
-
-Requires:           ca-certificates
-
-Provides:           %{name} = %{version}-%{release}
-Provides:           python2-%{pkgname} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -80,17 +48,17 @@ the identity of TLS hosts. It has been extracted from the Requests project.
 %prep
 %{crc_check}
 
-%setup -qn %{name}-%{version}
+%setup -qn python-%{pkgname}-%{version}
 
 rm -rf %{pkgname}.egg-info
 
 %build
-python setup.py build
+%{py3_build}
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{py3_install}
 
 %clean
 rm -rf %{buildroot}
@@ -100,13 +68,19 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc LICENSE README.rst
-%{python_sitelib}/*
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
+* Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2022.12.07-0
+- Updated to the latest release
+
 * Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 2019.11.28-0
 - Updated to the latest release
+
+* Thu Apr 11 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.11.29-1
+- Updated for compatibility with Python 3.6
 
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2018.11.29-0
 - Updated to the latest release
