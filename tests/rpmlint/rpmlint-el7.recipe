@@ -1,0 +1,22 @@
+# Bibop recipe for rpmlint
+# See more: https://kaos.sh/bibop
+
+pkg rpmlint
+
+fast-finish yes
+
+command "-" "Check environment"
+  app rpmlint
+  app rpmdiff
+
+command "rpmlint test1.spec" "Check well-formated spec"
+  exit 0
+  output-contains "0 packages and 1 specfiles checked; 0 errors, 0 warnings."
+
+command "rpmlint test2.spec" "Check spec with warnings"
+  exit 0
+  output-contains "W: invalid-url Source0: abcd.tar.gz"
+
+command "rpmlint test3.spec" "Check spec with errors"
+  exit 0
+  output-contains "error: line 23: Unknown tag: %descriptionZ"
