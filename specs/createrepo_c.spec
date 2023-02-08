@@ -18,8 +18,9 @@
 
 %global __python3  %{_bindir}/python3
 
-%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)" 2>/dev/null)}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()" 2>/dev/null)}
+%global python_ver %(%{__python3} -c "import sys; print('{0}.{1}'.format(sys.version_info.major,sys.version_info.minor))" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" 2>/dev/null)}
 %{!?python3_lib: %global python3_lib %(%{__python3} -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))" 2>/dev/null)}
 %{!?python3_inc: %global python3_inc %(%{__python3} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())" 2>/dev/null)}
 
