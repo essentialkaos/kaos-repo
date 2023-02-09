@@ -13,36 +13,30 @@
 
 ################################################################################
 
-Summary:          Core git tools
-Name:             git
-Version:          2.38.1
-Release:          0%{?dist}
-License:          GPL
-Group:            Development/Tools
-URL:              https://git-scm.com
+Summary:        Core git tools
+Name:           git
+Version:        2.39.1
+Release:        0%{?dist}
+License:        GPL
+Group:          Development/Tools
+URL:            https://git-scm.com
 
-Source0:          https://github.com/git/git/archive/v%{version}.tar.gz
+Source0:        https://github.com/git/git/archive/v%{version}.tar.gz
 
-Source100:        checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    gcc make gettext xmlto asciidoc > 6.0.3
-BuildRequires:    libcurl-devel expat-devel openssl-devel zlib-devel
+BuildRequires:  gcc make gettext xmlto asciidoc > 6.0.3
+BuildRequires:  libcurl-devel expat-devel openssl-devel zlib-devel
 
-Requires:         perl-Git = %{version}-%{release}
-Requires:         zlib rsync less openssh-clients expat expat-devel
+Requires:       perl-Git = %{version}-%{release}
+Requires:       zlib rsync less openssh-clients expat expat-devel
 
-%if 0%{?rhel} <= 8
-Requires:         python2
-%else
-Requires:         python3
-%endif
+Provides:       git-core = %{version}-%{release}
 
-Provides:         git-core = %{version}-%{release}
-
-Obsoletes:        git-core <= 1.5.4.2
-Obsoletes:        git-p4 <= 1.5.4.2
+Obsoletes:      git-core <= 1.5.4.2
+Obsoletes:      git-p4 <= 1.5.4.2
 
 ################################################################################
 
@@ -58,20 +52,19 @@ SCMs, install the git-all meta-package.
 ################################################################################
 
 %package all
-Summary:           Meta-package to pull in all git tools
-Group:             Development/Tools
+Summary:    Meta-package to pull in all git tools
+Group:      Development/Tools
 
-BuildArch:         noarch
+BuildArch:  noarch
 
-Requires:          git = %{version}-%{release}
-Requires:          git-svn = %{version}-%{release}
-Requires:          git-cvs = %{version}-%{release}
-Requires:          git-arch = %{version}-%{release}
-Requires:          git-email = %{version}-%{release}
-Requires:          gitk = %{version}-%{release}
-Requires:          gitweb = %{version}-%{release}
-Requires:          git-gui = %{version}-%{release}
-Obsoletes:         git <= 1.5.4.2
+Requires:   git = %{version}-%{release}
+Requires:   git-svn = %{version}-%{release}
+Requires:   git-cvs = %{version}-%{release}
+Requires:   git-email = %{version}-%{release}
+Requires:   gitk = %{version}-%{release}
+Requires:   gitweb = %{version}-%{release}
+Requires:   git-gui = %{version}-%{release}
+Obsoletes:  git <= 1.5.4.2
 
 %description all
 Git is a fast, scalable, distributed revision control system with an
@@ -83,10 +76,10 @@ This is a dummy package which brings in all subpackages.
 ################################################################################
 
 %package svn
-Summary:        Git tools for importing Subversion repositories
-Group:          Development/Tools
+Summary:   Git tools for importing Subversion repositories
+Group:     Development/Tools
 
-Requires:       git = %{version}-%{release} subversion
+Requires:  git = %{version}-%{release} subversion
 
 %description svn
 Git tools for importing Subversion repositories.
@@ -94,38 +87,25 @@ Git tools for importing Subversion repositories.
 ################################################################################
 
 %package cvs
-Summary:        Git tools for importing CVS repositories
-Group:          Development/Tools
+Summary:    Git tools for importing CVS repositories
+Group:      Development/Tools
 
-BuildArch:      noarch
+BuildArch:  noarch
 
-Requires:       git = %{version}-%{release} cvs cvsps
+Requires:   git = %{version}-%{release} cvs
 
 %description cvs
 Git tools for importing CVS repositories.
 
 ################################################################################
 
-%package arch
-Summary:        Git tools for importing Arch repositories
-Group:          Development/Tools
-
-BuildArch:      noarch
-
-Requires:       git = %{version}-%{release} tla
-
-%description arch
-Git tools for importing Arch repositories.
-
-################################################################################
-
 %package email
-Summary:        Git tools for sending email
-Group:          Development/Tools
+Summary:    Git tools for sending email
+Group:      Development/Tools
 
-BuildArch:      noarch
+BuildArch:  noarch
 
-Requires:       git = %{version}-%{release}
+Requires:   git = %{version}-%{release}
 
 %description email
 Git tools for sending email.
@@ -133,12 +113,12 @@ Git tools for sending email.
 ################################################################################
 
 %package gui
-Summary:        Git GUI tool
-Group:          Development/Tools
+Summary:    Git GUI tool
+Group:      Development/Tools
 
-BuildArch:      noarch
+BuildArch:  noarch
 
-Requires:       git = %{version}-%{release} tk >= 8.4
+Requires:   git = %{version}-%{release} tk >= 8.4
 
 %description gui
 Git GUI tool
@@ -146,12 +126,12 @@ Git GUI tool
 ################################################################################
 
 %package -n gitk
-Summary:        Git revision tree visualiser ('gitk')
-Group:          Development/Tools
+Summary:    Git revision tree visualiser ('gitk')
+Group:      Development/Tools
 
-BuildArch:      noarch
+BuildArch:  noarch
 
-Requires:       git = %{version}-%{release} tk >= 8.4
+Requires:   git = %{version}-%{release} tk >= 8.4
 
 %description -n gitk
 Git revision tree visualiser ('gitk')
@@ -159,12 +139,12 @@ Git revision tree visualiser ('gitk')
 ################################################################################
 
 %package -n gitweb
-Summary:        Git web interface
-Group:          Development/Tools
+Summary:    Git web interface
+Group:      Development/Tools
 
-BuildArch:      noarch
+BuildArch:  noarch
 
-Requires:       git = %{version}-%{release}
+Requires:   git = %{version}-%{release}
 
 %description -n gitweb
 Browsing git repository on the web
@@ -222,15 +202,13 @@ find %{buildroot} -type f -name .packlist -exec rm -f {} ';'
 find %{buildroot} -type f -name '*.bs' -empty -exec rm -f {} ';'
 find %{buildroot} -type f -name perllocal.pod -exec rm -f {} ';'
 
+rm -f %{buildroot}%{_libexecdir}/git-core/git-archimport
+rm -f %{buildroot}%{_libexecdir}/git-core/git-p4
+rm -f %{buildroot}%{_mandir}/man1/git-archimport.*
+
 (find %{buildroot}%{_bindir} -type f | grep -vE "archimport|svn|cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@) > bin-man-doc-files
 (find %{buildroot}%{_libexecdir}/git-core -type f | grep -vE "archimport|svn|cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@) >> bin-man-doc-files
 (find %{buildroot}%{_mandir} %{buildroot}/Documentation -type f | grep -vE "archimport|svn|git-cvs|email|gitk|git-gui|git-citool" | sed -e s@^%{buildroot}@@ -e 's/$/*/' ) >> bin-man-doc-files
-
-%if 0%{?rhel} <= 8
-  sed -i "s#/usr/bin/python#/usr/bin/python2#" %{buildroot}%{_libexecdir}/git-core/git-p4
-%else
-  sed -i "s#/usr/bin/python#/usr/bin/python3#" %{buildroot}%{_libexecdir}/git-core/git-p4
-%endif
 
 rm -rf %{buildroot}%{_datadir}/locale
 
@@ -263,12 +241,6 @@ rm -rf %{buildroot}
 %{_bindir}/git-cvsserver
 %{_libexecdir}/git-core/*cvs*
 %{_mandir}/man1/*cvs*.1*
-
-%files arch
-%defattr(-,root,root)
-%doc Documentation/git-archimport.txt
-%{_libexecdir}/git-core/git-archimport
-%{_mandir}/man1/git-archimport.1*
 
 %files email
 %defattr(-,root,root)
@@ -310,6 +282,18 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.1.txt
+
+* Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.0.txt
+
+* Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.38.3-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.3.txt
+
+* Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.38.2-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.2.txt
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.38.1-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.1.txt
 
@@ -354,24 +338,3 @@ rm -rf %{buildroot}
 
 * Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.30.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.0.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.29.3-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.29.3.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.29.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.29.2.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.29.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.29.1.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.29.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.29.0.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.28.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.28.1.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.27.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.27.1.txt
-
-* Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.27.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.27.0.txt
