@@ -1,0 +1,16 @@
+# Bibop recipe for python3-certifi
+# See more: https://kaos.sh/bibop
+
+pkg python3-certifi
+
+fast-finish yes
+
+var package_name certifi
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}
+
+command "-" "Check certificates"
+  exist {PYTHON3_SITELIB}/{package_name}/cacert.pem
+  mode {PYTHON3_SITELIB}/{package_name}/cacert.pem 644
+  !empty {PYTHON3_SITELIB}/{package_name}/cacert.pem

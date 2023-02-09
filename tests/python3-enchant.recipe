@@ -1,0 +1,11 @@
+# Bibop recipe for python3-enchant
+# See more: https://kaos.sh/bibop
+
+pkg python3-enchant
+
+fast-finish yes
+
+var package_name enchant
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}

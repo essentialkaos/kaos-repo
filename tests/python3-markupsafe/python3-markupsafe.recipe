@@ -1,0 +1,15 @@
+# Bibop recipe for python3-markupsafe
+# See more: https://kaos.sh/bibop
+
+pkg python3-markupsafe
+
+fast-finish yes
+
+var package_name markupsafe
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}
+
+command "python3 test.py" "Run simple test script"
+  exit 0
+  output-contains "&lt;script&gt;alert(document.cookie);&lt;/script&gt;"
