@@ -66,7 +66,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver        12
-%define minorver        12
+%define minorver        13
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
@@ -126,7 +126,7 @@ BuildRequires:     perl-ExtUtils-Embed perl-ExtUtils-MakeMaker
 %endif
 
 %if %plpython
-BuildRequires:     python-devel
+BuildRequires:     python3-devel
 %endif
 
 %if %pltcl
@@ -167,7 +167,7 @@ BuildRequires:     openldap-devel
 %endif
 
 %if %llvm
-%if 0%{?rhel} == 8
+%if 0%{?rhel} >= 8
 BuildRequires:     llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 %if 0%{?rhel} == 7
@@ -213,10 +213,10 @@ if you're installing the postgresql%{pkgver}-server package.
 ################################################################################
 
 %package libs
-Summary:           The shared libraries required for any PostgreSQL clients
-Group:             Applications/Databases
+Summary:   The shared libraries required for any PostgreSQL clients
+Group:     Applications/Databases
 
-Provides:          %{realname}-libs = %{version}-%{release}
+Provides:  %{realname}-libs = %{version}-%{release}
 
 %description libs
 The postgresql%{pkgver}-libs package provides the essential shared libraries
@@ -227,15 +227,15 @@ to a PostgreSQL server.
 ################################################################################
 
 %package server
-Summary:           The programs needed to create and run a PostgreSQL server
-Group:             Applications/Databases
+Summary:   The programs needed to create and run a PostgreSQL server
+Group:     Applications/Databases
 
-Requires:          %{__useradd} %{__chkconfig}
-Requires:          %{name} = %{version}-%{release}
-Requires:          %{name}-libs = %{version}-%{release}
-Requires:          glibc kaosv >= 2.16 numactl
+Requires:  %{__useradd} %{__chkconfig}
+Requires:  %{name} = %{version}-%{release}
+Requires:  %{name}-libs = %{version}-%{release}
+Requires:  glibc kaosv >= 2.16 numactl
 
-Provides:          %{realname}-server = %{version}-%{release}
+Provides:  %{realname}-server = %{version}-%{release}
 
 %description server
 The postgresql%{pkgver}-server package includes the programs needed to create
@@ -251,10 +251,10 @@ to install the postgresql package.
 ################################################################################
 
 %package docs
-Summary:           Extra documentation for PostgreSQL
-Group:             Applications/Databases
+Summary:   Extra documentation for PostgreSQL
+Group:     Applications/Databases
 
-Provides:          %{realname}-docs = %{version}-%{release}
+Provides:  %{realname}-docs = %{version}-%{release}
 
 %description docs
 The postgresql%{pkgver}-docs package includes the SGML source for the
@@ -266,11 +266,11 @@ package also includes HTML version of the documentation.
 ################################################################################
 
 %package contrib
-Summary:           Contributed source and binaries distributed with PostgreSQL
-Group:             Applications/Databases
+Summary:   Contributed source and binaries distributed with PostgreSQL
+Group:     Applications/Databases
 
-Requires:          %{name} = %{version}
-Provides:          %{realname}-contrib = %{version}-%{release}
+Requires:  %{name} = %{version}
+Provides:  %{realname}-contrib = %{version}-%{release}
 
 %description contrib
 The postgresql%{pkgver}-contrib package contains contributed packages that are
@@ -279,17 +279,17 @@ included in the PostgreSQL distribution.
 ################################################################################
 
 %package devel
-Summary:           PostgreSQL development header files and libraries
-Group:             Development/Libraries
+Summary:   PostgreSQL development header files and libraries
+Group:     Development/Libraries
 
 %if %icu
-Requires:          libicu-devel
+Requires:  libicu-devel
 %endif
 
-AutoReq:           no
-Requires:          %{name} = %{version}-%{release}
-Requires:          %{name}-libs = %{version}-%{release}
-Provides:          %{realname}-devel = %{version}-%{release}
+AutoReq:   no
+Requires:  %{name} = %{version}-%{release}
+Requires:  %{name}-libs = %{version}-%{release}
+Provides:  %{realname}-devel = %{version}-%{release}
 
 %description devel
 The postgresql%{pkgver}-devel package contains the header files and libraries
@@ -302,19 +302,18 @@ develop applications which will interact with a PostgreSQL server.
 
 %if %llvm
 %package llvmjit
-Summary:           Just-in-time compilation support for PostgreSQL
-Group:             Applications/Databases
+Summary:   Just-in-time compilation support for PostgreSQL
+Group:     Applications/Databases
 
-Requires:          %{name}-server%{?_isa} = %{version}-%{release}
+Requires:  %{name}-server%{?_isa} = %{version}-%{release}
 
-%if 0%{?rhel} == 8
-Requires:          llvm >= 6.0
+%if 0%{?rhel} >= 8
+Requires:  llvm >= 6.0
+%else
+Requires:  llvm5.0 >= 5.0
 %endif
-%if 0%{?rhel} == 7
-Requires:          llvm5.0 >= 5.0
-%endif
 
-Provides:          %{realname}-llvmjit = %{version}
+Provides:  %{realname}-llvmjit = %{version}
 
 %description llvmjit
 The postgresql%{pkgver}-llvmjit package contains support for
@@ -327,17 +326,13 @@ goal of accelerating analytics queries.
 
 %if %plperl
 %package plperl
-Summary:           The Perl procedural language for PostgreSQL
-Group:             Applications/Databases
+Summary:    The Perl procedural language for PostgreSQL
+Group:      Applications/Databases
 
-Requires:          %{name}-server = %{version}
+Requires:   %{name}-server = %{version}
 
-%ifarch ppc ppc64
-BuildRequires:     perl-devel
-%endif
-
-Obsoletes:         %{realname}-pl = %{version}
-Provides:          %{realname}-plperl = %{version}-%{release}
+Obsoletes:  %{realname}-pl = %{version}
+Provides:   %{realname}-plperl = %{version}-%{release}
 
 %description plperl
 PostgreSQL is an advanced Object-Relational database management
@@ -348,16 +343,18 @@ for the backend.
 ################################################################################
 
 %if %plpython
-%package plpython
-Summary:           The Python procedural language for PostgreSQL
-Group:             Applications/Databases
-Requires:          %{name} = %{version}
-Requires:          %{name}-server = %{version}
+%package plpython3
+Summary:    The Python procedural language for PostgreSQL
+Group:      Applications/Databases
 
-Obsoletes:         %{realname}-pl = %{version}
-Provides:          %{realname}-plpython = %{version}-%{release}
+Requires:   %{name} = %{version}
+Requires:   %{name}-server = %{version}
+Requires:   python3-libs
 
-%description plpython
+Obsoletes:  %{realname}-pl = %{version}
+Provides:   %{realname}-plpython = %{version}-%{release}
+
+%description plpython3
 PostgreSQL is an advanced Object-Relational database management
 system. The postgresql%{pkgver}-plpython package contains the PL/Python language
 for the backend.
@@ -367,14 +364,14 @@ for the backend.
 
 %if %pltcl
 %package pltcl
-Summary:           The Tcl procedural language for PostgreSQL
-Group:             Applications/Databases
+Summary:    The Tcl procedural language for PostgreSQL
+Group:      Applications/Databases
 
-Requires:          %{name} = %{version}
-Requires:          %{name}-server = %{version}
+Requires:   %{name} = %{version}
+Requires:   %{name}-server = %{version}
 
-Obsoletes:         %{realname}-pl = %{version}
-Provides:          %{realname}-pltcl = %{version}-%{release}
+Obsoletes:  %{realname}-pl = %{version}
+Provides:   %{realname}-pltcl = %{version}-%{release}
 
 %description pltcl
 PostgreSQL is an advanced Object-Relational database management
@@ -386,11 +383,11 @@ for the backend.
 
 %if %test
 %package test
-Summary:           The test suite distributed with PostgreSQL
-Group:             Applications/Databases
+Summary:   The test suite distributed with PostgreSQL
+Group:     Applications/Databases
 
-Requires:          %{name}-server = %{version}
-Provides:          %{realname}-test = %{version}-%{release}
+Requires:  %{name}-server = %{version}
+Provides:  %{realname}-test = %{version}-%{release}
 
 %description test
 PostgreSQL is an advanced Object-Relational database management
@@ -425,13 +422,13 @@ CFLAGS="${CFLAGS} -I%{_includedir}/et" ; export CFLAGS
 %endif
 
 # Strip out -ffast-math from CFLAGS....
-
 CFLAGS=$(echo "$CFLAGS" | xargs -n 1 | grep -v ffast-math | xargs -n 100)
 CFLAGS="$CFLAGS -DLINUX_OOM_SCORE_ADJ=0"
 LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
 
 export CFLAGS
 export LIBNAME=%{_lib}
+export PYTHON=/usr/bin/python3
 
 %if %llvm
 %if 0%{?rhel} == 7
@@ -559,7 +556,7 @@ mkdir -p %{buildroot}%{install_dir}/share/extensions/
 # multilib header hack; note pg_config.h is installed in two places!
 # we only apply this to known Red Hat multilib arches, per bug #177564
 case `uname -i` in
-  i386 | x86_64 | ppc | ppc64 | s390 | s390x)
+  i386 | x86_64)
     mv %{buildroot}%{install_dir}/include/pg_config.h %{buildroot}%{install_dir}/include/pg_config_`uname -i`.h
     install -pm 644 %{SOURCE3} %{buildroot}%{install_dir}/include/
     mv %{buildroot}%{install_dir}/include/server/pg_config.h %{buildroot}%{install_dir}/include/server/pg_config_`uname -i`.h
@@ -572,7 +569,6 @@ case `uname -i` in
 esac
 
 # Installing and updating sysv init script
-
 install -d %{buildroot}%{_initddir}
 install -d %{buildroot}%{_sysconfdir}/sysconfig
 
@@ -640,8 +636,6 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
   cp %{SOURCE2} %{buildroot}%{install_dir}/lib/test/regress/Makefile
   chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
-
-rm -rf %{buildroot}%{install_dir}/share/extension/*_plpython3u*
 
 # Fix some more documentation
 # gzip doc/internals.ps
@@ -785,10 +779,10 @@ fi
 %endif
 
 %if %plpython
-%post plpython
+%post plpython3
 %{__ldconfig}
 
-%postun plpython
+%postun plpython3
 %{__ldconfig}
 %endif
 
@@ -1178,15 +1172,14 @@ rm -rf %{buildroot}
 %endif
 
 %if %plpython
-%files plpython -f pg_plpython.lst
+%files plpython3 -f pg_plpython.lst
 %defattr(-,root,root)
 %{install_dir}/lib/plpython*.so
-%{install_dir}/lib/hstore_plpython2.so
-%{install_dir}/lib/jsonb_plpython2.so
-%{install_dir}/lib/ltree_plpython2.so
+%{install_dir}/lib/hstore_plpython3.so
+%{install_dir}/lib/jsonb_plpython3.so
+%{install_dir}/lib/ltree_plpython3.so
 %{install_dir}/share/extension/jsonb_plpython*
-%{install_dir}/share/extension/plpython2u*
-%{install_dir}/share/extension/plpythonu*
+%{install_dir}/share/extension/plpython3u*
 %endif
 
 %if %test
@@ -1199,6 +1192,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 12.13-0
+- https://www.postgresql.org/docs/12/release-12-13.html
+
 * Thu Aug 18 2022 Anton Novojilov <andy@essentialkaos.com> - 12.12-0
 - https://www.postgresql.org/docs/12/release-12-12.html
 
