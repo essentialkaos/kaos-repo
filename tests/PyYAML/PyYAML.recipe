@@ -10,11 +10,11 @@ command "-" "Check Python 2 installation"
   dir {PYTHON2_SITEARCH}/yaml
   !empty-dir {PYTHON2_SITEARCH}/yaml
 
-  python-module yaml
+  python2-package yaml
 
 command "-" "Check Python 3 installation"
   exist {PYTHON3_SITEARCH}/yaml
   dir {PYTHON3_SITEARCH}/yaml
   !empty-dir {PYTHON3_SITEARCH}/yaml
 
-  python3-module yaml
+  python3-package yaml

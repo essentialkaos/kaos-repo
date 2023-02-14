@@ -161,9 +161,4 @@ command "-" "Check Perl installation"
   mode {perl_dir}/auto/Geo/OSR/OSR.so 755
 
 command "-" "Check Python 2 installation"
-  exist {PYTHON2_SITEARCH}/osgeo
-  dir {PYTHON2_SITEARCH}/osgeo
-
-  exist {PYTHON2_SITEARCH}/osgeo/__init__.py
-
-  python-module osgeo
+  python2-package osgeo
