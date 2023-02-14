@@ -53,6 +53,9 @@ install -pm 644 configs/Fedora/*.toml %{buildroot}%{_sysconfdir}/xdg/rpmlint/
 sed -i '/"BashismsCheck"/d' %{buildroot}%{_sysconfdir}/xdg/rpmlint/fedora.toml
 sed -i "/' no-signature',/a 'superfluous-%%clean-section'," %{buildroot}%{_sysconfdir}/xdg/rpmlint/fedora.toml
 
+%clean
+rm -rf %{buildroot}
+
 ################################################################################
 
 %files
