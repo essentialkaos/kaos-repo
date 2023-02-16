@@ -132,11 +132,9 @@ command "-" "Check PL/Python3U"
   lib-linked {lib_dir}/plpython3.so {python3_lib}
 
 command "-" "Check PL/PerlU"
-  exist {lib_dir}/bool_plperl.so
   exist {lib_dir}/hstore_plperl.so
   exist {lib_dir}/plperl.so
 
-  lib-linked {lib_dir}/bool_plperl.so libperl.so.*
   lib-linked {lib_dir}/hstore_plperl.so libperl.so.*
   lib-linked {lib_dir}/plperl.so libperl.so.*
 
