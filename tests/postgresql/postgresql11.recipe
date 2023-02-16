@@ -1,7 +1,7 @@
 # Bibop recipe for PostgreSQL 11
 # See more: https://kaos.sh/bibop
 
-pkg postgresql11-server postgresql11-libs postgresql11-devel
+pkg postgresql11-contrib postgresql11-devel postgresql11-docs postgresql11-libs postgresql11-llvmjit postgresql11-plperl postgresql11-plpython3 postgresql11-pltcl postgresql11-server postgresql11-test
 
 require-root yes
 unsafe-actions yes
@@ -11,11 +11,16 @@ var service_name  postgresql-{version}
 var service_user  postgres
 var service_group postgres
 var install_dir   /usr/pgsql-{version}
+var lib_dir       {install_dir}/lib
 var state_dir     /var/lib/pgsql
 var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
 
+var python3_lib   libpython{PYTHON3_VERSION}m.so.*
+
 var delay 5
+
+## ENVIRONMENT #################################################################
 
 command "-" "Check environment"
   app psql
@@ -81,16 +86,19 @@ command "-" "Check bash_profile"
   link {state_dir}/.bash_profile {install_dir}/share/bash_profile
 
 command "-" "Check development environment"
-  exist {install_dir}/lib/libecpg_compat.so
-  exist {install_dir}/lib/libecpg.so
-  exist {install_dir}/lib/libpgtypes.so
-  exist {install_dir}/lib/libpq.so
-  exist {install_dir}/lib/pkgconfig/libecpg_compat.pc
-  exist {install_dir}/lib/pkgconfig/libecpg.pc
-  exist {install_dir}/lib/pkgconfig/libpgtypes.pc
-  exist {install_dir}/lib/pkgconfig/libpq.pc
   exist {install_dir}/include/libpq-fe.h
   exist {install_dir}/include/pgtypes.h
+
+  lib-loaded libecpg.so.*
+  lib-loaded libecpg_compat.so.*
+  lib-loaded libpgtypes.so.*
+  lib-loaded libpq.so.*
+  lib-loaded libpqwalreceiver.so
+
+  lib-config libecpg_compat
+  lib-config libecpg
+  lib-config libpgtypes
+  lib-config libpq
 
 command "-" "Check symlinks linker and pkgconfig configs"
   exist /etc/ld.so.conf.d/postgresql-pgdg-libs.conf
@@ -104,6 +112,40 @@ command "-" "Check symlinks linker and pkgconfig configs"
   link {LIBDIR}/pkgconfig/libecpg.pc {install_dir}/lib/pkgconfig/libecpg.pc
   link {LIBDIR}/pkgconfig/libpgtypes.pc {install_dir}/lib/pkgconfig/libpgtypes.pc
   link {LIBDIR}/pkgconfig/libpq.pc {install_dir}/lib/pkgconfig/libpq.pc
+
+command "-" "Check LLVM Bitcode"
+  exist {lib_dir}/bitcode
+  exist {lib_dir}/llvmjit.so
+
+  dir {lib_dir}/bitcode
+  !empty-dir {lib_dir}/bitcode
+
+command "-" "Check PL/Python3U"
+  exist {lib_dir}/hstore_plpython3.so
+  exist {lib_dir}/jsonb_plpython3.so
+  exist {lib_dir}/ltree_plpython3.so
+  exist {lib_dir}/plpython3.so
+
+  lib-linked {lib_dir}/hstore_plpython3.so {python3_lib}
+  lib-linked {lib_dir}/jsonb_plpython3.so {python3_lib}
+  lib-linked {lib_dir}/ltree_plpython3.so {python3_lib}
+  lib-linked {lib_dir}/plpython3.so {python3_lib}
+
+command "-" "Check PL/PerlU"
+  exist {lib_dir}/bool_plperl.so
+  exist {lib_dir}/hstore_plperl.so
+  exist {lib_dir}/plperl.so
+
+  lib-linked {lib_dir}/bool_plperl.so libperl.so.*
+  lib-linked {lib_dir}/hstore_plperl.so libperl.so.*
+  lib-linked {lib_dir}/plperl.so libperl.so.*
+
+command "-" "Check PL/PerlU"
+  exist {lib_dir}/pltcl.so
+
+  lib-linked {lib_dir}/pltcl.so libtcl8.*
+
+## SERVER ######################################################################
 
 command "service {service_name} initdb" "Database initialization"
   exit 0

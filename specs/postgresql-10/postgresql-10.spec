@@ -314,7 +314,7 @@ Group:      Applications/Databases
 
 Requires:   %{name} = %{version}
 Requires:   %{name}-server = %{version}
-Requires:   python3-libs
+Requires:   python3 python3-libs
 
 Obsoletes:  %{realname}-pl = %{version}
 Provides:   %{realname}-plpython = %{version}-%{release}

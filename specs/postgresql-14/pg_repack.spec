@@ -39,40 +39,40 @@
 
 ################################################################################
 
-%define pg_maj_ver        14
-%define pg_low_fullver    14.0
-%define pg_dir            %{_prefix}/pgsql-14
+%define pg_maj_ver        15
+%define pg_low_fullver    15.0
+%define pg_dir            %{_prefix}/pgsql-%{pg_maj_ver}
 
-%define realname          pg_repack
+%define realname  pg_repack
 
 ################################################################################
 
-Summary:           Reorganize tables in PostgreSQL databases without any locks
-Name:              %{realname}%{pg_maj_ver}
-Version:           1.4.7
-Release:           0%{?dist}
-License:           BSD
-Group:             Applications/Databases
-URL:               https://pgxn.org/dist/pg_repack/
+Summary:        Reorganize tables in PostgreSQL databases without any locks
+Name:           %{realname}%{pg_maj_ver}
+Version:        1.4.7
+Release:        0%{?dist}
+License:        BSD
+Group:          Applications/Databases
+URL:            https://pgxn.org/dist/pg_repack/
 
-Source0:           https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source0:        https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc openssl-devel readline-devel
-BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+BuildRequires:  make gcc openssl-devel readline-devel
+BuildRequires:  postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:  postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
-%if 0%{?rhel} == 8
-BuildRequires:     llvm-devel >= 8.0.1 clang-devel >= 8.0.1
+%if 0%{?rhel} >= 8
+BuildRequires:  llvm-devel >= 8.0.1 clang-devel >= 8.0.1
 %endif
 %if 0%{?rhel} == 7
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+BuildRequires:  llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 
-Requires:          postgresql%{pg_maj_ver}
+Requires:       postgresql%{pg_maj_ver}
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

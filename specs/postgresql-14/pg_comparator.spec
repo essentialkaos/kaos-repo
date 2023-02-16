@@ -43,46 +43,46 @@
 
 ################################################################################
 
-%define pg_ver            14
-%define pg_maj_ver        14
-%define pg_low_fullver    14.0
-%define pg_dir            %{_prefix}/pgsql-14
+%define pg_ver            15
+%define pg_maj_ver        15
+%define pg_low_fullver    15.0
+%define pg_dir            %{_prefix}/pgsql-%{pg_maj_ver}
 %define realname          pg_comparator
 
 ################################################################################
 
 
-Summary:           Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
-Name:              %{realname}%{pg_maj_ver}
-Version:           2.3.2
-Release:           0%{?dist}
-License:           BSD
-Group:             Development/Tools
-URL:               https://www.cri.ensmp.fr/people/coelho/pg_comparator
+Summary:         Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
+Name:            %{realname}%{pg_maj_ver}
+Version:         2.3.2
+Release:         0%{?dist}
+License:         BSD
+Group:           Development/Tools
+URL:             https://www.cri.ensmp.fr/people/coelho/pg_comparator
 
-Source:            https://www.cri.ensmp.fr/people/coelho/pg_comparator/%{realname}-%{version}.tgz
+Source:          https://www.cri.ensmp.fr/people/coelho/pg_comparator/%{realname}-%{version}.tgz
 
-Patch0:            %{realname}-Makefile.patch
+Patch0:          %{realname}-Makefile.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc
-BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+BuildRequires:   make gcc
+BuildRequires:   postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:   postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
-%if 0%{?rhel} == 8
-BuildRequires:     llvm-devel >= 8.0.1 clang-devel >= 8.0.1
+%if 0%{?rhel} >= 8
+BuildRequires:   llvm-devel >= 8.0.1 clang-devel >= 8.0.1
 %endif
 %if 0%{?rhel} == 7
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 
-Requires:          perl(Getopt::Long), perl(Time::HiRes)
-Requires:          postgresql%{pg_maj_ver}
+Requires:        perl(Getopt::Long), perl(Time::HiRes)
+Requires:        postgresql%{pg_maj_ver}
 
-Requires(post):    %{_sbindir}/update-alternatives
+Requires(post):  %{_sbindir}/update-alternatives
 
-Provides:          %{name} = %{version}-%{release}
+Provides:        %{name} = %{version}-%{release}
 
 ################################################################################
 

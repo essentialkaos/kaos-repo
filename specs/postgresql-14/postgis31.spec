@@ -48,8 +48,8 @@
 
 %define maj_ver           3.1
 %define lib_ver           3
-%define pg_maj_ver        14
-%define pg_low_fullver    14.0
+%define pg_maj_ver        15
+%define pg_low_fullver    15.0
 %define pg_dir            %{_prefix}/pgsql-%{pg_maj_ver}
 %define gdal_dir          %{_prefix}/gdal3
 %define realname          postgis
@@ -60,42 +60,42 @@
 
 ################################################################################
 
-Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
-Name:              %{fullname}_%{pg_maj_ver}
-Version:           3.1.4
-Release:           0%{?dist}
-License:           GPLv2+
-Group:             Applications/Databases
-URL:               https://www.postgis.net
+Summary:        Geographic Information Systems Extensions to PostgreSQL %{pg_maj_ver}
+Name:           %{fullname}_%{pg_maj_ver}
+Version:        3.1.4
+Release:        0%{?dist}
+License:        GPLv2+
+Group:          Applications/Databases
+URL:            https://www.postgis.net
 
-Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
-Source1:           https://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
-Source2:           filter-requires-perl-Pg.sh
+Source0:        https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
+Source1:        https://download.osgeo.org/%{realname}/docs/%{realname}-%{version}.pdf
+Source2:        filter-requires-perl-Pg.sh
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+BuildRequires:  postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:  postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
-BuildRequires:     geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
-BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:     libgeotiff-devel libpng-devel libtiff-devel
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+BuildRequires:  geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
+BuildRequires:  proj-devel libtool flex json-c-devel libxml2-devel
+BuildRequires:  libgeotiff-devel libpng-devel libtiff-devel
+BuildRequires:  devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
+BuildRequires:  llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 %if %raster
-BuildRequires:     gdal3-devel
-Requires:          gdal3
+BuildRequires:  gdal3-devel
+Requires:       gdal3
 %endif
 
-Requires:          postgresql%{pg_maj_ver} geos >= 3.9 proj hdf5 json-c pcre
-Requires:          %{fullname}_%{pg_maj_ver}-client = %{version}-%{release}
+Requires:       postgresql%{pg_maj_ver} geos >= 3.9 proj hdf5 json-c pcre
+Requires:       %{fullname}_%{pg_maj_ver}-client = %{version}-%{release}
 
-Requires(post):    %{_sbindir}/update-alternatives
+Requires(post): %{_sbindir}/update-alternatives
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:       %{realname} = %{version}-%{release}
 
 ################################################################################
 

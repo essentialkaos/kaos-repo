@@ -45,9 +45,9 @@
 ################################################################################
 
 %define maj_ver           2.2
-%define pg_maj_ver        14
-%define pg_high_ver       14
-%define pg_low_fullver    14.0
+%define pg_maj_ver        15
+%define pg_high_ver       15
+%define pg_low_fullver    15.0
 %define pg_dir            %{_prefix}/pgsql-%{pg_high_ver}
 %define realname          slony1
 %define username          postgres
@@ -57,33 +57,33 @@
 
 ################################################################################
 
-Summary:           A "master to multiple slaves" replication system with cascading and failover
-Name:              %{realname}-%{pg_maj_ver}
-Version:           2.2.10
-Release:           0%{?dist}
-License:           BSD
-Group:             Applications/Databases
-URL:               https://www.slony.info
+Summary:        A "master to multiple slaves" replication system with cascading and failover
+Name:           %{realname}-%{pg_maj_ver}
+Version:        2.2.10
+Release:        0%{?dist}
+License:        BSD
+Group:          Applications/Databases
+URL:            https://www.slony.info
 
-Source0:           https://www.slony.info/downloads/%{maj_ver}/source/%{realname}-%{version}.tar.bz2
-Source2:           filter-requires-perl-Pg.sh
-Source3:           %{realname}.init
-Source4:           %{realname}.sysconfig
-Source5:           %{realname}.service
+Source0:        https://www.slony.info/downloads/%{maj_ver}/source/%{realname}-%{version}.tar.bz2
+Source2:        filter-requires-perl-Pg.sh
+Source3:        %{realname}.init
+Source4:        %{realname}.sysconfig
+Source5:        %{realname}.service
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc byacc flex chrpath
-BuildRequires:     postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
+BuildRequires:  make gcc byacc flex chrpath
+BuildRequires:  postgresql%{pg_maj_ver}-devel = %{pg_low_fullver}
+BuildRequires:  postgresql%{pg_maj_ver}-server = %{pg_low_fullver}
+BuildRequires:  postgresql%{pg_maj_ver}-libs = %{pg_low_fullver}
 
-Requires:          postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.16
-Requires:          systemd
+Requires:       postgresql%{pg_maj_ver}-server perl-DBD-Pg kaosv >= 2.16
+Requires:       systemd
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
