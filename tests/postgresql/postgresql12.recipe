@@ -18,7 +18,7 @@ var pid_file      /var/run/postgresql{version}.pid
 
 var python3_lib   libpython{PYTHON3_VERSION}m.so.*
 
-var delay 5
+var delay 10
 
 ## ENVIRONMENT #################################################################
 
