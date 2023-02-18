@@ -16,7 +16,7 @@ var state_dir     /var/lib/pgsql
 var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
 
-var python3_lib   libpython{PYTHON3_VERSION}m.so.*
+var python3_lib   libpython{PYTHON3_VERSION}*
 
 var delay 10
 
