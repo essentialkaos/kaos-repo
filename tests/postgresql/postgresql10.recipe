@@ -17,6 +17,8 @@ var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
 
 var python3_lib   libpython{PYTHON3_VERSION}*
+var perl_lib      libperl.*
+var tcl_lib       libtcl8.*
 
 var delay 10
 
@@ -126,13 +128,13 @@ command "-" "Check PL/PerlU"
   exist {lib_dir}/hstore_plperl.so
   exist {lib_dir}/plperl.so
 
-  lib-linked {lib_dir}/hstore_plperl.so libperl.so.*
-  lib-linked {lib_dir}/plperl.so libperl.so.*
+  lib-linked {lib_dir}/hstore_plperl.so {perl_lib}
+  lib-linked {lib_dir}/plperl.so {perl_lib}
 
 command "-" "Check PL/PerlU"
   exist {lib_dir}/pltcl.so
 
-  lib-linked {lib_dir}/pltcl.so libtcl8.*
+  lib-linked {lib_dir}/pltcl.so {tcl_lib}
 
 ## SERVER ######################################################################
 
