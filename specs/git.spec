@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.39.1
+Version:        2.39.2
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -282,6 +282,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Feb 15 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.2-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.2.txt
+
 * Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.1-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.1.txt
 
