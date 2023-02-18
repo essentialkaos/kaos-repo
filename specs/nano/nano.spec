@@ -4,37 +4,7 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _opt              /opt
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+%define _root  /root
 
 ################################################################################
 
@@ -42,29 +12,29 @@
 
 ################################################################################
 
-Summary:             A small text editor
-Name:                nano
-Version:             7.1
-Release:             0%{?dist}
-License:             GPLv3+
-Group:               Applications/Editors
-URL:                 https://www.nano-editor.org
+Summary:          A small text editor
+Name:             nano
+Version:          7.2
+Release:          0%{?dist}
+License:          GPLv3+
+Group:            Applications/Editors
+URL:              https://www.nano-editor.org
 
-Source0:             https://www.nano-editor.org/dist/v7/%{name}-%{version}.tar.xz
-Source1:             https://kaos.sh/blackhole-theme-nano/%{ek_theme_version}.tar.gz
+Source0:          https://www.nano-editor.org/dist/v7/%{name}-%{version}.tar.xz
+Source1:          https://kaos.sh/blackhole-theme-nano/%{ek_theme_version}.tar.gz
 
-Source100:           checksum.sha512
+Source100:        checksum.sha512
 
-Patch0:              %{name}-nanorc.patch
+Patch0:           %{name}-nanorc.patch
 
-BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:       gcc make automake ncurses-devel sed
+BuildRequires:    gcc make automake ncurses-devel sed
 
-Requires(post):      /sbin/install-info
-Requires(preun):     /sbin/install-info
+Requires(post):   /sbin/install-info
+Requires(preun):  /sbin/install-info
 
-Provides:            %{name} = %{version}-%{release}
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -146,6 +116,9 @@ fi
 ################################################################################
 
 %changelog
+* Sat Feb 18 2023 Anton Novojilov <andy@essentialkaos.com> - 7.2-0
+- <Shift+Insert> is prevented from pasting in view mode.
+
 * Sun Dec 25 2022 Anton Novojilov <andy@essentialkaos.com> - 7.1-0
 - When --autoindent and --breaklonglines are combined, pressing
   <Enter> at a specific position no longer eats characters.
