@@ -841,7 +841,6 @@ chown -R -h %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/nu
 %{__updalt} --install %{_libdir}/pkgconfig/libecpg.pc         %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc        %{pkgver}00
 %{__updalt} --install %{_libdir}/pkgconfig/libecpg_compat.pc  %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc %{pkgver}00
 
-
 # Drop alternatives entries for common binaries and man files
 %postun
 if [[ $1 -eq 0 ]] ; then

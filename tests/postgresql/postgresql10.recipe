@@ -15,12 +15,13 @@ var lib_dir       {install_dir}/lib
 var state_dir     /var/lib/pgsql
 var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
+var port          5432
 
 var python3_lib   libpython{PYTHON3_VERSION}*
 var perl_lib      libperl.*
 var tcl_lib       libtcl8.*
 
-var delay 10
+var delay 5
 
 ## ENVIRONMENT #################################################################
 
@@ -158,8 +159,9 @@ command "service {service_name} initdb" "Database initialization"
 
 command "systemctl start {service_name}" "Start PostgreSQL server"
   wait {delay}
+  wait-fs {data_dir}/data/postmaster.pid
   service-works {service_name}
-  connect tcp :5432
+  connect tcp :{port}
   checksum-read {pid_file} pid_sha
 
 command "systemctl status {service_name}" "Check status of PostgreSQL server"
@@ -171,14 +173,16 @@ command "{service_user}:{install_dir}/bin/psql -t -c 'select version();'" "Check
 
 command "systemctl restart {service_name}" "Restart PostgreSQL server"
   wait {delay}
+  wait-fs {data_dir}/data/postmaster.pid
   service-works {service_name}
-  connect tcp :5432
+  connect tcp :{port}
   !checksum {pid_file} {pid_sha}
 
 command "systemctl stop {service_name}" "Stop PostgreSQL server"
   wait {delay}
+  !wait-fs {data_dir}/data/postmaster.pid
   !service-works {service_name}
-  !connect tcp :5432
+  !connect tcp :{port}
 
 command:teardown "-" "Data cleanup"
   cleanup {data_dir}/data
