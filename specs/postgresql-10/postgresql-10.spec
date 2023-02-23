@@ -275,6 +275,10 @@ Group:     Development/Libraries
 Requires:  libicu-devel
 %endif
 
+%if %ssl
+Requires:  openssl-devel
+%endif
+
 AutoReq:   no
 Requires:  %{name} = %{version}-%{release}
 Requires:  %{name}-libs = %{version}-%{release}
