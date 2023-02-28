@@ -4,30 +4,42 @@
 pkg atop
 
 require-root yes
+unsafe-actions yes
 
 var service_name atop
+var delay 5
 
 command "-" "Check environment"
   app atop
-  app atopsar
-  app atopconvert
   app atopacctd
-  app atopgpud
+  app atopcat
+  app atopconvert
+  app atopsar
 
-  exist /etc/default/atop
+  service-present atop
+  service-present atopacct
+  service-present atop-rotate
 
-  service-present {service_name}
-  service-present {service_name}-rotate
-  service-present {service_name}gpu
-  service-present {service_name}acct
+  service-enabled atop
+  service-enabled atopacct
+
+command "-" "Check sysconfig file"
+  exist /etc/sysconfig/atop
+  mode /etc/sysconfig/atop 644
+
+command "-" "Check daily script"
+  exist /usr/share/atop/atop.daily
+  mode /usr/share/atop/atop.daily 755
+
+  file-contains /usr/share/atop/atop.daily "DEFAULTSFILE=/etc/sysconfig/atop"
 
 command "systemctl start {service_name}.service" "Start daemon"
-  wait-pid /var/run/atop.pid
+  wait {delay}
   service-works {service_name}
 
 command "systemctl status {service_name}.service" "Check daemon status"
   expect "active (running)"
 
 command "systemctl stop {service_name}.service" "Stop daemon"
-  wait 3
+  wait {delay}
   !service-works {service_name}

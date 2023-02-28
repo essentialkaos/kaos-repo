@@ -4,86 +4,34 @@
 
 ################################################################################
 
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%{!?systemd_enabled:%global systemd_enabled 0}
-%else
-%{!?systemd_enabled:%global systemd_enabled 1}
-%endif
+%define _logdir  %{_localstatedir}/log
+
+%define __systemctl  %{_bindir}/systemctl
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+Summary:        Advanced System and Process Monitor
+Name:           atop
+Version:        2.8.1
+Release:        0%{?dist}
+License:        GPLv2+
+Group:          Development/System
+URL:            https://www.atoptool.nl
 
-%define __ldconfig        %{_sbin}/ldconfig
-%define __service         %{_sbin}/service
-%define __touch           %{_bin}/touch
-%define __chkconfig       %{_sbin}/chkconfig
-%define __updalt          %{_sbindir}/update-alternatives
-%define __useradd         %{_sbindir}/useradd
-%define __groupadd        %{_sbindir}/groupadd
-%define __getent          %{_bindir}/getent
-%define __systemctl       %{_bindir}/systemctl
+Source0:        https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
+Source1:        atopd
 
-################################################################################
+Patch0:         atop-newer-gcc.patch
 
-Summary:         Advanced System and Process Monitor
-Name:            atop
-Version:         2.5.0
-Release:         0%{?dist}
-License:         GPL
-Group:           Development/System
-URL:             https://www.atoptool.nl
+Source100:      checksum.sha512
 
-Source0:         https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
-Source1:         %{name}.daily
-Source2:         %{name}.sysconfig
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source100:       checksum.sha512
+BuildRequires:  gcc make zlib-devel ncurses-devel systemd
 
-Patch0:          %{name}-script-path-fix.patch
+Requires:       zlib ncurses systemd
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:   gcc make zlib-devel ncurses-devel
-
-Requires:        zlib ncurses
-
-%if %{systemd_enabled}
-Requires:        systemd
-%else
-Requires:        initscripts
-%endif
-
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -109,6 +57,10 @@ as reports.
 
 %patch0 -p1
 
+# Set path to sysconfig file
+sed -i 's#/etc/default/atop#/etc/sysconfig/atop#' atop.daily
+sed -i 's#/etc/default/atop#/etc/sysconfig/atop#' atop.service
+
 %build
 %{__make} %{?_smp_mflags}
 
@@ -118,18 +70,18 @@ rm -rf %{buildroot}
 install -dm 0755 %{buildroot}%{_bindir}
 install -dm 0755 %{buildroot}%{_sbindir}
 
-install -pm 0711 atop        %{buildroot}%{_bindir}/
-install -pm 0711 atopconvert %{buildroot}%{_bindir}/
-install -pm 0700 atopacctd   %{buildroot}%{_sbindir}/
-install -pm 0700 atopgpud    %{buildroot}%{_sbindir}/
+install -pm 0755 atop %{buildroot}%{_bindir}/
+install -pm 0755 atopcat %{buildroot}%{_bindir}/
+install -pm 0755 atopconvert %{buildroot}%{_bindir}/
+install -pm 0700 atopacctd %{buildroot}%{_sbindir}/
 
-ln -sf %{_bindir}/atop  %{buildroot}%{_bindir}/atopsar
+ln -sf %{_bindir}/atop %{buildroot}%{_bindir}/atopsar
 
-install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
-install -pm 0711 %{SOURCE1} %{buildroot}%{_sysconfdir}/%{name}/
+install -dm 0755 %{buildroot}%{_datadir}/%{name}
+install -pm 0755 %{name}.daily %{buildroot}%{_datadir}/%{name}/atop.daily
 
 install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
-install -pm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -pm 0644 %{name}.default %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
 install -dm 0755 %{buildroot}%{_mandir}/man1
 install -dm 0755 %{buildroot}%{_mandir}/man5
@@ -137,34 +89,18 @@ install -dm 0755 %{buildroot}%{_mandir}/man8
 install -pm 0644 man/*.1* %{buildroot}%{_mandir}/man1/
 install -pm 0644 man/*.5* %{buildroot}%{_mandir}/man5/
 install -pm 0644 man/*.8* %{buildroot}%{_mandir}/man8/
-
-install -dm 0755 %{buildroot}%{_sysconfdir}/logrotate.d
-install -pm 0644 psaccs_atop %{buildroot}%{_sysconfdir}/logrotate.d/
-install -pm 0644 psaccu_atop %{buildroot}%{_sysconfdir}/logrotate.d/
+rm -f %{buildroot}%{_mandir}/man8/atopgpud.*
 
 install -dm 0755 %{buildroot}%{_logdir}/%{name}
 
-install -dm 0755 %{buildroot}%{_crondir}
-
-%if %{systemd_enabled}
 install -dm 0755 %{buildroot}%{_unitdir}
 install -dm 0755 %{buildroot}%{_sharedstatedir}/systemd/system-sleep
 install -dm 0755 %{buildroot}%{_sysconfdir}/default
-install -pm 0644 atop.service %{buildroot}%{_unitdir}/atop.service
-install -pm 0644 atop-rotate.service %{buildroot}%{_unitdir}/atop-rotate.service
-install -pm 0644 atop-rotate.timer %{buildroot}%{_unitdir}/atop-rotate.timer
-install -pm 0644 atopacct.service %{buildroot}%{_unitdir}/atopacct.service
-install -pm 0644 atopgpu.service %{buildroot}%{_unitdir}/atopgpu.service
-install -pm 0644 atop.default %{buildroot}%{_sysconfdir}/default/atop
-install -pm 0711 atop-pm.sh %{buildroot}%{_sharedstatedir}/systemd/system-sleep/atop-pm.sh
-%else
-install -dm 0755 %{buildroot}%{_initddir}
-install -dm 0755 %{buildroot}%{_sysconfdir}/%{name}
-install -pm 0755 atop.init %{buildroot}%{_initddir}/atop
-install -pm 0755 atopacct.init %{buildroot}%{_initddir}/atopacct
-install -pm 0644 atop.cronsysv %{buildroot}%{_crondir}/atop
-install -pm 0711 45atoppm %{buildroot}%{_sysconfdir}/%{name}/45atoppm
-%endif
+install -pm 0644 atop.service %{buildroot}%{_unitdir}/
+install -pm 0644 atop-rotate.service %{buildroot}%{_unitdir}/
+install -pm 0644 atop-rotate.timer %{buildroot}%{_unitdir}/
+install -pm 0644 atopacct.service %{buildroot}%{_unitdir}/
+install -pm 0755 atop-pm.sh %{buildroot}%{_sharedstatedir}/systemd/system-sleep/
 
 %clean
 rm -rf %{buildroot}
@@ -173,10 +109,6 @@ rm -rf %{buildroot}
 # save today's logfile (format might be incompatible)
 mv %{_logdir}/%{name}/atop_$(date +%Y%m%d) %{_logdir}/%{name}/atop_$(date +%Y%m%d).save &>/dev/null || :
 
-# create dummy files to be rotated
-touch %{_logdir}/%{name}/dummy_before %{_logdir}/%{name}/dummy_after
-
-%if %{systemd_enabled}
 %{__systemctl} daemon-reload &>/dev/null || :
 %{__systemctl} enable atop &>/dev/null || :
 %{__systemctl} enable atopacct &>/dev/null || :
@@ -184,83 +116,50 @@ touch %{_logdir}/%{name}/dummy_before %{_logdir}/%{name}/dummy_after
 %{__systemctl} start atop &>/dev/null || :
 %{__systemctl} start atopacct &>/dev/null || :
 %{__systemctl} start atop-rotate.timer &>/dev/null || :
-%else
-%{__chkconfig} --add atopacct
-%{__chkconfig} --add atop
-
-# install Power Management for suspend/hibernate
-if [[ -d %{_libdir}/pm-utils/sleep.d ]] ; then
-  cp %{_sysconfdir}/%{name}/45atoppm %{_libdir}/pm-utils/sleep.d/
-fi
-
-# activate daily logging for today
-%{_sbindir}/atopacctd
-%endif
-
-sleep 2
-%{_sysconfdir}/%{name}/atop.daily &
 
 %preun
-%if %{systemd_enabled}
 if [[ $1 -eq 0 ]] ; then
   %{__systemctl} stop atop &>/dev/null || :
   %{__systemctl} stop atopacct &>/dev/null || :
-  %{__systemctl} stop atopgpu &>/dev/null || :
+  %{__systemctl} stop atop-rotate.timer &>/dev/null || :
   %{__systemctl} disable atop &>/dev/null || :
   %{__systemctl} disable atopacct &>/dev/null || :
-  %{__systemctl} disable atopgpu &>/dev/null || :
+  %{__systemctl} disable atop-rotate.timer &>/dev/null || :
 fi
-%else
-killall atopacctd &>/dev/null || :
-killall atop &>/dev/null || :
-
-if [[ $1 -eq 0 ]] ; then
-  %{__chkconfig} --del atopacct
-  %{__chkconfig} --del atop
-fi
-
-rm -f %{_libdir}/pm-utils/sleep.d/45atoppm &>/dev/null || :
-%endif
 
 ################################################################################
 
 %files
 %defattr(-,root,root)
-%doc README COPYING AUTHOR ChangeLog
+%doc README COPYING
 %config(noreplace) %{_sysconfdir}/sysconfig/atop
-%if %{systemd_enabled}
 %config(noreplace) %{_unitdir}/atop.service
 %config(noreplace) %{_unitdir}/atopacct.service
-%config(noreplace) %{_unitdir}/atopgpu.service
 %config(noreplace) %{_unitdir}/atop-rotate.service
 %config(noreplace) %{_unitdir}/atop-rotate.timer
-%config(noreplace) %{_sysconfdir}/default/atop
 %{_sharedstatedir}/systemd/system-sleep/atop-pm.sh
-%else
-%config(noreplace) %{_initddir}/atop
-%config(noreplace) %{_initddir}/atopacct
-%{_sysconfdir}/%{name}/45atoppm
-%{_crondir}/atop
-%endif
+%{_datadir}/%{name}/atop.daily
 %{_bindir}/atop
+%{_bindir}/atopcat
 %{_bindir}/atopsar
 %{_bindir}/atopconvert
 %{_sbindir}/atopacctd
-%{_sbindir}/atopgpud
 %{_mandir}/man1/atop.1*
 %{_mandir}/man1/atopsar.1*
+%{_mandir}/man1/atopcat.1*
 %{_mandir}/man1/atopconvert.1*
 %{_mandir}/man5/atoprc.5*
 %{_mandir}/man8/atopacctd.8*
-%{_mandir}/man8/atopgpud.8*
-%{_sysconfdir}/%{name}/atop.daily
-%{_sysconfdir}/logrotate.d/psaccs_atop
-%{_sysconfdir}/logrotate.d/psaccu_atop
 %dir %{_logdir}/%{name}/
 
 ################################################################################
 
 %changelog
+* Tue Feb 28 2023 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
+- Bug solution: wrong conversion of NUMA statistics (for systems with multiple
+  NUMA nodes)
+- Bug solution: string formatting might result in buffer overflow
+
 * Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
 - Avoid using perf counters in VM
 - Improve daily rotation of logfile for systemd-based systems
