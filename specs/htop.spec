@@ -4,23 +4,23 @@
 
 ################################################################################
 
-Summary:              Interactive process viewer
-Name:                 htop
-Version:              3.2.1
-Release:              0%{?dist}
-License:              GPLv2
-Group:                Applications/System
-URL:                  https://htop.dev
+Summary:        Interactive process viewer
+Name:           htop
+Version:        3.2.2
+Release:        0%{?dist}
+License:        GPLv2
+Group:          Applications/System
+URL:            https://htop.dev
 
-Source0:              https://github.com/htop-dev/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source0:        https://github.com/htop-dev/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
 
-Source100:            checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        make gcc ncurses-devel lm_sensors-devel
+BuildRequires:  make gcc ncurses-devel lm_sensors-devel
 
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -68,6 +68,45 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Mar 09 2023 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
+- CPUMeter now can show frequency in text mode
+- Add option to render distribution path prefixes shadowed
+- DiskIOMeter converts to bytes per second (not per interval)
+- DiskIOMeter uses complete units, including missing "iB/s"
+- DiskIOMeter indicates read and write in meter mode
+- NetworkIOMeter converts to packets per second, shows packet rate
+- Allow continued process following when changing display settings
+- Update the panel header when changing to another tab
+- Drop margin around the header if there are no meters
+- Use Unicode replacement character for non-printable characters
+- Default color preset uses bold blue for better visibility
+- Update the Panel header on sort order inversions ('I')
+- Toggle the header meters with pound key
+- Fix ScreenPanel to handle quitting the panel while renaming
+- Add fallback for HOME environment variable using passwd database
+- Replace meaningless ID column with FD column in lock screen
+- Use device format in the lock screen matching the files screen
+- On Linux, improvements to file-descriptor lock detection
+- On Linux, further distinguish systemd states in the SystemdMeter
+- On Linux, improvements to cgroup and container identification
+- On Linux, support openat(2) without readlinkat(2) platforms
+- On Darwin, fix current process buffer handling for busy systems
+- On DragonFly BSD, fix incorrect processor time of processes
+- On FreeBSD, fix an issue with the memory graph not showing correctly
+- On FreeBSD, add support for displaying shared memory usage
+- On PCP, use pmLookupDescs(3) if available for efficiency
+- On PCP, normalize generic columns values for consistent display
+- On PCP, changes preparing for configurable, dynamic screens
+- Handle invalid process columns from the configuration file
+- Avoid undefined behaviour with deeply nested processes
+- Fix crash when removing the currently active screen
+- Prevent possible crash on a very early error path
+- Include automake for Debian/Ubuntu
+- Restore non-mouse support
+- Reject unsupported command line arguments
+- Document idle process state
+- Clarify M_TRS/M_DRS columns
+
 * Thu Aug 18 2022 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-0
 - Fix setting to show all branches collapsed by default
 - Restore functionality of stripExeFromCmdline setting
