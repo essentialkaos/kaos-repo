@@ -10,26 +10,26 @@
 
 ################################################################################
 
-Summary:         Command line tool for managing Amazon S3 and CloudFront services
-Name:            s3cmd
-Version:         2.3.0
-Release:         0%{?dist}
-Group:           Applications/System
-License:         GPL
-URL:             https://github.com/s3tools/s3cmd
+Summary:        Command line tool for managing Amazon S3 and CloudFront services
+Name:           s3cmd
+Version:        2.3.0
+Release:        0%{?dist}
+Group:          Applications/System
+License:        GPL
+URL:            https://github.com/s3tools/s3cmd
 
-Source0:         https://github.com/s3tools/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/s3tools/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildArch:       noarch
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   python3-devel
+BuildRequires:  python3-devel
 
-Requires:        python3 python3-dateutil python3-magic
+Requires:       python3 python3-dateutil python3-magic
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

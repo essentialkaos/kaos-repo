@@ -65,7 +65,7 @@
 Summary:        The Go Programming Language
 Name:           golang
 Version:        1.20.1
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        BSD
 Group:          Development/Languages
 URL:            https://go.dev
@@ -82,10 +82,11 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  golang >= 1.19
 
 Requires:       git
-Requires:       %{name}-bin
+Requires:       %{name}-bin = %{version}-%{release}
 Requires:       %{name}-src = %{version}-%{release}
 
 Provides:       go = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -111,11 +112,38 @@ Golang compiler source tree
 
 Summary:   Golang compiler tool
 Group:     Development/Languages
-Requires:  go = %{version}-%{release}
+Requires:  golang = %{version}-%{release}
 
 Requires:  glibc gcc
 
 Provides:  go(API)(go) = %{go_api}
+
+Obsoletes: golang-pkg-bin-linux-amd64 < 1.20
+Obsoletes: golang-pkg-darwin-amd64 < 1.20
+Obsoletes: golang-pkg-darwin-arm64 < 1.20
+Obsoletes: golang-pkg-freebsd-386 < 1.20
+Obsoletes: golang-pkg-freebsd-amd64 < 1.20
+Obsoletes: golang-pkg-freebsd-arm < 1.20
+Obsoletes: golang-pkg-freebsd-arm64 < 1.20
+Obsoletes: golang-pkg-linux-386 < 1.20
+Obsoletes: golang-pkg-linux-amd64 < 1.20
+Obsoletes: golang-pkg-linux-arm < 1.20
+Obsoletes: golang-pkg-linux-arm64 < 1.20
+Obsoletes: golang-pkg-netbsd-386 < 1.20
+Obsoletes: golang-pkg-netbsd-amd64 < 1.20
+Obsoletes: golang-pkg-netbsd-arm < 1.20
+Obsoletes: golang-pkg-netbsd-arm64 < 1.20
+Obsoletes: golang-pkg-openbsd-386 < 1.20
+Obsoletes: golang-pkg-openbsd-amd64 < 1.20
+Obsoletes: golang-pkg-openbsd-arm < 1.20
+Obsoletes: golang-pkg-openbsd-arm64 < 1.20
+Obsoletes: golang-pkg-plan9-386 < 1.20
+Obsoletes: golang-pkg-plan9-amd64 < 1.20
+Obsoletes: golang-pkg-plan9-arm < 1.20
+Obsoletes: golang-pkg-windows-386 < 1.20
+Obsoletes: golang-pkg-windows-amd64 < 1.20
+Obsoletes: golang-pkg-windows-arm < 1.20
+Obsoletes: golang-pkg-windows-arm64 < 1.20
 
 %description bin
 Golang compiler tool.
@@ -240,6 +268,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Mar 20 2023 Anton Novojilov <andy@essentialkaos.com> - 1.20.1-1
+- Fixed update from Golang < 1.20
+
 * Fri Feb 17 2023 Anton Novojilov <andy@essentialkaos.com> - 1.20.1-0
 - https://github.com/golang/go/issues?q=milestone:Go1.20.1+label:CherryPickApproved
 
