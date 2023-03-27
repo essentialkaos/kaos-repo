@@ -14,7 +14,7 @@ sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /et
 
 For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) repository packages. You could install this packages by next command:
 
-```
+```bash
 sudo yum install -y epel-release
 ```
 
