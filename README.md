@@ -12,10 +12,10 @@ This repository contains spec files and patches used for building RPM packages f
 sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 ```
 
-For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) and [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository packages. You could install this packages by next command:
+For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) repository packages. You could install this packages by next command:
 
 ```
-sudo yum install -y epel-release centos-release-scl
+sudo yum install -y epel-release
 ```
 
 ### Contributing Guidelines
