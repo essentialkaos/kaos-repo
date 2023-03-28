@@ -1,0 +1,11 @@
+# Bibop recipe for python3-toml
+# See more: https://kaos.sh/bibop
+
+pkg python3-toml
+
+fast-finish yes
+
+var package_name toml
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}
