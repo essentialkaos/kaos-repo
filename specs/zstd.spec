@@ -4,23 +4,23 @@
 
 ################################################################################
 
-Summary:         Zstandard (zstd) compression library
-Name:            zstd
-Version:         1.5.2
-Release:         0%{?dist}
-License:         BSD and GPLv2
-Group:           Development/Libraries
-URL:             https://github.com/facebook/zstd
+Summary:        Zstandard (zstd) compression library
+Name:           zstd
+Version:        1.5.5
+Release:        0%{?dist}
+License:        BSD and GPLv2
+Group:          Development/Libraries
+URL:            https://github.com/facebook/zstd
 
-Source0:         https://github.com/facebook/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/facebook/%{name}/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc
+BuildRequires:  make gcc
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -32,8 +32,8 @@ targeting real-time compression scenarios at zlib-level compression ratio.
 
 %package -n lib%{name}
 
-Summary:         Zstandard (zstd) shared library
-Group:           Development/Libraries
+Summary:  Zstandard (zstd) shared library
+Group:    Development/Libraries
 
 %description -n lib%{name}
 Zstandard compression shared library.
@@ -42,10 +42,10 @@ Zstandard compression shared library.
 
 %package -n lib%{name}-devel
 
-Summary:         Header files for Zstandard (zstd) library
-Group:           Development/Libraries
+Summary:  Header files for Zstandard (zstd) library
+Group:    Development/Libraries
 
-Requires:        lib%{name} = %{version}-%{release}
+Requires:  lib%{name} = %{version}-%{release}
 
 %description -n lib%{name}-devel
 Header files for Zstandard library.
@@ -54,10 +54,10 @@ Header files for Zstandard library.
 
 %package -n lib%{name}-static
 
-Summary:         Static variant of the Zstandard (zstd) library
-Group:           Development/Libraries
+Summary:  Static variant of the Zstandard (zstd) library
+Group:    Development/Libraries
 
-Requires:        lib%{name}-devel = %{version}-%{release}
+Requires:  lib%{name}-devel = %{version}-%{release}
 
 %description -n lib%{name}-static
 Static variant of the Zstandard library.
@@ -126,5 +126,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 19 2023 Anton Novojilov <andy@essentialkaos.com> - 1.5.5-0
+- https://github.com/facebook/zstd/releases/tag/v1.5.5
+
 * Sat Sep 17 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
 - Initial build for kaos-repo

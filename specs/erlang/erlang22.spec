@@ -23,7 +23,7 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     22
 %define ver_min     3
-%define ver_patch   4.25
+%define ver_patch   4.26
 %define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
@@ -1061,6 +1061,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu May 18 2023 Anton Novojilov <andy@essentialkaos.com> - 22.3.4.26-0
+- https://github.com/erlang/otp/releases/tag/OTP-22.3.4.26
+
 * Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 22.3.4.25-0
 - https://github.com/erlang/otp/releases/tag/OTP-22.3.4.25
 
