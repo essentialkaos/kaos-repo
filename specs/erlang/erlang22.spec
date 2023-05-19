@@ -101,6 +101,9 @@ Requires:       %{name}-tftp = %{version}
 Requires:       %{name}-typer = %{version}
 Requires:       %{name}-xmerl = %{version}
 
+Provides:       %{name} = %{version}-%{release}
+Provides:       %{realname} = %{ver_string}-%{release}
+
 Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
 Conflicts:      erlang20 erlang21 erlang23 erlang24 erlang25
 
