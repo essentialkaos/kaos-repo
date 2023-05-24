@@ -29,15 +29,15 @@ jobs:
         with:
           args: --version
 
-      - name: Install perfecto-docker
+      - name: Install perfecto-container
         run: |
-          wget https://kaos.sh/perfecto/perfecto-docker
-          chmod +x perfecto-docker
+          wget https://kaos.sh/perfecto/perfecto-container
+          chmod +x perfecto-container
 
       - name: Run Perfecto check
         env:
           IMAGE: ghcr.io/essentialkaos/perfecto:centos7
-        run: ./perfecto-docker -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
+        run: ./perfecto-container -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
 
   Bibop:
     name: Bibop
