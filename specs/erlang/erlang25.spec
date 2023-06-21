@@ -22,13 +22,13 @@
 %define elibdir     %{_libdir}/erlang/lib
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     25
-%define ver_min     2
-%define ver_patch   0
-%define ver_suffix  %{ver_min}
+%define ver_min     3
+%define ver_patch   2.2
+%define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
-%define libre_ver   3.6.1
+%define libre_ver   3.8.0
 
 ################################################################################
 
@@ -1033,6 +1033,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jun 21 2023 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.2-0
+- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.2
+- LibreSSL updated to 3.8.0
+
 * Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 25.2-0
 - https://github.com/erlang/otp/releases/tag/OTP-25.2
 
