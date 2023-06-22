@@ -28,7 +28,7 @@
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
-%define libre_ver   3.8.0
+%define libre_ver   3.7.3
 
 ################################################################################
 
@@ -1035,7 +1035,7 @@ rm -rf %{buildroot}
 %changelog
 * Wed Jun 21 2023 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.2-0
 - https://github.com/erlang/otp/releases/tag/OTP-25.3.2.2
-- LibreSSL updated to 3.8.0
+- LibreSSL updated to 3.7.3
 
 * Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 25.2-0
 - https://github.com/erlang/otp/releases/tag/OTP-25.2
