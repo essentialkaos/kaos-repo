@@ -21,14 +21,14 @@
 
 %define elibdir     %{_libdir}/erlang/lib
 %define eprefix     %{_prefix}%{_lib32}
-%define ver_maj     21
-%define ver_min     3
-%define ver_patch   8.24
+%define ver_maj     26
+%define ver_min     0
+%define ver_patch   1
 %define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
-%define libre_ver   2.9.2
+%define libre_ver   3.7.3
 
 ################################################################################
 
@@ -81,12 +81,10 @@ Requires:       %{name}-erl_interface = %{version}
 Requires:       %{name}-et = %{version}
 Requires:       %{name}-eunit = %{version}
 Requires:       %{name}-ftp = %{version}
-Requires:       %{name}-hipe = %{version}
 Requires:       %{name}-inets = %{version}
 Requires:       %{name}-mnesia = %{version}
 Requires:       %{name}-observer = %{version}
 Requires:       %{name}-os_mon = %{version}
-Requires:       %{name}-otp_mibs = %{version}
 Requires:       %{name}-parsetools = %{version}
 Requires:       %{name}-public_key = %{version}
 Requires:       %{name}-reltool = %{version}
@@ -104,7 +102,7 @@ Provides:       %{name} = %{version}-%{release}
 Provides:       %{realname} = %{ver_string}-%{release}
 
 Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
-Conflicts:      erlang20 erlang22 erlang23 erlang24 erlang25
+Conflicts:      erlang20 erlang21 erlang22 erlang23 erlang24 erlang25
 
 ################################################################################
 
@@ -138,7 +136,6 @@ Requires:  %{name}-erl_interface = %{version}
 Requires:  %{name}-et = %{version}
 Requires:  %{name}-eunit = %{version}
 Requires:  %{name}-ftp = %{version}
-Requires:  %{name}-hipe = %{version}
 Requires:  %{name}-inets = %{version}
 Requires:  %{name}-jinterface = %{version}
 Requires:  %{name}-megaco = %{version}
@@ -146,7 +143,6 @@ Requires:  %{name}-mnesia = %{version}
 Requires:  %{name}-observer = %{version}
 Requires:  %{name}-odbc = %{version}
 Requires:  %{name}-os_mon = %{version}
-Requires:  %{name}-otp_mibs = %{version}
 Requires:  %{name}-parsetools = %{version}
 Requires:  %{name}-public_key = %{version}
 Requires:  %{name}-reltool = %{version}
@@ -169,7 +165,7 @@ Full Erlang bundle.
 
 The Erlang/OTP system --- Erlang is a programming language which
 has many features more commonly associated with an operating system
-than with a programming language: concurrent processes, scheduling,
+than with a programming language:  concurrent processes, scheduling,
 memory management, distribution, networking, etc. The development package
 in addition contains the Erlang sources for all base libraries.
 Includes the Erlang/OTP graphical libraries.
@@ -198,7 +194,7 @@ Erlang architecture independent files
 
 The Erlang/OTP system --- Erlang is a programming language which
 has many features more commonly associated with an operating system
-than with a programming language: concurrent processes, scheduling,
+than with a programming language:  concurrent processes, scheduling,
 memory management, distribution, networking, etc. The development package
 in addition contains the Erlang sources for all base libraries.
 Includes the Erlang/OTP graphical libraries.
@@ -206,9 +202,9 @@ Includes the Erlang/OTP graphical libraries.
 ################################################################################
 
 %package -n %{name}-devel
-Summary:   Erlang header
-License:   MPL
-Group:     Development/Tools
+Summary:  Erlang header
+License:  MPL
+Group:    Development/Tools
 
 Requires:  %{name}-base = %{version}-%{release}
 Provides:  %{name}-devel = %{version}-%{release}
@@ -280,7 +276,6 @@ Group:    Development/Tools
 
 Requires:  %{name}-asn1 = %{version}-%{release}
 Requires:  %{name}-base = %{version}-%{release}
-Requires:  %{name}-hipe = %{version}-%{release}
 Requires:  %{name}-ssl = %{version}-%{release}
 
 %description -n %{name}-eldap
@@ -290,12 +285,12 @@ Access Protocol (LDAP).
 ################################################################################
 
 %package -n %{name}-emacs
-Summary:  Emacs support for The Erlang language
-License:  GPL
-Group:    Development/Tools
-Requires: emacs
+Summary:   Emacs support for The Erlang language
+License:   GPL
+Group:     Development/Tools
 
 Requires:  %{name}-base = %{version}-%{release}
+Requires:  emacs
 
 %description -n %{name}-emacs
 This module provides Erlang support to Emacs.
@@ -443,18 +438,6 @@ File Transfer Protocol (FTP).
 
 ################################################################################
 
-%package -n %{name}-hipe
-Summary:  High performance erlang
-License:  MPL
-Group:    Development/Tools
-
-Requires:  %{name}-base = %{version}-%{release}
-
-%description -n %{name}-hipe
-High-performance erlang.
-
-################################################################################
-
 %package -n %{name}-inviso
 Summary:  Erlang trace tool
 License:  MPL
@@ -523,11 +506,10 @@ distributed systems.
 ################################################################################
 
 %package -n %{name}-odbc
-Summary:  Interface to relational SQL-databases built on ODBC
-License:  MPL
-Group:    Development/Tools
-
-Requires:  %{name}-base = %{version}-%{release}
+Summary:   Interface to relational SQL-databases built on ODBC
+License:   MPL
+Requires:    %{name}-base = %{version}-%{release}
+Group:     Development/Tools
 
 %description -n %{name}-odbc
 The ODBC application is an interface to relational SQL-databases built
@@ -545,19 +527,6 @@ Requires:  %{name}-base = %{version}-%{release}
 %description -n %{name}-os_mon
 The operating system monitor OS_Mon monitors operating system disk and memory
 usage etc.
-
-################################################################################
-
-%package -n %{name}-otp_mibs
-Summary:  Snmp management information base for Erlang
-License:  MPL
-Group:    Development/Tools
-
-Requires:  %{name}-base = %{version}-%{release}
-
-%description -n %{name}-otp_mibs
-The OTP_Mibs application provides an SNMP management information base for
-Erlang nodes.
 
 ################################################################################
 
@@ -592,7 +561,6 @@ Erlang API to public key infrastructure.
 Summary:  A release management tool for Erlang
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-reltool
@@ -657,14 +625,13 @@ The SSL application provides secure communication over sockets.
 Summary:  Set of modules for working with Erlang source code
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-syntax_tools
 This package defines an abstract datatype that is compatible with the
 erl_parse data structures, and provides modules for analysis and
 manipulation, flexible pretty printing, and preservation of source-code
-comments. Now includes erl_tidy: automatic code tidying and checking.
+comments. Now includes erl_tidy:  automatic code tidying and checking.
 
 ################################################################################
 
@@ -672,7 +639,6 @@ comments. Now includes erl_tidy: automatic code tidying and checking.
 Summary:  Trivial FTP
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-tftp
@@ -684,7 +650,6 @@ Trivial FTP.
 Summary:  Set of programming tools including a coverage analyzer etc
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-tools
@@ -697,7 +662,6 @@ useful when developing Erlang programs.
 Summary:  Type annotator of Erlang code
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-typer
@@ -709,7 +673,6 @@ A type annotator of Erlang code.
 Summary:  Graphic system for Erlang
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-wx
@@ -722,7 +685,6 @@ for Erlang.
 Summary:  XML processing tools
 License:  MPL
 Group:    Development/Tools
-
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-xmerl
@@ -780,7 +742,6 @@ ERL_TOP=`pwd`; export ERL_TOP
   %endif
   --enable-threads \
   --enable-kernel-poll \
-  --enable-hipe \
   --enable-smp-support \
   --enable-builtin-zlib \
   --enable-sctp \
@@ -896,6 +857,7 @@ rm -rf %{buildroot}
 %{_libdir}/erlang/bin/ct_run
 %{_libdir}/erlang/bin/epmd
 %{_libdir}/erlang/bin/erl
+%{_libdir}/erlang/bin/erl_call
 %{_libdir}/erlang/bin/erlc
 %{_libdir}/erlang/bin/escript
 %{_libdir}/erlang/bin/no_dot_erlang.boot
@@ -984,10 +946,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{elibdir}/ftp-*
 
-%files -n %{name}-hipe
-%defattr(-,root,root,-)
-%{elibdir}/hipe-*
-
 %files -n %{name}-inets
 %defattr(-,root,root,-)
 %{elibdir}/inets-*
@@ -1019,10 +977,6 @@ rm -rf %{buildroot}
 %files -n %{name}-os_mon
 %defattr(-,root,root,-)
 %{elibdir}/os_mon-*
-
-%files -n %{name}-otp_mibs
-%defattr(-,root,root,-)
-%{elibdir}/otp_mibs-*
 
 %files -n %{name}-parsetools
 %defattr(-,root,root,-)
@@ -1079,60 +1033,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Jul 20 2021 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.24-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.24
-
-* Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.18-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.18
-
-* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.17-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.17
-
-* Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.16-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.16
-
-* Tue Mar 24 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.14-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.14
-- Using DevToolSet 7 for build
-
-* Fri Jan 24 2020 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.12-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.12
-
-* Tue Dec 10 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.11-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.11
-
-* Thu Aug 15 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.6-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.6
-- Added CRC check for sources
-
-* Fri Jul 05 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.5-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.5
-- Added sctp support
-- Rebuilt with built-in zlib
-
-* Mon Jun 03 2019 Anton Novojilov <andy@essentialkaos.com> - 21.3.8.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.3.8.2
-- LibreSSL updated to 2.9.2
-
-* Tue Mar 12 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.7-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.2.7
-
-* Wed Feb 13 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.5-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.2.5
-
-* Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.3-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.2.3
-
-* Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 21.2.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.2.2
-- LibreSSL updated to 2.9.0
-
-* Thu Oct 25 2018 Anton Novojilov <andy@essentialkaos.com> - 21.1.1-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.1.1
-- LibreSSL updated to 2.8.2
-
-* Sat Jul 28 2018 Gleb Goncharov <g.goncharov@fun-box.ru> - 21.0.4-0
-- https://github.com/erlang/otp/releases/tag/OTP-21.0.4
-
-* Wed Jun 20 2018 Anton Novojilov <andy@essentialkaos.com> - 21.0-0
-- Initial build
+* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 26.0.1-0
+- https://github.com/erlang/otp/releases/tag/OTP-26.0.1

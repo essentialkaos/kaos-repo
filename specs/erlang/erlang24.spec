@@ -104,7 +104,7 @@ Provides:       %{name} = %{version}-%{release}
 Provides:       %{realname} = %{ver_string}-%{release}
 
 Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
-Conflicts:      erlang20 erlang21 erlang22 erlang23 erlang25
+Conflicts:      erlang20 erlang21 erlang22 erlang23 erlang25 erlang26
 
 ################################################################################
 
@@ -1062,4 +1062,4 @@ rm -rf %{buildroot}
 - https://github.com/erlang/otp/releases/tag/OTP-24.0.3
 
 * Tue Jul 20 2021 Anton Novojilov <andy@essentialkaos.com> - 24.0.1-0
-- Initial build for kaos repository
+- https://github.com/erlang/otp/releases/tag/OTP-24.0.1

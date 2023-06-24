@@ -105,7 +105,7 @@ Provides:       %{name} = %{version}-%{release}
 Provides:       %{realname} = %{ver_string}-%{release}
 
 Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
-Conflicts:      erlang20 erlang21 erlang22 erlang24 erlang25
+Conflicts:      erlang20 erlang21 erlang22 erlang24 erlang25 erlang26
 
 ################################################################################
 
@@ -1085,10 +1085,10 @@ rm -rf %{buildroot}
 - LibreSSL updated to 3.3.3
 
 * Tue Nov 10 2020 Anton Novojilov <andy@essentialkaos.com> - 23.1.2-0
-- - https://github.com/erlang/otp/releases/tag/OTP-23.1.2
+- https://github.com/erlang/otp/releases/tag/OTP-23.1.2
 
 * Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.3-0
-- - https://github.com/erlang/otp/releases/tag/OTP-23.0.3
+- https://github.com/erlang/otp/releases/tag/OTP-23.0.3
 
 * Fri May 22 2020 Anton Novojilov <andy@essentialkaos.com> - 23.0.1-0
-- Initial build for kaos repository
+- https://github.com/erlang/otp/releases/tag/OTP-23.0.1
