@@ -1,6 +1,6 @@
 [kaos-testing]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for EL$releasever - $basearch
-baseurl=https://yum.kaos.st/$releasever/testing/$basearch
+baseurl=https://pkgs.kaos.st/$releasever/testing/$basearch
 priority=1
 enabled=0
 gpgcheck=1
@@ -10,7 +10,7 @@ bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues
 
 [kaos-testing-src]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for EL$releasever - $basearch
-baseurl=https://yum.kaos.st/$releasever/testing/SRPMS
+baseurl=https://pkgs.kaos.st/$releasever/testing/SRPMS
 priority=1
 enabled=0
 gpgcheck=1

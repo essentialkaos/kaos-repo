@@ -4,12 +4,12 @@
 
 <br/>
 
-This repository contains spec files and patches used for building RPM packages for [ESSENTIAL KAOS Public YUM Repository](https://yum.kaos.st).
+This repository contains spec files and patches used for building RPM packages for [EK Public Repository](https://pkgs.kaos.st).
 
 ### Installation
 
 ```bash
-sudo yum install -y https://yum.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 ```
 
 For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by next command:

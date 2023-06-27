@@ -13,12 +13,12 @@
 
 ################################################################################
 
-Summary:         ESSENTIAL KAOS Public YUM Repository
+Summary:         ESSENTIAL KAOS Public Repository
 Name:            kaos-repo
-Version:         11.0
+Version:         12.0
 Release:         0%{?dist}
 License:         Apache License, Version 2.0
-Vendor:          ESSENTIALKAOS
+Vendor:          ESSENTIAL KAOS
 Group:           Development/Tools
 URL:             https://kaos.sh/kaos-repo
 
@@ -107,6 +107,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 27 2023 Anton Novojilov <andy@essentialkaos.com> - 12.0-0
+- Migrate from yum.kaos.st to pkgs.kaos.st
+
 * Mon Dec 05 2022 Anton Novojilov <andy@essentialkaos.com> - 11.0-0
 - Added EL8/EL9 support
 - Added SHA2 key for EL8+
