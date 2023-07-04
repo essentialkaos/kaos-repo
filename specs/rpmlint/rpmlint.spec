@@ -10,6 +10,8 @@ URL:            https://github.com/rpm-software-management/rpmlint
 
 Source0:        https://github.com/rpm-software-management/%{name}/archive/refs/tags/%{version}.0.tar.gz
 
+Patch0:         default-config.patch
+
 BuildArch:      noarch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -39,6 +41,8 @@ and installed binary rpms instead of uninstalled binary rpm files.
 %prep
 %setup -qn %{name}-%{version}.0
 
+%patch0 -p1
+
 %build
 %{py3_build}
 
@@ -49,9 +53,6 @@ rm -rf %{buildroot}
 
 install -dDm 755 %{buildroot}%{_sysconfdir}/xdg/rpmlint
 install -pm 644 configs/Fedora/*.toml %{buildroot}%{_sysconfdir}/xdg/rpmlint/
-
-sed -i '/"BashismsCheck"/d' %{buildroot}%{_sysconfdir}/xdg/rpmlint/fedora.toml
-sed -i "/' no-signature',/a 'superfluous-%%clean-section'," %{buildroot}%{_sysconfdir}/xdg/rpmlint/fedora.toml
 
 %clean
 rm -rf %{buildroot}
@@ -70,7 +71,7 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.4-0
+* Mon Jul 03 2023 Anton Novojilov <andy@essentialkaos.com> - 2.4-0
 - https://github.com/rpm-software-management/rpmlint/releases/tag/2.4.0
 
 * Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.3-0
