@@ -4,27 +4,29 @@
 
 ################################################################################
 
-%define tarversion  3400000
+%define tarversion  3420000
 
 ################################################################################
 
-Summary:            Embeddable SQL Database Engine
-Name:               sqlite
-Version:            3.40.0
-Release:            0%{?dist}
-License:            Public domain
-Group:              Development/Tools
-URL:                https://www.sqlite.org
+Summary:        Embeddable SQL Database Engine (SQLite)
+Name:           sqlite
+Version:        3.42.0
+Release:        0%{?dist}
+License:        Public domain
+Group:          Development/Tools
+URL:            https://www.sqlite.org
 
-Source0:            https://www.sqlite.org/2022/%{name}-autoconf-%{tarversion}.tar.gz
+Source0:        https://www.sqlite.org/2023/%{name}-autoconf-%{tarversion}.tar.gz
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc glibc-devel readline-devel tcl-devel
+BuildRequires:  make gcc glibc-devel readline-devel tcl-devel
 
-Provides:           %{name} = %{version}-%{release}
+Requires:       %{name}-libs = %{version}
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -42,12 +44,21 @@ application that supports the Qt database plug-ins.
 
 ################################################################################
 
-%package devel
-Group:              Development/Libraries
-Summary:            Embeddable SQL Database Engine
+%package libs
+Group:    Development/Libraries
+Summary:  Shared library for SQLite
 
-Requires:           %{name} = %{version}
-Requires:           glibc-devel
+%description libs
+This package contains the shared library for SQLite.
+
+################################################################################
+
+%package devel
+Group:     Development/Libraries
+Summary:   Embeddable SQL Database Engine
+
+Requires:  %{name}-libs = %{version}
+Requires:  glibc-devel
 
 %description devel
 SQLite is a C library that implements an embeddable SQL database
@@ -64,8 +75,8 @@ application which supports the Qt database plug-ins.
 ################################################################################
 
 %package tcl
-Group:              Development/Libraries
-Summary:            Tcl binding for SQLite
+Group:    Development/Libraries
+Summary:  Tcl binding for SQLite
 
 %description tcl
 This package contains laguage bindings from the Tcl programming
@@ -107,10 +118,10 @@ pushd tea
   %{make_install} libdir=%{tcl_archdir}
 popd
 
-%post
+%post libs
 /sbin/ldconfig
 
-%postun
+%postun libs
 /sbin/ldconfig
 
 %clean
@@ -120,9 +131,14 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+%doc README.txt
 %{_bindir}/sqlite3
 %{_libdir}/libsqlite*.so.*
 %{_mandir}/man1/*
+
+%files libs
+%defattr(-,root,root,-)
+%{_libdir}/libsqlite*.so.*
 
 %files devel
 %defattr(-,root,root,-)
@@ -137,6 +153,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 3.42.0-0
+- https://www.sqlite.org/releaselog/3_42_0.html
+
 * Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 3.40.0-0
 - https://www.sqlite.org/releaselog/3_40_0.html
 

@@ -8,11 +8,7 @@
 %global python_base  python36
 %endif
 
-%if 0%{?rhel} == 8
-%global python_base  python38
-%endif
-
-%if 0%{?rhel} == 9
+%if 0%{?rhel} >= 8
 %global python_base  python3
 %endif
 
@@ -68,31 +64,31 @@
 
 ################################################################################
 
-Summary:            Creates a common metadata repository
-Name:               createrepo_c
-Version:            0.20.1
-Release:            0%{?dist}
-License:            GPLv2
-Group:              Development/Tools
-URL:                https://github.com/rpm-software-management/createrepo_c
+Summary:        Creates a common metadata repository
+Name:           createrepo_c
+Version:        0.20.1
+Release:        0%{?dist}
+License:        GPLv2
+Group:          Development/Tools
+URL:            https://github.com/rpm-software-management/createrepo_c
 
-Source0:            https://github.com/rpm-software-management/%{name}/archive/%{version}.tar.gz
+Source0:        https://github.com/rpm-software-management/%{name}/archive/%{version}.tar.gz
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      gcc cmake doxygen bzip2-devel file-devel xz
-BuildRequires:      glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
-BuildRequires:      openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
-BuildRequires:      rpm-devel libmodulemd-devel libyaml-devel zchunk-devel
-BuildRequires:      bash-completion
+BuildRequires:  gcc cmake doxygen bzip2-devel file-devel xz
+BuildRequires:  glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
+BuildRequires:  openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
+BuildRequires:  rpm-devel libmodulemd-devel libyaml-devel zchunk-devel
+BuildRequires:  bash-completion
 
-Requires:           rpm
+Requires:       rpm
 
-Requires:           %{name}-libs = %{version}-%{release}
+Requires:       %{name}-libs = %{version}-%{release}
 
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -106,8 +102,8 @@ rpm packages and maintaining it.
 
 %package libs
 
-Summary:            Library for repodata manipulation
-Group:              Development/Libraries
+Summary:  Library for repodata manipulation
+Group:    Development/Libraries
 
 %description libs
 Libraries for applications using the createrepo_c library
@@ -117,14 +113,14 @@ for easy manipulation with a repodata.
 
 %package devel
 
-Summary:            Library for repodata manipulation
-Group:              Development/Libraries
+Summary:   Library for repodata manipulation
+Group:     Development/Libraries
 
-Requires:           pkgconfig >= 1:0.14
-Requires:           pkgconfig(glib-2.0) pkgconfig(rpm) pkgconfig(libcurl)
-Requires:           pkgconfig(sqlite3) pkgconfig(sqlite3) pkgconfig(libxml-2.0)
-Requires:           pkgconfig(openssl)
-Requires:           %{name}-libs =  %{version}-%{release}
+Requires:  pkgconfig >= 1:0.14
+Requires:  pkgconfig(glib-2.0) pkgconfig(rpm) pkgconfig(libcurl)
+Requires:  pkgconfig(sqlite3) pkgconfig(sqlite3) pkgconfig(libxml-2.0)
+Requires:  pkgconfig(openssl)
+Requires:  %{name}-libs =  %{version}-%{release}
 
 %description devel
 This package contains the createrepo_c C library and header files.
@@ -134,14 +130,13 @@ These development files are for easy manipulation with a repodata.
 
 %package -n %{python_base}-%{name}
 
-Summary:            Python bindings for the createrepo_c library
-Group:              Development/Languages
+Summary:        Python bindings for the createrepo_c library
+Group:          Development/Languages
 
-BuildRequires:      %{python_base}-devel %{python_base}-libs
+BuildRequires:  %{python_base}-devel %{python_base}-libs
 
-Requires:           %{python_base}
-
-Requires:           %{name} = %{version}-%{release}
+Requires:       %{python_base}
+Requires:       %{name} = %{version}-%{release}
 
 %description -n %{python_base}-%{name}
 Python bindings for the createrepo_c library.
