@@ -9,13 +9,13 @@
 ################################################################################
 
 %define realname   redis
-%define major_ver  5
+%define major_ver  7
 
 ################################################################################
 
 Summary:           A persistent key-value database
 Name:              redis%{major_ver}
-Version:           5.0.14
+Version:           7.0.11
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -54,7 +54,7 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Conflicts:         redis redis6 redis7
+Conflicts:         redis redis5 redis7
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{name}-server = %{version}-%{release}
@@ -173,7 +173,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
+%doc 00-RELEASENOTES BUGS COPYING README.md
 %attr(-,%{realname},%{realname}) %config(noreplace) %{_sysconfdir}/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{realname}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
@@ -195,53 +195,17 @@ rm -rf %{buildroot}
 
 %files cli
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
+%doc 00-RELEASENOTES BUGS COPYING README.md
 %{_bindir}/%{realname}-cli
 
 ################################################################################
 
 %changelog
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 5.0.14-0
-- https://github.com/redis/redis/blob/5.0.14/00-RELEASENOTES
+* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.11-0
+- https://github.com/redis/redis/blob/7.0.11/00-RELEASENOTES
 
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.13-0
-- https://github.com/redis/redis/blob/5.0.13/00-RELEASENOTES
+* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.10-0
+- https://github.com/redis/redis/blob/7.0.10/00-RELEASENOTES
 
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.12-0
-- https://github.com/redis/redis/blob/5.0.12/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.11-0
-- https://github.com/redis/redis/blob/5.0.11/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.10-0
-- https://github.com/redis/redis/blob/5.0.10/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.9-0
-- https://github.com/redis/redis/blob/5.0.9/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.8-0
-- https://github.com/redis/redis/blob/5.0.8/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.7-0
-- https://github.com/redis/redis/blob/5.0.7/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.6-0
-- https://github.com/redis/redis/blob/5.0.6/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.5-0
-- https://github.com/redis/redis/blob/5.0.5/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.4-0
-- https://github.com/redis/redis/blob/5.0.4/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.3-0
-- https://github.com/redis/redis/blob/5.0.3/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
-- https://github.com/redis/redis/blob/5.0.2/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
-- https://github.com/redis/redis/blob/5.0.1/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
-- https://github.com/redis/redis/blob/5.0.0/00-RELEASENOTES
+* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.9-0
+- https://github.com/redis/redis/blob/7.0.9/00-RELEASENOTES

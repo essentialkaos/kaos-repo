@@ -1,7 +1,7 @@
-# Bibop recipe for Redis 5.x
+# Bibop recipe for Redis 7.x
 # See more: https://kaos.sh/bibop
 
-pkg redis5 redis5-cli
+pkg redis7 redis7-cli
 
 require-root yes
 unsafe-actions yes

@@ -82,7 +82,6 @@ command "redis-cli SAVE" "Create database dump"
 
 +command "-" "Check created dump file"
   wait-fs {dump_file} 5
-
   exist {dump_file}
   mode {dump_file} 644
   owner {dump_file} {service_user}

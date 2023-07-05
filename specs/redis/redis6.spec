@@ -1,9 +1,5 @@
 ################################################################################
 
-# rpmbuilder:pedantic true
-
-################################################################################
-
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
@@ -12,81 +8,57 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __sysctl          %{_bindir}/systemctl
-
-################################################################################
-
 %define realname   redis
 %define major_ver  6
 
 ################################################################################
 
-Summary:            A persistent key-value database
-Name:               redis%{major_ver}
-Version:            6.2.7
-Release:            0%{?dist}
-License:            BSD
-Group:              Applications/Databases
-URL:                https://redis.io
+Summary:           A persistent key-value database
+Name:              redis%{major_ver}
+Version:           6.2.12
+Release:           0%{?dist}
+License:           BSD
+Group:             Applications/Databases
+URL:               https://redis.io
 
-Source0:            https://github.com/redis/%{realname}/archive/%{version}.tar.gz
-Source1:            %{realname}.logrotate
-Source3:            %{realname}.sysconfig
-Source4:            sentinel.logrotate
-Source5:            sentinel.init
-Source6:            sentinel.sysconfig
-Source7:            %{realname}.service
-Source8:            sentinel.service
-Source9:            %{realname}-limit-systemd
-Source10:           sentinel-limit-systemd
+Source0:           https://github.com/redis/%{realname}/archive/%{version}.tar.gz
+Source1:           %{realname}.logrotate
+Source3:           %{realname}.sysconfig
+Source4:           sentinel.logrotate
+Source6:           sentinel.sysconfig
+Source7:           %{realname}.service
+Source8:           sentinel.service
+Source9:           %{realname}-limit-systemd
+Source10:          sentinel-limit-systemd
 
-Source100:          checksum.sha512
+Source100:         checksum.sha512
 
-Patch0:             %{realname}-%{major_ver}-config.patch
-Patch1:             sentinel-%{major_ver}-config.patch
+Patch0:            %{realname}-%{major_ver}-config.patch
+Patch1:            sentinel-%{major_ver}-config.patch
 
-BuildRoot:          %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:         %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make tcl systemd-devel
-BuildRequires:      devtoolset-7-gcc
+BuildRequires:     make tcl systemd-devel
 
-Requires:           %{name}-cli >= %{version}
-Requires:           logrotate
+%if 0%{?rhel} <= 7
+BuildRequires:     devtoolset-9-gcc
+%else
+BuildRequires:     gcc
+%endif
 
-Requires(pre):      shadow-utils
-Requires(post):     systemd
-Requires(preun):    systemd
-Requires(postun):   systemd
+Requires:          %{name}-cli >= %{version}
+Requires:          logrotate
 
-Conflicts:          redis redis5 redis7
+Requires(pre):     shadow-utils
+Requires(post):    systemd
+Requires(preun):   systemd
+Requires(postun):  systemd
+
+Conflicts:         redis redis5 redis7
+
+Provides:          %{name} = %{version}-%{release}
+Provides:          %{name}-server = %{version}-%{release}
+Provides:          %{name}-sentinel = %{version}-%{release}
 
 ################################################################################
 
@@ -102,8 +74,8 @@ different kind of sorting abilities.
 
 %package cli
 
-Summary:            Client for working with Redis from console
-Group:              Applications/Databases
+Summary:  Client for working with Redis from console
+Group:    Applications/Databases
 
 %description cli
 Client for working with Redis from console
@@ -119,8 +91,11 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
+%if 0%{?rhel} <= 7
 # Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+%endif
+
 export BUILD_WITH_SYSTEMD=yes
 
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
@@ -177,19 +152,19 @@ useradd -r -g %{realname} -d %{_sharedstatedir}/%{realname} -s /sbin/nologin \
 
 %post
 if [[ $1 -eq 1 ]] ; then
-  %{__sysctl} enable %{realname}.service &>/dev/null || :
+  systemctl enable %{realname}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__sysctl} --no-reload disable %{realname}.service &>/dev/null || :
-  %{__sysctl} --no-reload disable sentinel.service &>/dev/null || :
-  %{__sysctl} stop %{realname}.service &>/dev/null || :
-  %{__sysctl} stop sentinel.service &>/dev/null || :
+  systemctl --no-reload disable %{realname}.service &>/dev/null || :
+  systemctl --no-reload disable sentinel.service &>/dev/null || :
+  systemctl stop %{realname}.service &>/dev/null || :
+  systemctl stop sentinel.service &>/dev/null || :
 fi
 
 %postun
-%{__sysctl} daemon-reload &>/dev/null || :
+systemctl daemon-reload &>/dev/null || :
 
 %clean
 rm -rf %{buildroot}
@@ -199,23 +174,18 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
-
+%attr(-,%{realname},%{realname}) %config(noreplace) %{_sysconfdir}/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{realname}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
 %config(noreplace) %{_sysconfdir}/sysconfig/%{realname}
 %config(noreplace) %{_sysconfdir}/sysconfig/sentinel
-
-%attr(-,%{realname},%{realname}) %config(noreplace) %{_sysconfdir}/*.conf
-
 %dir %attr(0755,%{realname},root) %{_localstatedir}/lib/%{realname}
 %dir %attr(0755,%{realname},root) %{_localstatedir}/log/%{realname}
 %dir %attr(0755,%{realname},root) %{_localstatedir}/run/%{realname}
-
 %{_unitdir}/%{realname}.service
 %{_unitdir}/sentinel.service
 %{_sysconfdir}/systemd/system/%{realname}.service.d/limit.conf
 %{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
-
 %{_bindir}/%{realname}-server
 %{_bindir}/%{realname}-sentinel
 %{_bindir}/%{realname}-benchmark
@@ -231,6 +201,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 6.2.12-0
+- https://github.com/redis/redis/blob/6.2.12/00-RELEASENOTES
+
 * Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.7-0
 - https://github.com/redis/redis/blob/6.2.7/00-RELEASENOTES
 
