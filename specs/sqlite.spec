@@ -48,6 +48,10 @@ application that supports the Qt database plug-ins.
 Group:    Development/Libraries
 Summary:  Shared library for SQLite
 
+%if 0%{?rhel} == 7
+Requires:  %{name} = %{version}
+%endif
+
 %description libs
 This package contains the shared library for SQLite.
 

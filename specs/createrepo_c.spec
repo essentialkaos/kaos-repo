@@ -174,6 +174,11 @@ rm -rf %{buildroot}
 
 %{make_install}
 
+ln -sf %{_bindir}/createrepo_c %{buildroot}%{_bindir}/createrepo
+ln -sf %{_bindir}/mergerepo_c %{buildroot}%{_bindir}/mergerepo
+ln -sf %{_bindir}/modifyrepo_c %{buildroot}%{_bindir}/modifyrepo
+ln -sf %{_bindir}/sqliterepo_c %{buildroot}%{_bindir}/sqliterepo
+
 %post -n %{name}-libs
 %{__ldconfig}
 
@@ -188,11 +193,15 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc README.md COPYING AUTHORS
-%{_mandir}/man8/*.8.*
 %{_bindir}/createrepo_c
 %{_bindir}/mergerepo_c
 %{_bindir}/modifyrepo_c
 %{_bindir}/sqliterepo_c
+%{_bindir}/createrepo
+%{_bindir}/mergerepo
+%{_bindir}/modifyrepo
+%{_bindir}/sqliterepo
+%{_mandir}/man8/*.8.*
 %{_datadir}/bash-completion/completions/*
 
 %files libs
