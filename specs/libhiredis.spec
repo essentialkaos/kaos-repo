@@ -4,27 +4,27 @@
 
 ################################################################################
 
-%define realname       hiredis
+%define realname  hiredis
 
 ################################################################################
 
-Summary:             Minimalistic C client for Redis
-Name:                lib%{realname}
-Version:             1.1.0
-Release:             0%{?dist}
-License:             BSD
-Group:               System Environment/Libraries
-URL:                 https://github.com/redis/hiredis
+Summary:        Minimalistic C client for Redis
+Name:           lib%{realname}
+Version:        1.1.0
+Release:        0%{?dist}
+License:        BSD
+Group:          System Environment/Libraries
+URL:            https://github.com/redis/hiredis
 
-Source0:             https://github.com/redis/hiredis/archive/refs/tags/v%{version}.tar.gz
+Source0:        https://github.com/redis/%{realname}/archive/refs/tags/v%{version}.tar.gz
 
-Source100:           checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:           %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:       gcc make
+BuildRequires:  gcc make
 
-Provides:            %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -34,9 +34,10 @@ Hiredis is a minimalistic C client library for the Redis database.
 ################################################################################
 
 %package devel
-Summary:             Header files and libraries for hiredis C development
-Group:               Development/Libraries
-Requires:            %{name} = %{version}
+Summary:   Header files and libraries for hiredis C development
+Group:     Development/Libraries
+
+Requires:  %{name} = %{version}
 
 %description devel
 The %{name}-devel package contains the header files and
