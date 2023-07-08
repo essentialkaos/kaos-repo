@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Perfecto docker image
-        uses: docker://ghcr.io/essentialkaos/perfecto:centos7
+        uses: docker://ghcr.io/essentialkaos/perfecto:ol8
         with:
           args: --version
 
@@ -36,7 +36,7 @@ jobs:
 
       - name: Run Perfecto check
         env:
-          IMAGE: ghcr.io/essentialkaos/perfecto:centos7
+          IMAGE: ghcr.io/essentialkaos/perfecto:ol8
         run: ./perfecto-container -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
 
   Bibop:
