@@ -4,11 +4,6 @@
 
 ################################################################################
 
-%if 0%{?rhel} == 7
-%global python_base  python36
-%global __python3    %{_bindir}/python3.6
-%endif
-
 %if 0%{?rhel} == 8
 %global python_base  python38
 %global __python3    %{_bindir}/python3.8
@@ -31,11 +26,11 @@
 
 Summary:        High productivity build system
 Name:           meson
-Version:        0.64.1
+Version:        1.1.1
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
-URL:            https://mesonbuild.com
+URL:            https://github.com/mesonbuild/meson
 
 Source0:        https://github.com/mesonbuild/meson/releases/download/%{version}/%{name}-%{version}.tar.gz
 
@@ -43,8 +38,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  %{python_base}-devel
-BuildRequires:  %{python_base}-setuptools
+BuildRequires:  %{python_base}-devel %{python_base}-setuptools
 
 Requires:       %{python_base}-setuptools
 Requires:       ninja-build
@@ -97,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-0
+- https://github.com/mesonbuild/meson/compare/1.1.0...1.1.1
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.64.1-0
 - https://github.com/mesonbuild/meson/compare/0.64.0...0.64.1
 
