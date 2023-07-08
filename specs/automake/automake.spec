@@ -9,32 +9,32 @@
 
 ################################################################################
 
-Summary:          A GNU tool for automatically creating Makefiles
-Name:             automake
-Version:          1.16.5
-Release:          0%{?dist}
-License:          GPLv2+ and GFDL and Public Domain and MIT
-Group:            Development/Tools
-URL:              https://www.gnu.org/software/automake/
+Summary:        A GNU tool for automatically creating Makefiles
+Name:           automake
+Version:        1.16.5
+Release:        0%{?dist}
+License:        GPLv2+ and GFDL and Public Domain and MIT
+Group:          Development/Tools
+URL:            https://www.gnu.org/software/automake/
 
-Source0:          https://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.xz
-Source2:          https://git.savannah.gnu.org/cgit/config.git/plain/config.sub
-Source3:          https://git.savannah.gnu.org/cgit/config.git/plain/config.guess
+Source0:        https://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.xz
+Source2:        https://git.savannah.gnu.org/cgit/config.git/plain/config.sub
+Source3:        https://git.savannah.gnu.org/cgit/config.git/plain/config.guess
 
-Source100:        checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:         perl(Thread::Queue)
-Requires:         perl(threads)
+Requires:       perl(Thread::Queue)
+Requires:       perl(threads)
 
-BuildRequires:    autoconf >= 2.65 make coreutils findutils
-BuildRequires:    perl-generators perl-interpreter perl(Thread::Queue)
-BuildRequires:    perl(threads)
+BuildRequires:  autoconf >= 2.65 make coreutils findutils
+BuildRequires:  perl-generators perl-interpreter perl(Thread::Queue)
+BuildRequires:  perl(threads)
 
-BuildArch:        noarch
+BuildArch:      noarch
 
-Provides:         %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
