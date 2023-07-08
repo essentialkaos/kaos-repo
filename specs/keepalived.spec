@@ -4,89 +4,44 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __sysctl          %{_bindir}/systemctl
+%bcond_without  snmp
+%bcond_without  vrrp
+%bcond_with     profile
+%bcond_with     debug
 
 ################################################################################
 
-%bcond_without snmp
-%bcond_without vrrp
-%bcond_with profile
-%bcond_with debug
+Name:           keepalived
+Summary:        High Availability monitor built upon LVS, VRRP and service pollers
+Version:        2.2.8
+Release:        0%{?dist}
+License:        GPLv2+
+URL:            https://www.keepalived.org
+Group:          System Environment/Daemons
 
-################################################################################
+Source0:        https://www.keepalived.org/software/%{name}-%{version}.tar.gz
 
-Name:              keepalived
-Summary:           High Availability monitor built upon LVS, VRRP and service pollers
-Version:           2.0.19
-Release:           0%{?dist}
-License:           GPLv2+
-URL:               https://www.keepalived.org
-Group:             System Environment/Daemons
+Source100:      checksum.sha512
 
-Source0:           https://www.keepalived.org/software/%{name}-%{version}.tar.gz
-Source1:           %{name}.init
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source100:         checksum.sha512
+BuildRequires:  gcc make openssl-devel kernel-devel popt-devel
+BuildRequires:  libnfnetlink-devel
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-%if %{with snmp}
-BuildRequires:     net-snmp-devel
-%endif
-
-BuildRequires:     gcc make openssl-devel libnl-devel kernel-devel popt-devel
-BuildRequires:     libnfnetlink-devel
-
-%if %{with snmp}
-Requires:          net-snmp-libs
-%endif
-
-Requires:          lm_sensors-libs
-
-%if 0%{?rhel} >= 7
-Requires:          systemd
+%if 0%{?rhel} <= 7
+BuildRequires:  libnl-devel
 %else
-Requires:          kaosv >= 2.15
-
-Requires(post):    %{__chkconfig}
-Requires(preun):   %{__chkconfig}
-Requires(preun):   %{__service}
-Requires(postun):  %{__service}
+BuildRequires:  libnl3-devel
 %endif
 
-Provides:          %{name} = %{version}-%{release}
+%if %{with snmp}
+BuildRequires:  net-snmp-devel
+Requires:       net-snmp-libs
+%endif
+
+Requires:       systemd lm_sensors-libs
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -117,6 +72,7 @@ infrastructures.
     %{?with_profile:--enable-profile} \
     %{!?with_vrrp:--disable-vrrp} \
     %{?with_snmp:--enable-snmp}
+
 %{__make} %{?_smp_mflags} STRIP=/bin/true
 
 %install
@@ -126,12 +82,8 @@ rm -rf %{buildroot}
 
 rm -rf %{buildroot}%{_sysconfdir}/%{name}/samples/
 
-%if 0%{?rhel} <= 6
-rm -rf %{buildroot}%{_libdir32}/systemd
-rm -rf %{buildroot}%{_sysconfdir}/init/%{name}.conf
-install -dm 755 %{buildroot}%{_initrddir}
-install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-%endif
+mv %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.sample \
+   %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
 
 %if %{with snmp}
   mkdir -p %{buildroot}%{_datadir}/snmp/mibs/
@@ -143,31 +95,18 @@ rm -rf %{buildroot}
 
 %post
 if [[ $1 -eq 1 ]] ; then
-%if 0%{?rhel} >= 7
-  %{__sysctl} enable %{name}.service &>/dev/null || :
-%else
-  %{__chkconfig} --add %{name} &>/dev/null || :
-%endif
+  systemctl enable %{name}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-%if 0%{?rhel} >= 7
-  %{__sysctl} --no-reload disable %{name}.service &>/dev/null || :
-  %{__sysctl} stop %{name}.service &>/dev/null || :
-%else
-  %{__service} %{name} stop &>/dev/null || :
-  %{__chkconfig} --del %{name} &>/dev/null || :
-%endif
+  systemctl --no-reload disable %{name}.service &>/dev/null || :
+  systemctl stop %{name}.service &>/dev/null || :
 fi
 
 %postun
 if [[ $1 -ge 1 ]] ; then
-%if 0%{?rhel} >= 7
-  %{__sysctl} daemon-reload &>/dev/null || :
-%else
-  %{__service} %{name} restart &>/dev/null || :
-%endif
+  systemctl daemon-reload &>/dev/null || :
 fi
 
 ################################################################################
@@ -179,19 +118,13 @@ fi
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%{_unitdir}/%{name}.service
 %{_bindir}/genhash
 %{_sbindir}/%{name}
 %{_mandir}/man1/genhash.1*
 %{_mandir}/man5/%{name}.conf.5*
 %{_mandir}/man8/%{name}.8*
 %{_defaultdocdir}/%{name}/README
-
-%if 0%{?rhel} >= 7
-%{_unitdir}/%{name}.service
-%else
-%{_initrddir}/%{name}
-%endif
-
 %if %{with_snmp}
 %{_datadir}/snmp/mibs/KEEPALIVED-MIB.txt
 %endif
@@ -199,6 +132,9 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.8-0
+- https://www.keepalived.org/release-notes/Release-2.2.8.html
+
 * Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.19-0
 - Allow persistence, scheduler and flags of VS to be changed on reload
   A virtual server is identified by its IP address, protocol and port,
