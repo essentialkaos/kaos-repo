@@ -4,15 +4,9 @@
 
 ################################################################################
 
-%define _logdir  %{_localstatedir}/log
-
-%define __systemctl  %{_bindir}/systemctl
-
-################################################################################
-
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.8.1
+Version:        2.9.0
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -67,64 +61,65 @@ sed -i 's#/etc/default/atop#/etc/sysconfig/atop#' atop.service
 %install
 rm -rf %{buildroot}
 
-install -dm 0755 %{buildroot}%{_bindir}
-install -dm 0755 %{buildroot}%{_sbindir}
+install -dm 755 %{buildroot}%{_bindir}
+install -dm 755 %{buildroot}%{_sbindir}
 
-install -pm 0755 atop %{buildroot}%{_bindir}/
-install -pm 0755 atopcat %{buildroot}%{_bindir}/
-install -pm 0755 atopconvert %{buildroot}%{_bindir}/
-install -pm 0700 atopacctd %{buildroot}%{_sbindir}/
+install -pm 755 atop %{buildroot}%{_bindir}/
+install -pm 755 atopcat %{buildroot}%{_bindir}/
+install -pm 755 atopconvert %{buildroot}%{_bindir}/
+install -pm 700 atopacctd %{buildroot}%{_sbindir}/
 
 ln -sf %{_bindir}/atop %{buildroot}%{_bindir}/atopsar
 
-install -dm 0755 %{buildroot}%{_datadir}/%{name}
-install -pm 0755 %{name}.daily %{buildroot}%{_datadir}/%{name}/atop.daily
+install -dm 755 %{buildroot}%{_datadir}/%{name}
+install -pm 755 %{name}.daily %{buildroot}%{_datadir}/%{name}/atop.daily
 
-install -dm 0755 %{buildroot}%{_sysconfdir}/sysconfig
-install -pm 0644 %{name}.default %{buildroot}%{_sysconfdir}/sysconfig/%{name}
+install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
+install -pm 644 %{name}.default %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 
-install -dm 0755 %{buildroot}%{_mandir}/man1
-install -dm 0755 %{buildroot}%{_mandir}/man5
-install -dm 0755 %{buildroot}%{_mandir}/man8
-install -pm 0644 man/*.1* %{buildroot}%{_mandir}/man1/
-install -pm 0644 man/*.5* %{buildroot}%{_mandir}/man5/
-install -pm 0644 man/*.8* %{buildroot}%{_mandir}/man8/
+install -dm 755 %{buildroot}%{_mandir}/man1
+install -dm 755 %{buildroot}%{_mandir}/man5
+install -dm 755 %{buildroot}%{_mandir}/man8
+install -pm 644 man/*.1* %{buildroot}%{_mandir}/man1/
+install -pm 644 man/*.5* %{buildroot}%{_mandir}/man5/
+install -pm 644 man/*.8* %{buildroot}%{_mandir}/man8/
+
 rm -f %{buildroot}%{_mandir}/man8/atopgpud.*
 
-install -dm 0755 %{buildroot}%{_logdir}/%{name}
+install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
 
-install -dm 0755 %{buildroot}%{_unitdir}
-install -dm 0755 %{buildroot}%{_sharedstatedir}/systemd/system-sleep
-install -dm 0755 %{buildroot}%{_sysconfdir}/default
-install -pm 0644 atop.service %{buildroot}%{_unitdir}/
-install -pm 0644 atop-rotate.service %{buildroot}%{_unitdir}/
-install -pm 0644 atop-rotate.timer %{buildroot}%{_unitdir}/
-install -pm 0644 atopacct.service %{buildroot}%{_unitdir}/
-install -pm 0755 atop-pm.sh %{buildroot}%{_sharedstatedir}/systemd/system-sleep/
+install -dm 755 %{buildroot}%{_unitdir}
+install -dm 755 %{buildroot}%{_sharedstatedir}/systemd/system-sleep
+install -dm 755 %{buildroot}%{_sysconfdir}/default
+install -pm 644 atop.service %{buildroot}%{_unitdir}/
+install -pm 644 atop-rotate.service %{buildroot}%{_unitdir}/
+install -pm 644 atop-rotate.timer %{buildroot}%{_unitdir}/
+install -pm 644 atopacct.service %{buildroot}%{_unitdir}/
+install -pm 755 atop-pm.sh %{buildroot}%{_sharedstatedir}/systemd/system-sleep/
 
 %clean
 rm -rf %{buildroot}
 
 %post
 # save today's logfile (format might be incompatible)
-mv %{_logdir}/%{name}/atop_$(date +%Y%m%d) %{_logdir}/%{name}/atop_$(date +%Y%m%d).save &>/dev/null || :
+mv %{_localstatedir}/log/%{name}/atop_$(date +%Y%m%d) %{_localstatedir}/log/%{name}/atop_$(date +%Y%m%d).save &>/dev/null || :
 
-%{__systemctl} daemon-reload &>/dev/null || :
-%{__systemctl} enable atop &>/dev/null || :
-%{__systemctl} enable atopacct &>/dev/null || :
-%{__systemctl} enable atop-rotate.timer &>/dev/null || :
-%{__systemctl} start atop &>/dev/null || :
-%{__systemctl} start atopacct &>/dev/null || :
-%{__systemctl} start atop-rotate.timer &>/dev/null || :
+systemctl daemon-reload &>/dev/null || :
+systemctl enable atop &>/dev/null || :
+systemctl enable atopacct &>/dev/null || :
+systemctl enable atop-rotate.timer &>/dev/null || :
+systemctl start atop &>/dev/null || :
+systemctl start atopacct &>/dev/null || :
+systemctl start atop-rotate.timer &>/dev/null || :
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__systemctl} stop atop &>/dev/null || :
-  %{__systemctl} stop atopacct &>/dev/null || :
-  %{__systemctl} stop atop-rotate.timer &>/dev/null || :
-  %{__systemctl} disable atop &>/dev/null || :
-  %{__systemctl} disable atopacct &>/dev/null || :
-  %{__systemctl} disable atop-rotate.timer &>/dev/null || :
+  systemctl stop atop &>/dev/null || :
+  systemctl stop atopacct &>/dev/null || :
+  systemctl stop atop-rotate.timer &>/dev/null || :
+  systemctl disable atop &>/dev/null || :
+  systemctl disable atopacct &>/dev/null || :
+  systemctl disable atop-rotate.timer &>/dev/null || :
 fi
 
 ################################################################################
@@ -132,6 +127,7 @@ fi
 %files
 %defattr(-,root,root)
 %doc README COPYING
+%dir %{_localstatedir}/log/%{name}/
 %config(noreplace) %{_sysconfdir}/sysconfig/atop
 %config(noreplace) %{_unitdir}/atop.service
 %config(noreplace) %{_unitdir}/atopacct.service
@@ -150,11 +146,18 @@ fi
 %{_mandir}/man1/atopconvert.1*
 %{_mandir}/man5/atoprc.5*
 %{_mandir}/man8/atopacctd.8*
-%dir %{_logdir}/%{name}/
 
 ################################################################################
 
 %changelog
+* Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.9.0-0
+- Introduction of bar graph mode
+- Additional counters per thread showing the number of voluntary and
+  involuntary context switches (key 's')
+- Improved handling of process accounting
+- Various bugfixes and minor improvements
+- Various bugfixes (to avoid loss of synchronization and race conditions)
+
 * Tue Feb 28 2023 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
 - Bug solution: wrong conversion of NUMA statistics (for systems with multiple
   NUMA nodes)
