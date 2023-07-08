@@ -6,7 +6,7 @@
 
 Summary:        Real-time web log analyzer and interactive viewer
 Name:           goaccess
-Version:        1.7
+Version:        1.7.2
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        GPLv2+
@@ -57,7 +57,7 @@ rm -rf %{buildroot}
 %clean
 rm -rf %{buildroot}
 
-################################################################################
+############################################################# ###################
 
 %files
 %defattr(-,root,root,-)
@@ -72,6 +72,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
+- https://goaccess.io/release-notes#release-1.7.2
+
 * Wed Feb 22 2023 Anton Novojilov <andy@essentialkaos.com> - 1.7-0
 - https://goaccess.io/release-notes#release-1.7
 
