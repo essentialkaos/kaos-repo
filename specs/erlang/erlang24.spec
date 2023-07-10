@@ -726,7 +726,8 @@ export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
 
 pushd libressl-%{libre_ver}
   mkdir build
-  ./configure --prefix=$(pwd)/build --libdir=%{_libdir} --enable-shared=no
+  # perfecto:ignore
+  ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
   %{__make} install
 popd

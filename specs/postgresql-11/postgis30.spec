@@ -171,7 +171,7 @@ cp -p %{SOURCE1} .
 # We need the below for GDAL
 export LD_LIBRARY_PATH=%{pg_dir}/lib
 
-# perfecto:absolve
+# perfecto:ignore
 export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
 export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
 

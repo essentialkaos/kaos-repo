@@ -186,11 +186,12 @@ fi
 %triggerun -- %{name} < 1.4.1
 cp -a %{_sysconfdir}/crontab %{_sysconfdir}/crontab.rpmsave
 
-# perfecto:absolve 4
-sed -e '/^01 \* \* \* \* root run-parts \/etc\/cron\.hourly/d'\
-  -e '/^02 4 \* \* \* root run-parts \/etc\/cron\.daily/d'\
-  -e '/^22 4 \* \* 0 root run-parts \/etc\/cron\.weekly/d'\
-  -e '/^42 4 1 \* \* root run-parts \/etc\/cron\.monthly/d' %{_sysconfdir}/crontab.rpmsave > %{_sysconfdir}/crontab
+# perfecto:ignore 4
+sed -e '/^01 \* \* \* \* root run-parts \/etc\/cron\.hourly/d' \
+  -e '/^02 4 \* \* \* root run-parts \/etc\/cron\.daily/d' \
+  -e '/^22 4 \* \* 0 root run-parts \/etc\/cron\.weekly/d' \
+  -e '/^42 4 1 \* \* root run-parts \/etc\/cron\.monthly/d' \
+     %{_sysconfdir}/crontab.rpmsave > %{_sysconfdir}/crontab
 exit 0
 
 %triggerun -- vixie-cron

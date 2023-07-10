@@ -23,7 +23,7 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     26
 %define ver_min     0
-%define ver_patch   1
+%define ver_patch   2
 %define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
@@ -717,7 +717,8 @@ export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
 
 pushd libressl-%{libre_ver}
   mkdir build
-  ./configure --prefix=$(pwd)/build --libdir=%{_libdir} --enable-shared=no
+  # perfecto:ignore
+  ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
   %{__make} install
 popd
@@ -1033,5 +1034,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 26.0.2-0
+- https://github.com/erlang/otp/releases/tag/OTP-26.0.2
+
 * Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 26.0.1-0
 - https://github.com/erlang/otp/releases/tag/OTP-26.0.1

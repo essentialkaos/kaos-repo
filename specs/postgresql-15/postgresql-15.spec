@@ -442,7 +442,7 @@ export PYTHON=/usr/bin/python3
 
 %if %llvm
 %if 0%{?rhel} == 7
-# perfecto:absolve
+# perfecto:ignore
 export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
 export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
 %endif
