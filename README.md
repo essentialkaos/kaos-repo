@@ -12,13 +12,31 @@ This repository contains spec files and patches used for building RPM packages f
 sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 ```
 
-For some packages may be required [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by next command:
+Some packages have dependencies from [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by following commands:
 
 ```bash
+# CentOS 7 / Alma / Rocky
 sudo yum install -y epel-release
+# Oracle Linux 7
+sudo yum install -y oracle-epel-release-el7
+# Oracle Linux 8
+sudo dnf install -y oracle-epel-release-el8
+# Oracle Linux 9
+sudo dnf install -y oracle-epel-release-el9
 ```
 
-For building some packages may be required [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository. You could add this repository by next command:
+Some packages for EL 8/9 have dependencies from [CodeReady Builder](https://developers.redhat.com/blog/2018/11/15/introducing-codeready-linux-builder) repository. You can enable this repository by following commands:
+
+```bash
+# Alma / Rocky
+sudo dnf config-manager --set-enabled crb
+# Oracle Linux 8
+sudo dnf config-manager --set-enabled ol8_codeready_builder
+# Oracle Linux 9
+sudo dnf config-manager --set-enabled ol9_codeready_builder
+```
+
+Building some packages for EL 7 requires [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository. You could add this repository by following command:
 
 ```bash
 sudo yum install -y centos-release-scl
@@ -38,16 +56,16 @@ Security is our first priority. We can't keep an outdated package in our reposit
 
 ### End-of-Support Schedule
 
-| CentOS/RHEL version | Updates     | Repository removal |
-|---------------------|-------------|--------------------|
-| `7.x`               | 1 Jan 2023  | 1 Jun 2023         |
-| `8.x`               | 1 Jan 2024  | 1 Jun 2024         |
-| `9.x`               | 1 Jan 2026  | 1 Jun 2026         |
+| EL version | Updates     | Repository removal |
+|------------|-------------|--------------------|
+| `7.x`      | 1 Sep 2023  | 31 Dec 2023        |
+| `8.x`      | 1 Sep 2024  | 31 Dec 2024        |
+| `9.x`      | 1 Sep 2026  | 31 Dec 2026        |
 
 ### [_perfecto_](https://kaos.sh/perfecto) and [bibop](https://kaos.sh/bibop) check status
 
 | Branch | Status |
-|------------|--------|
+|--------|--------|
 | `master` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=master)](https://kaos.sh/w/kaos-repo/ci?query=branch:master) |
 | `develop` | [![CI](https://kaos.sh/w/kaos-repo/ci.svg?branch=develop)](https://kaos.sh/w/kaos-repo/ci?query=branch:develop) |
 
