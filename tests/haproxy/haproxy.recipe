@@ -1,7 +1,7 @@
-# Bibop recipe for HAProxy 2.3
+# Bibop recipe for HAProxy
 # See more: https://kaos.sh/bibop
 
-pkg haproxy23
+pkg haproxy
 
 require-root yes
 unsafe-actions yes
@@ -30,12 +30,12 @@ command "systemctl start {service_name}" "Start HAProxy daemon"
   wait {delay}
   service-works {service_name}
 
-command "systemctl status {service_name}" "Check status of HAProxy daemon"
++command "systemctl status {service_name}" "Check status of HAProxy daemon"
   expect "active (running)"
 
-command "-" "Make HTTP request"
++command "-" "Make HTTP request"
   http-status GET "http://127.0.0.1:80" 200
 
-command "systemctl stop {service_name}" "Stop HAProxy daemon"
++command "systemctl stop {service_name}" "Stop HAProxy daemon"
   wait {delay}
   !service-works {service_name}

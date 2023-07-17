@@ -5,8 +5,8 @@
 ################################################################################
 
 %define orig_name  haproxy
-%define major_ver  2.4
-%define comp_ver   24
+%define major_ver  2.6
+%define comp_ver   26
 
 %define hp_user      %{orig_name}
 %define hp_group     %{orig_name}
@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.6
 %define pcre_ver      10.42
-%define openssl_ver   1.1.1u
+%define openssl_ver   3.0.9
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.23
+Version:        2.6.14
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -54,7 +54,7 @@ BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-binutils
 BuildRequires:  gcc-c++
 %endif
 
-Conflicts:      haproxy haproxy22 haproxy26 haproxy28
+Conflicts:      haproxy haproxy22 haproxy24 haproxy28
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -152,7 +152,7 @@ use_regparm="USE_REGPARM=1"
                           TARGET="linux-glibc" \
                           USE_OPENSSL=1 \
                           SSL_INC=openssl-%{openssl_ver}/build/include \
-                          SSL_LIB=openssl-%{openssl_ver}/build/lib \
+                          SSL_LIB=openssl-%{openssl_ver}/build/%{_lib} \
                           USE_PCRE2_JIT=1 \
                           USE_STATIC_PCRE2=1 \
                           PCRE2_INC=pcre2-%{pcre_ver}/build/include \
@@ -231,90 +231,59 @@ fi
 ################################################################################
 
 %changelog
-* Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 2.4.23-0
-- DEV: hpack: fix `trash` build regression
-- BUG/MINOR: ssl: ssl-(min|max)-ver parameter not duplicated for bundles in
-  crt-list
-- BUG/MINOR: mworker: stop doing strtok directly from the env
-- BUG/MEDIUM: mworker: don't register mworker_accept_wrapper() when master FD
-  is wrong
-- MINOR: startup: HAPROXY_STARTUP_VERSION contains the version used to start
-- BUG/MINOR: sched: properly report long_rq when tasks remain in the queue
-- BUG/MEDIUM: sched: allow a bit more TASK_HEAVY to be processed when needed
-- BUG/MINOR: mworker: prevent incorrect values in uptime
-- BUG/MINOR: cache: Cache response even if request has "no-cache" directive
-- BUG/MINOR: cache: Check cache entry is complete in case of Vary
-- BUG/MINOR: ring: do not realign ring contents on resize
-- DOC: config: Fix description of options about HTTP connection modes
-- DOC: config: Add the missing tune.fail-alloc option from global listing
-- DOC: config: Clarify the meaning of 'hold' in the 'resolvers' section
-- BUG/MINOR: http-check: Don't set HTX_SL_F_BODYLESS flag with a log-format body
-- BUG/MINOR: http-check: Skip C-L header for empty body when it's not mandatory
-- BUG/MINOR: http-ana: Do a L7 retry on read error if there is no response
-- BUG/MINOR: ssl: Use 'date' instead of 'now' in ocsp stapling callback
-- BUG/MINOR: init: properly detect NUMA bindings on large systems
-- BUG/MINOR: init: make sure to always limit the total number of threads
-- DOC/CLEANUP: fix typos
-- BUG/MINOR: mux-h2: make sure the h2c task exists before refreshing it
-- BUG/MEDIUM: listener: duplicate inherited FDs if needed
-- BUG/MEDIUM: spoe: Don't set the default traget for the SPOE agent frontend
-- BUG/MINOR: proto_ux: report correct error when bind_listener fails
-- BUG/MINOR: protocol: fix minor memory leak in protocol_bind_all()
-- BUG/MINOR: sock_unix: match finalname with tempname in sock_unix_addrcmp()
-- BUG/MEDIUM: connection: Clear flags when a conn is removed from an idle list
-- BUG/MEDIUM: connection: Preserve flags when a conn is removed from an idle
-  list
-- BUG/MEDIUM: mux-h2: erase h2c->wait_event.tasklet on error path
-- BUG/MEDIUM: mux-h1: Wakeup H1C on shutw if there is no I/O subscription
-- BUILD: da: extends CFLAGS to support API v3 from 3.1.7 and onwards.
-- MINOR: proxy/pool: prevent unnecessary calls to pool_gc()
-- DOC: config: strict-sni allows to start without certificate
-- BUG/MEDIUM: channel: Improve reports for shut in co_getblk()
-- BUG/MEDIUM: dns: Properly handle error when a response consumed
-- MINOR: proxy: check if p is NULL in free_proxy()
-- BUG/MINOR: sink: free forward_px on deinit()
-- BUG/MINOR: log: free log forward proxies on deinit()
-- BUG/MINOR: hlua: enforce proper running context for register_x functions
-- CLEANUP: hlua: fix conflicting comment in hlua_ctx_destroy()
-- BUG/MEDIUM: resolvers: Force the connect timeout for DNS resolutions
-- BUG/MINOR: stick_table: alert when type len has incorrect characters
-- CI: bump "actions/checkout" to v3 for cross zoo matrix
-- REGTESTS: fix the race conditions in log_uri.vtc
-- BUG/MEDIUM: log: Properly handle client aborts in syslog applet
-- CLEANUP: backend: Remove useless debug message in assign_server()
-- BUG/MINOR: cfgparse: make sure to include openssl-compat
-- BUG/MEDIUM: proxy/sktable: prevent watchdog trigger on soft-stop
-- BUG/MEDIUM: Update read expiration date on synchronous send
-- BUG/MINOR: mux-h2: make sure to produce a log on invalid requests
+* Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 2.6.14-0
+- BUG/MINOR: fd: always remove late updates when freeing fd_updt[]
+- MINOR: ssl: ssl_sock_load_cert_chain() display error strings
+- CI: switch to Fastly CDN to download LibreSSL
+- BUILD: ssl: switch LibreSSL to Fastly CDN
+- BUG/MEDIUM: spoe: Don't start new applet if there are enough idle ones
+- BUG/MINOR: resolvers: Use sc_need_room() to wait more room when dumping stats
+- MINOR: quic: use real sending rate measurement
+- DEV: haring: automatically disable DEBUG_STRICT
+- DEV: haring: update readme to suggest using the same build options for haring
+- BUG/MINOR: mux-quic: prevent quic_conn error code to be overwritten
+- BUG/MINOR: debug: do not emit empty lines in thread dumps
+- BUG/MINOR: quic: Wrong key update cipher context initialization for encryption
+- BUILD: ssl: buggy -Werror=dangling-pointer since gcc 13.0
+- DOC: configuration: add info about ssl-engine for 2.6
+- BUG/MINOR: quic: Possible crash when dumping version information
+- BUILD: mjson: Fix warning about unused variables
+- MINOR: spoe: Don't stop disabled proxies
+- BUG/MEDIUM: filters: Don't deinit filters for disabled proxies during startup
+- MINOR: http-rules: Add missing actions in http-after-response ruleset
+- BUG/MINOR: quic: Buggy acknowlegments of acknowlegments function
+- BUG/MEDIUM: mux-fcgi: Don't request more room if mux is waiting for more data
+- BUG/MINOR: proxy: missing free in free_proxy for redirect rules
+- MINOR: proxy: add http_free_redirect_rule() function
+- BUG/MINOR: http_rules: fix errors paths in http_parse_redirect_rule()
+- BUG/MINOR: errors: handle malloc failure in usermsgs_put()
+- BUG/MINOR: log: fix memory error handling in parse_logsrv()
+- MINOR: htx: add function to set EOM reliably
 - MINOR: checks: make sure spread-checks is used also at boot time
 - MINOR: clock: measure the total boot time
 - BUG/MINOR: checks: postpone the startup of health checks by the boot time
 - BUG/MINOR: clock: fix the boot time measurement method for 2.6 and older
 - BUG/MINOR: tcp-rules: Don't shortened the inspect-delay when EOI is set
+- REGTESTS: log: Reduce response inspect-delay for last_rule.vtc
 - DOC: config: Clarify conditions to shorten the inspect-delay for TCP rules
+- REGTESTS: log: Reduce again response inspect-delay for last_rule.vtc
 - DOC: add size format section to manual
 - DOC/MINOR: config: Fix typo in description for `ssl_bc` in configuration.txt
 - BUG/MINOR: hlua: unsafe hlua_lua2smp() usage
 - SCRIPTS: publish-release: update the umask to keep group write access
-- BUG/MINOR: log: fix memory error handling in parse_logsrv()
-- BUG/MINOR: proxy: missing free in free_proxy for redirect rules
-- MINOR: spoe: Don't stop disabled proxies
-- BUILD: mjson: Fix warning about unused variables
-- BUG/MINOR: debug: do not emit empty lines in thread dumps
-- BUG/MEDIUM: spoe: Don't start new applet if there are enough idle ones
-- CI: switch to Fastly CDN to download LibreSSL
-- BUILD: ssl: switch LibreSSL to Fastly CDN
-- BUG/MINOR: server: incorrect report for tracking servers leaving drain
-- MINOR: server: explicitly commit state change in srv_update_status()
-- BUG/MINOR: server: don't miss proxy stats update on server state transitions
-- BUG/MINOR: server: don't miss server stats update on server state transitions
-- BUG/MINOR: server: don't use date when restoring last_change from state file
-- CI: cirrus-ci: bump FreeBSD image to 13-1
-- BUG/MEDIUM: filters: Don't deinit filters for disabled proxies during startup
-- MINOR: proxy: add http_free_redirect_rule() function
-- BUG/MINOR: http_rules: fix errors paths in http_parse_redirect_rule()
+- BUG/MINOR: mux-quic: properly handle buf alloc failure
+- BUG/MINOR: mux-quic: handle properly recv ncbuf alloc failure
+- BUG/MINOR: quic: do not alloc buf count on alloc failure
+- BUG/MINOR: mux-quic: differentiate failure on qc_stream_desc alloc
+- BUG/MINOR: mux-quic: handle properly Tx buf exhaustion
+- MINOR: mux-quic: uninline qc_attach_sc()
+- BUG/MEDIUM: mux-quic: fix EOI for request without payload
+- BUG/MINOR: quic: Wrong token length check (quic_generate_retry_token())
+- BUG/MINOR: quic: Missing Retry token length on receipt
 - DOC: config: Fix bind/server/peer documentation in the peers section
 - CONTRIB: Add vi file extensions to .gitignore
 - BUG/MINOR: spoe: Only skip sending new frame after a receive attempt
+- BUG/MINOR: quic: Possible crash when SSL session init fails
+- DOC: config: fix jwt_verify() example using var()
 - BUG/MINOR: cfgparse-tcp: leak when re-declaring interface from bind line
 - BUG/MINOR: proxy: add missing interface bind free in free_proxy
