@@ -8,7 +8,6 @@ unsafe-actions yes
 
 var service_name keepalived
 var config /etc/keepalived/keepalived.conf
-var delay 3
 
 command "-" "Check environment"
   app keepalived
@@ -25,15 +24,13 @@ command "-" "Update configuration"
   copy keepalived.conf {config}
 
 command "systemctl start {service_name}" "Start keepalived daemon"
-  wait {delay}
-  service-works {service_name}
+  wait-service {service_name} 5
 
 command "systemctl status {service_name}" "Check status of keepalived daemon"
   expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop keepalived daemon"
-  wait {delay}
-  !service-works {service_name}
+  !wait-service {service_name} 5
 
 command "-" "Configuration restore"
   backup-restore {config}

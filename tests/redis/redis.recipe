@@ -18,8 +18,6 @@ var sentinel_logrotate /etc/logrotate.d/sentinel
 var dump_file /var/lib/redis/dump.rdb
 var log_file /var/log/redis/redis.log
 
-var delay 3
-
 command "-" "Check environment"
   app redis-server
   app redis-sentinel
@@ -54,16 +52,14 @@ command "-" "Check environment"
   owner /var/log/{service_name} {service_user}
 
 command "systemctl start {service_name}" "Start Redis service"
-  wait {delay}
-  service-works {service_name}
+  wait-service {service_name} 5
   connect tcp :6379
 
 command "systemctl status {service_name}" "Check status of Redis service"
   expect "active (running)"
 
 command "systemctl restart {service_name}" "Restart Redis service"
-  wait {delay}
-  service-works {service_name}
+  wait-service {service_name} 5
   connect tcp :6379
 
 command "redis-cli SET TEST ACBD1234" "Set test key"
@@ -88,8 +84,7 @@ command "redis-cli SAVE" "Create database dump"
   owner {dump_file} {service_user}
 
 command "systemctl stop {service_name}" "Stop Redis service"
-  wait {delay}
-  !service-works {service_name}
+  !wait-service {service_name} 5
   !connect tcp :6379
 
 command "-" "Cleanup"

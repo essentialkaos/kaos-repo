@@ -16,8 +16,6 @@ var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
 var bin_dir  /usr/pgsql-{postgres_version}/bin
 
-var delay 3
-
 command "-" "Check environment"
   exist /etc/slony1-{postgres_version_comb}/slon.conf
   exist /etc/slony1-{postgres_version_comb}/slon_tools.conf
@@ -113,12 +111,10 @@ command "-" "Check SQL files"
   mode {data_dir}/slony1_funcs.v84.{slony_version}.sql 644
 
 command "systemctl start {service_name}" "Start Slony1 daemon"
-  wait {delay}
-  service-works {service_name}
+  wait-service {service_name} 5
 
 command "systemctl status {service_name}" "Check status of Slony1 daemon"
   expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop Slony1 daemon"
-  wait {delay}
-  !service-works {service_name}
+  !wait-service {service_name} 5

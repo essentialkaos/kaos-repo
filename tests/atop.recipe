@@ -7,7 +7,6 @@ require-root yes
 unsafe-actions yes
 
 var service_name atop
-var delay 5
 
 command "-" "Check environment"
   app atop
@@ -34,12 +33,10 @@ command "-" "Check daily script"
   file-contains /usr/share/atop/atop.daily "DEFAULTSFILE=/etc/sysconfig/atop"
 
 command "systemctl start {service_name}.service" "Start daemon"
-  wait {delay}
-  service-works {service_name}
+  wait-service {service_name} 5
 
 command "systemctl status {service_name}.service" "Check daemon status"
   expect "active (running)"
 
 command "systemctl stop {service_name}.service" "Stop daemon"
-  wait {delay}
-  !service-works {service_name}
+  !wait-service {service_name} 5

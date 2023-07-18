@@ -8,8 +8,6 @@ var libressl_ver 2.9.2
 var epmd_service epmd
 var epmd_port    4369
 
-var delay 3
-
 command "-" "Check environment"
   app epmd
   app erl
@@ -34,14 +32,12 @@ command "escript ssl-info.erl" "Check version of SSL/TLS library"
   output-contains "LibreSSL {libressl_ver}"
 
 command "systemctl start {epmd_service}" "Start Erlang Port Mapper Daemon"
-  wait {delay}
-  service-works {epmd_service}
+  wait-service {epmd_service} 5
 
 command "systemctl status {epmd_service}" "Check status of Erlang Port Mapper Daemon"
   expect "active (running)"
   connect tcp :{epmd_port}
 
 command "systemctl stop {epmd_service}.socket" "Stop Erlang Port Mapper Daemon (with socket service)"
-  wait {delay}
-  !service-works {epmd_service}
+  !wait-service {epmd_service} 5
   !connect tcp :{epmd_port}

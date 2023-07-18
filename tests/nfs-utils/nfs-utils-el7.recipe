@@ -8,8 +8,6 @@ require-root yes
 var conf_file      /etc/nfsmount.conf
 var lib_dir        /var/lib/nfs
 
-var delay 3
-
 command "-" "Check apps and configs"
   app mount.nfs
   app mount.nfs4
@@ -71,10 +69,9 @@ command "-" "Check unit files"
   service-present rpc-statd-notify
 
 command "systemctl start nfs-server" "Start NFS Server daemon"
-  wait {delay}
-  service-works nfs-server
-  service-works nfs-mountd
-  service-works nfs-idmapd
+  wait-service nfs-server 5
+  wait-service nfs-mountd 5
+  wait-service nfs-idmapd 5
 
 command "systemctl status nfs-server" "Check status of NFS Server daemon"
   expect "active (exited)"
@@ -86,7 +83,6 @@ command "systemctl status nfs-idmapd" "Check status of NFSv4 ID-name mapping dae
   expect "active (running)"
 
 command "systemctl stop nfs-server" "Stop NFS Server daemon"
-  wait {delay}
-  !service-works nfs-server
-  !service-works nfs-mountd
-  !service-works nfs-idmapd
+  !wait-service nfs-server 5
+  !wait-service nfs-mountd 5
+  !wait-service nfs-idmapd 5

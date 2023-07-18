@@ -7,8 +7,6 @@ require-root yes
 
 var service_name crond
 
-var delay 3
-
 command "-" "Check environment
   app crond
   app crontab
@@ -46,12 +44,10 @@ command "-" "Check environment
   exist /var/spool/anacron/cron.monthly
 
 command "systemctl start {service_name}" "Start crond service"
-  wait {delay}
-  service-works {service_name}
+  wait-service {service_name} 5
 
 command "systemctl status {service_name}" "Check status of crond service"
   expect "active (running)"
 
 command "systemctl stop {service_name}" "Stop crond service"
-  wait {delay}
-  !service-works {service_name}
+  !wait-service {service_name} 5
