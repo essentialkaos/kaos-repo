@@ -11,94 +11,55 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-
-################################################################################
-
-%define realname          gdal
-%define fullname          %{realname}3
-%define install_dir       %{_prefix}/%{fullname}
-%define install_bin_dir   %{install_dir}/bin
-%define install_lib_dir   %{install_dir}/lib
-%define install_inc_dir   %{install_dir}/include
-%define install_man_dir   %{install_dir}/share/man/man1
+%define realname         gdal
+%define fullname         %{realname}3
+%define install_dir      %{_prefix}/%{fullname}
+%define install_bin_dir  %{install_dir}/bin
+%define install_lib_dir  %{install_dir}/lib
+%define install_inc_dir  %{install_dir}/include
+%define install_man_dir  %{install_dir}/share/man/man1
 
 # The oldest supported PG version
-%define pg_short_ver      95
-%define pg_lib_dir        %{_prefix}/pgsql-9.5/lib
+%define pg_short_ver  10
+%define pg_lib_dir    %{_prefix}/pgsql-%{pg_short_ver}/lib
 
 ################################################################################
 
-Summary:           A translator library for raster and vector geospatial data formats
-Name:              %{fullname}
-Version:           3.2.1
-Release:           1%{?dist}
-License:           MIT
-Group:             Development/Libraries
-URL:               https://www.gdal.org
+Summary:        A translator library for raster and vector geospatial data formats
+Name:           %{fullname}
+Version:        3.2.1
+Release:        1%{?dist}
+License:        MIT
+Group:          Development/Libraries
+URL:            https://www.gdal.org
 
-Source0:           https://download.osgeo.org/%{realname}/%{version}/%{realname}-%{version}.tar.gz
-Source1:           %{name}.pc
-Source2:           %{name}-pgdg-libs.conf
+Source0:        https://download.osgeo.org/%{realname}/%{version}/%{realname}-%{version}.tar.gz
+Source1:        %{name}.pc
+Source2:        %{name}-pgdg-libs.conf
 
-Patch1:            %{name}-perl.patch
-Patch2:            %{name}-sfgcal-linker.patch
+Patch1:         %{name}-perl.patch
+Patch2:         %{name}-sfgcal-linker.patch
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2
-BuildRequires:     geos-devel >= 3 libstdc++-devel expat-devel
-BuildRequires:     libgeotiff-devel libjpeg-turbo-devel libpng-devel
-BuildRequires:     hdf-devel hdf5-devel libtiff-devel
-BuildRequires:     libtool netcdf-devel blas-devel lapack-devel
-BuildRequires:     ruby-devel sqlite-devel >= 3 swig
-BuildRequires:     unixODBC-devel zlib-devel xerces-c-devel
-BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker
-BuildRequires:     freexl-devel postgresql%{pg_short_ver}-devel
-BuildRequires:     libcurl-devel >= %{libcurl_min_ver}
+BuildRequires:  autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2
+BuildRequires:  geos-devel >= 3 libstdc++-devel expat-devel
+BuildRequires:  libgeotiff-devel libjpeg-turbo-devel libpng-devel
+BuildRequires:  hdf-devel hdf5-devel libtiff-devel
+BuildRequires:  libtool netcdf-devel blas-devel lapack-devel
+BuildRequires:  ruby-devel sqlite-devel >= 3 swig
+BuildRequires:  unixODBC-devel zlib-devel xerces-c-devel
+BuildRequires:  proj-devel m4 chrpath perl-ExtUtils-MakeMaker
+BuildRequires:  freexl-devel postgresql%{pg_short_ver}-devel
+BuildRequires:  libcurl-devel >= %{libcurl_min_ver}
 
-Requires:          geos libstdc++ expat libgeotiff libjpeg libpng hdf hdf5
-Requires:          libtiff netcdf blas lapack sqlite unixODBC zlib xerces-c
-Requires:          proj freexl libcurl >= %{libcurl_min_ver}
+Requires:       geos libstdc++ expat libgeotiff libjpeg libpng hdf hdf5
+Requires:       libtiff netcdf blas lapack sqlite unixODBC zlib xerces-c
+Requires:       proj freexl libcurl >= %{libcurl_min_ver}
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -113,15 +74,16 @@ vector data.
 ################################################################################
 
 %package devel
-Summary:           GDAL library header files
-Group:             Development/Libraries
-Requires:          %{name} = %{version}-%{release}
+Summary:   GDAL library header files
+Group:     Development/Libraries
 
-Requires:          expat-devel geos-devel >= 3 hdf-devel hdf5-devel
-Requires:          netcdf-devel libstdc++-devel
-Requires:          postgresql%{pg_short_ver}-devel sqlite-devel >= 3
-Requires:          unixODBC-devel freexl-devel xerces-c-devel
-Requires:          libcurl-devel >= %{libcurl_min_ver}
+Requires:  %{name} = %{version}-%{release}
+
+Requires:  expat-devel geos-devel >= 3 hdf-devel hdf5-devel
+Requires:  netcdf-devel libstdc++-devel
+Requires:  postgresql%{pg_short_ver}-devel sqlite-devel >= 3
+Requires:  unixODBC-devel freexl-devel xerces-c-devel
+Requires:  libcurl-devel >= %{libcurl_min_ver}
 
 %description devel
 Development Libraries for the GDAL file format library
@@ -129,15 +91,15 @@ Development Libraries for the GDAL file format library
 ################################################################################
 
 %package perl
-Summary:           Perl bindings for GDAL
-Group:             Development/Languages
+Summary:        Perl bindings for GDAL
+Group:          Development/Languages
 
-BuildRequires:     perl-devel
+BuildRequires:  perl-devel
 
-Requires:          perl perl-ExtUtils-MakeMaker
-Requires:          %{name} = %{version}-%{release}
+Requires:       perl perl-ExtUtils-MakeMaker
+Requires:       %{name} = %{version}-%{release}
 
-Conflicts:         %{realname}-perl
+Conflicts:      %{realname}-perl
 
 %description perl
 Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
@@ -145,15 +107,15 @@ Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
 ################################################################################
 
 %package python
-Summary:           GDAL Python module
-Group:             Development/Languages
+Summary:        GDAL Python module
+Group:          Development/Languages
 
-BuildRequires:     python-devel python-setuptools python2-numpy
+BuildRequires:  python-devel python-setuptools python2-numpy
 
-Requires:          python
-Requires:          %{name} = %{version}-%{release}
+Requires:       python
+Requires:       %{name} = %{version}-%{release}
 
-Conflicts:         %{realname}-python
+Conflicts:      %{realname}-python
 
 %description python
 The GDAL python modules provide support to handle multiple GIS file formats.
@@ -339,10 +301,10 @@ chrpath --delete %{buildroot}%{install_lib_dir}/libgdal.so.*
 rm -rf %{buildroot}
 
 %post
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun
-%{__ldconfig}
+/sbin/ldconfig
 
 ################################################################################
 
@@ -453,7 +415,7 @@ rm -rf %{buildroot}
 %{install_lib_dir}/libgdal.la
 %{install_inc_dir}/*.h
 %{install_man_dir}/%{realname}-config.1*
-%{_pkgconfigdir}/%{name}.pc
+%{_libdir}/pkgconfig/%{name}.pc
 
 %files perl
 %defattr(-,root,root)

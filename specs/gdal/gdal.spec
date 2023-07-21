@@ -1,79 +1,46 @@
 ################################################################################
 
+# perfecto:target centos7 ol7
+
+################################################################################
+
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-
-%define _pyinclude        %{_includedir}/python2.7
+%define _pyinclude  %{_includedir}/python2.7
 
 ################################################################################
 
-Summary:           A translator library for raster and vector geospatial data formats
-Name:              gdal
-Version:           1.11.5
-Release:           3%{?dist}
-License:           MIT and BSD-3-Clause
-Group:             Development/Libraries
-URL:               https://www.gdal.org
+Summary:        A translator library for raster and vector geospatial data formats
+Name:           gdal
+Version:        1.11.5
+Release:        4%{?dist}
+License:        MIT and BSD-3-Clause
+Group:          Development/Libraries
+URL:            https://www.gdal.org
 
-Source0:           https://download.osgeo.org/%{name}/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://download.osgeo.org/%{name}/%{version}/%{name}-%{version}.tar.gz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-Patch0:            %{name}-python_install.patch
-Patch1:            %{name}-perl.patch
+Patch0:         %{name}-python_install.patch
+Patch1:         %{name}-perl.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2 expat-devel
-BuildRequires:     geos-devel >= 3 giflib-devel hdf-devel >= 4.0 libgeotiff-devel
-BuildRequires:     libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel >= 3.6.0
-BuildRequires:     libtool netcdf-devel blas-devel lapack-devel mysql-devel
-BuildRequires:     python-setuptools ruby-devel sqlite-devel swig
-BuildRequires:     unixODBC-devel libcurl-devel zlib-devel >= 1.1.4 xerces-c-devel
-BuildRequires:     proj-devel m4 chrpath perl-ExtUtils-MakeMaker python-devel
-BuildRequires:     freexl-devel postgresql93-devel
+BuildRequires:  autoconf >= 2.52 automake gcc-c++ doxygen >= 1.4.2 expat-devel
+BuildRequires:  geos-devel >= 3 giflib-devel hdf-devel >= 4.0 libgeotiff-devel
+BuildRequires:  libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel >= 3.6.0
+BuildRequires:  libtool netcdf-devel blas-devel lapack-devel mysql-devel
+BuildRequires:  python-setuptools ruby-devel sqlite-devel swig
+BuildRequires:  unixODBC-devel libcurl-devel zlib-devel >= 1.1.4 xerces-c-devel
+BuildRequires:  proj-devel m4 chrpath perl-ExtUtils-MakeMaker python-devel
+BuildRequires:  freexl-devel postgresql10-devel
 
-Requires:          xerces-c
+Requires:       xerces-c
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -88,15 +55,16 @@ vector data.
 ################################################################################
 
 %package devel
-Summary:           GDAL library header files
-Group:             Development/Libraries
-Requires:          %{name} = %{version}-%{release}
+Summary:   GDAL library header files
+Group:     Development/Libraries
 
-Requires:          hdf-devel >= 4.0 expat-devel geos-devel >= 3 libgeotiff-devel >= 1.2.1
-Requires:          libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel
-Requires:          netcdf-devel mysql-devel libcurl-devel
-Requires:          postgresql93-devel sqlite-devel >= 3 unixODBC-devel xerces-c-devel
-Requires:          giflib-devel freexl-devel
+Requires:  %{name} = %{version}-%{release}
+
+Requires:  hdf-devel >= 4.0 expat-devel geos-devel >= 3 libgeotiff-devel >= 1.2.1
+Requires:  libjpeg-turbo-devel libpng-devel libstdc++-devel libtiff-devel
+Requires:  netcdf-devel mysql-devel libcurl-devel
+Requires:  postgresql10-devel sqlite-devel >= 3 unixODBC-devel xerces-c-devel
+Requires:  giflib-devel freexl-devel
 
 %description devel
 Development Libraries for the GDAL file format library
@@ -104,11 +72,12 @@ Development Libraries for the GDAL file format library
 ################################################################################
 
 %package perl
-Summary:           Perl bindings for GDAL
-Group:             Development/Languages
-Requires:          %{name} = %{version}-%{release}
+Summary:   Perl bindings for GDAL
+Group:     Development/Languages
 
-Requires:          perl perl-ExtUtils-MakeMaker
+Requires:  %{name} = %{version}-%{release}
+
+Requires:  perl perl-ExtUtils-MakeMaker
 
 %description perl
 Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
@@ -116,9 +85,10 @@ Perl bindings for GDAL - Geo::GDAL, Geo::OGR and Geo::OSR modules.
 ################################################################################
 
 %package python
-Summary:           GDAL Python module
-Group:             Development/Languages
-Requires:          %{name} = %{version}-%{release}
+Summary:   GDAL Python module
+Group:     Development/Languages
+
+Requires:  %{name} = %{version}-%{release}
 
 %description python
 The GDAL python modules provide support to handle multiple GIS file formats.
@@ -255,10 +225,10 @@ rm -f %{buildroot}%{_usr}/man/man1/*.1.gz
 rm -rf %{buildroot}
 
 %post
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun
-%{__ldconfig}
+/sbin/ldconfig
 
 ################################################################################
 
@@ -351,7 +321,7 @@ rm -rf %{buildroot}
 %doc _html/*
 %attr(755,root,root) %{_bindir}/%{name}-config
 %dir %{_includedir}/%{name}
-%{_pkgconfigdir}/%{name}.pc
+%{_libdir}/pkgconfig/%{name}.pc
 %{_libdir}/libgdal.so
 %{_libdir}/libgdal.la
 %{_includedir}/%{name}/*.h
@@ -402,6 +372,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jul 20 2023 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-4
+- Minimal required version of PostgreSQL set to 10
+- Spec refactoring
+
 * Wed Aug 12 2020 Anton Novojilov <andy@essentialkaos.com> - 1.11.5-3
 - Fixed dependencies for CentOS 7+
 - Fixed path to Python headers
