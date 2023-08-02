@@ -4,51 +4,18 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _opt              /opt
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-################################################################################
-
 %global debug_package  %{nil}
 %global _binaries_in_noarch_packages_terminate_build  0
+%define _use_internal_dependency_generator  0
 %global __requires_exclude_from  ^(%{_datadir}|/usr/lib)/%{name}/(doc|src)/.*$
 %global __strip  /bin/true
-%define _use_internal_dependency_generator  0
 %define __find_requires  %{nil}
 %global __spec_install_post  /usr/lib/rpm/check-rpaths /usr/lib/rpm/check-buildroot /usr/lib/rpm/brp-compress
 
 ################################################################################
 
-%global goroot  %{_libdir32}/%{name}
+# perfecto:ignore
+%global goroot  /usr/lib/%{name}
 %global gopath  %{_datadir}/gocode
 
 %ifarch x86_64
@@ -64,7 +31,7 @@
 
 Summary:        The Go Programming Language
 Name:           golang
-Version:        1.20.6
+Version:        1.20.7
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
@@ -169,7 +136,7 @@ export CC_FOR_TARGET="gcc"
 export GOROOT_FINAL=%{goroot}
 export GOHOSTOS=linux
 export GOHOSTARCH=%{gohostarch}
-export GOROOT_BOOTSTRAP=%{_libdir32}/%{name}
+export GOROOT_BOOTSTRAP=%{goroot}
 
 pushd src
   ./make.bash -v
@@ -267,6 +234,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Aug 02 2023 Anton Novojilov <andy@essentialkaos.com> - 1.20.7-0
+- https://github.com/golang/go/issues?q=milestone:Go1.20.7+label:CherryPickApproved
+
 * Tue Jul 18 2023 Anton Novojilov <andy@essentialkaos.com> - 1.20.6-0
 - https://github.com/golang/go/issues?q=milestone:Go1.20.6+label:CherryPickApproved
 
