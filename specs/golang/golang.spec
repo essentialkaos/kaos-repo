@@ -25,13 +25,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api  1.20
+%global go_api  1.21
 
 ################################################################################
 
 Summary:        The Go Programming Language
 Name:           golang
-Version:        1.20.7
+Version:        1.21.0
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
@@ -46,7 +46,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  golang >= 1.19
+BuildRequires:  golang >= 1.20
 
 Requires:       %{name}-bin = %{version}-%{release}
 Requires:       %{name}-src = %{version}-%{release}
@@ -234,6 +234,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Aug 09 2023 Anton Novojilov <andy@essentialkaos.com> - 1.21.0-0
+- https://go.dev/doc/go1.21
+
 * Wed Aug 02 2023 Anton Novojilov <andy@essentialkaos.com> - 1.20.7-0
 - https://github.com/golang/go/issues?q=milestone:Go1.20.7+label:CherryPickApproved
 
