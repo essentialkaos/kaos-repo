@@ -15,7 +15,7 @@
 
 Summary:           A persistent key-value database
 Name:              redis%{major_ver}
-Version:           6.2.12
+Version:           6.2.13
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -201,6 +201,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 08 2023 Anton Novojilov <andy@essentialkaos.com> - 6.2.13-0
+- https://github.com/redis/redis/blob/6.2.13/00-RELEASENOTES
+
 * Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 6.2.12-0
 - https://github.com/redis/redis/blob/6.2.12/00-RELEASENOTES
 
