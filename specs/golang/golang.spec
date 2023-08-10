@@ -38,11 +38,12 @@ Group:          Development/Languages
 URL:            https://go.dev
 
 Source0:        https://storage.googleapis.com/%{name}/go%{version}.src.tar.gz
-
 Source10:       %{name}-gdbinit
 Source11:       %{name}-prelink.conf
 
 Source100:      checksum.sha512
+
+Patch0:         disable-google.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -130,6 +131,8 @@ end
 
 %setup -qn go
 
+%patch0 -p1
+
 %build
 export CC="gcc"
 export CC_FOR_TARGET="gcc"
@@ -148,7 +151,7 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{goroot}
 
-cp -ap api bin doc lib pkg src misc VERSION \
+cp -ap api bin doc lib pkg src misc VERSION go.env \
        %{buildroot}%{goroot}/
 
 touch %{buildroot}%{goroot}/pkg
