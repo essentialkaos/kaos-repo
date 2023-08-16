@@ -9,13 +9,14 @@
 ################################################################################
 
 %define realname   redis
-%define major_ver  7
+%define major_ver  6
+%define minor_ver  0
 
 ################################################################################
 
 Summary:           A persistent key-value database
-Name:              redis%{major_ver}
-Version:           7.0.12
+Name:              redis%{major_ver}%{minor_ver}
+Version:           6.0.20
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -33,8 +34,8 @@ Source10:          sentinel-limit-systemd
 
 Source100:         checksum.sha512
 
-Patch0:            %{realname}-%{major_ver}-config.patch
-Patch1:            sentinel-%{major_ver}-config.patch
+Patch0:            %{realname}-%{major_ver}%{minor_ver}-config.patch
+Patch1:            sentinel-%{major_ver}%{minor_ver}-config.patch
 
 BuildRoot:         %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -54,7 +55,7 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Conflicts:         redis redis5 redis7
+Conflicts:         redis redis50 redis62 redis70 redis72
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{name}-server = %{version}-%{release}
@@ -173,7 +174,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS COPYING README.md
+%doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
 %attr(-,%{realname},%{realname}) %config(noreplace) %{_sysconfdir}/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{realname}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
@@ -195,20 +196,11 @@ rm -rf %{buildroot}
 
 %files cli
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS COPYING README.md
+%doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
 %{_bindir}/%{realname}-cli
 
 ################################################################################
 
 %changelog
-* Tue Aug 08 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.12-0
-- https://github.com/redis/redis/blob/7.0.12/00-RELEASENOTES
-
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.11-0
-- https://github.com/redis/redis/blob/7.0.11/00-RELEASENOTES
-
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.10-0
-- https://github.com/redis/redis/blob/7.0.10/00-RELEASENOTES
-
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 7.0.9-0
-- https://github.com/redis/redis/blob/7.0.9/00-RELEASENOTES
+* Tue Aug 08 2023 Anton Novojilov <andy@essentialkaos.com> - 6.0.20-0
+- https://github.com/redis/redis/blob/6.0.20/00-RELEASENOTES

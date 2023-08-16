@@ -1,18 +1,18 @@
-diff --color -urN redis-7.0.11-orig/sentinel.conf redis-7.0.11-sentinel/sentinel.conf
---- redis-7.0.11-orig/sentinel.conf	2023-04-17 15:54:03.000000000 +0300
-+++ redis-7.0.11-sentinel/sentinel.conf	2023-07-05 22:57:58.000000000 +0300
+diff --color -urN redis-7.2.0-orig/sentinel.conf redis-7.2.0-sentinel/sentinel.conf
+--- redis-7.2.0-orig/sentinel.conf	2023-08-15 12:38:36.000000000 +0300
++++ redis-7.2.0-sentinel/sentinel.conf	2023-08-16 11:20:45.000000000 +0300
 @@ -1,5 +1,3 @@
 -# Example sentinel.conf
 -
  # By default protected mode is disabled in sentinel mode. Sentinel is reachable
  # from interfaces different than localhost. Make sure the sentinel instance is
  # protected from the outside world via firewalling or other means.
-@@ -22,7 +20,7 @@
+@@ -31,7 +29,7 @@
  # Specify the log file name. Also the empty string can be used to force
  # Sentinel to log on the standard output. Note that if you use standard
  # output for logging but daemonize, logs will be sent to /dev/null
 -logfile ""
 +logfile /var/log/redis/sentinel.log
  
- # sentinel announce-ip <ip>
- # sentinel announce-port <port>
+ # To enable logging to the system logger, just set 'syslog-enabled' to yes,
+ # and optionally update the other syslog parameters to suit your needs.

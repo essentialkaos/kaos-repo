@@ -9,13 +9,14 @@
 ################################################################################
 
 %define realname   redis
-%define major_ver  6
+%define major_ver  5
+%define minor_ver  0
 
 ################################################################################
 
 Summary:           A persistent key-value database
-Name:              redis%{major_ver}
-Version:           6.2.13
+Name:              redis%{major_ver}%{minor_ver}
+Version:           5.0.14
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -33,8 +34,8 @@ Source10:          sentinel-limit-systemd
 
 Source100:         checksum.sha512
 
-Patch0:            %{realname}-%{major_ver}-config.patch
-Patch1:            sentinel-%{major_ver}-config.patch
+Patch0:            %{realname}-%{major_ver}%{minor_ver}-config.patch
+Patch1:            sentinel-%{major_ver}%{minor_ver}-config.patch
 
 BuildRoot:         %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -54,7 +55,7 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Conflicts:         redis redis5 redis7
+Conflicts:         redis redis60 redis62 redis70 redis72
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{name}-server = %{version}-%{release}
@@ -201,83 +202,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Tue Aug 08 2023 Anton Novojilov <andy@essentialkaos.com> - 6.2.13-0
-- https://github.com/redis/redis/blob/6.2.13/00-RELEASENOTES
-
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 6.2.12-0
-- https://github.com/redis/redis/blob/6.2.12/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.7-0
-- https://github.com/redis/redis/blob/6.2.7/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.6-0
-- https://github.com/redis/redis/blob/6.2.6/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.5-0
-- https://github.com/redis/redis/blob/6.2.5/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.4-0
-- https://github.com/redis/redis/blob/6.2.4/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.3-0
-- https://github.com/redis/redis/blob/6.2.3/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.2-0
-- https://github.com/redis/redis/blob/6.2.2/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.1-0
-- https://github.com/redis/redis/blob/6.2.1/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.2.0-0
-- https://github.com/redis/redis/blob/6.2.0/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.16-0
-- https://github.com/redis/redis/blob/6.0.16/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.15-0
-- https://github.com/redis/redis/blob/6.0.15/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.14-0
-- https://github.com/redis/redis/blob/6.0.14/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.13-0
-- https://github.com/redis/redis/blob/6.0.13/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.12-0
-- https://github.com/redis/redis/blob/6.0.12/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.11-0
-- https://github.com/redis/redis/blob/6.0.11/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.10-0
-- https://github.com/redis/redis/blob/6.0.10/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.9-0
-- https://github.com/redis/redis/blob/6.0.9/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.8-0
-- https://github.com/redis/redis/blob/6.0.8/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.7-0
-- https://github.com/redis/redis/blob/6.0.7/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.6-0
-- https://github.com/redis/redis/blob/6.0.6/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.5-0
-- https://github.com/redis/redis/blob/6.0.5/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.4-0
-- https://github.com/redis/redis/blob/6.0.4/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.3-0
-- https://github.com/redis/redis/blob/6.0.3/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.2-0
-- https://github.com/redis/redis/blob/6.0.2/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.1-0
-- https://github.com/redis/redis/blob/6.0.1/00-RELEASENOTES
-
-* Wed May 25 2022 Anton Novojilov <andy@essentialkaos.com> - 6.0.0-0
-- https://github.com/redis/redis/blob/6.0.0/00-RELEASENOTES
+* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 5.0.14-0
+- https://github.com/redis/redis/blob/5.0.14/00-RELEASENOTES

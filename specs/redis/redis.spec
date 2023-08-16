@@ -9,6 +9,7 @@
 ################################################################################
 
 %define major_ver  7
+%define minor_ver  0
 
 ################################################################################
 
@@ -32,8 +33,8 @@ Source10:          sentinel-limit-systemd
 
 Source100:         checksum.sha512
 
-Patch0:            %{name}-%{major_ver}-config.patch
-Patch1:            sentinel-%{major_ver}-config.patch
+Patch0:            redis-%{major_ver}%{minor_ver}-config.patch
+Patch1:            sentinel-%{major_ver}%{minor_ver}-config.patch
 
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
