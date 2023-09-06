@@ -4,25 +4,25 @@
 
 ################################################################################
 
-Summary:         Meta-package that only requires libnghttp2
-Name:            nghttp2
-Version:         1.51.0
-Release:         0%{?dist}
-Group:           Applications/Internet
-License:         MIT
-URL:             https://nghttp2.org
+Summary:        Meta-package that only requires libnghttp2
+Name:           nghttp2
+Version:        1.56.0
+Release:        0%{?dist}
+Group:          Applications/Internet
+License:        MIT
+URL:            https://nghttp2.org
 
-Source0:         https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Source0:        https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.bz2
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc openssl-devel zlib-devel
+BuildRequires:  make gcc openssl-devel zlib-devel
 
-Requires:        libnghttp2%{?_isa} = %{version}-%{release}
+Requires:       libnghttp2%{?_isa} = %{version}-%{release}
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -33,8 +33,8 @@ This package installs no files. It only requires the libnghttp2 package.
 
 %package -n libnghttp2
 
-Summary:         A library implementing the HTTP/2 protocol
-Group:           Development/Libraries
+Summary:  A library implementing the HTTP/2 protocol
+Group:    Development/Libraries
 
 %description -n libnghttp2
 libnghttp2 is a library implementing the Hypertext Transfer Protocol
@@ -44,11 +44,11 @@ version 2 (HTTP/2) protocol in C.
 
 %package -n libnghttp2-devel
 
-Summary:         Files needed for building applications with libnghttp2
-Group:           Development/Libraries
+Summary:   Files needed for building applications with libnghttp2
+Group:     Development/Libraries
 
-Requires:        libnghttp2%{?_isa} = %{version}-%{release}
-Requires:        pkgconfig
+Requires:  libnghttp2%{?_isa} = %{version}-%{release}
+Requires:  pkgconfig
 
 %description -n libnghttp2-devel
 The libnghttp2-devel package includes libraries and header files needed
@@ -120,6 +120,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.56.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.56.0
+
 * Thu Dec 08 2022 Anton Novojilov <andy@essentialkaos.com> - 1.51.0-0
 - https://github.com/nghttp2/nghttp2/releases/tag/v1.51.0
 
