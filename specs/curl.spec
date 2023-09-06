@@ -4,16 +4,13 @@
 
 ################################################################################
 
-%define use_threads_posix 1
-
-%define cares_version    %(pkg-config --modversion libcares 2>/dev/null || echo 0)
 %define nghttp2_version  %(pkg-config --modversion libnghttp2 2>/dev/null || echo 0)
 
 ################################################################################
 
 Summary:        Utility for getting files from remote servers
 Name:           curl
-Version:        7.88.1
+Version:        8.2.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Applications/Internet
@@ -25,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc libidn2-devel krb5-devel
+BuildRequires:  make gcc libidn2-devel krb5-devel python3
 BuildRequires:  pkgconfig zlib-devel openldap-devel
 BuildRequires:  openssh-clients openssh-server stunnel perl
 BuildRequires:  perl(Cwd) perl(Digest::MD5) perl(Exporter) perl(vars)
@@ -35,17 +32,7 @@ BuildRequires:  perl(strict) perl(Time::Local) perl(Time::HiRes)
 BuildRequires:  libpsl-devel libzstd-devel libzstd-devel brotli-devel
 BuildRequires:  openssl-devel libnghttp2-devel >= %{nghttp2_version}
 
-%if 0%{?rhel} <= 7
-BuildRequires:  python epel-release
-%else
-BuildRequires:  python3
-%endif
-
-%if ! %{use_threads_posix}
-BuildRequires:  c-ares-devel >= 1.6.0
-%endif
-
-Requires:       c-ares libnghttp2 >= %{nghttp2_version}
+Requires:       libnghttp2 >= %{nghttp2_version}
 Requires:       libcurl%{?_isa} = %{version}-%{release}
 Requires:       %{_sysconfdir}/pki/tls/certs/ca-bundle.crt
 
@@ -65,14 +52,10 @@ resume, proxy tunneling and a busload of other useful tricks.
 ################################################################################
 
 %package -n libcurl
-Summary:  A library for getting files from web servers
-Group:    System Environment/Libraries
+Summary:   A library for getting files from web servers
+Group:     System Environment/Libraries
 
 Requires:  libnghttp2 >= %{nghttp2_version}
-
-%if ! %{use_threads_posix}
-Requires:  c-ares%{?_isa} >= %{cares_version}
-%endif
 
 %description -n libcurl
 libcurl is a free and easy-to-use client-side URL transfer library, supporting
@@ -85,14 +68,14 @@ resume, HTTP proxy tunneling and more.
 ################################################################################
 
 %package -n libcurl-devel
-Summary:  Files needed for building applications with libcurl
-Group:    Development/Libraries
+Summary:     Files needed for building applications with libcurl
+Group:       Development/Libraries
 
-Requires:  libcurl%{?_isa} = %{version}-%{release}
-Requires:  openssl-devel libnghttp2-devel >= %{nghttp2_version}
+Requires:   libcurl%{?_isa} = %{version}-%{release}
+Requires:   openssl-devel libnghttp2-devel >= %{nghttp2_version}
 
-Provides:  curl-devel = %{version}-%{release}
-Provides:  curl-devel%{?_isa} = %{version}-%{release}
+Provides:   curl-devel = %{version}-%{release}
+Provides:   curl-devel%{?_isa} = %{version}-%{release}
 
 Obsoletes:  curl-devel < %{version}-%{release}
 
@@ -118,11 +101,6 @@ fi
 %configure \
         --with-ssl \
         --with-ca-bundle=%{_sysconfdir}/pki/tls/certs/ca-bundle.crt \
-%if 0%{?use_threads_posix}
-        --enable-threaded-resolver \
-%else
-        --enable-ares \
-%endif
         --enable-symbol-hiding \
         --enable-ipv6 \
         --enable-ldaps \
@@ -191,6 +169,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.2.1-0
+- https://curl.se/changes.html#8_2_1
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.2.0-0
+- https://curl.se/changes.html#8_2_0
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.1.2-0
+- https://curl.se/changes.html#8_1_2
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.1.1-0
+- https://curl.se/changes.html#8_1_1
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.1.0-0
+- https://curl.se/changes.html#8_1_0
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.0.1-0
+- https://curl.se/changes.html#8_0_1
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.0.0-0
+- https://curl.se/changes.html#8_0_0
+
 * Mon Mar 20 2023 Anton Novojilov <andy@essentialkaos.com> - 7.88.1-0
 - https://curl.se/changes.html#7_88_1
 
