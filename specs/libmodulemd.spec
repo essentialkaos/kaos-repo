@@ -23,7 +23,7 @@
 
 Summary:        C Library for manipulating module metadata files
 Name:           libmodulemd
-Version:        2.14.0
+Version:        2.15.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -34,7 +34,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc gcc-c++ meson glib2-doc rpm-devel rpm-libs file-devel
+BuildRequires:  gcc gcc-c++ meson glib2-doc rpm-devel rpm-libs libzstd-devel
 BuildRequires:  pkgconfig(gobject-2.0) pkgconfig(gobject-introspection-1.0)
 BuildRequires:  pkgconfig(yaml-0.1)
 BuildRequires:  %{python_base}-devel %{python_base}-gobject-base epel-rpm-macros
@@ -74,6 +74,7 @@ gob_overrides_dir=$(%{__python3} -c 'import gi; print(gi._overridesdir)')
 %{meson} -Dwith_docs=false \
          -Dwith_py2=false \
          -Dwith_py3=true \
+         -Daccept_overflowed_buildorder=true \
          -Dgobject_overrides_dir_py3=$gob_overrides_dir
 
 %{meson_build}
@@ -116,6 +117,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Sep 07 2023 Anton Novojilov <andy@essentialkaos.com> - 2.15.0-0
+- https://github.com/fedora-modularity/libmodulemd/releases/tag/libmodulemd-2.15.0
+
 * Thu Sep 22 2022 Anton Novojilov <andy@essentialkaos.com> - 2.14.0-0
 - https://github.com/fedora-modularity/libmodulemd/releases/tag/libmodulemd-2.14.0
 
