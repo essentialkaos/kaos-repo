@@ -8,25 +8,25 @@
 
 ################################################################################
 
-Summary:         Library for country/city/organization to IP address or hostname mapping
-Name:            GeoIP
-Version:         1.6.12
-Release:         1%{?dist}
-Group:           Development/Libraries
-License:         LGPLv2+
-URL:             https://www.maxmind.com/app/c
+Summary:        Library for country/city/organization to IP address or hostname mapping
+Name:           GeoIP
+Version:        1.6.12
+Release:        1%{?dist}
+Group:          Development/Libraries
+License:        LGPLv2+
+URL:            https://www.maxmind.com/app/c
 
-Source0:         https://github.com/maxmind/geoip-api-c/releases/download/v%{version}/%{name}-%{version}.tar.gz
-Source100:       checksum.sha512
+Source0:        https://github.com/maxmind/geoip-api-c/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc zlib-devel
+BuildRequires:  make gcc zlib-devel
 
-Obsoletes:       geoip < %{version}-%{release}
+Obsoletes:      geoip < %{version}-%{release}
 
-Provides:        geoip = %{version}-%{release}
-Provides:        %{name} = %{version}-%{release}
+Provides:       geoip = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -41,13 +41,13 @@ packages.
 ################################################################################
 
 %package devel
-Summary:         Development headers and libraries for GeoIP
-Group:           Development/Libraries
+Summary:    Development headers and libraries for GeoIP
+Group:      Development/Libraries
 
-Requires:        %{name} = %{version}-%{release}
+Requires:   %{name} = %{version}-%{release}
 
-Provides:        geoip-devel = %{version}-%{release}
-Obsoletes:       geoip-devel < %{version}-%{release}
+Provides:   geoip-devel = %{version}-%{release}
+Obsoletes:  geoip-devel < %{version}-%{release}
 
 %description devel
 Development headers and static libraries for building GeoIP-based applications.
