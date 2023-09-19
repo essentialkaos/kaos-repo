@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:           GEOS is a C++ port of the Java Topology Suite
-Name:              geos
-Version:           3.11.0
-Release:           0%{?dist}
-License:           LGPLv2
-Group:             Applications/Engineering
-URL:               https://trac.osgeo.org/geos
+Summary:        GEOS is a C++ port of the Java Topology Suite
+Name:           geos
+Version:        3.12.0
+Release:        0%{?dist}
+License:        LGPLv2
+Group:          Applications/Engineering
+URL:            https://libgeos.org
 
-Source0:           https://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
+Source0:        https://download.osgeo.org/%{name}/%{name}-%{version}.tar.bz2
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make cmake3 gcc-c++
+BuildRequires:  make cmake3 gcc-c++
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -117,8 +117,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Sep 19 2023 Anton Novojilov <andy@essentialkaos.com> - 3.12.0-0
+- https://github.com/libgeos/geos/blob/3.12.0/NEWS.md
+
+* Tue Sep 19 2023 Anton Novojilov <andy@essentialkaos.com> - 3.11.2-0
+- https://github.com/libgeos/geos/blob/3.11.2/NEWS.md
+
 * Sun Sep 25 2022 Anton Novojilov <andy@essentialkaos.com> - 3.11.0-0
-- Updated to the latest release
+- https://github.com/libgeos/geos/blob/3.11.0/NEWS.md
 
 * Thu Feb 11 2021 Anton Novojilov <andy@essentialkaos.com> - 3.9.1-0
 - Updated to the latest release
