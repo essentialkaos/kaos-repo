@@ -4,62 +4,22 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+%global __perl_requires  %{SOURCE2}
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __sysctl          %{_bindir}/systemctl
-
-################################################################################
-
-%define maj_ver           2.2
-%define pg_maj_ver        15
-%define pg_high_ver       15
-%define pg_low_fullver    15.0
-%define pg_dir            %{_prefix}/pgsql-%{pg_high_ver}
-%define realname          slony1
-%define username          postgres
-%define groupname         postgres
-
-%global __perl_requires   %{SOURCE2}
+%define maj_ver         2.2
+%define pg_maj_ver      14
+%define pg_high_ver     14
+%define pg_low_fullver  14.6
+%define pg_dir          %{_prefix}/pgsql-%{pg_high_ver}
+%define realname        slony1
+%define username        postgres
+%define groupname       postgres
 
 ################################################################################
 
 Summary:        A "master to multiple slaves" replication system with cascading and failover
 Name:           %{realname}-%{pg_maj_ver}
-Version:        2.2.10
+Version:        2.2.11
 Release:        0%{?dist}
 License:        BSD
 Group:          Applications/Databases
@@ -166,25 +126,25 @@ pushd tools
   chrpath --delete %{buildroot}%{pg_dir}/lib/slony1_funcs.%{version}.so
 popd
 
-install -dm 755 %{buildroot}%{_logdir}/%{realname}-%{pg_maj_ver}
+install -dm 755 %{buildroot}%{_localstatedir}/log/%{realname}-%{pg_maj_ver}
 
 %clean
 rm -rf %{buildroot}
 
 %post
 if [[ $1 -eq 1 ]] ; then
-  %{__sysctl} enable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
+  systemctl enable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]] ; then
-  %{__sysctl} --no-reload disable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
-  %{__sysctl} stop %{realname}-%{pg_maj_ver}.service &>/dev/null || :
+  systemctl --no-reload disable %{realname}-%{pg_maj_ver}.service &>/dev/null || :
+  systemctl stop %{realname}-%{pg_maj_ver}.service &>/dev/null || :
 fi
 
 %postun
 if [[ $1 -ge 1 ]] ; then
-  %{__sysctl} daemon-reload &>/dev/null || :
+  systemctl daemon-reload &>/dev/null || :
 fi
 
 ################################################################################
@@ -195,7 +155,7 @@ fi
 %{pg_dir}/bin/slon*
 %{pg_dir}/lib/slon*
 %{pg_dir}/share/slon*
-%dir %{_logdir}/%{realname}-%{pg_maj_ver}
+%dir %{_localstatedir}/log/%{realname}-%{pg_maj_ver}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{realname}-%{pg_maj_ver}
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon.conf
 %config(noreplace) %{_sysconfdir}/%{realname}-%{pg_maj_ver}/slon_tools.conf
@@ -205,5 +165,10 @@ fi
 ################################################################################
 
 %changelog
-* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.10-0
-- Initial build for kaos-repo
+* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.11-0
+- Add support for PG 15
+- Remove unused autoconf check
+- Fix typo in admin guide
+
+* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.10-0
+- Remove unsupported warning with PG13

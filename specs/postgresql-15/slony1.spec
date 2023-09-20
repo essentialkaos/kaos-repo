@@ -7,9 +7,9 @@
 %global __perl_requires  %{SOURCE2}
 
 %define maj_ver         2.2
-%define pg_maj_ver      13
-%define pg_high_ver     13
-%define pg_low_fullver  13.9
+%define pg_maj_ver      15
+%define pg_high_ver     15
+%define pg_low_fullver  15.0
 %define pg_dir          %{_prefix}/pgsql-%{pg_high_ver}
 %define realname        slony1
 %define username        postgres
@@ -169,6 +169,3 @@ fi
 - Add support for PG 15
 - Remove unused autoconf check
 - Fix typo in admin guide
-
-* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 2.2.10-0
-- Remove unsupported warning with PG13
