@@ -6,7 +6,7 @@
 
 Summary:        Ultimate Packer for eXecutables
 Name:           upx
-Version:        4.0.1
+Version:        4.1.0
 Release:        0%{?dist}
 License:        GPLv2+ and Public Domain
 Group:          Applications/Archiving
@@ -47,16 +47,17 @@ executables suffer no memory overhead or other drawbacks.
 export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 %endif
 
-mkdir -p build/release
-cd build/release
-cmake3 ../..
-cmake3 --build .
+%{cmake3}
+%{cmake3_build}
 
 %install
 rm -rf %{buildroot}
 
-install -Dpm 644 doc/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
-install -Dpm 755 build/release/%{name} %{buildroot}%{_bindir}/%{name}
+%{cmake3_install}
+
+%if 0%{?rhel} <= 7
+rm -rf %{buildroot}%{_docdir}
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -65,13 +66,17 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING LICENSE README README.SRC THANKS doc/*.txt
+%doc COPYING LICENSE README README.SRC NEWS doc/*
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 
 ################################################################################
 
 %changelog
+* Wed Sep 20 2023 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
+- ELF: handle shared libraries with more than 2 PT_LOAD segments
+- bug fixes - see https://github.com/upx/upx/milestone/11
+
 * Wed Nov 23 2022 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
 - bug fixes - see https://github.com/upx/upx/milestone/8
 
