@@ -113,10 +113,6 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_sysconfdir}/ld.so.conf.d
 install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-libs.conf
 
-%if 0%{?rhel} <= 7
-mv %{buildroot}%{_libdir}/pkgconfig/%{realname}.pc %{buildroot}%{_libdir}/pkgconfig/%{name}.pc
-%endif
-
 %clean
 rm -rf %{buildroot}
 
@@ -151,7 +147,7 @@ rm -rf %{buildroot}
 %{_includedir}/%{name}/
 %{_libdir}/lib%{realname}.so
 %{_libdir}/cmake/%{realname}/
-%{_libdir}/pkgconfig/%{name}.pc
+%{_libdir}/pkgconfig/%{realname}.pc
 %{_mandir}/man1/%{realname}-config.1*
 
 ################################################################################

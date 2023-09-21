@@ -11,8 +11,8 @@
 
 %define maj_ver         3.1
 %define lib_ver         3
-%define pg_ver          12
-%define pg_low_fullver  %{pg_ver}.13
+%define pg_ver          15
+%define pg_low_fullver  %{pg_ver}.0
 %define pg_dir          %{_prefix}/pgsql-%{pg_ver}
 %define realname        postgis
 %define pkgname         %{realname}-%{maj_ver}

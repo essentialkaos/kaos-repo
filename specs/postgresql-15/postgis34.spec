@@ -9,14 +9,14 @@
 
 ################################################################################
 
-%define maj_ver         3.1
+%define maj_ver         3.4
 %define lib_ver         3
-%define pg_ver          12
-%define pg_low_fullver  %{pg_ver}.13
+%define pg_ver          15
+%define pg_low_fullver  %{pg_ver}.0
 %define pg_dir          %{_prefix}/pgsql-%{pg_ver}
 %define realname        postgis
 %define pkgname         %{realname}-%{maj_ver}
-%define fullname        %{realname}31
+%define fullname        %{realname}34
 
 %define __perl_requires   filter-requires-perl-Pg.sh
 
@@ -24,7 +24,7 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:              %{fullname}_%{pg_ver}
-Version:           3.1.9
+Version:           3.4.0
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -46,7 +46,7 @@ BuildRequires:     libgeotiff-devel libpng-devel libtiff-devel
 BuildRequires:     sqlite >= 3.40
 
 %if 0%{?rhel} == 7
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel libstdc++-static
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %else
 BuildRequires:     gcc-c++ llvm-devel >= 6.0.0 clang-devel >= 6.0.0
@@ -67,7 +67,7 @@ Requires:          %{fullname}_%{pg_ver}-client = %{version}-%{release}
 
 Requires(post):    update-alternatives
 
-Conflicts:         %{realname}30 %{realname}32 %{realname}33 %{realname}34
+Conflicts:         %{realname}30 %{realname}31 %{realname}32 %{realname}33
 
 Provides:          %{realname} = %{version}-%{release}
 
@@ -161,13 +161,11 @@ rm -rf %{buildroot}%{pg_dir}/doc
 
 mkdir -p %{buildroot}%{pg_dir}/bin/%{pkgname}
 
-chrpath --delete %{buildroot}%{pg_dir}/bin/pgsql2shp
-chrpath --delete %{buildroot}%{pg_dir}/bin/shp2pgsql
-chrpath --delete %{buildroot}%{pg_dir}/bin/raster2pgsql
+chrpath --delete %{buildroot}%{_bindir}/pgsql2shp
+chrpath --delete %{buildroot}%{_bindir}/raster2pgsql
+chrpath --delete %{buildroot}%{_bindir}/shp2pgsql
 
-mv %{buildroot}%{pg_dir}/bin/pgsql2shp \
-   %{buildroot}%{pg_dir}/bin/shp2pgsql \
-   %{buildroot}%{pg_dir}/bin/raster2pgsql \
+mv %{buildroot}%{_bindir}/* \
    %{buildroot}%{pg_dir}/bin/%{pkgname}/
 
 %if %utils
@@ -178,18 +176,26 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 /sbin/ldconfig
 
-update-alternatives --install %{_bindir}/pgsql2shp    postgis-pgsql2shp    %{pg_dir}/bin/%{pkgname}/pgsql2shp    %{pg_ver}0
-update-alternatives --install %{_bindir}/shp2pgsql    postgis-shp2pgsql    %{pg_dir}/bin/%{pkgname}/shp2pgsql    %{pg_ver}0
-update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{pkgname}/raster2pgsql %{pg_ver}0
+update-alternatives --install %{_bindir}/pgsql2shp       postgis-pgsql2shp       %{pg_dir}/bin/%{pkgname}/pgsql2shp       %{pg_ver}0
+update-alternatives --install %{_bindir}/pgtopo_export   postgis-pgtopo_export   %{pg_dir}/bin/%{pkgname}/pgtopo_export   %{pg_ver}0
+update-alternatives --install %{_bindir}/pgtopo_import   postgis-pgtopo_import   %{pg_dir}/bin/%{pkgname}/pgtopo_import   %{pg_ver}0
+update-alternatives --install %{_bindir}/postgis         postgis-postgis         %{pg_dir}/bin/%{pkgname}/postgis         %{pg_ver}0
+update-alternatives --install %{_bindir}/postgis_restore postgis-postgis_restore %{pg_dir}/bin/%{pkgname}/postgis_restore %{pg_ver}0
+update-alternatives --install %{_bindir}/raster2pgsql    postgis-raster2pgsql    %{pg_dir}/bin/%{pkgname}/raster2pgsql    %{pg_ver}0
+update-alternatives --install %{_bindir}/shp2pgsql       postgis-shp2pgsql       %{pg_dir}/bin/%{pkgname}/shp2pgsql       %{pg_ver}0
 
 %postun
 /sbin/ldconfig
 
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system
-  update-alternatives --remove postgis-pgsql2shp     %{pg_dir}/bin/%{pkgname}/pgsql2shp
-  update-alternatives --remove postgis-shp2pgsql     %{pg_dir}/bin/%{pkgname}/shp2pgsql
-  update-alternatives --remove postgis-raster2pgsql  %{pg_dir}/bin/%{pkgname}/raster2pgsql
+  update-alternatives --remove postgis-pgsql2shp       %{pg_dir}/bin/%{pkgname}/pgsql2shp
+  update-alternatives --remove postgis-pgtopo_export   %{pg_dir}/bin/%{pkgname}/pgtopo_export
+  update-alternatives --remove postgis-pgtopo_import   %{pg_dir}/bin/%{pkgname}/pgtopo_import
+  update-alternatives --remove postgis-postgis         %{pg_dir}/bin/%{pkgname}/postgis
+  update-alternatives --remove postgis-postgis_restore %{pg_dir}/bin/%{pkgname}/postgis_restore
+  update-alternatives --remove postgis-raster2pgsql    %{pg_dir}/bin/%{pkgname}/raster2pgsql
+  update-alternatives --remove postgis-shp2pgsql       %{pg_dir}/bin/%{pkgname}/shp2pgsql
 fi
 
 %clean
@@ -206,10 +212,15 @@ rm -rf %{buildroot}
 %if %raster
 %{pg_dir}/lib/postgis_raster-%{lib_ver}.so
 %endif
+%{_mandir}/man1/*
 
 %files client
 %defattr(-,root,root)
 %{pg_dir}/bin/%{pkgname}/pgsql2shp
+%{pg_dir}/bin/%{pkgname}/pgtopo_export
+%{pg_dir}/bin/%{pkgname}/pgtopo_import
+%{pg_dir}/bin/%{pkgname}/postgis
+%{pg_dir}/bin/%{pkgname}/postgis_restore
 %{pg_dir}/bin/%{pkgname}/raster2pgsql
 %{pg_dir}/bin/%{pkgname}/shp2pgsql
 
@@ -219,7 +230,6 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{pkgname}/legacy_minimal.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_comments.sql
-%{pg_dir}/share/contrib/%{pkgname}/postgis_restore.pl
 %{pg_dir}/share/contrib/%{pkgname}/postgis.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_upgrade.sql
 %{pg_dir}/share/contrib/%{pkgname}/raster_comments.sql
@@ -248,10 +258,12 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc utils/README
 %attr(755,root,root) %{_datadir}/%{name}/create_extension_unpackage.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_or_replace_to_create.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_skip_signatures.pl
 %attr(755,root,root) %{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_undef.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_uninstall.pl
 %attr(755,root,root) %{_datadir}/%{name}/create_unpackaged.pl
-%attr(755,root,root) %{_datadir}/%{name}/postgis_proc_upgrade.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_upgrade.pl
 %attr(755,root,root) %{_datadir}/%{name}/postgis_restore.pl
 %attr(755,root,root) %{_datadir}/%{name}/profile_intersects.pl
 %attr(755,root,root) %{_datadir}/%{name}/read_scripts_version.pl
@@ -265,5 +277,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.1.9-0
-- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.1.9/NEWS
+* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.4.0-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.0/NEWS

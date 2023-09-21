@@ -9,14 +9,14 @@
 
 ################################################################################
 
-%define maj_ver         3.1
+%define maj_ver         3.2
 %define lib_ver         3
-%define pg_ver          12
-%define pg_low_fullver  %{pg_ver}.13
+%define pg_ver          14
+%define pg_low_fullver  %{pg_ver}.6
 %define pg_dir          %{_prefix}/pgsql-%{pg_ver}
 %define realname        postgis
 %define pkgname         %{realname}-%{maj_ver}
-%define fullname        %{realname}31
+%define fullname        %{realname}32
 
 %define __perl_requires   filter-requires-perl-Pg.sh
 
@@ -24,7 +24,7 @@
 
 Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:              %{fullname}_%{pg_ver}
-Version:           3.1.9
+Version:           3.2.5
 Release:           0%{?dist}
 License:           GPLv2+
 Group:             Applications/Databases
@@ -46,7 +46,7 @@ BuildRequires:     libgeotiff-devel libpng-devel libtiff-devel
 BuildRequires:     sqlite >= 3.40
 
 %if 0%{?rhel} == 7
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
+BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel libstdc++-static
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %else
 BuildRequires:     gcc-c++ llvm-devel >= 6.0.0 clang-devel >= 6.0.0
@@ -67,7 +67,7 @@ Requires:          %{fullname}_%{pg_ver}-client = %{version}-%{release}
 
 Requires(post):    update-alternatives
 
-Conflicts:         %{realname}30 %{realname}32 %{realname}33 %{realname}34
+Conflicts:         %{realname}30 %{realname}31 %{realname}33 %{realname}34
 
 Provides:          %{realname} = %{version}-%{release}
 
@@ -265,5 +265,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.1.9-0
-- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.1.9/NEWS
+* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.2.5/NEWS
