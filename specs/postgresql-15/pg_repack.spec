@@ -4,8 +4,12 @@
 
 ################################################################################
 
-%define pg_ver      10
-%define pg_fullver  %{pg_ver}.23
+%{!?llvm:%global llvm 1}
+
+################################################################################
+
+%define pg_ver      15
+%define pg_fullver  %{pg_ver}.0
 %define pg_dir      %{_prefix}/pgsql-%{pg_ver}
 %define realname    pg_repack
 
@@ -23,9 +27,19 @@ Source0:        https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{v
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc openssl-devel readline-devel zlib-devel
+BuildRequires:  make gcc openssl-devel readline-devel zlib-devel libzstd-devel
 BuildRequires:  postgresql%{pg_ver}-devel = %{pg_fullver}
 BuildRequires:  postgresql%{pg_ver}-libs = %{pg_fullver}
+
+%if %llvm
+%if 0%{?rhel} >= 8
+BuildRequires:  llvm-devel >= 6.0.0 clang-devel >= 6.0.0
+%endif
+%if 0%{?rhel} == 7
+# from centos-release-scl
+BuildRequires:  llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+%endif
+%endif
 
 Requires:       postgresql%{pg_ver}
 
@@ -44,6 +58,14 @@ The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
 %setup -qn %{realname}-%{version}
 
 %build
+%if %llvm
+%if 0%{?rhel} == 7
+# perfecto:ignore
+export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
+export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
+%endif
+%endif
+
 %{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
@@ -71,6 +93,9 @@ rm -rf %{buildroot}
 %attr(755,root,root) %{pg_dir}/lib/pg_repack.so
 %{pg_dir}/share/extension/%{realname}--%{version}.sql
 %{pg_dir}/share/extension/%{realname}.control
+%if %llvm
+%{pg_dir}/lib/bitcode/*
+%endif
 
 ################################################################################
 
@@ -79,26 +104,3 @@ rm -rf %{buildroot}
 - Added support for PostgreSQL 15
 - Fixed --parent-table on declarative partitioned tables
 - Removed connection info from error log
-
-* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.7-0
-- Added support for PostgreSQL 14
-
-* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
-- Added support for PostgreSQL 13
-- Dropped support for PostgreSQL before 9.4
-
-* Tue Jan 21 2020 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
-- Added support for PostgreSQL 12
-- Fixed parallel processing for indexes with operators from public schema
-
-* Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.4-0
-- Added support for PostgreSQL 11
-- Remove duplicate password prompt
-
-* Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.3-0
-- Fixed possible CVE-2018-1058 attack paths
-- Fixed "unexpected index definition" after CVE-2018-1058 changes in PostgreSQL
-- Fixed build with recent Ubuntu packages
-
-* Tue Nov 28 2017 Anton Novojilov <andy@essentialkaos.com> - 1.4.2-0
-- Initial build for kaos repo
