@@ -1,7 +1,7 @@
 # Sysconfig for postgresql service
 
 PG_ENGINE=""
-PG_POSTMASTER=""
+PG_POSTGRES=""
 PG_DATA=""
 PG_LOG=""
 PG_UPLOG=""
