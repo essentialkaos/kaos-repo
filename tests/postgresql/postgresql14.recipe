@@ -17,6 +17,8 @@ var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
 var port          5432
 
+var cmd_pause     1
+
 var python3_lib   libpython{PYTHON3_VERSION}*
 var perl_lib      libperl.*
 var tcl_lib       libtcl8.*
@@ -167,6 +169,7 @@ command "service {service_name} initdb" "Database initialization"
   owner {data_dir}/data/postgresql.conf {service_user}
 
 command "systemctl start {service_name}" "Start PostgreSQL server"
+  wait {cmd_pause}
   wait-fs {data_dir}/data/postmaster.pid
   service-works {service_name}
   connect tcp :{port}
@@ -180,12 +183,14 @@ command "{service_user}:{install_dir}/bin/psql -t -c 'select version();'" "Check
   output-contains "PostgreSQL {version}"
 
 command "systemctl restart {service_name}" "Restart PostgreSQL server"
+  wait {cmd_pause}
   wait-fs {data_dir}/data/postmaster.pid
   service-works {service_name}
   connect tcp :{port}
   !checksum {pid_file} {pid_sha}
 
 command "systemctl stop {service_name}" "Stop PostgreSQL server"
+  wait {cmd_pause}
   !wait-fs {data_dir}/data/postmaster.pid
   !service-works {service_name}
   !connect tcp :{port}

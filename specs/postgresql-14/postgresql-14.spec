@@ -134,7 +134,7 @@ BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 BuildRequires:     systemd systemd-devel
 
-Requires:          /sbin/ldconfig initscripts
+Requires:          %{_sbindir}/ldconfig initscripts
 Requires:          %{name}-libs = %{version}
 
 Requires(post):    systemd
@@ -186,10 +186,10 @@ to a PostgreSQL server.
 Summary:   The programs needed to create and run a PostgreSQL server
 Group:     Applications/Databases
 
-Requires:  useradd chkconfig
 Requires:  %{name} = %{version}-%{release}
 Requires:  %{name}-libs = %{version}-%{release}
 Requires:  glibc kaosv >= 2.16 numactl
+Requires:  %{_sbindir}/useradd %{_sbindir}/chkconfig
 
 Provides:  %{realname}-server = %{version}-%{release}
 

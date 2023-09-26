@@ -1,12 +1,12 @@
-# Bibop recipe for PostgreSQL 15
+# Bibop recipe for PostgreSQL 16
 # See more: https://kaos.sh/bibop
 
-pkg postgresql15-contrib postgresql15-devel postgresql15-docs postgresql15-libs postgresql15-llvmjit postgresql15-plperl postgresql15-plpython3 postgresql15-pltcl postgresql15-server postgresql15-test
+pkg postgresql16-contrib postgresql16-devel postgresql16-docs postgresql16-libs postgresql16-llvmjit postgresql16-plperl postgresql16-plpython3 postgresql16-pltcl postgresql16-server postgresql16-test
 
 require-root yes
 unsafe-actions yes
 
-var version       15
+var version       16
 var service_name  postgresql-{version}
 var service_user  postgres
 var service_group postgres
