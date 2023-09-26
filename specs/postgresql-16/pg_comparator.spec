@@ -8,26 +8,28 @@
 
 ################################################################################
 
-%define pg_ver      13
-%define pg_fullver  %{pg_ver}.9
+%define pg_ver      16
+%define pg_fullver  %{pg_ver}.0
 %define pg_dir      %{_prefix}/pgsql-%{pg_ver}
-%define realname    pg_repack
+%define realname    pg_comparator
 
 ################################################################################
 
-Summary:         Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
+Summary:         Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
 Name:            %{realname}%{pg_ver}
-Version:         1.4.8
+Version:         2.3.2
 Release:         0%{?dist}
 License:         BSD
-Group:           Applications/Databases
-URL:             https://pgxn.org/dist/pg_repack/
+Group:           Development/Tools
+URL:             https://www.cri.ensmp.fr/people/coelho/pg_comparator
 
-Source0:         https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source:          https://www.cri.ensmp.fr/people/coelho/pg_comparator/%{realname}-%{version}.tgz
+
+Patch0:          %{realname}-Makefile.patch
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc openssl-devel readline-devel zlib-devel
+BuildRequires:   make gcc
 BuildRequires:   postgresql%{pg_ver}-devel = %{pg_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 
@@ -40,6 +42,7 @@ BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
 
+Requires:        perl(Getopt::Long), perl(Time::HiRes)
 Requires:        postgresql%{pg_ver}
 
 Requires(post):  %{_sbindir}/update-alternatives
@@ -49,14 +52,16 @@ Provides:        %{name} = %{version}-%{release}
 ################################################################################
 
 %description
-pg_repack can re-organize tables on a postgres database without any locks so
-that you can retrieve or update rows in tables being reorganized.
-The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
+pg_comparator is a tool to compare possibly very big tables in
+different locations and report differences, with a network and
+time-efficient approach.
 
 ################################################################################
 
 %prep
 %setup -qn %{realname}-%{version}
+
+%patch0 -p1
 
 %build
 %if %llvm
@@ -75,11 +80,11 @@ rm -rf %{buildroot}
 %{make_install} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %post
-update-alternatives --install %{_bindir}/pg_repack pgrepack %{pg_dir}/bin/pg_repack %{pg_ver}0
+update-alternatives --install %{_bindir}/pg_comparator pgcomparator %{pg_dir}/bin/pg_comparator %{pg_ver}0
 
 %postun
 if [[ $1 -eq 0 ]] ; then
-  update-alternatives --remove pgrepack %{pg_dir}/bin/pg_repack
+  update-alternatives --remove pgcomparator %{pg_dir}/bin/pg_comparator
 fi
 
 %clean
@@ -89,11 +94,12 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc COPYRIGHT doc/pg_repack.rst
-%attr(755,root,root) %{pg_dir}/bin/pg_repack
-%attr(755,root,root) %{pg_dir}/lib/pg_repack.so
-%{pg_dir}/share/extension/%{realname}--%{version}.sql
-%{pg_dir}/share/extension/%{realname}.control
+%doc LICENSE
+%doc %{pg_dir}/doc/extension/README.pg_comparator
+%{pg_dir}/bin/pg_comparator
+%{pg_dir}/lib/pgcmp.so
+%{pg_dir}/share/extension/*.sql
+%{pg_dir}/share/extension/pgcmp.control
 %if %llvm
 %{pg_dir}/lib/bitcode/*
 %endif
@@ -101,14 +107,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 1.4.8-0
-- Added support for PostgreSQL 15
-- Fixed --parent-table on declarative partitioned tables
-- Removed connection info from error log
+* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
+- Updated to the latest stable release
 
-* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.7-0
-- Added support for PostgreSQL 14
-
-* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
-- Added support for PostgreSQL 13
-- Dropped support for PostgreSQL before 9.4
+* Thu Oct 12 2017 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
+- Initial build

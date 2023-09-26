@@ -131,8 +131,8 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Requires(post):    update-alternatives
-Requires(postun):  update-alternatives
+Requires(post):    %{_sbindir}/update-alternatives
+Requires(postun):  %{_sbindir}/update-alternatives
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{version}-%{release}

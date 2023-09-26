@@ -22,54 +22,53 @@
 
 ################################################################################
 
-Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
-Name:              %{fullname}_%{pg_ver}
-Version:           3.4.0
-Release:           0%{?dist}
-License:           GPLv2+
-Group:             Applications/Databases
-URL:               https://www.postgis.net
+Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
+Name:            %{fullname}_%{pg_ver}
+Version:         3.4.0
+Release:         0%{?dist}
+License:         GPLv2+
+Group:           Applications/Databases
+URL:             https://www.postgis.net
 
-Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
-Source1:           filter-requires-perl-Pg.sh
+Source0:         https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
+Source1:         filter-requires-perl-Pg.sh
 
-Source100:         checksum.sha512
+Source100:       checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     postgresql%{pg_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_ver}-libs = %{pg_low_fullver}
+BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
+BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
 
-BuildRequires:     geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
-BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:     libgeotiff-devel libpng-devel libtiff-devel
-BuildRequires:     sqlite >= 3.40
+BuildRequires:   geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
+BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
+BuildRequires:   sqlite >= 3.40 libgeotiff-devel libpng-devel libtiff-devel
 
 %if 0%{?rhel} == 7
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel libstdc++-static
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+BuildRequires:   devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel libstdc++-static
+BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %else
-BuildRequires:     gcc-c++ llvm-devel >= 6.0.0 clang-devel >= 6.0.0
+BuildRequires:   gcc-c++ llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 
 %if %raster
 %if 0%{?rhel} == 7
-BuildRequires:     gdal3-devel
-Requires:          gdal3-libs
+BuildRequires:   gdal3-devel
+Requires:        gdal3-libs
 %else
-BuildRequires:     gdal-devel >= 3
-Requires:          gdal-libs >= 3
+BuildRequires:   gdal-devel >= 3
+Requires:        gdal-libs >= 3
 %endif
 %endif
 
-Requires:          postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
-Requires:          %{fullname}_%{pg_ver}-client = %{version}-%{release}
+Requires:        postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
+Requires:        %{fullname}_%{pg_ver}-client = %{version}-%{release}
 
-Requires(post):    update-alternatives
+Requires(post):  %{_sbindir}/update-alternatives
 
-Conflicts:         %{realname}30 %{realname}31 %{realname}32 %{realname}33
+Conflicts:       %{realname}30 %{realname}31 %{realname}32 %{realname}33
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:        %{realname} = %{version}-%{release}
 
 ################################################################################
 

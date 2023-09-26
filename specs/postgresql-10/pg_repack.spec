@@ -11,25 +11,27 @@
 
 ################################################################################
 
-Summary:        Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
-Name:           %{realname}%{pg_ver}
-Version:        1.4.8
-Release:        0%{?dist}
-License:        BSD
-Group:          Applications/Databases
-URL:            https://pgxn.org/dist/pg_repack/
+Summary:         Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
+Name:            %{realname}%{pg_ver}
+Version:         1.4.8
+Release:         0%{?dist}
+License:         BSD
+Group:           Applications/Databases
+URL:             https://pgxn.org/dist/pg_repack/
 
-Source0:        https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source0:         https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc openssl-devel readline-devel zlib-devel
-BuildRequires:  postgresql%{pg_ver}-devel = %{pg_fullver}
-BuildRequires:  postgresql%{pg_ver}-libs = %{pg_fullver}
+BuildRequires:   make gcc openssl-devel readline-devel zlib-devel
+BuildRequires:   postgresql%{pg_ver}-devel = %{pg_fullver}
+BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 
-Requires:       postgresql%{pg_ver}
+Requires:        postgresql%{pg_ver}
 
-Provides:       %{name} = %{version}-%{release}
+Requires(post):  %{_sbindir}/update-alternatives
+
+Provides:        %{name} = %{version}-%{release}
 
 ################################################################################
 

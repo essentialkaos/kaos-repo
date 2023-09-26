@@ -42,8 +42,7 @@ BuildRequires:     postgresql%{pg_ver}-libs = %{pg_low_fullver}
 
 BuildRequires:     geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
 BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:     libgeotiff-devel libpng-devel libtiff-devel
-BuildRequires:     sqlite >= 3.40
+BuildRequires:     sqlite >= 3.40 libgeotiff-devel libpng-devel libtiff-devel
 
 %if 0%{?rhel} == 7
 BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel
@@ -64,7 +63,7 @@ Requires:          gdal-libs >= 3
 Requires:          postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
 Requires:          %{fullname}_%{pg_ver}-client = %{version}-%{release}
 
-Requires(post):    update-alternatives
+Requires(post):    %{_sbindir}/update-alternatives
 
 Conflicts:         %{realname}31 %{realname}32 %{realname}33 %{realname}34
 

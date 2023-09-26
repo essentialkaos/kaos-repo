@@ -38,7 +38,6 @@ BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 BuildRequires:   llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 %if 0%{?rhel} == 7
-# from centos-release-scl
 BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
@@ -46,7 +45,7 @@ BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 Requires:        perl(Getopt::Long), perl(Time::HiRes)
 Requires:        postgresql%{pg_ver}
 
-Requires(post):  update-alternatives
+Requires(post):  %{_sbindir}/update-alternatives
 
 Provides:        %{name} = %{version}-%{release}
 

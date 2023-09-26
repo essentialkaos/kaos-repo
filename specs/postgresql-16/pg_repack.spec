@@ -8,8 +8,8 @@
 
 ################################################################################
 
-%define pg_ver      13
-%define pg_fullver  %{pg_ver}.9
+%define pg_ver      16
+%define pg_fullver  %{pg_ver}.0
 %define pg_dir      %{_prefix}/pgsql-%{pg_ver}
 %define realname    pg_repack
 
@@ -27,7 +27,7 @@ Source0:         https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc openssl-devel readline-devel zlib-devel
+BuildRequires:   make gcc openssl-devel readline-devel zlib-devel libzstd-devel
 BuildRequires:   postgresql%{pg_ver}-devel = %{pg_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 
@@ -105,10 +105,3 @@ rm -rf %{buildroot}
 - Added support for PostgreSQL 15
 - Fixed --parent-table on declarative partitioned tables
 - Removed connection info from error log
-
-* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.7-0
-- Added support for PostgreSQL 14
-
-* Thu Feb 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
-- Added support for PostgreSQL 13
-- Dropped support for PostgreSQL before 9.4

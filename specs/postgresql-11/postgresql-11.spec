@@ -128,7 +128,6 @@ BuildRequires:     openldap-devel
 BuildRequires:     llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 %if 0%{?rhel} == 7
-# from centos-release-scl
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
@@ -142,8 +141,8 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Requires(post):    update-alternatives
-Requires(postun):  update-alternatives
+Requires(post):    %{_sbindir}/update-alternatives
+Requires(postun):  %{_sbindir}/update-alternatives
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{version}-%{release}

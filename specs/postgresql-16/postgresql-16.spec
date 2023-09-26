@@ -80,7 +80,7 @@ BuildRequires:     make gcc gcc-c++ perl glibc-devel bison flex
 BuildRequires:     readline-devel zlib-devel perl-generators
 
 %if %plperl
-BuildRequires:     perl-ExtUtils-Embed perl-ExtUtils-MakeMaker
+BuildRequires:     perl(ExtUtils::Embed) perl(ExtUtils::MakeMaker)
 %endif
 
 %if %plpython
@@ -129,7 +129,6 @@ BuildRequires:     openldap-devel
 BuildRequires:     llvm-devel >= 8.0.1 clang-devel >= 8.0.1
 %endif
 %if 0%{?rhel} == 7
-# from centos-release-scl
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
@@ -148,8 +147,8 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Requires(post):    update-alternatives
-Requires(postun):  update-alternatives
+Requires(post):    %{_sbindir}/update-alternatives
+Requires(postun):  %{_sbindir}/update-alternatives
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{version}-%{release}
