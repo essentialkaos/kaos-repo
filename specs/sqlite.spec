@@ -4,25 +4,29 @@
 
 ################################################################################
 
-%define tarversion  3420000
+%define ver_major     3
+%define ver_minor     43
+%define ver_patch     1
+%define release_year  2023
+%define tarversion    %{ver_major}%{ver_minor}0%{ver_patch}00
 
 ################################################################################
 
 Summary:        Embeddable SQL Database Engine (SQLite)
 Name:           sqlite
-Version:        3.42.0
+Version:        %{ver_major}.%{ver_minor}.%{ver_patch}
 Release:        0%{?dist}
 License:        Public domain
 Group:          Development/Tools
 URL:            https://www.sqlite.org
 
-Source0:        https://www.sqlite.org/2023/%{name}-autoconf-%{tarversion}.tar.gz
+Source0:        https://www.sqlite.org/%{release_year}/%{name}-autoconf-%{tarversion}.tar.gz
 
 Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc glibc-devel readline-devel tcl-devel
+BuildRequires:  make gcc glibc-devel readline-devel
 
 Requires:       %{name}-libs = %{version}
 
@@ -78,38 +82,30 @@ application which supports the Qt database plug-ins.
 
 ################################################################################
 
-%package tcl
-Group:    Development/Libraries
-Summary:  Tcl binding for SQLite
-
-%description tcl
-This package contains laguage bindings from the Tcl programming
-language SQLite.
-
-SQLite is a C library that implements an embeddable SQL database
-engine. Programs that link with the SQLite library can have SQL
-database access without running a separate RDBMS process.
-
-################################################################################
-
 %prep
 %{crc_check}
 
 %setup -qn sqlite-autoconf-%{tarversion}
 
 %build
-export CFLAGS="-DSQLITE_ENABLE_COLUMN_METADATA -DSQLITE_USE_URI -fPIC"
+export CFLAGS="%{optflags} %{build_ldflags} \
+               -DSQLITE_ENABLE_COLUMN_METADATA=1 \
+               -DSQLITE_DISABLE_DIRSYNC=1 \
+               -DSQLITE_SECURE_DELETE=1 \
+               -DSQLITE_ENABLE_UNLOCK_NOTIFY=1 \
+               -DSQLITE_ENABLE_DBSTAT_VTAB=1 \
+               -DSQLITE_ENABLE_FTS3_PARENTHESIS=1 \
+               -DSQLITE_ENABLE_DBPAGE_VTAB \
+               -Wall -fno-strict-aliasing"
 
 %configure --disable-static \
+           --enable-rtree \
+           --enable-fts3 \
+           --enable-fts4 \
+           --enable-fts5 \
            --enable-threadsafe
 
 %{__make} %{?_smp_mflags}
-
-pushd tea
-  export CFLAGS=-I..
-  export LDFLAGS=-L../.libs
-  %configure --with-tcl=%{_libdir} --with-system-sqlite
-popd
 
 %install
 rm -rf %{buildroot}
@@ -118,12 +114,14 @@ rm -rf %{buildroot}
 
 rm -f %{buildroot}%{_libdir}/*.la
 
-pushd tea
-  %{make_install} libdir=%{tcl_archdir}
-popd
-
 %post libs
 /sbin/ldconfig
+
+%if 0%{?rhel} == 9
+  # Remove WAL files for dnf history plugin due to segfault on EL 9
+  # https://github.com/rpm-software-management/libdnf/issues/1603
+  rm -rf %{_sharedstatedir}/dnf/history.sqlite-* &> /dev/null
+%endif
 
 %postun libs
 /sbin/ldconfig
@@ -150,13 +148,15 @@ rm -rf %{buildroot}
 %{_libdir}/libsqlite*.so
 %{_libdir}/pkgconfig/sqlite3.pc
 
-%files tcl
-%defattr(-,root,root,-)
-%{_mandir}/mann/*
-
 ################################################################################
 
 %changelog
+* Mon Sep 25 2023 Anton Novojilov <andy@essentialkaos.com> - 3.43.1-0
+- https://www.sqlite.org/releaselog/3_43_1.html
+
+* Mon Sep 25 2023 Anton Novojilov <andy@essentialkaos.com> - 3.43.0-0
+- https://www.sqlite.org/releaselog/3_43_0.html
+
 * Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 3.42.0-0
 - https://www.sqlite.org/releaselog/3_42_0.html
 
