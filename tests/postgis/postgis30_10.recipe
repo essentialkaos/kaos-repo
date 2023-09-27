@@ -1,24 +1,34 @@
 # Bibop recipe for PostGIS 3.0 for PostgreSQL 10
 # See more: https://kaos.sh/bibop
 
+################################################################################
+
 pkg postgresql10-server postgis30_10 postgis30_10-client postgis30_10-scripts postgis30_10-utils
 
-fast-finish yes
+require-root yes
+unsafe-actions yes
 
-var postgis_lib_version   3
-var postgis_major_version 3.0
-var postgis_version       3.0.4
-var postgres_version      10
-var pkg_ver               30_10
+var postgis_lib_version    3
+var postgis_major_version  3.0
+var postgis_version        3.0.9
+var postgres_version       10
+var pkg_ver                30_{postgres_version}
 
-var data_dir /usr/pgsql-{postgres_version}/share
-var lib_dir  /usr/pgsql-{postgres_version}/lib
-var bin_dir  /usr/pgsql-{postgres_version}/bin
+var postgres_service   postgresql-{postgres_version}
+var postgres_port      5432
+var postgres_data_dir  /var/lib/pgsql/{postgres_version}
+var postgres_pid       /var/run/postgresql{postgres_version}.pid
 
-var utils_dir /usr/share/postgis{pkg_ver}
+var data_dir  /usr/pgsql-{postgres_version}/share
+var lib_dir   /usr/pgsql-{postgres_version}/lib
+var bin_dir   /usr/pgsql-{postgres_version}/bin
 
-var contrib_dir   {data_dir}/contrib/postgis-{postgis_major_version}
-var extension_dir {data_dir}/extension
+var utils_dir  /usr/share/postgis{pkg_ver}
+
+var contrib_dir    {data_dir}/contrib/postgis-{postgis_major_version}
+var extension_dir  {data_dir}/extension
+
+################################################################################
 
 command "-" "Check libraries"
   exist {lib_dir}/address_standardizer-{postgis_lib_version}.so
@@ -32,8 +42,7 @@ command "-" "Check libraries"
   mode {lib_dir}/postgis_topology-{postgis_lib_version}.so 755
 
 command "-" "Check linking with GDAL library"
-  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.28
-  !lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.1
+  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.*
 
 command "-" "Check data directories"
   exist {contrib_dir}
@@ -44,36 +53,6 @@ command "-" "Check data directories"
   dir {extension_dir}
   mode {extension_dir} 755
 
-command "-" "Check SQL files"
-  exist {contrib_dir}/legacy.sql
-  exist {contrib_dir}/legacy_gist.sql
-  exist {contrib_dir}/legacy_minimal.sql
-  exist {contrib_dir}/postgis.sql
-  exist {contrib_dir}/postgis_comments.sql
-  exist {contrib_dir}/postgis_proc_set_search_path.sql
-  exist {contrib_dir}/postgis_restore.pl
-  exist {contrib_dir}/postgis_upgrade.sql
-  exist {contrib_dir}/raster_comments.sql
-  exist {contrib_dir}/rtpostgis.sql
-  exist {contrib_dir}/rtpostgis_legacy.sql
-  exist {contrib_dir}/rtpostgis_proc_set_search_path.sql
-  exist {contrib_dir}/rtpostgis_upgrade.sql
-  exist {contrib_dir}/sfcgal_comments.sql
-  exist {contrib_dir}/spatial_ref_sys.sql
-  exist {contrib_dir}/topology.sql
-  exist {contrib_dir}/topology_comments.sql
-  exist {contrib_dir}/topology_upgrade.sql
-  exist {contrib_dir}/uninstall_legacy.sql
-  exist {contrib_dir}/uninstall_postgis.sql
-  exist {contrib_dir}/uninstall_rtpostgis.sql
-  exist {contrib_dir}/uninstall_topology.sql
-
-  exist {extension_dir}/address_standardizer--{postgis_version}.sql
-  exist {extension_dir}/postgis--{postgis_version}.sql
-  exist {extension_dir}/postgis_raster--{postgis_version}.sql
-  exist {extension_dir}/postgis_tiger_geocoder--{postgis_version}.sql
-  exist {extension_dir}/postgis_topology--{postgis_version}.sql
-
 command "-" "Check client binaries"
   app pgsql2shp
   app raster2pgsql
@@ -83,32 +62,30 @@ command "-" "Check client binaries"
   link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
   link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
 
-command "-" "Check scripts"
-  exist {utils_dir}/create_extension_unpackage.pl
-  exist {utils_dir}/create_spatial_ref_sys_config_dump.pl
-  exist {utils_dir}/create_undef.pl
-  exist {utils_dir}/create_unpackaged.pl
-  exist {utils_dir}/postgis_proc_set_search_path.pl
-  exist {utils_dir}/postgis_proc_upgrade.pl
-  exist {utils_dir}/postgis_restore.pl
-  exist {utils_dir}/profile_intersects.pl
-  exist {utils_dir}/read_scripts_version.pl
-  exist {utils_dir}/repo_revision.pl
-  exist {utils_dir}/test_estimation.pl
-  exist {utils_dir}/test_geography_estimation.pl
-  exist {utils_dir}/test_geography_joinestimation.pl
-  exist {utils_dir}/test_joinestimation.pl
+################################################################################
 
-  mode {utils_dir}/create_spatial_ref_sys_config_dump.pl 755
-  mode {utils_dir}/create_undef.pl 755
-  mode {utils_dir}/create_unpackaged.pl 755
-  mode {utils_dir}/postgis_proc_set_search_path.pl 755
-  mode {utils_dir}/postgis_proc_upgrade.pl 755
-  mode {utils_dir}/postgis_restore.pl 755
-  mode {utils_dir}/profile_intersects.pl 755
-  mode {utils_dir}/read_scripts_version.pl 755
-  mode {utils_dir}/repo_revision.pl 755
-  mode {utils_dir}/test_estimation.pl 755
-  mode {utils_dir}/test_geography_estimation.pl 755
-  mode {utils_dir}/test_geography_joinestimation.pl 755
-  mode {utils_dir}/test_joinestimation.pl 755
+command "service {postgres_service} initdb" "Database initialization"
+  exit 0
+
+command "systemctl start {postgres_service}" "Start PostgreSQL server"
+  wait 1
+  wait-fs {postgres_pid}
+  service-works {postgres_service}
+  connect tcp :{postgres_port}
+
+command "postgres:{bin_dir}/psql -t -c 'CREATE EXTENSION postgis;'" "Create PostGIS extension"
+  exit 0
+
+command "postgres:{bin_dir}/psql -t -c 'SELECT PostGIS_Full_Version();'" "Check extension version"
+  exit 0
+  output-contains 'POSTGIS="{postgis_version} '
+
+command "systemctl stop {postgres_service}" "Stop PostgreSQL server"
+  wait 1
+  !wait-fs {postgres_pid}
+  !service-works {postgres_service}
+
+################################################################################
+
+command:teardown "-" "Data cleanup"
+  cleanup {postgres_data_dir}/data
