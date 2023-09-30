@@ -4,8 +4,9 @@
 
 ################################################################################
 
-%{!?utils:%define utils 1}
-%{!?raster:%define raster 1}
+%{!?utils:%global utils 1}
+%{!?raster:%global raster 1}
+%{!?llvm:%global llvm 1}
 
 ################################################################################
 
@@ -39,16 +40,17 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
-
-BuildRequires:   geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
+BuildRequires:   gcc-c++ geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:   sqlite >= 3.40 libgeotiff-devel libpng-devel libtiff-devel
+BuildRequires:   sqlite >= 3.42 libgeotiff-devel libpng-devel libtiff-devel
 
+%if %llvm
+%if 0%{?rhel} >= 8
+BuildRequires:   llvm-devel >= 6.0.0 clang-devel >= 6.0.0
+%endif
 %if 0%{?rhel} == 7
-BuildRequires:   devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel libstdc++-static
 BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
-%else
-BuildRequires:   gcc-c++ llvm-devel >= 6.0.0 clang-devel >= 6.0.0
+%endif
 %endif
 
 %if %raster
@@ -64,7 +66,7 @@ Requires:        gdal-libs >= 3
 Requires:        postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
 Requires:        %{fullname}_%{pg_ver}-client = %{version}-%{release}
 
-Requires(post):  %{_sbindir}/update-alternatives
+Requires(post):  chkconfig
 
 Conflicts:       %{realname}30 %{realname}31 %{realname}32 %{realname}33
 

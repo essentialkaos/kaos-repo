@@ -38,9 +38,10 @@ functions such as IsValid()
 ################################################################################
 
 %package devel
-Summary:           Development files for GEOS
-Group:             Development/Libraries
-Requires:          %{name} = %{version}-%{release}
+Summary:  Development files for GEOS
+Group:    Development/Libraries
+
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 GEOS (Geometry Engine - Open Source) is a C++ port of the Java Topology
@@ -86,10 +87,10 @@ popd
 %endif
 
 %post
-/sbin/ldconfig
+%{_sbindir}/ldconfig
 
 %postun
-/sbin/ldconfig
+%{_sbindir}/ldconfig
 
 %clean
 rm -rf %{buildroot}

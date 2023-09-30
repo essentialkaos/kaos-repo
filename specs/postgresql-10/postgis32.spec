@@ -22,52 +22,45 @@
 
 ################################################################################
 
-Summary:           Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
-Name:              %{fullname}_%{pg_ver}
-Version:           3.2.5
-Release:           0%{?dist}
-License:           GPLv2+
-Group:             Applications/Databases
-URL:               https://www.postgis.net
+Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
+Name:            %{fullname}_%{pg_ver}
+Version:         3.2.5
+Release:         0%{?dist}
+License:         GPLv2+
+Group:           Applications/Databases
+URL:             https://www.postgis.net
 
-Source0:           https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
-Source1:           filter-requires-perl-Pg.sh
+Source0:         https://download.osgeo.org/%{realname}/source/%{realname}-%{version}.tar.gz
+Source1:         filter-requires-perl-Pg.sh
 
-Source100:         checksum.sha512
+Source100:       checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     postgresql%{pg_ver}-devel = %{pg_low_fullver}
-BuildRequires:     postgresql%{pg_ver}-libs = %{pg_low_fullver}
-
-BuildRequires:     geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
-BuildRequires:     proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:     sqlite >= 3.40 libgeotiff-devel libpng-devel libtiff-devel
-
-%if 0%{?rhel} == 7
-BuildRequires:     devtoolset-7-gcc-c++ devtoolset-7-libstdc++-devel libstdc++-static
-%else
-BuildRequires:     gcc-c++
-%endif
+BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
+BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
+BuildRequires:   gcc-c++ geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
+BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
+BuildRequires:   sqlite >= 3.42 libgeotiff-devel libpng-devel libtiff-devel
 
 %if %raster
 %if 0%{?rhel} == 7
-BuildRequires:     gdal3-devel
-Requires:          gdal3-libs
+BuildRequires:   gdal3-devel
+Requires:        gdal3-libs
 %else
-BuildRequires:     gdal-devel >= 3
-Requires:          gdal-libs >= 3
+BuildRequires:   gdal-devel >= 3
+Requires:        gdal-libs >= 3
 %endif
 %endif
 
-Requires:          postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
-Requires:          %{fullname}_%{pg_ver}-client = %{version}-%{release}
+Requires:        postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
+Requires:        %{fullname}_%{pg_ver}-client = %{version}-%{release}
 
-Requires(post):    %{_sbindir}/update-alternatives
+Requires(post):  chkconfig
 
-Conflicts:         %{realname}30 %{realname}31 %{realname}33 %{realname}34
+Conflicts:       %{realname}30 %{realname}31 %{realname}33 %{realname}34
 
-Provides:          %{realname} = %{version}-%{release}
+Provides:        %{realname} = %{version}-%{release}
 
 ################################################################################
 
@@ -159,9 +152,7 @@ rm -rf %{buildroot}%{pg_dir}/doc
 
 mkdir -p %{buildroot}%{pg_dir}/bin/%{pkgname}
 
-chrpath --delete %{buildroot}%{pg_dir}/bin/pgsql2shp
-chrpath --delete %{buildroot}%{pg_dir}/bin/shp2pgsql
-chrpath --delete %{buildroot}%{pg_dir}/bin/raster2pgsql
+chrpath --delete --keepgoing %{buildroot}%{pg_dir}/bin/* || :
 
 mv %{buildroot}%{pg_dir}/bin/pgsql2shp \
    %{buildroot}%{pg_dir}/bin/shp2pgsql \

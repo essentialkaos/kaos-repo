@@ -2,42 +2,27 @@
 
 %{!?_without_check: %define _with_check 1}
 
-# Do out of tree builds
-%global _configure ../configure
-
-# Common configure options
-%global configure_opts \\\
-           --enable-shared \\\
-           --enable-netcdf-4 \\\
-           --enable-dap \\\
-           --enable-extra-example-tests \\\
-           CPPFLAGS=-I%{_includedir}/hdf \\\
-           LIBS="-ldf -ljpeg" \\\
-           --enable-hdf4 \\\
-           --disable-dap-remote-tests \\\
-%{nil}
-
 ################################################################################
 
-Summary:            Libraries for the Unidata network Common Data Form
-Name:               netcdf
-Version:            4.7.3
-Release:            0%{?dist}
-License:            NetCDF
-Group:              Applications/Engineering
-URL:                https://www.unidata.ucar.edu/downloads/netcdf/
+Summary:        Libraries for the Unidata network Common Data Form
+Name:           netcdf
+Version:        4.9.2
+Release:        0%{?dist}
+License:        NetCDF
+Group:          Applications/Engineering
+URL:            https://www.unidata.ucar.edu/software/netcdf/
 
-Source0:            https://www.unidata.ucar.edu/downloads/%{name}/ftp/%{name}-c-%{version}.tar.gz
+Source0:        https://downloads.unidata.ucar.edu/%{name}-c/%{version}/%{name}-c-%{version}.tar.gz
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc chrpath doxygen hdf-static gawk
-BuildRequires:      libcurl-devel m4 zlib-devel openssh-clients
-BuildRequires:      hdf5-devel >= 1.10
+BuildRequires:  make gcc chrpath doxygen gawk libxml2-devel
+BuildRequires:  libcurl-devel m4 zlib-devel openssh-clients libtirpc-devel
+BuildRequires:  hdf-static hdf5-devel >= 1.10
 
-Requires:           hdf5 >= 1.10
+Requires:       hdf5 >= 1.10
 
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -54,11 +39,11 @@ Program Center in Boulder, Colorado.
 ################################################################################
 
 %package devel
-Summary:            Development files for netcdf
-Group:              Development/Libraries
+Summary:  Development files for netcdf
+Group:    Development/Libraries
 
-Requires:           %{name} = %{version}-%{release}
-Requires:           pkgconfig hdf5-devel libcurl-devel
+Requires:  %{name} = %{version}-%{release}
+Requires:  pkgconfig hdf5-devel libcurl-devel
 
 %description devel
 This package contains the netCDF C header files, shared devel libs, and
@@ -67,10 +52,10 @@ man pages.
 ################################################################################
 
 %package static
-Summary:            Static libs for netcdf
-Group:              Development/Libraries
+Summary:  Static libs for netcdf
+Group:    Development/Libraries
 
-Requires:           %{name} = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
 
 %description static
 This package contains the netCDF C static libs.
@@ -81,13 +66,22 @@ This package contains the netCDF C static libs.
 %setup -qn %{name}-c-%{version}
 
 %build
-export LDFLAGS="-Wl,-z,relro -L%{_libdir}/hdf"
+export LDFLAGS="%{__global_ldflags} -L%{_libdir}/hdf"
+export CFLAGS="%{optflags} -fno-strict-aliasing"
 
-# Serial build
 mkdir build
 pushd build
   ln -s ../configure .
-  %configure %{configure_opts}
+
+  %configure --enable-shared \
+             --enable-dap \
+             --enable-netcdf-4 \
+             --enable-hdf4 \
+             --disable-dap-remote-tests \
+             --enable-extra-example-tests \
+             CPPFLAGS="-I%{_includedir}/hdf -DH5_USE_110_API" \
+             LIBS="-ltirpc"
+
   %{__make} %{?_smp_mflags}
 popd
 
@@ -96,7 +90,7 @@ rm -rf %{buildroot}
 
 %{make_install} -C build
 
-chrpath --delete %{buildroot}%{_bindir}/nc{copy,dump,gen,gen3}
+chrpath --delete --keepgoing %{buildroot}%{_bindir}/* || :
 
 rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{_infodir}/dir
@@ -110,20 +104,22 @@ rm -f %{buildroot}%{_infodir}/dir
 rm -rf %{buildroot}
 
 %post
-/sbin/ldconfig
+%{_sbindir}/ldconfig
 
 %postun
-/sbin/ldconfig
+%{_sbindir}/ldconfig
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc COPYRIGHT README.md RELEASE_NOTES.md
+%{_bindir}/nc4print
 %{_bindir}/nccopy
 %{_bindir}/ncdump
 %{_bindir}/ncgen
 %{_bindir}/ncgen3
+%{_bindir}/ocprint
 %{_libdir}/*.so.*
 %{_mandir}/man1/*
 
@@ -144,6 +140,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 4.9.2-0
+- https://github.com/Unidata/netcdf-c/releases/tag/v4.9.2
+
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 4.7.3-0
 - Updated to the latest stable release
 

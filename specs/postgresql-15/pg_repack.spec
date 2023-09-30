@@ -15,36 +15,36 @@
 
 ################################################################################
 
-Summary:        Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
-Name:           %{realname}%{pg_ver}
-Version:        1.4.8
-Release:        0%{?dist}
-License:        BSD
-Group:          Applications/Databases
-URL:            https://pgxn.org/dist/pg_repack/
+Summary:         Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
+Name:            %{realname}%{pg_ver}
+Version:         1.4.8
+Release:         0%{?dist}
+License:         BSD
+Group:           Applications/Databases
+URL:             https://pgxn.org/dist/pg_repack/
 
-Source0:        https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
+Source0:         https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc openssl-devel readline-devel zlib-devel libzstd-devel
-BuildRequires:  postgresql%{pg_ver}-devel = %{pg_fullver}
-BuildRequires:  postgresql%{pg_ver}-libs = %{pg_fullver}
+BuildRequires:   make gcc openssl-devel readline-devel zlib-devel libzstd-devel
+BuildRequires:   postgresql%{pg_ver}-devel = %{pg_fullver}
+BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 
 %if %llvm
 %if 0%{?rhel} >= 8
-BuildRequires:  llvm-devel >= 6.0.0 clang-devel >= 6.0.0
+BuildRequires:   llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 %if 0%{?rhel} == 7
-BuildRequires:  llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
+BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
 
-Requires:       postgresql%{pg_ver}
+Requires:        postgresql%{pg_ver}
 
-Requires(post):  %{_sbindir}/update-alternatives
+Requires(post):  chkconfig
 
-Provides:       %{name} = %{version}-%{release}
+Provides:        %{name} = %{version}-%{release}
 
 ################################################################################
 

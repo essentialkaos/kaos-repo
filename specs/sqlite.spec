@@ -5,8 +5,8 @@
 ################################################################################
 
 %define ver_major     3
-%define ver_minor     43
-%define ver_patch     1
+%define ver_minor     41
+%define ver_patch     2
 %define release_year  2023
 %define tarversion    %{ver_major}%{ver_minor}0%{ver_patch}00
 
@@ -26,7 +26,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc glibc-devel readline-devel
+BuildRequires:  make gcc glibc-devel readline-devel zlib-devel
 
 Requires:       %{name}-libs = %{version}
 
@@ -98,8 +98,7 @@ export CFLAGS="%{optflags} %{build_ldflags} \
                -DSQLITE_ENABLE_DBPAGE_VTAB \
                -Wall -fno-strict-aliasing"
 
-%configure --disable-static \
-           --enable-rtree \
+%configure --enable-rtree \
            --enable-fts3 \
            --enable-fts4 \
            --enable-fts5 \
@@ -113,15 +112,10 @@ rm -rf %{buildroot}
 %{make_install}
 
 rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/*.a
 
 %post libs
 /sbin/ldconfig
-
-%if 0%{?rhel} == 9
-  # Remove WAL files for dnf history plugin due to segfault on EL 9
-  # https://github.com/rpm-software-management/libdnf/issues/1603
-  rm -rf %{_sharedstatedir}/dnf/history.sqlite-* &> /dev/null
-%endif
 
 %postun libs
 /sbin/ldconfig
@@ -151,14 +145,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Mon Sep 25 2023 Anton Novojilov <andy@essentialkaos.com> - 3.43.1-0
-- https://www.sqlite.org/releaselog/3_43_1.html
+* Sat Sep 30 2023 Anton Novojilov <andy@essentialkaos.com> - 3.41.2-0
+- https://www.sqlite.org/releaselog/3_41_2.html
 
-* Mon Sep 25 2023 Anton Novojilov <andy@essentialkaos.com> - 3.43.0-0
-- https://www.sqlite.org/releaselog/3_43_0.html
-
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 3.42.0-0
-- https://www.sqlite.org/releaselog/3_42_0.html
+* Sat Sep 30 2023 Anton Novojilov <andy@essentialkaos.com> - 3.40.1-0
+- https://www.sqlite.org/releaselog/3_40_1.html
 
 * Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 3.40.0-0
 - https://www.sqlite.org/releaselog/3_40_0.html

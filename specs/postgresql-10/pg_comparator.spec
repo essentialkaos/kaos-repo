@@ -32,7 +32,7 @@ BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 Requires:        perl(Getopt::Long), perl(Time::HiRes)
 Requires:        postgresql%{pg_ver}
 
-Requires(post):  %{_sbindir}/update-alternatives
+Requires(post):  chkconfig
 
 Provides:        %{name} = %{version}-%{release}
 

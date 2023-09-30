@@ -58,8 +58,8 @@ Security is our first priority. We can't keep an outdated package in our reposit
 
 | EL version | Updates     | Repository removal |
 |------------|-------------|--------------------|
-| `7.x`      | 1 Sep 2023  | 31 Dec 2023        |
-| `8.x`      | 1 Sep 2024  | 31 Dec 2024        |
+| `7.x`      | 1 Jun 2024  | 31 Dec 2024        |
+| `8.x`      | 1 Jun 2025  | 31 Dec 2025        |
 | `9.x`      | 1 Sep 2026  | 31 Dec 2026        |
 
 ### [_perfecto_](https://kaos.sh/perfecto) and [bibop](https://kaos.sh/bibop) check status

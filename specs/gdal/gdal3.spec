@@ -4,6 +4,7 @@
 
 ################################################################################
 
+%global sqlite_min_ver %(rpm -q --quiet sqlite-devel && rpm -q --qf '%{VERSION}' sqlite-devel || echo "3")
 %global libcurl_min_ver %(rpm -q --quiet libcurl-devel && rpm -q --qf '%{VERSION}' libcurl-devel || echo "7")
 
 ################################################################################
@@ -46,12 +47,15 @@ BuildRequires:  cmake swig
 BuildRequires:  gcc-c++ bison expat-devel freexl-devel geos-devel hdf-devel
 BuildRequires:  hdf5-devel libgeotiff-devel libjpeg-devel libpng-devel
 BuildRequires:  libtiff-devel libzstd-devel libwebp-devel netcdf-devel
-BuildRequires:  openexr-devel openjpeg2-devel proj-devel sqlite-devel
+BuildRequires:  openexr-devel openjpeg2-devel proj-devel
 BuildRequires:  xerces-c-devel xz-devel zlib-devel giflib-devel
 BuildRequires:  postgresql%{pg_short_ver}-devel
+
+BuildRequires:  sqlite-devel >= %{sqlite_min_ver}
 BuildRequires:  libcurl-devel >= %{libcurl_min_ver}
 
 Requires:       libcurl >= %{libcurl_min_ver}
+Requires:       sqlite-libs >= %{sqlite_min_ver}
 
 Provides:       %{name} = %{version}-%{release}
 

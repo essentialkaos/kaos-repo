@@ -42,7 +42,7 @@ BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 Requires:        postgresql%{pg_ver}
 
-Requires(post):  %{_sbindir}/update-alternatives
+Requires(post):  chkconfig
 
 Provides:        %{name} = %{version}-%{release}
 

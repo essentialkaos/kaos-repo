@@ -134,15 +134,12 @@ BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 
 BuildRequires:     systemd systemd-devel
 
-Requires:          %{_sbindir}/ldconfig initscripts
+Requires:          glibc initscripts
 Requires:          %{name}-libs = %{version}
 
-Requires(post):    systemd
+Requires(post):    systemd chkconfig
 Requires(preun):   systemd
-Requires(postun):  systemd
-
-Requires(post):    %{_sbindir}/update-alternatives
-Requires(postun):  %{_sbindir}/update-alternatives
+Requires(postun):  systemd chkconfig
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{version}-%{release}

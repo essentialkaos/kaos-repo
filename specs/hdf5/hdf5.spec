@@ -4,38 +4,26 @@
 
 ################################################################################
 
-%global _configure ../configure
+Summary:        A general purpose library and file format for storing scientific data
+Name:           hdf5
+Version:        1.10.10
+Release:        0%{?dist}
+License:        BSD
+Group:          System Environment/Libraries
+URL:            https://www.hdfgroup.org/HDF5/
 
-%global configure_opts \\\
-  --disable-silent-rules \\\
-  --enable-fortran \\\
-  --enable-fortran2003 \\\
-  --enable-hl \\\
-  --enable-shared \\\
-%{nil}
+Source:         https://support.hdfgroup.org/ftp/HDF5/releases/%{name}-1.10/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
+Source1:        h5comp
 
-################################################################################
+Source100:      checksum.sha512
 
-Summary:              A general purpose library and file format for storing scientific data
-Name:                 hdf5
-Version:              1.10.5
-Release:              0%{?dist}
-License:              BSD
-Group:                System Environment/Libraries
-URL:                  https://www.hdfgroup.org/HDF5/
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source:               https://support.hdfgroup.org/ftp/HDF5/releases/%{name}-1.10/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
-Source1:              h5comp
+BuildRequires:  make gcc gcc-c++ automake libtool openssh-clients
+BuildRequires:  krb5-devel openssl-devel zlib-devel gcc-gfortran time
+BuildRequires:  chrpath
 
-Source100:            checksum.sha512
-
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:        make gcc gcc-c++ automake libtool openssh-clients
-BuildRequires:        krb5-devel openssl-devel zlib-devel gcc-gfortran time
-BuildRequires:        chrpath
-
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -51,11 +39,11 @@ grids. You can also mix and match them in HDF5 files according to your needs.
 ################################################################################
 
 %package devel
-Summary:            HDF5 development files
-Group:              Development/Libraries
+Summary:   HDF5 development files
+Group:     Development/Libraries
 
-Requires:           %{name} = %{version}-%{release}
-Requires:           zlib-devel
+Requires:  %{name} = %{version}-%{release}
+Requires:  zlib-devel
 
 %description devel
 HDF5 development headers and libraries.
@@ -63,10 +51,10 @@ HDF5 development headers and libraries.
 ################################################################################
 
 %package static
-Summary:            HDF5 static libraries
-Group:              Development/Libraries
+Summary:   HDF5 static libraries
+Group:     Development/Libraries
 
-Requires:           %{name}-devel = %{version}-%{release}
+Requires:  %{name}-devel = %{version}-%{release}
 
 %description static
 HDF5 static libraries.
@@ -88,7 +76,13 @@ export CFLAGS="${RPM_OPT_FLAGS/O2/O0}"
 mkdir build
 pushd build
   ln -s ../configure .
-  %configure %{configure_opts} --enable-cxx
+
+  %configure --disable-silent-rules \
+             --enable-cxx \
+             --enable-fortran \
+             --enable-hl \
+             --enable-shared
+
   %{__make} %{?_smp_mflags}
 popd
 
@@ -123,43 +117,24 @@ for x in h5c++ h5cc h5fc ; do
 done
 %endif
 
-chrpath --delete %{buildroot}%{_bindir}/gif2h5
-chrpath --delete %{buildroot}%{_bindir}/h52gif
-chrpath --delete %{buildroot}%{_bindir}/h5clear
-chrpath --delete %{buildroot}%{_bindir}/h5copy
-chrpath --delete %{buildroot}%{_bindir}/h5debug
-chrpath --delete %{buildroot}%{_bindir}/h5diff
-chrpath --delete %{buildroot}%{_bindir}/h5dump
-chrpath --delete %{buildroot}%{_bindir}/h5format_convert
-chrpath --delete %{buildroot}%{_bindir}/h5import
-chrpath --delete %{buildroot}%{_bindir}/h5jam
-chrpath --delete %{buildroot}%{_bindir}/h5ls
-chrpath --delete %{buildroot}%{_bindir}/h5mkgrp
-chrpath --delete %{buildroot}%{_bindir}/h5perf_serial
-chrpath --delete %{buildroot}%{_bindir}/h5repack
-chrpath --delete %{buildroot}%{_bindir}/h5repart
-chrpath --delete %{buildroot}%{_bindir}/h5stat
-chrpath --delete %{buildroot}%{_bindir}/h5unjam
-chrpath --delete %{buildroot}%{_bindir}/h5watch
+chrpath --delete $(find %{buildroot}%{_bindir} -type f -exec grep -IL . "{}" \;)
 chrpath --delete %{buildroot}%{_libdir}/*.so.*
 
 %clean
 rm -rf %{buildroot}
 
 %post
-/sbin/ldconfig
+%{_sbindir}/ldconfig
 
 %postun
-/sbin/ldconfig
+%{_sbindir}/ldconfig
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING MANIFEST README.txt release_docs/RELEASE.txt
+%doc COPYING README.md release_docs/RELEASE.txt
 %doc release_docs/HISTORY*.txt
-%{_bindir}/gif2h5
-%{_bindir}/h52gif
 %{_bindir}/h5clear
 %{_bindir}/h5copy
 %{_bindir}/h5debug
@@ -197,6 +172,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 1.10.10-0
+- https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.10/src/hdf5-1.10.10-RELEASE.txt
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.10.5-0
 - Updated to the latest stable release
 

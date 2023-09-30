@@ -4,24 +4,24 @@
 
 ################################################################################
 
-Summary:           GeoTIFF format library
-Name:              libgeotiff
-Version:           1.7.1
-Release:           0%{?dist}
-License:           MIT
-Group:             System Environment/Libraries
-URL:               https://trac.osgeo.org/geotiff/
+Summary:        GeoTIFF format library
+Name:           libgeotiff
+Version:        1.7.1
+Release:        0%{?dist}
+License:        MIT
+Group:          System Environment/Libraries
+URL:            https://trac.osgeo.org/geotiff/
 
-Source0:           https://download.osgeo.org/geotiff/%{name}/%{name}-%{version}.tar.gz
+Source0:        https://download.osgeo.org/geotiff/%{name}/%{name}-%{version}.tar.gz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc gcc-c++ doxygen chrpath
-BuildRequires:     libtiff-devel libjpeg-devel zlib-devel proj-devel >= 6
+BuildRequires:  make gcc gcc-c++ doxygen chrpath
+BuildRequires:  libtiff-devel libjpeg-turbo-devel zlib-devel proj-devel >= 6
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -34,11 +34,11 @@ raster imagery.
 ################################################################################
 
 %package devel
-Summary:           Development library and header for the GeoTIFF file format library
-Group:             Development/Libraries
+Summary:  Development library and header for the GeoTIFF file format library
+Group:    Development/Libraries
 
-Requires:          pkgconfig libtiff-devel proj-devel
-Requires:          %{name} = %{version}-%{release}
+Requires:  pkgconfig libtiff-devel proj-devel
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 The GeoTIFF library provides support for development of geotiff image format.
@@ -51,7 +51,6 @@ The GeoTIFF library provides support for development of geotiff image format.
 %setup -qn %{name}-%{version}
 
 %build
-
 # Disable -g flag removal
 sed -i 's| \| sed \"s\/-g \/\/\"||g' configure
 # Use gcc -shared instead of ld -shared to build with -fstack-protector
@@ -96,9 +95,7 @@ install -pm 644 %{name}.pc %{buildroot}%{_libdir}/pkgconfig/
 rm -rf %{buildroot}%{_libdir}/*.a
 rm -rf %{buildroot}%{_libdir}/*.la
 
-chrpath --delete %{buildroot}%{_bindir}/applygeo
-chrpath --delete %{buildroot}%{_bindir}/geotifcp
-chrpath --delete %{buildroot}%{_bindir}/listgeo
+chrpath --delete --keepgoing %{buildroot}%{_bindir}/* || :
 
 pushd docs
   doxygen .
