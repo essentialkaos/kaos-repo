@@ -22,51 +22,9 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _opt              /opt
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
-%define __groupadd        %{_sbindir}/groupadd
-%define __useradd         %{_sbindir}/useradd
-
-################################################################################
-
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
-Version:        0.20.1
+Version:        1.0.0
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Development/Tools
@@ -154,6 +112,12 @@ sed -i '/unset(PYTHON_LIBRARY/d' src/python/CMakeLists.txt
 sed -i '/unset(PYTHON_INCLUDE_DIR/d' src/python/CMakeLists.txt
 sed -i 's/3 EXACT/3/g' src/python/CMakeLists.txt
 
+%if 0%{?rhel} == 9
+# Fix wrong check for GLib 2.70
+# https://github.com/rpm-software-management/createrepo_c/pull/342#issuecomment-1621547652
+sed -i 's/g_pattern_spec_match/g_pattern_match/' src/createrepo_c.c
+%endif
+
 cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir} \
       -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \
@@ -180,10 +144,10 @@ ln -sf %{_bindir}/modifyrepo_c %{buildroot}%{_bindir}/modifyrepo
 ln -sf %{_bindir}/sqliterepo_c %{buildroot}%{_bindir}/sqliterepo
 
 %post -n %{name}-libs
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun -n %{name}-libs
-%{__ldconfig}
+/sbin/ldconfig
 
 %clean
 rm -rf %{buildroot}
@@ -224,6 +188,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 01 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/0.20.1...1.0.0
+
 * Mon Sep 19 2022 Anton Novojilov <andy@essentialkaos.com> - 0.20.1-0
 - https://github.com/rpm-software-management/createrepo_c/compare/0.20.0...0.20.1
 
