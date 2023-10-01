@@ -41,6 +41,17 @@ Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
+%package utils
+Summary:  Optional utilities and scripts for pgbouncer
+Group:    Development/Tools
+
+Requires:  python3 python3-psycopg2
+
+%description utils
+Optional utilities and scripts for pgbouncer.
+
+################################################################################
+
 %description
 pgbouncer is a lightweight connection pooler for PostgreSQL. pgbouncer uses
 libevent for low-level socket handling.
@@ -76,17 +87,18 @@ install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
 install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
 install -dm 755 %{buildroot}%{_initrddir}
 
-install -pm 644 etc/pgbouncer.ini %{buildroot}%{_sysconfdir}/%{name}
+install -pm 600 etc/pgbouncer.ini %{buildroot}%{_sysconfdir}/%{name}
 install -pm 700 etc/mkauth.py %{buildroot}%{_sysconfdir}/%{name}/
+
+touch %{buildroot}%{_sysconfdir}/%{name}/userlist.txt
+chmod 600 %{buildroot}%{_sysconfdir}/%{name}/userlist.txt
 
 install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
 install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
-%if 0%{?rhel} >= 7
 install -dm 755 %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/%{name}.service
-%endif
 
 rm -f %{buildroot}%{_docdir}/%{name}/pgbouncer.ini
 rm -f %{buildroot}%{_docdir}/%{name}/NEWS
@@ -123,8 +135,9 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYRIGHT NEWS.md
-%attr(-,%{username},%{groupname}) %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/%{name}.ini
+%attr(-,%{username},%{groupname}) %dir %{_sysconfdir}/%{name}
+%attr(600,%{username},%{groupname}) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.ini
+%attr(600,%{username},%{groupname}) %config(noreplace) %{_sysconfdir}/%{name}/userlist.txt
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %{_bindir}/*
@@ -132,8 +145,12 @@ fi
 %{_unitdir}/%{name}.service
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man5/%{name}.*
-%{_sysconfdir}/%{name}/mkauth.py*
 %{_docdir}/%{name}/*
+
+%files utils
+%defattr(-,root,root,-)
+%{_sysconfdir}/%{name}/mkauth.py
+%exclude %{_sysconfdir}/%{name}/mkauth.py?
 
 ################################################################################
 

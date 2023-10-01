@@ -49,8 +49,8 @@ application that supports the Qt database plug-ins.
 ################################################################################
 
 %package libs
-Group:    Development/Libraries
 Summary:  Shared library for SQLite
+Group:    Development/Libraries
 
 %if 0%{?rhel} == 7
 Requires:  %{name} = %{version}
@@ -62,8 +62,8 @@ This package contains the shared library for SQLite.
 ################################################################################
 
 %package devel
-Group:     Development/Libraries
 Summary:   Embeddable SQL Database Engine
+Group:     Development/Libraries
 
 Requires:  %{name}-libs = %{version}
 Requires:  glibc-devel
