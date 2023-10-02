@@ -42,7 +42,7 @@ BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
 BuildRequires:   gcc-c++ geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:   sqlite >= 3.42 libgeotiff-devel libpng-devel libtiff-devel
+BuildRequires:   sqlite-devel libgeotiff-devel libpng-devel libtiff-devel
 
 %if %llvm
 %if 0%{?rhel} >= 8

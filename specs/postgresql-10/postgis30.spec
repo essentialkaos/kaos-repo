@@ -41,7 +41,7 @@ BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
 BuildRequires:   gcc-c++ geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
-BuildRequires:   sqlite >= 3.42 libgeotiff-devel libpng-devel libtiff-devel
+BuildRequires:   sqlite-devel libgeotiff-devel libpng-devel libtiff-devel
 
 %if %raster
 %if 0%{?rhel} == 7
@@ -120,10 +120,6 @@ The postgis-utils package provides the utilities for PostGIS.
 # We need the below for GDAL
 export LD_LIBRARY_PATH=%{pg_dir}/lib
 export LIBGDAL_CFLAGS=""
-
-%if 0%{?rhel} == 7
-export PATH="/opt/rh/devtoolset-7/root/usr/bin:$PATH"
-%endif
 
 %configure \
            --with-pgconfig=%{pg_dir}/bin/pg_config \
