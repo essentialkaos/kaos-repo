@@ -3,7 +3,7 @@
 
 pkg erlang24
 
-var libressl_ver 3.7.3
+var libressl_ver 3.8.1
 
 var epmd_service epmd
 var epmd_port    4369
