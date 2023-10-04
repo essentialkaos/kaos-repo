@@ -12,7 +12,7 @@
 
 Summary:        Improved colored diff
 Name:           icdiff
-Version:        2.0.5
+Version:        2.0.7
 Release:        0%{?dist}
 License:        Python 2.6.2
 Group:          Development/Tools
@@ -69,9 +69,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.0.7-0
+- https://github.com/jeffkaufman/icdiff/blob/release-2.0.7/ChangeLog
+
 * Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 2.0.5-0
-- Set process exit code to indicate differences
-- Support -P/--permissions option
+- https://github.com/jeffkaufman/icdiff/blob/release-2.0.5/ChangeLog
 
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.5-0
 - Error handling: unknown encoding
