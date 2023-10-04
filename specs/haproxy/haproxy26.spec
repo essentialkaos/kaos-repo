@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.6
 %define pcre_ver      10.42
-%define openssl_ver   3.0.9
+%define openssl_ver   3.0.11
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.14
+Version:        2.6.15
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -231,6 +231,83 @@ fi
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.6.15-0
+- BUG/MINOR: quic: Wrong encryption level flags checking
+- BUG/MINOR: server: inherit from netns in srv_settings_cpy()
+- BUG/MINOR: namespace: missing free in netns_sig_stop()
+- BUG/MINOR: quic: Missing initialization (packet number space probing)
+- BUG/MEDIUM: mworker: increase maxsock with each new worker
+- BUG/MINOR: quic: ticks comparison without ticks API use
+- DOC: Add tune.h2.max-frame-size option to table of contents
+- REGTESTS: h1_host_normalization : Add a barrier to not mix up log messages
+- BUG/MINOR: mworker: leak of a socketpair during startup failure
+- BUG/MEDIUM: mux-h2: make sure control frames do not refresh the idle timeout
+- BUG/MINOR: mux-h2: refresh the idle_timer when the mux is empty
+- BUG/MEDIUM: quic: error checking buffer large enought to receive the retry tag
+- BUG/MINOR: config: fix stick table duplicate name check
+- BUG/MINOR: quic: Missing random bits in Retry packet header
+- BUG/MINOR: quic: Wrong Retry paquet version field endianess
+- BUG/MINOR: quic: Wrong endianess for version field in Retry token
+- IMPORT: slz: implement a synchronous flush() operation
+- MINOR: compression/slz: add support for a pure flush of pending bytes
+- BUILD: debug: avoid a build warning related to epoll_wait() in debug code
+- MINOR: quic: Move QUIC encryption level structure definition
+- MINOR: quic: Move packet number space related functions
+- MINOR: quic: Reduce the maximum length of TLS secrets
+- CLEANUP: quic: Remove server specific about Initial packet number space
+- BUG/MINOR: tcp_sample: bc_{dst,src} return IP not INT
+- BUG/MINOR: cache: A 'max-age=0' cache-control directive can be overriden
+  by a s-maxage
+- BUG/MEDIUM: sink: invalid server list in sink_new_from_logsrv()
+- BUG/MINOR: sink: missing sft free in sink_deinit()
+- BUG/MINOR: ring: size warning incorrectly reported as fatal error
+- BUG/MINOR: ring: maxlen warning reported as alert
+- BUG/MINOR: log: LF upsets maxlen for UDP targets
+- MINOR: sink/api: pass explicit maxlen parameter to sink_write()
+- BUG/MEDIUM: log: improper use of logsrv->maxlen for buffer targets
+- BUG/MINOR: log: fix missing name error message in cfg_parse_log_forward()
+- BUG/MINOR: log: fix multiple error paths in cfg_parse_log_forward()
+- BUG/MINOR: log: free errmsg on error in cfg_parse_log_forward()
+- BUG/MINOR: sink: invalid sft free in sink_deinit()
+- BUG/MINOR: sink: fix errors handling in cfg_post_parse_ring()
+- BUG/MINOR: sink/log: properly deinit srv in sink_new_from_logsrv()
+- BUG/MINOR: config: Remove final '\n' in error messages
+- BUG/MEDIUM: quic: token IV was not computed using a strong secret
+- BUG/MINOR: quic: retry token remove one useless intermediate expand
+- BUG/MEDIUM: quic: missing check of dcid for init pkt including a token
+- BUG/MEDIUM: quic: timestamp shared in token was using internal time clock
+- BUG/MINOR: hlua: hlua_yieldk ctx argument should support pointers
+- DOC: config: Fix fc_src description to state the source address is returned
+- BUG/MINOR: sample: Fix wrong overflow detection in add/sub conveters
+- BUG/MINOR: http: Return the right reason for 302
+- CI: explicitely highlight VTest result section if there's something
+- BUILD: quic: fix warning during compilation using gcc-6.5
+- BUG/MINOR: hlua: add check for lua_newstate
+- BUG/MINOR: h1-htx: Return the right reason for 302 FCGI responses
+- BUG/MINOR: quic: Missing parentheses around PTO probe variable.
+- BUG/MEDIUM: listener: Acquire proxy's lock in relax_listener() if necessary
+- MINOR: quic: Make ->set_encryption_secrets() be callable two times
+- MINOR: quic: Useless call to SSL_CTX_set_quic_method()
+- BUG/MEDIUM: h3: Properly report a C-L header was found to the HTX start-line
+- DOC: configuration: describe Td in Timing events
+- BUG/MINOR: chunk: fix chunk_appendf() to not write a zero if buffer is full
+- BUG/MEDIUM: h3: Be sure to handle fin bit on the last DATA frame
+- BUG/MAJOR: http-ana: Get a fresh trash buffer for each header value
+  replacement
+- REORG: http: move has_forbidden_char() from h2.c to http.h
+- BUG/MAJOR: h3: reject header values containing invalid chars
+- BUG/MAJOR: http: reject any empty content-length header value
+- MINOR: ist: add new function ist_find_range() to find a character range
+- MINOR: http: add new function http_path_has_forbidden_char()
+- MINOR: h2: pass accept-invalid-http-request down the request parser
+- REGTESTS: http-rules: add accept-invalid-http-request for normalize-uri tests
+- BUG/MINOR: h1: do not accept '#' as part of the URI component
+- BUG/MINOR: h2: reject more chars from the :path pseudo header
+- BUG/MINOR: h3: reject more chars from the :path pseudo header
+- REGTESTS: http-rules: verify that we block '#' by default for normalize-uri
+- DOC: clarify the handling of URL fragments in requests
+- BUG/MINOR: http: skip leading zeroes in content-length values
+
 * Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 2.6.14-0
 - BUG/MINOR: fd: always remove late updates when freeing fd_updt[]
 - MINOR: ssl: ssl_sock_load_cert_chain() display error strings

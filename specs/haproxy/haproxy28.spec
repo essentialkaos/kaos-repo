@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.6
 %define pcre_ver      10.42
-%define openssl_ver   3.1.1
+%define openssl_ver   3.1.3
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.1
+Version:        2.8.3
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -231,6 +231,137 @@ fi
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.8.3-0
+- CI: do not use "groupinstall" for Fedora Rawhide builds
+- CI: get rid of travis-ci wrapper for Coverity scan
+- BUG/MEDIUM: quic: fix tasklet_wakeup loop on connection closing
+- BUG/MINOR: hlua: fix invalid use of lua_pop on error paths
+- DEV: flags/show-sess-to-flags: properly decode fd.state
+- BUG/MINOR: stktable: allow sc-set-gpt(0) from tcp-request connection
+- BUG/MINOR: stktable: allow sc-add-gpc from tcp-request connection
+- DOC: typo: fix sc-set-gpt references
+- SCRIPTS: git-show-backports: automatic ref and base detection with -m
+- REGTESTS: Do not use REQUIRE_VERSION for HAProxy 2.5+ (3)
+- DOC: jwt: Add explicit list of supported algorithms
+- BUILD: Makefile: add the USE_QUIC option to make help
+- IMPORT: plock: also support inlining the int code
+- MINOR: threads: inline the wait function for pthread_rwlock emulation
+- MINOR: atomic: make sure to always relax after a failed CAS
+- IMPORT: xxhash: update xxHash to version 0.8.2
+- CI: fedora: fix "dnf" invocation syntax
+- BUG/MINOR: hlua_fcn: potentially unsafe stktable_data_ptr usage
+- DOC: lua: fix core.register_action typo
+- BUG/MINOR: ssl_sock: fix possible memory leak on OOM
+- BUILD: import: guard plock.h against multiple inclusion
+- BUG/MINOR: ssl/cli: can't find ".crt" files when replacing a certificate
+- BUG/MINOR: stream: protect stream_dump() against incomplete streams
+- DOC: config: mention uid dependency on the tune.quic.socket-owner option
+- BUG/MINOR: checks: do not queue/wake a bounced check
+- DEBUG: applet: Properly report opposite SC expiration dates in traces
+- BUG/MEDIUM: stconn: Update stream expiration date on blocked sends
+- BUG/MINOR: stconn: Don't report blocked sends during connection establishment
+- BUG/MEDIUM: stconn: Wake applets on sending path if there is a pending
+  shutdown
+- BUG/MEDIUM: stconn: Don't block sends if there is a pending shutdown
+- BUG/MINOR: quic: Possible skipped RTT sampling
+- BUG/MAJOR: quic: Really ignore malformed ACK frames.
+- BUG/MEDIUM: h1-htx: Ensure chunked parsing with full output buffer
+- BUG/MINOR: stream: further protect stream_dump() against incomplete sessions
+- DOC: configuration: update examples for req.ver
+- MINOR: httpclient: allow to configure the retries
+- MINOR: httpclient: allow to configure the timeout.connect
+- BUG/MINOR: quic: Wrong RTT adjusments
+- BUG/MINOR: quic: Wrong RTT computation (srtt and rrt_var)
+- BUG/MEDIUM: applet: Fix API for function to push new data in channels buffer
+- BUG/MEDIUM: stconn: Report read activity when a stream is attached to front SC
+- BUG/MEDIUM: applet: Report an error if applet request more room on aborted SC
+- BUG/MEDIUM: stconn/stream: Forward shutdown on write timeout
+- NUG/MEDIUM: stconn: Always update stream's expiration date after I/O
+- BUG/MINOR: applet: Always expect data when CLI is waiting for a new command
+- BUG/MINOR: ring/cli: Don't expect input data when showing events
+- BUG/MINOR: hlua/action: incorrect message on E_YIELD error
+- MEDIUM: capabilities: enable support for Linux capabilities
+- CI: Update to actions/checkout@v4
+
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.8.2-0
+- DOC: ssl: Fix typo in 'ocsp-update' option
+- DOC: ssl: Add ocsp-update troubleshooting clues and emphasize on crt-list
+  only aspect
+- BUG/MINOR: tcp_sample: bc_{dst,src} return IP not INT
+- BUG/MINOR: cache: A 'max-age=0' cache-control directive can be overriden
+  by a s-maxage
+- BUG/MEDIUM: sink: invalid server list in sink_new_from_logsrv()
+- BUG/MINOR: http_ext: unhandled ERR_ABORT in proxy_http_parse_7239()
+- BUG/MINOR: sink: missing sft free in sink_deinit()
+- BUG/MINOR: ring: size warning incorrectly reported as fatal error
+- BUG/MINOR: ring: maxlen warning reported as alert
+- BUG/MINOR: log: LF upsets maxlen for UDP targets
+- MINOR: sink/api: pass explicit maxlen parameter to sink_write()
+- BUG/MEDIUM: log: improper use of logsrv->maxlen for buffer targets
+- BUG/MINOR: log: fix missing name error message in cfg_parse_log_forward()
+- BUG/MINOR: log: fix multiple error paths in cfg_parse_log_forward()
+- BUG/MINOR: log: free errmsg on error in cfg_parse_log_forward()
+- BUG/MINOR: sink: invalid sft free in sink_deinit()
+- BUG/MINOR: sink: fix errors handling in cfg_post_parse_ring()
+- BUG/MINOR: server: set rid default value in new_server()
+- MINOR: hlua_fcn/mailers: handle timeout mail from mailers section
+- BUG/MINOR: sink/log: properly deinit srv in sink_new_from_logsrv()
+- EXAMPLES: maintain haproxy 2.8 retrocompatibility for lua mailers script
+- BUG/MINOR: hlua_fcn/queue: use atomic load to fetch queue size
+- BUG/MINOR: config: Remove final '\n' in error messages
+- BUG/MEDIUM: quic: token IV was not computed using a strong secret
+- BUG/MINOR: quic: retry token remove one useless intermediate expand
+- BUG/MEDIUM: quic: missing check of dcid for init pkt including a token
+- BUG/MEDIUM: quic: timestamp shared in token was using internal time clock
+- CLEANUP: quic: remove useless parameter 'key' from quic_packet_encrypt
+- BUG/MINOR: hlua: hlua_yieldk ctx argument should support pointers
+- BUG/MEDIUM: hlua_fcn/queue: bad pop_wait sequencing
+- DOC: config: Fix fc_src description to state the source address is returned
+- BUG/MINOR: sample: Fix wrong overflow detection in add/sub conveters
+- BUG/MINOR: http: Return the right reason for 302
+- CI: add naming convention documentation
+- CI: explicitely highlight VTest result section if there's something
+- BUILD: quic: fix warning during compilation using gcc-6.5
+- BUG/MINOR: hlua: add check for lua_newstate
+- BUG/MINOR: h1-htx: Return the right reason for 302 FCGI responses
+- MINOR: cpuset: add cpu_map_configured() to know if a cpu-map was found
+- BUG/MINOR: config: do not detect NUMA topology when cpu-map is configured
+- BUG/MINOR: cpuset: remove the bogus "proc" from the cpu_map struct
+- BUG/MINOR: init: set process' affinity even in foreground
+- BUG/MINOR: server: Don't warn on server resolution failure with init-addr none
+- BUG/MINOR: quic: Missing parentheses around PTO probe variable.
+- BUG/MINOR: server-state: Ignore empty files
+- BUG/MINOR: server-state: Avoid warning on 'file not found'
+- BUG/MEDIUM: listener: Acquire proxy's lock in relax_listener() if necessary
+- MINOR: quic: Make ->set_encryption_secrets() be callable two times
+- MINOR: quic: Useless call to SSL_CTX_set_quic_method()
+- BUG/MINOR: ssl: OCSP callback only registered for first SSL_CTX
+- BUG/MEDIUM: h3: Properly report a C-L header was found to the HTX start-line
+- DOC: configuration: describe Td in Timing events
+- BUG/MINOR: chunk: fix chunk_appendf() to not write a zero if buffer is full
+- BUG/MEDIUM: h3: Be sure to handle fin bit on the last DATA frame
+- BUG/MEDIUM: bwlim: Reset analyse expiration date when then channel analyse
+  ends
+- BUG/MEDIUM: quic: consume contig space on requeue datagram
+- BUG/MINOR: http-client: Don't forget to commit changes on HTX message
+- BUG/MINOR: quic: reappend rxbuf buffer on fake dgram alloc error
+- BUILD: quic: fix wrong potential NULL dereference
+- BUG/MAJOR: http-ana: Get a fresh trash buffer for each header value
+  replacement
+- REORG: http: move has_forbidden_char() from h2.c to http.h
+- BUG/MAJOR: h3: reject header values containing invalid chars
+- BUG/MAJOR: http: reject any empty content-length header value
+- MINOR: ist: add new function ist_find_range() to find a character range
+- MINOR: http: add new function http_path_has_forbidden_char()
+- MINOR: h2: pass accept-invalid-http-request down the request parser
+- REGTESTS: http-rules: add accept-invalid-http-request for normalize-uri tests
+- BUG/MINOR: h1: do not accept '#' as part of the URI component
+- BUG/MINOR: h2: reject more chars from the :path pseudo header
+- BUG/MINOR: h3: reject more chars from the :path pseudo header
+- REGTESTS: http-rules: verify that we block '#' by default for normalize-uri
+- DOC: clarify the handling of URL fragments in requests
+- BUG/MINOR: http: skip leading zeroes in content-length values
+
 * Fri Jul 14 2023 Anton Novojilov <andy@essentialkaos.com> - 2.8.1-0
 - BUG/MINOR: stats: Fix Lua's `get_stats` function
 - BUG/MINOR: stream: do not use client-fin/server-fin with HTX

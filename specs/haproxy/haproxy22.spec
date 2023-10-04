@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.6
 %define pcre_ver      10.42
-%define openssl_ver   1.1.1u
+%define openssl_ver   1.1.1v
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.2.30
+Version:        2.2.31
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -227,6 +227,31 @@ fi
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.31-0
+- BUG/MINOR: server: inherit from netns in srv_settings_cpy()
+- BUG/MINOR: namespace: missing free in netns_sig_stop()
+- BUG/MEDIUM: mworker: increase maxsock with each new worker
+- DOC: Add tune.h2.max-frame-size option to table of contents
+- BUG/MINOR: ring: maxlen warning reported as alert
+- BUG/MINOR: sample: Fix wrong overflow detection in add/sub conveters
+- BUG/MINOR: http: Return the right reason for 302
+- CI: explicitely highlight VTest result section if there's something
+- BUG/MINOR: h1-htx: Return the right reason for 302 FCGI responses
+- DOC: configuration: describe Td in Timing events
+- BUG/MINOR: chunk: fix chunk_appendf() to not write a zero if buffer is full
+- BUG/MAJOR: http-ana: Get a fresh trash buffer for each header value
+  replacement
+- BUG/MAJOR: http: reject any empty content-length header value
+- MINOR: ist: add new function ist_find_range() to find a character range
+- MINOR: ist: Add istend() function to return a pointer to the end of the string
+- MINOR: http: add new function http_path_has_forbidden_char()
+- MINOR: h2: pass accept-invalid-http-request down the request parser
+- BUG/MINOR: h1: do not accept '#' as part of the URI component
+- BUG/MINOR: h2: reject more chars from the :path pseudo header
+- REGTESTS: http-rules: verify that we block '#' by default for normalize-uri
+- DOC: clarify the handling of URL fragments in requests
+- BUG/MINOR: http: skip leading zeroes in content-length values
+
 * Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.30-0
 - DOC/MINOR: reformat configuration.txt's "quoting and escaping" table
 - BUG/MINOR: mworker: stop doing strtok directly from the env

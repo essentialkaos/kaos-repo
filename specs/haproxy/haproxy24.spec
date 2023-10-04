@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.6
 %define pcre_ver      10.42
-%define openssl_ver   1.1.1u
+%define openssl_ver   1.1.1v
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.23
+Version:        2.4.24
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -231,6 +231,73 @@ fi
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.4.24-0
+- MINOR: proto_uxst: add resume method
+- CLEANUP: listener: function comment typo in stop_listener()
+- BUG/MINOR: listener: null pointer dereference suspected by coverity
+- MINOR: listener/api: add lli hint to listener functions
+- MINOR: listener: add relax_listener() function
+- MINOR: listener: workaround for closing a tiny race between resume_listener()
+  and stopping
+- MINOR: listener: make sure we don't pause/resume bypassed listeners
+- BUG/MEDIUM: listener: fix pause_listener() suspend return value handling
+- BUG/MINOR: listener: fix resume_listener() resume return value handling
+- BUG/MEDIUM: resume from LI_ASSIGNED in default_resume_listener()
+- MINOR: listener: pause_listener() becomes suspend_listener()
+- BUG/MEDIUM: listener/proxy: fix listeners notify for proxy resume
+- MEDIUM: proto_ux: properly suspend named UNIX listeners
+- MINOR: proto_ux: ability to dump ABNS names in error messages
+- MINOR: lua: Add a function to get a reference on a table in the stack
+- CLEANUP: Remove unused function hlua_get_top_error_string
+- MINOR: hlua: add simple hlua reference handling API
+- BUG/MINOR: hlua: fix reference leak in core.register_task()
+- BUG/MINOR: hlua: fix reference leak in hlua_post_init_state()
+- MINOR: hlua: simplify lua locking
+- BUG/MEDIUM: hlua: prevent deadlocks with main lua lock
+- BUG/MINOR: server: inherit from netns in srv_settings_cpy()
+- BUG/MINOR: namespace: missing free in netns_sig_stop()
+- BUG/MEDIUM: mworker: increase maxsock with each new worker
+- DOC: Add tune.h2.max-frame-size option to table of contents
+- BUILD: debug: avoid a build warning related to epoll_wait() in debug code
+- BUG/MINOR: tcp_sample: bc_{dst,src} return IP not INT
+- BUG/MINOR: cache: A 'max-age=0' cache-control directive can be overriden
+  by a s-maxage
+- BUG/MEDIUM: sink: invalid server list in sink_new_from_logsrv()
+- BUG/MINOR: sink: missing sft free in sink_deinit()
+- BUG/MINOR: ring: size warning incorrectly reported as fatal error
+- BUG/MINOR: ring: maxlen warning reported as alert
+- BUG/MINOR: log: LF upsets maxlen for UDP targets
+- MINOR: sink/api: pass explicit maxlen parameter to sink_write()
+- BUG/MEDIUM: log: improper use of logsrv->maxlen for buffer targets
+- BUG/MINOR: log: fix missing name error message in cfg_parse_log_forward()
+- BUG/MINOR: log: fix multiple error paths in cfg_parse_log_forward()
+- BUG/MINOR: log: free errmsg on error in cfg_parse_log_forward()
+- BUG/MINOR: sink: invalid sft free in sink_deinit()
+- BUG/MINOR: sink: fix errors handling in cfg_post_parse_ring()
+- BUG/MINOR: sink/log: properly deinit srv in sink_new_from_logsrv()
+- BUG/MINOR: config: Remove final '\n' in error messages
+- BUG/MINOR: hlua: hlua_yieldk ctx argument should support pointers
+- BUG/MINOR: sample: Fix wrong overflow detection in add/sub conveters
+- BUG/MINOR: http: Return the right reason for 302
+- CI: explicitely highlight VTest result section if there's something
+- BUG/MINOR: hlua: add check for lua_newstate
+- BUG/MINOR: h1-htx: Return the right reason for 302 FCGI responses
+- BUG/MEDIUM: listener: Acquire proxy's lock in relax_listener() if necessary
+- DOC: configuration: describe Td in Timing events
+- BUG/MINOR: chunk: fix chunk_appendf() to not write a zero if buffer is full
+- BUG/MAJOR: http-ana: Get a fresh trash buffer for each header value
+  replacement
+- BUG/MAJOR: http: reject any empty content-length header value
+- MINOR: ist: add new function ist_find_range() to find a character range
+- MINOR: http: add new function http_path_has_forbidden_char()
+- MINOR: h2: pass accept-invalid-http-request down the request parser
+- REGTESTS: http-rules: add accept-invalid-http-request for normalize-uri tests
+- BUG/MINOR: h1: do not accept '#' as part of the URI component
+- BUG/MINOR: h2: reject more chars from the :path pseudo header
+- REGTESTS: http-rules: verify that we block '#' by default for normalize-uri
+- DOC: clarify the handling of URL fragments in requests
+- BUG/MINOR: http: skip leading zeroes in content-length values
+
 * Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 2.4.23-0
 - DEV: hpack: fix `trash` build regression
 - BUG/MINOR: ssl: ssl-(min|max)-ver parameter not duplicated for bundles in
