@@ -6,7 +6,7 @@
 
 Summary:        Utility for optimizing/compressing JPEG files
 Name:           jpegoptim
-Version:        1.5.0
+Version:        1.5.5
 Release:        0%{?dist}
 License:        GPL
 Group:          Applications/Multimedia
@@ -62,6 +62,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 1.5.5-0
+- https://github.com/tjko/jpegoptim/releases/tag/v1.5.5
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
 - https://github.com/tjko/jpegoptim/releases/tag/v1.5.0
 
