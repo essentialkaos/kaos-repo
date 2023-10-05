@@ -6,7 +6,7 @@
 
 Summary:        Friendly interactive shell (FISh)
 Name:           fish
-Version:        3.5.1
+Version:        3.6.1
 Release:        0%{?dist}
 License:        GPL2
 Group:          System Environment/Shells
@@ -18,21 +18,15 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  ncurses-devel gettext autoconf
+BuildRequires:  ncurses-devel gettext autoconf pcre2-devel
 
 %if 0%{?rhel} <= 7
-BuildRequires:  cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils
+BuildRequires:  cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils python-devel
 %else
-BuildRequires:  cmake gcc-c++
+BuildRequires:  cmake gcc-c++ python3-devel
 %endif
 
 Requires:       bc which man
-
-%if 0%{?rhel} <= 8
-Requires:       python2
-%else
-Requires:       python3
-%endif
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -56,18 +50,17 @@ is simple but incompatible with other shell languages.
 export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
 %endif
 
-mkdir build
-pushd build
-  cmake3 .. -DCMAKE_INSTALL_PREFIX="/"
-  cmake3 --build .
-popd
+%cmake3 -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
+        -Dextra_completionsdir=%{_datadir}/%{name}/vendor_completions.d \
+        -Dextra_functionsdir=%{_datadir}/%{name}/vendor_functions.d \
+        -Dextra_confdir=%{_datadir}/%{name}/vendor_conf.d
+
+%cmake3_build
 
 %install
 rm -rf %{buildroot}
 
-pushd build
-  %{make_install}
-popd
+%cmake3_install
 
 rm -f %{buildroot}%{_datadir}/applications/fish.desktop
 rm -f %{buildroot}%{_datadir}/pixmaps/fish.png
@@ -81,9 +74,8 @@ if ! grep -q "%{_bindir}/%{name}" %{_sysconfdir}/shells ; then
 fi
 
 %postun
-if [[ $1 -eq 0 ]] ; then
-  grep -v "%{_bindir}/%{name}" %{_sysconfdir}/shells > %{_sysconfdir}/%{name}.tmp
-  mv %{_sysconfdir}/%{name}.tmp %{_sysconfdir}/shells
+if [[ $1 -eq 0 && -f %{_sysconfdir}/shells ]] ; then
+  sed -i '\!^%{_bindir}/%{name}$!d' %{_sysconfdir}/shells
 fi
 
 ################################################################################
@@ -92,7 +84,7 @@ fi
 %defattr(-,root,root,-)
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.fish
-%attr(0755,root,root) %{_bindir}/*
+%{_bindir}/*
 %{_datadir}/%{name}/
 %{_datadir}/doc/%{name}/
 %{_datadir}/locale/*
@@ -102,6 +94,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Oct 05 2023 Anton Novojilov <andy@essentialkaos.com> - 3.6.1-0
+- https://github.com/fish-shell/fish-shell/releases/tag/3.6.1
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 3.5.1-0
 - https://github.com/fish-shell/fish-shell/releases/tag/3.5.1
 
