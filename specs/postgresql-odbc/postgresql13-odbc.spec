@@ -7,8 +7,8 @@
 %define short_name  psqlodbc
 %define pg_ver      13
 
-%define maj_ver     13
-%define min_ver     02
+%define maj_ver     16
+%define min_ver     00
 %define patch       0000
 
 %define pkg_ver     %{maj_ver}.%{min_ver}.%{patch}
@@ -127,5 +127,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 16.00.0000-0
+- Use autoconf to check for stdbool.h
+- Make it possible to use standard bool on Windows
+
 * Thu Feb 23 2023 Anton Novojilov <andy@essentialkaos.com> - 13.02.0000-0
 - Initial rebuild for kaos-repo
