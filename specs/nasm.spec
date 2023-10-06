@@ -4,27 +4,27 @@
 
 ################################################################################
 
-Summary:            A portable x86 assembler which uses Intel-like syntax
-Name:               nasm
-Version:            2.15.05
-Release:            0%{?dist}
-License:            BSD
-Group:              Development/Languages
-URL:                https://www.nasm.us
+Summary:          A portable x86 assembler which uses Intel-like syntax
+Name:             nasm
+Version:          2.16.01
+Release:          0%{?dist}
+License:          BSD
+Group:            Development/Languages
+URL:              https://www.nasm.us
 
-Source0:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
-Source1:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
+Source0:          https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
+Source1:          https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
 
-Source100:          checksum.sha512
+Source100:        checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc perl(Env) xmlto
+BuildRequires:    make gcc perl(Env) xmlto
 
-Requires(post):     /sbin/install-info
-Requires(preun):    /sbin/install-info
+Requires(post):   info
+Requires(preun):  info
 
-Provides:           %{name} = %{version}-%{release}
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -32,17 +32,6 @@ Provides:           %{name} = %{version}-%{release}
 NASM is the Netwide Assembler, a free portable assembler for the Intel
 80x86 microprocessor series, using primarily the traditional Intel
 instruction mnemonics and syntax.
-
-################################################################################
-
-%package rdoff
-Summary:            Tools for the RDOFF binary format, sometimes used with NASM
-Group:              Development/Languages
-
-%description rdoff
-Tools for the operating-system independent RDOFF binary format, which
-is sometimes used with the Netwide Assembler (NASM). These tools
-include linker, library manager, loader, and information dump.
 
 ################################################################################
 
@@ -64,7 +53,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_mandir}/man1
 
-%{make_install} install_rdf
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
@@ -91,23 +80,66 @@ fi
 %{_mandir}/man1/nasm*
 %{_mandir}/man1/ndisasm*
 
-%files rdoff
-%defattr(-,root,root,-)
-%{_bindir}/ldrdf
-%{_bindir}/rdf2bin
-%{_bindir}/rdf2ihx
-%{_bindir}/rdf2com
-%{_bindir}/rdfdump
-%{_bindir}/rdflib
-%{_bindir}/rdx
-%{_bindir}/rdf2ith
-%{_bindir}/rdf2srec
-%{_mandir}/man1/rd*
-%{_mandir}/man1/ld*
-
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.16.01-0
+- Support for the rdf format has been discontinued and all the RDOFF utilities
+  has been removed.
+- The --reproducible option now leaves the filename field in the COFF object
+  format blank. This was always rather useless since it is only 18 characters
+  long; as such debug formats have to carry their own filename information
+  anyway.
+- Fix handling of MASM-syntax reserved memory (e.g. dw ?) when used in
+  structure definitions.
+- The preprocessor now supports functions, which can be less verbose and more
+  convenient than the equivalent code implemented using directives.
+- Fix the handling of %%00 in the preprocessor.
+- Fix incorrect handling of path names affecting error messages, dependency
+  generation, and debug format output.
+- Support for the RDOFF output format and the RDOFF tools have been removed. The
+  RDOFF tools had already been broken since at least NASM 2.14. For flat code
+  the ELF output format recommended; for segmented code the obj (OMF) output
+  format.
+- New facility: preprocessor functions. Preprocessor functions, which are
+  expanded similarly to single-line macros, can greatly simplify code that in
+  the past would have required a lengthy list of directives and intermediate
+  macros.
+- Single-line macros can now declare parameters (using a && prefix) that creates
+  a quoted string, but does not requote an already quoted string.
+- Instruction table updated per public information available as of
+  November 2022.
+- All warnings in the preprocessor have now been assigned warning classes.
+- Fix the invalid use of RELA–type relocations instead of REL–type relocations
+  when generating DWARF debug information for the elf32 output format.
+- Fix the handling at in istruc when the structure contains local labels.
+- When assembling with --reproducible, don't encode the filename in the COFF
+  header for the coff, win32 or win64 output formats. The COFF header only has
+  space for an 18-character filename, which makes this field rather useless
+  in the first place. Debug output data, if enabled, is not affected.
+- Fix incorrect size calculation when using MASM syntax for non-byte
+  reservations (e.g. dw ?.)
+- Allow forcing an instruction in 64-bit mode to have a (possibly redundant)
+  REX prefix, using the syntax {rex} as a prefix.
+- Add a {vex} prefix to enforce VEX (AVX) encoding of an instruction, either
+  using the 2- or 3-byte VEX prefixes.
+- The CPU directive has been augmented to allow control of generation of
+  VEX (AVX) versus EVEX (AVX-512) instruction formats, see section 7.11.
+- Some recent instructions that previously have been only available using EVEX
+  encodings are now also encodable using VEX (AVX) encodings. For backwards
+  compatibility these encodings are not enabled by default, but can be generated
+  either via an explicit {vex} prefix or by specifying either CPU LATEVEX or
+  CPU NOEVEX.
+- Document the already existing %%unimacro directive.
+- Fix a code range generation bug in the DWARF debug format (incorrect
+  information in the DW_AT_high_pc field) for the ELF output formats. This bug
+  happened to cancel out with a bug in older versions of the GNU binutils
+  linker, but breaks with other linkers and updated or other linkers that expect
+  the spec to be followed.
+- Fix segment symbols with addends, e.g. jmp _TEXT+10h:0 in output formats that
+  support segment relocations, e.g. the obj format.
+- Fix various crashes and hangs on invalid input.
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.15.05-0
 - Correct %%ifid $ and %%ifid $$ being treated as true.
 - Add --reproducible option to suppress NASM version numbers and timestamps
