@@ -4,14 +4,11 @@
 
 ################################################################################
 
-%if 0%{?rhel} == 7
-%global python_base  python36
-%endif
+%{!?_without_sanitizers: %define _with_sanitizers 1}
 
-%if 0%{?rhel} >= 8
+################################################################################
+
 %global python_base  python3
-%endif
-
 %global __python3  %{_bindir}/python3
 
 %global python_ver %(%{__python3} -c "import sys; print('{0}.{1}'.format(sys.version_info.major,sys.version_info.minor))" 2>/dev/null || echo 0.0)
@@ -24,7 +21,7 @@
 
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
-Version:        1.0.0
+Version:        1.0.1
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Development/Tools
@@ -41,6 +38,10 @@ BuildRequires:  glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:  openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
 BuildRequires:  rpm-devel libmodulemd-devel libyaml-devel zchunk-devel
 BuildRequires:  bash-completion
+
+%if %{?_with_sanitizers:1}%{?_without_sanitizers:0}
+BuildRequires:  libasan liblsan libubsan
+%endif
 
 Requires:       rpm
 
@@ -128,6 +129,11 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DPYTHON_INCLUDE_DIR:PATH=%{python3_inc} \
       -DENABLE_DRPM:BOOL=ON \
       -DWITH_ZCHUNK:BOOL=ON \
+%if %{?_with_sanitizers:1}%{?_without_sanitizers:0}
+      -DWITH_SANITIZERS=ON \
+%else
+      -DWITH_SANITIZERS=OFF \
+%endif
       -DBUILD_SHARED_LIBS:BOOL=ON .
 
 %{__make} %{?_smp_mflags} RPM_OPT_FLAGS="%{optflags}"
@@ -188,6 +194,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.0.0...1.0.1
+
 * Sun Oct 01 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.0-0
 - https://github.com/rpm-software-management/createrepo_c/compare/0.20.1...1.0.0
 
