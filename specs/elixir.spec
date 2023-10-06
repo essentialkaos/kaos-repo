@@ -8,26 +8,26 @@
 
 ################################################################################
 
-Summary:            A modern approach to programming for the Erlang VM
-Name:               elixir
-Version:            1.14.5
-Release:            0%{?dist}
-License:            ASL 2.0 and ERPL
-Group:              Development/Tools
-URL:                https://elixir-lang.org
+Summary:        A modern approach to programming for the Erlang VM
+Name:           elixir
+Version:        1.15.6
+Release:        0%{?dist}
+License:        ASL 2.0 and ERPL
+Group:          Development/Tools
+URL:            https://elixir-lang.org
 
-Source0:            https://github.com/elixir-lang/elixir/archive/v%{version}.tar.gz
+Source0:        https://github.com/elixir-lang/elixir/archive/v%{version}.tar.gz
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      erlang23 git
+BuildRequires:  erlang24 git
 
-Requires:           erlang >= 23
+Requires:       erlang >= 24
 
-Provides:           %{name} = %{version}-%{release}
-Provides:           %{name}-lang = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
+Provides:       %{name}-lang = %{version}-%{release}
 
 ################################################################################
 
@@ -82,6 +82,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.15.6-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.15.6
+
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.15.5-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.15.5
+
 * Wed Jun 21 2023 Anton Novojilov <andy@essentialkaos.com> - 1.14.5-0
 - https://github.com/elixir-lang/elixir/releases/tag/v1.14.5
 
