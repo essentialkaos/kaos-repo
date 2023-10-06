@@ -12,8 +12,8 @@
 
 # Found X264_BUILD in (x264.h)
 %define pkg_build  164
-%define pkg_date   20220602
-%define pkg_sha    baee400fa9ced6f5481a728138fed6e867b0ff7f
+%define pkg_date   20231006
+%define pkg_sha    31e19f92f00c7003fa115047ce50978bc98c3a0d
 
 ################################################################################
 
@@ -43,8 +43,8 @@ x264 is a free library for encoding H.264/AVC video streams.
 ################################################################################
 
 %package devel
-Summary:  Development files for x264
-Group:    Development/Libraries
+Summary:   Development files for x264
+Group:     Development/Libraries
 
 Requires:  %{name} = %{version}-%{release}
 
@@ -101,6 +101,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.164-20231006_0
+- Updated to the latest stable snapshot
+
 * Sat Dec 17 2022 Anton Novojilov <andy@essentialkaos.com> - 0.164-20220602_0
 - Updated to the latest stable snapshot
 
