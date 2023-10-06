@@ -4,26 +4,26 @@
 
 ################################################################################
 
-Name:              vips
-Summary:           C/C++ library for processing large images
-Version:           8.13.3
-Release:           0%{?dist}
-License:           LGPLv2+
-Group:             System Environment/Libraries
-URL:               https://libvips.github.io/libvips/
+Name:           vips
+Summary:        C/C++ library for processing large images
+Version:        8.14.5
+Release:        0%{?dist}
+License:        LGPLv2+
+Group:          System Environment/Libraries
+URL:            https://libvips.github.io/libvips/
 
-Source0:           https://github.com/libvips/libvips/releases/download/v%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/libvips/libvips/releases/download/v%{version}/%{name}-%{version}.tar.xz
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     meson cmake pkgconfig gettext
-BuildRequires:     gcc gcc-c++ libjpeg-turbo-devel libtiff-devel zlib-devel
-BuildRequires:     glib2-devel libxml2-devel expat-devel orc-devel libpng-devel
-BuildRequires:     libexif-devel
+BuildRequires:  meson cmake pkgconfig gettext
+BuildRequires:  gcc gcc-c++ libjpeg-turbo-devel libtiff-devel zlib-devel
+BuildRequires:  glib2-devel libxml2-devel expat-devel orc-devel libpng-devel
+BuildRequires:  libexif-devel
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -38,10 +38,11 @@ against VIPS.
 ################################################################################
 
 %package devel
-Summary:           Development files for %{name}
-Group:             Development/Libraries
-Requires:          libjpeg-turbo-devel libtiff-devel zlib-devel
-Requires:          vips = %{version}-%{release}
+Summary:   Development files for %{name}
+Group:     Development/Libraries
+
+Requires:  libjpeg-turbo-devel libtiff-devel zlib-devel
+Requires:  vips = %{version}-%{release}
 
 %description devel
 Package contains the header files and libraries necessary for developing
@@ -50,14 +51,15 @@ programs using VIPS. It also contains a C++ API and development man pages.
 ################################################################################
 
 %package tools
-Summary:           Command-line tools for %{name}
-Group:             Applications/Multimedia
-Requires:          vips = %{version}-%{release}
+Summary:   Command-line tools for %{name}
+Group:     Applications/Multimedia
+
+Requires:  vips = %{version}-%{release}
 
 %if 0%{?rhel} <= 8
-Requires:          python2
+Requires:  python2
 %else
-Requires:          python3
+Requires:  python3
 %endif
 
 %description tools
@@ -133,7 +135,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc AUTHORS NEWS THANKS COPYING ChangeLog
+%doc README.md LICENSE ChangeLog
 %{_libdir}/*.so.*
 
 %files devel
@@ -151,6 +153,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.14.5-0
+- https://github.com/libvips/libvips/releases/tag/v8.14.5
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 8.13.3-0
 - https://github.com/libvips/libvips/releases/tag/v8.13.3
 
