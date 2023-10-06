@@ -6,7 +6,7 @@
 
 Summary:        A library for making, reading and applying deltarpm packages
 Name:           drpm
-Version:        0.5.1
+Version:        0.5.2
 Release:        0%{?dist}
 License:        LGPLv2+ and BSD
 Group:          Development/Tools
@@ -33,10 +33,10 @@ compatible with the original deltarpm packages.
 ################################################################################
 
 %package devel
-Summary:        C interface for the drpm library
-Group:          Development/Libraries
+Summary:   C interface for the drpm library
+Group:     Development/Libraries
 
-Requires:       %{name} = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 The drpm-devel package provides a C interface (drpm.h) for the drpm library.
@@ -92,6 +92,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.5.2-0
+- https://github.com/rpm-software-management/drpm/releases/tag/0.5.2
+
 * Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 0.5.1-0
 - https://github.com/rpm-software-management/drpm/releases/tag/0.5.1
 
