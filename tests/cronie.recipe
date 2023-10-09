@@ -1,4 +1,4 @@
-# Bibop recipe for cronie for CentOS 7
+# Bibop recipe for cronie
 # See more: https://kaos.sh/bibop
 
 pkg cronie cronie-anacron
@@ -18,9 +18,6 @@ command "-" "Check environment
 
   exist /etc/cron.deny
   exist /etc/cron.d/0hourly
-
-  exist /etc/rc.d/init.d/crond
-  mode /etc/rc.d/init.d/crond 755
 
   exist /etc/sysconfig/crond
   mode /etc/sysconfig/crond 644

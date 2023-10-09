@@ -13,31 +13,31 @@ command "-" "Check libs"
   lib-config createrepo_c
   lib-header createrepo_c
 
-command "createrepo_c -p -d --workers=1 --simple-md-filenames ." "Generate test metadata"
+command "createrepo_c -p -d --simple-md-filenames --compress-type=xz --general-compress-type=xz ." "Generate test metadata"
   exit 0
   dir repodata
 
 +command "-" "Check generated metadata"
-  exist "repodata/filelists.sqlite.bz2"
-  exist "repodata/filelists.xml.gz"
-  exist "repodata/other.sqlite.bz2"
-  exist "repodata/other.xml.gz"
-  exist "repodata/primary.sqlite.bz2"
-  exist "repodata/primary.xml.gz"
+  exist "repodata/filelists.sqlite.xz"
+  exist "repodata/filelists.xml.xz"
+  exist "repodata/other.sqlite.xz"
+  exist "repodata/other.xml.xz"
+  exist "repodata/primary.sqlite.xz"
+  exist "repodata/primary.xml.xz"
   exist "repodata/repomd.xml"
 
-  mode "repodata/filelists.sqlite.bz2" 644
-  mode "repodata/filelists.xml.gz" 644
-  mode "repodata/other.sqlite.bz2" 644
-  mode "repodata/other.xml.gz" 644
-  mode "repodata/primary.sqlite.bz2" 644
-  mode "repodata/primary.xml.gz" 644
+  mode "repodata/filelists.sqlite.xz" 644
+  mode "repodata/filelists.xml.xz" 644
+  mode "repodata/other.sqlite.xz" 644
+  mode "repodata/other.xml.xz" 644
+  mode "repodata/primary.sqlite.xz" 644
+  mode "repodata/primary.xml.xz" 644
   mode "repodata/repomd.xml" 644
 
-  !empty "repodata/filelists.sqlite.bz2"
-  !empty "repodata/filelists.xml.gz"
-  !empty "repodata/other.sqlite.bz2"
-  !empty "repodata/other.xml.gz"
-  !empty "repodata/primary.sqlite.bz2"
-  !empty "repodata/primary.xml.gz"
+  !empty "repodata/filelists.sqlite.xz"
+  !empty "repodata/filelists.xml.xz"
+  !empty "repodata/other.sqlite.xz"
+  !empty "repodata/other.xml.xz"
+  !empty "repodata/primary.sqlite.xz"
+  !empty "repodata/primary.xml.xz"
   !empty "repodata/repomd.xml"
