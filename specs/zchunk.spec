@@ -10,7 +10,7 @@
 
 Summary:        A file format designed for highly efficient deltas while maintaining good compression
 Name:           zchunk
-Version:        1.2.3
+Version:        1.3.2
 Release:        0%{?dist}
 License:        BSD and MIT
 Group:          Development/Libraries
@@ -136,5 +136,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 09 2023 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
+- https://github.com/zchunk/zchunk/compare/1.2.3...1.3.2
+
 * Sat Sep 17 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.3-0
 - Initial build for kaos-repo
