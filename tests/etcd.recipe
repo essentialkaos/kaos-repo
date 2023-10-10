@@ -13,6 +13,6 @@ command "etcd --version" "Check etcd version info"
   expect "etcd Version:"
   exit 0
 
-command "etcdctl --version" "Check etcdctl version info"
+command "etcdctl version" "Check etcdctl version info"
   expect "etcdctl version:"
   exit 0

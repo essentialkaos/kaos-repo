@@ -26,13 +26,12 @@
 Summary:        A translator library for raster and vector geospatial data formats
 Name:           %{fullname}
 Version:        3.7.2
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        MIT
 Group:          Development/Libraries
 URL:            https://www.gdal.org
 
 Source0:        https://download.osgeo.org/%{realname}/%{version}/%{realname}-%{version}.tar.gz
-Source1:        %{realname}3-pgdg-libs.conf
 
 Source100:      checksum.sha512
 
@@ -45,7 +44,7 @@ BuildRequires:  cmake swig
 %endif
 
 BuildRequires:  gcc-c++ bison expat-devel freexl-devel geos-devel hdf-devel
-BuildRequires:  hdf5-devel libgeotiff-devel libjpeg-devel libpng-devel
+BuildRequires:  hdf5-devel libgeotiff-devel libjpeg-turbo-devel libpng-devel
 BuildRequires:  libtiff-devel libzstd-devel libwebp-devel netcdf-devel
 BuildRequires:  openexr-devel openjpeg2-devel proj-devel
 BuildRequires:  xerces-c-devel xz-devel zlib-devel giflib-devel
@@ -113,10 +112,6 @@ rm -rf %{buildroot}
 
 %{cmake3_install}
 
-# Install linker configuration file
-install -dm 755 %{buildroot}%{_sysconfdir}/ld.so.conf.d
-install -pm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/ld.so.conf.d/%{name}-libs.conf
-
 %clean
 rm -rf %{buildroot}
 
@@ -131,7 +126,6 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README.md NEWS.md PROVENANCE.TXT LICENSE.TXT SECURITY.md CODE_OF_CONDUCT.md
-%config(noreplace) %{_sysconfdir}/ld.so.conf.d/%{name}-libs.conf
 %exclude %{_mandir}/man1/%{realname}-config.1*
 %exclude %{_bindir}/%{realname}-config*
 %exclude %{_datadir}/bash-completion/completions/*.py
@@ -157,6 +151,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Oct 10 2023 Anton Novojilov <andy@essentialkaos.com> - 3.7.2-1
+- Spec refactoring
+
 * Tue Sep 19 2023 Anton Novojilov <andy@essentialkaos.com> - 3.7.2-0
 - https://github.com/OSGeo/gdal/blob/v3.7.2/NEWS.md
 

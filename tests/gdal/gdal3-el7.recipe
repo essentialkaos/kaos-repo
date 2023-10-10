@@ -1,7 +1,7 @@
-# Bibop recipe for GDAL 3 for EL8/EL9
+# Bibop recipe for GDAL 3 for EL7
 # See more: https://kaos.sh/bibop
 
-pkg gdal gdal-libs gdal-devel
+pkg gdal3 gdal3-libs gdal3-devel
 
 fast-finish yes
 
