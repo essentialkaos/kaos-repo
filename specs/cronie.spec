@@ -18,7 +18,7 @@
 Summary:         Cron daemon for executing programs at set times
 Name:            cronie
 Version:         1.6.1
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         MIT and BSD and ISC and GPLv2
 Group:           System Environment/Base
 URL:             https://github.com/cronie-crond/cronie
@@ -29,13 +29,9 @@ Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:        syslog bash
-BuildRequires:   make gcc sed
+BuildRequires:   make gcc sed systemd
 
-Conflicts:       sysklogd < 1.4.1
-Provides:        vixie-cron = 4.4
-Obsoletes:       vixie-cron <= 4.3
-Requires:        dailyjobs
+Requires:        dailyjobs systemd
 
 %if %{with selinux}
 Requires:        libselinux >= 2.0.64
@@ -52,6 +48,7 @@ BuildRequires:   audit-libs-devel >= 1.4.1
 Requires(post):  coreutils sed
 
 Provides:        %{name} = %{version}-%{release}
+Provides:        %{service_name} = %{version}-%{release}
 
 ################################################################################
 
@@ -64,14 +61,17 @@ SELinux.
 ################################################################################
 
 %package anacron
-Summary:         Utility for running regular jobs
+Summary:   Utility for running regular jobs
+Group:     System Environment/Base
+
 Requires:        crontabs
-Group:           System Environment/Base
-Provides:        dailyjobs = %{version}-%{release}
-Provides:        anacron = 2.4
-Obsoletes:       anacron <= 2.3
-Requires(post):  coreutils
 Requires:        %{name} = %{version}-%{release}
+Requires(post):  coreutils
+
+Provides:  dailyjobs = %{version}-%{release}
+Provides:  anacron = 2.4
+
+Obsoletes:  anacron <= 2.3
 
 %description anacron
 Anacron is part of cronie that is used for running jobs with regular
@@ -87,11 +87,13 @@ for better utilization of resources shared among multiple systems.
 ################################################################################
 
 %package noanacron
-Summary:   Utility for running simple regular jobs in old cron style
-Group:     System Environment/Base
-Provides:  dailyjobs = %{version}-%{release}
+Summary:  Utility for running simple regular jobs in old cron style
+Group:    System Environment/Base
+
 Requires:  crontabs
 Requires:  %{name} = %{version}-%{release}
+
+Provides:  dailyjobs = %{version}-%{release}
 
 %description noanacron
 Old style of running {hourly,daily,weekly,monthly}.jobs without anacron. No
@@ -134,72 +136,60 @@ install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig/
 install -dm 755 %{buildroot}%{_sysconfdir}/cron.d/
 
 %if ! %{with pam}
-  rm -f %{buildroot}%{_sysconfdir}/pam.d/%{service_name}
+rm -f %{buildroot}%{_sysconfdir}/pam.d/%{service_name}
 %endif
 
 install -pm 644 %{service_name}.sysconfig %{buildroot}%{_sysconfdir}/sysconfig/%{service_name}
 
-%{__touch} %{buildroot}%{_sysconfdir}/cron.deny
+touch %{buildroot}%{_sysconfdir}/cron.deny
 
 install -pm 644 contrib/anacrontab %{buildroot}%{_sysconfdir}/anacrontab
-install -pm 755 contrib/0hourly %{buildroot}%{_sysconfdir}/cron.d/0hourly
+install -pm 644 contrib/0hourly %{buildroot}%{_sysconfdir}/cron.d/0hourly
 
 install -dm 755 %{buildroot}%{_sysconfdir}/cron.hourly
 
 install -pm 755 contrib/0anacron %{buildroot}%{_sysconfdir}/cron.hourly/0anacron
 
-install -dm 755 %{buildroot}%{_spooldir}/anacron
+install -dm 755 %{buildroot}%{_localstatedir}/spool/anacron
 
-%{__touch} %{buildroot}%{_spooldir}/anacron/cron.daily
-%{__touch} %{buildroot}%{_spooldir}/anacron/cron.weekly
-%{__touch} %{buildroot}%{_spooldir}/anacron/cron.monthly
+touch %{buildroot}%{_localstatedir}/spool/anacron/cron.daily
+touch %{buildroot}%{_localstatedir}/spool/anacron/cron.weekly
+touch %{buildroot}%{_localstatedir}/spool/anacron/cron.monthly
 
 # noanacron package
 install -pm 644 contrib/dailyjobs %{buildroot}%{_sysconfdir}/cron.d/dailyjobs
 
-# install sysvinit initscript into sub-package
-install -dm 755 %{buildroot}%{_initrddir}
-install -pm 755 %{name}.init %{buildroot}%{_initrddir}/%{service_name}
+# install systemd service
+install -dm 755 %{buildroot}%{_unitdir}
+install -pm 644 contrib/%{name}.systemd %{buildroot}%{_unitdir}/%{service_name}.service
 
 %clean
 rm -rf %{buildroot}
 
 %post
-# always try to add service to chkconfig
-%{__chkconfig} --add %{service_name}
+if [[ $1 -eq 1 ]] ; then
+  systemctl enable %{service_name}.service &>/dev/null || :
+fi
 
-%post anacron
-[[ -e %{_spooldir}/anacron/cron.daily ]] || %{__touch} %{_spooldir}/anacron/cron.daily
-[[ -e %{_spooldir}/anacron/cron.weekly ]] || %{__touch} %{_spooldir}/anacron/cron.weekly
-[[ -e %{_spooldir}/anacron/cron.monthly ]] || %{__touch} %{_spooldir}/anacron/cron.monthly
+%preun
+if [[ $1 -eq 0 ]]; then
+  systemctl --no-reload disable %{service_name}.service &>/dev/null || :
+  systemctl stop %{service_name}.service &>/dev/null || :
+fi
 
 %postun
-if [[ $1 -ge 1 ]]; then
-  %{__service} %{service_name} condrestart &>/dev/null || :
+if [[ $1 -ge 1 ]] ; then
+  systemctl daemon-reload &>/dev/null || :
 fi
 
-if [[ $1 -eq 0 ]] ; then
-  %{__service} %{service_name} stop &>/dev/null || :
-  %{__chkconfig} --del %{service_name}
-fi
+%post anacron
+[[ -e %{_localstatedir}/spool/anacron/cron.daily ]] || touch %{_localstatedir}/spool/anacron/cron.daily
+[[ -e %{_localstatedir}/spool/anacron/cron.weekly ]] || touch %{_localstatedir}/spool/anacron/cron.weekly
+[[ -e %{_localstatedir}/spool/anacron/cron.monthly ]] || touch %{_localstatedir}/spool/anacron/cron.monthly
 
-%triggerun -- %{name} < 1.4.1
-cp -a %{_sysconfdir}/crontab %{_sysconfdir}/crontab.rpmsave
-
-# perfecto:ignore 4
-sed -e '/^01 \* \* \* \* root run-parts \/etc\/cron\.hourly/d' \
-  -e '/^02 4 \* \* \* root run-parts \/etc\/cron\.daily/d' \
-  -e '/^22 4 \* \* 0 root run-parts \/etc\/cron\.weekly/d' \
-  -e '/^42 4 1 \* \* root run-parts \/etc\/cron\.monthly/d' \
-     %{_sysconfdir}/crontab.rpmsave > %{_sysconfdir}/crontab
-exit 0
-
-%triggerun -- vixie-cron
-cp -a %{_lockdir}/subsys/%{service_name} %{_lockdir}/subsys/%{name} &>/dev/null || :
-
-%triggerpostun -- vixie-cron
-%{__chkconfig} --add %{service_name}
-[[ -f %{_lockdir}/subsys/%{name} ]] && ( rm -f %{_lockdir}/subsys/%{name} ; %{__service} %{service_name} restart ) &>/dev/null || :
+%triggerin -- pam, glibc
+# changes in pam, glibc or libselinux can make crond crash when it calls pam
+systemctl try-restart %{service_name}.service &>/dev/null || :
 
 ################################################################################
 
@@ -216,23 +206,23 @@ cp -a %{_lockdir}/subsys/%{service_name} %{_lockdir}/subsys/%{name} &>/dev/null 
 %{_mandir}/man1/crontab.*
 %dir %{_localstatedir}/spool/cron
 %dir %{_sysconfdir}/cron.d
-%{_initrddir}/%{service_name}
 %if %{with pam}
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/pam.d/%{service_name}
 %endif
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
 %config(noreplace) %{_sysconfdir}/cron.deny
-%attr(0644,root,root) %{_sysconfdir}/cron.d/0hourly
+%{_sysconfdir}/cron.d/0hourly
+%{_unitdir}/%{service_name}.service
 
 %files anacron
 %defattr(-,root,root,-)
 %{_sbindir}/anacron
 %attr(0755,root,root) %{_sysconfdir}/cron.hourly/0anacron
 %config(noreplace) %{_sysconfdir}/anacrontab
-%dir %{_spooldir}/anacron
-%ghost %verify(not md5 size mtime) %{_spooldir}/anacron/cron.daily
-%ghost %verify(not md5 size mtime) %{_spooldir}/anacron/cron.weekly
-%ghost %verify(not md5 size mtime) %{_spooldir}/anacron/cron.monthly
+%dir %{_localstatedir}/spool/anacron
+%ghost %verify(not md5 size mtime) %{_localstatedir}/spool/anacron/cron.daily
+%ghost %verify(not md5 size mtime) %{_localstatedir}/spool/anacron/cron.weekly
+%ghost %verify(not md5 size mtime) %{_localstatedir}/spool/anacron/cron.monthly
 %{_mandir}/man5/anacrontab.*
 %{_mandir}/man8/anacron.*
 
@@ -243,6 +233,9 @@ cp -a %{_lockdir}/subsys/%{service_name} %{_lockdir}/subsys/%{name} &>/dev/null 
 ################################################################################
 
 %changelog
+* Mon Oct 09 2023 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- Spec refactoring
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - https://github.com/cronie-crond/cronie/releases/tag/cronie-1.6.1
 
