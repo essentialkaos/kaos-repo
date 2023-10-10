@@ -100,7 +100,7 @@ Development Libraries for the GDAL file format library.
 
 %build
 %{cmake3} \
-  -DCMAKE_INSTALL_INCLUDEDIR=include/%{fullname} \
+  -DCMAKE_INSTALL_INCLUDEDIR=include/%{realname} \
   -DGDAL_USE_JPEG12_INTERNAL=OFF \
   -DBUILD_PYTHON_BINDINGS=OFF \
   -DENABLE_DEFLATE64=OFF
@@ -142,7 +142,7 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 %{_bindir}/%{realname}-config*
-%{_includedir}/%{name}/
+%{_includedir}/%{realname}/
 %{_libdir}/lib%{realname}.so
 %{_libdir}/cmake/%{realname}/
 %{_libdir}/pkgconfig/%{realname}.pc
