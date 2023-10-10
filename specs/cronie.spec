@@ -167,6 +167,10 @@ install -pm 644 contrib/%{name}.systemd %{buildroot}%{_unitdir}/%{service_name}.
 rm -rf %{buildroot}
 
 %post
+if [[ -f "%{_rundir}/%{service_name}.pid" ]] ; then
+  rm -f %{_rundir}/%{service_name}.pid
+fi
+
 if [[ $1 -eq 1 ]] ; then
   systemctl enable %{service_name}.service &>/dev/null || :
 fi
@@ -178,8 +182,10 @@ if [[ $1 -eq 0 ]]; then
 fi
 
 %postun
+systemctl daemon-reload &>/dev/null || :
+
 if [[ $1 -ge 1 ]] ; then
-  systemctl daemon-reload &>/dev/null || :
+  systemctl try-restart &>/dev/null || :
 fi
 
 %post anacron
