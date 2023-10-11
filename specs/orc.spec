@@ -9,23 +9,23 @@
 
 ################################################################################
 
-Summary:         The Oil Run-time Compiler
-Name:            orc
-Version:         0.4.33
-Release:         0%{?dist}
-Group:           System Environment/Libraries
-License:         BSD
-URL:             https://gitlab.freedesktop.org/gstreamer/orc
+Summary:        The Oil Run-time Compiler
+Name:           orc
+Version:        0.4.34
+Release:        0%{?dist}
+Group:          System Environment/Libraries
+License:        BSD
+URL:            https://gitlab.freedesktop.org/gstreamer/orc
 
-Source0:         https://gstreamer.freedesktop.org/src/%{name}/%{name}-%{version}.tar.xz
+Source0:        https://gstreamer.freedesktop.org/src/%{name}/%{name}-%{version}.tar.xz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   meson gcc
+BuildRequires:  meson gcc
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -39,11 +39,11 @@ subtraction, and many arithmetic operations.
 ################################################################################
 
 %package devel
-Summary:         Development files and static libraries for Orc
-Group:           Development/Libraries
+Summary:   Development files and static libraries for Orc
+Group:     Development/Libraries
 
-Requires:        %{name} = %{version}-%{release}
-Requires:        %{name}-compiler pkgconfig
+Requires:  %{name} = %{version}-%{release}
+Requires:  %{name}-compiler pkgconfig
 
 %description devel
 This package contains the files needed to build packages that depend
@@ -52,11 +52,11 @@ on orc.
 ################################################################################
 
 %package compiler
-Summary:         Orc compiler
-Group:           Development/Libraries
+Summary:   Orc compiler
+Group:     Development/Libraries
 
-Requires:        %{name} = %{version}-%{release}
-Requires:        pkgconfig
+Requires:  %{name} = %{version}-%{release}
+Requires:  pkgconfig
 
 %description compiler
 The Orc compiler, to produce optimized code.
@@ -115,6 +115,16 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 11 2023 Anton Novojilov <andy@essentialkaos.com> - 0.4.34-0
+- Thread-safety improvements around orc codemem allocation/freeing
+- Add orc_parse_code() with more detailed error reporting
+- Implement Orc function lazy initialization correctly via atomic operations
+- orc program parser fixes and improvements
+- build fixes and compiler warning fixes
+- coverity and clang scan-build static code analysis fixes
+- meson: Do not always generate static library for test library
+- ci improvements
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.4.33-0
 - Add support for aarch64 (64-bit ARM) architecture (not yet enabled on
   Windows though)
