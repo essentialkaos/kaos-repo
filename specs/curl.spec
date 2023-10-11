@@ -10,7 +10,7 @@
 
 Summary:        Utility for getting files from remote servers
 Name:           curl
-Version:        8.2.1
+Version:        8.4.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Applications/Internet
@@ -30,7 +30,7 @@ BuildRequires:  perl(File::Basename) perl(File::Copy) perl(File::Spec)
 BuildRequires:  perl(IPC::Open2) perl(MIME::Base64) perl(warnings)
 BuildRequires:  perl(strict) perl(Time::Local) perl(Time::HiRes)
 BuildRequires:  libpsl-devel libzstd-devel libzstd-devel brotli-devel
-BuildRequires:  openssl-devel libnghttp2-devel >= %{nghttp2_version}
+BuildRequires:  openssl-devel libnghttp2-devel
 
 Requires:       libnghttp2 >= %{nghttp2_version}
 Requires:       libcurl%{?_isa} = %{version}-%{release}
@@ -140,10 +140,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc CHANGES README*
-%doc docs/BUGS.md docs/FAQ docs/FEATURES.md docs/TODO docs/HTTP2.md
-%doc docs/HTTP3.md docs/SSL-PROBLEMS.md docs/THANKS docs/KNOWN_BUGS
-%doc docs/SECURITY-PROCESS.md docs/BUG-BOUNTY.md docs/TheArtOfHttpScripting.md
+%doc CHANGES README* docs/*.md
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 
@@ -154,9 +151,7 @@ rm -rf %{buildroot}
 
 %files -n libcurl-devel
 %defattr(-,root,root,-)
-%doc docs/examples/*.c docs/examples/Makefile.example docs/INTERNALS.md
-%doc docs/CHECKSRC.md docs/CONTRIBUTE.md docs/libcurl/ABI.md docs/CODE_STYLE.md
-%doc docs/CIPHERS.md docs/DYNBUF.md
+%doc docs/examples/*.c docs/examples/Makefile.example
 %{_bindir}/curl-config
 %{_includedir}/curl/
 %{_libdir}/*.so
@@ -169,6 +164,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 11 2023 Anton Novojilov <andy@essentialkaos.com> - 8.4.0-0
+- https://curl.se/changes.html#8_4_0
+
+* Wed Oct 11 2023 Anton Novojilov <andy@essentialkaos.com> - 8.3.0-0
+- https://curl.se/changes.html#8_3_0
+
 * Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.2.1-0
 - https://curl.se/changes.html#8_2_1
 
