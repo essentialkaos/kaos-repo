@@ -1,13 +1,13 @@
-# Bibop recipe for pg_repack for PostgreSQL 14
+# Bibop recipe for pg_repack for PostgreSQL 16
 # See more: https://kaos.sh/bibop
 
-pkg postgresql14-server pg_repack14
+pkg postgresql16-server pg_repack16
 
 require-root yes
 unsafe-actions yes
 
 var repack_version   1.4.8
-var postgres_version 14
+var postgres_version 16
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib

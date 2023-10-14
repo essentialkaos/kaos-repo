@@ -1,18 +1,26 @@
 # Bibop recipe for pg_repack for PostgreSQL 13
 # See more: https://kaos.sh/bibop
 
-pkg pg_repack13
+pkg postgresql13-server pg_repack13
 
-fast-finish yes
+require-root yes
+unsafe-actions yes
 
-var repack_version   1.4.7
+var repack_version   1.4.8
 var postgres_version 13
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
 var bin_dir  /usr/pgsql-{postgres_version}/bin
 
+var postgres_service   postgresql-{postgres_version}
+var postgres_port      5432
+var postgres_data_dir  /var/lib/pgsql/{postgres_version}
+var postgres_pid       /var/run/postgresql{postgres_version}.pid
+
 var extension_dir {data_dir}/extension
+
+################################################################################
 
 command "-" "Check library"
   exist {lib_dir}/pg_repack.so
@@ -25,3 +33,27 @@ command "-" "Check binary"
 command "-" "Check SQL files"
   exist {extension_dir}/pg_repack--{repack_version}.sql
   exist {extension_dir}/pg_repack.control
+
+################################################################################
+
+command "service {postgres_service} initdb" "Database initialization"
+  exit 0
+
+command "systemctl start {postgres_service}" "Start PostgreSQL server"
+  wait 1
+  wait-fs {postgres_pid}
+  service-works {postgres_service}
+  connect tcp :{postgres_port}
+
+command "postgres:{bin_dir}/psql -t -c 'CREATE EXTENSION pg_repack;'" "Create PostGIS extension"
+  exit 0
+
+command "systemctl stop {postgres_service}" "Stop PostgreSQL server"
+  wait 1
+  !wait-fs {postgres_pid}
+  !service-works {postgres_service}
+
+################################################################################
+
+command:teardown "-" "Data cleanup"
+  cleanup {postgres_data_dir}/data
