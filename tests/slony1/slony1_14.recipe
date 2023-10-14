@@ -5,32 +5,33 @@ pkg slony1-14
 
 require-root yes
 
-var slony_version 2.2.10
+var slony_version 2.2.11
 
-var postgres_version      14
-var postgres_version_comb 14
+var postgres_version 14
 
-var service_name slony1-{postgres_version_comb}
+var service_name slony1-{postgres_version}
 
 var data_dir /usr/pgsql-{postgres_version}/share
 var lib_dir  /usr/pgsql-{postgres_version}/lib
 var bin_dir  /usr/pgsql-{postgres_version}/bin
 
+################################################################################
+
 command "-" "Check environment"
-  exist /etc/slony1-{postgres_version_comb}/slon.conf
-  exist /etc/slony1-{postgres_version_comb}/slon_tools.conf
+  exist /etc/slony1-{postgres_version}/slon.conf
+  exist /etc/slony1-{postgres_version}/slon_tools.conf
 
-  mode /etc/slony1-{postgres_version_comb}/slon.conf 644
-  mode /etc/slony1-{postgres_version_comb}/slon_tools.conf 644
+  mode /etc/slony1-{postgres_version}/slon.conf 644
+  mode /etc/slony1-{postgres_version}/slon_tools.conf 644
 
-  owner /etc/slony1-{postgres_version_comb}/slon.conf root
-  owner /etc/slony1-{postgres_version_comb}/slon_tools.conf root
+  owner /etc/slony1-{postgres_version}/slon.conf root
+  owner /etc/slony1-{postgres_version}/slon_tools.conf root
 
-  exist /etc/sysconfig/slony1-{postgres_version_comb}
-  mode /etc/sysconfig/slony1-{postgres_version_comb} 644
+  exist /etc/sysconfig/slony1-{postgres_version}
+  mode /etc/sysconfig/slony1-{postgres_version} 644
 
-  exist /etc/rc.d/init.d/slony1-{postgres_version_comb}
-  mode /etc/rc.d/init.d/slony1-{postgres_version_comb} 755
+  exist /etc/rc.d/init.d/slony1-{postgres_version}
+  mode /etc/rc.d/init.d/slony1-{postgres_version} 755
 
 command "-" "Check binaries"
   exist {bin_dir}/slon
@@ -109,6 +110,8 @@ command "-" "Check SQL files"
   mode {data_dir}/slony1_funcs.{slony_version}.sql 644
   mode {data_dir}/slony1_funcs.v83.{slony_version}.sql 644
   mode {data_dir}/slony1_funcs.v84.{slony_version}.sql 644
+
+################################################################################
 
 command "systemctl start {service_name}" "Start Slony1 daemon"
   wait-service {service_name} 5

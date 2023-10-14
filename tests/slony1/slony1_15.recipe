@@ -1,13 +1,13 @@
-# Bibop recipe for Slony 1 for PostgreSQL 11
+# Bibop recipe for Slony 1 for PostgreSQL 15
 # See more: https://kaos.sh/bibop
 
-pkg slony1-11
+pkg slony1-15
 
 require-root yes
 
 var slony_version 2.2.11
 
-var postgres_version 11
+var postgres_version 15
 
 var service_name slony1-{postgres_version}
 
