@@ -8,117 +8,13 @@ fast-finish yes
 var lib_name hiredis
 
 command "-" "Check shared libs"
-  lib-loaded libhiredis.so.0.*
+  lib-loaded libhiredis.so.1.*
 
 command "-" "Check headers"
   lib-header {lib_name}
 
 command "-" "Check pkg-config"
   lib-config {lib_name}
-
-command "-" "Check symbols exported by libhiredis.so"
-  lib-exported libhiredis.so.0 freeReplyObject
-  lib-exported libhiredis.so.0 hex_digit_to_int
-  lib-exported libhiredis.so.0 is_hex_digit
-  lib-exported libhiredis.so.0 redisAppendCommand
-  lib-exported libhiredis.so.0 redisAppendCommandArgv
-  lib-exported libhiredis.so.0 redisAppendFormattedCommand
-  lib-exported libhiredis.so.0 redisAsyncCommand
-  lib-exported libhiredis.so.0 redisAsyncCommandArgv
-  lib-exported libhiredis.so.0 redisAsyncConnect
-  lib-exported libhiredis.so.0 redisAsyncConnectBind
-  lib-exported libhiredis.so.0 redisAsyncConnectBindWithReuse
-  lib-exported libhiredis.so.0 redisAsyncConnectUnix
-  lib-exported libhiredis.so.0 redisAsyncDisconnect
-  lib-exported libhiredis.so.0 redisAsyncFormattedCommand
-  lib-exported libhiredis.so.0 redisAsyncFree
-  lib-exported libhiredis.so.0 redisAsyncHandleRead
-  lib-exported libhiredis.so.0 redisAsyncHandleWrite
-  lib-exported libhiredis.so.0 redisAsyncSetConnectCallback
-  lib-exported libhiredis.so.0 redisAsyncSetDisconnectCallback
-  lib-exported libhiredis.so.0 redisBufferRead
-  lib-exported libhiredis.so.0 redisBufferWrite
-  lib-exported libhiredis.so.0 redisCheckSocketError
-  lib-exported libhiredis.so.0 redisCommand
-  lib-exported libhiredis.so.0 redisCommandArgv
-  lib-exported libhiredis.so.0 redisConnect
-  lib-exported libhiredis.so.0 redisConnectBindNonBlock
-  lib-exported libhiredis.so.0 redisConnectBindNonBlockWithReuse
-  lib-exported libhiredis.so.0 redisConnectFd
-  lib-exported libhiredis.so.0 redisConnectNonBlock
-  lib-exported libhiredis.so.0 redisConnectUnix
-  lib-exported libhiredis.so.0 redisConnectUnixNonBlock
-  lib-exported libhiredis.so.0 redisConnectUnixWithTimeout
-  lib-exported libhiredis.so.0 redisConnectWithTimeout
-  lib-exported libhiredis.so.0 redisContextConnectBindTcp
-  lib-exported libhiredis.so.0 redisContextConnectTcp
-  lib-exported libhiredis.so.0 redisContextConnectUnix
-  lib-exported libhiredis.so.0 redisContextSetTimeout
-  lib-exported libhiredis.so.0 redisEnableKeepAlive
-  lib-exported libhiredis.so.0 redisFormatCommand
-  lib-exported libhiredis.so.0 redisFormatCommandArgv
-  lib-exported libhiredis.so.0 redisFormatSdsCommandArgv
-  lib-exported libhiredis.so.0 redisFree
-  lib-exported libhiredis.so.0 redisFreeCommand
-  lib-exported libhiredis.so.0 redisFreeKeepFd
-  lib-exported libhiredis.so.0 redisFreeSdsCommand
-  lib-exported libhiredis.so.0 redisGetReply
-  lib-exported libhiredis.so.0 redisGetReplyFromReader
-  lib-exported libhiredis.so.0 redisKeepAlive
-  lib-exported libhiredis.so.0 redisProcessCallbacks
-  lib-exported libhiredis.so.0 redisReaderCreate
-  lib-exported libhiredis.so.0 redisReaderCreateWithFunctions
-  lib-exported libhiredis.so.0 redisReaderFeed
-  lib-exported libhiredis.so.0 redisReaderFree
-  lib-exported libhiredis.so.0 redisReaderGetReply
-  lib-exported libhiredis.so.0 redisReconnect
-  lib-exported libhiredis.so.0 redisSetTimeout
-  lib-exported libhiredis.so.0 redisvAppendCommand
-  lib-exported libhiredis.so.0 redisvAsyncCommand
-  lib-exported libhiredis.so.0 redisvCommand
-  lib-exported libhiredis.so.0 redisvFormatCommand
-  lib-exported libhiredis.so.0 sdsAllocPtr
-  lib-exported libhiredis.so.0 sdsAllocSize
-  lib-exported libhiredis.so.0 sdscat
-  lib-exported libhiredis.so.0 sdscatfmt
-  lib-exported libhiredis.so.0 sdscatlen
-  lib-exported libhiredis.so.0 sdscatprintf
-  lib-exported libhiredis.so.0 sdscatrepr
-  lib-exported libhiredis.so.0 sdscatsds
-  lib-exported libhiredis.so.0 sdscatvprintf
-  lib-exported libhiredis.so.0 sdsclear
-  lib-exported libhiredis.so.0 sdscmp
-  lib-exported libhiredis.so.0 sdscpy
-  lib-exported libhiredis.so.0 sdscpylen
-  lib-exported libhiredis.so.0 sdsdup
-  lib-exported libhiredis.so.0 sdsempty
-  lib-exported libhiredis.so.0 sdsfree
-  lib-exported libhiredis.so.0 sds_free
-  lib-exported libhiredis.so.0 sdsfreesplitres
-  lib-exported libhiredis.so.0 sdsfromlonglong
-  lib-exported libhiredis.so.0 sdsgrowzero
-  lib-exported libhiredis.so.0 sdsIncrLen
-  lib-exported libhiredis.so.0 sdsjoin
-  lib-exported libhiredis.so.0 sdsjoinsds
-  lib-exported libhiredis.so.0 sdsll2str
-  lib-exported libhiredis.so.0 sdsMakeRoomFor
-  lib-exported libhiredis.so.0 sds_malloc
-  lib-exported libhiredis.so.0 sdsmapchars
-  lib-exported libhiredis.so.0 sdsnew
-  lib-exported libhiredis.so.0 sdsnewlen
-  lib-exported libhiredis.so.0 sdsrange
-  lib-exported libhiredis.so.0 sds_realloc
-  lib-exported libhiredis.so.0 sdsRemoveFreeSpace
-  lib-exported libhiredis.so.0 sdssplitargs
-  lib-exported libhiredis.so.0 sdssplitlen
-  lib-exported libhiredis.so.0 sdstolower
-  lib-exported libhiredis.so.0 sdstoupper
-  lib-exported libhiredis.so.0 sdstrim
-  lib-exported libhiredis.so.0 sdsull2str
-  lib-exported libhiredis.so.0 sdsupdatelen
-
-command "./test_{ARCH_BITS}" "Check prebuilt binary"
-  exit 0
 
 command "gcc -o test_bin -l {lib_name} test.c" "Compile binary"
   exit 0

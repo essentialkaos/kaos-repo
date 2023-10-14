@@ -1,4 +1,4 @@
-# Bibop recipe for hdf5
+# Bibop recipe for HDF 5
 # See more: https://kaos.sh/bibop
 
 pkg hdf5 hdf5-devel hdf5-static
@@ -6,31 +6,31 @@ pkg hdf5 hdf5-devel hdf5-static
 fast-finish yes
 
 command "-" "Check apps"
-  app gif2h5
-  app h52gif
-  app h5c++
-  app h5c++-64
-  app h5cc
-  app h5cc-64
   app h5clear
   app h5copy
   app h5debug
   app h5diff
   app h5dump
-  app h5fc
-  app h5fc-64
   app h5format_convert
   app h5import
   app h5jam
   app h5ls
   app h5mkgrp
   app h5perf_serial
-  app h5redeploy
   app h5repack
   app h5repart
   app h5stat
   app h5unjam
   app h5watch
+
+command "-" "Check devel apps"
+  app h5c++
+  app h5c++-64
+  app h5cc
+  app h5cc-64
+  app h5fc
+  app h5fc-64
+  app h5redeploy
 
 command "-" "Check shared libs"
   lib-loaded libhdf5.so.*

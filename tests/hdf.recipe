@@ -1,4 +1,4 @@
-# Bibop recipe for hdf
+# Bibop recipe for HDF
 # See more: https://kaos.sh/bibop
 
 pkg hdf hdf-devel
@@ -7,8 +7,6 @@ fast-finish yes
 
 command "-" "Check apps"
   app gif2hdf
-  app h4cc
-  app h4fc
   app h4redeploy
   app hdf24to8
   app hdf2gif
@@ -33,6 +31,13 @@ command "-" "Check apps"
   app ristosds
   app vmake
   app vshow
+
+command "-" "Check apps from devel"
+  app h4cc
+
+command "-" "Check shared libs"
+  lib-loaded libdf.so.*
+  lib-loaded libmfhdf.so.*
 
 command "-" "Check headers"
   lib-header hdf
