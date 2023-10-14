@@ -16,7 +16,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs
-Version:        18.18.0
+Version:        18.18.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -107,6 +107,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 13 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.1-0
+- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.18.1
+
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.0-0
 - https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.18.0
 
