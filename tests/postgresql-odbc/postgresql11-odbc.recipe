@@ -3,6 +3,8 @@
 
 pkg postgresql11-odbc
 
+fast-finish yes
+
 var pg_ver 11
 var pg_dir /usr/pgsql-{pg_ver}
 var pg_lib {pg_dir}/lib
