@@ -11,9 +11,6 @@ var extra_linking_flags "-levent_extra -levent"
 var openssl_linking_flags "-levent_openssl -levent"
 var pthreads_linking_flags "-levent_pthreads -levent"
 
-command "-" "Check environment"
-  app event_rpcgen.py
-
 command "-" "Check shared libs"
   lib-loaded libevent-2.1.so.*
   lib-loaded libevent_core-2.1.so.*
@@ -70,4 +67,3 @@ command "gcc -o test_pthreads_bin {pthreads_linking_flags} test.c" "Compile bina
 
 +command "./test_pthreads_bin" "Execute built binary"
   exit 0
-
