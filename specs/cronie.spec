@@ -175,6 +175,8 @@ if [[ $1 -eq 1 ]] ; then
   systemctl enable %{service_name}.service &>/dev/null || :
 fi
 
+systemctl daemon-reload &>/dev/null || :
+
 %preun
 if [[ $1 -eq 0 ]]; then
   systemctl --no-reload disable %{service_name}.service &>/dev/null || :
