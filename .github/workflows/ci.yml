@@ -40,7 +40,7 @@ jobs:
         run: ./perfecto-container -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| test/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
 
   Bibop:
-    name: Bibop
+    name: Bibop Validation
     runs-on: ubuntu-latest
 
     steps:
