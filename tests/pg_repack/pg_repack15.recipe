@@ -6,7 +6,9 @@ pkg postgresql15-server pg_repack15
 require-root yes
 unsafe-actions yes
 
-var repack_version   1.4.8
+var ext_name     pg_repack
+var ext_version  1.4.8
+
 var postgres_version 15
 
 var data_dir /usr/pgsql-{postgres_version}/share
@@ -23,16 +25,16 @@ var extension_dir {data_dir}/extension
 ################################################################################
 
 command "-" "Check library"
-  exist {lib_dir}/pg_repack.so
-  mode {lib_dir}/pg_repack.so 755
+  exist {lib_dir}/{ext_name}.so
+  mode {lib_dir}/{ext_name}.so 755
 
 command "-" "Check binary"
-  app pg_repack
-  link /usr/bin/pg_repack {bin_dir}/pg_repack
+  app {ext_name}
+  link /usr/bin/{ext_name} {bin_dir}/{ext_name}
 
 command "-" "Check SQL files"
-  exist {extension_dir}/pg_repack--{repack_version}.sql
-  exist {extension_dir}/pg_repack.control
+  exist {extension_dir}/{ext_name}--{ext_version}.sql
+  exist {extension_dir}/{ext_name}.control
 
 ################################################################################
 
@@ -45,7 +47,7 @@ command "systemctl start {postgres_service}" "Start PostgreSQL server"
   service-works {postgres_service}
   connect tcp :{postgres_port}
 
-command "postgres:{bin_dir}/psql -t -c 'CREATE EXTENSION pg_repack;'" "Create PostGIS extension"
+command "postgres:{bin_dir}/psql -t -c 'CREATE EXTENSION {ext_name};'" "Create PostGIS extension"
   exit 0
 
 command "systemctl stop {postgres_service}" "Stop PostgreSQL server"
