@@ -41,10 +41,11 @@ glib will support signal in the future.
 
 %package devel
 
-Summary:         Development files for %{name}
-Group:           Development/Libraries
-Requires:        %{name} = %{version}-%{release}
-Requires:        pkgconfig
+Summary:  Development files for %{name}
+Group:    Development/Libraries
+
+Requires:  %{name} = %{version}-%{release}
+Requires:  pkgconfig
 
 %description devel
 The %{name}-devel package contains libraries and header files for
@@ -54,9 +55,10 @@ developing applications that use %{name}.
 
 %package glib
 
-Summary:         glib module for %{name}
-Group:           Development/Libraries
-Requires:        %{name} = %{version}-%{release}
+Summary:  glib module for %{name}
+Group:    Development/Libraries
+
+Requires:  %{name} = %{version}-%{release}
 
 %description glib
 Module for %{name} which provides integration with glib.
@@ -67,12 +69,12 @@ This package does NOT yet provide %{name}-module-base.
 
 %package glib-devel
 
-Summary:         Development files for %{name}-glib
-Group:           Development/Libraries
+Summary:  Development files for %{name}-glib
+Group:    Development/Libraries
 
-Requires:        %{name}-glib = %{version}-%{release}
-Requires:        %{name}-devel = %{version}-%{release}
-Requires:        pkgconfig(glib-2.0)
+Requires:  %{name}-glib = %{version}-%{release}
+Requires:  %{name}-devel = %{version}-%{release}
+Requires:  pkgconfig(glib-2.0)
 
 %description    glib-devel
 The %{name}-glib-devel package contains libraries and header files for
@@ -82,11 +84,11 @@ developing applications that use %{name}-glib.
 
 %package libevent
 
-Summary:         libevent module for %{name}
-Group:           Development/Libraries
+Summary:  libevent module for %{name}
+Group:    Development/Libraries
 
-Requires:        %{name} = %{version}-%{release}
-Provides:        %{name}-module-base = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
+Provides:  %{name}-module-base = %{version}-%{release}
 
 %description libevent
 Module for %{name} which provides integration with libevent.
@@ -95,12 +97,12 @@ Module for %{name} which provides integration with libevent.
 
 %package libevent-devel
 
-Summary:         Development files for %{name}-libevent
-Group:           Development/Libraries
+Summary:  Development files for %{name}-libevent
+Group:    Development/Libraries
 
-Requires:        %{name}-libevent = %{version}-%{release}
-Requires:        %{name}-devel = %{version}-%{release}
-Requires:        pkgconfig(libevent)
+Requires:  %{name}-libevent = %{version}-%{release}
+Requires:  %{name}-devel = %{version}-%{release}
+Requires:  pkgconfig(libevent)
 
 %description libevent-devel
 The %{name}-libevent-devel package contains libraries and header files for
@@ -110,10 +112,11 @@ developing applications that use %{name}-libevent.
 
 %package libev
 
-Summary:         libev module for %{name}
-Group:           Development/Libraries
-Requires:        %{name} = %{version}-%{release}
-Provides:        %{name}-module-base = %{version}-%{release}
+Summary:  libev module for %{name}
+Group:    Development/Libraries
+
+Requires:  %{name} = %{version}-%{release}
+Provides:  %{name}-module-base = %{version}-%{release}
 
 %description libev
 Module for %{name} which provides integration with libev.
@@ -122,11 +125,12 @@ Module for %{name} which provides integration with libev.
 
 %package libev-devel
 
-Summary:         Development files for %{name}-libev
-Group:           Development/Libraries
-Requires:        %{name}-libev = %{version}-%{release}
-Requires:        %{name}-devel = %{version}-%{release}
-Requires:        libev-devel
+Summary:  Development files for %{name}-libev
+Group:    Development/Libraries
+
+Requires:  %{name}-libev = %{version}-%{release}
+Requires:  %{name}-devel = %{version}-%{release}
+Requires:  libev-devel
 
 %description libev-devel
 The %{name}-libev-devel package contains libraries and header files for
@@ -158,21 +162,25 @@ rm -rf %{buildroot}
 
 %post
 /sbin/ldconfig
+
 %postun
 /sbin/ldconfig
 
 %post glib
 /sbin/ldconfig
+
 %postun glib
 /sbin/ldconfig
 
 %post libevent
 /sbin/ldconfig
+
 %postun libevent
 /sbin/ldconfig
 
 %post libev
 /sbin/ldconfig
+
 %postun libev
 /sbin/ldconfig
 

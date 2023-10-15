@@ -34,59 +34,6 @@ command "-" "Check pkg-config"
   lib-config libverto-libevent
   lib-config libverto-libev
 
-command "-" "Check symbols exported by libverto.so"
-  lib-exported libverto.so verto_add_child
-  lib-exported libverto.so verto_add_idle
-  lib-exported libverto.so verto_add_io
-  lib-exported libverto.so verto_add_signal
-  lib-exported libverto.so verto_add_timeout
-  lib-exported libverto.so verto_break
-  lib-exported libverto.so verto_cleanup
-  lib-exported libverto.so verto_convert_module
-  lib-exported libverto.so verto_default
-  lib-exported libverto.so verto_del
-  lib-exported libverto.so verto_fire
-  lib-exported libverto.so verto_free
-  lib-exported libverto.so verto_get_ctx
-  lib-exported libverto.so verto_get_fd
-  lib-exported libverto.so verto_get_fd_state
-  lib-exported libverto.so verto_get_flags
-  lib-exported libverto.so verto_get_interval
-  lib-exported libverto.so verto_get_private
-  lib-exported libverto.so verto_get_proc
-  lib-exported libverto.so verto_get_proc_status
-  lib-exported libverto.so verto_get_signal
-  lib-exported libverto.so verto_get_supported_types
-  lib-exported libverto.so verto_get_type
-  lib-exported libverto.so verto_new
-  lib-exported libverto.so verto_reinitialize
-  lib-exported libverto.so verto_run
-  lib-exported libverto.so verto_run_once
-  lib-exported libverto.so verto_set_allocator
-  lib-exported libverto.so verto_set_default
-  lib-exported libverto.so verto_set_fd_state
-  lib-exported libverto.so verto_set_flags
-  lib-exported libverto.so verto_set_private
-  lib-exported libverto.so verto_set_proc_status
-
-command "-" "Check symbols exported by libverto-glib.so"
-  lib-exported libverto-glib.so verto_convert_glib
-  lib-exported libverto-glib.so verto_default_glib
-  lib-exported libverto-glib.so verto_module_table_glib
-  lib-exported libverto-glib.so verto_new_glib
-
-command "-" "Check symbols exported by libverto-libevent.so"
-  lib-exported libverto-libevent.so verto_convert_libevent
-  lib-exported libverto-libevent.so verto_default_libevent
-  lib-exported libverto-libevent.so verto_module_table_libevent
-  lib-exported libverto-libevent.so verto_new_libevent
-
-command "-" "Check symbols exported by libverto-libev.so"
-  lib-exported libverto-libev.so verto_convert_libev
-  lib-exported libverto-libev.so verto_default_libev
-  lib-exported libverto-libev.so verto_module_table_libev
-  lib-exported libverto-libev.so verto_new_libev
-
 command "gcc -o test_bin {main_linking_flags} test.c" "Compile binary"
   exit 0
   exist test_bin

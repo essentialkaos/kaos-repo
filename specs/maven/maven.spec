@@ -4,36 +4,36 @@
 
 ################################################################################
 
-%define __jar_repack %{nil}
+%define __jar_repack  %{nil}
 
 ################################################################################
 
-%define pkg_name          apache-maven
-%define pkg_major_ver     3
-%define pkg_homedir       %{_datadir}/%{name}
-%define pkg_confdir       %{_sysconfdir}/%{name}
+%define pkg_name       apache-maven
+%define pkg_major_ver  3
+%define pkg_homedir    %{_datadir}/%{name}
+%define pkg_confdir    %{_sysconfdir}/%{name}
 
 ################################################################################
 
-Summary:       Java project management and project comprehension tool
-Name:          maven
-Version:       3.6.3
-Release:       0%{?dist}
-Group:         Development/Tools
-License:       ASL 2.0 and MIT
-URL:           https://maven.apache.org
+Summary:    Java project management and project comprehension tool
+Name:       maven
+Version:    3.9.5
+Release:    0%{?dist}
+Group:      Development/Tools
+License:    ASL 2.0 and MIT
+URL:        https://maven.apache.org
 
-Source0:       https://mirror.linux-ia64.org/apache/%{name}/%{name}-%{pkg_major_ver}/%{version}/binaries/apache-%{name}-%{version}-bin.tar.gz
-Source1:       %{name}-bash-completion
+Source0:    https://mirror.linux-ia64.org/apache/%{name}/%{name}-%{pkg_major_ver}/%{version}/binaries/apache-%{name}-%{version}-bin.tar.gz
+Source1:    %{name}-bash-completion
 
-Source100:     checksum.sha512
+Source100:  checksum.sha512
 
-BuildRoot:     %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:      jdk >= 1.8.0
-Requires:      %{name}-lib = %{version}-%{release}
+Requires:   jdk >= 1.8.0
+Requires:   %{name}-lib = %{version}-%{release}
 
-Provides:      %{name} = %{version}-%{release}
+Provides:   %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -45,8 +45,8 @@ reporting and documentation from a central piece of information.
 ################################################################################
 
 %package lib
-Summary:       Core part of Maven
-Group:         Development/Tools
+Summary:  Core part of Maven
+Group:    Development/Tools
 
 %description lib
 Core part of Apache Maven that can be used as a library.
@@ -125,5 +125,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 15 2023 Anton Novojilov <andy@essentialkaos.com> - 3.9.5-0
+- https://maven.apache.org/docs/3.9.5/release-notes.html
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 3.6.3-0
 - Initial build for kaos-repo
