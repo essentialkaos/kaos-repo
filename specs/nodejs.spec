@@ -108,13 +108,13 @@ rm -rf %{buildroot}
 
 %changelog
 * Sat Oct 14 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.2-0
-- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.18.2
+- https://nodejs.org/en/blog/release/v18.18.2
 
 * Fri Oct 13 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.1-0
-- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.18.1
+- https://nodejs.org/en/blog/release/v18.18.1
 
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.0-0
-- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.18.0
+- https://nodejs.org/en/blog/release/v18.18.0
 
 * Thu Dec 15 2022 Anton Novojilov <andy@essentialkaos.com> - 18.12.1-0
-- https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V18.md#18.12.1
+- https://nodejs.org/en/blog/release/v18.12.1
