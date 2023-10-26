@@ -8,37 +8,13 @@ on:
 
 jobs:
   Perfecto:
-    name: Perfecto
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Code checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Perfecto docker image
-        uses: docker://ghcr.io/essentialkaos/perfecto:ol8
-        with:
-          args: --version
-
-      - name: Install perfecto-container
-        run: |
-          wget https://kaos.sh/perfecto/perfecto-container
-          chmod +x perfecto-container
-
-      - name: Run Perfecto check
-        env:
-          IMAGE: ghcr.io/essentialkaos/perfecto:ol8
-        run: ./perfecto-container -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| tests/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
-
+    strategy:
+      matrix:
+        image: [ 'ol7', 'ol8', 'ol9']
+    uses: ./.github/workflows/perfecto.yml
+    with:
+      image: ${{ matrix.image }}
+  
   Bibop:
     name: Bibop Validation
     runs-on: ubuntu-latest
