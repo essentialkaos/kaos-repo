@@ -8,6 +8,7 @@ require-root yes
 var service_user  memcached
 var service_group memcached
 var service_name  memcached
+var pause 3
 
 command "-" "Check environment"
   app memcached
@@ -20,6 +21,7 @@ command "-" "Check environment"
 
 command "systemctl start {service_name}" "Start Memcached service"
   wait-service {service_name} 5
+  wait {pause}
   connect tcp :11211
 
 command "systemctl status {service_name}" "Check status of Memcached service"
@@ -27,6 +29,7 @@ command "systemctl status {service_name}" "Check status of Memcached service"
 
 command "systemctl restart {service_name}" "Restart Memcached service"
   wait-service {service_name} 5
+  wait {pause}
   connect tcp :11211
 
 command "systemctl stop {service_name}" "Stop Memcached service"

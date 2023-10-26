@@ -35,7 +35,7 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel python3-setuptools
 
-Requires:       python3 python3-markupsafe
+Requires:       python3 python3-markupsafe = 2.0.1
 
 Provides:       %{name} = %{version}-%{release}
 

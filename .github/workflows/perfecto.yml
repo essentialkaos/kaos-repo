@@ -9,7 +9,7 @@ on:
 
 jobs:
   Perfecto:
-    name: Perfecto
+    name: Perfecto Check
     runs-on: ubuntu-latest
 
     steps:
@@ -24,6 +24,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Perfecto docker image
+        run: |
+          docker pull ghcr.io/essentialkaos/perfecto:${{inputs.image}}
 
       - name: Show verion of Perfecto in docker image
         run: |
