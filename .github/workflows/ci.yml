@@ -28,11 +28,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Run Perfecto docker image
-        uses: "docker://ghcr.io/essentialkaos/perfecto:${{matrix.image}}"
-        with:
-          args: --version
-
       - name: Install perfecto-container
         run: |
           wget https://kaos.sh/perfecto/perfecto-container
