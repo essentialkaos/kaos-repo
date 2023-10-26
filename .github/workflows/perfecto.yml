@@ -1,0 +1,39 @@
+name: Perfecto
+
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+
+jobs:
+  Perfecto:
+    name: Perfecto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Show verion of Perfecto in docker image
+        run: |
+          docker run ghcr.io/essentialkaos/perfecto:${{inputs.image}} --version
+
+      - name: Install perfecto-container
+        run: |
+          wget https://kaos.sh/perfecto/perfecto-container
+          chmod +x perfecto-container
+      - name: Run Perfecto check
+        env:
+          IMAGE: ghcr.io/essentialkaos/perfecto:${{inputs.image}}
+        run: ./perfecto-container -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| tests/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
