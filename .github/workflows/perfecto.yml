@@ -7,7 +7,7 @@ on:
 
 jobs:
   Perfecto:
-    name: Perfecto (${{inputs.image}})
+    name: Perfecto (${{github.event.inputs.image}})
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Perfecto docker image
-        uses: docker://ghcr.io/essentialkaos/perfecto:${{inputs.image}}
+        uses: docker://ghcr.io/essentialkaos/perfecto:${{github.event.inputs.image}}
         with:
           args: --version
 
@@ -35,5 +35,5 @@ jobs:
 
       - name: Run Perfecto check
         env:
-          IMAGE: ghcr.io/essentialkaos/perfecto:${{inputs.image}}
+          IMAGE: ghcr.io/essentialkaos/perfecto:${{github.event.inputs.image}}
         run: ./perfecto-container -A PF20 $(git diff --name-status origin/master | tr '\t' ' ' | grep -Ev '(^D| tests/)' | grep '\.spec' | rev | cut -f1 -d' ' | rev | sort)
