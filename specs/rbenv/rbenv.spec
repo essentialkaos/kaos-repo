@@ -4,67 +4,40 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%define profile_dir  %{_sysconfdir}/profile.d
+%define profile      %{profile_dir}/%{name}.sh
 
 ################################################################################
 
-%define profile_dir       %{_sysconfdir}/profile.d
-%define profile           %{profile_dir}/%{name}.sh
+Summary:        Version manager tool for the Ruby programming language
+Name:           rbenv
+Version:        1.2.0
+Release:        0%{?dist}
+License:        MIT
+Group:          Development/Tools
+URL:            https://github.com/rbenv/rbenv
 
-################################################################################
+Source0:        https://github.com/rbenv/%{name}/archive/v%{version}.tar.gz
+Source1:        %{name}.profile
 
-Summary:         Simple Ruby version management utility
-Name:            rbenv
-Version:         1.1.2
-Release:         0%{?dist}
-License:         MIT
-Group:           Development/Tools
-URL:             https://github.com/sstephenson/rbenv
+Source100:      checksum.sha512
 
-Source0:         https://github.com/rbenv/%{name}/archive/v%{version}.tar.gz
-Source1:         %{name}.profile
+Patch0:         %{name}-default-root.patch
+Patch1:         %{name}-hit-prefix-arrow.patch
 
-Source100:       checksum.sha512
+BuildRequires:  make gcc
 
-Patch0:          %{name}-default-root.patch
-Patch1:          %{name}-hit-prefix-arrow.patch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc
-
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-rbenv lets you easily switch between multiple versions
-of Ruby. Its simple, unobtrusive, and follows the UNIX
-tradition of single-purpose tools that do one thing well.
+rbenv is a version manager tool for the Ruby programming language on Unix-like
+systems. It is useful for switching between multiple Ruby versions on the same
+machine and for ensuring that each project you are working on always runs on the
+correct Ruby version.
 
 ################################################################################
 
@@ -86,18 +59,18 @@ popd
 %install
 rm -rf %{buildroot}
 
-install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}
+install -dm 0755 %{buildroot}%{_prefix}/local/%{name}
 install -dm 0755 %{buildroot}%{profile_dir}
 install -dm 0755 %{buildroot}%{_bindir}
 
-install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}/versions
-install -dm 0755 %{buildroot}%{_loc_prefix}/%{name}/shims
+install -dm 0755 %{buildroot}%{_prefix}/local/%{name}/versions
+install -dm 0755 %{buildroot}%{_prefix}/local/%{name}/shims
 
-cp -r bin libexec completions LICENSE %{buildroot}%{_loc_prefix}/%{name}/
+cp -r bin libexec completions LICENSE %{buildroot}%{_prefix}/local/%{name}/
 
 install -pm 755 %{SOURCE1} %{buildroot}%{profile}
 
-ln -sf %{_loc_prefix}/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
+ln -sf %{_prefix}/local/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 
 %clean
 rm -rf %{buildroot}
@@ -106,13 +79,32 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%{_loc_prefix}/%{name}
+%doc LICENSE README.md
 %{profile}
+%{_prefix}/local/%{name}
 %{_bindir}/%{name}
 
 ################################################################################
 
 %changelog
+* Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- Have shims survive upgrades via Homebrew
+- Improve init: warn about missing shell and name the shell explicitly
+  in the template
+- Sort 'rbenv versions' output semantically
+- Remove misleading 'set by $(rbenv-version-origin)' message when system
+  ruby is in use
+- Output more information in RBENV_DEBUG mode
+- Improve compatibility with bash 'set -u' (nounset) mode
+- Remove fish completion script
+- Speed up rehash
+- Disallow path segments and directory traversal in .ruby-version files
+- Avoid 'type: write error: broken pipe' warning
+- Fix fish shell initialization
+- Avoid unintentional globbing in bash completion
+- Strip '-<suffix>' when detecting the shell
+- Supply 'head -n' flag explicitly
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.1.2-0
 - Fix rehash mechanism for versions of bash that complain about
   clobbering /dev/null

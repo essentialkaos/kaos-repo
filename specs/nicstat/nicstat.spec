@@ -1,23 +1,29 @@
 ################################################################################
 
-Summary:           Network traffic statics utility
-Name:              nicstat
-Version:           1.95
-Release:           2%{?dist}
-License:           Artistic 2.0
-Group:             Applications/System
-URL:               https://sourceforge.net/projects/nicstat
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
-Source:            https://downloads.sourceforge.net/%{name}/%{name}-src-%{version}.tar.gz
+################################################################################
+
+Summary:        Network traffic statics utility
+Name:           nicstat
+Version:        1.95
+Release:        2%{?dist}
+License:        Artistic 2.0
+Group:          Applications/System
+URL:            https://sourceforge.net/projects/nicstat
+
+Source0:        https://downloads.sourceforge.net/%{name}/%{name}-src-%{version}.tar.gz
+
+Source100:      checksum.sha512
 
 # https://github.com/scotte/nicstat
-Patch0:            %{name}-scotte-fixes.patch
+Patch0:         %{name}-scotte-fixes.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     gcc
+BuildRequires:  gcc
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -29,6 +35,8 @@ average packet sizes and more.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-src-%{version}
 
 %patch0 -p1 -b .scotte-fixes

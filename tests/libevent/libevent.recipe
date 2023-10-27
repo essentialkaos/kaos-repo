@@ -1,0 +1,69 @@
+# Bibop recipe for libevent
+# See more: https://kaos.sh/bibop
+
+pkg libevent libevent-devel
+
+fast-finish yes
+
+var main_linking_flags "-levent"
+var core_linking_flags "-levent_core"
+var extra_linking_flags "-levent_extra -levent"
+var openssl_linking_flags "-levent_openssl -levent"
+var pthreads_linking_flags "-levent_pthreads -levent"
+
+command "-" "Check shared libs"
+  lib-loaded libevent-2.1.so.*
+  lib-loaded libevent_core-2.1.so.*
+  lib-loaded libevent_extra-2.1.so.*
+  lib-loaded libevent_openssl-2.1.so.*
+  lib-loaded libevent_pthreads-2.1.so.*
+
+command "-" "Check headers"
+  lib-header evdns.h
+  lib-header event.h
+  lib-header event2
+  lib-header evhttp.h
+  lib-header evrpc.h
+  lib-header evutil.h
+
+command "-" "Check pkg-config"
+  lib-config libevent
+  lib-config libevent_core
+  lib-config libevent_extra
+  lib-config libevent_openssl
+  lib-config libevent_pthreads
+
+command "gcc -o test_main_bin {main_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_main_bin
+
++command "./test_main_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_core_bin {core_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_core_bin
+
++command "./test_core_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_extra_bin {extra_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_extra_bin
+
++command "./test_extra_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_openssl_bin {openssl_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_openssl_bin
+
++command "./test_openssl_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_pthreads_bin {pthreads_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_pthreads_bin
+
++command "./test_pthreads_bin" "Execute built binary"
+  exit 0

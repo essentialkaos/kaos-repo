@@ -1,6 +1,7 @@
 [Unit]
 Description=PostgreSQL {{MAJOR_VERSION}} database server
-After=syslog.target network.target
+Documentation=https://www.postgresql.org/docs/{{MAJOR_VERSION}}/static/
+After=syslog.target network-online.target
 
 [Service]
 PIDFile=/var/run/postgresql{{PKG_VERSION}}.pid

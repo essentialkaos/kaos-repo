@@ -1,59 +1,31 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+Summary:        Tool for checking common errors in RPM packages
+Name:           rpmlint
+Version:        2.4
+Release:        0%{?dist}
+License:        GPLv2
+Group:          Development/Tools
+URL:            https://github.com/rpm-software-management/rpmlint
 
-################################################################################
+Source0:        https://github.com/rpm-software-management/%{name}/archive/refs/tags/%{version}.0.tar.gz
 
-Summary:            Tool for checking common errors in RPM packages
-Name:               rpmlint
-Version:            1.11
-Release:            0%{?dist}
-License:            GPLv2
-Group:              Development/Tools
-URL:                https://github.com/rpm-software-management/rpmlint
+Patch0:         default-config.patch
 
-Source0:            https://github.com/rpm-software-management/%{name}/archive/%{name}-%{version}.tar.gz
-Source1:            %{name}.config
-Source2:            RhelCheck.py
+BuildArch:      noarch
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildArch:          noarch
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires:  python3-devel >= 3.8 python3-setuptools
 
-BuildRequires:      python rpm-python sed python-magic >= 5.05
+Requires:       cpio binutils rpm-build gzip bzip2 xz epel-release
+Requires:       python3 >= 3.8 python3-rpm python3-setuptools
+Requires:       python3-toml python3-pyxdg python3-beam
 
-Requires:           python rpm-python python-magic >= 5.05 python-enchant cpio
-Requires:           binutils desktop-file-utils gzip bzip2 xz
-
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-
 rpmlint is a tool for checking common errors in rpm packages. rpmlint can be
 used to test individual packages before uploading or to check an entire
 distribution. By default all applicable checks are performed but specific
@@ -67,25 +39,20 @@ and installed binary rpms instead of uninstalled binary rpm files.
 ################################################################################
 
 %prep
-%setup -qn %{name}-%{name}-%{version}
+%setup -qn %{name}-%{version}.0
 
-sed -i -e /MenuCheck/d Config.py
-cp -p config config.example
-
-install -pm 644 %{SOURCE2} RhelCheck.py
+%patch0 -p1
 
 %build
-%{__make} %{?_smp_mflags} COMPILE_PYC=1
+%{py3_build}
 
 %install
 rm -rf %{buildroot}
 
-%{make_install} ETCDIR=%{_sysconfdir} \
-                MANDIR=%{_mandir} \
-                LIBDIR=%{_datadir}/rpmlint \
-                BINDIR=%{_bindir}
+%{py3_install}
 
-install -pm 644 %{SOURCE1} %{buildroot}%{_datadir}/rpmlint/config
+install -dDm 755 %{buildroot}%{_sysconfdir}/xdg/rpmlint
+install -pm 644 configs/Fedora/*.toml %{buildroot}%{_sysconfdir}/xdg/rpmlint/
 
 %clean
 rm -rf %{buildroot}
@@ -94,20 +61,33 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING INSTALL config.example
-%config(noreplace) %{_sysconfdir}/rpmlint/
-%{_sysconfdir}/bash_completion.d/
+%doc README.md
+%dir %{_sysconfdir}/xdg/rpmlint
+%config(noreplace) %{_sysconfdir}/xdg/rpmlint/*.toml
 %{_bindir}/rpmdiff
 %{_bindir}/rpmlint
-%{_datadir}/rpmlint/
-%{_mandir}/man1/rpmlint.1*
-%{_mandir}/man1/rpmdiff.1*
+%{python3_sitelib}/*
 
 ################################################################################
 
 %changelog
+* Mon Jul 03 2023 Anton Novojilov <andy@essentialkaos.com> - 2.4-0
+- https://github.com/rpm-software-management/rpmlint/releases/tag/2.4.0
+
+* Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.3-0
+- https://github.com/rpm-software-management/rpmlint/releases/tag/2.3.0
+
+* Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2-0
+- https://github.com/rpm-software-management/rpmlint/releases/tag/2.2.0
+
+* Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.1-0
+- https://github.com/rpm-software-management/rpmlint/releases/tag/2.1.0
+
+* Mon Feb 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.0-0
+- https://github.com/rpm-software-management/rpmlint/releases/tag/2.0.0
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.11-0
-- Updated to the latest release
+- https://github.com/rpm-software-management/rpmlint/releases/tag/rpmlint-1.11
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
 - Updated to the latest release

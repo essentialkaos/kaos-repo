@@ -1,0 +1,34 @@
+# Bibop recipe for faac
+# See more: https://kaos.sh/bibop
+
+pkg gcc faac faac-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lfaac"
+
+command "-" "Check environment"
+  app faac
+
+command "-" "Check shared libs"
+  lib-loaded libfaac.so.*
+
+command "-" "Check headers"
+  lib-header faac.h
+  lib-header faaccfg.h
+
+command "-" "Check symbols exported by libfaac.so"
+  lib-exported libfaac.so faacEncClose
+  lib-exported libfaac.so faacEncEncode
+  lib-exported libfaac.so faacEncGetCurrentConfiguration
+  lib-exported libfaac.so faacEncGetDecoderSpecificInfo
+  lib-exported libfaac.so faacEncGetVersion
+  lib-exported libfaac.so faacEncOpen
+  lib-exported libfaac.so faacEncSetConfiguration
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

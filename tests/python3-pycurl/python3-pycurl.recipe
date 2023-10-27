@@ -1,0 +1,22 @@
+# Bibop recipe for python3-pycurl
+# See more: https://kaos.sh/bibop
+
+pkg python3-pycurl
+
+fast-finish yes
+
+var package_name pycurl
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}
+
+  exist {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX}
+  mode {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX} 755
+
+  lib-linked {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX} libssl.so.*
+  lib-linked {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX} libcrypto.so.*
+  lib-linked {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX} libcurl.so.*
+
+command "python3 test.py" "Run simple test script"
+  exit 0
+  output-contains "200"

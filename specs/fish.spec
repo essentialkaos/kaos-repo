@@ -1,53 +1,34 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-Summary:            Friendly interactive shell (FISh)
-Name:               fish
-Version:            3.0.2
-Release:            0%{?dist}
-License:            GPL2
-Group:              System Environment/Shells
-URL:                http://fishshell.com
+Summary:        Friendly interactive shell (FISh)
+Name:           fish
+Version:        3.6.1
+Release:        0%{?dist}
+License:        GPL2
+Group:          System Environment/Shells
+URL:            https://fishshell.com
 
-Source0:            https://github.com/fish-shell/fish-shell/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/fish-shell/fish-shell/releases/download/%{version}/%{name}-%{version}.tar.xz
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source100:      checksum.sha512
 
-BuildRequires:      ncurses-devel gettext autoconf
-BuildRequires:      devtoolset-3-gcc-c++ devtoolset-3-binutils
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:           bc python which man
+BuildRequires:  ncurses-devel gettext autoconf pcre2-devel
+
+%if 0%{?rhel} <= 7
+BuildRequires:  cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils python-devel
+%else
+BuildRequires:  cmake gcc-c++ python3-devel
+%endif
+
+Requires:       bc which man
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -59,33 +40,42 @@ is simple but incompatible with other shell languages.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
-# Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-3/root/usr/bin:$PATH"
+%if 0%{?rhel} <= 7
+# Use gcc and gcc-c++ from DevToolSet 9
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+%endif
 
-%configure
+%cmake3 -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
+        -Dextra_completionsdir=%{_datadir}/%{name}/vendor_completions.d \
+        -Dextra_functionsdir=%{_datadir}/%{name}/vendor_functions.d \
+        -Dextra_confdir=%{_datadir}/%{name}/vendor_conf.d
 
-%{__make} %{?_smp_mflags}
+%cmake3_build
 
 %install
 rm -rf %{buildroot}
 
-%{make_install}
+%cmake3_install
+
+rm -f %{buildroot}%{_datadir}/applications/fish.desktop
+rm -f %{buildroot}%{_datadir}/pixmaps/fish.png
 
 %clean
 rm -rf %{buildroot}
 
 %post
-if [[ ! `grep "%{_bindir}/%{name}" %{_sysconfdir}/shells` ]] ; then
+if ! grep -q "%{_bindir}/%{name}" %{_sysconfdir}/shells ; then
   echo "%{_bindir}/%{name}" >> %{_sysconfdir}/shells
 fi
 
 %postun
-if [[ $1 -eq 0 ]] ; then
-  grep -v "%{_bindir}/%{name}" %{_sysconfdir}/shells > %{_sysconfdir}/%{name}.tmp
-  mv %{_sysconfdir}/%{name}.tmp %{_sysconfdir}/shells
+if [[ $1 -eq 0 && -f %{_sysconfdir}/shells ]] ; then
+  sed -i '\!^%{_bindir}/%{name}$!d' %{_sysconfdir}/shells
 fi
 
 ################################################################################
@@ -94,48 +84,54 @@ fi
 %defattr(-,root,root,-)
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.fish
+%{_bindir}/*
 %{_datadir}/%{name}/
 %{_datadir}/doc/%{name}/
 %{_datadir}/locale/*
 %{_mandir}/man1/*
 %{_datadir}/pkgconfig/%{name}.pc
-%attr(0755,root,root) %{_bindir}/*
 
 ################################################################################
 
 %changelog
+* Thu Oct 05 2023 Anton Novojilov <andy@essentialkaos.com> - 3.6.1-0
+- https://github.com/fish-shell/fish-shell/releases/tag/3.6.1
+
+* Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 3.5.1-0
+- https://github.com/fish-shell/fish-shell/releases/tag/3.5.1
+
 * Fri Jul 12 2019 Anton Novojilov <andy@essentialkaos.com> - 3.0.2-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/3.0.2
 
 * Thu Jan 10 2019 Anton Novojilov <andy@essentialkaos.com> - 3.0.0-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/3.0.0
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 2.7.1-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.7.1
 
 * Sat Jul 08 2017 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.6.0
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 2.5.0-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.5.0
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.4.0
 
 * Mon Sep 05 2016 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.3.1
 
 * Mon May 23 2016 Gleb Goncharov <inbox@gongled.ru> - 2.3.0-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.3.0
 
 * Thu Aug 06 2015 Anton Novojilov <andy@essentialkaos.com> - 2.2.0-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.2.0
 
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 2.1.2-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.1.2
 
 * Fri Oct 10 2014 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
-- Updated to the latest stable release
+- https://github.com/fish-shell/fish-shell/releases/tag/2.1.1
 
 * Fri Dec 27 2013 Anton Novojilov <andy@essentialkaos.com> - 2.1.0-0
 - Initial build

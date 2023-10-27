@@ -1,0 +1,24 @@
+diff -urN goaccess-1.5.7-orig/config/goaccess.conf goaccess-1.5.7/config/goaccess.conf
+--- goaccess-1.5.7-orig/config/goaccess.conf	2022-04-28 03:53:10.000000000 +0300
++++ goaccess-1.5.7/config/goaccess.conf	2022-08-22 13:24:54.000000000 +0300
+@@ -100,6 +100,20 @@
+ # CADDY JSON Structured
+ #log-format {ts:"%x.%^",request:{remote_ip:"%h",proto:"%H",method:"%m",host:"%v",uri:"%U",headers:{"User-Agent":["%u","%^"]},tls:{cipher_suite:"%k",proto:"%K"}},duration:"%T",size:"%b",status:"%s",resp_headers:{"Content-Type":["%M;%^"]}}
+ 
++# WEBKAOS basic formats
++#time-format %T
++#date-format %d/%b/%Y
++# -- WEBKAOS | main
++#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%R" "%u" "%~h"
++# -- WEBKAOS | extended
++#log-format [%^] %h - [%d:%t %^] "%r" %s %b "%~h" "%R" %v %T %^ %^ - %^
++# -- WEBKAOS | reflog
++#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%R" "%u"
++# -- WEBKAOS | timed_combined
++#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%^" %v "%R" "%u" %T %^
++# -- WEBKAOS | vhost_ip_full_format
++#log-format [%^] %h - %e [%d:%t %^] %v %^ %r %s %b "%R" "%u" "%~h" %T %^
++
+ # In addition to specifying the raw log/date/time formats, for
+ # simplicity, any of the following predefined log format names can be
+ # supplied to the log/date/time-format variables. GoAccess  can  also

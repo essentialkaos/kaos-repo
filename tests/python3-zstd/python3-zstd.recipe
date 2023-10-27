@@ -1,0 +1,23 @@
+# Bibop recipe for python3-zstd
+# See more: https://kaos.sh/bibop
+
+pkg python3-zstd
+
+fast-finish yes
+
+var package_name zstd
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}
+
+  exist {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX}
+  mode {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX} 755
+
+  lib-linked {PYTHON3_SITEARCH}/{package_name}{PYTHON3_BINDING_SUFFIX} libzstd.so.*
+
+command "python3 -c 'import zstd; print(zstd.version())'" "Check version"
+  exit 0
+  output-match "1\.\d\.\d\.\d"
+
+command "python3 test.py" "Run simple test script"
+  exit 0

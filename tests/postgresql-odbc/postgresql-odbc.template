@@ -1,0 +1,27 @@
+# Bibop recipe for ODBC driver for PostgreSQL %PG_VERSION%
+# See more: https://kaos.sh/bibop
+
+pkg postgresql%PG_VERSION%-odbc
+
+fast-finish yes
+
+var pg_ver %PG_VERSION%
+var pg_dir /usr/pgsql-{pg_ver}
+var pg_lib {pg_dir}/lib
+
+command "-" "Check shared libraries"
+  exist {pg_lib}/psqlodbc.so
+  exist {pg_lib}/psqlodbca.so
+  exist {pg_lib}/psqlodbcw.so
+
+  mode {pg_lib}/psqlodbca.so 755
+  mode {pg_lib}/psqlodbcw.so 755
+
+  link {LIBDIR}/psqlodbc.so {pg_lib}/psqlodbcw.so
+  link {LIBDIR}/psqlodbca.so {pg_lib}/psqlodbca.so
+  link {LIBDIR}/psqlodbcw.so {pg_lib}/psqlodbcw.so
+
+  lib-linked {pg_lib}/psqlodbca.so libpq.so.*
+  lib-linked {pg_lib}/psqlodbca.so libodbcinst.so.*
+  lib-linked {pg_lib}/psqlodbcw.so libpq.so.*
+  lib-linked {pg_lib}/psqlodbcw.so libodbcinst.so.*

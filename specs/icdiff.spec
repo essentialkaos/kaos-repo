@@ -4,26 +4,33 @@
 
 ################################################################################
 
-Summary:           Improved colored diff
-Name:              icdiff
-Version:           1.9.5
-Release:           0%{?dist}
-License:           Python 2.6.2
-Group:             Development/Tools
-URL:               https://www.jefftk.com/icdiff
+%global python_ver %(%{__python3} -c "import sys; print('{0}.{1}'.format(sys.version_info.major,sys.version_info.minor))" 2>/dev/null || echo 0.0)
+%{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))" 2>/dev/null)}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" 2>/dev/null)}
 
-Source0:           https://github.com/jeffkaufman/%{name}/archive/release-%{version}.tar.gz
+################################################################################
 
-Source100:         checksum.sha512
+Summary:        Improved colored diff
+Name:           icdiff
+Version:        2.0.7
+Release:        0%{?dist}
+License:        Python 2.6.2
+Group:          Development/Tools
+URL:            https://www.jefftk.com/icdiff
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source0:        https://github.com/jeffkaufman/%{name}/archive/release-%{version}.tar.gz
 
-BuildArch:         noarch
-Requires:          python-setuptools
+Source100:      checksum.sha512
 
-BuildRequires:     python2-devel python-setuptools
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Provides:          %{name} = %{version}-%{release}
+BuildArch:      noarch
+
+Requires:       python3-setuptools
+
+BuildRequires:  python3-devel python3-setuptools
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -39,12 +46,12 @@ Improved colored diff.
 %setup -qn %{name}-release-%{version}
 
 %build
-python setup.py build
+%{py3_build}
 
 %install
 rm -rf %{buildroot}
 
-python setup.py install -O1 --skip-build --root %{buildroot}
+%{py3_install}
 
 %clean
 rm -rf %{buildroot}
@@ -53,14 +60,21 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc ChangeLog README.md
-%{python_sitelib}/%{name}*
+%doc LICENSE ChangeLog README.md
+%exclude %{python3_sitelib}/__pycache__
+%{python3_sitelib}/%{name}*
 %{_bindir}/git-%{name}
 %{_bindir}/%{name}
 
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.0.7-0
+- https://github.com/jeffkaufman/icdiff/blob/release-2.0.7/ChangeLog
+
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 2.0.5-0
+- https://github.com/jeffkaufman/icdiff/blob/release-2.0.5/ChangeLog
+
 * Sat Dec 14 2019 Anton Novojilov <andy@essentialkaos.com> - 1.9.5-0
 - Error handling: unknown encoding
 - pipes: stop printing an error when pipes close

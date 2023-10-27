@@ -1,0 +1,178 @@
+# Bibop recipe for libnghttp2
+# See more: https://kaos.sh/bibop
+
+pkg libnghttp2 libnghttp2-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lnghttp2"
+
+command "-" "Check shared libs"
+  lib-loaded libnghttp2.so.*
+
+command "-" "Check headers"
+  lib-header nghttp2
+
+command "-" "Check pkg-config"
+  lib-config libnghttp2
+
+command "-" "Check symbols exported by libnghttp2.so"
+  lib-exported libnghttp2.so nghttp2_check_authority
+  lib-exported libnghttp2.so nghttp2_check_header_name
+  lib-exported libnghttp2.so nghttp2_check_header_value
+  lib-exported libnghttp2.so nghttp2_hd_deflate_bound
+  lib-exported libnghttp2.so nghttp2_hd_deflate_change_table_size
+  lib-exported libnghttp2.so nghttp2_hd_deflate_del
+  lib-exported libnghttp2.so nghttp2_hd_deflate_get_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_hd_deflate_get_max_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_hd_deflate_get_num_table_entries
+  lib-exported libnghttp2.so nghttp2_hd_deflate_get_table_entry
+  lib-exported libnghttp2.so nghttp2_hd_deflate_hd
+  lib-exported libnghttp2.so nghttp2_hd_deflate_hd_vec
+  lib-exported libnghttp2.so nghttp2_hd_deflate_new
+  lib-exported libnghttp2.so nghttp2_hd_deflate_new2
+  lib-exported libnghttp2.so nghttp2_hd_inflate_change_table_size
+  lib-exported libnghttp2.so nghttp2_hd_inflate_del
+  lib-exported libnghttp2.so nghttp2_hd_inflate_end_headers
+  lib-exported libnghttp2.so nghttp2_hd_inflate_get_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_hd_inflate_get_max_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_hd_inflate_get_num_table_entries
+  lib-exported libnghttp2.so nghttp2_hd_inflate_get_table_entry
+  lib-exported libnghttp2.so nghttp2_hd_inflate_hd
+  lib-exported libnghttp2.so nghttp2_hd_inflate_hd2
+  lib-exported libnghttp2.so nghttp2_hd_inflate_new
+  lib-exported libnghttp2.so nghttp2_hd_inflate_new2
+  lib-exported libnghttp2.so nghttp2_http2_strerror
+  lib-exported libnghttp2.so nghttp2_is_fatal
+  lib-exported libnghttp2.so nghttp2_nv_compare_name
+  lib-exported libnghttp2.so nghttp2_option_del
+  lib-exported libnghttp2.so nghttp2_option_new
+  lib-exported libnghttp2.so nghttp2_option_set_builtin_recv_extension_type
+  lib-exported libnghttp2.so nghttp2_option_set_max_deflate_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_option_set_max_outbound_ack
+  lib-exported libnghttp2.so nghttp2_option_set_max_reserved_remote_streams
+  lib-exported libnghttp2.so nghttp2_option_set_max_send_header_block_length
+  lib-exported libnghttp2.so nghttp2_option_set_no_auto_ping_ack
+  lib-exported libnghttp2.so nghttp2_option_set_no_auto_window_update
+  lib-exported libnghttp2.so nghttp2_option_set_no_closed_streams
+  lib-exported libnghttp2.so nghttp2_option_set_no_http_messaging
+  lib-exported libnghttp2.so nghttp2_option_set_no_recv_client_magic
+  lib-exported libnghttp2.so nghttp2_option_set_peer_max_concurrent_streams
+  lib-exported libnghttp2.so nghttp2_option_set_user_recv_extension_type
+  lib-exported libnghttp2.so nghttp2_pack_settings_payload
+  lib-exported libnghttp2.so nghttp2_priority_spec_check_default
+  lib-exported libnghttp2.so nghttp2_priority_spec_default_init
+  lib-exported libnghttp2.so nghttp2_priority_spec_init
+  lib-exported libnghttp2.so nghttp2_rcbuf_decref
+  lib-exported libnghttp2.so nghttp2_rcbuf_get_buf
+  lib-exported libnghttp2.so nghttp2_rcbuf_incref
+  lib-exported libnghttp2.so nghttp2_rcbuf_is_static
+  lib-exported libnghttp2.so nghttp2_select_next_protocol
+  lib-exported libnghttp2.so nghttp2_session_callbacks_del
+  lib-exported libnghttp2.so nghttp2_session_callbacks_new
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_before_frame_send_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_data_source_read_length_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_error_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_error_callback2
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_begin_frame_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_begin_headers_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_data_chunk_recv_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_extension_chunk_recv_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_frame_not_send_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_frame_recv_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_frame_send_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_header_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_header_callback2
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_invalid_frame_recv_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_invalid_header_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_invalid_header_callback2
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_on_stream_close_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_pack_extension_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_recv_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_select_padding_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_send_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_send_data_callback
+  lib-exported libnghttp2.so nghttp2_session_callbacks_set_unpack_extension_callback
+  lib-exported libnghttp2.so nghttp2_session_change_stream_priority
+  lib-exported libnghttp2.so nghttp2_session_check_request_allowed
+  lib-exported libnghttp2.so nghttp2_session_check_server_session
+  lib-exported libnghttp2.so nghttp2_session_client_new
+  lib-exported libnghttp2.so nghttp2_session_client_new2
+  lib-exported libnghttp2.so nghttp2_session_client_new3
+  lib-exported libnghttp2.so nghttp2_session_consume
+  lib-exported libnghttp2.so nghttp2_session_consume_connection
+  lib-exported libnghttp2.so nghttp2_session_consume_stream
+  lib-exported libnghttp2.so nghttp2_session_create_idle_stream
+  lib-exported libnghttp2.so nghttp2_session_del
+  lib-exported libnghttp2.so nghttp2_session_find_stream
+  lib-exported libnghttp2.so nghttp2_session_get_effective_local_window_size
+  lib-exported libnghttp2.so nghttp2_session_get_effective_recv_data_length
+  lib-exported libnghttp2.so nghttp2_session_get_hd_deflate_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_session_get_hd_inflate_dynamic_table_size
+  lib-exported libnghttp2.so nghttp2_session_get_last_proc_stream_id
+  lib-exported libnghttp2.so nghttp2_session_get_local_settings
+  lib-exported libnghttp2.so nghttp2_session_get_local_window_size
+  lib-exported libnghttp2.so nghttp2_session_get_next_stream_id
+  lib-exported libnghttp2.so nghttp2_session_get_outbound_queue_size
+  lib-exported libnghttp2.so nghttp2_session_get_remote_settings
+  lib-exported libnghttp2.so nghttp2_session_get_remote_window_size
+  lib-exported libnghttp2.so nghttp2_session_get_root_stream
+  lib-exported libnghttp2.so nghttp2_session_get_stream_effective_local_window_size
+  lib-exported libnghttp2.so nghttp2_session_get_stream_effective_recv_data_length
+  lib-exported libnghttp2.so nghttp2_session_get_stream_local_close
+  lib-exported libnghttp2.so nghttp2_session_get_stream_local_window_size
+  lib-exported libnghttp2.so nghttp2_session_get_stream_remote_close
+  lib-exported libnghttp2.so nghttp2_session_get_stream_remote_window_size
+  lib-exported libnghttp2.so nghttp2_session_get_stream_user_data
+  lib-exported libnghttp2.so nghttp2_session_mem_recv
+  lib-exported libnghttp2.so nghttp2_session_mem_send
+  lib-exported libnghttp2.so nghttp2_session_recv
+  lib-exported libnghttp2.so nghttp2_session_resume_data
+  lib-exported libnghttp2.so nghttp2_session_send
+  lib-exported libnghttp2.so nghttp2_session_server_new
+  lib-exported libnghttp2.so nghttp2_session_server_new2
+  lib-exported libnghttp2.so nghttp2_session_server_new3
+  lib-exported libnghttp2.so nghttp2_session_set_local_window_size
+  lib-exported libnghttp2.so nghttp2_session_set_next_stream_id
+  lib-exported libnghttp2.so nghttp2_session_set_stream_user_data
+  lib-exported libnghttp2.so nghttp2_session_set_user_data
+  lib-exported libnghttp2.so nghttp2_session_terminate_session
+  lib-exported libnghttp2.so nghttp2_session_terminate_session2
+  lib-exported libnghttp2.so nghttp2_session_upgrade
+  lib-exported libnghttp2.so nghttp2_session_upgrade2
+  lib-exported libnghttp2.so nghttp2_session_want_read
+  lib-exported libnghttp2.so nghttp2_session_want_write
+  lib-exported libnghttp2.so nghttp2_set_debug_vprintf_callback
+  lib-exported libnghttp2.so nghttp2_stream_get_first_child
+  lib-exported libnghttp2.so nghttp2_stream_get_next_sibling
+  lib-exported libnghttp2.so nghttp2_stream_get_parent
+  lib-exported libnghttp2.so nghttp2_stream_get_previous_sibling
+  lib-exported libnghttp2.so nghttp2_stream_get_state
+  lib-exported libnghttp2.so nghttp2_stream_get_stream_id
+  lib-exported libnghttp2.so nghttp2_stream_get_sum_dependency_weight
+  lib-exported libnghttp2.so nghttp2_stream_get_weight
+  lib-exported libnghttp2.so nghttp2_strerror
+  lib-exported libnghttp2.so nghttp2_submit_altsvc
+  lib-exported libnghttp2.so nghttp2_submit_data
+  lib-exported libnghttp2.so nghttp2_submit_extension
+  lib-exported libnghttp2.so nghttp2_submit_goaway
+  lib-exported libnghttp2.so nghttp2_submit_headers
+  lib-exported libnghttp2.so nghttp2_submit_origin
+  lib-exported libnghttp2.so nghttp2_submit_ping
+  lib-exported libnghttp2.so nghttp2_submit_priority
+  lib-exported libnghttp2.so nghttp2_submit_push_promise
+  lib-exported libnghttp2.so nghttp2_submit_request
+  lib-exported libnghttp2.so nghttp2_submit_response
+  lib-exported libnghttp2.so nghttp2_submit_rst_stream
+  lib-exported libnghttp2.so nghttp2_submit_settings
+  lib-exported libnghttp2.so nghttp2_submit_shutdown_notice
+  lib-exported libnghttp2.so nghttp2_submit_trailer
+  lib-exported libnghttp2.so nghttp2_submit_window_update
+  lib-exported libnghttp2.so nghttp2_version
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

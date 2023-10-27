@@ -10,7 +10,7 @@
 
 Summary:         A search tool that combines the usability of ag with the raw speed of grep
 Name:            ripgrep
-Version:         11.0.1
+Version:         13.0.0
 Release:         0%{?dist}
 Group:           Applications/Text
 License:         MIT or Unlicense
@@ -51,21 +51,25 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_mandir}/man1
 install -dm 755 %{buildroot}%{_datadir}/bash-completion/completions
+install -dm 755 %{buildroot}%{_datarootdir}/fish/vendor_completions.d
 
 install -pm 755 target/release/rg %{buildroot}%{_bindir}/
-install -pm 644 $(find target -name "rg.1" | head -1) \
+install -pm 644 $(find target/release -name "rg.1" | head -1) \
                 %{buildroot}%{_mandir}/man1/
 
-install -pm 644 $(find target -name "rg.bash" | head -1) \
+install -pm 644 $(find target/release -name "rg.bash" | head -1) \
                 %{buildroot}%{_datadir}/bash-completion/completions/rg
 
-%clean
-rm -rf %{buildroot}
+install -pm 644 $(find target/release -name "rg.fish" | head -1) \
+                %{buildroot}%{_datarootdir}/fish/vendor_completions.d/rg.fish
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 cargo test
 %endif
+
+%clean
+rm -rf %{buildroot}
 
 ################################################################################
 
@@ -74,11 +78,15 @@ cargo test
 %doc README.md CHANGELOG.md COPYING LICENSE-MIT UNLICENSE
 %{_bindir}/rg
 %{_mandir}/man1/rg.*
-%{_datadir}/bash-completion
+%{_datadir}/bash-completion/completions/rg
+%{_datarootdir}/fish/vendor_completions.d/rg.fish
 
 ################################################################################
 
 %changelog
+* Sat Oct 01 2022 Anton Novojilov <andy@essentialkaos.com> - 13.0.0-0
+- Updated to the latest stable release
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.1-0
 - Updated to the latest stable release
 

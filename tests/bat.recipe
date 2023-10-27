@@ -1,0 +1,17 @@
+# Bibop recipe for bat
+# See more: https://kaos.sh/bibop
+
+pkg bat
+
+fast-finish yes
+
+command "-" "Check environment"
+  app bat
+
+command "-" "Check shells autocompletions"
+  exist /usr/share/bash-completion/completions/bat
+  exist /usr/share/fish/vendor_completions.d/bat.fish
+  exist /usr/share/zsh/site-functions/_bat
+  !empty /usr/share/bash-completion/completions/bat
+  !empty /usr/share/fish/vendor_completions.d/bat.fish
+  !empty /usr/share/zsh/site-functions/_bat

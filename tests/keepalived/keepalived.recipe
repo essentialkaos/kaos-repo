@@ -1,0 +1,36 @@
+# Bibop recipe for keepalived
+# See more: https://kaos.sh/bibop
+
+pkg keepalived
+
+require-root yes
+unsafe-actions yes
+
+var service_name keepalived
+var config /etc/keepalived/keepalived.conf
+
+command "-" "Check environment"
+  app keepalived
+  service-present {service_name}
+
+  # Check config file
+  exist /etc/keepalived/keepalived.conf
+  mode /etc/keepalived/keepalived.conf 644
+
+command "-" "Configuration backup"
+  backup {config}
+
+command "-" "Update configuration"
+  copy keepalived.conf {config}
+
+command "systemctl start {service_name}" "Start keepalived daemon"
+  wait-service {service_name} 5
+
+command "systemctl status {service_name}" "Check status of keepalived daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop keepalived daemon"
+  !wait-service {service_name} 5
+
+command "-" "Configuration restore"
+  backup-restore {config}

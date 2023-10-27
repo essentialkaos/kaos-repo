@@ -4,25 +4,25 @@
 
 ################################################################################
 
-Summary:         Meta-package that only requires libnghttp2
-Name:            nghttp2
-Version:         1.40.0
-Release:         0%{?dist}
-Group:           Applications/Internet
-License:         MIT
-URL:             https://nghttp2.org
+Summary:        Meta-package that only requires libnghttp2
+Name:           nghttp2
+Version:        1.57.0
+Release:        0%{?dist}
+Group:          Applications/Internet
+License:        MIT
+URL:            https://nghttp2.org
 
-Source0:         https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Source0:        https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.bz2
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc openssl-devel zlib-devel
+BuildRequires:  make gcc openssl-devel zlib-devel
 
-Requires:        libnghttp2%{?_isa} = %{version}-%{release}
+Requires:       libnghttp2%{?_isa} = %{version}-%{release}
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -33,8 +33,8 @@ This package installs no files. It only requires the libnghttp2 package.
 
 %package -n libnghttp2
 
-Summary:         A library implementing the HTTP/2 protocol
-Group:           Development/Libraries
+Summary:  A library implementing the HTTP/2 protocol
+Group:    Development/Libraries
 
 %description -n libnghttp2
 libnghttp2 is a library implementing the Hypertext Transfer Protocol
@@ -44,11 +44,11 @@ version 2 (HTTP/2) protocol in C.
 
 %package -n libnghttp2-devel
 
-Summary:         Files needed for building applications with libnghttp2
-Group:           Development/Libraries
+Summary:   Files needed for building applications with libnghttp2
+Group:     Development/Libraries
 
-Requires:        libnghttp2%{?_isa} = %{version}-%{release}
-Requires:        pkgconfig
+Requires:  libnghttp2%{?_isa} = %{version}-%{release}
+Requires:  pkgconfig
 
 %description -n libnghttp2-devel
 The libnghttp2-devel package includes libraries and header files needed
@@ -90,14 +90,14 @@ rm -f %{buildroot}%{_datadir}/doc/nghttp2/README.rst
 rm -fr %{buildroot}%{_datadir}/nghttp2
 rm -fr %{buildroot}%{_mandir}/man1
 
+%clean
+rm -rf %{buildroot}
+
 %post -n libnghttp2
 /sbin/ldconfig
 
 %postun -n libnghttp2
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -114,50 +114,59 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.rst
 %{_includedir}/nghttp2
-%{_libdir}/pkgconfig/libnghttp2.pc
 %{_libdir}/libnghttp2.so
+%{_libdir}/pkgconfig/libnghttp2.pc
 
 ################################################################################
 
 %changelog
+* Wed Oct 11 2023 Anton Novojilov <andy@essentialkaos.com> - 1.57.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.57.0
+
+* Wed Sep 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.56.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.56.0
+
+* Thu Dec 08 2022 Anton Novojilov <andy@essentialkaos.com> - 1.51.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.51.0
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 1.40.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.40.0
 
 * Sun Aug 18 2019 Anton Novojilov <andy@essentialkaos.com> - 1.39.1-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.39.1
 
 * Sat Nov 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.34.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.34.0
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.33.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.33.0
 
 * Tue Jun 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.32.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.32.0
 
 * Fri Apr 13 2018 Anton Novojilov <andy@essentialkaos.com> - 1.31.1-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.31.1
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.27.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.27.0
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.25.0
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.24.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.24.0
 
 * Wed May 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.22.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.22.0
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.20.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.20.0
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.19.0-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.19.0
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.18.1-0
-- Updated to the latest stable release
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.18.1
 
 * Tue Nov 01 2016 Anton Novojilov <andy@essentialkaos.com> - 1.16.0-0
 - Initial build for kaos repository

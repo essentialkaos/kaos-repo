@@ -1,0 +1,30 @@
+# Bibop recipe for libfaad2
+# See more: https://kaos.sh/bibop
+
+pkg faad2 libfaad2 libfaad2-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lfaad"
+
+command "-" "Check shared libs"
+  lib-loaded libfaad.so.*
+  lib-loaded libfaad_drm.so.*
+
+command "-" "Check static libs"
+  exist /usr/lib64/libfaad.a
+  mode /usr/lib64/libfaad.a 644
+
+  exist /usr/lib64/libfaad_drm.a
+  mode /usr/lib64/libfaad_drm.a 644
+
+command "-" "Check headers"
+  lib-header faad.h
+  lib-header neaacdec.h
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with faad2"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

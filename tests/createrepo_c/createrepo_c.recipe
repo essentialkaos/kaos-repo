@@ -1,0 +1,43 @@
+# Bibop recipe for createrepo_c
+# See more: https://kaos.sh/bibop
+
+pkg createrepo_c createrepo_c-devel createrepo_c-libs
+
+fast-finish yes
+
+command "-" "Check environment"
+  app createrepo_c
+
+command "-" "Check libs"
+  lib-loaded libcreaterepo_c.so.*
+  lib-config createrepo_c
+  lib-header createrepo_c
+
+command "createrepo_c -p -d --simple-md-filenames --compress-type=xz --general-compress-type=xz ." "Generate test metadata"
+  exit 0
+  dir repodata
+
++command "-" "Check generated metadata"
+  exist "repodata/filelists.sqlite.xz"
+  exist "repodata/filelists.xml.xz"
+  exist "repodata/other.sqlite.xz"
+  exist "repodata/other.xml.xz"
+  exist "repodata/primary.sqlite.xz"
+  exist "repodata/primary.xml.xz"
+  exist "repodata/repomd.xml"
+
+  mode "repodata/filelists.sqlite.xz" 644
+  mode "repodata/filelists.xml.xz" 644
+  mode "repodata/other.sqlite.xz" 644
+  mode "repodata/other.xml.xz" 644
+  mode "repodata/primary.sqlite.xz" 644
+  mode "repodata/primary.xml.xz" 644
+  mode "repodata/repomd.xml" 644
+
+  !empty "repodata/filelists.sqlite.xz"
+  !empty "repodata/filelists.xml.xz"
+  !empty "repodata/other.sqlite.xz"
+  !empty "repodata/other.xml.xz"
+  !empty "repodata/primary.sqlite.xz"
+  !empty "repodata/primary.xml.xz"
+  !empty "repodata/repomd.xml"

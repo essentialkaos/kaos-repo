@@ -6,7 +6,7 @@
 
 Summary:        A library for making, reading and applying deltarpm packages
 Name:           drpm
-Version:        0.4.1
+Version:        0.5.2
 Release:        0%{?dist}
 License:        LGPLv2+ and BSD
 Group:          Development/Tools
@@ -20,7 +20,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc cmake >= 2.8.5
 BuildRequires:  rpm-devel openssl-devel zlib-devel bzip2-devel xz-devel
-BuildRequires:  pkgconfig doxygen libcmocka-devel >= 1.0 pkgconfig(libzstd)
+BuildRequires:  pkgconfig pkgconfig(libzstd)
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -33,10 +33,10 @@ compatible with the original deltarpm packages.
 ################################################################################
 
 %package devel
-Summary:        C interface for the drpm library
-Group:          Development/Libraries
+Summary:   C interface for the drpm library
+Group:     Development/Libraries
 
-Requires:       %{name} = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 The drpm-devel package provides a C interface (drpm.h) for the drpm library.
@@ -52,12 +52,12 @@ mkdir build
 %build
 pushd build
   cmake .. -DWITH_ZSTD:BOOL=ON \
+           -DENABLE_TESTS:BOOL=OFF \
            -DHAVE_LZLIB_DEVEL:BOOL=OFF \
            -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
            -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir}
 
   %{__make} %{?_smp_mflags}
-  %{__make} doc
 popd
 
 %install
@@ -85,7 +85,6 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root,-)
-%doc build/doc/html/
 %{_libdir}/lib%{name}.so
 %{_includedir}/%{name}.h
 %{_libdir}/pkgconfig/%{name}.pc
@@ -93,5 +92,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.5.2-0
+- https://github.com/rpm-software-management/drpm/releases/tag/0.5.2
+
+* Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 0.5.1-0
+- https://github.com/rpm-software-management/drpm/releases/tag/0.5.1
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 0.4.1-0
-- Initial build
+- Initial build for kaos-repo

@@ -1,22 +1,28 @@
 ################################################################################
 
-Summary:              Utility for optimizing/compressing JPEG files
-Name:                 jpegoptim
-Version:              1.4.6
-Release:              0%{?dist}
-License:              GPL
-Group:                Applications/Multimedia
-URL:                  https://github.com/tjko/jpegoptim
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
-Source:               https://github.com/tjko/%{name}/archive/RELEASE.%{version}.tar.gz
+################################################################################
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Summary:        Utility for optimizing/compressing JPEG files
+Name:           jpegoptim
+Version:        1.5.5
+Release:        0%{?dist}
+License:        GPL
+Group:          Applications/Multimedia
+URL:            https://github.com/tjko/jpegoptim
 
-BuildRequires:        make gcc libjpeg-turbo-devel
+Source:         https://github.com/tjko/jpegoptim/archive/refs/tags/v%{version}.tar.gz
 
-Requires:             libjpeg-turbo
+Source100:      checksum.sha512
 
-Provides:             %{name} = %{version}-%{release}
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  make gcc libjpeg-turbo-devel
+
+Requires:       libjpeg-turbo
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -29,7 +35,9 @@ by re-encoding the image using user specified image quality factor.
 ################################################################################
 
 %prep
-%setup -qn %{name}-RELEASE.%{version}
+%{crc_check}
+
+%setup -qn %{name}-%{version}
 
 %build
 %{configure}
@@ -54,11 +62,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 1.5.5-0
+- https://github.com/tjko/jpegoptim/releases/tag/v1.5.5
+
+* Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- https://github.com/tjko/jpegoptim/releases/tag/v1.5.0
+
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.6-0
-- Updated to latest stable release
+- https://github.com/tjko/jpegoptim/releases/tag/v1.4.6
 
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.4.5-0
-- Updated to latest stable release
+- https://github.com/tjko/jpegoptim/releases/tag/v1.4.5
 
 * Fri Dec 09 2016 Gleb Goncharov <ggoncharov@simtechdev.com> - 1.4.4-0
 - Initial build

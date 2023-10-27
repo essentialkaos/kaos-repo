@@ -1,0 +1,28 @@
+# Bibop recipe for orc
+# See more: https://kaos.sh/bibop
+
+pkg orc orc-compiler orc-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lorc-0.4"
+
+command "-" "Check environment"
+  app orc-bugreport
+  app orcc
+
+command "-" "Check shared libs"
+  lib-loaded liborc-0.4.so.*
+
+command "-" "Check headers"
+  lib-header orc-0.4
+
+command "-" "Check pkg-config"
+  lib-config orc-0.4
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

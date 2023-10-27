@@ -1,0 +1,123 @@
+# Bibop recipe for Slony 1 for PostgreSQL 11
+# See more: https://kaos.sh/bibop
+
+pkg slony1-11
+
+require-root yes
+
+var slony_version 2.2.11
+
+var postgres_version 11
+
+var service_name slony1-{postgres_version}
+
+var data_dir /usr/pgsql-{postgres_version}/share
+var lib_dir  /usr/pgsql-{postgres_version}/lib
+var bin_dir  /usr/pgsql-{postgres_version}/bin
+
+################################################################################
+
+command "-" "Check environment"
+  exist /etc/slony1-{postgres_version}/slon.conf
+  exist /etc/slony1-{postgres_version}/slon_tools.conf
+
+  mode /etc/slony1-{postgres_version}/slon.conf 644
+  mode /etc/slony1-{postgres_version}/slon_tools.conf 644
+
+  owner /etc/slony1-{postgres_version}/slon.conf root
+  owner /etc/slony1-{postgres_version}/slon_tools.conf root
+
+  exist /etc/sysconfig/slony1-{postgres_version}
+  mode /etc/sysconfig/slony1-{postgres_version} 644
+
+  exist /etc/rc.d/init.d/slony1-{postgres_version}
+  mode /etc/rc.d/init.d/slony1-{postgres_version} 755
+
+command "-" "Check binaries"
+  exist {bin_dir}/slon
+  exist {bin_dir}/slon_kill
+  exist {bin_dir}/slon_start
+  exist {bin_dir}/slon_status
+  exist {bin_dir}/slon_watchdog
+  exist {bin_dir}/slon_watchdog2
+  exist {bin_dir}/slonik
+  exist {bin_dir}/slonik_add_node
+  exist {bin_dir}/slonik_build_env
+  exist {bin_dir}/slonik_create_set
+  exist {bin_dir}/slonik_drop_node
+  exist {bin_dir}/slonik_drop_sequence
+  exist {bin_dir}/slonik_drop_set
+  exist {bin_dir}/slonik_drop_table
+  exist {bin_dir}/slonik_execute_script
+  exist {bin_dir}/slonik_failover
+  exist {bin_dir}/slonik_init_cluster
+  exist {bin_dir}/slonik_merge_sets
+  exist {bin_dir}/slonik_move_set
+  exist {bin_dir}/slonik_print_preamble
+  exist {bin_dir}/slonik_restart_node
+  exist {bin_dir}/slonik_store_node
+  exist {bin_dir}/slonik_subscribe_set
+  exist {bin_dir}/slonik_uninstall_nodes
+  exist {bin_dir}/slonik_unsubscribe_set
+  exist {bin_dir}/slonik_update_nodes
+  exist {bin_dir}/slony_logshipper
+  exist {bin_dir}/slony_show_configuration
+
+  mode {bin_dir}/slon 755
+  mode {bin_dir}/slon_kill 755
+  mode {bin_dir}/slon_start 755
+  mode {bin_dir}/slon_status 755
+  mode {bin_dir}/slon_watchdog 755
+  mode {bin_dir}/slon_watchdog2 755
+  mode {bin_dir}/slonik 755
+  mode {bin_dir}/slonik_add_node 755
+  mode {bin_dir}/slonik_build_env 755
+  mode {bin_dir}/slonik_create_set 755
+  mode {bin_dir}/slonik_drop_node 755
+  mode {bin_dir}/slonik_drop_sequence 755
+  mode {bin_dir}/slonik_drop_set 755
+  mode {bin_dir}/slonik_drop_table 755
+  mode {bin_dir}/slonik_execute_script 755
+  mode {bin_dir}/slonik_failover 755
+  mode {bin_dir}/slonik_init_cluster 755
+  mode {bin_dir}/slonik_merge_sets 755
+  mode {bin_dir}/slonik_move_set 755
+  mode {bin_dir}/slonik_print_preamble 755
+  mode {bin_dir}/slonik_restart_node 755
+  mode {bin_dir}/slonik_store_node 755
+  mode {bin_dir}/slonik_subscribe_set 755
+  mode {bin_dir}/slonik_uninstall_nodes 755
+  mode {bin_dir}/slonik_unsubscribe_set 755
+  mode {bin_dir}/slonik_update_nodes 755
+  mode {bin_dir}/slony_logshipper 755
+  mode {bin_dir}/slony_show_configuration 755
+
+command "-" "Check libraries"
+  exist {lib_dir}/slon-tools.pm
+  exist {lib_dir}/slony1_funcs.{slony_version}.so
+
+command "-" "Check SQL files"
+  exist {data_dir}/slony1_base.{slony_version}.sql
+  exist {data_dir}/slony1_base.v83.{slony_version}.sql
+  exist {data_dir}/slony1_base.v84.{slony_version}.sql
+  exist {data_dir}/slony1_funcs.{slony_version}.sql
+  exist {data_dir}/slony1_funcs.v83.{slony_version}.sql
+  exist {data_dir}/slony1_funcs.v84.{slony_version}.sql
+
+  mode {data_dir}/slony1_base.{slony_version}.sql 644
+  mode {data_dir}/slony1_base.v83.{slony_version}.sql 644
+  mode {data_dir}/slony1_base.v84.{slony_version}.sql 644
+  mode {data_dir}/slony1_funcs.{slony_version}.sql 644
+  mode {data_dir}/slony1_funcs.v83.{slony_version}.sql 644
+  mode {data_dir}/slony1_funcs.v84.{slony_version}.sql 644
+
+################################################################################
+
+command "systemctl start {service_name}" "Start Slony1 daemon"
+  wait-service {service_name} 5
+
+command "systemctl status {service_name}" "Check status of Slony1 daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop Slony1 daemon"
+  !wait-service {service_name} 5

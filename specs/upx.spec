@@ -4,53 +4,27 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+Summary:        Ultimate Packer for eXecutables
+Name:           upx
+Version:        4.1.0
+Release:        0%{?dist}
+License:        GPLv2+ and Public Domain
+Group:          Applications/Archiving
+URL:            https://upx.github.io
 
-################################################################################
+Source0:        https://github.com/upx/upx/releases/download/v%{version}/%{name}-%{version}-src.tar.xz
 
-Summary:           Ultimate Packer for eXecutables
-Name:              upx
-Version:           3.96
-Release:           0%{?dist}
-License:           GPLv2+ and Public Domain
-Group:             Applications/Archiving
-URL:               https://upx.github.io
+Source100:      checksum.sha512
 
-Source0:           https://github.com/upx/upx/releases/download/v%{version}/%{name}-%{version}-src.tar.xz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source100:         checksum.sha512
+%if 0%{?rhel} <= 7
+BuildRequires:  cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils
+%else
+BuildRequires:  cmake gcc-c++
+%endif
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:     make gcc gcc-c++ ucl-devel zlib-devel
-
-Requires:          ucl zlib
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -67,19 +41,23 @@ executables suffer no memory overhead or other drawbacks.
 
 %setup -qn %{name}-%{version}-src
 
-sed -i -e 's/ -O2/ /' -e 's/ -Werror//' src/Makefile
-
-# Disable check_whitespace script
-echo -n > src/stub/scripts/check_whitespace.sh
-
 %build
-%{__make} %{?_smp_mflags} -C src
-%{__make} -C doc
+%if 0%{?rhel} <= 7
+# Use gcc and gcc-c++ from DevToolSet 9
+export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
+%endif
+
+%{cmake3}
+%{cmake3_build}
 
 %install
 rm -rf %{buildroot}
-install -Dpm 644 doc/%{name}.1 %{buildroot}%{_mandir}/man1/%{name}.1
-install -Dpm 755 src/%{name}.out %{buildroot}%{_bindir}/%{name}
+
+%{cmake3_install}
+
+%if 0%{?rhel} <= 7
+rm -rf %{buildroot}%{_docdir}
+%endif
 
 %clean
 rm -rf %{buildroot}
@@ -88,13 +66,31 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc BUGS COPYING LICENSE NEWS PROJECTS README README.1ST THANKS doc/*.txt
+%doc COPYING LICENSE README README.SRC NEWS doc/*
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 
 ################################################################################
 
 %changelog
+* Wed Sep 20 2023 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
+- ELF: handle shared libraries with more than 2 PT_LOAD segments
+- bug fixes - see https://github.com/upx/upx/milestone/11
+
+* Wed Nov 23 2022 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
+- bug fixes - see https://github.com/upx/upx/milestone/8
+
+* Wed Nov 23 2022 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
+- Switch to semantic versioning
+- SECURITY NOTES: emphasize the security context in the docs
+- Support easy building from source code with CMake
+- Support easy rebuilding the stubs from source with Podman/Docker
+- Add integrated doctest C++ testing framework
+- Add support for EFI files (PE x86; Kornel Pal)
+- win32/pe and win64/pe: set correct SizeOfHeaders in the PE header
+- bug fixes - see https://github.com/upx/upx/milestone/6
+- bug fixes - see https://github.com/upx/upx/milestone/7
+
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 3.96-0
 - bug fixes
 

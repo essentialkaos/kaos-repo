@@ -1,0 +1,19 @@
+# Bibop recipe for yum-plugin-versionlock
+# See more: https://kaos.sh/bibop
+
+pkg yum-plugin-versionlock
+
+fast-finish yes
+
+var plugin_dir /usr/lib/yum-plugins
+var config_dir /etc/yum/pluginconf.d
+
+command "-" "Check configuration files"
+  exist {config_dir}/versionlock.conf
+  mode {config_dir}/versionlock.conf 644
+  exist {config_dir}/versionlock.list
+  mode {config_dir}/versionlock.list 644
+
+command "-" "Check plugin code"
+  exist {plugin_dir}/versionlock.py
+  mode {plugin_dir}/versionlock.py 644

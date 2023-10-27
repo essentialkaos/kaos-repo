@@ -1,0 +1,39 @@
+# Bibop recipe for freexl
+# See more: https://kaos.sh/bibop
+
+pkg freexl freexl-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lfreexl -lm"
+
+command "-" "Check shared libs"
+  lib-loaded libfreexl.so.*
+
+command "-" "Check headers"
+  lib-header freexl.h
+
+command "-" "Check pkg-config"
+  lib-config freexl
+
+command "-" "Check symbols exported by libfreexl.so"
+  lib-exported libfreexl.so freexl_close
+  lib-exported libfreexl.so freexl_get_active_worksheet
+  lib-exported libfreexl.so freexl_get_cell_value
+  lib-exported libfreexl.so freexl_get_FAT_entry
+  lib-exported libfreexl.so freexl_get_info
+  lib-exported libfreexl.so freexl_get_SST_string
+  lib-exported libfreexl.so freexl_get_worksheet_name
+  lib-exported libfreexl.so freexl_open
+  lib-exported libfreexl.so freexl_open_info
+  lib-exported libfreexl.so freexl_select_active_worksheet
+  lib-exported libfreexl.so freexlversion
+  lib-exported libfreexl.so freexl_version
+  lib-exported libfreexl.so freexl_worksheet_dimensions
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with freexl"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

@@ -1,0 +1,52 @@
+diff -urN otp-OTP-23.0.1-orig/lib/crypto/c_src/api_ng.c otp-OTP-23.0.1/lib/crypto/c_src/api_ng.c
+--- otp-OTP-23.0.1-orig/lib/crypto/c_src/api_ng.c	2020-05-20 10:57:39.000000000 +0300
++++ otp-OTP-23.0.1/lib/crypto/c_src/api_ng.c	2020-05-22 15:15:54.000000000 +0300
+@@ -39,48 +39,6 @@
+ # define GET_IV_LEN(Ciph) EVP_CIPHER_iv_length((Ciph)->cipher.p)
+ #endif
+ 
+-#if !defined(HAVE_EVP_CIPHER_CTX_COPY)
+-/*
+-  The EVP_CIPHER_CTX_copy is not available in older cryptolibs although
+-  the function is needed.
+-  Instead of implement it in-place, we have a copy here as a compatibility
+-  function
+-*/
+-
+-int EVP_CIPHER_CTX_copy(EVP_CIPHER_CTX *out, const EVP_CIPHER_CTX *in);
+-
+-int EVP_CIPHER_CTX_copy(EVP_CIPHER_CTX *out, const EVP_CIPHER_CTX *in)
+-{
+-    if ((in == NULL) || (in->cipher == NULL))
+-        {
+-            return 0;
+-        }
+-#ifdef HAS_ENGINE_SUPPORT
+-    /* Make sure it's safe to copy a cipher context using an ENGINE */
+-    if (in->engine && !ENGINE_init(in->engine))
+-        return 0;
+-#endif
+-
+-    EVP_CIPHER_CTX_cleanup(out);
+-    memcpy(out,in,sizeof *out);
+-
+-    if (in->cipher_data && in->cipher->ctx_size)
+-        {
+-            out->cipher_data=OPENSSL_malloc(in->cipher->ctx_size);
+-            if (!out->cipher_data)
+-                return 0;
+-            memcpy(out->cipher_data,in->cipher_data,in->cipher->ctx_size);
+-        }
+-
+-#if defined(EVP_CIPH_CUSTOM_COPY) && defined(EVP_CTRL_COPY)
+-    if (in->cipher->flags & EVP_CIPH_CUSTOM_COPY)
+-        return in->cipher->ctrl((EVP_CIPHER_CTX *)in, EVP_CTRL_COPY, 0, out);
+-#endif
+-    return 1;
+-}
+-/****** End of !defined(HAVE_EVP_CIPHER_CTX_COPY) ******/
+-#endif
+-
+ /*************************************************************************/
+ /* Get the arguments for the initialization of the EVP_CIPHER_CTX. Check */
+ /* them and initialize that context.                                     */

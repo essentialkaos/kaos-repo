@@ -1,0 +1,39 @@
+# Bibop recipe for libresample
+# See more: https://kaos.sh/bibop
+
+pkg libresample libresample-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lm"
+
+command "-" "Check environment"
+  app resample-sndfile
+
+command "-" "Check shared libs"
+  lib-loaded libresample.so.*
+
+command "-" "Check headers"
+  lib-header libresample.h
+
+command "-" "Check pkg-config"
+  lib-config libresample
+
+command "-" "Check symbols exported by libresample.so"
+  lib-exported libresample.so lrsFilterUD
+  lib-exported libresample.so lrsFilterUp
+  lib-exported libresample.so lrsLpFilter
+  lib-exported libresample.so lrsSrcUD
+  lib-exported libresample.so lrsSrcUp
+  lib-exported libresample.so resample_close
+  lib-exported libresample.so resample_dup
+  lib-exported libresample.so resample_get_filter_width
+  lib-exported libresample.so resample_open
+  lib-exported libresample.so resample_process
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

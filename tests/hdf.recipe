@@ -1,0 +1,43 @@
+# Bibop recipe for HDF
+# See more: https://kaos.sh/bibop
+
+pkg hdf hdf-devel
+
+fast-finish yes
+
+command "-" "Check apps"
+  app gif2hdf
+  app h4redeploy
+  app hdf24to8
+  app hdf2gif
+  app hdf2jpeg
+  app hdf8to24
+  app hdfcomp
+  app hdfed
+  app hdfimport
+  app hdfls
+  app hdfpack
+  app hdftopal
+  app hdftor8
+  app hdfunpac
+  app hdiff
+  app hdp
+  app hncdump
+  app hncgen
+  app hrepack
+  app jpeg2hdf
+  app paltohdf
+  app r8tohdf
+  app ristosds
+  app vmake
+  app vshow
+
+command "-" "Check apps from devel"
+  app h4cc
+
+command "-" "Check shared libs"
+  lib-loaded libdf.so.*
+  lib-loaded libmfhdf.so.*
+
+command "-" "Check headers"
+  lib-header hdf

@@ -1,18 +1,24 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
 Summary:            Library to extract data from within an Excel spreadsheet
 Name:               freexl
-Version:            1.0.5
+Version:            1.0.6
 Release:            0%{?dist}
 License:            MIT
 Group:              System Environment/Libraries
-URL:                http://www.gaia-gis.it/FreeXL
+URL:                https://www.gaia-gis.it/FreeXL
 
-Source:             http://www.gaia-gis.it/gaia-sins/freexl-sources/%{name}-%{version}.tar.gz
+Source0:            https://www.gaia-gis.it/gaia-sins/freexl-sources/%{name}-%{version}.tar.gz
+
+Source100:          checksum.sha512
 
 BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -48,6 +54,8 @@ developing applications that use %{name}.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
@@ -64,7 +72,6 @@ sed -i 's/^INSTALL_HEADER = \$(INSTALL_DATA)/& -p/' headers/Makefile.in
 doxygen
 
 rm -f html/installdox
-
 
 %install
 rm -rf %{buildroot}
@@ -110,11 +117,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.0.6-0
+- Updated to the latest stable release
+
 * Thu Mar 22 2018 Anton Novojilov <andy@essentialkaos.com> - 1.0.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Mon Mar 20 2017 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
 - Initial build for kaos repository

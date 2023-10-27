@@ -4,52 +4,6 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ldconfig        %{_sbin}/ldconfig
-%define __service         %{_sbin}/service
-%define __touch           %{_bin}/touch
-%define __chkconfig       %{_sbin}/chkconfig
-%define __updalt          %{_sbindir}/update-alternatives
-%define __useradd         %{_sbindir}/useradd
-%define __groupadd        %{_sbindir}/groupadd
-%define __getent          %{_bindir}/getent
-%define __systemctl       %{_bindir}/systemctl
-
-################################################################################
-
-%define beta 0
-
-%{?beta:%define __os_install_post /usr/lib/rpm/brp-compress}
 %{!?kerbdir:%define kerbdir "/usr"}
 %{!?test:%define test 1}
 %{!?plpython:%define plpython 1}
@@ -66,21 +20,10 @@
 %{!?runselftest:%define runselftest 0}
 %{!?uuid:%define uuid 1}
 %{!?ldap:%define ldap 1}
-
-%if 0%{?rhel} && 0%{?rhel} <= 6
-%{!?systemd_enabled:%global systemd_enabled 0}
-%{!?sdt:%global sdt 0}
-%{!?selinux:%global selinux 0}
-%{!?llvm:%global llvm 0}
-%else
-%{!?systemd_enabled:%global systemd_enabled 1}
 %{!?llvm:%global llvm 1}
-%{!?sdt:%global sdt 1}
-%{!?selinux:%global selinux 1}
-%endif
 
 %define majorver        12
-%define minorver        1
+%define minorver        16
 %define rel             0
 %define fullver         %{majorver}.%{minorver}
 %define pkgver          12
@@ -120,6 +63,8 @@ Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
 Source11:          %{realname}.service
+Source12:          bash_profile
+Source13:          %{realname}-tmpfiles.d.conf
 
 Source100:         checksum.sha512
 
@@ -131,18 +76,14 @@ Patch4:            %{realname}-var-run-socket.patch
 BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:     make gcc gcc-c++ perl glibc-devel bison flex >= 2.5.31
-BuildRequires:     readline-devel zlib-devel >= 1.0.4
-
-%if 0%{?rhel} > 7
-BuildRequires:     perl-generators
-%endif
+BuildRequires:     readline-devel zlib-devel >= 1.0.4 perl-generators
 
 %if %plperl
 BuildRequires:     perl-ExtUtils-Embed perl-ExtUtils-MakeMaker
 %endif
 
 %if %plpython
-BuildRequires:     python-devel
+BuildRequires:     python3-devel
 %endif
 
 %if %pltcl
@@ -183,33 +124,22 @@ BuildRequires:     openldap-devel
 %endif
 
 %if %llvm
-%if 0%{?rhel} == 8
+%if 0%{?rhel} >= 8
 BuildRequires:     llvm-devel >= 6.0.0 clang-devel >= 6.0.0
 %endif
 %if 0%{?rhel} == 7
-# from centos-release-scl
 BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
 %endif
 %endif
 
-Requires:          %{__ldconfig} initscripts
-Requires:          %{name}-libs = %{version}
-
-%if %{systemd_enabled}
 BuildRequires:     systemd systemd-devel
 
-Requires(post):    systemd
-Requires(preun):   systemd
-Requires(postun):  systemd
-%else
-Requires(post):    chkconfig
-Requires(preun):   chkconfig
-Requires(preun):   initscripts
-Requires(postun):  initscripts
-%endif
+Requires:          glibc initscripts
+Requires:          %{name}-libs = %{version}
 
-Requires(post):    %{__updalt}
-Requires(postun):  %{__updalt}
+Requires(post):    systemd chkconfig
+Requires(preun):   systemd
+Requires(postun):  systemd chkconfig
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{realname} = %{version}-%{release}
@@ -236,10 +166,10 @@ if you're installing the postgresql%{pkgver}-server package.
 ################################################################################
 
 %package libs
-Summary:           The shared libraries required for any PostgreSQL clients
-Group:             Applications/Databases
+Summary:   The shared libraries required for any PostgreSQL clients
+Group:     Applications/Databases
 
-Provides:          %{realname}-libs = %{version}-%{release}
+Provides:  %{realname}-libs = %{version}-%{release}
 
 %description libs
 The postgresql%{pkgver}-libs package provides the essential shared libraries
@@ -250,15 +180,15 @@ to a PostgreSQL server.
 ################################################################################
 
 %package server
-Summary:           The programs needed to create and run a PostgreSQL server
-Group:             Applications/Databases
+Summary:   The programs needed to create and run a PostgreSQL server
+Group:     Applications/Databases
 
-Requires:          %{__useradd} %{__chkconfig}
-Requires:          %{name} = %{version}-%{release}
-Requires:          %{name}-libs = %{version}-%{release}
-Requires:          glibc kaosv >= 2.15 numactl
+Requires:  %{name} = %{version}-%{release}
+Requires:  %{name}-libs = %{version}-%{release}
+Requires:  glibc kaosv >= 2.16 numactl
+Requires:  %{_sbindir}/useradd %{_sbindir}/chkconfig
 
-Provides:          %{realname}-server = %{version}-%{release}
+Provides:  %{realname}-server = %{version}-%{release}
 
 %description server
 The postgresql%{pkgver}-server package includes the programs needed to create
@@ -274,10 +204,10 @@ to install the postgresql package.
 ################################################################################
 
 %package docs
-Summary:           Extra documentation for PostgreSQL
-Group:             Applications/Databases
+Summary:   Extra documentation for PostgreSQL
+Group:     Applications/Databases
 
-Provides:          %{realname}-docs = %{version}-%{release}
+Provides:  %{realname}-docs = %{version}-%{release}
 
 %description docs
 The postgresql%{pkgver}-docs package includes the SGML source for the
@@ -289,11 +219,11 @@ package also includes HTML version of the documentation.
 ################################################################################
 
 %package contrib
-Summary:           Contributed source and binaries distributed with PostgreSQL
-Group:             Applications/Databases
+Summary:   Contributed source and binaries distributed with PostgreSQL
+Group:     Applications/Databases
 
-Requires:          %{name} = %{version}
-Provides:          %{realname}-contrib = %{version}-%{release}
+Requires:  %{name} = %{version}
+Provides:  %{realname}-contrib = %{version}-%{release}
 
 %description contrib
 The postgresql%{pkgver}-contrib package contains contributed packages that are
@@ -302,17 +232,21 @@ included in the PostgreSQL distribution.
 ################################################################################
 
 %package devel
-Summary:           PostgreSQL development header files and libraries
-Group:             Development/Libraries
+Summary:   PostgreSQL development header files and libraries
+Group:     Development/Libraries
 
 %if %icu
-Requires:          libicu-devel
+Requires:  libicu-devel
 %endif
 
-AutoReq:           no
-Requires:          %{name} = %{version}-%{release}
-Requires:          %{name}-libs = %{version}-%{release}
-Provides:          %{realname}-devel = %{version}-%{release}
+%if %ssl
+Requires:  openssl-devel
+%endif
+
+AutoReq:   no
+Requires:  %{name} = %{version}-%{release}
+Requires:  %{name}-libs = %{version}-%{release}
+Provides:  %{realname}-devel = %{version}-%{release}
 
 %description devel
 The postgresql%{pkgver}-devel package contains the header files and libraries
@@ -325,16 +259,18 @@ develop applications which will interact with a PostgreSQL server.
 
 %if %llvm
 %package llvmjit
-Summary:           Just-in-time compilation support for PostgreSQL
-Group:             Applications/Databases
+Summary:   Just-in-time compilation support for PostgreSQL
+Group:     Applications/Databases
 
-Requires:          %{name}-server%{?_isa} = %{version}-%{release}
+Requires:  %{name}-server%{?_isa} = %{version}-%{release}
 
-%if 0%{?rhel} && 0%{?rhel} == 7
-Requires:          llvm5.0 >= 5.0
+%if 0%{?rhel} >= 8
+Requires:  llvm >= 6.0
+%else
+Requires:  llvm5.0 >= 5.0
 %endif
 
-Provides:          %{realname}-llvmjit = %{version}
+Provides:  %{realname}-llvmjit = %{version}
 
 %description llvmjit
 The postgresql%{pkgver}-llvmjit package contains support for
@@ -347,17 +283,13 @@ goal of accelerating analytics queries.
 
 %if %plperl
 %package plperl
-Summary:           The Perl procedural language for PostgreSQL
-Group:             Applications/Databases
+Summary:    The Perl procedural language for PostgreSQL
+Group:      Applications/Databases
 
-Requires:          %{name}-server = %{version}
+Requires:   %{name}-server = %{version}
 
-%ifarch ppc ppc64
-BuildRequires:     perl-devel
-%endif
-
-Obsoletes:         %{realname}-pl = %{version}
-Provides:          %{realname}-plperl = %{version}-%{release}
+Obsoletes:  %{realname}-pl = %{version}
+Provides:   %{realname}-plperl = %{version}-%{release}
 
 %description plperl
 PostgreSQL is an advanced Object-Relational database management
@@ -368,16 +300,18 @@ for the backend.
 ################################################################################
 
 %if %plpython
-%package plpython
-Summary:           The Python procedural language for PostgreSQL
-Group:             Applications/Databases
-Requires:          %{name} = %{version}
-Requires:          %{name}-server = %{version}
+%package plpython3
+Summary:    The Python procedural language for PostgreSQL
+Group:      Applications/Databases
 
-Obsoletes:         %{realname}-pl = %{version}
-Provides:          %{realname}-plpython = %{version}-%{release}
+Requires:   %{name} = %{version}
+Requires:   %{name}-server = %{version}
+Requires:   python3 python3-libs
 
-%description plpython
+Obsoletes:  %{realname}-pl = %{version}
+Provides:   %{realname}-plpython = %{version}-%{release}
+
+%description plpython3
 PostgreSQL is an advanced Object-Relational database management
 system. The postgresql%{pkgver}-plpython package contains the PL/Python language
 for the backend.
@@ -387,14 +321,14 @@ for the backend.
 
 %if %pltcl
 %package pltcl
-Summary:           The Tcl procedural language for PostgreSQL
-Group:             Applications/Databases
+Summary:    The Tcl procedural language for PostgreSQL
+Group:      Applications/Databases
 
-Requires:          %{name} = %{version}
-Requires:          %{name}-server = %{version}
+Requires:   %{name} = %{version}
+Requires:   %{name}-server = %{version}
 
-Obsoletes:         %{realname}-pl = %{version}
-Provides:          %{realname}-pltcl = %{version}-%{release}
+Obsoletes:  %{realname}-pl = %{version}
+Provides:   %{realname}-pltcl = %{version}-%{release}
 
 %description pltcl
 PostgreSQL is an advanced Object-Relational database management
@@ -406,11 +340,11 @@ for the backend.
 
 %if %test
 %package test
-Summary:           The test suite distributed with PostgreSQL
-Group:             Applications/Databases
+Summary:   The test suite distributed with PostgreSQL
+Group:     Applications/Databases
 
-Requires:          %{name}-server = %{version}
-Provides:          %{realname}-test = %{version}-%{release}
+Requires:  %{name}-server = %{version}
+Provides:  %{realname}-test = %{version}-%{release}
 
 %description test
 PostgreSQL is an advanced Object-Relational database management
@@ -445,27 +379,17 @@ CFLAGS="${CFLAGS} -I%{_includedir}/et" ; export CFLAGS
 %endif
 
 # Strip out -ffast-math from CFLAGS....
-
 CFLAGS=$(echo "$CFLAGS" | xargs -n 1 | grep -v ffast-math | xargs -n 100)
 CFLAGS="$CFLAGS -DLINUX_OOM_SCORE_ADJ=0"
-
-%if 0%{?rhel}
-  LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
-%endif
-
-%if %icu
-%if 0%{?rhel} && 0%{?rhel} <= 6
-  ICU_CFLAGS='-I%{_includedir}' ; export ICU_CFLAGS
-  ICU_LIBS='-L%{_libdir} -licui18n -licuuc -licudata' ; export ICU_LIBS
-%endif
-%endif
+LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
 
 export CFLAGS
 export LIBNAME=%{_lib}
+export PYTHON=/usr/bin/python3
 
 %if %llvm
-%if 0%{?rhel} && 0%{?rhel} == 7
-# perfecto:absolve
+%if 0%{?rhel} == 7
+# perfecto:ignore
 export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
 export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
 %endif
@@ -476,17 +400,11 @@ export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
   --includedir=%{install_dir}/include \
   --mandir=%{install_dir}/share/man \
   --datadir=%{install_dir}/share \
-%if %beta
-  --enable-debug \
-  --enable-cassert \
-%endif
 %if %icu
   --with-icu \
 %endif
 %if %llvm
-%if 0%{?rhel} && 0%{?rhel} == 7
   --with-llvm \
-%endif
 %endif
 %if %plperl
   --with-perl \
@@ -595,7 +513,7 @@ mkdir -p %{buildroot}%{install_dir}/share/extensions/
 # multilib header hack; note pg_config.h is installed in two places!
 # we only apply this to known Red Hat multilib arches, per bug #177564
 case `uname -i` in
-  i386 | x86_64 | ppc | ppc64 | s390 | s390x)
+  i386 | x86_64)
     mv %{buildroot}%{install_dir}/include/pg_config.h %{buildroot}%{install_dir}/include/pg_config_`uname -i`.h
     install -pm 644 %{SOURCE3} %{buildroot}%{install_dir}/include/
     mv %{buildroot}%{install_dir}/include/server/pg_config.h %{buildroot}%{install_dir}/include/server/pg_config_`uname -i`.h
@@ -608,7 +526,6 @@ case `uname -i` in
 esac
 
 # Installing and updating sysv init script
-
 install -d %{buildroot}%{_initddir}
 install -d %{buildroot}%{_sysconfdir}/sysconfig
 
@@ -622,8 +539,6 @@ sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_initddir}/%{service
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_initddir}/%{service_name}
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_initddir}/%{service_name}
 
-%if %{systemd_enabled}
-
 # Installing and updating systemd config
 install -d %{buildroot}%{_unitdir}
 install -pm 644 %{SOURCE11} %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
@@ -635,8 +550,6 @@ sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_unitdir}/postgresql
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 
-%endif
-
 ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{majorver}
 
 %if %pam
@@ -644,8 +557,11 @@ install -d %{buildroot}%{_sysconfdir}/pam.d
 install -pm 644 %{SOURCE8} %{buildroot}%{_sysconfdir}/pam.d/%{realname}%{majorver}
 %endif
 
+install -dm 755 %{buildroot}%{_tmpfilesdir}
+install -pm 644 %{SOURCE13} %{buildroot}%{_tmpfilesdir}/%{realname}-%{majorver}.conf
+
 # Create the directory for sockets
-install -dm 755 %{buildroot}%{_rundir}/%{realname}
+install -dm 755 %{buildroot}%{_localstatedir}/run/%{realname}
 
 # PGDATA needs removal of group and world permissions due to pg_pwd hole.
 install -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/data
@@ -677,8 +593,6 @@ install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
   cp %{SOURCE2} %{buildroot}%{install_dir}/lib/test/regress/Makefile
   chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
 %endif
-
-rm -rf %{buildroot}%{install_dir}/share/extension/*_plpython3u*
 
 # Fix some more documentation
 # gzip doc/internals.ps
@@ -764,165 +678,165 @@ cat postgres-%{majorver}.lang \
     pg_controldata-%{majorver}.lang \
     plpgsql-%{majorver}.lang > pg_server.lst
 
+# Install bash profile
+install -pm 700 %{SOURCE12} %{buildroot}%{install_dir}/share/
+sed -i "s#{{PGDATA}}#%{_sharedstatedir}/%{shortname}/%{majorver}/data/#" \
+       %{buildroot}%{install_dir}/share/bash_profile
 
 ################################################################################
 
 %pre server
 if [[ $1 -eq 1 ]] ; then
-  %{__getent} group %{groupname} >/dev/null || %{__groupadd} -g %{gid} -o -r %{groupname}
-  %{__getent} passwd %{username} >/dev/null || \
-              %{__useradd} -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
+  getent group %{groupname} >/dev/null || groupadd -g %{gid} -o -r %{groupname}
+  getent passwd %{username} >/dev/null || \
+              useradd -M -n -g %{username} -o -r -d %{_sharedstatedir}/%{shortname} -s /bin/bash -u %{gid} %{username}
 fi
-
-touch %{_logdir}/%{shortname}
-chown %{username}:%{groupname} %{_logdir}/%{shortname}
-chmod 0700 %{_logdir}/%{shortname}
 
 %post server
 if [[ $1 -eq 1 ]] ; then
-%if %{systemd_enabled}
-  %{__systemctl} daemon-reload %{service_name}.service &>/dev/null || :
-  %{__systemctl} preset %{service_name}.service &>/dev/null || :
+  systemctl daemon-reload %{service_name}.service &>/dev/null || :
+  systemctl preset %{service_name}.service &>/dev/null || :
   systemd-tmpfiles --create &>/dev/null || :
-%else
-  %{__chkconfig} --add %{service_name} &>/dev/null || :
-%endif
-  %{__ldconfig}
+
+  /sbin/ldconfig
 fi
 
-# Migrate from official shitty packages
-if [[ -f %{_rundir}/postmaster-%{majorver}.pid ]] ; then
-  cat %{_rundir}/postmaster-%{majorver}.pid > %{_rundir}/%{name}.pid
-  touch %{_lockdir}/%{name}
-  rm -f %{_rundir}/postmaster-%{majorver}.pid
-  rm -f %{_lockdir}/%{realname}-%{majorver}
+# Removing bash_profile generated by previous versions of packages
+if [[ ! -L %{_sharedstatedir}/%{shortname}/.bash_profile ]] ; then
+  rm -f %{_sharedstatedir}/%{shortname}/.bash_profile
 fi
 
-# postgres' .bash_profile.
-# We now don't install .bash_profile as we used to in pre 9.0. Instead, use cat,
-# so that package manager will be happy during upgrade to new major version.
-# perfecto:absolve 3
-echo "[[ -f /etc/profile ]] && source /etc/profile
-PGDATA=/var/lib/pgsql/%{majorver}/data
-export PGDATA" > %{_sharedstatedir}/%{shortname}/.bash_profile
-
-chown %{username}: %{_sharedstatedir}/%{shortname}/.bash_profile
+update-alternatives --install %{_sharedstatedir}/%{shortname}/.bash_profile %{shortname}-bash_profile %{install_dir}/share/bash_profile %{pkgver}00
 
 %preun server
 if [[ $1 -eq 0 ]] ; then
-%if %{systemd_enabled}
-  %{__systemctl} --no-reload disable %{service_name}.service &>/dev/null || :
-  %{__systemctl} stop %{service_name}.service &>/dev/null || :
-%else
-  %{__service} %{service_name} stop &>/dev/null || :
-  %{__chkconfig} --del %{service_name} &>/dev/null || :
-%endif
+  update-alternatives --remove %{shortname}-bash_profile %{install_dir}/share/bash_profile
+  systemctl --no-reload disable %{service_name}.service &>/dev/null || :
+  systemctl stop %{service_name}.service &>/dev/null || :
 fi
 
 %postun server
-%{__ldconfig}
-%if %{systemd_enabled}
-%{__systemctl} daemon-reload &>/dev/null || :
-%endif
+systemctl daemon-reload &>/dev/null || :
+/sbin/ldconfig
 
 %if %plperl
 %post plperl
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun plperl
-%{__ldconfig}
+/sbin/ldconfig
 %endif
 
 %if %plpython
-%post plpython
-%{__ldconfig}
+%post plpython3
+/sbin/ldconfig
 
-%postun plpython
-%{__ldconfig}
+%postun plpython3
+/sbin/ldconfig
 %endif
 
 %if %pltcl
 %post pltcl
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun pltcl
-%{__ldconfig}
+/sbin/ldconfig
 %endif
 
 %if %test
 %post test
-chown -R %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
+chown -R -h %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
 %endif
 
 # Create alternatives entries for common binaries and man files
 %post
-%{__updalt} --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}00
-%{__updalt} --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}00
-%{__updalt} --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}00
-%{__updalt} --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}00
-%{__updalt} --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}00
-%{__updalt} --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}00
-%{__updalt} --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}00
-%{__updalt} --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}00
-%{__updalt} --install %{_bindir}/pg_dump       %{shortname}-pg_dump       %{install_dir}/bin/pg_dump       %{pkgver}00
-%{__updalt} --install %{_bindir}/pg_dumpall    %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall    %{pkgver}00
-%{__updalt} --install %{_bindir}/pg_restore    %{shortname}-pg_restore    %{install_dir}/bin/pg_restore    %{pkgver}00
-%{__updalt} --install %{_bindir}/reindexdb     %{shortname}-reindexdb     %{install_dir}/bin/reindexdb     %{pkgver}00
-%{__updalt} --install %{_bindir}/vacuumdb      %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb      %{pkgver}00
+update-alternatives --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}00
+update-alternatives --install %{_bindir}/clusterdb     %{shortname}-clusterdb     %{install_dir}/bin/clusterdb     %{pkgver}00
+update-alternatives --install %{_bindir}/createdb      %{shortname}-createdb      %{install_dir}/bin/createdb      %{pkgver}00
+update-alternatives --install %{_bindir}/createuser    %{shortname}-createuser    %{install_dir}/bin/createuser    %{pkgver}00
+update-alternatives --install %{_bindir}/dropdb        %{shortname}-dropdb        %{install_dir}/bin/dropdb        %{pkgver}00
+update-alternatives --install %{_bindir}/dropuser      %{shortname}-dropuser      %{install_dir}/bin/dropuser      %{pkgver}00
+update-alternatives --install %{_bindir}/pg_basebackup %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup %{pkgver}00
+update-alternatives --install %{_bindir}/pg_config     %{shortname}-pg_config     %{install_dir}/bin/pg_config     %{pkgver}00
+update-alternatives --install %{_bindir}/pg_dump       %{shortname}-pg_dump       %{install_dir}/bin/pg_dump       %{pkgver}00
+update-alternatives --install %{_bindir}/pg_dumpall    %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall    %{pkgver}00
+update-alternatives --install %{_bindir}/pg_restore    %{shortname}-pg_restore    %{install_dir}/bin/pg_restore    %{pkgver}00
+update-alternatives --install %{_bindir}/reindexdb     %{shortname}-reindexdb     %{install_dir}/bin/reindexdb     %{pkgver}00
+update-alternatives --install %{_bindir}/vacuumdb      %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb      %{pkgver}00
 
-%{__updalt} --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/pg_dumpall.1    %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1    %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/pg_restore.1    %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1    %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/psql.1          %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1          %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/reindexdb.1     %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1     %{pkgver}00
-%{__updalt} --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}00
+update-alternatives --install %{_mandir}/man1/clusterdb.1     %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1     %{pkgver}00
+update-alternatives --install %{_mandir}/man1/createdb.1      %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1      %{pkgver}00
+update-alternatives --install %{_mandir}/man1/createuser.1    %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1    %{pkgver}00
+update-alternatives --install %{_mandir}/man1/dropdb.1        %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1        %{pkgver}00
+update-alternatives --install %{_mandir}/man1/dropuser.1      %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1      %{pkgver}00
+update-alternatives --install %{_mandir}/man1/pg_basebackup.1 %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1 %{pkgver}00
+update-alternatives --install %{_mandir}/man1/pg_dump.1       %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1       %{pkgver}00
+update-alternatives --install %{_mandir}/man1/pg_dumpall.1    %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1    %{pkgver}00
+update-alternatives --install %{_mandir}/man1/pg_restore.1    %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1    %{pkgver}00
+update-alternatives --install %{_mandir}/man1/psql.1          %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1          %{pkgver}00
+update-alternatives --install %{_mandir}/man1/reindexdb.1     %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1     %{pkgver}00
+update-alternatives --install %{_mandir}/man1/vacuumdb.1      %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1      %{pkgver}00
 
 %post libs
-%{__updalt} --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}00
-%{__ldconfig}
+# Create link to linker configuration file
+update-alternatives --install %{_sysconfdir}/ld.so.conf.d/%{realname}-pgdg-libs.conf  %{shortname}-ld-conf  %{install_dir}/share/%{service_name}-libs.conf %{pkgver}00
+# Update shared libs cache
+/sbin/ldconfig
+
+%post devel
+# Create links to pkgconfig configuration files
+update-alternatives --install %{_libdir}/pkgconfig/libpq.pc           %{shortname}-pkgconfig-libpq           %{install_dir}/lib/pkgconfig/libpq.pc          %{pkgver}00
+update-alternatives --install %{_libdir}/pkgconfig/libpgtypes.pc      %{shortname}-pkgconfig-libpgtypes      %{install_dir}/lib/pkgconfig/libpgtypes.pc     %{pkgver}00
+update-alternatives --install %{_libdir}/pkgconfig/libecpg.pc         %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc        %{pkgver}00
+update-alternatives --install %{_libdir}/pkgconfig/libecpg_compat.pc  %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc %{pkgver}00
 
 # Drop alternatives entries for common binaries and man files
 %postun
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system (vs. just being upgraded)
-  %{__updalt} --remove %{shortname}-psql          %{install_dir}/bin/psql
-  %{__updalt} --remove %{shortname}-clusterdb     %{install_dir}/bin/clusterdb
-  %{__updalt} --remove %{shortname}-createdb      %{install_dir}/bin/createdb
-  %{__updalt} --remove %{shortname}-createuser    %{install_dir}/bin/createuser
-  %{__updalt} --remove %{shortname}-dropdb        %{install_dir}/bin/dropdb
-  %{__updalt} --remove %{shortname}-dropuser      %{install_dir}/bin/dropuser
-  %{__updalt} --remove %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup
-  %{__updalt} --remove %{shortname}-pg_config     %{install_dir}/bin/pg_config
-  %{__updalt} --remove %{shortname}-pg_dump       %{install_dir}/bin/pg_dump
-  %{__updalt} --remove %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall
-  %{__updalt} --remove %{shortname}-pg_restore    %{install_dir}/bin/pg_restore
-  %{__updalt} --remove %{shortname}-reindexdb     %{install_dir}/bin/reindexdb
-  %{__updalt} --remove %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb
+  update-alternatives --remove %{shortname}-psql          %{install_dir}/bin/psql
+  update-alternatives --remove %{shortname}-clusterdb     %{install_dir}/bin/clusterdb
+  update-alternatives --remove %{shortname}-createdb      %{install_dir}/bin/createdb
+  update-alternatives --remove %{shortname}-createuser    %{install_dir}/bin/createuser
+  update-alternatives --remove %{shortname}-dropdb        %{install_dir}/bin/dropdb
+  update-alternatives --remove %{shortname}-dropuser      %{install_dir}/bin/dropuser
+  update-alternatives --remove %{shortname}-pg_basebackup %{install_dir}/bin/pg_basebackup
+  update-alternatives --remove %{shortname}-pg_config     %{install_dir}/bin/pg_config
+  update-alternatives --remove %{shortname}-pg_dump       %{install_dir}/bin/pg_dump
+  update-alternatives --remove %{shortname}-pg_dumpall    %{install_dir}/bin/pg_dumpall
+  update-alternatives --remove %{shortname}-pg_restore    %{install_dir}/bin/pg_restore
+  update-alternatives --remove %{shortname}-reindexdb     %{install_dir}/bin/reindexdb
+  update-alternatives --remove %{shortname}-vacuumdb      %{install_dir}/bin/vacuumdb
 
-  %{__updalt} --remove %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1
-  %{__updalt} --remove %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1
-  %{__updalt} --remove %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1
-  %{__updalt} --remove %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1
-  %{__updalt} --remove %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1
-  %{__updalt} --remove %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1
-  %{__updalt} --remove %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1
-  %{__updalt} --remove %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1
-  %{__updalt} --remove %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1
-  %{__updalt} --remove %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1
-  %{__updalt} --remove %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1
-  %{__updalt} --remove %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1
+  update-alternatives --remove %{shortname}-clusterdbman     %{install_dir}/share/man/man1/clusterdb.1
+  update-alternatives --remove %{shortname}-createdbman      %{install_dir}/share/man/man1/createdb.1
+  update-alternatives --remove %{shortname}-createuserman    %{install_dir}/share/man/man1/createuser.1
+  update-alternatives --remove %{shortname}-dropdbman        %{install_dir}/share/man/man1/dropdb.1
+  update-alternatives --remove %{shortname}-dropuserman      %{install_dir}/share/man/man1/dropuser.1
+  update-alternatives --remove %{shortname}-pg_basebackupman %{install_dir}/share/man/man1/pg_basebackup.1
+  update-alternatives --remove %{shortname}-pg_dumpallman    %{install_dir}/share/man/man1/pg_dumpall.1
+  update-alternatives --remove %{shortname}-pg_dumpman       %{install_dir}/share/man/man1/pg_dump.1
+  update-alternatives --remove %{shortname}-pg_restoreman    %{install_dir}/share/man/man1/pg_restore.1
+  update-alternatives --remove %{shortname}-psqlman          %{install_dir}/share/man/man1/psql.1
+  update-alternatives --remove %{shortname}-reindexdbman     %{install_dir}/share/man/man1/reindexdb.1
+  update-alternatives --remove %{shortname}-vacuumdbman      %{install_dir}/share/man/man1/vacuumdb.1
 fi
 
 %postun libs
 if [[ $1 -eq 0 ]] ; then
-  %{__updalt} --remove %{shortname}-ld-conf %{install_dir}/share/%{service_name}-libs.conf
-  %{__ldconfig}
+  # Remove link to linker configuration file
+  update-alternatives --remove %{shortname}-ld-conf %{install_dir}/share/%{service_name}-libs.conf
+  # Update shared libs cache
+  /sbin/ldconfig
+fi
+
+%postun devel
+if [[ $1 -eq 0 ]] ; then
+  # Remove links to pkgconfig configuration files
+  update-alternatives --remove %{shortname}-pkgconfig-libpq           %{install_dir}/lib/pkgconfig/libpq.pc
+  update-alternatives --remove %{shortname}-pkgconfig-libpgtypes      %{install_dir}/lib/pkgconfig/libpgtypes.pc
+  update-alternatives --remove %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc
+  update-alternatives --remove %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc
 fi
 
 %clean
@@ -1017,12 +931,6 @@ rm -rf %{buildroot}
 %{install_dir}/share/extension/jsonb_plperl*.sql
 %{install_dir}/share/extension/jsonb_plperl*.control
 %endif
-%if %plpython
-%{install_dir}/lib/hstore_plpython2.so
-%{install_dir}/lib/jsonb_plpython2.so
-%{install_dir}/share/extension/*_plpythonu*
-%{install_dir}/share/extension/*_plpython2u*
-%endif
 %{install_dir}/lib/passwordcheck.so
 %{install_dir}/lib/pg_freespacemap.so
 %{install_dir}/lib/pg_stat_statements.so
@@ -1031,9 +939,6 @@ rm -rf %{buildroot}
 %{install_dir}/lib/sslinfo.so
 %{install_dir}/lib/lo.so
 %{install_dir}/lib/ltree.so
-%if %plpython
-%{install_dir}/lib/ltree_plpython2.so
-%endif
 %{install_dir}/lib/moddatetime.so
 %{install_dir}/lib/pageinspect.so
 %{install_dir}/lib/pgcrypto.so
@@ -1125,10 +1030,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %config(noreplace) %{_initddir}/%{service_name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
-%if %{systemd_enabled}
-%config(noreplace) %{_unitdir}/postgresql-%{majorver}.service
-%endif
-%attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
+%config(noreplace) %{_unitdir}/%{realname}-%{majorver}.service
+%config(noreplace) %{_tmpfilesdir}/%{realname}-%{majorver}.conf
+%attr(755,%{username},%{groupname}) %dir %{_localstatedir}/run/%{realname}
 %{_initddir}/%{tinyname}%{majorver}
 %if %pam
 %config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{majorver}
@@ -1167,6 +1071,8 @@ rm -rf %{buildroot}
 %{install_dir}/lib/plpgsql.so
 %dir %{install_dir}/share/extension
 %{install_dir}/share/extension/plpgsql*
+
+%config(noreplace) %attr(700,%{username},%{groupname}) %{install_dir}/share/bash_profile
 
 %dir %{install_dir}/lib
 %dir %{install_dir}/share
@@ -1221,13 +1127,14 @@ rm -rf %{buildroot}
 %endif
 
 %if %plpython
-%files plpython -f pg_plpython.lst
+%files plpython3 -f pg_plpython.lst
 %defattr(-,root,root)
 %{install_dir}/lib/plpython*.so
-%{install_dir}/lib/hstore_plpython2.so
-%{install_dir}/lib/ltree_plpython2.so
-%{install_dir}/share/extension/plpython2u*
-%{install_dir}/share/extension/plpythonu*
+%{install_dir}/lib/hstore_plpython3.so
+%{install_dir}/lib/jsonb_plpython3.so
+%{install_dir}/lib/ltree_plpython3.so
+%{install_dir}/share/extension/jsonb_plpython*
+%{install_dir}/share/extension/plpython3u*
 %endif
 
 %if %test
@@ -1240,6 +1147,55 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 20 2023 Anton Novojilov <andy@essentialkaos.com> - 12.16-0
+- https://www.postgresql.org/docs/12/release-12-16.html
+
+* Wed Sep 20 2023 Anton Novojilov <andy@essentialkaos.com> - 12.15-0
+- https://www.postgresql.org/docs/12/release-12-15.html
+
+* Wed Sep 20 2023 Anton Novojilov <andy@essentialkaos.com> - 12.14-0
+- https://www.postgresql.org/docs/12/release-12-14.html
+
+* Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 12.13-0
+- https://www.postgresql.org/docs/12/release-12-13.html
+
+* Thu Aug 18 2022 Anton Novojilov <andy@essentialkaos.com> - 12.12-0
+- https://www.postgresql.org/docs/12/release-12-12.html
+
+* Thu May 19 2022 Anton Novojilov <andy@essentialkaos.com> - 12.11-0
+- https://www.postgresql.org/docs/12/release-12-11.html
+
+* Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 12.10-0
+- https://www.postgresql.org/docs/12/release-12-10.html
+
+* Wed Nov 17 2021 Anton Novojilov <andy@essentialkaos.com> - 12.9-0
+- https://www.postgresql.org/docs/12/release-12-9.html
+
+* Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 12.8-0
+- https://www.postgresql.org/docs/12/release-12-8.html
+
+* Sat Sep 04 2021 Anton Novojilov <andy@essentialkaos.com> - 12.7-0
+- https://www.postgresql.org/docs/12/release-12-7.html
+
+* Thu Apr 01 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-1
+- Changed bash_profile installation routine
+
+* Mon Feb 15 2021 Anton Novojilov <andy@essentialkaos.com> - 12.6-0
+- https://www.postgresql.org/docs/12/release-12-6.html
+
+* Tue Dec 29 2020 Anton Novojilov <andy@essentialkaos.com> - 12.5-0
+- https://www.postgresql.org/docs/12/release-12-5.html
+
+* Thu Aug 13 2020 Anton Novojilov <andy@essentialkaos.com> - 12.4-0
+- https://www.postgresql.org/docs/12/release-12-4.html
+
+* Sat May 23 2020 Anton Novojilov <andy@essentialkaos.com> - 12.3-0
+- https://www.postgresql.org/docs/12/release-12-3.html
+- Spec improvements
+
+* Sat Mar 07 2020 Anton Novojilov <andy@essentialkaos.com> - 12.2-1
+- Fixed bug in init script
+
 * Mon Jan 20 2020 Anton Novojilov <andy@essentialkaos.com> - 12.1-0
 - Updated to the latest stable release
 

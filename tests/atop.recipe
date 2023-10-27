@@ -1,0 +1,42 @@
+# Bibop recipe for atop
+# See more: https://kaos.sh/bibop
+
+pkg atop
+
+require-root yes
+unsafe-actions yes
+
+var service_name atop
+
+command "-" "Check environment"
+  app atop
+  app atopacctd
+  app atopcat
+  app atopconvert
+  app atopsar
+
+  service-present atop
+  service-present atopacct
+  service-present atop-rotate
+
+  service-enabled atop
+  service-enabled atopacct
+
+command "-" "Check sysconfig file"
+  exist /etc/sysconfig/atop
+  mode /etc/sysconfig/atop 644
+
+command "-" "Check daily script"
+  exist /usr/share/atop/atop.daily
+  mode /usr/share/atop/atop.daily 755
+
+  file-contains /usr/share/atop/atop.daily "DEFAULTSFILE=/etc/sysconfig/atop"
+
+command "systemctl start {service_name}.service" "Start daemon"
+  wait-service {service_name} 5
+
+command "systemctl status {service_name}.service" "Check daemon status"
+  expect "active (running)"
+
+command "systemctl stop {service_name}.service" "Stop daemon"
+  !wait-service {service_name} 5

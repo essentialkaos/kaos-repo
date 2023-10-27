@@ -1,2 +1,0 @@
-[web]
-cacerts = /etc/pki/tls/certs/ca-bundle.crt

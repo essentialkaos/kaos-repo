@@ -4,66 +4,24 @@
 
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+Summary:        Cross-platform asychronous I/O
+Name:           libuv
+Version:        1.46.0
+Release:        0%{?dist}
+License:        MIT, BSD and ISC
+Group:          Development/Tools
+URL:            https://libuv.org
 
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
-%define __ldconfig        %{_sbin}/ldconfig
+Source0:        https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz
+Source1:        %{name}.pc.in
 
-################################################################################
+Source100:      checksum.sha512
 
-Summary:              Cross-platform asychronous I/O
-Name:                 libuv
-Version:              1.34.0
-Release:              0%{?dist}
-License:              MIT, BSD and ISC
-Group:                Development/Tools
-URL:                  https://libuv.org
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source0:              https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz
-Source1:              %{name}.pc.in
-Source100:            checksum.sha512
+BuildRequires:  gcc libtool autoconf automake
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:        autoconf >= 2.59 automake >= 1.9.6
-BuildRequires:        gcc libtool >= 1.5.22
-
-Requires(post):       %{__ldconfig}
-Requires(postun):     %{__ldconfig}
-
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -75,14 +33,11 @@ Julia, pyuv, and others.
 ################################################################################
 
 %package devel
-Summary:              Development libraries for libuv
-Group:                Development/Tools
+Summary:  Development libraries for libuv
+Group:    Development/Tools
 
-Requires:             %{name} = %{version}-%{release}
-Requires:             pkgconfig
-
-Requires(post):       %{__ldconfig}
-Requires(postun):     %{__ldconfig}
+Requires:  pkgconfig
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 Development libraries for libuv.
@@ -109,23 +64,23 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-install -dm 755 %{buildroot}%{_pkgconfigdir}
+install -dm 755 %{buildroot}%{_libdir}/pkgconfig
 
 sed -e "s#@prefix@#%{_prefix}#g" \
     -e "s#@exec_prefix@#%{_exec_prefix}#g" \
     -e "s#@libdir@#%{_libdir}#g" \
     -e "s#@includedir@#%{_includedir}#g" \
     -e "s#@version@#%{version}#g" \
-    %SOURCE1 > %{buildroot}%{_pkgconfigdir}/libuv.pc
+    %SOURCE1 > %{buildroot}%{_libdir}/pkgconfig/libuv.pc
 
 %clean
 rm -rf %{buildroot}
 
 %post
-%{__ldconfig}
+/sbin/ldconfig
 
 %postun
-%{__ldconfig}
+/sbin/ldconfig
 
 ################################################################################
 
@@ -147,56 +102,59 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Jul 09 2023 Anton Novojilov <andy@essentialkaos.com> - 1.46.0-0
+- https://github.com/libuv/libuv/releases/tag/v1.46.0
+
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 1.34.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.34.0
 
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 1.30.1-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.30.1
 
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.25.0
 
 * Fri Nov 16 2018 Anton Novojilov <andy@essentialkaos.com> - 1.24.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.24.0
 
 * Wed Sep 26 2018 Anton Novojilov <andy@essentialkaos.com> - 1.23.1-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.23.1
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 1.23.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.23.0
 
 * Fri Jul 06 2018 Anton Novojilov <andy@essentialkaos.com> - 1.21.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.21.0
 
 * Sun Jun 17 2018 Anton Novojilov <andy@essentialkaos.com> - 1.20.3-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.20.3
 
 * Sun Mar 25 2018 Anton Novojilov <andy@essentialkaos.com> - 1.19.2-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.19.2
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 1.19.1-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.19.1
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 1.16.1-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.16.1
 
 * Sat Sep 16 2017 Anton Novojilov <andy@essentialkaos.com> - 1.14.1-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.14.1
 
 * Sun Jul 09 2017 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.13.1
 
 * Wed Mar 22 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-1
 - Minor spec improvement
 
 * Sat Feb 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.11.0
 
 * Sat Jan 21 2017 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.10.2
 
 * Wed Nov 09 2016 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
-- Updated to the latest stable release
+- https://github.com/libuv/libuv/releases/tag/v1.10.0
 
 * Tue Oct 18 2016 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.9.1-0
 - Initial build

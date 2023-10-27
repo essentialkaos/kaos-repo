@@ -1,0 +1,55 @@
+# Bibop recipe for GDAL 3 for EL7
+# See more: https://kaos.sh/bibop
+
+pkg gdal3 gdal3-libs gdal3-devel
+
+fast-finish yes
+
+var inc_dir    /usr/include/gdal
+var lib_dir    /usr/lib/gdal
+var cmake_lib  /usr/lib64/cmake/gdal
+
+command "-" "Check apps"
+  app gdal-config
+  app gdal_contour
+  app gdal_create
+  app gdal_grid
+  app gdal_rasterize
+  app gdal_translate
+  app gdal_viewshed
+  app gdaladdo
+  app gdalbuildvrt
+  app gdaldem
+  app gdalenhance
+  app gdalinfo
+  app gdallocationinfo
+  app gdalmanage
+  app gdalmdiminfo
+  app gdalmdimtranslate
+  app gdalsrsinfo
+  app gdaltindex
+  app gdaltransform
+  app gdalwarp
+  app gnmanalyse
+  app gnmmanage
+  app nearblack
+  app ogr2ogr
+  app ogrinfo
+  app ogrlineref
+  app ogrtindex
+  app sozip
+
+command "-" "Check cmake scripts"
+  exist {cmake_lib}/GDAL-targets-noconfig.cmake
+  exist {cmake_lib}/GDAL-targets.cmake
+  exist {cmake_lib}/GDALConfig.cmake
+  exist {cmake_lib}/GDALConfigVersion.cmake
+
+command "-" "Check shared libs"
+  lib-loaded libgdal.so.*
+
+command "-" "Check headers"
+  exist {inc_dir}/gdal.h
+
+command "-" "Check pkg-config"
+  lib-config gdal

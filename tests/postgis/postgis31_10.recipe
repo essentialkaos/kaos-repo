@@ -1,0 +1,91 @@
+# Bibop recipe for PostGIS 3.1 for PostgreSQL 10
+# See more: https://kaos.sh/bibop
+
+################################################################################
+
+pkg postgresql10-server postgis31_10 postgis31_10-client postgis31_10-scripts postgis31_10-utils
+
+require-root yes
+unsafe-actions yes
+
+var postgis_lib_version    3
+var postgis_major_version  3.1
+var postgis_version        3.1.9
+var postgres_version       10
+var pkg_ver                31_{postgres_version}
+
+var postgres_service   postgresql-{postgres_version}
+var postgres_port      5432
+var postgres_data_dir  /var/lib/pgsql/{postgres_version}
+var postgres_pid       /var/run/postgresql{postgres_version}.pid
+
+var data_dir  /usr/pgsql-{postgres_version}/share
+var lib_dir   /usr/pgsql-{postgres_version}/lib
+var bin_dir   /usr/pgsql-{postgres_version}/bin
+
+var utils_dir  /usr/share/postgis{pkg_ver}
+
+var contrib_dir    {data_dir}/contrib/postgis-{postgis_major_version}
+var extension_dir  {data_dir}/extension
+
+################################################################################
+
+command "-" "Check libraries"
+  exist {lib_dir}/address_standardizer-{postgis_lib_version}.so
+  exist {lib_dir}/postgis-{postgis_lib_version}.so
+  exist {lib_dir}/postgis_raster-{postgis_lib_version}.so
+  exist {lib_dir}/postgis_topology-{postgis_lib_version}.so
+
+  mode {lib_dir}/address_standardizer-{postgis_lib_version}.so 755
+  mode {lib_dir}/postgis-{postgis_lib_version}.so 755
+  mode {lib_dir}/postgis_raster-{postgis_lib_version}.so 755
+  mode {lib_dir}/postgis_topology-{postgis_lib_version}.so 755
+
+command "-" "Check linking with GDAL library"
+  lib-linked {lib_dir}/postgis_raster-{postgis_lib_version}.so libgdal.so.*
+
+command "-" "Check data directories"
+  exist {contrib_dir}
+  dir {contrib_dir}
+  mode {contrib_dir} 755
+
+  exist {extension_dir}
+  dir {extension_dir}
+  mode {extension_dir} 755
+
+command "-" "Check client binaries"
+  app pgsql2shp
+  app raster2pgsql
+  app shp2pgsql
+
+  link /bin/pgsql2shp {bin_dir}/postgis-{postgis_major_version}/pgsql2shp
+  link /bin/shp2pgsql {bin_dir}/postgis-{postgis_major_version}/shp2pgsql
+  link /bin/raster2pgsql {bin_dir}/postgis-{postgis_major_version}/raster2pgsql
+
+################################################################################
+
+command "service {postgres_service} initdb" "Database initialization"
+  exit 0
+
+command "systemctl start {postgres_service}" "Start PostgreSQL server"
+  wait 1
+  wait-fs {postgres_pid}
+  service-works {postgres_service}
+  connect tcp :{postgres_port}
+
+command "postgres:{bin_dir}/psql -t -c 'CREATE EXTENSION postgis;'" "Create PostGIS extension"
+  exit 0
+
+command "postgres:{bin_dir}/psql -t -c 'SELECT PostGIS_Full_Version();'" "Check extension version"
+  exit 0
+  output-contains 'POSTGIS="{postgis_version} '
+
+command "systemctl stop {postgres_service}" "Stop PostgreSQL server"
+  wait 1
+  !wait-fs {postgres_pid}
+  !service-works {postgres_service}
+
+################################################################################
+
+command:teardown "-" "Data cleanup"
+  cleanup {postgres_data_dir}/data

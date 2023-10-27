@@ -1,0 +1,24 @@
+# Bibop recipe for Hiredis
+# See more: https://kaos.sh/bibop
+
+pkg gcc libhiredis libhiredis-devel
+
+fast-finish yes
+
+var lib_name hiredis
+
+command "-" "Check shared libs"
+  lib-loaded libhiredis.so.1.*
+
+command "-" "Check headers"
+  lib-header {lib_name}
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}
+
+command "gcc -o test_bin -l {lib_name} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

@@ -1,0 +1,134 @@
+# Bibop recipe for cURL
+# See more: https://kaos.sh/bibop
+
+pkg gcc curl libcurl libcurl-devel
+
+fast-finish yes
+
+var lib_name curl
+
+command "-" "Check environment"
+  app curl
+
+command "curl -Is https://www.google.com" "Check basic HTTP request"
+  expect "200"
+  exit 0
+
+command "curl --http1.0 -Is https://www.google.com" "Check HTTP/1.0 requests"
+  expect "HTTP/1.0 200 OK"
+  exit 0
+
+command "curl --http1.1 -Is https://www.google.com" "Check HTTP/1.1 requests"
+  expect "HTTP/1.1 200 OK"
+  exit 0
+
+command "curl --http2 -Is https://www.google.com" "Check HTTP/2 requests"
+  expect "HTTP/2 200"
+  exit 0
+
+command "curl -LIs http://google.com" "Check redirect"
+  expect "Server: gws"
+  exit 0
+
+command "curl -Is https://unknown" "Check request error"
+  !exit 0
+
+command "-" "Check lib"
+  lib-loaded libcurl.so.*
+
+command "-" "Check headers"
+  lib-header {lib_name}
+
+command "-" "Check symbols exported by libcurl.so"
+  lib-exported libcurl.so curl_easy_cleanup
+  lib-exported libcurl.so curl_easy_duphandle
+  lib-exported libcurl.so curl_easy_escape
+  lib-exported libcurl.so curl_easy_getinfo
+  lib-exported libcurl.so curl_easy_init
+  lib-exported libcurl.so curl_easy_option_by_id
+  lib-exported libcurl.so curl_easy_option_by_name
+  lib-exported libcurl.so curl_easy_option_next
+  lib-exported libcurl.so curl_easy_pause
+  lib-exported libcurl.so curl_easy_perform
+  lib-exported libcurl.so curl_easy_recv
+  lib-exported libcurl.so curl_easy_reset
+  lib-exported libcurl.so curl_easy_send
+  lib-exported libcurl.so curl_easy_setopt
+  lib-exported libcurl.so curl_easy_strerror
+  lib-exported libcurl.so curl_easy_unescape
+  lib-exported libcurl.so curl_easy_upkeep
+  lib-exported libcurl.so curl_escape
+  lib-exported libcurl.so curl_formadd
+  lib-exported libcurl.so curl_formfree
+  lib-exported libcurl.so curl_formget
+  lib-exported libcurl.so curl_free
+  lib-exported libcurl.so curl_getdate
+  lib-exported libcurl.so curl_getenv
+  lib-exported libcurl.so curl_global_cleanup
+  lib-exported libcurl.so curl_global_init
+  lib-exported libcurl.so curl_global_init_mem
+  lib-exported libcurl.so curl_global_sslset
+  lib-exported libcurl.so curl_maprintf
+  lib-exported libcurl.so curl_mfprintf
+  lib-exported libcurl.so curl_mime_addpart
+  lib-exported libcurl.so curl_mime_data
+  lib-exported libcurl.so curl_mime_data_cb
+  lib-exported libcurl.so curl_mime_encoder
+  lib-exported libcurl.so curl_mime_filedata
+  lib-exported libcurl.so curl_mime_filename
+  lib-exported libcurl.so curl_mime_free
+  lib-exported libcurl.so curl_mime_headers
+  lib-exported libcurl.so curl_mime_init
+  lib-exported libcurl.so curl_mime_name
+  lib-exported libcurl.so curl_mime_subparts
+  lib-exported libcurl.so curl_mime_type
+  lib-exported libcurl.so curl_mprintf
+  lib-exported libcurl.so curl_msnprintf
+  lib-exported libcurl.so curl_msprintf
+  lib-exported libcurl.so curl_multi_add_handle
+  lib-exported libcurl.so curl_multi_assign
+  lib-exported libcurl.so curl_multi_cleanup
+  lib-exported libcurl.so curl_multi_fdset
+  lib-exported libcurl.so curl_multi_info_read
+  lib-exported libcurl.so curl_multi_init
+  lib-exported libcurl.so curl_multi_perform
+  lib-exported libcurl.so curl_multi_poll
+  lib-exported libcurl.so curl_multi_remove_handle
+  lib-exported libcurl.so curl_multi_setopt
+  lib-exported libcurl.so curl_multi_socket
+  lib-exported libcurl.so curl_multi_socket_action
+  lib-exported libcurl.so curl_multi_socket_all
+  lib-exported libcurl.so curl_multi_strerror
+  lib-exported libcurl.so curl_multi_timeout
+  lib-exported libcurl.so curl_multi_wait
+  lib-exported libcurl.so curl_multi_wakeup
+  lib-exported libcurl.so curl_mvaprintf
+  lib-exported libcurl.so curl_mvfprintf
+  lib-exported libcurl.so curl_mvprintf
+  lib-exported libcurl.so curl_mvsnprintf
+  lib-exported libcurl.so curl_mvsprintf
+  lib-exported libcurl.so curl_pushheader_byname
+  lib-exported libcurl.so curl_pushheader_bynum
+  lib-exported libcurl.so curl_share_cleanup
+  lib-exported libcurl.so curl_share_init
+  lib-exported libcurl.so curl_share_setopt
+  lib-exported libcurl.so curl_share_strerror
+  lib-exported libcurl.so curl_slist_append
+  lib-exported libcurl.so curl_slist_free_all
+  lib-exported libcurl.so curl_strequal
+  lib-exported libcurl.so curl_strnequal
+  lib-exported libcurl.so curl_unescape
+  lib-exported libcurl.so curl_url
+  lib-exported libcurl.so curl_url_cleanup
+  lib-exported libcurl.so curl_url_dup
+  lib-exported libcurl.so curl_url_get
+  lib-exported libcurl.so curl_url_set
+  lib-exported libcurl.so curl_version
+  lib-exported libcurl.so curl_version_info
+
+command "gcc -o test_bin -l {lib_name} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

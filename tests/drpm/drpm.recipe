@@ -1,0 +1,24 @@
+# Bibop recipe for drpm
+# See more: https://kaos.sh/bibop
+
+pkg drpm drpm-devel
+
+fast-finish yes
+
+var lib_linking_flags "-ldrpm"
+
+command "-" "Check shared libs"
+  lib-loaded libdrpm.so.*
+
+command "-" "Check headers"
+  lib-header drpm.h
+
+command "-" "Check pkg-config"
+  lib-config drpm
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

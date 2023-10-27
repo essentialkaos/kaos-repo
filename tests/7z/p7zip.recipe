@@ -1,0 +1,33 @@
+# Bibop recipe for p7zip
+# See more: https://kaos.sh/bibop
+
+pkg p7zip p7zip-plugins
+
+fast-finish yes
+
+command "-" "Check environment"
+  app 7z
+  app 7za
+
+command "-" "Check libexec"
+  exist /usr/libexec/p7zip/7z
+  exist /usr/libexec/p7zip/7z.so
+  exist /usr/libexec/p7zip/7za
+  exist /usr/libexec/p7zip/7zCon.sfx
+  exist /usr/libexec/p7zip/Codecs/Rar.so
+
+  mode /usr/libexec/p7zip/7z 755
+  mode /usr/libexec/p7zip/7z.so 755
+  mode /usr/libexec/p7zip/7za 755
+  mode /usr/libexec/p7zip/7zCon.sfx 755
+  mode /usr/libexec/p7zip/Codecs/Rar.so 755
+
+command "7za x test.7z" "Unpack test file"
+  exit 0
+  exist test.txt
+  !empty test.txt
+
+command "7za a -mx=1 test2.7z test.txt" "Pack test file"
+  exit 0
+  exist test2.7z
+  !empty test2.7z

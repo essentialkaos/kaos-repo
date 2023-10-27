@@ -1,0 +1,63 @@
+# Bibop recipe for HDF 5
+# See more: https://kaos.sh/bibop
+
+pkg hdf5 hdf5-devel hdf5-static
+
+fast-finish yes
+
+command "-" "Check apps"
+  app h5clear
+  app h5copy
+  app h5debug
+  app h5diff
+  app h5dump
+  app h5format_convert
+  app h5import
+  app h5jam
+  app h5ls
+  app h5mkgrp
+  app h5perf_serial
+  app h5repack
+  app h5repart
+  app h5stat
+  app h5unjam
+  app h5watch
+
+command "-" "Check devel apps"
+  app h5c++
+  app h5c++-64
+  app h5cc
+  app h5cc-64
+  app h5fc
+  app h5fc-64
+  app h5redeploy
+
+command "-" "Check shared libs"
+  lib-loaded libhdf5.so.*
+  lib-loaded libhdf5_cpp.so.*
+  lib-loaded libhdf5_fortran.so.*
+  lib-loaded libhdf5_hl.so.*
+  lib-loaded libhdf5_hl_cpp.so.*
+  lib-loaded libhdf5hl_fortran.so.*
+
+command "-" "Check static libs"
+  exist /usr/lib64/libhdf5.a
+  mode /usr/lib64/libhdf5.a 644
+
+  exist /usr/lib64/libhdf5_cpp.a
+  mode /usr/lib64/libhdf5_cpp.a 644
+
+  exist /usr/lib64/libhdf5_fortran.a
+  mode /usr/lib64/libhdf5_fortran.a 644
+
+  exist /usr/lib64/libhdf5_hl.a
+  mode /usr/lib64/libhdf5_hl.a 644
+
+  exist /usr/lib64/libhdf5_hl_cpp.a
+  mode /usr/lib64/libhdf5_hl_cpp.a 644
+
+  exist /usr/lib64/libhdf5hl_fortran.a
+  mode /usr/lib64/libhdf5hl_fortran.a 644
+
+command "-" "Check headers"
+  lib-header hdf5.h

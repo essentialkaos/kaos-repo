@@ -1,60 +1,46 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define shortname         7za
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-Summary:           Very high compression ratio file archiver
-Name:              p7zip
-Version:           16.02
-Release:           1%{?dist}
-License:           LGPLv2 and (LGPLv2+ or CPL)
-Group:             Applications/Archiving
-URL:               http://p7zip.sourceforge.net
+%define shortname  7za
 
-Source:            http://downloads.sourceforge.net/project/p7zip/%{name}/%{version}/%{name}_%{version}_src_all.tar.bz2
+################################################################################
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Summary:        Very high compression ratio file archiver
+Name:           p7zip
+Version:        16.02
+Release:        2%{?dist}
+License:        LGPLv2 and (LGPLv2+ or CPL)
+Group:          Applications/Archiving
+URL:            https://p7zip.sourceforge.net
 
-BuildRequires:     make gcc gcc-c++
+Source0:        https://downloads.sourceforge.net/project/p7zip/%{name}/%{version}/%{name}_%{version}_src_all.tar.bz2
+
+Source100:      checksum.sha512
+
+Patch0:         CVE-2016-9296.patch
+Patch1:         CVE-2017-17969.patch
+Patch2:         01-hardening-flags.patch
+Patch3:         02-fix-g++-warning.patch
+Patch4:         03-gcc10-conversion.patch
+Patch5:         04-fix-data-null-pointer.patch
+Patch6:         05-fix-out-of-mem.patch
+
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  make gcc gcc-c++
 
 %ifarch %{ix86}
-BuildRequires:     nasm
+BuildRequires:  nasm
 %endif
 %ifarch x86_64
-BuildRequires:     yasm
+BuildRequires:  yasm
 %endif
 
-Provides:          %{name} = %{version}-%{release}
-Provides:          %{shortname} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
+Provides:       %{shortname} = %{version}-%{release}
 
 ################################################################################
 
@@ -65,8 +51,8 @@ compression ratio. The original version can be found at http://www.7-zip.org.
 ################################################################################
 
 %package plugins
-Summary:           Additional plugins for p7zip
-Group:             Applications/Archiving
+Summary:  Additional plugins for p7zip
+Group:    Applications/Archiving
 
 %description plugins
 Additional plugins that can be used with 7z to extend its abilities.
@@ -75,8 +61,17 @@ This package contains also a virtual file system for Midnight Commander.
 ################################################################################
 
 %prep
+%{crc_check}
 
 %setup -qn %{name}_%{version}
+
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build
 mkdir docs
@@ -143,6 +138,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 16.02-2
+- Added various patches
+
 * Wed Nov 22 2017 Anton Novojilov <andy@essentialkaos.com> - 16.02-1
 - Moved Rar.so from base package to plugins package
 

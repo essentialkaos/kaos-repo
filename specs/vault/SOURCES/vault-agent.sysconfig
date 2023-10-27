@@ -1,3 +1,0 @@
-# Path to configuration file
-CONF_FILE="/etc/vault/agent/config.hcl"
-

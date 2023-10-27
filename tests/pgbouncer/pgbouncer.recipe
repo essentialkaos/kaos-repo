@@ -1,0 +1,98 @@
+# Bibop recipe for pgbouncer
+# See more: https://kaos.sh/bibop
+
+pkg pgbouncer pgbouncer-utils postgresql12-server
+
+require-root yes
+unsafe-actions yes
+
+var service_name      pgbouncer
+var service_user      pgbouncer
+var config_dir        /etc/pgbouncer
+var service_config    {config_dir}/pgbouncer.ini
+var users_list        {config_dir}/userlist.txt
+var logrotate_config  /etc/logrotate.d/pgbouncer
+var default_port      6432
+
+var postgres_version   12
+var postgres_service   postgresql-{postgres_version}
+var postgres_port      5432
+var postgres_data_dir  /var/lib/pgsql/{postgres_version}
+
+################################################################################
+
+command "-" "Check environment"
+  app pgbouncer
+  service-present {service_name}
+
+  exist {service_config}
+  owner {service_config} {service_user}:{service_user}
+  mode {service_config} 600
+
+  exist {users_list}
+  owner {users_list} {service_user}:{service_user}
+  mode {users_list} 600
+
+  exist {logrotate_config}
+  mode {logrotate_config} 644
+
+################################################################################
+
+command "python3 {config_dir}/mkauth.py" "Check mkauth script"
+  expect "usage: mkauth DSTFN CONNSTR"
+
+################################################################################
+
+command "service {postgres_service} initdb" "Database initialization"
+  exit 0
+
+command "-" "Configure PostgreSQL"
+  copy pg_hba.conf {postgres_data_dir}/data/pg_hba.conf
+
+command "-" "Configure pgbouncer"
+  backup {service_config}
+  backup {users_list}
+  
+  copy pgbouncer.ini {service_config}
+  copy userlist.txt {users_list}
+
+command "systemctl start {postgres_service}" "Start PostgreSQL server"
+  wait-service {postgres_service}
+  connect tcp :{postgres_port}
+
+command "postgres:psql -f create_test_db.sql" "Create test database"
+  exit 0
+
+command "systemctl start {service_name}" "Start pgbouncer daemon"
+  wait-service {service_name} 5
+  connect tcp :{default_port}
+
+command "psql 'postgresql://pgbtest:Test1234!@127.0.0.1:6432/pgbtest' -t -c 'SELECT * FROM test WHERE id = 1;'" "Select from DB using pgbouncer"
+  exit 0
+  output-contains "1 | Test"
+
+command "systemctl restart {service_name}" "Restart pgbouncer daemon"
+  wait-service {service_name} 5
+  connect tcp :{default_port}
+
+command "psql 'postgresql://pgbtest:Test1234!@127.0.0.1:6432/pgbtest' -t -c 'SELECT * FROM test WHERE id = 2;'" "Select from DB using pgbouncer"
+  exit 0
+  output-contains "2 | 1234"
+
+command "systemctl status {service_name}" "Check status of pgbouncer daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop pgbouncer daemon"
+  !wait-service {service_name} 5
+  !connect tcp :{default_port}
+
+command "systemctl stop {postgres_service}" "Stop PostgreSQL server"
+  !wait-service {postgres_service} 5
+  !connect tcp :{postgres_port}
+
+################################################################################
+
+command:teardown "-" "Data cleanup"
+  backup-restore {service_config}
+  backup-restore {users_list}
+  cleanup {postgres_data_dir}/data

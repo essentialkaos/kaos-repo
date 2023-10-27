@@ -1,0 +1,11 @@
+# Bibop recipe for python3-click
+# See more: https://kaos.sh/bibop
+
+pkg python3-click
+
+fast-finish yes
+
+var package_name click
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}

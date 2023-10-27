@@ -52,7 +52,7 @@
 
 Summary:              A GNU general-purpose parser generator
 Name:                 bison
-Version:              3.5
+Version:              3.8.2
 Release:              0%{?dist}
 License:              GPLv3+
 Group:                Development/Tools
@@ -72,6 +72,7 @@ Requires(post):       /sbin/install-info
 Requires(preun):      /sbin/install-info
 
 Provides:             bundled(gnulib) = %{name}-%{version}
+Provides:             %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -174,44 +175,47 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 3.8.2-0
+- Updated to the latest stable release
+
 * Fri Dec 13 2019 Anton Novojilov <andy@essentialkaos.com> - 3.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Dec 12 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jul 03 2019 Anton Novojilov <andy@essentialkaos.com> - 3.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.4-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Jan 09 2019 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Dec 08 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Thu Nov 15 2018 Anton Novojilov <andy@essentialkaos.com> - 3.1-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Sat Jun 09 2018 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
-- Updated to latest stable release
+- Updated to the latest stable release
 
 * Wed Feb 24 2016 Gleb Goncharov <yum@gongled.ru> - 3.0.4-0
 - Initial build

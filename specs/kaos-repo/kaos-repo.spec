@@ -1,57 +1,50 @@
 ################################################################################
 
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-
-%define fm_config         %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
-%define pr_config         %{_sysconfdir}/yum/pluginconf.d/priorities.conf
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-Summary:         ESSENTIAL KAOS Public Repo
-Name:            kaos-repo
-Version:         9.2
-Release:         0%{?dist}
-License:         EKOL
-Vendor:          ESSENTIALKAOS
-Group:           Development/Tools
-URL:             https://github.com/essentialkaos/kaos-repo
+%define fm_config  %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
+%define pr_config  %{_sysconfdir}/yum/pluginconf.d/priorities.conf
 
-Source0:         %{name}-%{version}.tar.bz2
+################################################################################
+
+%define key_name RPM-GPG-KEY-ESSENTIALKAOS
+
+################################################################################
+
+Summary:         ESSENTIAL KAOS Public Repository
+Name:            kaos-repo
+Version:         12.0
+Release:         0%{?dist}
+License:         Apache License, Version 2.0
+Vendor:          ESSENTIAL KAOS
+Group:           Development/Tools
+URL:             https://kaos.sh/kaos-repo
+
+Source0:         kaos-release.repo
+Source1:         kaos-testing.repo
+
+Source10:        %{key_name}-SHA1
+Source11:        %{key_name}-SHA2
+
+Source100:       checksum.sha512
 
 BuildArch:       noarch
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Requires:        yum-plugin-priorities
 
 Provides:        %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-This package contains yum configuration files for access to ESSENTIAL KAOS
-repository.
+This package contains yum/dnf configuration files for access to ESSENTIAL KAOS
+YUM repository.
 
 ################################################################################
 
 %prep
-%setup -q
+%{crc_check}
 
 %build
 %install
@@ -60,11 +53,19 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_sysconfdir}/yum.repos.d
 install -dm 755 %{buildroot}%{_sysconfdir}/pki/rpm-gpg
 
-install -pm 644 *.repo \
+install -pm 644 %{SOURCE0} \
+                %{buildroot}%{_sysconfdir}/yum.repos.d/
+install -pm 644 %{SOURCE1} \
                 %{buildroot}%{_sysconfdir}/yum.repos.d/
 
-install -pm 644 RPM-GPG-KEY-ESSENTIALKAOS \
-                %{buildroot}%{_sysconfdir}/pki/rpm-gpg
+%if 0%{?rhel} >= 8
+install -pm 644 %{SOURCE11} \
+                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
+%else
+sed -i '/module_hotfixes/d' %{buildroot}%{_sysconfdir}/yum.repos.d/*.repo
+install -pm 644 %{SOURCE10} \
+                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
+%endif
 
 %post
 if [[ -f %{fm_config} ]] ; then
@@ -81,7 +82,7 @@ if [[ -f %{pr_config} ]] ; then
 fi
 
 if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
-  if [[ ! $(grep 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys) ]] ; then
+  if ! grep -q 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys ; then
     echo "%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS" >> %{_sysconfdir}/abrt/gpg_keys
   fi
 fi
@@ -106,6 +107,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 27 2023 Anton Novojilov <andy@essentialkaos.com> - 12.0-0
+- Migrate from yum.kaos.st to pkgs.kaos.st
+
+* Mon Dec 05 2022 Anton Novojilov <andy@essentialkaos.com> - 11.0-0
+- Added EL8/EL9 support
+- Added SHA2 key for EL8+
+
+* Thu Jul 07 2022 Anton Novojilov <andy@essentialkaos.com> - 10.0-0
+- Removed yum-plugin-priorities from required dependencies
+- Spec improvements
+
 * Wed May 29 2019 Anton Novojilov <andy@essentialkaos.com> - 9.2-0
 - Added obsoletes check in priorities plugin
 

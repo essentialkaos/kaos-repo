@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master]
+
+jobs:
+  Perfecto:
+    strategy:
+      matrix:
+        image: [ 'ol7', 'ol8', 'ol9']
+    uses: ./.github/workflows/perfecto.yml
+    with:
+      image: ${{ matrix.image }}
+
+  Bibop:
+    name: Bibop Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup PATH
+        run: |
+          echo "${{ github.workspace }}" >> "$GITHUB_PATH"
+
+      - name: Code checkout
+        uses: actions/checkout@v3
+
+      - name: Install bibop and bibop-massive
+        run: |
+          wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
+          wget https://kaos.sh/bibop/scripts/bibop-massive
+          chmod +x bibop bibop-massive
+          bibop -v
+          bibop-massive -v
+
+      - name: Run bibop recipes validation
+        env:
+          TERM: xterm-256color
+        run: bibop-massive -V tests

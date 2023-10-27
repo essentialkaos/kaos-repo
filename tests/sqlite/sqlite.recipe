@@ -1,0 +1,32 @@
+# Bibop recipe for SQLite
+# See more: https://kaos.sh/bibop
+
+pkg sqlite sqlite-libs sqlite-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lsqlite3"
+
+command "-" "Check binary"
+  app sqlite3
+
+command "sqlite3 test.sqlite 'SELECT uuid FROM basic WHERE id = 2;'" "Execute query over test DB"
+  exit 0
+  output-contains f05a62be-fd37-4eb1-accc-cb4232827bc6
+
+command "-" "Check shared libs"
+  lib-loaded libsqlite3.so.*
+
+command "-" "Check headers"
+  lib-header sqlite3
+  lib-header sqlite3ext
+
+command "-" "Check pkg-config"
+  lib-config sqlite3
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

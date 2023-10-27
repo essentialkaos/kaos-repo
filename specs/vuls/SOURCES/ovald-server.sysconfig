@@ -1,8 +1,0 @@
-# Sysconfig file for oval-dictionary server
-
-DATA_DIR=""
-IP=""
-PORT=""
-USER=""
-LOG_DIR=""
-LOG=""

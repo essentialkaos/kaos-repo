@@ -1,0 +1,25 @@
+# Bibop recipe for libuv
+# See more: https://kaos.sh/bibop
+
+pkg libuv libuv-devel
+
+fast-finish yes
+
+var lib_name libuv
+var lib_linking_flags "-luv -lrt -ldl"
+
+command "-" "Check shared libs"
+  lib-loaded {lib_name}.so.*
+
+command "-" "Check headers"
+  lib-header uv
+
+command "-" "Check pkg-config"
+  lib-config {lib_name}
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

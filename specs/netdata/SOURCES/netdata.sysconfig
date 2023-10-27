@@ -1,6 +1,0 @@
-# Sysconfig file for netdata 
-
-BINARY=""
-CONF_FILE=""
-OPTIONS=""
-

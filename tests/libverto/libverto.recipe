@@ -1,0 +1,64 @@
+# Bibop recipe for libverto
+# See more: https://kaos.sh/bibop
+
+pkg libverto libverto-devel libverto-glib libverto-glib-devel libverto-libevent libverto-libevent-devel libverto-libev libverto-libev-devel
+
+fast-finish yes
+
+var main_linking_flags "-lverto"
+var glib_linking_flags "-lverto-glib -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include"
+var libevent_linking_flags "-lverto-libevent"
+var libev_linking_flags "-lverto-libev"
+
+command "-" "Check shared libs"
+  lib-loaded libverto.so.*
+  lib-loaded libverto-glib.so.*
+  lib-loaded libverto-libevent.so.*
+  lib-loaded libverto-libev.so.*
+
+  lib-exist libverto.so
+  lib-exist libverto-glib.so
+  lib-exist libverto-libevent.so
+  lib-exist libverto-libev.so
+
+command "-" "Check headers"
+  lib-header verto
+  lib-header verto-module
+  lib-header verto-glib
+  lib-header verto-libevent
+  lib-header verto-libev
+
+command "-" "Check pkg-config"
+  lib-config libverto
+  lib-config libverto-glib
+  lib-config libverto-libevent
+  lib-config libverto-libev
+
+command "gcc -o test_bin {main_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_glib_bin {glib_linking_flags} test-glib.c" "Compile binary"
+  exit 0
+  exist test_glib_bin
+
++command "./test_glib_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_libevent_bin {libevent_linking_flags} test-libevent.c" "Compile binary"
+  exit 0
+  exist test_libevent_bin
+
++command "./test_libevent_bin" "Execute built binary"
+  exit 0
+
+command "gcc -o test_libev_bin {libev_linking_flags} test-libev.c" "Compile binary"
+  exit 0
+  exist test_libev_bin
+
++command "./test_libev_bin" "Execute built binary"
+  exit 0
+

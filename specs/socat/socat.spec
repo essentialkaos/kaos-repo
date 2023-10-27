@@ -1,33 +1,37 @@
 ################################################################################
 
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
+
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
-Summary:          Bidirectional data relay between two data channels ('netcat++')
-Name:             socat
-Version:          1.7.3.2
-Release:          3%{?dist}
-License:          GPLv2
-Group:            Applications/Internet
-URL:              http://www.dest-unreach.org/socat
+Summary:        Bidirectional data relay between two data channels ('netcat++')
+Name:           socat
+Version:        1.7.4.4
+Release:        0%{?dist}
+License:        GPLv2
+Group:          Applications/Internet
+URL:            http://www.dest-unreach.org/socat
 
-Source:           http://www.dest-unreach.org/socat/download/%{name}-%{version}.tar.gz
+Source0:        http://www.dest-unreach.org/socat/download/%{name}-%{version}.tar.gz
 
-Patch1:           %{name}-1.7.3.1-test.patch
+Source100:      checksum.sha512
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:    gcc make openssl-devel readline-devel ncurses-devel
-BuildRequires:    autoconf kernel-headers tcp_wrappers-devel
+BuildRequires:  gcc make openssl-devel readline-devel ncurses-devel
+BuildRequires:  autoconf kernel-headers
 
 %if %{?_with_check:1}%{?_without_check:0}
-BuildRequires:    net-tools openssl iputils iproute
+BuildRequires:  net-tools openssl iputils iproute
 %endif
 
-Requires:         openssl readline ncurses
+Requires:       openssl readline ncurses
 
-Provides:         %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -41,12 +45,11 @@ line editor (readline), a program, or a combination of two of these.
 ################################################################################
 
 %prep
-%setup -q
+%{crc_check}
 
+%setup -q
 iconv -f iso8859-1 -t utf-8 CHANGES > CHANGES.utf8
 mv CHANGES.utf8 CHANGES
-
-%patch1 -p1
 
 %build
 %configure --enable-help \
@@ -109,5 +112,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 1.7.4.4-0
+- Fixed UDP-RECVFROM failures and a couple of other bugs
+
 * Mon Feb 19 2018 Anton Novojilov <andy@essentialkaos.com> - 1.7.3.2-3
 - Initial build for kaos repository

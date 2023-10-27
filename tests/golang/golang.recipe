@@ -1,12 +1,67 @@
 # Bibop recipe for Golang
 # See more: https://kaos.sh/bibop
 
-pkg golang
+################################################################################
+
+pkg golang golang-bin golang-src
 
 fast-finish yes
 
+var cache_dir  {WORKDIR}/.build-cache
+var goroot_dir /usr/lib/golang
+var tools_dir  {goroot_dir}/pkg/tool/{OS}_{ARCH_NAME}
+
+################################################################################
+
 command "-" "Check environment"
   app go
+  app gofmt
+
+command "-" "Check tools"
+  exist {tools_dir}/addr2line
+  exist {tools_dir}/asm
+  exist {tools_dir}/buildid
+  exist {tools_dir}/cgo
+  exist {tools_dir}/compile
+  exist {tools_dir}/covdata
+  exist {tools_dir}/cover
+  exist {tools_dir}/dist
+  exist {tools_dir}/doc
+  exist {tools_dir}/fix
+  exist {tools_dir}/link
+  exist {tools_dir}/nm
+  exist {tools_dir}/objdump
+  exist {tools_dir}/pack
+  exist {tools_dir}/pprof
+  exist {tools_dir}/test2json
+  exist {tools_dir}/trace
+  exist {tools_dir}/vet
+
+  mode {tools_dir}/addr2line 755
+  mode {tools_dir}/asm 755
+  mode {tools_dir}/buildid 755
+  mode {tools_dir}/cgo 755
+  mode {tools_dir}/compile 755
+  mode {tools_dir}/covdata 755
+  mode {tools_dir}/cover 755
+  mode {tools_dir}/dist 755
+  mode {tools_dir}/doc 755
+  mode {tools_dir}/fix 755
+  mode {tools_dir}/link 755
+  mode {tools_dir}/nm 755
+  mode {tools_dir}/objdump 755
+  mode {tools_dir}/pack 755
+  mode {tools_dir}/pprof 755
+  mode {tools_dir}/test2json 755
+  mode {tools_dir}/trace 755
+  mode {tools_dir}/vet 755
+
+command "-" "Check sources"
+  dir {goroot_dir}/src
+  exist {goroot_dir}/src/vendor/modules.txt
+
+command "-" "Configure build cache"
+  env-set GOCACHE {cache_dir}
 
 command "go version" "Check version info"
   exit 0
@@ -19,3 +74,234 @@ command "go run test.go" "Execute basic script"
 command "go run test-cgo.go" "Execute basic script with cgo"
   exit 0
   output-contains "42"
+
+## AIX #########################################################################
+
+command "GOOS=aix GOARCH=ppc64 go build -o test_aix_ppc64 test.go" "Compile aix/ppc64"
+  exit 0
+  exist test_aix_ppc64
+  !empty test_aix_ppc64
+
+## macOS #######################################################################
+
+command "GOOS=darwin GOARCH=amd64 go build -o test_darwin_amd64 test.go" "Compile darwin/amd64"
+  exit 0
+  exist test_darwin_amd64
+  !empty test_darwin_amd64
+
+command "GOOS=darwin GOARCH=arm64 go build -o test_darwin_arm64 test.go" "Compile darwin/arm64"
+  exit 0
+  exist test_darwin_arm64
+  !empty test_darwin_arm64
+
+## DragonFly BSD
+
+command "GOOS=dragonfly GOARCH=amd64 go build -o test_dragonfly_amd64 test.go" "Compile dragonfly/amd64"
+  exit 0
+  exist test_dragonfly_amd64
+  !empty test_dragonfly_amd64
+
+## FreeBSD #####################################################################
+
+command "GOOS=freebsd GOARCH=386 go build -o test_freebsd_386 test.go" "Compile freebsd/386"
+  exit 0
+  exist test_freebsd_386
+  !empty test_freebsd_386
+
+command "GOOS=freebsd GOARCH=amd64 go build -o test_freebsd_amd64 test.go" "Compile freebsd/amd64"
+  exit 0
+  exist test_freebsd_amd64
+  !empty test_freebsd_amd64
+
+command "GOOS=freebsd GOARCH=arm go build -o test_freebsd_arm test.go" "Compile freebsd/arm"
+  exit 0
+  exist test_freebsd_arm
+  !empty test_freebsd_arm
+
+command "GOOS=freebsd GOARCH=arm64 go build -o test_freebsd_arm64 test.go" "Compile freebsd/arm64"
+  exit 0
+  exist test_freebsd_arm64
+  !empty test_freebsd_arm64
+
+command "GOOS=freebsd GOARCH=riscv64 go build -o test_freebsd_riscv64 test.go" "Compile freebsd/riscv64"
+  exit 0
+  exist test_freebsd_riscv64
+  !empty test_freebsd_riscv64
+
+## Illumos #####################################################################
+
+command "GOOS=illumos GOARCH=amd64 go build -o test_illumos_amd64 test.go" "Compile illumos/amd64"
+  exit 0
+  exist test_illumos_amd64
+  !empty test_illumos_amd64
+
+## JS WASM #####################################################################
+
+command "GOOS=js GOARCH=wasm go build -o test_js_wasm test.go" "Compile js/wasm"
+  exit 0
+  exist test_js_wasm
+  !empty test_js_wasm
+
+## Linux #######################################################################
+
+command "GOOS=linux GOARCH=386 go build -o test_linux_386 test.go" "Compile linux/386"
+  exit 0
+  exist test_linux_386
+  !empty test_linux_386
+
+command "GOOS=linux GOARCH=amd64 go build -o test_linux_amd64 test.go" "Compile linux/amd64"
+  exit 0
+  exist test_linux_amd64
+  !empty test_linux_amd64
+
+command "GOOS=linux GOARCH=arm go build -o test_linux_arm test.go" "Compile linux/arm"
+  exit 0
+  exist test_linux_arm
+  !empty test_linux_arm
+
+command "GOOS=linux GOARCH=arm64 go build -o test_linux_arm64 test.go" "Compile linux/arm64"
+  exit 0
+  exist test_linux_arm64
+  !empty test_linux_arm64
+
+command "GOOS=linux GOARCH=loong64 go build -o test_linux_loong64 test.go" "Compile linux/loong64"
+  exit 0
+  exist test_linux_loong64
+  !empty test_linux_loong64
+
+command "GOOS=linux GOARCH=mips go build -o test_linux_mips test.go" "Compile linux/mips"
+  exit 0
+  exist test_linux_mips
+  !empty test_linux_mips
+
+command "GOOS=linux GOARCH=mips64 go build -o test_linux_mips64 test.go" "Compile linux/mips64"
+  exit 0
+  exist test_linux_mips64
+  !empty test_linux_mips64
+
+command "GOOS=linux GOARCH=mips64le go build -o test_linux_mips64le test.go" "Compile linux/mips64le"
+  exit 0
+  exist test_linux_mips64le
+  !empty test_linux_mips64le
+
+command "GOOS=linux GOARCH=mipsle go build -o test_linux_mipsle test.go" "Compile linux/mipsle"
+  exit 0
+  exist test_linux_mipsle
+  !empty test_linux_mipsle
+
+command "GOOS=linux GOARCH=ppc64 go build -o test_linux_ppc64 test.go" "Compile linux/ppc64"
+  exit 0
+  exist test_linux_ppc64
+  !empty test_linux_ppc64
+
+command "GOOS=linux GOARCH=ppc64le go build -o test_linux_ppc64le test.go" "Compile linux/ppc64le"
+  exit 0
+  exist test_linux_ppc64le
+  !empty test_linux_ppc64le
+
+command "GOOS=linux GOARCH=riscv64 go build -o test_linux_riscv64 test.go" "Compile linux/riscv64"
+  exit 0
+  exist test_linux_riscv64
+  !empty test_linux_riscv64
+
+command "GOOS=linux GOARCH=s390x go build -o test_linux_s390x test.go" "Compile linux/s390x"
+  exit 0
+  exist test_linux_s390x
+  !empty test_linux_s390x
+
+## NetBSD ######################################################################
+
+command "GOOS=netbsd GOARCH=386 go build -o test_netbsd_386 test.go" "Compile netbsd/386"
+  exit 0
+  exist test_netbsd_386
+  !empty test_netbsd_386
+
+command "GOOS=netbsd GOARCH=amd64 go build -o test_netbsd_amd64 test.go" "Compile netbsd/amd64"
+  exit 0
+  exist test_netbsd_amd64
+  !empty test_netbsd_amd64
+
+command "GOOS=netbsd GOARCH=arm go build -o test_netbsd_arm test.go" "Compile netbsd/arm"
+  exit 0
+  exist test_netbsd_arm
+  !empty test_netbsd_arm
+
+command "GOOS=netbsd GOARCH=arm64 go build -o test_netbsd_arm64 test.go" "Compile netbsd/arm64"
+  exit 0
+  exist test_netbsd_arm64
+  !empty test_netbsd_arm64
+
+## OpenBSD #####################################################################
+
+command "GOOS=openbsd GOARCH=386 go build -o test_openbsd_386 test.go" "Compile openbsd/386"
+  exit 0
+  exist test_openbsd_386
+  !empty test_openbsd_386
+
+command "GOOS=openbsd GOARCH=amd64 go build -o test_openbsd_amd64 test.go" "Compile openbsd/amd64"
+  exit 0
+  exist test_openbsd_amd64
+  !empty test_openbsd_amd64
+
+command "GOOS=openbsd GOARCH=arm go build -o test_openbsd_arm test.go" "Compile openbsd/arm"
+  exit 0
+  exist test_openbsd_arm
+  !empty test_openbsd_arm
+
+command "GOOS=openbsd GOARCH=arm64 go build -o test_openbsd_arm64 test.go" "Compile openbsd/arm64"
+  exit 0
+  exist test_openbsd_arm64
+  !empty test_openbsd_arm64
+
+command "GOOS=openbsd GOARCH=mips64 go build -o test_openbsd_mips64 test.go" "Compile openbsd/mips64"
+  exit 0
+  exist test_openbsd_mips64
+  !empty test_openbsd_mips64
+
+## Plan9 #######################################################################
+
+command "GOOS=plan9 GOARCH=386 go build -o test_plan9_386 test.go" "Compile plan9/386"
+  exit 0
+  exist test_plan9_386
+  !empty test_plan9_386
+
+command "GOOS=plan9 GOARCH=amd64 go build -o test_plan9_amd64 test.go" "Compile plan9/amd64"
+  exit 0
+  exist test_plan9_amd64
+  !empty test_plan9_amd64
+
+command "GOOS=plan9 GOARCH=arm go build -o test_plan9_arm test.go" "Compile plan9/arm"
+  exit 0
+  exist test_plan9_arm
+  !empty test_plan9_arm
+
+## Solaris #####################################################################
+
+command "GOOS=solaris GOARCH=amd64 go build -o test_solaris_amd64 test.go" "Compile solaris/amd64"
+  exit 0
+  exist test_solaris_amd64
+  !empty test_solaris_amd64
+
+## Windows #####################################################################
+
+command "GOOS=windows GOARCH=386 go build -o test_windows_386 test.go" "Compile windows/386"
+  exit 0
+  exist test_windows_386
+  !empty test_windows_386
+
+command "GOOS=windows GOARCH=amd64 go build -o test_windows_amd64 test.go" "Compile windows/amd64"
+  exit 0
+  exist test_windows_amd64
+  !empty test_windows_amd64
+
+command "GOOS=windows GOARCH=arm go build -o test_windows_arm test.go" "Compile windows/arm"
+  exit 0
+  exist test_windows_arm
+  !empty test_windows_arm
+
+command "GOOS=windows GOARCH=arm64 go build -o test_windows_arm64 test.go" "Compile windows/arm64"
+  exit 0
+  exist test_windows_arm64
+  !empty test_windows_arm64
+
+################################################################################

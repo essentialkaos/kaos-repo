@@ -1,49 +1,20 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _opt              /opt
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _docdir           %{_datadir}/doc
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock/subsys
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _crondir          %{_sysconfdir}/cron.d
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _loc_mandir       %{_loc_datarootdir}/man
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
 Summary:              Tool for monitoring the progress of data through a pipeline
 Name:                 pv
-Version:              1.6.6
+Version:              1.6.20
 Release:              0%{?dist}
 License:              Artistic v2.0
 Group:                Applications/System
-URL:                  http://www.ivarch.com/programs/pv.shtml
+URL:                  https://www.ivarch.com/programs/pv.shtml
 
-Source0:              http://www.ivarch.com/programs/sources/%{name}-%{version}.tar.bz2
+Source0:              https://github.com/a-j-wood/pv/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+
+Source100:            checksum.sha512
 
 BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -63,10 +34,12 @@ is, and an estimate of how long it will be until completion.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 %build
-%configure
+%{configure}
 %{__make} %{?_smp_mflags}
 
 %install
@@ -77,6 +50,7 @@ install -dm 755 %{buildroot}%{_mandir}/man1
 install -dm 755 %{buildroot}%{_datarootdir}/locale
 
 %{make_install} DESTDIR="%{buildroot}"
+
 %find_lang %{name}
 
 %clean
@@ -86,7 +60,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README doc/NEWS doc/TODO
+%doc README doc/NEWS doc/TODO doc/COPYING
 %attr(755,root,root) %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 %{_datarootdir}/locale/*
@@ -94,8 +68,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 1.6.20-0
+- https://github.com/a-j-wood/pv/releases/tag/v1.6.20
+
 * Mon Jul 10 2017 Anton Novojilov <andy@essentialkaos.com> - 1.6.6-0
-- Updated to latest stable release
+- https://github.com/a-j-wood/pv/releases/tag/v1.6.6
 
 * Thu May 04 2017 Gleb Goncharov <g.goncharov@fun-box.ru> - 1.6.0-0
 - Initial build

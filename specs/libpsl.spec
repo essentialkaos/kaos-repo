@@ -1,51 +1,31 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
+
+################################################################################
 
 %{!?_without_check: %define _with_check 1}
 
 ################################################################################
 
-Summary:            C library for the Publix Suffix List
-Name:               libpsl
-Version:            0.20.2
-Release:            0%{?dist}
-License:            MIT
-Group:              Development/Tools
-URL:                https://rockdaboot.github.io/libpsl
+Summary:        C library for the Publix Suffix List
+Name:           libpsl
+Version:        0.21.2
+Release:        0%{?dist}
+License:        MIT
+Group:          Development/Tools
+URL:            https://rockdaboot.github.io/libpsl
 
-Source0:            https://github.com/rockdaboot/%{name}/releases/download/%{name}-%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/rockdaboot/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source100:      checksum.sha512
 
-BuildRequires:      make autoconf automake gettext-devel glib2-devel gtk-doc
-BuildRequires:      libicu-devel libtool libxslt chrpath
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Provides:           %{name} = %{version}-%{release}
+BuildRequires:  make autoconf automake gettext-devel glib2-devel
+BuildRequires:  libicu-devel libtool libxslt chrpath python3
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -75,9 +55,10 @@ Libpsl...
 ################################################################################
 
 %package devel
-Summary:            Development files for %{name}
-Group:              Development/Tools
-Requires:           %{name}%{?_isa} = %{version}-%{release}
+Summary:  Development files for %{name}
+Group:    Development/Tools
+
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 This package contains libraries and header files for
@@ -86,8 +67,8 @@ developing applications that use %{name}.
 ################################################################################
 
 %package -n psl
-Summary:            Commandline utility to explore the Public Suffix List
-Group:              Development/Tools
+Summary:  Commandline utility to explore the Public Suffix List
+Group:    Development/Tools
 
 %description -n psl
 This package contains a commandline utility to explore the Public Suffix List,
@@ -97,14 +78,16 @@ is acceptable for domains and so on.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -qn %{name}-%{version}
 
 %build
-[ -f configure ] || autoreconf -fiv
+[[ -f configure ]] || autoreconf -fiv
+
 %configure --disable-silent-rules \
            --disable-static \
-           --enable-man \
-           --enable-gtk-doc
+           --enable-man
 
 %{__make} %{?_smp_mflags}
 
@@ -134,21 +117,20 @@ rm -rf %{buildroot}
 ################################################################################
 
 %files
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc COPYING
 %{_libdir}/libpsl.so.*
 
 %files devel
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc AUTHORS NEWS
 %{_datadir}/gtk-doc/html/libpsl/
 %{_includedir}/libpsl.h
 %{_libdir}/libpsl.so
 %{_libdir}/pkgconfig/libpsl.pc
-%{_mandir}/man3/libpsl.3*
 
 %files -n psl
-%defattr(-, root, root, -)
+%defattr(-,root,root,-)
 %doc AUTHORS NEWS COPYING
 %{_bindir}/psl
 %{_mandir}/man1/psl*
@@ -156,11 +138,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Oct 14 2023 Anton Novojilov <andy@essentialkaos.com> - 0.21.2-0
+- https://github.com/rockdaboot/libpsl/releases/tag/0.21.2
+
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 0.21.1-0
+- https://github.com/rockdaboot/libpsl/releases/tag/0.21.1
+
 * Sun Aug 04 2019 Anton Novojilov <andy@essentialkaos.com> - 0.20.2-0
-- Updated to the latest stable release
+- https://github.com/rockdaboot/libpsl/releases/tag/0.20.2
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.17.0-0
-- Updated to the latest stable release
+- https://github.com/rockdaboot/libpsl/releases/tag/0.17.0
 
 * Wed Nov 23 2016 Anton Novojilov <andy@essentialkaos.com> - 0.15.0-0
 - Initial build for kaos repo

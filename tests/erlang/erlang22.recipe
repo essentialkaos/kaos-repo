@@ -5,11 +5,16 @@ pkg erlang22
 
 var libressl_ver 2.9.2
 
+var epmd_service epmd
+var epmd_port    4369
+
 command "-" "Check environment"
   app epmd
   app erl
   app erlc
   app escript
+
+  service-present {epmd_service}
 
 command "-" "Check zlib linking"
   !lib-linked {ERLANG_BIN_DIR}/beam.smp libz.so.1
@@ -26,5 +31,13 @@ command "escript ssl-info.erl" "Check version of SSL/TLS library"
   exit 0
   output-contains "LibreSSL {libressl_ver}"
 
-command "escript sctp-test.erl" "Check SCTP support"
-  exit 0
+command "systemctl start {epmd_service}" "Start Erlang Port Mapper Daemon"
+  wait-service {epmd_service} 5
+
+command "systemctl status {epmd_service}" "Check status of Erlang Port Mapper Daemon"
+  expect "active (running)"
+  connect tcp :{epmd_port}
+
+command "systemctl stop {epmd_service}.socket" "Stop Erlang Port Mapper Daemon (with socket service)"
+  !wait-service {epmd_service} 5
+  !connect tcp :{epmd_port}

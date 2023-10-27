@@ -1,0 +1,24 @@
+# Bibop recipe for libmetalink
+# See more: https://kaos.sh/bibop
+
+pkg libmetalink libmetalink-devel
+
+fast-finish yes
+
+var lib_linking_flags "-lmetalink"
+
+command "-" "Check shared libs"
+  lib-loaded libmetalink.so.*
+
+command "-" "Check headers"
+  lib-header metalink
+
+command "-" "Check pkg-config"
+  lib-config libmetalink
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

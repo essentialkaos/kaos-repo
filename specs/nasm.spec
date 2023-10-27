@@ -1,58 +1,30 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-Summary:            A portable x86 assembler which uses Intel-like syntax
-Name:               nasm
-Version:            2.14.02
-Release:            0%{?dist}
-License:            BSD
-Group:              Development/Languages
-URL:                http://www.nasm.us
+Summary:          A portable x86 assembler which uses Intel-like syntax
+Name:             nasm
+Version:          2.16.01
+Release:          0%{?dist}
+License:          BSD
+Group:            Development/Languages
+URL:              https://www.nasm.us
 
-Source0:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
-Source1:            https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
+Source0:          https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}.tar.bz2
+Source1:          https://www.nasm.us/pub/%{name}/releasebuilds/%{version}/%{name}-%{version}-xdoc.tar.bz2
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source100:        checksum.sha512
 
-BuildRequires:      make gcc perl(Env) asciidoc xmlto
+BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if 0%{?rhel} <= 6
-BuildRequires:      autoconf268
-%else
-BuildRequires:      autoconf >= 2.69
-%endif
+BuildRequires:    make gcc perl(Env) xmlto
 
-Requires(post):     /sbin/install-info
-Requires(preun):    /sbin/install-info
+Requires(post):   info
+Requires(preun):  info
 
-Provides:           %{name} = %{version}-%{release}
+Provides:         %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -63,30 +35,14 @@ instruction mnemonics and syntax.
 
 ################################################################################
 
-%package rdoff
-Summary:            Tools for the RDOFF binary format, sometimes used with NASM
-Group:              Development/Languages
-
-%description rdoff
-Tools for the operating-system independent RDOFF binary format, which
-is sometimes used with the Netwide Assembler (NASM). These tools
-include linker, library manager, loader, and information dump.
-
-################################################################################
-
 %prep
+%{crc_check}
+
 %setup -q
 
 tar xjf %{SOURCE1} --strip-components 1
 
 %build
-%if 0%{?rhel} <= 6
-sed -i 's/AC_PREREQ(2.69)/AC_PREREQ(2.68)/' configure.ac
-autoreconf268
-%else
-autoreconf
-%endif
-
 %configure
 
 %{__make} all %{?_smp_mflags}
@@ -97,7 +53,7 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{_mandir}/man1
 
-%{make_install} install_rdf
+%{make_install}
 
 %clean
 rm -rf %{buildroot}
@@ -118,29 +74,77 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS CHANGES README TODO
+%doc AUTHORS LICENSE CHANGES README.md
 %{_bindir}/nasm
 %{_bindir}/ndisasm
 %{_mandir}/man1/nasm*
 %{_mandir}/man1/ndisasm*
 
-%files rdoff
-%defattr(-,root,root,-)
-%{_bindir}/ldrdf
-%{_bindir}/rdf2bin
-%{_bindir}/rdf2ihx
-%{_bindir}/rdf2com
-%{_bindir}/rdfdump
-%{_bindir}/rdflib
-%{_bindir}/rdx
-%{_bindir}/rdf2ith
-%{_bindir}/rdf2srec
-%{_mandir}/man1/rd*
-%{_mandir}/man1/ld*
-
 ################################################################################
 
 %changelog
+* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.16.01-0
+- Support for the rdf format has been discontinued and all the RDOFF utilities
+  has been removed.
+- The --reproducible option now leaves the filename field in the COFF object
+  format blank. This was always rather useless since it is only 18 characters
+  long; as such debug formats have to carry their own filename information
+  anyway.
+- Fix handling of MASM-syntax reserved memory (e.g. dw ?) when used in
+  structure definitions.
+- The preprocessor now supports functions, which can be less verbose and more
+  convenient than the equivalent code implemented using directives.
+- Fix the handling of %%00 in the preprocessor.
+- Fix incorrect handling of path names affecting error messages, dependency
+  generation, and debug format output.
+- Support for the RDOFF output format and the RDOFF tools have been removed. The
+  RDOFF tools had already been broken since at least NASM 2.14. For flat code
+  the ELF output format recommended; for segmented code the obj (OMF) output
+  format.
+- New facility: preprocessor functions. Preprocessor functions, which are
+  expanded similarly to single-line macros, can greatly simplify code that in
+  the past would have required a lengthy list of directives and intermediate
+  macros.
+- Single-line macros can now declare parameters (using a && prefix) that creates
+  a quoted string, but does not requote an already quoted string.
+- Instruction table updated per public information available as of
+  November 2022.
+- All warnings in the preprocessor have now been assigned warning classes.
+- Fix the invalid use of RELA–type relocations instead of REL–type relocations
+  when generating DWARF debug information for the elf32 output format.
+- Fix the handling at in istruc when the structure contains local labels.
+- When assembling with --reproducible, don't encode the filename in the COFF
+  header for the coff, win32 or win64 output formats. The COFF header only has
+  space for an 18-character filename, which makes this field rather useless
+  in the first place. Debug output data, if enabled, is not affected.
+- Fix incorrect size calculation when using MASM syntax for non-byte
+  reservations (e.g. dw ?.)
+- Allow forcing an instruction in 64-bit mode to have a (possibly redundant)
+  REX prefix, using the syntax {rex} as a prefix.
+- Add a {vex} prefix to enforce VEX (AVX) encoding of an instruction, either
+  using the 2- or 3-byte VEX prefixes.
+- The CPU directive has been augmented to allow control of generation of
+  VEX (AVX) versus EVEX (AVX-512) instruction formats, see section 7.11.
+- Some recent instructions that previously have been only available using EVEX
+  encodings are now also encodable using VEX (AVX) encodings. For backwards
+  compatibility these encodings are not enabled by default, but can be generated
+  either via an explicit {vex} prefix or by specifying either CPU LATEVEX or
+  CPU NOEVEX.
+- Document the already existing %%unimacro directive.
+- Fix a code range generation bug in the DWARF debug format (incorrect
+  information in the DW_AT_high_pc field) for the ELF output formats. This bug
+  happened to cancel out with a bug in older versions of the GNU binutils
+  linker, but breaks with other linkers and updated or other linkers that expect
+  the spec to be followed.
+- Fix segment symbols with addends, e.g. jmp _TEXT+10h:0 in output formats that
+  support segment relocations, e.g. the obj format.
+- Fix various crashes and hangs on invalid input.
+
+* Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.15.05-0
+- Correct %%ifid $ and %%ifid $$ being treated as true.
+- Add --reproducible option to suppress NASM version numbers and timestamps
+ in output files.
+
 * Wed Jan 23 2019 Anton Novojilov <andy@essentialkaos.com> - 2.14.02-0
 - Fix crash due to multiple errors or warnings during the code generation pass
   if a list file is specified

@@ -1,0 +1,40 @@
+# Bibop recipe for netcdf
+# See more: https://kaos.sh/bibop
+
+pkg netcdf netcdf-devel netcdf-static
+
+fast-finish yes
+
+var lib_linking_flags "-lnetcdf"
+
+command "-" "Check apps"
+  app nc-config
+  app nccopy
+  app ncdump
+  app ncgen
+  app ncgen3
+
+command "-" "Check shared libs"
+  lib-loaded libnetcdf.so.*
+
+command "-" "Check static libs"
+  exist /usr/lib64/libnetcdf.a
+  mode /usr/lib64/libnetcdf.a 644
+
+command "-" "Check headers"
+  lib-header netcdf.h
+  lib-header netcdf_aux.h
+  lib-header netcdf_dispatch.h
+  lib-header netcdf_filter.h
+  lib-header netcdf_mem.h
+  lib-header netcdf_meta.h
+
+command "-" "Check pkg-config"
+  lib-config netcdf
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0

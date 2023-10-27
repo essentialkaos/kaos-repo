@@ -1,0 +1,14 @@
+# Bibop recipe for python3-pygments
+# See more: https://kaos.sh/bibop
+
+pkg python3-pygments
+
+fast-finish yes
+
+var package_name pygments
+
+command "-" "Check environment"
+  app pygmentize3
+
+command "-" "Check package {package_name}"
+  python3-package {package_name}

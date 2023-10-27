@@ -4,25 +4,15 @@
 
 ################################################################################
 
-%define realname      libevent
-
-%if 0%{?rhel} >= 7
-%define pkgname       libevent
-%else
-%define pkgname       libevent2
-%endif
-
-################################################################################
-
 Summary:              Abstract asynchronous event notification library
-Name:                 %{pkgname}
-Version:              2.1.11
+Name:                 libevent
+Version:              2.1.12
 Release:              0%{?dist}
 License:              BSD
 Group:                System Environment/Libraries
 URL:                  https://libevent.org
 
-Source0:              https://github.com/%{realname}/%{realname}/archive/release-%{version}-stable.tar.gz
+Source0:              https://github.com/%{name}/%{name}/archive/release-%{version}-stable.tar.gz
 
 Source100:            checksum.sha512
 
@@ -30,10 +20,7 @@ BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u}
 
 BuildRequires:        gcc make automake libtool openssl-devel zlib-devel
 
-# For CentOS7/RHEL7 libevent2 = libevent
-%if 0%{?rhel} >= 7
-Provides:             %{realname}2 = %{version}-%{release}
-%endif
+Provides:             %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -50,10 +37,7 @@ Group:                System Environment/Libraries
 Summary:              Development files for %{name}
 Requires:             %{name} = %{version}
 
-# For CentOS7/RHEL7 libevent2 = libevent
-%if 0%{?rhel} >= 7
-Provides:             %{realname}2-devel = %{version}-%{release}
-%endif
+Provides:             %{name}-devel = %{version}-%{release}
 
 %description devel
 Development files for %{name}
@@ -63,7 +47,7 @@ Development files for %{name}
 %prep
 %{crc_check}
 
-%setup -qn %{realname}-release-%{version}-stable
+%setup -qn %{name}-release-%{version}-stable
 
 %build
 ./autogen.sh
@@ -79,6 +63,7 @@ rm -rf %{buildroot}
 
 %{make_install}
 
+rm -f %{buildroot}%{_bindir}/event_rpcgen.py
 rm -f %{buildroot}%{_libdir}/*.la
 
 %post
@@ -95,19 +80,70 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc LICENSE README.md ChangeLog-2.0
-%{_libdir}/%{realname}*.so.*
+%{_libdir}/%{name}*.so.*
 
 %files devel
 %defattr(-,root,root)
-%{_bindir}/event_rpcgen.py
 %{_libdir}/pkgconfig/*.pc
 %{_includedir}/*.h
 %{_includedir}/event2/
-%{_libdir}/%{realname}*.so
+%{_libdir}/%{name}*.so
 
 ################################################################################
 
 %changelog
+* Thu Dec 01 2022 Anton Novojilov <andy@essentialkaos.com> - 2.1.12-0
+- tinytest: support timeout on Windows
+- Merge branch 'osx-clock'
+- test-ratelim: calculate timers bias (for slow CPUs) to avoid false-positive
+- buffer: do not pass NULL to memcpy() from evbuffer_pullup()
+- http: fix undefined-shift in EVUTIL_IS*_ helpers
+- Check error code of evhttp_add_header_internal() in evhttp_parse_query_impl()
+- http: fix EVHTTP_CON_AUTOFREE in case of timeout (and some else)
+- evdns: Add additional validation for values of dns options
+- There is typo in GetAdaptersAddresses windows library. It should
+  be iphlpapi.dll
+- Merge branch 'EV_CLOSED-and-EV_ET-fixes'
+- Fix memory corruption in EV_CLOSURE_EVENT_FINALIZE with debug enabled
+- increase segment refcnt only if evbuffer_add_file_segment() succeeds
+- evdns: fix a crash when evdns_base with waiting requests is freed
+- event_base_once: fix potential null pointer threat
+- http: do not assume body for CONNECT
+- evbuffer_add_file: fix freeing of segment in the error path
+- Fix checking return value of the evdns_base_resolv_conf_parse()
+- evutil_time: improve evutil_gettimeofday on Windows
+- Support EV_CLOSED on linux for poll(2)
+- Parse IPv6 scope IDs.
+- evutil_time: Implements usleep() using wait funtion on Windows
+- evutil_time: detect and use _gmtime64_s()/_gmtime64()
+- bufferevent: allow setting priority on socket and openssl type
+- Fix EV_CLOSED detection/reporting (epoll only)
+- Revert "Warn if forked from the event loop during event_reinit()"
+- https-client: load certificates from the system cert store on Windows
+- Do not use sysctl.h on linux (it had been deprecated)
+- cmake: avoid problems from use of CMAKE_USE_PTHREADS_INIT
+- Update list of cmake files for autotools dist archive
+- LibeventConfig.cmake: restore CMAKE_FIND_LIBRARY_SUFFIXES and
+  LIBEVENT_STATIC_LINK default
+- cmake: fix getaddrinfo checking error
+- autoconf: fix getaddrinfo checking errors on mingw
+- Do not use shared global structures on CYGWIN
+- Added uninstall target check to cmakelists
+- Fix compilation without OPENSSL_API_COMPAT
+- cmake: improve package config file (1c047618, baec84f2 yuangongji)
+- Link with iphlpapi only on windows
+- autotools: fails build when need but can not find openssl
+- Merge branch 'http-connect'
+- Fix compat with NetBSD >= 10
+- cmake: fix getrandom() detection
+- arc4random: replace sysctl() with getrandom (on linux)
+- Upgrade autoconf (after upgrading minimum required to 2.67)
+- eliminate some C4267 warnings in Windows
+- autotools: attach doxygen target into all target
+- cmake: attach doxygen target into all target
+- Change the minimum version of automake to 1.13 and autoconf to 2.67
+- Add Uninstall.cmake.in into dist archive
+
 * Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.1.11-0
 - Protect min_heap_push_ against integer overflow
 - Revert "Protect min_heap_push_ against integer overflow."
