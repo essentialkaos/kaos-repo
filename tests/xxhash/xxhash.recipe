@@ -1,0 +1,47 @@
+# Bibop recipe for xxhash
+# See more: https://kaos.sh/bibop
+
+pkg xxhash xxhash-devel xxhash-libs xxhash-doc
+
+fast-finish yes
+
+var lib_linking_flags "-lxxhash"
+
+command "-" "Check apps"
+  app xxhsum
+  app xxh32sum
+  app xxh64sum
+  app xxh128sum
+
+command "-" "Check shared libs"
+  lib-loaded libxxhash.so.*
+
+command "-" "Check headers"
+  lib-header xxh3.h
+  lib-header xxhash.h
+
+command "-" "Check pkg-config"
+  lib-config libxxhash
+
+command "xxhsum test.c" "Check hash generation with xxhsum"
+  exit 0
+  output-contains "c7d16feb831c7fc0  test.c"
+
+command "xxh32sum test.c" "Check hash generation with xxh32sum"
+  exit 0
+  output-contains "80c41288  test.c"
+
+command "xxh64sum test.c" "Check hash generation with xxh64sum"
+  exit 0
+  output-contains "c7d16feb831c7fc0  test.c"
+
+command "xxh128sum test.c" "Check hash generation with xxh128sum"
+  exit 0
+  output-contains "7d9dbb0e56392a4043c367e4f24f6758  test.c"
+
+command "gcc -o test_bin {lib_linking_flags} test.c" "Compile binary with libxxhash"
+  exit 0
+  exist test_bin
+
++command "./test_bin" "Execute built binary"
+  exit 0
