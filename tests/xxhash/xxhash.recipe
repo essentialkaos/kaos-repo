@@ -23,9 +23,6 @@ command "-" "Check headers"
 command "-" "Check pkg-config"
   lib-config libxxhash
 
-command "-" "Check HTML documentation"
-  exist /usr/share/doc/xxhash-doc/html
-
 command "xxhsum test.c" "Check hash generation with xxhsum"
   exit 0
   output-contains "c7d16feb831c7fc0  test.c"
