@@ -36,8 +36,8 @@ kv[prog_name]="postgresql-${PKG_VERSION}"
 
 kv.readSysconfig "${kv[prog_name]}-${MAJOR_VERSION}"
 
-kv[lock_file]="${kv[lock_dir]}/postgresql"
-kv[pid_file]="${kv[pid_dir]}/postgresql.pid"
+kv[lock_file]="${kv[lock_dir]}/postgresql${PKG_VERSION}"
+kv[pid_file]="${kv[pid_dir]}/postgresql${PKG_VERSION}.pid"
 
 pg_engine="${PG_ENGINE:-/usr/${short_name}-${MAJOR_VERSION}/bin}"
 pg_postgres="${PG_POSTGRES:-${pg_engine}/postgres}"
