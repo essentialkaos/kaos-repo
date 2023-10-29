@@ -157,28 +157,40 @@ command "service {service_name} initdb" "Database initialization"
   owner {data_dir}/data/pg_ident.conf {service_user}
   owner {data_dir}/data/postgresql.conf {service_user}
 
-command "systemctl start {service_name}" "Start PostgreSQL server"
++command "systemctl start {service_name}" "Start PostgreSQL server"
   wait {cmd_pause}
   wait-fs {data_dir}/data/postmaster.pid
   service-works {service_name}
   connect tcp :{port}
   checksum-read {pid_file} pid_sha
 
-command "systemctl status {service_name}" "Check status of PostgreSQL server"
++command "systemctl status {service_name}" "Check status of PostgreSQL server"
   expect "active (running)"
 
-command "{service_user}:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
++command "{service_user}:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
   exit 0
   output-contains "PostgreSQL {version}"
 
-command "systemctl restart {service_name}" "Restart PostgreSQL server"
++command "systemctl restart {service_name}" "Restart PostgreSQL server"
   wait {cmd_pause}
   wait-fs {data_dir}/data/postmaster.pid
   service-works {service_name}
   connect tcp :{port}
   !checksum {pid_file} {pid_sha}
 
-command "systemctl stop {service_name}" "Stop PostgreSQL server"
++command "systemctl stop {service_name}" "Stop PostgreSQL server"
+  wait {cmd_pause}
+  !wait-fs {data_dir}/data/postmaster.pid
+  !service-works {service_name}
+  !connect tcp :{port}
+
++command "service start {service_name}" "Check start using service"
+  wait {cmd_pause}
+  wait-fs {data_dir}/data/postmaster.pid
+  service-works {service_name}
+  connect tcp :{port}
+
++command "service stop {service_name}" "Check stop using service"
   wait {cmd_pause}
   !wait-fs {data_dir}/data/postmaster.pid
   !service-works {service_name}
