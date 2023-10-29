@@ -204,4 +204,5 @@ command "service {service_name} initdb" "Database initialization"
   !wait-service {service_name}
 
 command:teardown "-" "Data cleanup"
-  cleanup {data_dir}
+  cleanup {data_dir}/data
+  cleanup {data_dir}/backups
