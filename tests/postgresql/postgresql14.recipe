@@ -17,8 +17,8 @@ var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
 var port          5432
 
-var wait_fs       5
-var wait_connect  5
+var wait_fs       15
+var wait_connect  15
 
 var python3_lib   libpython{PYTHON3_VERSION}*
 var perl_lib      libperl.*
