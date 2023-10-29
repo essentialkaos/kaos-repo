@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# postgresql    This is the init script for starting up the PostgreSQL
-#               server.
+# postgresql   This is the init script for starting up the PostgreSQL {{MAJOR_VERSION}}
+#              server.
 #
 # chkconfig: - 64 36
 # description: PostgreSQL database server.
@@ -32,12 +32,12 @@ GROUP_NAME="{{GROUP_NAME}}"
 
 short_name="pgsql"
 
-kv[prog_name]="postgresql"
+kv[prog_name]="postgresql-${PKG_VERSION}"
 
 kv.readSysconfig "${kv[prog_name]}-${MAJOR_VERSION}"
 
-kv[lock_file]="${kv[lock_dir]}/${kv[prog_name]}${PKG_VERSION}"
-kv[pid_file]="${kv[pid_dir]}/${kv[prog_name]}${PKG_VERSION}.pid"
+kv[lock_file]="${kv[lock_dir]}/${kv[prog_name]}"
+kv[pid_file]="${kv[pid_dir]}/${kv[prog_name]}.pid"
 
 pg_engine="${PG_ENGINE:-/usr/${short_name}-${MAJOR_VERSION}/bin}"
 pg_postgres="${PG_POSTGRES:-${pg_engine}/postgres}"
@@ -153,8 +153,8 @@ upgrade() {
 
   local cur_version="${1-$MAJOR_VERSION}"
   local prev_version="${2-$PREV_VERSION}"
-  local cur_init="${kv[prog_name]}-$cur_version"
-  local prev_init="${kv[prog_name]}-$prev_version"
+  local cur_init="postgresql-$cur_version"
+  local prev_init="postgresql-$prev_version"
 
   if [[ ! -f "$INIT_DIR/$cur_init" ]] ; then
     kv.error "Couldn't find init script $INIT_DIR/$cur_init" $ACTION_ERROR
@@ -171,10 +171,10 @@ upgrade() {
     return $ACTION_ERROR
   fi
 
-  local old_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/${kv[prog_name]}-$cur_version")
-  local old_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/${kv[prog_name]}-$prev_version")
-  local new_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/${kv[prog_name]}-$cur_version")
-  local new_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/${kv[prog_name]}-$prev_version")
+  local old_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/postgresql-$cur_version")
+  local old_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/postgresql-$prev_version")
+  local new_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/postgresql-$cur_version")
+  local new_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/postgresql-$prev_version")
 
   /sbin/service "${PROG_NAME}${PKG_VERSION}" initdb
 
