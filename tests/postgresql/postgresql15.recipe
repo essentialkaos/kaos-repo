@@ -10,6 +10,7 @@ var version       15
 var service_name  postgresql-{version}
 var service_user  postgres
 var service_group postgres
+var sysconfig     /etc/sysconfig/{service_name}
 var install_dir   /usr/pgsql-{version}
 var lib_dir       {install_dir}/lib
 var state_dir     /var/lib/pgsql
@@ -17,11 +18,14 @@ var data_dir      {state_dir}/{version}
 var pid_file      /var/run/postgresql{version}.pid
 var port          5432
 
-var cmd_pause     1
+var wait_fs       15
+var wait_connect  15
 
 var python3_lib   libpython{PYTHON3_VERSION}*
 var perl_lib      libperl.*
 var tcl_lib       libtcl8.*
+
+var test_data_dir  {WORKDIR}/db{version}
 
 ## ENVIRONMENT #################################################################
 
@@ -48,7 +52,7 @@ command "-" "Check configuration files for external systems"
   exist /usr/lib/tmpfiles.d/postgresql-{version}.conf
   mode /usr/lib/tmpfiles.d/postgresql-{version}.conf 644
 
-command "-" "Check data directory"
+command "-" "Check default data directory"
   exist {data_dir}/backups
   exist {data_dir}/data
   owner {data_dir}/data {service_user}
@@ -150,51 +154,90 @@ command "-" "Check PL/PerlU"
 
 ## SERVER ######################################################################
 
-command "service {service_name} initdb" "Database initialization"
-  exit 0
-  exist {data_dir}/data/PG_VERSION
-  exist {data_dir}/data/pg_hba.conf
-  exist {data_dir}/data/pg_ident.conf
-  exist {data_dir}/data/postgresql.conf
-  exist {data_dir}/data/pg_wal
-  mode {data_dir}/data/pg_hba.conf 600
-  mode {data_dir}/data/pg_ident.conf 600
-  mode {data_dir}/data/postgresql.conf 600
-  mode {data_dir}/data/pg_wal 700
-  !empty {data_dir}/data/pg_hba.conf
-  !empty {data_dir}/data/pg_ident.conf
-  !empty {data_dir}/data/postgresql.conf
-  owner {data_dir}/data/pg_hba.conf {service_user}
-  owner {data_dir}/data/pg_ident.conf {service_user}
-  owner {data_dir}/data/postgresql.conf {service_user}
+command "-" "Create directory for data"
+  mkdir {test_data_dir}
+  chown {test_data_dir} {service_user}:{service_group}
 
-command "systemctl start {service_name}" "Start PostgreSQL server"
-  wait {cmd_pause}
-  wait-fs {data_dir}/data/postmaster.pid
-  service-works {service_name}
-  connect tcp :{port}
+command "-" "Replace default sysconfig"
+  backup {sysconfig}
+  template sysconfig.tmpl {sysconfig}
+
+command "service {service_name} initdb" "Database initialization with default locale"
+  exit 0
+  exist {test_data_dir}/PG_VERSION
+  exist {test_data_dir}/pg_hba.conf
+  exist {test_data_dir}/pg_ident.conf
+  exist {test_data_dir}/postgresql.conf
+  exist {test_data_dir}/pg_wal
+  mode {test_data_dir}/pg_hba.conf 600
+  mode {test_data_dir}/pg_ident.conf 600
+  mode {test_data_dir}/postgresql.conf 600
+  mode {test_data_dir}/pg_wal 700
+  !empty {test_data_dir}/pg_hba.conf
+  !empty {test_data_dir}/pg_ident.conf
+  !empty {test_data_dir}/postgresql.conf
+  owner {test_data_dir}/pg_hba.conf {service_user}
+  owner {test_data_dir}/pg_ident.conf {service_user}
+  owner {test_data_dir}/postgresql.conf {service_user}
+
++command "-" "Remove data"
+  cleanup {test_data_dir}
+
+command "service {service_name} initdb en_GB.UTF-8" "Database initialization with custom locale"
+  exit 0
+  exist {test_data_dir}/PG_VERSION
+  exist {test_data_dir}/pg_hba.conf
+  exist {test_data_dir}/pg_ident.conf
+  exist {test_data_dir}/postgresql.conf
+  exist {test_data_dir}/pg_wal
+  mode {test_data_dir}/pg_hba.conf 600
+  mode {test_data_dir}/pg_ident.conf 600
+  mode {test_data_dir}/postgresql.conf 600
+  mode {test_data_dir}/pg_wal 700
+  !empty {test_data_dir}/pg_hba.conf
+  !empty {test_data_dir}/pg_ident.conf
+  !empty {test_data_dir}/postgresql.conf
+  owner {test_data_dir}/pg_hba.conf {service_user}
+  owner {test_data_dir}/pg_ident.conf {service_user}
+  owner {test_data_dir}/postgresql.conf {service_user}
+
++command "systemctl start {service_name}" "Start PostgreSQL server"
+  wait-fs {test_data_dir}/postmaster.pid {wait_fs}
+  wait-connect tcp :{port} {wait_connect}
+  wait-service {service_name}
   checksum-read {pid_file} pid_sha
 
-command "systemctl status {service_name}" "Check status of PostgreSQL server"
++command "systemctl status {service_name}" "Check status of PostgreSQL server"
   expect "active (running)"
 
-command "{service_user}:{install_dir}/bin/psql -t -c 'select version();'" "Check PostgreSQL version"
++command "{service_user}:{install_dir}/bin/psql -t -c 'SELECT version();'" "Check PostgreSQL version"
   exit 0
   output-contains "PostgreSQL {version}"
 
-command "systemctl restart {service_name}" "Restart PostgreSQL server"
-  wait {cmd_pause}
-  wait-fs {data_dir}/data/postmaster.pid
-  service-works {service_name}
-  connect tcp :{port}
++command "{service_user}:{install_dir}/bin/psql -t -c 'SHOW LC_COLLATE;'" "Check locale"
+  exit 0
+  output-contains "en_GB.UTF-8"
+
++command "systemctl restart {service_name}" "Restart PostgreSQL server"
+  wait-fs {test_data_dir}/postmaster.pid {wait_fs}
+  wait-connect tcp :{port} {wait_connect}
+  wait-service {service_name}
   !checksum {pid_file} {pid_sha}
 
-command "systemctl stop {service_name}" "Stop PostgreSQL server"
-  wait {cmd_pause}
-  !wait-fs {data_dir}/data/postmaster.pid
-  !service-works {service_name}
-  !connect tcp :{port}
++command "systemctl stop {service_name}" "Stop PostgreSQL server"
+  !wait-fs {test_data_dir}/postmaster.pid {wait_fs}
+  !wait-connect tcp :{port} {wait_connect}
+  !wait-service {service_name}
 
-command:teardown "-" "Data cleanup"
-  cleanup {data_dir}/data
-  cleanup {data_dir}/backups
++command "service pg{version} start" "Check start using service with shortname link"
+  wait-fs {test_data_dir}/postmaster.pid {wait_fs}
+  wait-connect tcp :{port} {wait_connect}
+  wait-service {service_name}
+
++command "service pg{version} stop" "Check stop using service with shortname link"
+  !wait-fs {test_data_dir}/postmaster.pid {wait_fs}
+  !wait-connect tcp :{port} {wait_connect}
+  !wait-service {service_name}
+
+command:teardown "-" "Restore original sysconfig file"
+  backup-restore {sysconfig}

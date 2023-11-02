@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# postgresql    This is the init script for starting up the PostgreSQL
-#               server.
+# postgresql   This is the init script for starting up the PostgreSQL {{MAJOR_VERSION}}
+#              server.
 #
 # chkconfig: - 64 36
 # description: PostgreSQL database server.
@@ -32,28 +32,25 @@ GROUP_NAME="{{GROUP_NAME}}"
 
 short_name="pgsql"
 
-kv[prog_name]="postgresql"
+kv[prog_name]="postgresql-${PKG_VERSION}"
 
-kv.readSysconfig "${kv[prog_name]}-${MAJOR_VERSION}"
+kv.readSysconfig "postgresql-${MAJOR_VERSION}"
 
-kv[lock_file]="${kv[lock_dir]}/${kv[prog_name]}${PKG_VERSION}"
-kv[pid_file]="${kv[pid_dir]}/${kv[prog_name]}${PKG_VERSION}.pid"
+kv[lock_file]="${kv[lock_dir]}/postgresql${PKG_VERSION}"
+kv[pid_file]="${kv[pid_dir]}/postgresql${PKG_VERSION}.pid"
 
 pg_engine="${PG_ENGINE:-/usr/${short_name}-${MAJOR_VERSION}/bin}"
 pg_postgres="${PG_POSTGRES:-${pg_engine}/postgres}"
 pg_data="${PG_DATA:-/var/lib/${short_name}/${MAJOR_VERSION}/data}"
 pg_log="${PG_LOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgstartup.log}"
-pg_uplog="${PG_UPLOG:-/var/lib/${short_name}/${MAJOR_VERSION}/pgupgrade.log}"
 pg_socket_dir="${PG_SOCKET_DIR:-/var/run/postgresql}"
 timeout="${TIMEOUT:-300}"
 disable_auto_numa="${DISABLE_AUTO_NUMA}"
 
 pg_ctl="$pg_engine/pg_ctl"
-pg_upgrade="$pg_engine/pg_upgrade"
 pg_initdb="$pg_engine/initdb"
 
 export pg_data
-export pg_port
 
 kv[user]="$USER_NAME"
 kv[search_pattern]="$pg_engine"
@@ -63,9 +60,7 @@ kv[oom_adj]="$OOM_DISABLE"
 ###############################################################################
 
 kv.addCommand "initdb"  "Init new database"           "initdb"
-kv.addCommand "upgrade" "Upgrade data"                "upgrade"
 kv.addCommand "reload"  "Reload configuration files"  "reload"
-kv.addCommand "promote" "Trigger failover"            "promote"
 
 kv.addHandler "start"   "startServiceHandler"
 kv.addHandler "start"   "preStartServiceHandler" "pre"
@@ -73,7 +68,6 @@ kv.addHandler "stop"    "stopServiceHandler"
 
 kv.addCommandArgs "stop"    "force"
 kv.addCommandArgs "initdb"  "locale"
-kv.addCommandArgs "upgrade" "current-version" "prev-version"
 
 kv.disableOutputRedirect "start" "pre"
 
@@ -148,80 +142,10 @@ initdb() {
   return $status
 }
 
-upgrade() {
-  kv[log]="$pg_uplog"
-
-  local cur_version="${1-$MAJOR_VERSION}"
-  local prev_version="${2-$PREV_VERSION}"
-  local cur_init="${kv[prog_name]}-$cur_version"
-  local prev_init="${kv[prog_name]}-$prev_version"
-
-  if [[ ! -f "$INIT_DIR/$cur_init" ]] ; then
-    kv.error "Couldn't find init script $INIT_DIR/$cur_init" $ACTION_ERROR
-  fi
-
-  if [[ ! -f "$INIT_DIR/$prev_init" ]] ; then
-    kv.error "Couldn't find init script $INIT_DIR/$prev_init"
-    kv.error "Please install ${PROG_NAME}${prev_version/./}-server RPM first."
-    return $ACTION_ERROR
-  fi
-
-  if [[ ! -x "$pg_engine/pg_upgrade" ]] ; then
-    kv.show "Please install the ${PROG_NAME}${PKG_VERSION}-contrib RPM for pg_upgrade command."
-    return $ACTION_ERROR
-  fi
-
-  local old_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/${kv[prog_name]}-$cur_version")
-  local old_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/${kv[prog_name]}-$prev_version")
-  local new_data=$(sed -n 's/^PGDATA=//p' "$INIT_DIR/${kv[prog_name]}-$cur_version")
-  local new_port=$(sed -n 's/^PGPORT=//p' "$INIT_DIR/${kv[prog_name]}-$prev_version")
-
-  /sbin/service "${PROG_NAME}${PKG_VERSION}" initdb
-
-  if [[ $? -ne 0 ]] ; then
-    kv.error "Initialization failed!" $ACTION_ERROR
-  fi
-
-  kv.run "$pg_upgrade" -b "/usr/${SHORT_NAME}-${prev_version}/bin/" -B $pg_engine/ -d "$old_data" -D "$new_data" -p "$old_port" -P "$new_port" -c
-
-  if [[ $? -ne 0 ]] ; then
-    kv.error "Cluster check failed. Please see the output above." $ACTION_ERROR
-  fi
-
-  kv.show "Clusters checked successfully, proceeding with upgrade from $prev_version to $cur_version..."
-
-  /sbin/service "$prev_init" stop
-
-  rm -f "$pg_uplog" &> /dev/null
-  touch "$pg_uplog" || return 1
-  kv.chown "$USER_NAME:$GROUP_NAME" "$pg_uplog"
-  kv.chmod go-rwx "$PGUPLOG"
-
-  kv.restoreSEContext "$pg_uplog"
-
-  kv.show "Performing upgrade..."
-
-  kv.run "$pg_upgrade" -b "/usr/${SHORT_NAME}-${prev_version}/bin/" -B "$pg_engine/" -d "$old_data" -D "$new_data" -p "$old_port" -P "$new_port"
-
-  kv.show "Upgrade complete" $GREEN
-}
-
 reload() {
-  kv.showProcessMessage "Reloading configs"
+  kv.showProcessMessage "Reloading configuration"
 
   kv.run "$pg_ctl" reload -D "$pg_data" -s
-
-  local status=$?
-
-  kv.showStatusMessage "$status"
-
-  return $status
-}
-
-promote() {
-  kv.showProcessMessage "Promoting"
-
-  kv.run "$pg_ctl" promote -D "$pg_data" -s
 
   local status=$?
 

@@ -23,7 +23,7 @@
 
 %define majorver      10
 %define minorver      23
-%define rel           0
+%define rel           1
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        10
 %define realname      postgresql
@@ -141,7 +141,7 @@ PostgreSQL is an advanced Object-Relational database management system
 (DBMS) that supports almost all SQL constructs (including
 transactions, subselects and user-defined types and functions). The
 postgresql package includes the client programs and libraries that
-you'll need to access a PostgreSQL DBMS server.  These PostgreSQL
+you'll need to access a PostgreSQL DBMS server. These PostgreSQL
 client programs are programs that directly manipulate the internal
 structure of PostgreSQL databases on a PostgreSQL server. These client
 programs can be located on the same machine with the PostgreSQL
@@ -499,7 +499,7 @@ sed -i 's/{{PREV_VERSION}}/%{prev_version}/g' %{buildroot}%{_unitdir}/postgresql
 sed -i 's/{{USER_NAME}}/%{username}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 sed -i 's/{{GROUP_NAME}}/%{groupname}/g' %{buildroot}%{_unitdir}/postgresql-%{majorver}.service
 
-ln -sf %{_initddir}/%{service_name} %{buildroot}%{_initddir}/%{tinyname}%{majorver}
+ln -sf %{service_name} %{buildroot}%{_initddir}/%{tinyname}%{majorver}
 
 %if %pam
 install -d %{buildroot}%{_sysconfdir}/pam.d
@@ -1080,6 +1080,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Oct 29 2023 Anton Novojilov <andy@essentialkaos.com> - 10.23-1
+- Improved init script compatibility with systemd
+
 * Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 10.23-0
 - https://www.postgresql.org/docs/10/release-10-23.html
 
