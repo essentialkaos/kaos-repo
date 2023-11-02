@@ -214,7 +214,7 @@ command "service {service_name} initdb en_GB.UTF-8" "Database initialization wit
   exit 0
   output-contains "PostgreSQL {version}"
 
-+command "{service_user}:{install_dir}/bin/psql -t -c 'SHOW LC_COLLATE;'" "Check locale"
++command "{service_user}:{install_dir}/bin/psql -t -c 'SHOW LC_MESSAGES;'" "Check locale"
   exit 0
   output-contains "en_GB.UTF-8"
 
