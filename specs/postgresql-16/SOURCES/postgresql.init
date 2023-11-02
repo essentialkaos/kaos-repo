@@ -34,7 +34,7 @@ short_name="pgsql"
 
 kv[prog_name]="postgresql-${PKG_VERSION}"
 
-kv.readSysconfig "${kv[prog_name]}-${MAJOR_VERSION}"
+kv.readSysconfig "postgresql-${MAJOR_VERSION}"
 
 kv[lock_file]="${kv[lock_dir]}/postgresql${PKG_VERSION}"
 kv[pid_file]="${kv[pid_dir]}/postgresql${PKG_VERSION}.pid"
