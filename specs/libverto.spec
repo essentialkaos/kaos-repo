@@ -7,7 +7,7 @@
 Summary:         Main loop abstraction library
 Name:            libverto
 Version:         0.3.2
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         MIT
 Group:           Development/Libraries
 URL:             https://github.com/latchset/libverto
@@ -19,6 +19,8 @@ Source100:       checksum.sha512
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   make gcc glib2-devel libevent-devel libev-devel chrpath
+
+Obsoletes:       libverto-tevent <= 0.3.1
 
 Provides:        %{name} = %{version}-%{release}
 
@@ -231,6 +233,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 03 2023 Anton Novojilov <andy@essentialkaos.com> - 0.3.2-1
+- Improved spec
+
 * Thu Sep 22 2022 Anton Novojilov <andy@essentialkaos.com> - 0.3.2-0
 - Fix use-after-free in verto_reinitialize()
 - Fix use-after-free in verto_free()
