@@ -21,6 +21,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:   make gcc glib2-devel libevent-devel libev-devel chrpath
 
 Obsoletes:       libverto-tevent <= 0.3.1
+Obsoletes:       libverto-tevent-devel <= 0.3.1
 
 Provides:        %{name} = %{version}-%{release}
 
