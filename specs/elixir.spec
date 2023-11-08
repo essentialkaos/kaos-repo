@@ -10,7 +10,7 @@
 
 Summary:        A modern approach to programming for the Erlang VM
 Name:           elixir
-Version:        1.15.6
+Version:        1.15.7
 Release:        0%{?dist}
 License:        ASL 2.0 and ERPL
 Group:          Development/Tools
@@ -82,6 +82,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 08 2023 Anton Novojilov <andy@essentialkaos.com> - 1.15.7-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.15.7
+
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.15.6-0
 - https://github.com/elixir-lang/elixir/releases/tag/v1.15.6
 
