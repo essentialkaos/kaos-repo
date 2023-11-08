@@ -18,6 +18,8 @@
 %define pkgname         %{realname}-%{maj_ver}
 %define fullname        %{realname}31
 
+%define min_geos_ver    3.11
+
 %define __perl_requires   filter-requires-perl-Pg.sh
 
 ################################################################################
@@ -25,7 +27,7 @@
 Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:            %{fullname}_%{pg_ver}
 Version:         3.1.9
-Release:         0%{?dist}
+Release:         1%{?dist}
 License:         GPLv2+
 Group:           Applications/Databases
 URL:             https://www.postgis.net
@@ -39,7 +41,8 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
-BuildRequires:   gcc-c++ geos-devel >= 3.9 chrpath make pcre-devel hdf5-devel
+BuildRequires:   geos-devel >= %{min_geos_ver}
+BuildRequires:   gcc-c++ chrpath make pcre-devel hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
 BuildRequires:   sqlite-devel libgeotiff-devel libpng-devel libtiff-devel
 
@@ -53,8 +56,9 @@ Requires:        gdal-libs >= 3
 %endif
 %endif
 
-Requires:        postgresql%{pg_ver} geos >= 3.9 proj hdf5 json-c pcre
+Requires:        postgresql%{pg_ver} proj hdf5 json-c pcre
 Requires:        %{fullname}_%{pg_ver}-client = %{version}-%{release}
+Requires:        geos >= %{min_geos_ver}
 
 Requires(post):  chkconfig
 
@@ -249,5 +253,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Nov 08 2023 Anton Novojilov <andy@essentialkaos.com> - 3.1.9-1
+- Minimal required version of GEOS set to 3.11
+
 * Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.1.9-0
 - https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.1.9/NEWS
