@@ -8,19 +8,19 @@
 
 ################################################################################
 
-%define jdk_major  17.0.9
-%define jdk_minor  9
+%define jdk_major  21.0.1
+%define jdk_minor  12
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  1705
+%define alt_priority  2100
 
 ################################################################################
 
-Summary:      OpenJDK Runtime Environment (JRE 17)
-Name:         jre17
+Summary:      OpenJDK Runtime Environment (JRE 21)
+Name:         jre21
 Epoch:        1
 Version:      %{jdk_major}
 Release:      %{jdk_minor}%{?dist}
@@ -28,7 +28,7 @@ Group:        Development/Languages
 License:      ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:          https://adoptium.net
 
-Source0:      https://github.com/adoptium/temurin17-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK17U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
+Source0:      https://github.com/adoptium/temurin21-binaries/releases/download/jdk-%{jdk_major}+%{jdk_minor}/OpenJDK21U-jre_x64_linux_hotspot_%{jdk_major}_%{jdk_minor}.tar.gz
 Source1:      java.sh
 
 Source100:    checksum.sha512
@@ -45,9 +45,9 @@ Conflicts:    java-21-openjdk-headless
 AutoProv:     no
 AutoReqProv:  no
 
-Provides:     jre = 1:17
-Provides:     jre-lts = 1:17
-Provides:     java = 1:17
+Provides:     jre = 1:21
+Provides:     jre-lts = 1:21
+Provides:     java = 1:21
 Provides:     jre-%{jdk_major} = 1:%{version}-%{release}
 Provides:     jre-lts-%{jdk_major} = 1:%{version}-%{release}
 Provides:     java-%{jdk_major} = 1:%{version}-%{release}
@@ -110,20 +110,5 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
-* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 17.0.9-9
-- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk-17.0.9+9
-
-* Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 17.0.7-7
-- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk-17.0.7+7
-
-* Fri Dec 02 2022 Anton Novojilov <andy@essentialkaos.com> - 17.0.5-8
-- Updated to the latest version
-
-* Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 17.0.4.1-1
-- Updated to the latest version
-
-* Wed Aug 17 2022 Anton Novojilov <andy@essentialkaos.com> - 17.0.4-8
-- Updated to the latest version
-
-* Tue Jun 28 2022 Anton Novojilov <andy@essentialkaos.com> - 17.0.3-7
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 21.0.1-12
 - Initial build for kaos repository

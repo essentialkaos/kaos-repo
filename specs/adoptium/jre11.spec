@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major  11.0.19
-%define jdk_minor  7
+%define jdk_major  11.0.21
+%define jdk_minor  9
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  1116
+%define alt_priority  1117
 
 ################################################################################
 
@@ -40,6 +40,7 @@ Conflicts:    java-1.7.0-openjdk-headless
 Conflicts:    java-1.8.0-openjdk-headless
 Conflicts:    java-11-openjdk-headless
 Conflicts:    java-17-openjdk-headless
+Conflicts:    java-21-openjdk-headless
 
 AutoProv:     no
 AutoReqProv:  no
@@ -109,6 +110,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 11.0.21-9
+- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk-11.0.21+9
+
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 11.0.19-7
 - https://adoptium.net/en-GB/temurin/release-notes/?version=jdk-11.0.19+7
 
