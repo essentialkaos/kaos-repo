@@ -21,7 +21,7 @@
 
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
-Version:        1.0.1
+Version:        1.0.2
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Development/Tools
@@ -33,7 +33,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc cmake doxygen bzip2-devel file-devel xz
+BuildRequires:  gcc cmake doxygen bzip2-devel xz
 BuildRequires:  glib2-devel >= 2.22.0 libcurl-devel libxml2-devel
 BuildRequires:  openssl-devel sqlite-devel xz-devel zlib-devel drpm-devel
 BuildRequires:  rpm-devel libmodulemd-devel libyaml-devel zchunk-devel
@@ -44,7 +44,6 @@ BuildRequires:  libasan liblsan libubsan
 %endif
 
 Requires:       rpm
-
 Requires:       %{name}-libs = %{version}-%{release}
 
 Provides:       %{name} = %{version}-%{release}
@@ -111,13 +110,6 @@ Python bindings for the createrepo_c library.
 
 sed -i '/unset(PYTHON_LIBRARY/d' src/python/CMakeLists.txt
 sed -i '/unset(PYTHON_INCLUDE_DIR/d' src/python/CMakeLists.txt
-sed -i 's/3 EXACT/3/g' src/python/CMakeLists.txt
-
-%if 0%{?rhel} == 9
-# Fix wrong check for GLib 2.70
-# https://github.com/rpm-software-management/createrepo_c/pull/342#issuecomment-1621547652
-sed -i 's/g_pattern_spec_match/g_pattern_match/' src/createrepo_c.c
-%endif
 
 cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir} \
@@ -194,6 +186,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.0.1...1.0.2
+
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
 - https://github.com/rpm-software-management/createrepo_c/compare/1.0.0...1.0.1
 
