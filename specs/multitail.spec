@@ -8,45 +8,52 @@
 
 ################################################################################
 
-Summary:          View one or multiple files like tail but with multiple windows
-Name:             multitail
-Version:          7.0.0
-Release:          0%{?dist}
-License:          Apache-2.0
-Group:            Applications/Text
-URL:              https://www.vanheusden.com/multitail/
+Summary:        View one or multiple files like tail but with multiple windows
+Name:           multitail
+Version:        7.1.2
+Release:        0%{?dist}
+License:        Apache-2.0
+Group:          Applications/Text
+URL:            https://www.vanheusden.com/multitail/
 
-Source0:          https://github.com/folkertvanheusden/multitail/archive/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/folkertvanheusden/multitail/archive/%{version}/%{name}-%{version}.tar.gz
 
-Source100:        checksum.sha512
+Source100:      checksum.sha512
 
-Patch0:           https://sources.debian.org/data/main/m/multitail/6.5.0-5/debian/patches/fix-format-strings.diff
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRoot:        %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:    gcc ncurses-devel
+BuildRequires:  gcc ncurses-devel
 
 %if 0%{?rhel} <= 7
-BuildRequires:    cmake3
+BuildRequires:  cmake3
 %else
-BuildRequires:    cmake
+BuildRequires:  cmake
 %endif
 
-Requires:         ncurses
+Requires:       ncurses
 
-Provides:         %{name} = %{version}-%{release}
-Provides:         %{shortname} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
+Provides:       %{shortname} = %{version}-%{release}
 
 ################################################################################
 
 %description
 MultiTail lets you view one or multiple files like the original tail
-program. The difference is that it creates multiple windows on your console
-(with ncurses). Merging of 2 or even more logfiles is possible. It can also
-use colors while displaying the logfiles (through regular expressions), for
-faster recognition of what is important and what not. It can also filter
-lines (again with regular expressions). It has interactive menus for editing
-given regular expressions and deleting and adding windows.
+program. The difference is that it creates multiple windows on your
+console (with ncurses). It can also monitor wildcards: if another file
+matching the wildcard has a more recent modification date, it will
+automatically switch to that file. That way you can, for example,
+monitor a complete directory of files. Merging of 2 or even more
+logfiles is possible.
+
+It can also use colors while displaying the logfiles (through regular
+expressions), for faster recognition of what is important and what not.
+Multitail can also filter lines (again with regular expressions) and
+has interactive menus for editing given regular expressions and
+deleting and adding windows. One can also have windows with the output
+of shell scripts and other software. When viewing the output of
+external software, MultiTail can mimic the functionality of tools like
+'watch' and such.
 
 ################################################################################
 
@@ -54,12 +61,10 @@ given regular expressions and deleting and adding windows.
 %{crc_check}
 
 %setup -q
-%patch0 -p1
 
 sed -i "s/6.4.3/%{version}/" CMakeLists.txt
 sed -i '/multitail.conf.new/d' CMakeLists.txt
 sed -i '/conversion-scripts/d' CMakeLists.txt
-sed -i 's/license.txt/LICENSE/' CMakeLists.txt
 
 rm GNUmakefile
 
@@ -95,6 +100,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 7.1.2-0
+- https://github.com/folkertvanheusden/multitail/compare/7.0.0...7.1.2
+
 * Tue Dec 13 2022 Anton Novojilov <andy@essentialkaos.com> - 7.0.0-0
 - https://github.com/folkertvanheusden/multitail/compare/6.5...7.0.0
 
