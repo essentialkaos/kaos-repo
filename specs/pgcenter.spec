@@ -1,7 +1,7 @@
 ################################################################################
 
-# rpmbuilder:gopack    github.com/lesovsky/pgcenter
-# rpmbuilder:tag       v0.9.2
+# rpmbuilder:gopack  github.com/lesovsky/pgcenter
+# rpmbuilder:tag     v0.9.2
 
 ################################################################################
 
@@ -9,10 +9,14 @@
 
 ################################################################################
 
+%define  debug_package %{nil}
+
+################################################################################
+
 Summary:        Top-like PostgreSQL statistics viewer
 Name:           pgcenter
 Version:        0.9.2
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        BSD 3-Clause
 Group:          Development/Tools
 URL:            https://github.com/lesovsky/pgcenter
@@ -23,7 +27,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make golang >= 1.18
+BuildRequires:  golang >= 1.20
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -51,8 +55,8 @@ operations, pgcenter can start psql session for this purposes.
 export TOP_DIR=$(pwd)
 
 pushd github.com/lesovsky/pgcenter
-CGO_ENABLED=0 go build -o "%{name}" ./cmd
-cp COPYRIGHT README.md $TOP_DIR/
+  CGO_ENABLED=0 go build -o "%{name}" ./cmd
+  cp COPYRIGHT README.md $TOP_DIR/
 popd
 
 %install
@@ -75,6 +79,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.9.2-1
+- Rebuilt with the latest version of Go
+
 * Thu Dec 15 2022 Anton Novojilov <andy@essentialkaos.com> - 0.9.2-0
 - https://github.com/lesovsky/pgcenter/releases/tag/v0.9.2
 
