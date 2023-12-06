@@ -10,7 +10,7 @@
 
 Summary:        Utility for getting files from remote servers
 Name:           curl
-Version:        8.4.0
+Version:        8.5.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Applications/Internet
@@ -164,6 +164,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.5.0-0
+- https://curl.se/changes.html#8_5_0
+
 * Wed Oct 11 2023 Anton Novojilov <andy@essentialkaos.com> - 8.4.0-0
 - https://curl.se/changes.html#8_4_0
 
