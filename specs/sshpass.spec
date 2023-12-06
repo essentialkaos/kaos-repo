@@ -4,23 +4,23 @@
 
 ################################################################################
 
-Summary:            Non-interactive SSH authentication utility
-Name:               sshpass
-Version:            1.09
-Release:            0%{?dist}
-License:            GPLv2
-Group:              Development/Tools
-URL:                https://sshpass.sourceforge.net
+Summary:        Non-interactive SSH authentication utility
+Name:           sshpass
+Version:        1.10
+Release:        0%{?dist}
+License:        GPLv2
+Group:          Development/Tools
+URL:            https://sshpass.sourceforge.net
 
-Source0:            https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:        https://downloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc
+BuildRequires:  make gcc
 
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -60,6 +60,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
+- Remove sig unsafe functions from signal handler.
+- Allow -e to explicitly specify the environment variable to use
+- Unset the variable specified with -e before calling subprogram
+- Change the logic for setting a controlling TTY. Fixes compatibility
+  issues with OpenSolaris and MSYS/Cygwin.
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 1.09-0
 - Explicitly set the controlling TTY
 
