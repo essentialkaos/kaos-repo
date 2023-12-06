@@ -4,24 +4,24 @@
 
 ################################################################################
 
-Summary:              A network diagnostic tool
-Name:                 mtr
-Version:              0.95
-Release:              0%{?dist}
-Epoch:                10
-License:              GPLv2+
-Group:                Applications/Internet
-URL:                  https://www.bitwizard.nl/mtr/
+Summary:        A network diagnostic tool
+Name:           mtr
+Epoch:          10
+Version:        0.95
+Release:        0%{?dist}
+License:        GPLv2+
+Group:          Applications/Internet
+URL:            https://www.bitwizard.nl/mtr/
 
-Source0:              https://github.com/traviscross/mtr/archive/v%{version}.tar.gz
+Source0:        https://github.com/traviscross/mtr/archive/v%{version}.tar.gz
 
-Source100:            checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        autoconf automake libtool ncurses-devel
+BuildRequires:  autoconf automake libtool ncurses-devel
 
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
