@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:         A cat(1) clone with wings
-Name:            bat
-Version:         0.22.1
-Release:         0%{?dist}
-Group:           Applications/Text
-License:         MIT and Apache 2.0
-URL:             https://github.com/sharkdp/bat
+Summary:        A cat(1) clone with wings
+Name:           bat
+Version:        0.24.0
+Release:        0%{?dist}
+Group:          Applications/Text
+License:        MIT and Apache 2.0
+URL:            https://github.com/sharkdp/bat
 
-Source0:         https://github.com/sharkdp/%{name}/archive/v%{version}.tar.gz
+Source0:        https://github.com/sharkdp/%{name}/archive/v%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   cargo
+BuildRequires:  cargo
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -86,5 +86,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.24.0-0
+- https://github.com/sharkdp/bat/releases/tag/v0.24.0
+
 * Sat Oct 01 2022 Anton Novojilov <andy@essentialkaos.com> - 0.22.1-0
 - Initial build for kaos repository
