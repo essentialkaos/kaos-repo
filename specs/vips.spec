@@ -6,7 +6,7 @@
 
 Name:           vips
 Summary:        C/C++ library for processing large images
-Version:        8.14.5
+Version:        8.15.0
 Release:        0%{?dist}
 License:        LGPLv2+
 Group:          System Environment/Libraries
@@ -18,7 +18,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  meson cmake pkgconfig gettext
+BuildRequires:  meson cmake pkgconfig gettext libarchive
 BuildRequires:  gcc gcc-c++ libjpeg-turbo-devel libtiff-devel zlib-devel
 BuildRequires:  glib2-devel libxml2-devel expat-devel orc-devel libpng-devel
 BuildRequires:  libexif-devel
@@ -86,13 +86,14 @@ PDF formats.
 
 %build
 %{meson} \
+         -Darchive=disabled \
          -Dcfitsio=disabled \
          -Dfftw=disabled \
          -Dfontconfig=disabled \
-         -Dgsf=disabled \
          -Dheif=disabled \
+         -Dhighway=disabled \
          -Dimagequant=disabled \
-         -Dintrospection=false \
+         -Dintrospection=disabled \
          -Djpeg-xl=disabled \
          -Dlcms=disabled \
          -Dmagick=disabled \
@@ -153,6 +154,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.15.0-0
+- https://github.com/libvips/libvips/releases/tag/v8.15.0
+
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.14.5-0
 - https://github.com/libvips/libvips/releases/tag/v8.14.5
 
