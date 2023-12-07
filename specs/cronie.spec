@@ -17,8 +17,8 @@
 
 Summary:         Cron daemon for executing programs at set times
 Name:            cronie
-Version:         1.6.1
-Release:         1%{?dist}
+Version:         1.7.0
+Release:         0%{?dist}
 License:         MIT and BSD and ISC and GPLv2
 Group:           System Environment/Base
 URL:             https://github.com/cronie-crond/cronie
@@ -109,22 +109,22 @@ extra features.
 %build
 %configure \
 %if %{with pam}
---with-pam \
+  --with-pam \
 %endif
 %if %{with selinux}
---with-selinux \
+  --with-selinux \
 %endif
 %if %{with audit}
---with-audit \
+  --with-audit \
 %endif
 %if %{with inotify}
---with-inotify \
+  --with-inotify \
 %endif
---enable-anacron \
---enable-pie \
---enable-relro
+  --enable-anacron \
+  --enable-pie \
+  --enable-relro
 
-%{__make} %{?_smp_mflags}
+%{make_build} V=2
 
 %install
 rm -rf %{buildroot}
@@ -241,6 +241,9 @@ systemctl try-restart %{service_name}.service &>/dev/null || :
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
+- https://github.com/cronie-crond/cronie/releases/tag/cronie-1.7.0
+
 * Mon Oct 09 2023 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
 - Spec refactoring
 
