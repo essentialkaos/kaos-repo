@@ -2,30 +2,30 @@ package main
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 //                                                                                    //
-//                         Copyright (c) 2021 ESSENTIAL KAOS                          //
+//                         Copyright (c) 2023 ESSENTIAL KAOS                          //
 //      Apache License, Version 2.0 <https://www.apache.org/licenses/LICENSE-2.0>     //
 //                                                                                    //
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"sort"
 	"strconv"
 	"strings"
 
-	"pkg.re/essentialkaos/ek.v12/fmtc"
-	"pkg.re/essentialkaos/ek.v12/path"
-	"pkg.re/essentialkaos/ek.v12/sortutil"
-	"pkg.re/essentialkaos/ek.v12/strutil"
+	"github.com/essentialkaos/ek/env"
+	"github.com/essentialkaos/ek/fmtc"
+	"github.com/essentialkaos/ek/path"
+	"github.com/essentialkaos/ek/sortutil"
+	"github.com/essentialkaos/ek/strutil"
 )
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 const (
 	APP  = "ReleaseInfoGen"
-	VER  = "1.0.0"
+	VER  = "2.0.0"
 	DESC = "Go utility for generating release info"
 )
 
@@ -59,8 +59,31 @@ func (c Changes) Less(i, j int) bool {
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 func main() {
-	checkoutLatestChanges()
+	check()
+	genChanges()
+}
+
+// check checks required apps
+func check() {
+	if env.Which("git") == "" {
+		printErrorAndExit("This script requires git")
+	}
+}
+
+// genChanges generates list of changes
+func genChanges() {
+	err := checkoutLatestChanges()
+
+	if err != nil {
+		printErrorAndExit(err.Error())
+	}
+
 	changes := createChangesList()
+
+	if len(changes) == 0 {
+		printWarn("No changes found")
+		return
+	}
 
 	listAdditions(changes)
 	listModifications(changes)
@@ -70,20 +93,22 @@ func main() {
 // ////////////////////////////////////////////////////////////////////////////////// //
 
 // checkoutLatestChanges checkouts the latest changes
-func checkoutLatestChanges() {
+func checkoutLatestChanges() error {
 	cmd := exec.Command("git", "checkout", "-B", "master", "origin/master")
 	err := cmd.Run()
 
 	if err != nil {
-		printErrorAndExit(err.Error())
+		return err
 	}
 
 	cmd = exec.Command("git", "checkout", "develop")
 	err = cmd.Run()
 
 	if err != nil {
-		printErrorAndExit(err.Error())
+		return err
 	}
+
+	return nil
 }
 
 // createChangesList makes slice with changes between develop and master branch
@@ -118,11 +143,10 @@ func listAdditions(changes Changes) {
 
 	for _, c := range changes {
 		if c.Type == TYPE_ADDED {
-			pkgName := getSpecValue(c.File, "name")
-			pkgDesc := getSpecValue(c.File, "summary")
+			values := getSpecValue(c.File, "name", "summary")
 
-			data = append(data, fmt.Sprintf(
-				"`%s` (_%s_)", pkgName, pkgDesc,
+			data = append(data, fmtc.Sprintf(
+				"`%s` (_{&}%s{!}_)", values[0], values[1],
 			))
 		}
 
@@ -131,11 +155,10 @@ func listAdditions(changes Changes) {
 			srcName := path.Base(c.Source)
 
 			if fileName != srcName {
-				pkgName := getSpecValue(c.File, "name")
-				pkgDesc := getSpecValue(c.File, "summary")
+				values := getSpecValue(c.File, "name", "summary")
 
-				data = append(data, fmt.Sprintf(
-					"`%s` (_%s_)", pkgName, pkgDesc,
+				data = append(data, fmtc.Sprintf(
+					"`%s` (_{&}%s{!}_)", values[0], values[1],
 				))
 			}
 		}
@@ -143,10 +166,10 @@ func listAdditions(changes Changes) {
 
 	sortutil.StringsNatural(data)
 
-	fmt.Println("### New packages\n")
+	fmtc.Println("{*}### New packages{!}\n")
 
 	for _, info := range data {
-		fmt.Printf("- %s\n", info)
+		fmtc.Printf("{s}-{!} %s\n", info)
 	}
 
 	fmtc.NewLine()
@@ -161,20 +184,19 @@ func listModifications(changes Changes) {
 			continue
 		}
 
-		pkgName := getSpecValue(c.File, "name")
-		pkgVer := getSpecValue(c.File, "version")
+		values := getSpecValue(c.File, "name", "version")
 
-		data = append(data, fmt.Sprintf(
-			"`%s` updated to %s", pkgName, pkgVer,
+		data = append(data, fmtc.Sprintf(
+			"`%s` updated to %s", values[0], values[1],
 		))
 	}
 
 	sortutil.StringsNatural(data)
 
-	fmt.Println("### Updates\n")
+	fmtc.Println("{*}### Updates{!}\n")
 
 	for _, info := range data {
-		fmt.Printf("- %s\n", info)
+		fmtc.Printf("{s}-{!} %s\n", info)
 	}
 
 	fmtc.NewLine()
@@ -216,10 +238,10 @@ func listDeletions(changes Changes) {
 
 	sortutil.StringsNatural(data)
 
-	fmt.Println("### Deletions\n")
+	fmtc.Println("{*}### Deletions{!}\n")
 
 	for _, pkg := range data {
-		fmt.Printf("- `%s`\n", pkg)
+		fmtc.Printf("{s}-{!} `%s`\n", pkg)
 	}
 
 	fmtc.NewLine()
@@ -271,15 +293,21 @@ func filterChanges(changes Changes) Changes {
 }
 
 // getSpecValue reads macro value from spec
-func getSpecValue(file, macro string) string {
-	cmd := exec.Command("rpm", "-q", "--qf", "%{"+macro+"}\n", "--specfile", file)
+func getSpecValue(file string, macros ...string) []string {
+	var macroList string
+
+	for _, macro := range macros {
+		macroList += "%{" + macro + "}\n"
+	}
+
+	cmd := exec.Command("rpm", "-q", "--qf", macroList, "--specfile", file)
 	output, err := cmd.Output()
 
 	if err != nil {
-		return ""
+		return make([]string, len(macros))
 	}
 
-	return strings.Split(string(output), "\n")[0]
+	return strings.Split(string(output), "\n")
 }
 
 // isUniqSpec returns true if spec is unique (only one spec with this name)
