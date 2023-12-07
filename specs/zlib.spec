@@ -1,30 +1,6 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
@@ -32,21 +8,23 @@
 
 ################################################################################
 
-Summary:            The compression and decompression library
-Name:               zlib
-Version:            1.2.13
-Release:            0%{?dist}
-License:            zlib and Boost
-Group:              System Environment/Libraries
-URL:                https://www.zlib.net
+Summary:        The compression and decompression library
+Name:           zlib
+Version:        1.3
+Release:        0%{?dist}
+License:        zlib and Boost
+Group:          System Environment/Libraries
+URL:            https://www.zlib.net
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source:             https://www.zlib.net/%{name}-%{version}.tar.xz
+Source0:        https://www.zlib.net/%{name}-%{version}.tar.xz
 
-BuildRequires:      make automake autoconf libtool
+Source100:      checksum.sha512
 
-Provides:           %{name} = %{version}-%{release}
+BuildRequires:  make automake autoconf libtool
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -58,9 +36,10 @@ library which is used by many different programs.
 
 %package devel
 
-Summary:            Header files and libraries for Zlib development
-Group:              Development/Libraries
-Requires:           %{name} = %{version}-%{release}
+Summary:  Header files and libraries for Zlib development
+Group:    Development/Libraries
+
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 The zlib-devel package contains the header files and libraries needed
@@ -71,9 +50,10 @@ library.
 
 %package static
 
-Summary:            Static libraries for Zlib development
-Group:              Development/Libraries
-Requires:           %{name}-devel = %{version}-%{release}
+Summary:  Static libraries for Zlib development
+Group:    Development/Libraries
+
+Requires:  %{name}-devel = %{version}-%{release}
 
 %description static
 The zlib-static package includes static libraries needed
@@ -84,9 +64,10 @@ decompression library.
 
 %package -n minizip
 
-Summary:            Library for manipulation with .zip archives
-Group:              System Environment/Libraries
-Requires:           %{name} = %{version}-%{release}
+Summary:  Library for manipulation with .zip archives
+Group:    System Environment/Libraries
+
+Requires:  %{name} = %{version}-%{release}
 
 %description -n minizip
 Minizip is a library for manipulation with files from .zip archives.
@@ -95,10 +76,11 @@ Minizip is a library for manipulation with files from .zip archives.
 
 %package -n minizip-devel
 
-Summary:            Development files for the minizip library
-Group:              Development/Libraries
-Requires:           minizip = %{version}-%{release}
-Requires:           %{name}-devel = %{version}-%{release}
+Summary:  Development files for the minizip library
+Group:    Development/Libraries
+
+Requires:  minizip = %{version}-%{release}
+Requires:  %{name}-devel = %{version}-%{release}
 
 %description -n minizip-devel
 This package contains the libraries and header files needed for
@@ -107,6 +89,8 @@ developing applications which use minizip.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
 
 iconv -f iso-8859-2 -t utf-8 < ChangeLog > ChangeLog.tmp
@@ -196,6 +180,17 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.3-0
+- Building using K&R (pre-ANSI) function definitions is no longer supported
+- Fixed a bug in deflateBound() for level 0 and memLevel 9
+- Fixed a bug when gzungetc() is used immediately after gzopen()
+- Fixed a bug when using gzflush() with a very small buffer
+- Fixed a crash when gzsetparams() is attempted for a transparent write
+- Fixed test/example.c to work with FORCE_STORED
+- Fixed minizip to allow it to open an empty zip file
+- Fixed reading disk number start on zip64 files in minizip
+- Fixed a logic error in minizip argument processing
+
 * Thu Oct 27 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.13-0
 - Fix a bug when getting a gzip header extra field with inflateGetHeader().
   This remedies CVE-2022-37434.
