@@ -16,7 +16,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs
-Version:        18.18.2
+Version:        20.10.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -95,7 +95,6 @@ rm -rf %{buildroot}
 %{_bindir}/npx
 %{_bindir}/corepack
 %{_libdir32}/%{shortname}_modules
-%{_datadir}/systemtap/tapset/%{shortname}.stp
 %{_docdir}/%{shortname}/gdbinit
 %{_docdir}/%{shortname}/lldb*
 %{_mandir}/man1/%{shortname}.1.gz
@@ -107,6 +106,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 20.10.0-0
+- https://nodejs.org/en/blog/release/v20.10.0
+
 * Sat Oct 14 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.2-0
 - https://nodejs.org/en/blog/release/v18.18.2
 
