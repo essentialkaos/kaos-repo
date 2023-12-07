@@ -14,7 +14,7 @@
 
 Summary:    A powerful build system for the JVM
 Name:       gradle
-Version:    7.6
+Version:    8.5
 Release:    0%{?dist}
 License:    ASL 2.0
 Group:      Development/Tools
@@ -59,6 +59,7 @@ install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_opt}/%{name}/%{version}
 
 cp -rp * %{buildroot}%{_opt}/%{name}/%{version}/
+rm -f %{buildroot}%{_opt}/%{name}/bin/*.bat
 
 ln -sf %{_opt}/%{name}/%{version} %{buildroot}%{_opt}/%{name}/current
 ln -sf %{_opt}/%{name}/%{version}/bin/%{name} %{buildroot}%{_bindir}/%{name}
@@ -76,6 +77,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 8.5-0
+- https://docs.gradle.org/8.5/release-notes.html
+
 * Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 7.6-0
 - https://docs.gradle.org/7.6/release-notes.html
 
