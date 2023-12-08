@@ -19,6 +19,8 @@ var postgres_service   postgresql-{postgres_version}
 var postgres_port      5432
 var postgres_data_dir  /var/lib/pgsql/{postgres_version}
 
+var pause 5
+
 ################################################################################
 
 command "-" "Check environment"
@@ -59,6 +61,7 @@ command "-" "Configure pgbouncer"
 command "systemctl start {postgres_service}" "Start PostgreSQL server"
   wait-service {postgres_service}
   connect tcp :{postgres_port}
+  wait {pause}
 
 command "postgres:psql -f create_test_db.sql" "Create test database"
   exit 0
