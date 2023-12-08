@@ -4,7 +4,7 @@
 
 ################################################################################
 
-%{!?_without_sanitizers: %define _with_sanitizers 0}
+%define _without_sanitizers 0
 
 ################################################################################
 
@@ -111,6 +111,8 @@ Python bindings for the createrepo_c library.
 sed -i '/unset(PYTHON_LIBRARY/d' src/python/CMakeLists.txt
 sed -i '/unset(PYTHON_INCLUDE_DIR/d' src/python/CMakeLists.txt
 
+echo ""
+
 cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DCMAKE_INSTALL_LIBDIR:PATH=%{_libdir} \
       -DINCLUDE_INSTALL_DIR:PATH=%{_includedir} \
@@ -188,6 +190,7 @@ rm -rf %{buildroot}
 %changelog
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.2-0
 - https://github.com/rpm-software-management/createrepo_c/compare/1.0.1...1.0.2
+- Build with sanitizers disabled by default due to many leak alerts
 
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.0.1-0
 - https://github.com/rpm-software-management/createrepo_c/compare/1.0.0...1.0.1
