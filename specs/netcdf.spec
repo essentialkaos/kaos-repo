@@ -4,10 +4,14 @@
 
 ################################################################################
 
+%global hdf5_ver  %(rpm -q --quiet hdf5-devel && rpm -q --qf '%%{version}' hdf5-devel || echo "1.14")
+
+################################################################################
+
 Summary:        Libraries for the Unidata network Common Data Form
 Name:           netcdf
 Version:        4.9.2
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        NetCDF
 Group:          Applications/Engineering
 URL:            https://www.unidata.ucar.edu/software/netcdf/
@@ -18,9 +22,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc chrpath doxygen gawk libxml2-devel
 BuildRequires:  libcurl-devel m4 zlib-devel openssh-clients libtirpc-devel
-BuildRequires:  hdf-static hdf5-devel >= 1.10
+BuildRequires:  hdf-static hdf5-devel
 
-Requires:       hdf5 >= 1.10
+Requires:       hdf5 = %{hdf5_ver}
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -43,7 +47,8 @@ Summary:  Development files for netcdf
 Group:    Development/Libraries
 
 Requires:  %{name} = %{version}-%{release}
-Requires:  pkgconfig hdf5-devel libcurl-devel
+Requires:  hdf5-devel = %{hdf5_ver}
+Requires:  pkgconfig libcurl-devel
 
 %description devel
 This package contains the netCDF C header files, shared devel libs, and
@@ -140,6 +145,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 4.9.2-1
+- Rebuilt with the latest version of HDF5
+
 * Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 4.9.2-0
 - https://github.com/Unidata/netcdf-c/releases/tag/v4.9.2
 
