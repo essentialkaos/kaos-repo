@@ -23,8 +23,8 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver      13
-%define minorver      12
-%define rel           1
+%define minorver      13
+%define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        13
 %define realname      postgresql
@@ -1150,6 +1150,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 13.13-0
+- https://www.postgresql.org/docs/13/release-13-13.html
+
 * Sun Oct 29 2023 Anton Novojilov <andy@essentialkaos.com> - 13.12-1
 - Improved init script compatibility with systemd
 
