@@ -4,8 +4,9 @@
 
 ################################################################################
 
-%global sqlite_min_ver %(rpm -q --quiet sqlite-devel && rpm -q --qf '%{VERSION}' sqlite-devel || echo "3")
-%global libcurl_min_ver %(rpm -q --quiet libcurl-devel && rpm -q --qf '%{VERSION}' libcurl-devel || echo "7")
+%global sqlite_ver   %(rpm -q --quiet sqlite-devel && rpm -q --qf '%%{version}' sqlite-devel || echo "3")
+%global libcurl_ver  %(rpm -q --quiet libcurl-devel && rpm -q --qf '%%{version}' libcurl-devel || echo "8")
+%global hdf5_ver     %(rpm -q --quiet hdf5-devel && rpm -q --qf '%%{version}' hdf5-devel || echo "1.14")
 
 ################################################################################
 
@@ -25,8 +26,8 @@
 
 Summary:        A translator library for raster and vector geospatial data formats
 Name:           %{fullname}
-Version:        3.7.2
-Release:        1%{?dist}
+Version:        3.7.3
+Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
 URL:            https://www.gdal.org
@@ -44,17 +45,19 @@ BuildRequires:  cmake swig
 %endif
 
 BuildRequires:  gcc-c++ bison expat-devel freexl-devel geos-devel hdf-devel
-BuildRequires:  hdf5-devel libgeotiff-devel libjpeg-turbo-devel libpng-devel
+BuildRequires:  libgeotiff-devel libjpeg-turbo-devel libpng-devel
 BuildRequires:  libtiff-devel libzstd-devel libwebp-devel netcdf-devel
 BuildRequires:  openexr-devel openjpeg2-devel proj-devel
 BuildRequires:  xerces-c-devel xz-devel zlib-devel giflib-devel
 BuildRequires:  postgresql%{pg_short_ver}-devel
 
-BuildRequires:  sqlite-devel >= %{sqlite_min_ver}
-BuildRequires:  libcurl-devel >= %{libcurl_min_ver}
+BuildRequires:  sqlite-devel >= %{sqlite_ver}
+BuildRequires:  libcurl-devel >= %{libcurl_ver}
+BuildRequires:  hdf5-devel = %{hdf5_ver}
 
-Requires:       libcurl >= %{libcurl_min_ver}
-Requires:       sqlite-libs >= %{sqlite_min_ver}
+Requires:       libcurl >= %{libcurl_ver}
+Requires:       sqlite-libs >= %{sqlite_ver}
+Requires:       hdf5 >= %{hdf5_ver}
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -85,8 +88,9 @@ Group:     Development/Libraries
 
 Requires:  %{name}-libs = %{version}-%{release}
 
-Requires:  libcurl-devel >= %{libcurl_min_ver}
 Requires:  postgresql%{pg_short_ver}-devel
+Requires:  libcurl-devel >= %{libcurl_ver}
+Requires:  hdf5-devel = %{hdf5_ver}
 
 %description devel
 Development Libraries for the GDAL file format library.
@@ -151,6 +155,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 3.7.3-0
+- https://github.com/OSGeo/gdal/blob/v3.7.3/NEWS.md
+
 * Tue Oct 10 2023 Anton Novojilov <andy@essentialkaos.com> - 3.7.2-1
 - Spec refactoring
 
