@@ -35,8 +35,9 @@ Requires:       zlib rsync less openssh-clients expat expat-devel
 
 Provides:       git-core = %{version}-%{release}
 
-Obsoletes:      git-core <= 1.5.4.2
 Obsoletes:      git-p4 <= 1.5.4.2
+Obsoletes:      git-core >= 1
+Obsoletes:      git-core-doc >= 1
 
 ################################################################################
 
