@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.42.0
+Version:        2.43.0
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -35,8 +35,9 @@ Requires:       zlib rsync less openssh-clients expat expat-devel
 
 Provides:       git-core = %{version}-%{release}
 
-Obsoletes:      git-core <= 1.5.4.2
 Obsoletes:      git-p4 <= 1.5.4.2
+Obsoletes:      git-core >= 1
+Obsoletes:      git-core-doc >= 1
 
 ################################################################################
 
@@ -282,6 +283,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.43.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.0.txt
+
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.42.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.1.txt
+
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.42.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.0.txt
 

@@ -4,26 +4,35 @@
 
 ################################################################################
 
-Summary:        A general purpose library and file format for storing scientific data
-Name:           hdf5
-Version:        1.10.10
-Release:        0%{?dist}
-License:        BSD
-Group:          System Environment/Libraries
-URL:            https://www.hdfgroup.org/HDF5/
+%define major_version  1
+%define minor_version  14
+%define patch_version  3
 
-Source:         https://support.hdfgroup.org/ftp/HDF5/releases/%{name}-1.10/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
-Source1:        h5comp
+################################################################################
 
-Source100:      checksum.sha512
+Summary:           A general purpose library and file format for storing scientific data
+Name:              hdf5
+Version:           %{major_version}.%{minor_version}.%{patch_version}
+Release:           0%{?dist}
+License:           BSD
+Group:             System Environment/Libraries
+URL:               https://www.hdfgroup.org/HDF5/
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source:            https://support.hdfgroup.org/ftp/HDF5/releases/%{name}-%{major_version}.%{minor_version}/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
+Source1:           h5comp
 
-BuildRequires:  make gcc gcc-c++ automake libtool openssh-clients
-BuildRequires:  krb5-devel openssl-devel zlib-devel gcc-gfortran time
-BuildRequires:  chrpath
+Source100:         checksum.sha512
 
-Provides:       %{name} = %{version}-%{release}
+BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:     make gcc gcc-c++ automake libtool openssh-clients
+BuildRequires:     krb5-devel openssl-devel zlib-devel gcc-gfortran time
+BuildRequires:     chrpath
+
+Requires(post):    /sbin/ldconfig
+Requires(postun):  /sbin/ldconfig
+
+Provides:          %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -66,12 +75,15 @@ HDF5 static libraries.
 
 %setup -q
 
+# Remove -Werror flag stripping that breaks the build
+sed -i '/s\/-Werror\/\/g/d' configure
+
 %build
 
 export CC=gcc
 export CXX=g++
 export F9X=gfortran
-export CFLAGS="${RPM_OPT_FLAGS/O2/O0}"
+export LDFLAGS="%{__global_ldflags} -fPIC -Wl,-z,now -Wl,--as-needed"
 
 mkdir build
 pushd build
@@ -83,7 +95,7 @@ pushd build
              --enable-hl \
              --enable-shared
 
-  %{__make} %{?_smp_mflags}
+  %{make_build} LDFLAGS="%{__global_ldflags} -fPIC -Wl,-z,now -Wl,--as-needed"
 popd
 
 %install
@@ -124,10 +136,10 @@ chrpath --delete %{buildroot}%{_libdir}/*.so.*
 rm -rf %{buildroot}
 
 %post
-%{_sbindir}/ldconfig
+/sbin/ldconfig
 
 %postun
-%{_sbindir}/ldconfig
+/sbin/ldconfig
 
 ################################################################################
 
@@ -138,9 +150,11 @@ rm -rf %{buildroot}
 %{_bindir}/h5clear
 %{_bindir}/h5copy
 %{_bindir}/h5debug
+%{_bindir}/h5delete
 %{_bindir}/h5diff
 %{_bindir}/h5dump
 %{_bindir}/h5format_convert
+%{_bindir}/h5fuse.sh
 %{_bindir}/h5import
 %{_bindir}/h5jam
 %{_bindir}/h5ls
@@ -159,6 +173,7 @@ rm -rf %{buildroot}
 %{_bindir}/h5cc*
 %{_bindir}/h5fc*
 %{_bindir}/h5redeploy
+%{_bindir}/h5tools_test_utils
 %{_includedir}/*.h
 %{_libdir}/*.so
 %{_libdir}/*.settings
@@ -172,6 +187,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.14.3-0
+- https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src/hdf5-1.14.3-RELEASE.txt
+
 * Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 1.10.10-0
 - https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.10/src/hdf5-1.10.10-RELEASE.txt
 

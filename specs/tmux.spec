@@ -4,28 +4,24 @@
 
 ################################################################################
 
-%define _smp_mflags -j1
+Summary:        A terminal multiplexer
+Name:           tmux
+Version:        3.3a
+Release:        0%{?dist}
+License:        ISC and BSD
+Group:          Applications/System
+URL:            https://github.com/tmux/tmux
 
-################################################################################
+Source0:        https://github.com/%{name}/%{name}/archive/%{version}.tar.gz
 
-Summary:              A terminal multiplexer
-Name:                 tmux
-Version:              3.3a
-Release:              0%{?dist}
-License:              ISC and BSD
-Group:                Applications/System
-URL:                  https://github.com/tmux/tmux
+Source100:      checksum.sha512
 
-Source0:              https://github.com/%{name}/%{name}/archive/%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Source100:            checksum.sha512
+BuildRequires:  make gcc byacc autoconf automake
+BuildRequires:  ncurses-devel libevent-devel
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-BuildRequires:        make gcc byacc autoconf automake
-BuildRequires:        ncurses-devel libevent-devel
-
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

@@ -4,23 +4,23 @@
 
 ################################################################################
 
-Summary:              Tool for monitoring the progress of data through a pipeline
-Name:                 pv
-Version:              1.6.20
-Release:              0%{?dist}
-License:              Artistic v2.0
-Group:                Applications/System
-URL:                  https://www.ivarch.com/programs/pv.shtml
+Summary:        Tool for monitoring the progress of data through a pipeline
+Name:           pv
+Version:        1.8.5
+Release:        0%{?dist}
+License:        Artistic v2.0
+Group:          Applications/System
+URL:            https://www.ivarch.com/programs/pv.shtml
 
-Source0:              https://github.com/a-j-wood/pv/releases/download/v%{version}/%{name}-%{version}.tar.bz2
+Source0:        https://www.ivarch.com/programs/sources/%{name}-%{version}.tar.gz
 
-Source100:            checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc make gettext
+BuildRequires:  gcc make gettext
 
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -51,6 +51,8 @@ install -dm 755 %{buildroot}%{_datarootdir}/locale
 
 %{make_install} DESTDIR="%{buildroot}"
 
+rm -rf %{buildroot}%{_docdir}/%{name}
+
 %find_lang %{name}
 
 %clean
@@ -60,7 +62,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README doc/NEWS doc/TODO doc/COPYING
+%doc README.md
 %attr(755,root,root) %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 %{_datarootdir}/locale/*
@@ -68,6 +70,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.5-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.8.5
+
 * Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 1.6.20-0
 - https://github.com/a-j-wood/pv/releases/tag/v1.6.20
 

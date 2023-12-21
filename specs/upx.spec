@@ -6,7 +6,7 @@
 
 Summary:        Ultimate Packer for eXecutables
 Name:           upx
-Version:        4.1.0
+Version:        4.2.1
 Release:        0%{?dist}
 License:        GPLv2+ and Public Domain
 Group:          Applications/Archiving
@@ -73,6 +73,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 4.2.1-0
+- https://github.com/upx/upx/blob/v4.2.1/NEWS
+
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 4.2.0-0
+- https://github.com/upx/upx/blob/v4.2.0/NEWS
+
 * Wed Sep 20 2023 Anton Novojilov <andy@essentialkaos.com> - 4.1.0-0
 - ELF: handle shared libraries with more than 2 PT_LOAD segments
 - bug fixes - see https://github.com/upx/upx/milestone/11

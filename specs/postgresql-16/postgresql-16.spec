@@ -24,8 +24,8 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      16
-%define minorver      0
-%define rel           1
+%define minorver      1
+%define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        16
 %define realname      postgresql
@@ -1169,6 +1169,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 16.1-0
+- https://www.postgresql.org/docs/16/release-16-1.html
+
 * Sun Oct 29 2023 Anton Novojilov <andy@essentialkaos.com> - 16.0-1
 - Improved init script compatibility with systemd
 

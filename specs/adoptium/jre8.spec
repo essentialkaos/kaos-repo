@@ -8,14 +8,14 @@
 
 ################################################################################
 
-%define jdk_major  372
-%define jdk_minor  b07
+%define jdk_major  392
+%define jdk_minor  b08
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  814
+%define alt_priority  815
 
 ################################################################################
 
@@ -40,6 +40,7 @@ Conflicts:    java-1.7.0-openjdk-headless
 Conflicts:    java-1.8.0-openjdk-headless
 Conflicts:    java-11-openjdk-headless
 Conflicts:    java-17-openjdk-headless
+Conflicts:    java-21-openjdk-headless
 
 AutoProv:     no
 AutoReqProv:  no
@@ -110,6 +111,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.392-b08
+- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk8u392-b08
+
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.372-b07
 - https://adoptium.net/en-GB/temurin/release-notes/?version=jdk8u372-b07
 

@@ -10,7 +10,7 @@
 
 Summary:         A search tool that combines the usability of ag with the raw speed of grep
 Name:            ripgrep
-Version:         13.0.0
+Version:         14.0.3
 Release:         0%{?dist}
 Group:           Applications/Text
 License:         MIT or Unlicense
@@ -43,6 +43,7 @@ regex pattern.
 %setup -qn %{name}-%{version}
 
 %build
+sed -i 's#rust-version = "1.72"#rust-version = "1.71"#' Cargo.toml
 cargo build --release --verbose
 
 %install
@@ -52,16 +53,16 @@ install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_mandir}/man1
 install -dm 755 %{buildroot}%{_datadir}/bash-completion/completions
 install -dm 755 %{buildroot}%{_datarootdir}/fish/vendor_completions.d
+install -dm 755 %{buildroot}%{_datadir}/zsh/site-functions
 
-install -pm 755 target/release/rg %{buildroot}%{_bindir}/
-install -pm 644 $(find target/release -name "rg.1" | head -1) \
-                %{buildroot}%{_mandir}/man1/
+pushd target/release
+  install -pm 755 rg %{buildroot}%{_bindir}/
 
-install -pm 644 $(find target/release -name "rg.bash" | head -1) \
-                %{buildroot}%{_datadir}/bash-completion/completions/rg
-
-install -pm 644 $(find target/release -name "rg.fish" | head -1) \
-                %{buildroot}%{_datarootdir}/fish/vendor_completions.d/rg.fish
+  ./rg --generate man > %{buildroot}%{_mandir}/man1/rg.1
+  ./rg --generate complete-bash > %{buildroot}%{_datadir}/bash-completion/completions/rg
+  ./rg --generate complete-fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/rg.fish
+  ./rg --generate complete-zsh > %{buildroot}%{_datadir}/zsh/site-functions/_rg
+popd
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
@@ -79,34 +80,38 @@ rm -rf %{buildroot}
 %{_bindir}/rg
 %{_mandir}/man1/rg.*
 %{_datadir}/bash-completion/completions/rg
+%{_datadir}/zsh/site-functions/_rg
 %{_datarootdir}/fish/vendor_completions.d/rg.fish
 
 ################################################################################
 
 %changelog
+* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 14.0.3-0
+- https://github.com/BurntSushi/ripgrep/releases/tag/14.0.3
+
 * Sat Oct 01 2022 Anton Novojilov <andy@essentialkaos.com> - 13.0.0-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/13.0.0
 
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.1-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/11.0.1
 
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 11.0.0-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/11.0.0
 
 * Wed Sep 12 2018 Anton Novojilov <andy@essentialkaos.com> - 0.10.0-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/0.10.0
 
 * Mon Mar 26 2018 Anton Novojilov <andy@essentialkaos.com> - 0.8.1-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/0.8.1
 
 * Tue Feb 20 2018 Anton Novojilov <andy@essentialkaos.com> - 0.8.0-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/0.8.0
 
 * Fri Nov 17 2017 Anton Novojilov <andy@essentialkaos.com> - 0.7.1-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/0.7.1
 
 * Mon Sep 18 2017 Anton Novojilov <andy@essentialkaos.com> - 0.6.0-0
-- Updated to the latest stable release
+- https://github.com/BurntSushi/ripgrep/releases/tag/0.6.0
 
 * Sun Apr 16 2017 Anton Novojilov <andy@essentialkaos.com> - 0.5.1-0
 - Initial build for kaos repository

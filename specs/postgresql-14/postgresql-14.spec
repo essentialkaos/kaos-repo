@@ -23,8 +23,8 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver      14
-%define minorver      9
-%define rel           1
+%define minorver      10
+%define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        14
 %define realname      postgresql
@@ -1158,6 +1158,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 14.10-0
+- https://www.postgresql.org/docs/14/release-14-10.html
+
 * Sun Oct 29 2023 Anton Novojilov <andy@essentialkaos.com> - 14.9-1
 - Improved init script compatibility with systemd
 

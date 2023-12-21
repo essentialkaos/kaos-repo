@@ -23,12 +23,12 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     24
 %define ver_min     3
-%define ver_patch   4.14
+%define ver_patch   4.15
 %define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
-%define libre_ver   3.8.1
+%define libre_ver   3.8.2
 
 ################################################################################
 
@@ -41,8 +41,8 @@ License:        MPL
 URL:            https://www.erlang.org
 
 Source0:        https://github.com/erlang/otp/archive/OTP-%{ver_string}.tar.gz
-Source1:        https://www.erlang.org/download/otp_doc_html_%{ver_maj}.%{ver_min}.tar.gz
-Source2:        https://www.erlang.org/download/otp_doc_man_%{ver_maj}.%{ver_min}.tar.gz
+Source1:        https://github.com/erlang/otp/releases/download/OTP-%{ver_string}/otp_doc_html_%{ver_string}.tar.gz
+Source2:        https://github.com/erlang/otp/releases/download/OTP-%{ver_string}/otp_doc_man_%{ver_string}.tar.gz
 Source3:        epmd.service
 Source4:        epmd.socket
 Source5:        epmd@.service
@@ -877,7 +877,6 @@ rm -rf %{buildroot}
 %{_libdir}/erlang/bin/start_sasl.boot
 %{_libdir}/erlang/erts-*
 %{_libdir}/erlang/misc/format_man_pages
-%{_libdir}/erlang/misc/makewhatis
 %{_libdir}/erlang/releases
 %{_libdir}/erlang/bin/run_erl
 %{_libdir}/erlang/bin/start
@@ -1043,6 +1042,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Dec 21 2023 Anton Novojilov <andy@essentialkaos.com> - 24.3.4.15-0
+- https://github.com/erlang/otp/releases/tag/OTP-24.3.4.15
+- LibreSSL updated to 3.8.2
+
 * Sun Oct 15 2023 Anton Novojilov <andy@essentialkaos.com> - 24.3.4.14-0
 - https://github.com/erlang/otp/releases/tag/OTP-24.3.4.14
 

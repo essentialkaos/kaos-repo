@@ -10,7 +10,7 @@
 
 Summary:        Bidirectional data relay between two data channels ('netcat++')
 Name:           socat
-Version:        1.7.4.4
+Version:        1.8.0.0
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Applications/Internet
@@ -104,14 +104,20 @@ rm -rf %{buildroot}
 %doc BUGREPORTS CHANGES DEVELOPMENT EXAMPLES FAQ PORTING
 %doc COPYING* README SECURITY
 %doc %attr(0644,root,root) *.sh
+%{_bindir}/socat-*.sh
 %{_bindir}/socat
+%{_bindir}/socat1
 %{_bindir}/filan
 %{_bindir}/procan
 %{_mandir}/man1/socat.1*
+%{_mandir}/man1/socat1.1*
 
 ################################################################################
 
 %changelog
+* Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.0-0
+- http://www.dest-unreach.org/socat/CHANGES
+
 * Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 1.7.4.4-0
 - Fixed UDP-RECVFROM failures and a couple of other bugs
 

@@ -4,21 +4,23 @@
 
 ################################################################################
 
-Summary:         Run a command as a Unix daemon
-Name:            daemonize
-Version:         1.7.8
-Release:         0%{?dist}
-Group:           Applications/System
-License:         BSD
-URL:             https://software.clapper.org/daemonize
+Summary:        Run a command as a Unix daemon
+Name:           daemonize
+Version:        1.7.8
+Release:        0%{?dist}
+Group:          Applications/System
+License:        BSD
+URL:            https://software.clapper.org/daemonize
 
-Source0:         https://github.com/bmc/%{name}/archive/release-%{version}.tar.gz
+Source0:        https://github.com/bmc/%{name}/archive/release-%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc
+BuildRequires:  make gcc
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

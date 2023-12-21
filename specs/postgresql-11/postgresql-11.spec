@@ -24,7 +24,7 @@
 
 %define majorver      11
 %define minorver      21
-%define rel           1
+%define rel           2
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        11
 %define realname      postgresql
@@ -1145,6 +1145,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 11.21-2
+- Rebuilt with the latest version of LLVM
+
 * Sun Oct 29 2023 Anton Novojilov <andy@essentialkaos.com> - 11.21-1
 - Improved init script compatibility with systemd
 

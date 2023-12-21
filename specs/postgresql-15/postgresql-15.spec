@@ -24,8 +24,8 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      15
-%define minorver      4
-%define rel           1
+%define minorver      5
+%define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        15
 %define realname      postgresql
@@ -1171,6 +1171,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 15.5-0
+- https://www.postgresql.org/docs/15/release-15-5.html
+
 * Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 15.4-0
 - https://www.postgresql.org/docs/15/release-15-4.html
 
