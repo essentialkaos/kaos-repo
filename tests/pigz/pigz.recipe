@@ -1,0 +1,72 @@
+# Bibop recipe for pigz
+# See more: https://kaos.sh/bibop
+
+pkg pigz
+
+fast-finish yes
+
+var sample sample.txt
+
+################################################################################
+
+command "-" "Check apps"
+  app pigz
+  app unpigz
+
+################################################################################
+
+command "-" "Calculate sample checksum"
+  checksum-read {sample} sample_crc
+
+command "-" "Prepare samples fo tests"
+  copy {sample} gzip-{sample}
+  copy {sample} zlib-{sample}
+  copy {sample} zip-{sample}
+
+## GZIP ########################################################################
+
+command "pigz --fast gzip-{sample}" "Compress sample to gzip"
+  exit 0
+  exist gzip-{sample}.gz
+  !exist gzip-{sample}
+
+command "pigz -t gzip-{sample}.gz" "Test compressed sample"
+  exit 0
+
+command "unpigz gzip-{sample}" "Uncompress sample and check"
+  exit 0
+  !exist gzip-{sample}.gz
+  exist gzip-{sample}
+  checksum gzip-{sample} {sample_crc}
+
+## ZLIB ########################################################################
+
+command "pigz --fast -z zlib-{sample}" "Compress sample to zlib"
+  exit 0
+  exist zlib-{sample}.zz
+  !exist zlib-{sample}
+
+command "pigz -t zlib-{sample}.zz" "Test compressed sample"
+  exit 0
+
+command "unpigz zlib-{sample}" "Uncompress sample and check"
+  exit 0
+  !exist zlib-{sample}.gz
+  exist zlib-{sample}
+  checksum zlib-{sample} {sample_crc}
+
+## ZIP ########################################################################
+
+command "pigz --fast -K zip-{sample}" "Compress sample to zip"
+  exit 0
+  exist zip-{sample}.zip
+  !exist zip-{sample}
+
+command "pigz -t zip-{sample}.zip" "Test compressed sample"
+  exit 0
+
+command "unpigz zip-{sample}" "Uncompress sample and check"
+  exit 0
+  !exist zip-{sample}.gz
+  exist zip-{sample}
+  checksum zip-{sample} {sample_crc}
