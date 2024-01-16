@@ -22,7 +22,7 @@
 
 Name:           haproxy
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.4
+Version:        2.8.5
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu

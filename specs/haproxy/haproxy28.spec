@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.4
+Version:        2.8.5
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -231,6 +231,55 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.5-0
+- BUG/MAJOR: quic: complete thread migration before tcp-rules
+- BUG/MEDIUM: mux-h2: fail earlier on malloc in takeover()
+- BUG/MEDIUM: mux-h1: fail earlier on malloc in takeover()
+- BUG/MEDIUM: mux-fcgi: fail earlier on malloc in takeover()
+- BUG/MINOR: stream/cli: report correct stream age in "show sess"
+- MINOR: stktable: add stktable_deinit function
+- BUG/MINOR: proxy/stktable: missing frees on proxy cleanup
+- REGTESTS: http: add a test to validate chunked responses delivery
+- BUG/MINOR: startup: set GTUNE_SOCKET_TRANSFER correctly
+- BUG/MINOR: sock: mark abns sockets as non-suspendable and always unbind them
+- BUG/MEDIUM: quic: Possible crash for connections to be killed
+- BUG/MINOR: quic: Possible RX packet memory leak under heavy load
+- BUG/MINOR: server: do not leak default-server in defaults sections
+- DOC: 51d: updated 51Degrees repo URL for v3.2.10
+- DOC: config: fix timeout check inheritance restrictions
+- REGTESTS: connection: disable http_reuse_be_transparent.vtc if !TPROXY
+- DOC: lua: add sticktable class reference from Proxy.stktable
+- DOC: lua: fix Proxy.get_mode() output
+- BUG/MINOR: quic: fix CONNECTION_CLOSE_APP encoding
+- BUG/MINOR: compression: possible NULL dereferences in
+  comp_prepare_compress_request()
+- BUG/MEDIUM: master/cli: Properly pin the master CLI on thread 1 / group 1
+- BUG/MINOR: h3: fix TRAILERS encoding
+- BUG/MINOR: h3: always reject PUSH_PROMISE
+- DOC: config: fix missing characters in set-spoe-group action
+- BUG/MINOR: quic_tp: fix preferred_address decoding
+- BUG/MINOR: config: Stopped parsing upon unmatched environment variables
+- BUG/MINOR: cfgparse-listen: fix warning being reported as an alert
+- DOC: config: specify supported sections for "max-session-srv-conns"
+- DOC: config: add matrix entry for "max-session-srv-conns"
+- DOC: config: fix monitor-fail typo
+- REGTESTS: sample: Test the behavior of consecutive delimiters for the field
+  converter
+- BUG/MINOR: sample: Make the `word` converter compatible with `-m found`
+- DOC: Clarify the differences between field() and word()
+- BUG/MEDIUM: peers: fix partial message decoding
+- BUG/MINOR: cache: Remove incomplete entries from the cache when stream
+  is closed
+- BUG/MEDIUM: quic: Possible crash during retransmissions and heavy load
+- BUG/MINOR: quic: Possible leak of TX packets under heavy load
+- BUG/MINOR: quic: Missing QUIC connection path member initialization
+- BUG/MINOR: quic: Packet number spaces too lately initialized
+- BUG/MINOR: ssl: Double free of OCSP Certificate ID
+- MINOR: ssl/cli: Add ha_(warning|alert) msgs to CLI ckch callback
+- BUG/MINOR: ssl: Wrong OCSP CID after modifying an SSL certficate
+- BUG/MINOR: lua: Wrong OCSP CID after modifying an SSL certficate (LUA)
+- BUG/MEDIUM: proxy: always initialize the default settings after init
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.8.4-0
 - BUILD: bug: make BUG_ON() void to avoid a rare warning
 - BUG/MINOR: quic: Leak of frames to send.
