@@ -1,21 +1,21 @@
 ################################################################################
 
-Summary:            Modular Assembler
-Name:               yasm
-Version:            1.3.0
-Release:            0%{?dist}
-License:            BSD and (GPLv2+ or Artistic or LGPLv2+) and LGPLv2
-Group:              Development/Languages
-URL:                http://yasm.tortall.net
+Summary:        Modular Assembler
+Name:           yasm
+Version:        1.3.0
+Release:        0%{?dist}
+License:        BSD and (GPLv2+ or Artistic or LGPLv2+) and LGPLv2
+Group:          Development/Languages
+URL:            http://yasm.tortall.net
 
-Source0:            http://www.tortall.net/projects/%{name}/releases/%{name}-%{version}.tar.gz
+Source0:        http://www.tortall.net/projects/%{name}/releases/%{name}-%{version}.tar.gz
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc bison byacc xmlto gettext-devel
+BuildRequires:  make gcc bison byacc xmlto gettext-devel
 
-Provides:           %{name} = %{version}-%{release}
-Provides:           bundled(md5-plumb) = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
+Provides:       bundled(md5-plumb) = %{version}-%{release}
 
 ################################################################################
 
@@ -30,13 +30,13 @@ overall design is an optimizer module.
 ################################################################################
 
 %package devel
-Summary:            Header files and static libraries for the yasm Modular Assembler
-Group:              Development/Libraries
+Summary:  Header files and static libraries for the yasm Modular Assembler
+Group:    Development/Libraries
 
-Requires:           %{name} = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
 
-Provides:           %{name}-static = %{version}-%{release}
-Provides:           bundled(md5-plumb) = %{version}-%{release}
+Provides:  %{name}-static = %{version}-%{release}
+Provides:  bundled(md5-plumb) = %{version}-%{release}
 
 %description devel
 Yasm is a complete rewrite of the NASM assembler under the "new" BSD License
