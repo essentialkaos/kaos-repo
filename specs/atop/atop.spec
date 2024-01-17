@@ -6,7 +6,7 @@
 
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.9.0
+Version:        2.10.0
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -64,10 +64,11 @@ rm -rf %{buildroot}
 install -dm 755 %{buildroot}%{_bindir}
 install -dm 755 %{buildroot}%{_sbindir}
 
+install -pm 700 atopacctd %{buildroot}%{_sbindir}/
 install -pm 755 atop %{buildroot}%{_bindir}/
 install -pm 755 atopcat %{buildroot}%{_bindir}/
 install -pm 755 atopconvert %{buildroot}%{_bindir}/
-install -pm 700 atopacctd %{buildroot}%{_sbindir}/
+install -pm 755 atophide %{buildroot}%{_bindir}/
 
 ln -sf %{_bindir}/atop %{buildroot}%{_bindir}/atopsar
 
@@ -137,19 +138,45 @@ fi
 %{_datadir}/%{name}/atop.daily
 %{_bindir}/atop
 %{_bindir}/atopcat
-%{_bindir}/atopsar
 %{_bindir}/atopconvert
+%{_bindir}/atophide
+%{_bindir}/atopsar
 %{_sbindir}/atopacctd
 %{_mandir}/man1/atop.1*
 %{_mandir}/man1/atopsar.1*
 %{_mandir}/man1/atopcat.1*
 %{_mandir}/man1/atopconvert.1*
+%{_mandir}/man1/atophide.1*
 %{_mandir}/man5/atoprc.5*
 %{_mandir}/man8/atopacctd.8*
 
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.10.0-0
+- Additional memory statistics on system level: amount of available memory,
+  amount of memory used for Transparant Huge Pages, amount of memory used by two
+  categories of static huge pages (usually 2MiB and 1GiB), and the number
+  of pages transferred to/from zswap.
+- Additional counters for the number of idle threads on system level and process
+  level.
+- Refined view of memory bar graph, including free static huge pages.
+- Generic way to determine the container id or pod name for containerized
+  processes.
+- Support for a BPF-based alternative for the netatop kernel module to gather
+  network statistics per process/thread.
+- Use the -z flag followed by a regex to prepend matching environment variables
+  to the full command line that is shown per process (with key 'c').
+- Various bugfixes (like memory leak when switching to bar graph mode) and minor
+  improvements.
+- Bugfix: failing malloc while starting atopsar (unprivileged) for a live
+  measurement.
+- The program atophide can be used to make an extraction from an input raw log
+  to an output raw log, optionally specifying a begin time and/or an end time.
+- The format of the raw file is incompatible with previous versions. Raw files
+  from previous versions can be converted to the new layout with the atopconvert
+  command.
+
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.9.0-0
 - Introduction of bar graph mode
 - Additional counters per thread showing the number of voluntary and
