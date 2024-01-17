@@ -1,58 +1,28 @@
 ################################################################################
 
-%define _posixroot        /
-%define _root             /root
-%define _bin              /bin
-%define _sbin             /sbin
-%define _srv              /srv
-%define _home             /home
-%define _lib32            %{_posixroot}lib
-%define _lib64            %{_posixroot}lib64
-%define _libdir32         %{_prefix}%{_lib32}
-%define _libdir64         %{_prefix}%{_lib64}
-%define _logdir           %{_localstatedir}/log
-%define _rundir           %{_localstatedir}/run
-%define _lockdir          %{_localstatedir}/lock
-%define _cachedir         %{_localstatedir}/cache
-%define _spooldir         %{_localstatedir}/spool
-%define _loc_prefix       %{_prefix}/local
-%define _loc_exec_prefix  %{_loc_prefix}
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_libdir       %{_loc_exec_prefix}/%{_lib}
-%define _loc_libdir32     %{_loc_exec_prefix}/%{_lib32}
-%define _loc_libdir64     %{_loc_exec_prefix}/%{_lib64}
-%define _loc_libexecdir   %{_loc_exec_prefix}/libexec
-%define _loc_sbindir      %{_loc_exec_prefix}/sbin
-%define _loc_bindir       %{_loc_exec_prefix}/bin
-%define _loc_datarootdir  %{_loc_prefix}/share
-%define _loc_includedir   %{_loc_prefix}/include
-%define _rpmstatedir      %{_sharedstatedir}/rpm-state
-%define _pkgconfigdir     %{_libdir}/pkgconfig
-
-%define __ln              %{_bin}/ln
-%define __touch           %{_bin}/touch
-%define __service         %{_sbin}/service
-%define __chkconfig       %{_sbin}/chkconfig
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-Name:              tsung
-Summary:           A distributed multi-protocol load testing tool
-Version:           1.7.0
-Release:           0%{?dist}
-Group:             Development/Tools
-License:           GPLv2
-URL:               http://tsung.erlang-projects.org
+Name:           tsung
+Summary:        A distributed multi-protocol load testing tool
+Version:        1.8.0
+Release:        0%{?dist}
+Group:          Development/Tools
+License:        GPLv2
+URL:            https://github.com/processone/tsung
 
-Source:            http://tsung.erlang-projects.org/dist/%{name}-%{version}.tar.gz
+Source0:        https://github.com/processone/tsung/archive/refs/tags/v1.8.0.tar.gz
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source100:      checksum.sha512
 
-BuildRequires:     erlang make
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:          erlang perl(Template)
+BuildRequires:  erlang >= 21 make
 
-Provides:          %{name} = %{version}-%{release}
+Requires:       erlang >= 21 perl(Template)
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -70,7 +40,10 @@ It also has support for SSL.
 ################################################################################
 
 %prep
+%{crc_check}
+
 %setup -q
+
 iconv -f ISO-8859-1 -t UTF-8 CONTRIBUTORS > CONTRIBUTORS.new && \
 touch -r CONTRIBUTORS CONTRIBUTORS.new && \
 mv CONTRIBUTORS.new CONTRIBUTORS
@@ -105,6 +78,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.8.0-0
+- https://github.com/processone/tsung/blob/v1.8.0/CHANGELOG.md
+
 * Sat Nov 18 2017 Anton Novojilov <andy@essentialkaos.com> - 1.7.0-0
 - Updated to latest stable release
 
