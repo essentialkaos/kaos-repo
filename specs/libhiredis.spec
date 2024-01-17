@@ -10,7 +10,7 @@
 
 Summary:        Minimalistic C client for Redis
 Name:           lib%{realname}
-Version:        1.1.0
+Version:        1.2.0
 Release:        0%{?dist}
 License:        BSD
 Group:          System Environment/Libraries
@@ -34,8 +34,8 @@ Hiredis is a minimalistic C client library for the Redis database.
 ################################################################################
 
 %package devel
-Summary:   Header files and libraries for hiredis C development
-Group:     Development/Libraries
+Summary:  Header files and libraries for hiredis C development
+Group:    Development/Libraries
 
 Requires:  %{name} = %{version}
 
@@ -84,6 +84,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- https://github.com/redis/hiredis/releases/tag/v1.2.0
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.1.0-0
 - https://github.com/redis/hiredis/releases/tag/v1.1.0
 
