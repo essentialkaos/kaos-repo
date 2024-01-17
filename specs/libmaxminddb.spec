@@ -8,27 +8,27 @@
 
 ################################################################################
 
-Summary:         C library for the MaxMind DB file format
-Name:            libmaxminddb
-Version:         1.7.1
-Release:         0%{?dist}
-License:         Apache-2.0
-Group:           Development/Libraries
-URL:             https://github.com/maxmind/libmaxminddb
+Summary:        C library for the MaxMind DB file format
+Name:           libmaxminddb
+Version:        1.9.1
+Release:        0%{?dist}
+License:        Apache-2.0
+Group:          Development/Libraries
+URL:            https://github.com/maxmind/libmaxminddb
 
-Source0:         https://github.com/maxmind/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source0:        https://github.com/maxmind/%{name}/releases/download/%{version}/%{name}-%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc chrpath
+BuildRequires:  make gcc chrpath
 
 %if 0%{?rhel} == 9
-BuildRequires:   perl-FindBin
+BuildRequires:  perl-FindBin
 %endif
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -41,10 +41,10 @@ flexibility in the type of data associated with an address.
 ################################################################################
 
 %package devel
-Summary:         Development headers and libraries for libmaxminddb
-Group:           Development/Libraries
+Summary:  Development headers and libraries for libmaxminddb
+Group:    Development/Libraries
 
-Requires:        %{name} = %{version}-%{release}
+Requires:  %{name} = %{version}-%{release}
 
 %description devel
 Development headers and static libraries for building libmaxminddb-based
@@ -108,6 +108,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
+- https://github.com/maxmind/libmaxminddb/releases/tag/1.9.1
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
 - https://github.com/maxmind/libmaxminddb/releases/tag/1.7.1
 
