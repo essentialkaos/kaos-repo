@@ -6,7 +6,7 @@
 
 Name:           vips
 Summary:        C/C++ library for processing large images
-Version:        8.15.0
+Version:        8.15.1
 Release:        0%{?dist}
 License:        LGPLv2+
 Group:          System Environment/Libraries
@@ -38,8 +38,8 @@ against VIPS.
 ################################################################################
 
 %package devel
-Summary:   Development files for %{name}
-Group:     Development/Libraries
+Summary:  Development files for %{name}
+Group:    Development/Libraries
 
 Requires:  libjpeg-turbo-devel libtiff-devel zlib-devel
 Requires:  vips = %{version}-%{release}
@@ -68,10 +68,11 @@ Package contains command-line tools for working with VIPS.
 ################################################################################
 
 %package doc
-Summary:           Documentation for %{name}
-Group:             Documentation
-Conflicts:         %{name} < %{version}-%{release}
-Conflicts:         %{name} > %{version}-%{release}
+Summary:  Documentation for %{name}
+Group:    Documentation
+
+Conflicts:  %{name} < %{version}-%{release}
+Conflicts:  %{name} > %{version}-%{release}
 
 %description doc
 Package contains extensive documentation about VIPS in both HTML and
@@ -154,6 +155,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 8.15.1-0
+- https://github.com/libvips/libvips/releases/tag/v8.15.1
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 8.15.0-0
 - https://github.com/libvips/libvips/releases/tag/v8.15.0
 
