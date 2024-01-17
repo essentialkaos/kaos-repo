@@ -10,7 +10,7 @@ Version:        2.71
 Release:        0%{?dist}
 License:        GPLv2+ and GFDL
 Group:          Development/Tools
-URL:            https://www.gnu.org/software/automake/
+URL:            https://www.gnu.org/software/autoconf/
 
 Source0:        https://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.xz
 
