@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.6
 %define pcre_ver      10.42
-%define openssl_ver   3.0.11
+%define openssl_ver   3.0.12
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.15
+Version:        2.6.16
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -231,6 +231,151 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.16-0
+- CI: get rid of travis-ci wrapper for Coverity scan
+- BUG/MINOR: hlua: fix invalid use of lua_pop on error paths
+- BUG/MINOR: stktable: allow sc-set-gpt(0) from tcp-request connection
+- DOC: typo: fix sc-set-gpt references
+- SCRIPTS: git-show-backports: automatic ref and base detection with -m
+- BUILD: Makefile: add the USE_QUIC option to make help
+- MINOR: atomic: make sure to always relax after a failed CAS
+- BUG/MINOR: hlua_fcn: potentially unsafe stktable_data_ptr usage
+- DOC: lua: fix core.register_action typo
+- BUG/MINOR: ssl_sock: fix possible memory leak on OOM
+- BUG/MINOR: ssl/cli: can't find ".crt" files when replacing a certificate
+- BUG/MEDIUM: stconn: Wake applets on sending path if there is a pending
+  shutdown
+- BUG/MEDIUM: stconn: Don't block sends if there is a pending shutdown
+- BUG/MINOR: quic: Possible skipped RTT sampling
+- BUG/MAJOR: quic: Really ignore malformed ACK frames.
+- BUG/MEDIUM: h1-htx: Ensure chunked parsing with full output buffer
+- DOC: configuration: update examples for req.ver
+- BUG/MINOR: quic: Wrong RTT adjusments
+- BUG/MEDIUM: stconn/stream: Forward shutdown on write timeout
+- BUG/MINOR: hlua/action: incorrect message on E_YIELD error
+- CI: Update to actions/checkout@v4
+- BUG/MINOR: quic: Wrong RTT computation (srtt and rrt_var)
+- BUG/MINOR: quic: Leak of frames to send.
+- BUG/MINOR: quic: Wrong cluster secret initialization
+- MINOR: hlua: add hlua_stream_ctx_prepare helper function
+- BUG/MEDIUM: hlua: streams don't support mixing lua-load with
+  lua-load-per-thread
+- Revert "BUG/MEDIUM: quic: missing check of dcid for init pkt including
+  a token"
+- CI: musl: highlight section if there are coredumps
+- CI: musl: drop shopt in workflow invocation
+- BUG/MEDIUM: hlua: don't pass stale nargs argument to lua_resume()
+- BUG/MINOR: hlua/init: coroutine may not resume itself
+- BUG/MEDIUM: mux-fcgi: Don't swap trash and dbuf when handling STDERR records
+- BUG/MINOR: promex: fix backend_agg_check_status
+- BUG/MINOR: freq_ctr: fix possible negative rate with the scaled API
+- BUG/MAJOR: mux-h2: Report a protocol error for any DATA frame before headers
+- BUG/MINOR: server: add missing free for server->rdr_pfx
+- MINOR: pattern: fix pat_{parse,match}_ip() function comments
+- BUG/MEDIUM: server/cli: don't delete a dynamic server that has streams
+- BUILD: bug: make BUG_ON() void to avoid a rare warning
+- BUG/MEDIUM: actions: always apply a longest match on prefix lookup
+- BUG/MEDIUM: quic_conn: let the scheduler kill the task when needed
+- MINOR: hlua: Set context's appctx when the lua socket is created
+- MINOR: hlua: Don't preform operations on a not connected socket
+- MINOR: hlua: Save the lua socket's timeout in its context
+- MINOR: hlua: Save the lua socket's server in its context
+- MINOR: hlua: Test the hlua struct first when the lua socket is connecting
+- BUG/MEDIUM: hlua: Initialize appctx used by a lua socket on connect only
+- BUG/MINOR: mux-h1: Ignore C-L when sending H1 messages if T-E is also set
+- BUG/MEDIUM: h1: Ignore C-L value in the H1 parser if T-E is also set
+- BUG/MINOR: hq-interop: simplify parser requirement
+- BUG/MINOR: quic: Avoid crashing with unsupported cryptographic algos
+- BUG/MINOR: quic: reject packet with no frame
+- BUG/MINOR: mux-quic: support initial 0 max-stream-data
+- BUG/MINOR: h3: strengthen host/authority header parsing
+- BUG/MINOR: mux-quic: fix free on qcs-new fail alloc
+- BUG/MINOR: mux-h2: make up other blocked streams upon removal from list
+- BUG/MEDIUM: mux-h2: Don't report an error on shutr if a shutw is pending
+- BUG/MINOR: mux-h2: fix http-request and http-keep-alive timeouts again
+- BUG/MEDIUM: peers: Be sure to always refresh recconnect timer in sync task
+- BUG/MEDIUM: peers: Fix synchro for huge number of tables
+- BUG/MINOR: mux-h2: commit the current stream ID even on reject
+- BUG/MINOR: mux-h2: update tracked counters with req cnt/req err
+- DOC: internal: filters: fix reference to entities.pdf
+- BUG/MINOR: ssl: load correctly @system-ca when ca-base is define
+- MINOR: connection: add conn_pr_mode_to_proto_mode() helper func
+- BUG/MEDIUM: server: "proto" not working for dynamic servers
+- BUG/MINOR: ssl: suboptimal certificate selection with TLSv1.3 and dual
+  ECDSA/RSA
+- BUG/MEDIUM: ssl: segfault when cipher is NULL
+- BUG/MINOR: tcpcheck: Report hexstring instead of binary one on check failure
+- BUG/MINOR: stktable: missing free in parse_stick_table()
+- BUG/MINOR: cfgparse/stktable: fix error message on stktable_init() failure
+- CLEANUP: htx: Properly indent htx_reserve_max_data() function
+- BUG/MINOR: stick-table/cli: Check for invalid ipv4 key
+- BUG/MINOR: mux-h1: Properly handle http-request and http-keep-alive timeouts
+- BUG/MEDIUM: pool: fix releasable pool calculation when overloaded
+- DOC: management: -q is quiet all the time
+- DOC: config: use the word 'backend' instead of 'proxy' in 'track' description
+- BUG/MEDIUM: applet: Remove appctx from buffer wait list on release
+- DOC: quic: Wrong syntax for "quic-cc-algo" keyword.
+- BUG/MINOR: stconn: Handle abortonclose if backend connection was already
+  set up
+- MINOR: connection: Add a CTL flag to notify mux it should wait for reads again
+- MEDIUM: mux-h1: Handle MUX_SUBS_RECV flag in h1_ctl() and susbscribe for reads
+- BUG/MEDIUM: stream: Properly handle abortonclose when set on backend only
+- REGTESTS: http: Improve script testing abortonclose option
+- BUG/MINOR: http-client: Don't forget to commit changes on HTX message
+- BUG/MEDIUM: stream: Don't call mux .ctl() callback if not implemented
+- MINOR: htx: Use a macro for overhead induced by HTX
+- MINOR: channel: Add functions to get info on buffers and deal with HTX streams
+- BUG/MINOR: stconn: Fix streamer detection for HTX streams
+- BUG/MINOR: stconn: Use HTX-aware channel's functions to get info on buffer
+- BUG/MINOR: quic: do not consider idle timeout on CLOSING state
+- BUG/MINOR: mux-quic: fix early close if unset client timeout
+- BUG/MINOR: ssl: use a thread-safe sslconns increment
+- MINOR: frontend: implement a dedicated actconn increment function
+- BUG/MINOR: quic: idle timer task requeued in the past
+- BUG/MEDIUM: quic: Avoid trying to send ACK frames from an empty ack ranges
+  tree
+- BUG/MEDIUM: quic: Possible crashes when sending too short Initial packets
+- BUG/MINOR: sink: don't learn srv port from srv addr
+- MEDIUM: quic: count quic_conn instance for maxconn
+- MEDIUM: quic: count quic_conn for global sslconns
+- BUG/MEDIUM: quic: fix actconn on quic_conn alloc failure
+- BUG/MEDIUM: quic: fix sslconns on quic_conn alloc failure
+- BUG/MEDIUM: mux-h2: fail earlier on malloc in takeover()
+- BUG/MEDIUM: mux-h1: fail earlier on malloc in takeover()
+- BUG/MEDIUM: mux-fcgi: fail earlier on malloc in takeover()
+- BUG/MINOR: stream/cli: report correct stream age in "show sess"
+- MINOR: stktable: add stktable_deinit function
+- BUG/MINOR: proxy/stktable: missing frees on proxy cleanup
+- REGTESTS: http: add a test to validate chunked responses delivery
+- BUG/MINOR: startup: set GTUNE_SOCKET_TRANSFER correctly
+- BUG/MINOR: sock: mark abns sockets as non-suspendable and always unbind them
+- BUG/MEDIUM: quic: Possible crash for connections to be killed
+- BUG/MINOR: server: do not leak default-server in defaults sections
+- DOC: 51d: updated 51Degrees repo URL for v3.2.10
+- DOC: config: fix timeout check inheritance restrictions
+- REGTESTS: connection: disable http_reuse_be_transparent.vtc if !TPROXY
+- DOC: lua: add sticktable class reference from Proxy.stktable
+- DOC: lua: fix Proxy.get_mode() output
+- BUG/MINOR: quic: fix CONNECTION_CLOSE_APP encoding
+- BUG/MINOR: h3: always reject PUSH_PROMISE
+- DOC: config: fix missing characters in set-spoe-group action
+- BUG/MINOR: quic_tp: fix preferred_address decoding
+- BUG/MINOR: config: Stopped parsing upon unmatched environment variables
+- BUG/MINOR: cfgparse-listen: fix warning being reported as an alert
+- DOC: config: specify supported sections for "max-session-srv-conns"
+- DOC: config: add matrix entry for "max-session-srv-conns"
+- DOC: config: fix monitor-fail typo
+- REGTESTS: sample: Test the behavior of consecutive delimiters for the field
+  converter
+- BUG/MINOR: sample: Make the `word` converter compatible with `-m found`
+- DOC: Clarify the differences between field() and word()
+- BUG/MINOR: cache: Remove incomplete entries from the cache when stream
+  is closed
+- BUG/MEDIUM: pattern: don't trim pools under lock in pat_ref_purge_range()
+- BUG/MINOR: quic: Possible memory leak from TX packets
+- BUG/MEDIUM: quic: Avoid some crashes upon TX packet allocation failures
+- BUG/MINOR: quic: Possible leak of TX packets under heavy load
+
 * Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.6.15-0
 - BUG/MINOR: quic: Wrong encryption level flags checking
 - BUG/MINOR: server: inherit from netns in srv_settings_cpy()

@@ -16,7 +16,7 @@
 
 Summary:           A persistent key-value database
 Name:              redis%{major_ver}%{minor_ver}
-Version:           7.2.3
+Version:           7.2.4
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -202,6 +202,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jan 16 2024 Anton Novojilov <andy@essentialkaos.com> - 7.2.4-0
+- https://github.com/redis/redis/blob/7.2.4/00-RELEASENOTES
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 7.2.3-0
 - https://github.com/redis/redis/blob/7.2.3/00-RELEASENOTES
 

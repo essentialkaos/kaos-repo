@@ -10,7 +10,7 @@
 
 Summary:         A search tool that combines the usability of ag with the raw speed of grep
 Name:            ripgrep
-Version:         14.0.3
+Version:         14.1.0
 Release:         0%{?dist}
 Group:           Applications/Text
 License:         MIT or Unlicense
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 14.1.0-0
+- https://github.com/BurntSushi/ripgrep/releases/tag/14.1.0
+
 * Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 14.0.3-0
 - https://github.com/BurntSushi/ripgrep/releases/tag/14.0.3
 

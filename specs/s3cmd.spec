@@ -12,7 +12,7 @@
 
 Summary:        Command line tool for managing Amazon S3 and CloudFront services
 Name:           s3cmd
-Version:        2.3.0
+Version:        2.4.0
 Release:        0%{?dist}
 Group:          Applications/System
 License:        GPL
@@ -73,6 +73,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- https://github.com/s3tools/s3cmd/releases/tag/v2.4.0
+
 * Sun Dec 04 2022 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
 - https://github.com/s3tools/s3cmd/releases/tag/v2.3.0
 
