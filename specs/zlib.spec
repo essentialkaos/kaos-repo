@@ -10,7 +10,7 @@
 
 Summary:        The compression and decompression library
 Name:           zlib
-Version:        1.3
+Version:        1.3.1
 Release:        0%{?dist}
 License:        zlib and Boost
 Group:          System Environment/Libraries
@@ -180,6 +180,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jan 25 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
+- Reject overflows of zip header fields in minizip
+- Fix bug in inflateSync() for data held in bit buffer
+- Add LIT_MEM define to use more memory for a small deflate speedup
+- Fix decision on the emission of Zip64 end records in minizip
+- Add bounds checking to ERR_MSG() macro, used by zError()
+- Neutralize zip file traversal attacks in miniunz
+- Fix a bug in ZLIB_DEBUG compiles in check_match()
+
 * Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.3-0
 - Building using K&R (pre-ANSI) function definitions is no longer supported
 - Fixed a bug in deflateBound() for level 0 and memLevel 9
