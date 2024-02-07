@@ -5,8 +5,6 @@
 
 pkg golang golang-bin golang-src
 
-fast-finish yes
-
 var cache_dir  {WORKDIR}/.build-cache
 var goroot_dir /usr/lib/golang
 var tools_dir  {goroot_dir}/pkg/tool/{OS}_{ARCH_NAME}
