@@ -1,0 +1,30 @@
+# Bibop recipe for yarn
+# See more: https://github.com/essentialkaos/bibop
+
+pkg yarn
+
+fast-finish yes
+
+var data_dir /usr/lib/node_modules/yarn
+
+command "-" "Check environment"
+  app yarnpkg
+  app yarn
+
+command "-" "Check files"
+  exist {data_dir}/bin
+  exist {data_dir}/lib
+
+  dir {data_dir}/bin
+  dir {data_dir}/lib
+
+  !empty-dir {data_dir}/bin
+  !empty-dir {data_dir}/lib
+
+command "yarn --version" "Check version info"
+  exit 0
+  output-match "1\.\d+\.\d+"
+
+command "yarn --help" "Check help option output"
+  exit 0
+  output-contains "Displays help information."
