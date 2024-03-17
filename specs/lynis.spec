@@ -6,7 +6,7 @@
 
 Summary:    Security auditing and hardening tool
 Name:       lynis
-Version:    3.0.9
+Version:    3.1.1
 Release:    0%{?dist}
 License:    GPLv3
 Group:      Development/Tools
@@ -75,6 +75,28 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Mar 17 2024 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
+- Detection of ArcoLinux
+- DBS-1882 - Redis configuration file path added for FreeBSD
+  (/usr/local/etc/redis.conf)
+- DBS-1882 - Check /snap directory location for Redis configuration file
+
+* Sun Mar 17 2024 Anton Novojilov <andy@essentialkaos.com> - 3.1.0-0
+- MALW-3280 - Correction to detect com.avast.daemon
+- OS detection added for Guix System, macOS Ventura (13.x)/Sonoma (14.x),
+  NXP LSDK, OpenEmbedded "nodistro", and The Yocto Projects distro "Poky"
+- Updated Amazon Linux EOL dates and addition of Amazon Linux 2023
+- STATUS_NOT_ACTIVE variable added to translation files
+- End-of-life dates updated
+- Fixing missing or erroneous test number comments
+- Detection of SentinelOne corrected
+- Wazuh for file integrity and tooling
+- Updated parsing output of arch-audit
+- Added support for SentinelOne detection
+- Replacing deprecated option -i for xargs
+- Path detection for PostgreSQL improved
+- Translation: Indonesian
+
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 3.0.9-0
 - DBS-1820 - Added newer style format for Mongo authorization setting
 - FILE-6410 - Locations added for plocate
