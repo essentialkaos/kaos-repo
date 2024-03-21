@@ -17,8 +17,8 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.6
-%define pcre_ver      10.42
-%define openssl_ver   3.0.12
+%define pcre_ver      10.43
+%define openssl_ver   3.0.13
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -27,7 +27,7 @@
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
 Version:        2.6.16
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
 Group:          System Environment/Daemons
@@ -99,7 +99,7 @@ pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
   ./config --prefix=$(pwd)/build no-shared no-threads
-  %{__make}
+  %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
 
@@ -231,6 +231,10 @@ fi
 ################################################################################
 
 %changelog
+* Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.16-1
+- OpenSSL updated to 3.0.13
+- PCRE2 updated to 10.43
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.16-0
 - CI: get rid of travis-ci wrapper for Coverity scan
 - BUG/MINOR: hlua: fix invalid use of lua_pop on error paths

@@ -17,7 +17,7 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.6
-%define pcre_ver      10.42
+%define pcre_ver      10.43
 %define openssl_ver   1.1.1w
 %define ncurses_ver   6.4
 %define readline_ver  8.2
@@ -27,7 +27,7 @@
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
 Version:        2.4.25
-Release:        0%{?dist}
+Release:        1%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
 Group:          System Environment/Daemons
@@ -231,6 +231,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.25-1
+- PCRE2 updated to 10.43
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.25-0
 - BUG/MEDIUM: dns: Be sure to unlock DSS when existing dns_session_io_handler()
 - BUG/MINOR: hlua: fix invalid use of lua_pop on error paths

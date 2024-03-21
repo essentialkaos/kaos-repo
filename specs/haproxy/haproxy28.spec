@@ -17,8 +17,8 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.6
-%define pcre_ver      10.42
-%define openssl_ver   3.1.4
+%define pcre_ver      10.43
+%define openssl_ver   3.1.5
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.5
+Version:        2.8.7
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -99,7 +99,7 @@ pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
   ./config --prefix=$(pwd)/build no-shared no-threads
-  %{__make}
+  %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
 
@@ -231,6 +231,103 @@ fi
 ################################################################################
 
 %changelog
+* Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.7-0
+- BUG/MAJOR: ssl/ocsp: crash with ocsp when old process exit or using ocsp CLI
+
+* Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.6-0
+- DOC: configuration: typo req.ssl_hello_type
+- BUG/MINOR: mworker/cli: fix set severity-output support
+- BUG/MEDIUM: quic: Possible buffer overflow when building TLS records
+- BUG/MEDIUM: quic: QUIC CID removed from tree without locking
+- BUG/MEDIUM: mux-h2: Report too large HEADERS frame only when rxbuf is empty
+- BUG/MINOR: resolvers: default resolvers fails when network not configured
+- DOC: config: Update documentation about local haproxy response
+- MINOR: stats: store the parent proxy in stats ctx (http)
+- BUG/MEDIUM: stats: unhandled switching rules with TCP frontend
+- BUG/MINOR: mux-quic: always report error to SC on RESET_STREAM emission
+- BUG/MINOR: quic: Wrong keylog callback setting.
+- BUG/MINOR: quic: Missing call to TLS message callbacks
+- MINOR: h3: check connection error during sending
+- BUG/MINOR: h3: close connection on header list too big
+- BUG/MINOR: h3: properly handle alloc failure on finalize
+- BUG/MINOR: h3: close connection on sending alloc errors
+- CLEANUP: quic: Remaining useless code into server part
+- BUG/MEDIUM: h3: fix incorrect snd_buf return value
+- BUG/MEDIUM: stconn: Forward shutdown on write timeout only if it is
+  forwardable
+- BUG/MEDIUM: spoe: Never create new spoe applet if there is no server up
+- MINOR: mux-h2: support limiting the total number of H2 streams per connection
+- DOC: configuration: corrected description of keyword
+  tune.ssl.ocsp-update.mindelay
+- BUG/MINOR: mux-quic: do not prevent non-STREAM sending on flow control
+- BUG/MINOR: mux-h2: also count streams for refused ones
+- BUG/MEDIUM: quic: keylog callback not called (USE_OPENSSL_COMPAT)
+- MINOR: compiler: add a new DO_NOT_FOLD() macro to prevent code folding
+- MINOR: debug: make sure calls to ha_crash_now() are never merged
+- MINOR: debug: make ABORT_NOW() store the caller's line number when using abort
+- MINOR: debug: make BUG_ON() catch build errors even without DEBUG_STRICT
+- MINOR: mux-h2/traces: also suggest invalid header upon parsing error
+- MINOR: mux-h2/traces: explicitly show the error/refused stream states
+- MINOR: mux-h2/traces: clarify the "rejected H2 request" event
+- BUG/MEDIUM: mux-h2: refine connection vs stream error on headers
+- MINOR: mux-h2/traces: add a missing trace on connection WU with negative inc
+- REGTESTS: add a test to ensure map-ordering is preserved
+- BUG/MEDIUM: cli: some err/warn msg dumps add LR into CSV output on stat's CLI
+- BUG/MINOR: vars/cli: fix missing LF after "get var" output
+- BUG/MEDIUM: cli: fix once for all the problem of missing trailing LFs
+- BUG/MINOR: jwt: fix jwt_verify crash on 32-bit archs
+- BUG/MEDIUM: pool: fix rare risk of deadlock in pool_flush()
+- BUG/MEDIUM: stconn: Allow expiration update when READ/WRITE event is pending
+- BUG/MEDIUM: stconn: Don't check pending shutdown to wake an applet up
+- BUG/MINOR: h1: Don't support LF only at the end of chunks
+- BUG/MEDIUM: h1: Don't support LF only to mark the end of a chunk size
+- BUG/MINOR: h1-htx: properly initialize the err_pos field
+- BUG/MEDIUM: h1: always reject the NUL character in header values
+- BUG/MAJOR: ssl_sock: Always clear retry flags in read/write functions
+- BUG/MINOR: ssl: Fix error message after ssl_sock_load_ocsp call
+- BUG/MINOR: ssl: Duplicate ocsp update mode when dup'ing ckch
+- BUG/MINOR: ssl: Clear the ckch instance when deleting a crt-list line
+- MINOR: ssl: Use OCSP_CERTID instead of ckch_store in ckch_store_build_certid
+- BUG/MEDIUM: ocsp: Separate refcount per instance and per store
+- BUG/MINOR: ssl: Destroy ckch instances before the store during deinit
+- BUG/MINOR: ssl: Reenable ocsp auto-update after an "add ssl crt-list"
+- REGTESTS: ssl: Fix empty line in cli command input
+- REGTESTS: ssl: Add OCSP related tests
+- BUG/MEDIUM: ssl: Fix crash when calling "update ssl ocsp-response" when an
+  update is ongoing
+- BUG/MINOR: h3: fix checking on NULL Tx buffer
+- BUG/MEDIUM: mux-quic: report early error on stream
+- CLEANUP: quic: Remove unused CUBIC_BETA_SCALE_FACTOR_SHIFT macro.
+- MINOR: quic: Stop hardcoding a scale shifting value
+  (CUBIC_BETA_SCALE_FACTOR_SHIFT)
+- MINOR: quic: extract qc_stream_buf free in a dedicated function
+- BUG/MEDIUM: quic: remove unsent data from qc_stream_desc buf
+- MINOR: h3: add traces for stream sending function
+- BUG/MEDIUM: h3: do not crash on invalid response status code
+- BUG/MEDIUM: qpack: allow 6xx..9xx status codes
+- BUG/MEDIUM: quic: fix crash on invalid qc_stream_buf_free() BUG_ON
+- BUG/MINOR: quic: Wrong ack ranges handling when reaching the limit.
+- CLEANUP: quic: Code clarifications for QUIC CUBIC (RFC 9438)
+- BUG/MINOR: quic: fix possible integer wrap around in cubic window calculation
+- MINOR: quic: Stop using 1024th of a second.
+- BUG/MEDIUM: quic: Wrong K CUBIC calculation.
+- MINOR: quic: Update K CUBIC calculation (RFC 9438)
+- MINOR: quic: Dynamic packet reordering threshold
+- MINOR: quic: Add a counter for reordered packets
+- MINOR: errors: ha_alert() and ha_warning() uses warn_exec_path()
+- BUG/MINOR: diag: always show the version before dumping a diag warning
+- BUG/MINOR: diag: run the final diags before quitting when using -c
+- MINOR: ext-check: add an option to preserve environment variables
+- BUG/MINOR: ext-check: cannot use without preserve-env
+- BUILD: address a few remaining calloc(size, n) cases
+- DOC: configuration: clarify http-request wait-for-body
+- DOC: httpclient: add dedicated httpclient section
+- DOC: install: recommend pcre2
+- DOC: internal: update missing data types in peers-v2.0.txt
+- CI: Update to actions/cache@v4
+- DEV: makefile: add a new "range" target to iteratively build all commits
+- DEV: makefile: fix POSIX compatibility for "range" target
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.5-0
 - BUG/MAJOR: quic: complete thread migration before tcp-rules
 - BUG/MEDIUM: mux-h2: fail earlier on malloc in takeover()
