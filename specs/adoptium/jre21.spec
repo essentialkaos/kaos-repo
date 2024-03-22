@@ -8,14 +8,15 @@
 
 ################################################################################
 
-%define jdk_major  21.0.1
-%define jdk_minor  12
+%define jdk_major  21.0.2
+%define jdk_minor  13
+%define jdk_patch  %{nil}
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  2100
+%define alt_priority  2101
 
 ################################################################################
 
@@ -23,7 +24,7 @@ Summary:      OpenJDK Runtime Environment (JRE 21)
 Name:         jre21
 Epoch:        1
 Version:      %{jdk_major}
-Release:      %{jdk_minor}%{?dist}
+Release:      %{jdk_minor}%{jdk_patch}%{?dist}
 Group:        Development/Languages
 License:      ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:          https://adoptium.net
@@ -110,5 +111,8 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 21.0.2-13
+- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk-21.0.2+13
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 21.0.1-12
 - Initial build for kaos repository
