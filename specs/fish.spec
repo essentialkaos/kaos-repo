@@ -6,7 +6,7 @@
 
 Summary:        Friendly interactive shell (FISh)
 Name:           fish
-Version:        3.7.0
+Version:        3.7.1
 Release:        0%{?dist}
 License:        GPL2
 Group:          System Environment/Shells
@@ -94,6 +94,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Mar 25 2024 Anton Novojilov <andy@essentialkaos.com> - 3.7.1-0
+- https://github.com/fish-shell/fish-shell/releases/tag/3.7.1
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 3.7.0-0
 - https://github.com/fish-shell/fish-shell/releases/tag/3.7.0
 
