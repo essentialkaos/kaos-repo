@@ -22,7 +22,7 @@
 
 Name:           haproxy
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.6
+Version:        2.8.9
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -229,6 +229,93 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.9-0
+- BUILD: proxy: Replace free_logformat_list() to manually release log-format
+
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.8-0
+- MINOR: mux-h2: add a counter of "glitches" on a connection
+- BUG/MINOR: mux-h2: count rejected DATA frames against the connection's flow
+  control
+- MINOR: mux-h2: count excess of CONTINUATION frames as a glitch
+- MINOR: mux-h2: count late reduction of INITIAL_WINDOW_SIZE as a glitch
+- MINOR: mux-h2: always use h2c_report_glitch()
+- MEDIUM: mux-h2: allow to set the glitches threshold to kill a connection
+- MINOR: connection: add a new mux_ctl to report number of connection glitches
+- MINOR: mux-h2: implement MUX_CTL_GET_GLITCHES
+- MINOR: connection: add sample fetches to report per-connection glitches
+- BUG/MAJOR: promex: fix crash on deleted server
+- BUG/MINOR: quic: reject unknown frame type
+- BUG/MINOR: quic: reject HANDSHAKE_DONE as server
+- BUG/MINOR: qpack: reject invalid increment count decoding
+- BUG/MINOR: qpack: reject invalid dynamic table capacity
+- DOC: quic: Missing tuning setting in "Global parameters"
+- BUG/MEDIUM: applet: Immediately free appctx on early error
+- BUG/MEDIUM: hlua: Be able to garbage collect uninitialized lua sockets
+- BUG/MEDIUM: hlua: Don't loop if a lua socket does not consume received data
+- BUG/MEDIUM: quic: fix transient send error with listener socket
+- DOC: quic: fix recommandation for bind on multiple address
+- MINOR: quic: warn on bind on multiple addresses if no IP_PKTINFO support
+- BUG/MINOR: ist: allocate nul byte on istdup
+- BUG/MINOR: stats: drop srv refcount on early release
+- BUG/MAJOR: server: fix stream crash due to deleted server
+- BUG/MINOR: quic: fix output of show quic
+- BUG/MINOR: ist: only store NUL byte on succeeded alloc
+- BUG/MINOR: ssl/cli: duplicate cleaning code in cli_parse_del_crtlist
+- LICENSE: event_hdl: fix GPL license version
+- LICENSE: http_ext: fix GPL license version
+- DOC: configuration: clarify ciphersuites usage
+- BUG/MINOR: config/quic: Alert about PROXY protocol use on a QUIC listener
+- BUG/MINOR: hlua: Fix log level to the right value when set via
+  TXN:set_loglevel
+- MINOR: hlua: Be able to disable logging from lua
+- BUG/MINOR: tools: seed the statistical PRNG slightly better
+- BUG/MINOR: hlua: fix unsafe lua_tostring() usage with empty stack
+- BUG/MINOR: hlua: don't use lua_tostring() from unprotected contexts
+- BUG/MINOR: hlua: fix possible crash in hlua_filter_new() under load
+- BUG/MINOR: hlua: improper lock usage in hlua_filter_callback()
+- BUG/MINOR: hlua: improper lock usage in hlua_filter_new()
+- BUG/MEDIUM: hlua: improper lock usage with SET_SAFE_LJMP()
+- BUG/MAJOR: hlua: improper lock usage with hlua_ctx_resume()
+- BUG/MINOR: hlua: don't call ha_alert() in hlua_event_subscribe()
+- BUG/MINOR: sink: fix a race condition in the TCP log forwarding code
+- CI: skip scheduled builds on forks
+- BUG/MINOR: ssl/cli: typo in new ssl crl-file CLI description
+- BUG/MINOR: cfgparse: report proper location for log-format-sd errors
+- BUILD: solaris: fix compilation errors
+- DOC: configuration: clarify ciphersuites usage (V2)
+- BUG/MINOR: ssl: fix possible ctx memory leak in sample_conv_aes_gcm()
+- BUG/MINOR: hlua: segfault when loading the same filter from different contexts
+- BUG/MINOR: hlua: missing lock in hlua_filter_new()
+- BUG/MINOR: hlua: fix missing lock in hlua_filter_delete()
+- DEBUG: lua: precisely identify if stream is stuck inside lua or not
+- MINOR: hlua: use accessors for stream hlua ctx
+- BUG/MEDIUM: hlua: streams don't support mixing lua-load with
+  lua-load-per-thread (2nd try)
+- BUG/MINOR: listener: Wake proxy's mngmt task up if necessary on session
+  release
+- BUG/MINOR: listener: Don't schedule frontend without task in
+  listener_release()
+- BUG/MEDIUM: spoe: Don't rely on stream's expiration to detect processing
+  timeout
+- BUG/MINOR: spoe: Be sure to be able to quickly close IDLE applets on soft-stop
+- CI: temporarily adjust kernel entropy to work with ASAN/clang
+- BUG/MEDIUM: spoe: Return an invalid frame on recv if size is too small
+- BUG/MINOR: session: ensure conn owner is set after insert into session
+- BUG/MEDIUM: ssl: Fix crash in ocsp-update log function
+- BUG/MINOR: mux-quic: close all QCS before freeing QCC tasklet
+- BUG/MEDIUM: mux-fcgi: Properly handle EOM flag on end-of-trailers HTX block
+- OPTIM: http_ext: avoid useless copy in http_7239_extract_{ipv4,ipv6}
+- BUG/MINOR: server: 'source' interface ignored from 'default-server' directive
+- BUG/MINOR: ssl: Wrong ocsp-update "incompatibility" error message
+- BUG/MINOR: ssl: Detect more 'ocsp-update' incompatibilities
+- BUG/MINOR: server: fix persistence cookie for dynamic servers
+- MINOR: server: allow cookie for dynamic servers
+- MINOR: cli: Remove useless loop on commands to find unescaped semi-colon
+- BUG/MEDIUM: cli: Warn if pipelined commands are delimited by a \n
+- BUG/MINOR: server: ignore 'enabled' for dynamic servers
+- BUG/MINOR: backend: properly handle redispatch 0
+- BUG/MINOR: proxy: fix logformat expression leak in use_backend rules
+
 * Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.7-0
 - BUG/MAJOR: ssl/ocsp: crash with ocsp when old process exit or using ocsp CLI
 

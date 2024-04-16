@@ -26,8 +26,8 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.16
-Release:        1%{?dist}
+Version:        2.6.17
+Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
 Group:          System Environment/Daemons
@@ -231,6 +231,123 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.17-0
+- BUG/MEDIUM: connection: report connection errors even when no mux is installed
+- BUG/MEDIUM: mworker: set the master variable earlier
+- BUG/MEDIUM: proxy: always initialize the default settings after init
+- DOC: configuration: typo req.ssl_hello_type
+- BUG/MINOR: mworker/cli: fix set severity-output support
+- BUG/MEDIUM: mux-h2: Report too large HEADERS frame only when rxbuf is empty
+- BUG/MINOR: resolvers: default resolvers fails when network not configured
+- DOC: config: Update documentation about local haproxy response
+- MINOR: stats: store the parent proxy in stats ctx (http)
+- BUG/MEDIUM: stats: unhandled switching rules with TCP frontend
+- MINOR: h3: check connection error during sending
+- BUG/MINOR: h3: close connection on header list too big
+- BUG/MINOR: h3: properly handle alloc failure on finalize
+- BUG/MINOR: h3: close connection on sending alloc errors
+- CLEANUP: quic: Remaining useless code into server part
+- BUG/MEDIUM: h3: fix incorrect snd_buf return value
+- BUG/MEDIUM: stconn: Forward shutdown on write timeout only if it is
+  forwardable
+- BUG/MEDIUM: spoe: Never create new spoe applet if there is no server up
+- BUG/MEDIUM: h3: fix regression which completely prevents any send
+- BUG/MINOR: mux-quic: do not prevent non-STREAM sending on flow control
+- MINOR: compiler: add a new DO_NOT_FOLD() macro to prevent code folding
+- MINOR: debug: make sure calls to ha_crash_now() are never merged
+- MINOR: debug: make ABORT_NOW() store the caller's line number when using abort
+- MINOR: debug: make BUG_ON() catch build errors even without DEBUG_STRICT
+- BUG/MEDIUM: cli: some err/warn msg dumps add LR into CSV output on stat's CLI
+- BUG/MINOR: vars/cli: fix missing LF after "get var" output
+- BUG/MINOR: jwt: fix jwt_verify crash on 32-bit archs
+- BUG/MEDIUM: pool: fix rare risk of deadlock in pool_flush()
+- BUG/MINOR: h1-htx: properly initialize the err_pos field
+- BUG/MINOR: h1: Don't support LF only at the end of chunks
+- BUG/MEDIUM: h1: Don't support LF only to mark the end of a chunk size
+- BUG/MEDIUM: h1: always reject the NUL character in header values
+- BUG/MAJOR: ssl_sock: Always clear retry flags in read/write functions
+- BUG/MINOR: ssl: Clear the ckch instance when deleting a crt-list line
+- REGTESTS: ssl: Fix empty line in cli command input
+- BUG/MINOR: h3: fix checking on NULL Tx buffer
+- CLEANUP: quic: Remove unused CUBIC_BETA_SCALE_FACTOR_SHIFT macro.
+- MINOR: quic: Stop hardcoding a scale shifting value
+  (CUBIC_BETA_SCALE_FACTOR_SHIFT)
+- MINOR: quic: extract qc_stream_buf free in a dedicated function
+- MINOR: h3: add traces for stream sending function
+- BUG/MEDIUM: h3: do not crash on invalid response status code
+- BUG/MEDIUM: qpack: allow 6xx..9xx status codes
+- BUG/MEDIUM: quic: fix crash on invalid qc_stream_buf_free() BUG_ON
+- BUG/MINOR: quic: Wrong ack ranges handling when reaching the limit.
+- CLEANUP: quic: Code clarifications for QUIC CUBIC (RFC 9438)
+- BUG/MINOR: quic: fix possible integer wrap around in cubic window calculation
+- MINOR: quic: Stop using 1024th of a second.
+- BUG/MEDIUM: quic: Wrong K CUBIC calculation.
+- MINOR: quic: Update K CUBIC calculation (RFC 9438)
+- MINOR: quic: Dynamic packet reordering threshold
+- BUG/MINOR: diag: run the final diags before quitting when using -c
+- BUILD: address a few remaining calloc(size, n) cases
+- DOC: configuration: clarify http-request wait-for-body
+- DOC: httpclient: add dedicated httpclient section
+- DOC: install: recommend pcre2
+- DOC: internal: update missing data types in peers-v2.0.txt
+- CI: Update to actions/cache@v4
+- DEV: makefile: add a new "range" target to iteratively build all commits
+- DEV: makefile: fix POSIX compatibility for "range" target
+- BUG/MAJOR: promex: fix crash on deleted server
+- BUG/MINOR: quic: reject unknown frame type
+- BUG/MINOR: quic: reject HANDSHAKE_DONE as server
+- BUG/MINOR: qpack: reject invalid increment count decoding
+- BUG/MINOR: qpack: reject invalid dynamic table capacity
+- BUG/MEDIUM: applet: Immediately free appctx on early error
+- BUG/MEDIUM: hlua: Be able to garbage collect uninitialized lua sockets
+- BUG/MEDIUM: hlua: Don't loop if a lua socket does not consume received data
+- MINOR: quic: warn on bind on multiple addresses if no IP_PKTINFO support
+- BUG/MINOR: ist: allocate nul byte on istdup
+- BUG/MINOR: stats: drop srv refcount on early release
+- BUG/MAJOR: server: fix stream crash due to deleted server
+- BUG/MINOR: ist: only store NUL byte on succeeded alloc
+- BUG/MINOR: ssl/cli: duplicate cleaning code in cli_parse_del_crtlist
+- DOC: configuration: clarify ciphersuites usage
+- BUG/MINOR: hlua: Fix log level to the right value when set via
+  TXN:set_loglevel
+- MINOR: hlua: Be able to disable logging from lua
+- BUG/MINOR: tools: seed the statistical PRNG slightly better
+- BUG/MINOR: hlua: fix unsafe lua_tostring() usage with empty stack
+- BUG/MINOR: hlua: don't use lua_tostring() from unprotected contexts
+- BUG/MINOR: hlua: fix possible crash in hlua_filter_new() under load
+- BUG/MINOR: hlua: improper lock usage in hlua_filter_callback()
+- BUG/MINOR: hlua: improper lock usage in hlua_filter_new()
+- BUG/MEDIUM: hlua: improper lock usage with SET_SAFE_LJMP()
+- BUG/MAJOR: hlua: improper lock usage with hlua_ctx_resume()
+- BUG/MINOR: ssl/cli: typo in new ssl crl-file CLI description
+- BUG/MINOR: cfgparse: report proper location for log-format-sd errors
+- DOC: configuration: clarify ciphersuites usage (V2)
+- BUG/MINOR: ssl: fix possible ctx memory leak in sample_conv_aes_gcm()
+- BUG/MINOR: hlua: segfault when loading the same filter from different contexts
+- BUG/MINOR: hlua: missing lock in hlua_filter_new()
+- BUG/MINOR: hlua: fix missing lock in hlua_filter_delete()
+- BUG/MINOR: listener: Wake proxy's mngmt task up if necessary on session
+  release
+- BUG/MINOR: listener: Don't schedule frontend without task in
+  listener_release()
+- BUG/MEDIUM: spoe: Don't rely on stream's expiration to detect processing
+  timeout
+- BUG/MINOR: spoe: Be sure to be able to quickly close IDLE applets on soft-stop
+- CI: temporarily adjust kernel entropy to work with ASAN/clang
+- BUG/MEDIUM: spoe: Return an invalid frame on recv if size is too small
+- BUG/MINOR: session: ensure conn owner is set after insert into session
+- BUG/MINOR: mux-quic: close all QCS before freeing QCC tasklet
+- BUG/MEDIUM: mux-fcgi: Properly handle EOM flag on end-of-trailers HTX block
+- BUG/MINOR: server: 'source' interface ignored from 'default-server' directive
+- BUG/MINOR: server: ignore 'enabled' for dynamic servers
+- BUG/MINOR: backend: properly handle redispatch 0
+- DOC: config: Remove httpclient.timeout.connect parameter
+- DEBUG: lua: precisely identify if stream is stuck inside lua or not
+- MINOR: hlua: use accessors for stream hlua ctx
+- BUG/MEDIUM: hlua: streams don't support mixing lua-load with
+  lua-load-per-thread (2nd try)
+- BUG/MINOR: proxy: fix logformat expression leak in use_backend rules
+
 * Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.16-1
 - OpenSSL updated to 3.0.13
 - PCRE2 updated to 10.43
