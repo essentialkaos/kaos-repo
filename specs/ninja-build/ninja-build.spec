@@ -10,7 +10,7 @@
 
 Summary:        Small build system with a focus on speed
 Name:           ninja-build
-Version:        1.11.1
+Version:        1.12.0
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
@@ -83,5 +83,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
+- https://github.com/ninja-build/ninja/milestone/6?closed=1
+
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 1.11.1-0
 - Initial build
