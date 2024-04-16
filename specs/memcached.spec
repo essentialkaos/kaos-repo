@@ -11,7 +11,7 @@
 
 Summary:        High Performance, Distributed Memory Object Cache
 Name:           memcached
-Version:        1.6.23
+Version:        1.6.26
 Release:        0%{?dist}
 Group:          System Environment/Daemons
 License:        BSD
@@ -138,6 +138,15 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.6.26-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1626
+
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.6.25-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1625
+
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.6.24-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1624
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.6.23-0
 - https://github.com/memcached/memcached/wiki/ReleaseNotes1623
 
