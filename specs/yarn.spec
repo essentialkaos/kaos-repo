@@ -14,7 +14,7 @@
 
 Summary:    Fast, reliable, and secure dependency management
 Name:       yarn
-Version:    1.22.21
+Version:    1.22.22
 Release:    0%{?dist}
 License:    BSD
 Group:      Development/Tools
@@ -82,6 +82,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.22-0
+- https://github.com/yarnpkg/yarn/releases/tag/v1.22.22
+
 * Thu Feb 22 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.21-0
 - https://github.com/yarnpkg/yarn/releases/tag/v1.22.21
 
