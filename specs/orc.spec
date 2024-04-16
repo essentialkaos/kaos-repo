@@ -11,7 +11,7 @@
 
 Summary:        The Oil Run-time Compiler
 Name:           orc
-Version:        0.4.34
+Version:        0.4.38
 Release:        0%{?dist}
 Group:          System Environment/Libraries
 License:        BSD
@@ -106,7 +106,6 @@ rm -rf %{buildroot}
 %{_libdir}/liborc-*.so
 %{_libdir}/pkgconfig/%{name}-0.4.pc
 %{_libdir}/pkgconfig/%{name}-test-0.4.pc
-%{_datadir}/aclocal/%{name}.m4
 
 %files compiler
 %defattr(-,root,root,-)
@@ -115,6 +114,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 0.4.38-0
+- x86: account for XSAVE when checking for AVX support, fixing usage on
+  hardened linux kernels where AVX support has been disabled
+- neon: Use the real intrinsics for divf and sqrtf
+- orc.m4 for autotools is no longer shipped. If anyone still uses
+  it they can copy it into their source tree
+
 * Wed Oct 11 2023 Anton Novojilov <andy@essentialkaos.com> - 0.4.34-0
 - Thread-safety improvements around orc codemem allocation/freeing
 - Add orc_parse_code() with more detailed error reporting
