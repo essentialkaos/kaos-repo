@@ -10,7 +10,7 @@
 
 Summary:        Distributed reliable key-value store for the most critical data of a distributed system
 Name:           etcd
-Version:        3.5.11
+Version:        3.5.13
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        APLv2
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 3.5.13-0
+- https://github.com/etcd-io/etcd/releases/tag/v3.5.13
+
 * Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 3.5.11-0
 - https://github.com/etcd-io/etcd/releases/tag/v3.5.11
 
