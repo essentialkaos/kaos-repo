@@ -2,7 +2,7 @@ package main
 
 // ////////////////////////////////////////////////////////////////////////////////// //
 //                                                                                    //
-//                         Copyright (c) 2023 ESSENTIAL KAOS                          //
+//                         Copyright (c) 202 ESSENTIAL KAOS                          //
 //      Apache License, Version 2.0 <https://www.apache.org/licenses/LICENSE-2.0>     //
 //                                                                                    //
 // ////////////////////////////////////////////////////////////////////////////////// //
@@ -249,13 +249,13 @@ func listDeletions(changes Changes) {
 
 // parseChangeInfo parses change info
 func parseChangeInfo(line string) Change {
-	changeType := strutil.ReadField(line, 0, true, " ", "\t")
+	changeType := strutil.ReadField(line, 0, true, ' ', '\t')
 
 	switch changeType {
 	case TYPE_ADDED, TYPE_DELETED, TYPE_MODIFIED:
 		return Change{
 			Type: changeType,
-			File: strutil.ReadField(line, 1, true, " ", "\t"),
+			File: strutil.ReadField(line, 1, true, ' ', '\t'),
 		}
 	}
 
@@ -265,8 +265,8 @@ func parseChangeInfo(line string) Change {
 
 	return Change{
 		Type:       TYPE_RENAMED,
-		File:       strutil.ReadField(line, 2, true, " ", "\t"),
-		Source:     strutil.ReadField(line, 1, true, " ", "\t"),
+		File:       strutil.ReadField(line, 2, true, ' ', '\t'),
+		Source:     strutil.ReadField(line, 1, true, ' ', '\t'),
 		Similarity: extractSimilarityIndex(changeType),
 	}
 }
