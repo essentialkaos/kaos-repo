@@ -17,7 +17,7 @@
 
 Summary:         Cron daemon for executing programs at set times
 Name:            cronie
-Version:         1.7.1
+Version:         1.7.2
 Release:         0%{?dist}
 License:         MIT and BSD and ISC and GPLv2
 Group:           System Environment/Base
@@ -241,6 +241,9 @@ systemctl try-restart %{service_name}.service &>/dev/null || :
 ################################################################################
 
 %changelog
+* Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
+- https://github.com/cronie-crond/cronie/releases/tag/cronie-1.7.2
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
 - https://github.com/cronie-crond/cronie/releases/tag/cronie-1.7.1
 
