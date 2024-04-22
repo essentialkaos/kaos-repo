@@ -6,7 +6,7 @@
 
 Summary:        A program for synchronizing files over a network
 Name:           rsync
-Version:        3.2.7
+Version:        3.3.0
 Release:        0%{?dist}
 License:        GPLv3+
 Group:          Applications/Internet
@@ -115,8 +115,11 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 3.3.0-0
+- https://github.com/RsyncProject/rsync/blob/v3.3.0/NEWS.md
+
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 3.2.7-0
-- https://github.com/WayneD/rsync/blob/v3.2.7/NEWS.md
+- https://github.com/RsyncProject/rsync/blob/v3.2.7/NEWS.md
 
 * Wed Feb 07 2018 Anton Novojilov <andy@essentialkaos.com> - 3.1.3-0
 - Updated to latest stable release

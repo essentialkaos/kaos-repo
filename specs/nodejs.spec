@@ -16,7 +16,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs
-Version:        20.11.0
+Version:        20.12.2
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -106,6 +106,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 20.12.2-0
+- https://nodejs.org/en/blog/release/v20.12.2
+
+* Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 20.11.1-0
+- https://nodejs.org/en/blog/release/v20.11.1
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 20.11.0-0
 - https://nodejs.org/en/blog/release/v20.11.0
 

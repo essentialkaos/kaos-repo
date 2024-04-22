@@ -6,7 +6,7 @@
 
 Summary:        A GNU tool for automatically configuring source code
 Name:           autoconf
-Version:        2.71
+Version:        2.72
 Release:        0%{?dist}
 License:        GPLv2+ and GFDL
 Group:          Development/Tools
@@ -82,5 +82,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 2.72-0
+- Updated to the latest stable release
+
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.71-0
 - Initial build for EK repository

@@ -17,7 +17,7 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.6
-%define pcre_ver      10.42
+%define pcre_ver      10.43
 %define openssl_ver   1.1.1w
 %define ncurses_ver   6.4
 %define readline_ver  8.2
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.25
+Version:        2.4.26
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -231,6 +231,70 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.26-0
+- BUG/MINOR: sock: mark abns sockets as non-suspendable and always unbind them
+- BUG/MEDIUM: connection: report connection errors even when no mux is installed
+- DOC: configuration: typo req.ssl_hello_type
+- BUG/MEDIUM: mux-h2: Report too large HEADERS frame only when rxbuf is empty
+- DOC: config: Update documentation about local haproxy response
+- BUG/MEDIUM: stconn: Forward shutdown on write timeout only if it is
+  forwardable
+- BUG/MEDIUM: spoe: Never create new spoe applet if there is no server up
+- BUG/MEDIUM: cli: some err/warn msg dumps add LR into CSV output on stat's CLI
+- BUG/MINOR: vars/cli: fix missing LF after "get var" output
+- BUG/MEDIUM: pool: fix rare risk of deadlock in pool_flush()
+- BUG/MINOR: h1-htx: properly initialize the err_pos field
+- BUG/MINOR: h1: Don't support LF only at the end of chunks
+- BUG/MEDIUM: h1: Don't support LF only to mark the end of a chunk size
+- BUG/MEDIUM: h1: always reject the NUL character in header values
+- BUG/MAJOR: ssl_sock: Always clear retry flags in read/write functions
+- BUG/MINOR: ssl: Clear the ckch instance when deleting a crt-list line
+- BUILD: address a few remaining calloc(size, n) cases
+- DOC: configuration: clarify http-request wait-for-body
+- DOC: install: recommend pcre2
+- DOC: internal: update missing data types in peers-v2.0.txt
+- CI: Update to actions/cache@v4
+- DEV: makefile: add a new "range" target to iteratively build all commits
+- DEV: makefile: fix POSIX compatibility for "range" target
+- BUG/MEDIUM: hlua: Don't loop if a lua socket does not consume received data
+- BUG/MINOR: ist: allocate nul byte on istdup
+- BUG/MINOR: ssl/cli: duplicate cleaning code in cli_parse_del_crtlist
+- DOC: configuration: clarify ciphersuites usage
+- BUG/MINOR: hlua: Fix log level to the right value when set via
+  TXN:set_loglevel
+- MINOR: hlua: Be able to disable logging from lua
+- BUG/MINOR: tools: seed the statistical PRNG slightly better
+- BUG/MINOR: hlua: fix unsafe lua_tostring() usage with empty stack
+- BUG/MINOR: hlua: don't use lua_tostring() from unprotected contexts
+- BUG/MEDIUM: hlua: improper lock usage with SET_SAFE_LJMP()
+- BUG/MAJOR: hlua: improper lock usage with hlua_ctx_resume()
+- BUG/MINOR: cfgparse: report proper location for log-format-sd errors
+- DOC: configuration: clarify ciphersuites usage (V2)
+- BUG/MINOR: ssl: fix possible ctx memory leak in sample_conv_aes_gcm()
+- BUG/MINOR: listener: Wake proxy's mngmt task up if necessary on session
+  release
+- BUG/MINOR: listener: Don't schedule frontend without task in
+  listener_release()
+- BUG/MEDIUM: spoe: Don't rely on stream's expiration to detect processing
+  timeout
+- BUG/MINOR: spoe: Be sure to be able to quickly close IDLE applets on soft-stop
+- CI: temporarily adjust kernel entropy to work with ASAN/clang
+- BUG/MEDIUM: spoe: Return an invalid frame on recv if size is too small
+- BUG/MINOR: session: ensure conn owner is set after insert into session
+- BUG/MEDIUM: mux-fcgi: Properly handle EOM flag on end-of-trailers HTX block
+- BUG/MINOR: server: 'source' interface ignored from 'default-server' directive
+- BUG/MINOR: server: ignore 'enabled' for dynamic servers
+- BUG/MINOR: backend: properly handle redispatch 0
+- BUG/MINOR: ist: only store NUL byte on succeeded alloc
+- DEBUG: lua: precisely identify if stream is stuck inside lua or not
+- MINOR: hlua: use accessors for stream hlua ctx
+- BUG/MEDIUM: hlua: streams don't support mixing lua-load with
+  lua-load-per-thread (2nd try)
+- BUG/MINOR: proxy: fix logformat expression leak in use_backend rules
+
+* Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.25-1
+- PCRE2 updated to 10.43
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.25-0
 - BUG/MEDIUM: dns: Be sure to unlock DSS when existing dns_session_io_handler()
 - BUG/MINOR: hlua: fix invalid use of lua_pop on error paths

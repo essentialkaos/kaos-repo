@@ -8,14 +8,15 @@
 
 ################################################################################
 
-%define jdk_major  392
-%define jdk_minor  b08
+%define jdk_major  402
+%define jdk_minor  b06
+%define jdk_patch  %{nil}
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  865
+%define alt_priority  866
 
 ################################################################################
 
@@ -23,7 +24,7 @@ Summary:      OpenJDK Runtime Environment (JDK 8)
 Name:         jdk8
 Epoch:        1
 Version:      1.8.0.%{jdk_major}
-Release:      %{jdk_minor}%{?dist}
+Release:      %{jdk_minor}%{jdk_patch}%{?dist}
 Group:        Development/Languages
 License:      ASL 1.1 and ASL 2.0 and BSD and BSD with advertising and GPL+ and GPLv2 and GPLv2 with exceptions and IJG and LGPLv2+ and MIT and MPLv2.0 and Public Domain and W3C and zlib
 URL:          https://adoptium.net
@@ -111,6 +112,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.402-b06
+- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk8u402-b06
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.392-b08
 - https://adoptium.net/en-GB/temurin/release-notes/?version=jdk8u392-b08
 

@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.2.31
+Version:        2.2.33
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -227,6 +227,88 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.2.33-0
+- DOC: configuration: typo req.ssl_hello_type
+- BUG/MEDIUM: mux-h2: Report too large HEADERS frame only when rxbuf is empty
+- BUG/MEDIUM: stconn: Forward shutdown on write timeout only if it
+  is forwardable
+- BUG/MEDIUM: spoe: Never create new spoe applet if there is no server up
+- BUG/MEDIUM: cli: some err/warn msg dumps add LR into CSV output on stat's CLI
+- BUG/MEDIUM: pool: fix rare risk of deadlock in pool_flush()
+- BUG/MINOR: h1-htx: properly initialize the err_pos field
+- BUG/MEDIUM: h1: always reject the NUL character in header values
+- BUG/MAJOR: ssl_sock: Always clear retry flags in read/write functions
+- DOC: internal: update missing data types in peers-v2.0.txt
+- CI: Update to actions/cache@v4
+- BUG/MINOR: hlua: Fix log level to the right value when set via
+  TXN:set_loglevel
+- BUG/MINOR: cfgparse: report proper location for log-format-sd errors
+- BUG/MINOR: ssl: fix possible ctx memory leak in sample_conv_aes_gcm()
+- BUG/MEDIUM: spoe: Return an invalid frame on recv if size is too small
+- BUG/MINOR: session: ensure conn owner is set after insert into session
+- BUG/MINOR: server: 'source' interface ignored from 'default-server' directive
+- BUG/MINOR: backend: properly handle redispatch 0
+- CLEANUP: pools: remove unused arguments to pool_evict_from_cache()
+- BUG/MEDIUM: spoe: Don't rely on stream's expiration to detect processing
+  timeout
+
+* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.2.32-0
+- BUG/MINOR: stktable: allow sc-set-gpt(0) from tcp-request connection
+- SCRIPTS: git-show-backports: automatic ref and base detection with -m
+- DOC: lua: fix core.register_action typo
+- BUG/MEDIUM: stconn: Wake applets on sending path if there is a pending
+  shutdown
+- BUG/MEDIUM: stconn/stream: Forward shutdown on write timeout
+- BUG/MINOR: hlua/action: incorrect message on E_YIELD error
+- CI: Update to actions/checkout@v4
+- BUG/MEDIUM: hlua: don't pass stale nargs argument to lua_resume()
+- MINOR: buf: Add b_force_xfer() function
+- BUG/MEDIUM: mux-fcgi: Don't swap trash and dbuf when handling STDERR records
+- BUG/MINOR: freq_ctr: fix possible negative rate with the scaled API
+- BUG/MAJOR: mux-h2: Report a protocol error for any DATA frame before headers
+- MINOR: pattern: fix pat_{parse,match}_ip() function comments
+- BUG/MINOR: hlua: fix invalid use of lua_pop on error paths
+- BUG/MINOR: hlua_fcn: potentially unsafe stktable_data_ptr usage
+- BUILD: ssl: buggy -Werror=dangling-pointer since gcc 13.0
+- BUG/MEDIUM: actions: always apply a longest match on prefix lookup
+- BUG/MEDIUM: mux-h2: Don't report an error on shutr if a shutw is pending
+- BUG/MEDIUM: peers: Be sure to always refresh recconnect timer in sync task
+- BUG/MINOR: mux-h2: commit the current stream ID even on reject
+- BUG/MINOR: ssl: suboptimal certificate selection with TLSv1.3 and dual
+  ECDSA/RSA
+- BUG/MEDIUM: ssl: segfault when cipher is NULL
+- BUG/MINOR: tcpcheck: Report hexstring instead of binary one on check failure
+- BUG/MINOR: stktable: missing free in parse_stick_table()
+- BUG/MINOR: cfgparse/stktable: fix error message on stktable_init() failure
+- BUG/MINOR: stick-table/cli: Check for invalid ipv4 key
+- DOC: management: -q is quiet all the time
+- DOC: config: use the word 'backend' instead of 'proxy' in 'track' description
+- BUG/MINOR: stconn: Handle abortonclose if backend connection was already
+  set up
+- MINOR: connection: Add a CTL flag to notify mux it should wait for reads again
+- MEDIUM: mux-h1: Handle MUX_SUBS_RECV flag in h1_ctl() and susbscribe for reads
+- BUG/MEDIUM: stream: Properly handle abortonclose when set on backend only
+- REGTESTS: http: Improve script testing abortonclose option
+- BUG/MEDIUM: stream: Don't call mux .ctl() callback if not implemented
+- MINOR: htx: Use a macro for overhead induced by HTX
+- MINOR: channel: Add functions to get info on buffers and deal with HTX streams
+- BUG/MINOR: stconn: Fix streamer detection for HTX streams
+- BUG/MINOR: stconn: Use HTX-aware channel's functions to get info on buffer
+- BUG/MEDIUM: mux-h2: fail earlier on malloc in takeover()
+- BUG/MEDIUM: mux-h1: fail earlier on malloc in takeover()
+- BUG/MEDIUM: mux-fcgi: fail earlier on malloc in takeover()
+- REGTESTS: http: add a test to validate chunked responses delivery
+- DOC: 51d: updated 51Degrees repo URL for v3.2.10
+- DOC: config: specify supported sections for "max-session-srv-conns"
+- DOC: config: add matrix entry for "max-session-srv-conns"
+- REGTESTS: sample: Test the behavior of consecutive delimiters for the field
+  converter
+- BUG/MINOR: sample: Make the `word` converter compatible with `-m found`
+- DOC: Clarify the differences between field() and word()
+- BUG/MINOR: startup: set GTUNE_SOCKET_TRANSFER correctly
+- BUILD: ssl: work around bogus warning in gcc 12's -Wformat-truncation
+- BUG/MEDIUM: ssl: fix the gcc-12 broken fix :-(
+
 * Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.31-0
 - BUG/MINOR: server: inherit from netns in srv_settings_cpy()
 - BUG/MINOR: namespace: missing free in netns_sig_stop()

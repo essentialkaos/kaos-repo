@@ -251,11 +251,6 @@ command "GOOS=openbsd GOARCH=arm64 go build -o test_openbsd_arm64 test.go" "Comp
   exist test_openbsd_arm64
   !empty test_openbsd_arm64
 
-command "GOOS=openbsd GOARCH=mips64 go build -o test_openbsd_mips64 test.go" "Compile openbsd/mips64"
-  exit 0
-  exist test_openbsd_mips64
-  !empty test_openbsd_mips64
-
 ## Plan9 #######################################################################
 
 command "GOOS=plan9 GOARCH=386 go build -o test_plan9_386 test.go" "Compile plan9/386"
