@@ -3,7 +3,7 @@
 
 pkg erlang26
 
-var libressl_ver 3.8.4
+var libressl_ver 3.9.2
 
 var epmd_service epmd
 var epmd_port    4369

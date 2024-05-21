@@ -21,10 +21,9 @@
 
 %define elibdir     %{_libdir}/erlang/lib
 %define eprefix     %{_prefix}%{_lib32}
-%define ver_maj     26
-%define ver_min     2
-%define ver_patch   5
-%define ver_suffix  %{ver_min}.%{ver_patch}
+%define ver_maj     27
+%define ver_min     0
+%define ver_suffix  %{ver_min}%{?ver_patch:.%{ver_patch}}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
@@ -76,7 +75,6 @@ Requires:       %{name}-dialyzer = %{version}
 Requires:       %{name}-diameter = %{version}
 Requires:       %{name}-edoc = %{version}
 Requires:       %{name}-eldap = %{version}
-Requires:       %{name}-erl_docgen = %{version}
 Requires:       %{name}-erl_interface = %{version}
 Requires:       %{name}-et = %{version}
 Requires:       %{name}-eunit = %{version}
@@ -131,7 +129,6 @@ Requires:  %{name}-diameter = %{version}
 Requires:  %{name}-edoc = %{version}
 Requires:  %{name}-eldap = %{version}
 Requires:  %{name}-emacs = %{version}
-Requires:  %{name}-erl_docgen = %{version}
 Requires:  %{name}-erl_interface = %{version}
 Requires:  %{name}-et = %{version}
 Requires:  %{name}-eunit = %{version}
@@ -373,18 +370,6 @@ Requires:  %{name}-base = %{version}-%{release}
 Debugger is a graphical tool which can be used for debugging and testing
 of Erlang programs. For example, breakpoints can be set, code can be single
 stepped and variable values can be displayed and changed.
-
-################################################################################
-
-%package -n %{name}-erl_docgen
-Summary:  Documentation generator
-License:  MPL
-Group:    Development/Tools
-
-Requires:  %{name}-base = %{version}-%{release}
-
-%description -n %{name}-erl_docgen
-Documentation generator for erlang.
 
 ################################################################################
 
@@ -926,10 +911,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_sysconfdir}/emacs/site-start.d/erlang.el
 
-%files -n %{name}-erl_docgen
-%defattr(-,root,root,-)
-%{elibdir}/erl_docgen-*
-
 %files -n %{name}-erl_interface
 %defattr(-,root,root,-)
 %{elibdir}/erl_interface-*
@@ -1033,31 +1014,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Wed May 22 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.5-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.2.5
-- LibreSSL updated to 3.9.2
-
-* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.4-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.2.4
-- LibreSSL updated to 3.8.4
-
-* Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.3-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.2.3
-- LibreSSL updated to 3.8.3
-
-* Thu Dec 21 2023 Anton Novojilov <andy@essentialkaos.com> - 26.2.1-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.2.1
-- LibreSSL updated to 3.8.2
-
-* Sun Oct 15 2023 Anton Novojilov <andy@essentialkaos.com> - 26.1.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.1.2
-
-* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 26.1.1-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.1.1
-- LibreSSL updated to 3.8.1
-
-* Mon Jul 10 2023 Anton Novojilov <andy@essentialkaos.com> - 26.0.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.0.2
-
-* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 26.0.1-0
-- https://github.com/erlang/otp/releases/tag/OTP-26.0.1
+* Wed May 22 2024 Anton Novojilov <andy@essentialkaos.com> - 27.0-0
+- https://github.com/erlang/otp/releases/tag/OTP-27.0
