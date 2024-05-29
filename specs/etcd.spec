@@ -10,7 +10,7 @@
 
 Summary:        Distributed reliable key-value store for the most critical data of a distributed system
 Name:           etcd
-Version:        3.5.13
+Version:        3.5.14
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        APLv2
@@ -22,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  git golang >= 1.20
+BuildRequires:  git golang >= 1.21
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 3.5.14-0
+- https://github.com/etcd-io/etcd/releases/tag/v3.5.14
+
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 3.5.13-0
 - https://github.com/etcd-io/etcd/releases/tag/v3.5.13
 
