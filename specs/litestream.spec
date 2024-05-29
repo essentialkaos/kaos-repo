@@ -61,7 +61,7 @@ install -dm 755 %{buildroot}%{_unitdir}
 install -pm 755 github.com/benbjohnson/%{name}/%{name} \
                 %{buildroot}%{_bindir}/
 # perfecto:ignore
-install -pm 644 github.com/benbjohnson/%{name}/etc/%{name}.yml \
+install -pm 640 github.com/benbjohnson/%{name}/etc/%{name}.yml \
                 %{buildroot}%{_sysconfdir}/
 # perfecto:ignore
 install -pm 644 github.com/benbjohnson/%{name}/etc/%{name}.service \
