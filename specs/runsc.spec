@@ -14,6 +14,7 @@ Source1:        https://storage.googleapis.com/gvisor/releases/release/%{version
 Source10:       https://storage.googleapis.com/gvisor/releases/release/%{version}/x86_64/runsc.sha512
 Source11:       https://storage.googleapis.com/gvisor/releases/release/%{version}/x86_64/containerd-shim-runsc-v1.sha512
 
+Requires:       docker-ce systemd kernel > 4.14.77
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -45,6 +46,22 @@ install -pDm 755 %{SOURCE1} \
 
 %clean
 rm -rf %{buildroot}
+
+%post
+if [[ $1 -eq 1 ]] ; then
+  %{_bindir}/runsc install &>/dev/null || :
+  systemctl reload docker &>/dev/null || :
+fi
+
+%preun
+if [[ $1 -eq 0 ]] ; then
+  systemctl reload docker &>/dev/null || :
+fi
+
+%postun
+if [[ $1 -ge 1 ]] ; then
+  systemctl daemon-reload &>/dev/null || :
+fi
 
 ################################################################################
 
