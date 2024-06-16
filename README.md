@@ -1,4 +1,4 @@
-<p align="center"><a href="#readme"><img src="https://gh.kaos.st/kaos-repo.svg"/></a></p>
+<p align="center"><a href="#readme"><img src=".github/images/card.svg"/></a></p>
 
 <p align="center"><a href="#installation">Installation</a> • <a href="#contributing-guidelines">Contributing Guidelines</a> • <a href="#deletion-policy">Deletion Policy</a> • <a href="#end-of-support-schedule">EoS Schedule</a> • <a href="#perfecto-and-bibop-check-status">CI status</a> • <a href="#license">License</a></p>
 
@@ -53,6 +53,8 @@ Please find a minute to check out our main [Contributing Guidelines](https://kao
 ### Deletion Policy
 
 Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (_especially with known vulnerabilities_) of software, it would be deleted from the repository.
+
+We keep at least the last 5 minor versions (_with all releases_) of each package. In some cases (_e.g. programming languages_) we keep more versions of packages. If a version has a critical security vulnerability it may be removed from the repository at any time.
 
 ### End-of-Support Schedule
 

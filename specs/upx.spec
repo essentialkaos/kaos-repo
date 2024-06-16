@@ -6,7 +6,7 @@
 
 Summary:        Ultimate Packer for eXecutables
 Name:           upx
-Version:        4.2.3
+Version:        4.2.4
 Release:        0%{?dist}
 License:        GPLv2+ and Public Domain
 Group:          Applications/Archiving
@@ -73,11 +73,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu May 30 2024 Anton Novojilov <andy@essentialkaos.com> - 4.2.4-0
+- https://github.com/upx/upx/milestone/17
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 4.2.3-0
-- https://github.com/upx/upx/blob/v4.2.3/NEWS
+- https://github.com/upx/upx/milestone/16
 
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 4.2.2-0
-- https://github.com/upx/upx/blob/v4.2.2/NEWS
+- https://github.com/upx/upx/milestone/15
 
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 4.2.1-0
 - https://github.com/upx/upx/blob/v4.2.1/NEWS

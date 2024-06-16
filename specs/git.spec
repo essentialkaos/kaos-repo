@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.44.0
+Version:        2.45.1
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -283,6 +283,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.1.txt
+
+* Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.0.txt
+
+* Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.44.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.44.1.txt
+
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 2.44.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.44.0.txt
 
