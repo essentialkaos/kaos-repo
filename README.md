@@ -54,6 +54,8 @@ Please find a minute to check out our main [Contributing Guidelines](https://kao
 
 Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (_especially with known vulnerabilities_) of software, it would be deleted from the repository.
 
+We keep at least the last 5 minor versions (_with all releases_) of each package. In some cases (_e.g. programming languages_) we keep more versions of packages. If a version has a critical security vulnerability it may be removed from the repository at any time.
+
 ### End-of-Support Schedule
 
 | EL version | Updates     | Repository removal |
