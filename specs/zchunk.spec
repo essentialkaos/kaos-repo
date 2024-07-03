@@ -8,7 +8,7 @@
 
 ################################################################################
 
-Summary:        A file format designed for highly efficient deltas while maintaining good compression
+Summary:        Compressed file format that allows easy deltas
 Name:           zchunk
 Version:        1.4.0
 Release:        0%{?dist}

@@ -11,7 +11,7 @@
 
 ################################################################################
 
-Summary:         Efficient table content comparison and synchronization for PostgreSQL %{pg_ver}
+Summary:         A tool to compare and sync tables in different locations
 Name:            %{realname}%{pg_ver}
 Version:         2.3.2
 Release:         0%{?dist}

@@ -8,7 +8,7 @@
 
 ################################################################################
 
-Summary:         A search tool that combines the usability of ag with the raw speed of grep
+Summary:         Line-oriented search tool
 Name:            ripgrep
 Version:         14.1.0
 Release:         0%{?dist}

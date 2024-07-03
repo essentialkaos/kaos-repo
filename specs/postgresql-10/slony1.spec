@@ -17,7 +17,7 @@
 
 ################################################################################
 
-Summary:        A "master to multiple slaves" replication system with cascading and failover
+Summary:        Master to multiple slaves replication system for PostgreSQL
 Name:           %{realname}-%{pg_maj_ver}
 Version:        2.2.11
 Release:        0%{?dist}

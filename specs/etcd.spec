@@ -8,7 +8,7 @@
 
 ################################################################################
 
-Summary:        Distributed reliable key-value store for the most critical data of a distributed system
+Summary:        A highly-available key value store for shared configuration
 Name:           etcd
 Version:        3.5.14
 Release:        0%{?dist}

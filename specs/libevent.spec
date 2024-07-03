@@ -1,18 +1,18 @@
 ################################################################################
 
-Summary:              Abstract asynchronous event notification library
-Name:                 libevent
-Version:              1.4.15
-Release:              0%{?dist}
-License:              BSD
-Group:                System Environment/Libraries
-URL:                  http://libevent.org/
+Summary:        Abstract asynchronous event notification library
+Name:           libevent
+Version:        1.4.15
+Release:        0%{?dist}
+License:        BSD
+Group:          System Environment/Libraries
+URL:            https://libevent.org
 
-Source:               https://github.com/libevent/libevent/archive/release-%{version}-stable.tar.gz
+Source:         https://github.com/libevent/libevent/archive/release-%{version}-stable.tar.gz
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc make automake libtool doxygen openssl-devel
+BuildRequires:  gcc make automake libtool doxygen openssl-devel
 
 ################################################################################
 
@@ -27,9 +27,9 @@ without having to change the event loop.
 ################################################################################
 
 %package devel
-Summary:              Header files, libraries and development documentation for %{name}
-Group:                Development/Libraries
-Requires:             %{name} = %{version}-%{release}
+Summary:  Header files, libraries and development documentation for %{name}
+Group:    Development/Libraries
+Requires: %{name} = %{version}-%{release}
 
 %description devel
 This package contains the header files, static libraries and development
@@ -39,10 +39,10 @@ you will need to install %{name}-devel.
 ################################################################################
 
 %package doc
-Summary:              Development documentation for %{name}
-Group:                Development/Libraries
-Requires:             %{name}-devel = %{version}-%{release}
-BuildArch:            noarch
+Summary:    Development documentation for %{name}
+Group:      Development/Libraries
+Requires:   %{name}-devel = %{version}-%{release}
+BuildArch:  noarch
 
 %description doc
 This package contains the development documentation for %{name}.

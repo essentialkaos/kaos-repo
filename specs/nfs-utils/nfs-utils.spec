@@ -60,7 +60,7 @@
 
 ################################################################################
 
-Summary:              NFS utilities and supporting clients and daemons for the kernel NFS server
+Summary:              Network File System utilities
 Name:                 nfs-utils
 Epoch:                1
 Version:              1.3.4

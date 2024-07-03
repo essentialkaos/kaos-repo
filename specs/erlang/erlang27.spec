@@ -451,14 +451,14 @@ a Web server.
 ################################################################################
 
 %package -n %{name}-megaco
-Summary:  Framework for building applications on top of the Megaco/H.248 protocol
+Summary:  Framework for building applications on top of the H.248 protocol
 License:  MPL
 Group:    Development/Tools
 
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-megaco
-Megaco/H.248 is a protocol for control of elements in a physically decomposed
+H.248 is a protocol for control of elements in a physically decomposed
 multimedia gateway, enabling separation of call control from media conversion.
 
 ################################################################################
