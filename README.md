@@ -9,16 +9,12 @@ This repository contains spec files and patches used for building RPM packages f
 ### Installation
 
 ```bash
-sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 ```
 
 Some packages have dependencies from [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by following commands:
 
 ```bash
-# CentOS 7 / Alma / Rocky
-sudo yum install -y epel-release
-# Oracle Linux 7
-sudo yum install -y oracle-epel-release-el7
 # Oracle Linux 8
 sudo dnf install -y oracle-epel-release-el8
 # Oracle Linux 9
@@ -34,12 +30,6 @@ sudo dnf config-manager --set-enabled crb
 sudo dnf config-manager --set-enabled ol8_codeready_builder
 # Oracle Linux 9
 sudo dnf config-manager --set-enabled ol9_codeready_builder
-```
-
-Building some packages for EL 7 requires [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository. You could add this repository by following command:
-
-```bash
-sudo yum install -y centos-release-scl
 ```
 
 ### Contributing Guidelines
