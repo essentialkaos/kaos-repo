@@ -23,7 +23,7 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     26
 %define ver_min     2
-%define ver_patch   5
+%define ver_patch   5.2
 %define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
@@ -1033,6 +1033,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.5.2-0
+- https://github.com/erlang/otp/releases/tag/OTP-26.2.5.2
+
 * Wed May 22 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.5-0
 - https://github.com/erlang/otp/releases/tag/OTP-26.2.5
 - LibreSSL updated to 3.9.2

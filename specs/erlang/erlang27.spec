@@ -23,6 +23,7 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     27
 %define ver_min     0
+%define ver_patch   1
 %define ver_suffix  %{ver_min}%{?ver_patch:.%{ver_patch}}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
@@ -1014,5 +1015,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2024 Anton Novojilov <andy@essentialkaos.com> - 27.0.1-0
+- https://github.com/erlang/otp/releases/tag/OTP-27.0.1
+
 * Wed May 22 2024 Anton Novojilov <andy@essentialkaos.com> - 27.0-0
 - https://github.com/erlang/otp/releases/tag/OTP-27.0
