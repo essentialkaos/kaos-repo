@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:         Command-line benchmarking tool
-Name:            hyperfine
-Version:         1.18.0
-Release:         0%{?dist}
-Group:           Applications/Text
-License:         MIT or Unlicense
-URL:             https://github.com/sharkdp/hyperfine
+Summary:        Command-line benchmarking tool
+Name:           hyperfine
+Version:        1.18.0
+Release:        0%{?dist}
+Group:          Applications/Text
+License:        MIT or Unlicense
+URL:            https://github.com/sharkdp/hyperfine
 
-Source0:         https://github.com/sharkdp/%{name}/archive/refs/tags/v%{version}.tar.gz
+Source0:        https://github.com/sharkdp/%{name}/archive/refs/tags/v%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   cargo
+BuildRequires:  cargo
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
