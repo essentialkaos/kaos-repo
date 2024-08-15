@@ -10,7 +10,7 @@
 
 Summary:        C library for the MaxMind DB file format
 Name:           libmaxminddb
-Version:        1.9.1
+Version:        1.10.0
 Release:        0%{?dist}
 License:        Apache-2.0
 Group:          Development/Libraries
@@ -108,6 +108,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
+- https://github.com/maxmind/libmaxminddb/releases/tag/1.10.0
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.9.1-0
 - https://github.com/maxmind/libmaxminddb/releases/tag/1.9.1
 
