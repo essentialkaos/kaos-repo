@@ -2,7 +2,7 @@
 
 Summary:        The Container Security Platform
 Name:           runsc
-Version:        20240603
+Version:        20240807
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        MIT
@@ -73,5 +73,8 @@ fi
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 20240807-0
+- https://github.com/google/gvisor/releases/tag/release-20240807.0
+
 * Thu Jun 06 2024 Anton Novojilov <andy@essentialkaos.com> - 20240603-0
 - Initial build for kaos-repo
