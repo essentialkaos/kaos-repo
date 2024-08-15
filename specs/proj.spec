@@ -13,13 +13,13 @@
 
 ################################################################################
 
-%define data_version  1.9
+%define data_version  1.18
 
 ################################################################################
 
 Summary:           Cartographic projection software (PROJ)
 Name:              proj
-Version:           9.3.0
+Version:           9.4.1
 Release:           0%{?dist}
 License:           MIT
 Group:             Applications/Engineering
@@ -131,7 +131,6 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc NEWS AUTHORS COPYING README ChangeLog
 %{_bindir}/*
 %{_libdir}/libproj.so.*
 %{_mandir}/man1/*.1*
@@ -168,12 +167,14 @@ rm -rf %{buildroot}
 
 %files data-world
 %defattr(-,root,root,-)
+%{_datadir}/%{name}/ar_*
 %{_datadir}/%{name}/at_*
 %{_datadir}/%{name}/au_*
 %{_datadir}/%{name}/be_*
 %{_datadir}/%{name}/br_*
 %{_datadir}/%{name}/ca_*
 %{_datadir}/%{name}/ch_*
+%{_datadir}/%{name}/cz_*
 %{_datadir}/%{name}/de_*
 %{_datadir}/%{name}/DK
 %{_datadir}/%{name}/dk_*
@@ -194,6 +195,7 @@ rm -rf %{buildroot}
 %{_datadir}/%{name}/pl_*
 %{_datadir}/%{name}/pt_*
 %{_datadir}/%{name}/se_*
+%{_datadir}/%{name}/si_*
 %{_datadir}/%{name}/sk_*
 %{_datadir}/%{name}/uk_*
 %{_datadir}/%{name}/us_*
@@ -202,6 +204,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 9.4.1-0
+- https://proj.org/en/9.4/news.html
+
 * Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 9.3.0-0
 - https://proj.org/en/9.3/news.html
 
