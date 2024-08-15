@@ -6,7 +6,7 @@
 
 Summary:        GeoTIFF format library
 Name:           libgeotiff
-Version:        1.7.1
+Version:        1.7.3
 Release:        0%{?dist}
 License:        MIT
 Group:          System Environment/Libraries
@@ -134,6 +134,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.7.3-0
+- https://github.com/OSGeo/libgeotiff/releases/tag/1.7.3
+
 * Sat Sep 24 2022 Anton Novojilov <andy@essentialkaos.com> - 1.7.1-0
 - https://github.com/OSGeo/libgeotiff/releases/tag/1.7.1
 
