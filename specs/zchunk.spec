@@ -10,7 +10,7 @@
 
 Summary:        Compressed file format that allows easy deltas
 Name:           zchunk
-Version:        1.4.0
+Version:        1.5.1
 Release:        0%{?dist}
 License:        BSD and MIT
 Group:          Development/Libraries
@@ -136,6 +136,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
+- https://github.com/zchunk/zchunk/compare/1.4.0...1.5.1
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
 - https://github.com/zchunk/zchunk/compare/1.3.2...1.4.0
 
