@@ -10,40 +10,27 @@
 
 ################################################################################
 
-%define realname  gdal
-
-%if 0%{?rhel} <= 7
-%define fullname  %{realname}3
-%else
-%define fullname  %{realname}
-%endif
-
 # The oldest supported PG version
-%define pg_short_ver  10
+%define pg_short_ver  12
 %define pg_lib_dir    %{_prefix}/pgsql-%{pg_short_ver}/lib
 
 ################################################################################
 
 Summary:        A translator library for raster and vector geospatial data formats
-Name:           %{fullname}
-Version:        3.7.3
+Name:           gdal
+Version:        3.9.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
 URL:            https://www.gdal.org
 
-Source0:        https://download.osgeo.org/%{realname}/%{version}/%{realname}-%{version}.tar.gz
+Source0:        https://download.osgeo.org/%{name}/%{version}/%{name}-%{version}.tar.gz
 
 Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if 0%{?rhel} <= 7
-BuildRequires:  cmake3
-%else
 BuildRequires:  cmake swig
-%endif
-
 BuildRequires:  gcc-c++ bison expat-devel freexl-devel geos-devel hdf-devel
 BuildRequires:  libgeotiff-devel libjpeg-turbo-devel libpng-devel
 BuildRequires:  libtiff-devel libzstd-devel libwebp-devel netcdf-devel
@@ -53,7 +40,7 @@ BuildRequires:  postgresql%{pg_short_ver}-devel
 
 BuildRequires:  sqlite-devel >= %{sqlite_ver}
 BuildRequires:  libcurl-devel >= %{libcurl_ver}
-BuildRequires:  hdf5-devel = %{hdf5_ver}
+BuildRequires:  hdf5-devel >= %{hdf5_ver}
 
 Requires:       libcurl >= %{libcurl_ver}
 Requires:       sqlite-libs >= %{sqlite_ver}
@@ -100,12 +87,15 @@ Development Libraries for the GDAL file format library.
 %prep
 %{crc_check}
 
-%setup -qn %{realname}-%{version}
+%setup -qn %{name}-%{version}
 
 %build
 %{cmake3} \
-  -DCMAKE_INSTALL_INCLUDEDIR=include/%{realname} \
+  -DCMAKE_INSTALL_INCLUDEDIR=include/%{name} \
+  -DGDAL_USE_TIFF_INTERNAL=ON \
+  -DGDAL_USE_GEOTIFF_INTERNAL=ON \
   -DGDAL_USE_JPEG12_INTERNAL=OFF \
+  -DGDAL_USE_OPENEXR=OFF \
   -DBUILD_PYTHON_BINDINGS=OFF \
   -DENABLE_DEFLATE64=OFF
 
@@ -130,8 +120,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README.md NEWS.md PROVENANCE.TXT LICENSE.TXT SECURITY.md CODE_OF_CONDUCT.md
-%exclude %{_mandir}/man1/%{realname}-config.1*
-%exclude %{_bindir}/%{realname}-config*
+%exclude %{_mandir}/man1/%{name}-config.1*
+%exclude %{_bindir}/%{name}-config*
 %exclude %{_datadir}/bash-completion/completions/*.py
 %{_bindir}/*
 %{_mandir}/man1/*
@@ -139,22 +129,25 @@ rm -rf %{buildroot}
 
 %files libs
 %defattr(-,root,root)
-%{_libdir}/lib%{realname}.so.*
-%{_datadir}/%{realname}/
-%{_libdir}/%{realname}plugins/
+%{_libdir}/lib%{name}.so.*
+%{_datadir}/%{name}/
+%{_libdir}/%{name}plugins/
 
 %files devel
 %defattr(-,root,root)
-%{_bindir}/%{realname}-config*
-%{_includedir}/%{realname}/
-%{_libdir}/lib%{realname}.so
-%{_libdir}/cmake/%{realname}/
-%{_libdir}/pkgconfig/%{realname}.pc
-%{_mandir}/man1/%{realname}-config.1*
+%{_bindir}/%{name}-config*
+%{_includedir}/%{name}/
+%{_libdir}/lib%{name}.so
+%{_libdir}/cmake/%{name}/
+%{_libdir}/pkgconfig/%{name}.pc
+%{_mandir}/man1/%{name}-config.1*
 
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 3.9.1-0
+- https://github.com/OSGeo/gdal/blob/v3.9.1/NEWS.md
+
 * Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 3.7.3-0
 - https://github.com/OSGeo/gdal/blob/v3.7.3/NEWS.md
 
