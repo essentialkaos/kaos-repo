@@ -10,7 +10,7 @@
 
 Summary:        Utility for getting files from remote servers
 Name:           curl
-Version:        8.8.0
+Version:        8.9.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Applications/Internet
@@ -157,12 +157,19 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/libcurl.pc
 %{_mandir}/man3/*
+%{_mandir}/man1/curl-config.1*
 %{_datadir}/aclocal/libcurl.m4
 %exclude %{_libdir}/libcurl.la
 
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 8.9.1-0
+- https://curl.se/ch/8.9.1.html
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 8.9.0-0
+- https://curl.se/ch/8.9.0.html
+
 * Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 8.8.0-0
 - https://curl.se/changes.html#8_8_0
 
