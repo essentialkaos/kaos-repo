@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.45.1
+Version:        2.46.0
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -176,11 +176,7 @@ Perl interface to Git
 %setup -qn %{name}-%{version}
 
 %build
-%if 0%{?rhel} <= 7
-  export CFLAGS="%{optflags} -std=gnu99"
-%else
-  export CFLAGS="%{optflags}"
-%endif
+export CFLAGS="%{optflags}"
 
 %{__make} %{?_smp_mflags} CFLAGS="$CFLAGS" \
      %{path_settings} \
@@ -189,11 +185,7 @@ Perl interface to Git
 %install
 rm -rf %{buildroot}
 
-%if 0%{?rhel} <= 7
-  export CFLAGS="%{optflags} -std=gnu99"
-%else
-  export CFLAGS="%{optflags}"
-%endif
+export CFLAGS="%{optflags}"
 
 %{__make} %{?_smp_mflags} CFLAGS="$CFLAGS" DESTDIR=%{buildroot} \
      %{path_settings} \
@@ -283,6 +275,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.0.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.2-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.2.txt
+
 * Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.1-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.1.txt
 
