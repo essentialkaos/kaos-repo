@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:            Library to extract data from within an Excel spreadsheet
-Name:               freexl
-Version:            1.0.6
-Release:            0%{?dist}
-License:            MIT
-Group:              System Environment/Libraries
-URL:                https://www.gaia-gis.it/FreeXL
+Summary:        Library to extract data from within an Excel spreadsheet
+Name:           freexl
+Version:        2.0.0
+Release:        0%{?dist}
+License:        MIT
+Group:          System Environment/Libraries
+URL:            https://www.gaia-gis.it/fossil/freexl/index
 
-Source0:            https://www.gaia-gis.it/gaia-sins/freexl-sources/%{name}-%{version}.tar.gz
+Source0:        https://www.gaia-gis.it/gaia-sins/freexl-sources/%{name}-%{version}.tar.gz
 
-Source100:          checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:          %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:      make gcc doxygen
+BuildRequires:  make gcc minizip-devel expat-devel
 
-Provides:           %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -41,11 +41,11 @@ Design goals:
 ################################################################################
 
 %package devel
-Summary:            Development Libraries for FreeXL
-Group:              Development/Libraries
+Summary:   Development Libraries for FreeXL
+Group:     Development/Libraries
 
-Requires:           %{name} = %{version}-%{release}
-Requires:           pkgconfig
+Requires:  %{name} = %{version}-%{release}
+Requires:  pkgconfig
 
 %description devel
 The %{name}-devel package contains libraries and header files for
@@ -64,32 +64,17 @@ developing applications that use %{name}.
 
 %{__make} %{?_smp_mflags}
 
-# Mailed the author on Dec 5th 2011
-# Preserve date of header file
-sed -i 's/^INSTALL_HEADER = \$(INSTALL_DATA)/& -p/' headers/Makefile.in
-
-# Generate HTML documentation and clean unused installdox script
-doxygen
-
-rm -f html/installdox
-
 %install
 rm -rf %{buildroot}
 
 %{make_install}
 
-# Delete undesired libtool archives
 rm -f %{buildroot}%{_libdir}/lib%{name}.la
 
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
 %endif
-
-# Clean up
-pushd examples
-  %{__make} clean
-popd
 
 %clean
 rm -rf %{buildroot}
@@ -109,7 +94,7 @@ rm -rf %{buildroot}
 
 %files devel
 %defattr(-,root,root,-)
-%doc examples html
+%doc examples
 %{_includedir}/freexl.h
 %{_libdir}/lib%{name}.so
 %{_libdir}/pkgconfig/freexl.pc
@@ -117,6 +102,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- https://www.gaia-gis.it/gaia-sins/freexl-2.0.0-doxy-doc/html/index.html
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 1.0.6-0
 - Updated to the latest stable release
 
