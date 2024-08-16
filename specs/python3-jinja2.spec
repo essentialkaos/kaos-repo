@@ -10,8 +10,6 @@
 
 ################################################################################
 
-%define package_name  jinja2
-
 # Fix for https://github.com/pallets/jinja/issues/653
 %global _python_bytecompile_errors_terminate_build  0
 
@@ -19,13 +17,13 @@
 
 Summary:        Sandboxed template engine
 Name:           python3-jinja2
-Version:        2.10.3
+Version:        2.11.3
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
-URL:            http://jinja.pocoo.org
+URL:            https://jinja.pocoo.org
 
-Source0:        https://github.com/pallets/%{package_name}/archive/%{version}.tar.gz
+Source0:        https://github.com/pallets/jinja/archive/%{version}.tar.gz
 
 Source100:      checksum.sha512
 
@@ -35,7 +33,7 @@ BuildArch:      noarch
 
 BuildRequires:  python3-devel python3-setuptools
 
-Requires:       python3 python3-markupsafe = 2.0.1
+Requires:       python3 python3-markupsafe
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -74,8 +72,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.11.3-0
+- https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-3
+
 * Wed Jan 22 2020 Anton Novojilov <andy@essentialkaos.com> - 2.10.3-0
-- Updated to the latest stable release
+- http://jinja.palletsprojects.com/en/2.10.x/changelog/#version-2-10-3
 
 * Sun Oct 27 2019 Anton Novojilov <andy@essentialkaos.com> - 2.10-2
 - Added python36-markupsafe package to dependencies
