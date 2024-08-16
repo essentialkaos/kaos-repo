@@ -14,13 +14,13 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          7.2
+Version:          8.1
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
 URL:              https://www.nano-editor.org
 
-Source0:          https://www.nano-editor.org/dist/v7/%{name}-%{version}.tar.xz
+Source0:          https://www.nano-editor.org/dist/v8/%{name}-%{version}.tar.xz
 Source1:          https://kaos.sh/blackhole-theme-nano/%{ek_theme_version}.tar.gz
 
 Source100:        checksum.sha512
@@ -116,6 +116,42 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 8.1-0
+- The idiom nano filename:linenumber is understood only when
+  the option --colonparsing (or 'set colonparsing') is used.
+- Modern bindings are not activated when nano's invocation name
+  starts with "e", as it jars with Debian's alternatives system.
+- New bindable function 'cycle' first centers the current row,
+  then moves it to the top of the viewport, then to the bottom.
+  It is bound by default to ^L.
+- Option --listsyntaxes/-z lists the names of available syntaxes.
+
+
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 8.0-0
+- By default ^F is bound to starting a forward search, and ^B to
+  starting a backward search, while M-F and M-B repeat the search
+  in the corresponding direction. (See the documentation if you
+  want the old bindings back.)
+- Command-line option --modernbindings (-/) makes ^Q quit, ^X cut,
+  ^C copy, ^V paste, ^Z undo, ^Y redo, ^O open a file, ^W write a file,
+  ^R replace, ^G find again, ^D find again backwards, ^A set the mark,
+  ^T jump to a line, ^P show the position, and ^E execute.
+- Above modern bindings are activated also when the name of
+  nano's executable (or a symlink to it) starts with the letter "e".
+- To open a file at a certain line number, one can now use also
+  nano filename:number, besides nano +number filename.
+- <Alt+Home> and <Alt+End> put the cursor on the first and last
+  row in the viewport, while retaining the horizontal position.
+- When the three digits in an #RGB color code are all the same,
+  the code is mapped to the xterm grey scale, giving access to
+  fourteen levels of grey instead of just four.
+- For easier access, M-" is bound to placing/removing an anchor,
+  and M-' to jumping to the next anchor.
+- Whenever an error occurs, the keystroke buffer is cleared, thus
+  stopping the execution of a macro or a string bind.
+- The mousewheel scrolls the viewport instead of moving the cursor.
+
+
 * Sat Feb 18 2023 Anton Novojilov <andy@essentialkaos.com> - 7.2-0
 - <Shift+Insert> is prevented from pasting in view mode.
 
