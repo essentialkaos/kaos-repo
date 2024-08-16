@@ -6,9 +6,9 @@
 
 Summary:        Tool for monitoring the progress of data through a pipeline
 Name:           pv
-Version:        1.8.5
+Version:        1.8.12
 Release:        0%{?dist}
-License:        Artistic v2.0
+License:        GPLv3+
 Group:          Applications/System
 URL:            https://www.ivarch.com/programs/pv.shtml
 
@@ -70,6 +70,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.8.12-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.8.12
+
 * Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.5-0
 - https://codeberg.org/a-j-wood/pv/releases/tag/v1.8.5
 
