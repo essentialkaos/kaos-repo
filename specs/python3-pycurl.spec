@@ -15,14 +15,14 @@
 ################################################################################
 
 %define package_name  pycurl
-%define pypi_path     a8/af/24d3acfa76b867dbd8f1166853c18eefc890fc5da03a48672b38ea77ddae
+%define pypi_path     c9/5a/e68b8abbc1102113b7839e708ba04ef4c4b8b8a6da392832bb166d09ea72
 
 ################################################################################
 
 Summary:        A Python 3 interface to libcurl
 Name:           python3-%{package_name}
-Version:        7.45.2
-Release:        1%{?dist}
+Version:        7.45.3
+Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
 URL:            http://pycurl.io
@@ -80,6 +80,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 7.45.3-0
+- http://pycurl.io/docs/latest/release-notes.html#pycurl-7-45-3-2024-02-17
+
 * Mon Dec 11 2023 Anton Novojilov <andy@essentialkaos.com> - 7.45.2-1
 - Spec refactoring
 
