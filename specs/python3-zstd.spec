@@ -11,13 +11,13 @@
 ################################################################################
 
 %define package_name  zstd
-%define zstd_version  1.5.2
+%define zstd_version  1.5.5
 
 ################################################################################
 
 Summary:        Zstd Bindings for Python
 Name:           python3-%{package_name}
-Version:        %{zstd_version}.6
+Version:        %{zstd_version}.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -30,7 +30,7 @@ Source100:      checksum.sha512
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}
 
 BuildRequires:  gcc python3-devel python3-setuptools
-BuildRequires:  libzstd-devel >= %{zstd_version}
+BuildRequires:  libzstd-devel = %{zstd_version}
 
 Requires:       python3 libzstd >= %{zstd_version}
 
@@ -73,5 +73,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.5.1-0
+- https://github.com/sergey-dryabzhinsky/python-zstd/releases/tag/v1.5.5.1
+
 * Mon Feb 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.5.2.6-0
 - Initial build for kaos repository
