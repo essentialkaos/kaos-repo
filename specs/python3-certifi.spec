@@ -16,7 +16,7 @@
 
 Summary:        Python package for providing Mozilla's CA Bundle
 Name:           python3-%{pkgname}
-Version:        2022.12.07
+Version:        2024.07.04
 Release:        0%{?dist}
 License:        MPLv2.0
 Group:          Development/Libraries
@@ -73,6 +73,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2024.07.04-0
+- Updated to the latest release
+
 * Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2022.12.07-0
 - Updated to the latest release
 
