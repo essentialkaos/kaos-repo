@@ -9,16 +9,16 @@
 ################################################################################
 
 %define realname   redis
-%define major_ver  5
-%define minor_ver  0
+%define major_ver  7
+%define minor_ver  4
 
 ################################################################################
 
 Summary:           A persistent key-value database
 Name:              redis%{major_ver}%{minor_ver}
-Version:           5.0.14
+Version:           7.4.0
 Release:           0%{?dist}
-License:           BSD
+License:           RSALv2 and SSPLv1
 Group:             Applications/Databases
 URL:               https://redis.io
 
@@ -39,13 +39,7 @@ Patch1:            sentinel-%{major_ver}%{minor_ver}-config.patch
 
 BuildRoot:         %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make tcl systemd-devel
-
-%if 0%{?rhel} <= 7
-BuildRequires:     devtoolset-9-gcc
-%else
-BuildRequires:     gcc
-%endif
+BuildRequires:     make gcc tcl systemd-devel
 
 Requires:          %{name}-cli >= %{version}
 Requires:          logrotate
@@ -55,7 +49,7 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Conflicts:         redis redis60 redis62 redis70 redis72
+Conflicts:         redis redis50 redis60 redis62 redis70 redis72
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{name}-server = %{version}-%{release}
@@ -92,11 +86,6 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
-%endif
-
 export BUILD_WITH_SYSTEMD=yes
 
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
@@ -174,7 +163,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
+%doc 00-RELEASENOTES BUGS LICENSE.txt README.md
 %attr(-,%{realname},%{realname}) %config(noreplace) %{_sysconfdir}/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{realname}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
@@ -196,11 +185,11 @@ rm -rf %{buildroot}
 
 %files cli
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS CONTRIBUTING COPYING README.md
+%doc 00-RELEASENOTES BUGS LICENSE.txt README.md
 %{_bindir}/%{realname}-cli
 
 ################################################################################
 
 %changelog
-* Wed Jul 05 2023 Anton Novojilov <andy@essentialkaos.com> - 5.0.14-0
-- https://github.com/redis/redis/blob/5.0.14/00-RELEASENOTES
+* Tue Aug 20 2024 Anton Novojilov <andy@essentialkaos.com> - 7.4.0-0
+- https://github.com/redis/redis/releases/tag/7.4.0

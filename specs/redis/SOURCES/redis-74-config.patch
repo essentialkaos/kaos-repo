@@ -1,16 +1,16 @@
-diff --color -urN redis-6.2.13-orig/redis.conf redis-6.2.13-config/redis.conf
---- redis-6.2.13-orig/redis.conf	2023-07-10 14:37:59.000000000 +0300
-+++ redis-6.2.13-config/redis.conf	2023-08-16 11:12:41.000000000 +0300
-@@ -72,7 +72,7 @@
- # IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
- # JUST COMMENT OUT THE FOLLOWING LINE.
+diff --color -urN redis-7.4.0-orig/redis.conf redis-7.4.0-config/redis.conf
+--- redis-7.4.0-orig/redis.conf	2024-07-29 08:31:59.000000000 +0300
++++ redis-7.4.0-config/redis.conf	2024-08-20 17:13:57.000000000 +0300
+@@ -85,7 +85,7 @@
+ # You will also need to set a password unless you explicitly disable protected
+ # mode.
  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -bind 127.0.0.1 -::1
-+# bind 127.0.0.1 -::1
++#bind 127.0.0.1 -::1
  
- # Protected mode is a layer of security protection, in order to avoid that
- # Redis instances left open on the internet are accessed and exploited.
-@@ -288,7 +288,7 @@
+ # By default, outgoing connections (from replica to master, from Sentinel to
+ # instances, cluster bus, etc.) are not bound to a specific local address. In
+@@ -339,7 +339,7 @@
  #
  # Note that on modern Linux systems "/run/redis.pid" is more conforming
  # and should be used instead.
@@ -19,7 +19,7 @@ diff --color -urN redis-6.2.13-orig/redis.conf redis-6.2.13-config/redis.conf
  
  # Specify the server verbosity level.
  # This can be one of:
-@@ -301,7 +301,7 @@
+@@ -353,7 +353,7 @@
  # Specify the log file name. Also the empty string can be used to force
  # Redis to log on the standard output. Note that if you use standard
  # output for logging but daemonize, logs will be sent to /dev/null
@@ -28,7 +28,7 @@ diff --color -urN redis-6.2.13-orig/redis.conf redis-6.2.13-config/redis.conf
  
  # To enable logging to the system logger, just set 'syslog-enabled' to yes,
  # and optionally update the other syslog parameters to suit your needs.
-@@ -326,7 +326,7 @@
+@@ -378,7 +378,7 @@
  # Set the number of databases. The default database is DB 0, you can select
  # a different one on a per-connection basis using SELECT <dbid> where
  # dbid is a number between 0 and 'databases'-1
@@ -37,20 +37,16 @@ diff --color -urN redis-6.2.13-orig/redis.conf redis-6.2.13-config/redis.conf
  
  # By default Redis shows an ASCII art logo only when started to log to the
  # standard output and if the standard output is a TTY and syslog logging is
-@@ -380,9 +380,9 @@
+@@ -442,7 +442,7 @@
  #
- # You can set these explicitly by uncommenting the three following lines.
+ # You can set these explicitly by uncommenting the following line.
  #
--# save 3600 1
--# save 300 100
--# save 60 10000
-+save 3600 1
-+save 300 100
-+save 60  10000
+-# save 3600 1 300 100 60 10000
++save 3600 1 300 100 60 10000
  
  # By default Redis will stop accepting writes if RDB snapshots are enabled
  # (at least one save point) and the latest background save failed.
-@@ -453,7 +453,7 @@
+@@ -513,7 +513,7 @@
  # The Append Only File will also be created inside this directory.
  #
  # Note that you must specify a directory here, not a file name.

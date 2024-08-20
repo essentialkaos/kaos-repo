@@ -16,7 +16,7 @@
 
 Summary:           A persistent key-value database
 Name:              redis%{major_ver}%{minor_ver}
-Version:           7.2.4
+Version:           7.2.5
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -39,13 +39,7 @@ Patch1:            sentinel-%{major_ver}%{minor_ver}-config.patch
 
 BuildRoot:         %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make tcl systemd-devel
-
-%if 0%{?rhel} <= 7
-BuildRequires:     devtoolset-9-gcc
-%else
-BuildRequires:     gcc
-%endif
+BuildRequires:     make gcc tcl systemd-devel
 
 Requires:          %{name}-cli >= %{version}
 Requires:          logrotate
@@ -55,7 +49,7 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Conflicts:         redis redis50 redis60 redis62 redis70
+Conflicts:         redis redis50 redis60 redis62 redis70 redis74
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{name}-server = %{version}-%{release}
@@ -92,11 +86,6 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
-%endif
-
 export BUILD_WITH_SYSTEMD=yes
 
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
@@ -202,6 +191,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 20 2024 Anton Novojilov <andy@essentialkaos.com> - 7.2.5-0
+- https://github.com/redis/redis/blob/7.2.5/00-RELEASENOTES
+
 * Tue Jan 16 2024 Anton Novojilov <andy@essentialkaos.com> - 7.2.4-0
 - https://github.com/redis/redis/blob/7.2.4/00-RELEASENOTES
 

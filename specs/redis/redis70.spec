@@ -39,13 +39,7 @@ Patch1:            sentinel-%{major_ver}%{minor_ver}-config.patch
 
 BuildRoot:         %{_tmppath}/%{realname}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make tcl systemd-devel
-
-%if 0%{?rhel} <= 7
-BuildRequires:     devtoolset-9-gcc
-%else
-BuildRequires:     gcc
-%endif
+BuildRequires:     make gcc tcl systemd-devel
 
 Requires:          %{name}-cli >= %{version}
 Requires:          logrotate
@@ -55,7 +49,7 @@ Requires(post):    systemd
 Requires(preun):   systemd
 Requires(postun):  systemd
 
-Conflicts:         redis redis50 redis60 redis62 redis72
+Conflicts:         redis redis50 redis60 redis62 redis72 redis74
 
 Provides:          %{name} = %{version}-%{release}
 Provides:          %{name}-server = %{version}-%{release}
@@ -92,11 +86,6 @@ Client for working with Redis from console
 %patch1 -p1
 
 %build
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from devtoolset
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
-%endif
-
 export BUILD_WITH_SYSTEMD=yes
 
 %{__make} %{?_smp_mflags} MALLOC=jemalloc
