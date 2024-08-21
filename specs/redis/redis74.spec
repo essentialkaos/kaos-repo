@@ -77,6 +77,18 @@ Client for working with Redis from console
 
 ################################################################################
 
+%package devel
+
+Summary:  Development header for Redis module development
+Group:    Development/Libraries
+
+Provides:  %{name}-static = %{version}-%{release}
+
+%description devel
+Header file required for building loadable Redis modules.
+
+################################################################################
+
 %prep
 %{crc_check}
 
@@ -118,6 +130,9 @@ install -pm 644 %{SOURCE7} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE8} %{buildroot}%{_unitdir}/
 install -pm 644 %{SOURCE9} %{buildroot}%{_sysconfdir}/systemd/system/%{realname}.service.d/limit.conf
 install -pm 644 %{SOURCE10} %{buildroot}%{_sysconfdir}/systemd/system/sentinel.service.d/limit.conf
+
+install -dm 755 %{buildroot}%{_includedir}
+install -pm 644 src/redismodule.h %{buildroot}%{_includedir}/redismodule.h
 
 chmod 755 %{buildroot}%{_bindir}/%{realname}-*
 
@@ -187,6 +202,11 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc 00-RELEASENOTES BUGS LICENSE.txt README.md
 %{_bindir}/%{realname}-cli
+
+%files devel
+%doc LICENSE.txt
+%defattr(-,root,root,-)
+%{_includedir}/redismodule.h
 
 ################################################################################
 
