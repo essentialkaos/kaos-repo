@@ -1,0 +1,28 @@
+# Bibop recipe for uv
+# See more: https://kaos.sh/bibop
+
+pkg uv
+
+fast-finish yes
+lock-workdir no
+
+command "-" "Check environment"
+  app uv
+  app uvx
+
+command "uv python install 3.10" "Install python"
+  exit 0
+
+command "uv init uv-example" "Init example project"
+  exit 0
+
+command "-" "Set current directory to example project"
+  chdir uv-example
+  exist pyproject.toml
+
+command "uv add ruff" "Add ruff"
+  exit 0
+  exist uv.lock
+
+command "uv run ruff check" "Run ruff"
+  exit 0
