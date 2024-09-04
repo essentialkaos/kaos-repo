@@ -2,7 +2,7 @@
 
 Summary:    An extremely fast Python package installer and resolver
 Name:       uv
-Version:    0.4.3
+Version:    0.4.4
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    MIT AND Apache 2.0
@@ -75,5 +75,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Sep 04 2024 Anton Novojilov <andy@essentialkaos.com> - 0.4.4-0
+- https://github.com/astral-sh/uv/releases/tag/0.4.4
+
 * Tue Sep 03 2024 Anton Novojilov <andy@essentialkaos.com> - 0.4.3-0
 - Initial build for kaos repository
