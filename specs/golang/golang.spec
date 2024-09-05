@@ -127,11 +127,8 @@ for _,d in pairs({"api", "doc", "include", "lib", "src"}) do
 end
 
 %prep
-%{crc_check}
-
-%setup -qn go
-
-%patch0 -p1
+%crc_check
+%autosetup -p1 -n go
 
 %build
 export CC="gcc"

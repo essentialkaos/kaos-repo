@@ -4,8 +4,8 @@
 
 ################################################################################
 
-%define major_ver  22
-%define minor_ver  01
+%define major_ver  24
+%define minor_ver  08
 
 %define shortname  7z
 
@@ -26,12 +26,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make dos2unix
-%if 0%{?rhel} <= 7
-BuildRequires:  devtoolset-9-gcc-c++
-%else
-BuildRequires:  gcc-c++
-%endif
+BuildRequires:  make gcc-c++ dos2unix
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{shortname} = %{version}-%{release}
@@ -44,15 +39,19 @@ Provides:       %{shortname} = %{version}-%{release}
 ################################################################################
 
 %prep
-%{crc_check}
+%crc_check
+%autosetup -cn 7z%{major_ver}%{minor_ver}-linux
 
-%setup -qcn 7z%{major_ver}%{minor_ver}-linux
 dos2unix DOC/*.txt
+
+# perfecto:ignore
 chmod -x DOC/*.txt
 
 # Install asmc to deps directory
 mkdir deps
 cp %{SOURCE1} deps/asmc
+
+# perfecto:ignore
 chmod +x deps/asmc
 
 %if 0%{?rhel} < 9
@@ -64,11 +63,6 @@ sed -i 's#LFLAGS_ALL = -s#LFLAGS_ALL =#' CPP/7zip/7zip_gcc.mak
 sed -i 's/$(CXX) -o $(PROGPATH)/$(CXX) -Wl,-z,noexecstack -o $(PROGPATH)/' CPP/7zip/7zip_gcc.mak
 
 %build
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 9
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
-%endif
-
 # Add directory with asmc to PATH
 export PATH="$(pwd)/deps:$PATH"
 
@@ -86,11 +80,6 @@ ln -sf %{_bindir}/7zz %{buildroot}%{_bindir}/%{shortname}
 
 ################################################################################
 
-%clean
-rm -rf %{buildroot}
-
-################################################################################
-
 %files
 %defattr(-,root,root,-)
 %doc DOC/*.txt
@@ -100,6 +89,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 24.08-0
+- https://sourceforge.net/p/sevenzip/discussion/45797/thread/f162d68dcd/
+
 * Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 22.01-0
 - UDF support was improved to UDF version 2.60.
 - HFS and APFS support was improved.

@@ -4,25 +4,25 @@
 
 ################################################################################
 
-Summary:         Metalink library written in C
-Name:            libmetalink
-Version:         0.1.3
-Release:         1%{?dist}
-Group:           System Environment/Libraries
-License:         MIT
-URL:             https://launchpad.net/libmetalink
+Summary:        Metalink library written in C
+Name:           libmetalink
+Version:        0.1.3
+Release:        1%{?dist}
+Group:          System Environment/Libraries
+License:        MIT
+URL:            https://launchpad.net/libmetalink
 
-Source0:         https://launchpad.net/libmetalink/trunk/%{name}-%{version}/+download/%{name}-%{version}.tar.bz2
+Source0:        https://launchpad.net/libmetalink/trunk/%{name}-%{version}/+download/%{name}-%{version}.tar.bz2
 
-Patch0:          https://launchpadlibrarian.net/380798344/0001-fix-covscan-issues.patch
+Patch0:         https://launchpadlibrarian.net/380798344/0001-fix-covscan-issues.patch
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc expat-devel
+BuildRequires:  make gcc expat-devel
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -34,9 +34,10 @@ parsing Metalink XML files to programs written in C.
 
 %package  devel
 
-Summary:         Files needed for developing with %{name}
-Group:           Development/Libraries
-Requires:        %{name}%{?_isa} = %{version}-%{release}
+Summary:  Files needed for developing with %{name}
+Group:    Development/Libraries
+
+Requires:  %{name}%{?_isa} = %{version}-%{release}
 
 %description  devel
 Files needed for building applications with libmetalink.
@@ -44,11 +45,8 @@ Files needed for building applications with libmetalink.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -q
-
-%patch0 -p1
+%crc_check
+%autosetup -p1
 
 %build
 %configure --disable-static
@@ -60,9 +58,6 @@ rm -rf %{buildroot}
 %{make_install}
 
 find %{buildroot} -name *.la -delete
-
-%clean
-rm -rf %{buildroot}
 
 %post
 /sbin/ldconfig

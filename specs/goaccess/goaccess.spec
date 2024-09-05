@@ -37,11 +37,8 @@ for system administrators that require a visual server report on the fly.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -q
-
-%patch1 -p1
+%crc_check
+%autosetup -p1
 
 %build
 %configure --enable-utf8 \

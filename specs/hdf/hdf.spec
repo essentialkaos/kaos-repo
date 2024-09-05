@@ -77,12 +77,10 @@ HDF4 static libraries.
 ################################################################################
 
 %prep
-%{crc_check}
+%crc_check
+%autosetup -p1
 
-%setup -q
-
-%patch0 -p1 -b .maxavailfiles
-
+# perfecto:ignore
 chmod a-x *hdf/*/*.c hdf/*/*.h
 
 %build

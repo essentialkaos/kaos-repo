@@ -1,8 +1,8 @@
-diff -urN rbenv-1.1.1-orig/libexec/rbenv rbenv-1.1.1/libexec/rbenv
---- rbenv-1.1.1-orig/libexec/rbenv	2017-08-07 12:34:46.006506992 +0200
-+++ rbenv-1.1.1/libexec/rbenv	2017-08-07 12:36:09.000000000 +0200
-@@ -51,7 +51,7 @@
- fi
+diff --color -urN rbenv-1.3.0-orig/libexec/rbenv rbenv-1.3.0-root/libexec/rbenv
+--- rbenv-1.3.0-orig/libexec/rbenv	2024-07-05 16:02:25.000000000 +0300
++++ rbenv-1.3.0-root/libexec/rbenv	2024-09-06 01:32:13.000000000 +0300
+@@ -21,7 +21,7 @@
+ }
  
  if [ -z "${RBENV_ROOT}" ]; then
 -  RBENV_ROOT="${HOME}/.rbenv"

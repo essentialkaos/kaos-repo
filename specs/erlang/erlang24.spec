@@ -59,13 +59,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:  tk-devel flex bison gd-devel gd-devel libxslt
 BuildRequires:  valgrind-devel java-1.8.0-openjdk-devel
-BuildRequires:  lksctp-tools-devel autoconf
-
-%if 0%{?rhel} <= 7
-BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-binutils
-%else
-BuildRequires:  gcc-c++
-%endif
+BuildRequires:  lksctp-tools-devel autoconf gcc-c++
 
 Requires:       tk tcl
 
@@ -704,23 +698,15 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn otp-OTP-%{ver_string}
+%crc_check
+%autosetup -p1 -n otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
-
-%patch0 -p1
 
 %build
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 export BUILDDIR=$(pwd)
-
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 11
-export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
-%endif
 
 ### Static LibreSSL build start ###
 
@@ -838,9 +824,6 @@ fi
 if [[ $1 -ge 1 ]] ; then
   %{__sysctl} daemon-reload &>/dev/null || :
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

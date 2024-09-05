@@ -44,13 +44,10 @@ GNU nano is a small and friendly text editor.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -q
+%crc_check
+%autosetup -p1
 
 tar xzvf %{SOURCE1}
-
-%patch0 -p1
 
 %build
 %configure
@@ -80,9 +77,6 @@ cp blackhole-theme-nano-%{ek_theme_version}/*.nanorc \
 rm -f %{buildroot}%{_infodir}/dir
 
 %find_lang %{name}
-
-%clean
-rm -rf %{buildroot}
 
 %post
 if [[ -f %{_infodir}/%{name}.info.gz ]] ; then

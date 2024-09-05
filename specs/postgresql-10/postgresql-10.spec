@@ -322,20 +322,13 @@ system, including regression tests and benchmarks.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{realname}-%{version}
-
-%patch1 -p1
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
+%crc_check
+%autosetup -p0 -n %{realname}-%{version}
 
 # Copy pdf with documentation to build directory
 cp -p %{SOURCE7} .
 
 %build
-
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS
 CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS
 
@@ -784,9 +777,6 @@ if [[ $1 -eq 0 ]] ; then
   update-alternatives --remove %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc
   update-alternatives --remove %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

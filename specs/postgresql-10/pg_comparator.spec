@@ -46,9 +46,8 @@ time-efficient approach.
 ################################################################################
 
 %prep
-%setup -qn %{realname}-%{version}
-
-%patch0 -p1
+%crc_check
+%autosetup -p1 -n %{realname}-%{version}
 
 %build
 %{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
@@ -65,9 +64,6 @@ update-alternatives --install %{_bindir}/pg_comparator pgcomparator %{pg_dir}/bi
 if [[ $1 -eq 0 ]] ; then
   update-alternatives --remove pgcomparator %{pg_dir}/bin/pg_comparator
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

@@ -34,12 +34,7 @@ BuildRequires:   postgresql%{pg_ver}-devel = %{pg_fullver}
 BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
 
 %if %llvm
-%if 0%{?rhel} >= 8
 BuildRequires:   llvm-devel >= 6.0.0 clang-devel >= 6.0.0
-%endif
-%if 0%{?rhel} == 7
-BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
-%endif
 %endif
 
 Requires:        perl(Getopt::Long), perl(Time::HiRes)
@@ -59,19 +54,10 @@ time-efficient approach.
 ################################################################################
 
 %prep
-%setup -qn %{realname}-%{version}
-
-%patch0 -p1
+%crc_check
+%autosetup -p1 -n %{realname}-%{version}
 
 %build
-%if %llvm
-%if 0%{?rhel} == 7
-# perfecto:ignore
-export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
-export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
-%endif
-%endif
-
 %{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
@@ -86,9 +72,6 @@ update-alternatives --install %{_bindir}/pg_comparator pgcomparator %{pg_dir}/bi
 if [[ $1 -eq 0 ]] ; then
   update-alternatives --remove pgcomparator %{pg_dir}/bin/pg_comparator
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

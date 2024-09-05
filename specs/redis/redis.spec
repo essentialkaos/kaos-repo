@@ -89,12 +89,8 @@ Header file required for building loadable Redis modules.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{name}-%{version}
-
-%patch0 -p1
-%patch1 -p1
+%crc_check
+%autosetup -p1 -n %{realname}-%{version}
 
 %build
 export BUILD_WITH_SYSTEMD=yes
@@ -169,9 +165,6 @@ fi
 
 %postun
 systemctl daemon-reload &>/dev/null || :
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

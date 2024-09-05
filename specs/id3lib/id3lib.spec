@@ -23,15 +23,15 @@ Source2:        id3.pc
 Source100:      checksum.sha512
 
 Patch0:         %{name}-dox.patch
-Patch1:         %{name}-%{version}-autoreconf.patch
-Patch2:         %{name}-%{version}-io_helpers-163101.patch
-Patch3:         %{name}-%{version}-mkstemp.patch
-Patch4:         %{name}-%{version}-includes.patch
-Patch5:         %{name}-vbr_buffer_overflow.diff
-Patch6:         20-create-manpages.patch
-Patch7:         60-fix_make_check.patch
-Patch8:         60-%{name}-missing-nullpointer-check.patch
-Patch9:         %{name}-%{version}-fix-utf16-stringlists.patch
+Patch11:        %{name}-%{version}-autoreconf.patch
+Patch12:        %{name}-%{version}-io_helpers-163101.patch
+Patch13:        %{name}-%{version}-mkstemp.patch
+Patch14:        %{name}-%{version}-includes.patch
+Patch15:        %{name}-vbr_buffer_overflow.diff
+Patch16:        20-create-manpages.patch
+Patch17:        60-fix_make_check.patch
+Patch18:        60-%{name}-missing-nullpointer-check.patch
+Patch19:        %{name}-%{version}-fix-utf16-stringlists.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -54,11 +54,11 @@ tell mp3 header info, like bitrate etc.
 
 %package devel
 
-Summary:            Development tools for the id3lib library
-Group:              Development/Libraries
+Summary:  Development tools for the id3lib library
+Group:    Development/Libraries
 
-Requires:           %{name} = %{version}-%{release}
-Requires:           zlib-devel
+Requires:  %{name} = %{version}-%{release}
+Requires:  zlib-devel
 
 %description devel
 This package provides files needed to develop with the id3lib library.
@@ -66,21 +66,12 @@ This package provides files needed to develop with the id3lib library.
 ################################################################################
 
 %prep
-%{crc_check}
+%crc_check
+%autosetup -N
+%autopatch -p0 -M 9
+%autopatch -p1 -m 10
 
-%setup -q
-
-%patch0 -p0
-%patch1 -p1 -b .autoreconf
-%patch2 -p1 -b .io_helpers-163101
-%patch3 -p1 -b .mkstemp
-%patch4 -p1 -b .gcc43
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-
+# perfecto:ignore
 chmod -x src/*.h src/*.cpp include/id3/*.h
 
 sed -i -e 's/\r//' doc/id3v2.3.0.*
@@ -131,9 +122,6 @@ install -pm 644 %{SOURCE2} %{buildroot}%{_libdir}/pkgconfig/id3.pc
 
 %postun
 /sbin/ldconfig
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

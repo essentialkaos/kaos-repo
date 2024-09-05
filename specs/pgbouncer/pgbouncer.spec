@@ -59,11 +59,8 @@ libevent for low-level socket handling.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{name}-%{version}
-
-%patch0 -p1
+%crc_check
+%autosetup -p1 -n %{name}-%{version}
 
 %build
 sed -i.fedora \
@@ -104,9 +101,6 @@ rm -f %{buildroot}%{_docdir}/%{name}/pgbouncer.ini
 rm -f %{buildroot}%{_docdir}/%{name}/NEWS
 rm -f %{buildroot}%{_docdir}/%{name}/README
 rm -f %{buildroot}%{_docdir}/%{name}/userlist.txt
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

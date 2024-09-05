@@ -124,12 +124,7 @@ BuildRequires:     openldap-devel
 %endif
 
 %if %llvm
-%if 0%{?rhel} >= 8
 BuildRequires:     llvm-devel >= 6.0.0 clang-devel >= 6.0.0
-%endif
-%if 0%{?rhel} == 7
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
-%endif
 %endif
 
 BuildRequires:     systemd systemd-devel
@@ -263,12 +258,7 @@ Summary:   Just-in-time compilation support for PostgreSQL
 Group:     Applications/Databases
 
 Requires:  %{name}-server%{?_isa} = %{version}-%{release}
-
-%if 0%{?rhel} >= 8
 Requires:  llvm >= 6.0
-%else
-Requires:  llvm5.0 >= 5.0
-%endif
 
 Provides:  %{realname}-llvmjit = %{version}
 
@@ -356,14 +346,8 @@ system, including regression tests and benchmarks.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{realname}-%{version}
-
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
+%crc_check
+%autosetup -p0 -n %{realname}-%{version}
 
 # Copy pdf with documentation to build directory
 cp -p %{SOURCE7} .
@@ -386,14 +370,6 @@ LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
 export CFLAGS
 export LIBNAME=%{_lib}
 export PYTHON=/usr/bin/python3
-
-%if %llvm
-%if 0%{?rhel} == 7
-# perfecto:ignore
-export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
-export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
-%endif
-%endif
 
 %{_configure} --disable-rpath \
   --prefix=%{install_dir} \
@@ -838,9 +814,6 @@ if [[ $1 -eq 0 ]] ; then
   update-alternatives --remove %{shortname}-pkgconfig-libecpg         %{install_dir}/lib/pkgconfig/libecpg.pc
   update-alternatives --remove %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
