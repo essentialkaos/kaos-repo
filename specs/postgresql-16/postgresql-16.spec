@@ -24,7 +24,7 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      16
-%define minorver      1
+%define minorver      4
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        16
@@ -125,7 +125,7 @@ BuildRequires:     openldap-devel
 %endif
 
 %if %llvm
-BuildRequires:     llvm-devel >= 8.0.1 clang-devel >= 8.0.1
+BuildRequires:     llvm-devel >= 13.0 clang-devel >= 13.0
 %endif
 
 %if %zstd
@@ -264,7 +264,7 @@ Summary:   Just-in-time compilation support for PostgreSQL
 Group:     Applications/Databases
 
 Requires:  %{name}-server%{?_isa} = %{version}-%{release}
-Requires:  llvm >= 6.0
+Requires:  llvm >= 13.0
 
 Provides:  %{realname}-llvmjit = %{version}
 
@@ -545,7 +545,7 @@ install -dm 755 %{buildroot}%{_tmpfilesdir}
 install -pm 644 %{SOURCE13} %{buildroot}%{_tmpfilesdir}/%{realname}-%{majorver}.conf
 
 # Create the directory for sockets
-install -dm 755 %{buildroot}%{_localstatedir}/run/%{realname}
+install -dm 755 %{buildroot}%{_rundir}/%{realname}
 
 # PGDATA needs removal of group and world permissions due to pg_pwd hole.
 install -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/data
@@ -1026,7 +1026,7 @@ fi
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
 %config(noreplace) %{_unitdir}/%{realname}-%{majorver}.service
 %config(noreplace) %{_tmpfilesdir}/%{realname}-%{majorver}.conf
-%attr(755,%{username},%{groupname}) %dir %{_localstatedir}/run/%{realname}
+%attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{majorver}
 %if %pam
 %config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{majorver}
@@ -1063,6 +1063,7 @@ fi
 %{install_dir}/lib/pgoutput.so
 %{install_dir}/lib/plpgsql.so
 %{install_dir}/share/extension/plpgsql*
+%{install_dir}/share/fix-CVE-*.sql
 
 %config(noreplace) %attr(700,%{username},%{groupname}) %{install_dir}/share/bash_profile
 
@@ -1141,6 +1142,15 @@ fi
 ################################################################################
 
 %changelog
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 16.4-0
+- https://www.postgresql.org/docs/16/release-16-4.html
+
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 16.3-0
+- https://www.postgresql.org/docs/16/release-16-3.html
+
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 16.2-0
+- https://www.postgresql.org/docs/16/release-16-2.html
+
 * Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 16.1-0
 - https://www.postgresql.org/docs/16/release-16-1.html
 
