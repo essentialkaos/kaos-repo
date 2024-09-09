@@ -11,17 +11,17 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.21.0
+Version:           1.23.1
 Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://pgbouncer.github.io
 
 Source0:           https://pgbouncer.github.io/downloads/files/%{version}/%{name}-%{version}.tar.gz
-Source1:           %{name}.init
-Source2:           %{name}.sysconfig
-Source3:           %{name}.logrotate
-Source4:           %{name}.service
+Source1:           %{name}.service
+Source2:           %{name}.logrotate
+Source3:           %{name}.pam
+Source4:           %{name}.tmpd
 
 Source100:         checksum.sha512
 
@@ -31,11 +31,7 @@ BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n
 
 BuildRequires:     make gcc openssl-devel libevent-devel pam-devel systemd-devel
 
-Requires:          kaosv >= 2.16 openssl libevent
-
-Requires(post):    systemd
-Requires(preun):   systemd
-Requires(postun):  systemd
+Requires:          openssl libevent
 
 Provides:          %{name} = %{version}-%{release}
 
@@ -79,23 +75,20 @@ rm -rf %{buildroot}
 
 %{make_install}
 
-install -dm 755 %{buildroot}%{_sysconfdir}/%{name}/
-install -dm 755 %{buildroot}%{_sysconfdir}/sysconfig
-install -dm 755 %{buildroot}%{_sysconfdir}/logrotate.d
-install -dm 755 %{buildroot}%{_initrddir}
+install -dm 755 %{buildroot}%{_sysconfdir}/%{name}
+install -dm 755 %{buildroot}%{_localstatedir}/log/%{name}
+install -dm 755 %{buildroot}%{_rundir}/%{name}
 
-install -pm 600 etc/pgbouncer.ini %{buildroot}%{_sysconfdir}/%{name}
+install -pm 600 etc/pgbouncer.ini %{buildroot}%{_sysconfdir}/%{name}/
 install -pm 700 etc/mkauth.py %{buildroot}%{_sysconfdir}/%{name}/
 
 touch %{buildroot}%{_sysconfdir}/%{name}/userlist.txt
 chmod 600 %{buildroot}%{_sysconfdir}/%{name}/userlist.txt
 
-install -pm 755 %{SOURCE1} %{buildroot}%{_initrddir}/%{name}
-install -pm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
-install -pm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
-
-install -dm 755 %{buildroot}%{_unitdir}
-install -pm 644 %{SOURCE4} %{buildroot}%{_unitdir}/%{name}.service
+install -pDm 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
+install -pDm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pDm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/pam.d/%{name}
+install -pDm 644 %{SOURCE4} %{buildroot}%{_tmpfilesdir}/%{name}.conf
 
 rm -f %{buildroot}%{_docdir}/%{name}/pgbouncer.ini
 rm -f %{buildroot}%{_docdir}/%{name}/NEWS
@@ -128,18 +121,21 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYRIGHT NEWS.md
+%doc AUTHORS COPYRIGHT
 %attr(-,%{username},%{groupname}) %dir %{_sysconfdir}/%{name}
+%attr(-,%{username},%{groupname}) %dir %{_rundir}/%{name}
 %attr(600,%{username},%{groupname}) %config(noreplace) %{_sysconfdir}/%{name}/%{name}.ini
 %attr(600,%{username},%{groupname}) %config(noreplace) %{_sysconfdir}/%{name}/userlist.txt
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%attr(700,%{username},%{groupname}) %{_localstatedir}/log/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{_sysconfdir}/pam.d/%{name}
+%config(noreplace) %{_tmpfilesdir}/%{name}.conf
 %{_bindir}/*
-%{_initrddir}/%{name}
 %{_unitdir}/%{name}.service
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man5/%{name}.*
 %{_docdir}/%{name}/*
+%ghost %{_rundir}/%{name}/%{name}.pid
 
 %files utils
 %defattr(-,root,root,-)
@@ -149,6 +145,15 @@ fi
 ################################################################################
 
 %changelog
+* Mon Sep 09 2024 Anton Novojilov <andy@essentialkaos.com> - 1.23.1-0
+- https://www.pgbouncer.org/changelog.html#pgbouncer-123x
+
+* Mon Sep 09 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.1-0
+- https://www.pgbouncer.org/changelog.html#pgbouncer-122x
+- Remove init script usage
+- Added tmpfiles.d configuration
+- Added pam configuration
+
 * Tue Oct 17 2023 Anton Novojilov <andy@essentialkaos.com> - 1.21.0-0
 - https://www.pgbouncer.org/changelog.html#pgbouncer-121x
 

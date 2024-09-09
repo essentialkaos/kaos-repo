@@ -1,12 +1,21 @@
 [Unit]
-Description=PgBouncer
-After=syslog.target network.target
+Description=A lightweight connection pooler for PostgreSQL
+Documentation=man:pgbouncer(1)
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-PIDFile=/var/run/pgbouncer/pgbouncer.pid
-ExecStart=/etc/init.d/pgbouncer start
-ExecStop=/etc/init.d/pgbouncer stop
-ExecReload=/etc/init.d/pgbouncer reload
+RemainAfterExit=yes
+Type=notify
+TimeoutSec=300
+
+User=pgbouncer
+Group=pgbouncer
+
+Environment=BOUNCERCONF=/etc/pgbouncer/pgbouncer.ini
+ 
+ExecStart=/usr/bin/pgbouncer -q ${BOUNCERCONF}
+ExecReload=/usr/bin/pgbouncer -R -q ${BOUNCERCONF}
 
 [Install]
 WantedBy=multi-user.target
