@@ -3,8 +3,7 @@
 
 ################################################################################
 
-pkg postgresql12-server postgis34_12 postgis34_12-client
-pkg postgis34_12-scripts postgis34_12-utils
+pkg postgresql12-server postgis34_12 postgis34_12-client postgis34_12-scripts postgis34_12-utils
 
 require-root yes
 unsafe-actions yes

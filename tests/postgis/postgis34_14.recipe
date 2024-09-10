@@ -3,8 +3,7 @@
 
 ################################################################################
 
-pkg postgresql14-server postgis34_14 postgis34_14-client
-pkg postgis34_14-scripts postgis34_14-utils
+pkg postgresql14-server postgis34_14 postgis34_14-client postgis34_14-scripts postgis34_14-utils
 
 require-root yes
 unsafe-actions yes
