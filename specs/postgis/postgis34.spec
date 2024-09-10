@@ -8,27 +8,26 @@
 %{!?raster:%global raster 1}
 %{!?llvm:%global llvm 1}
 
+%define __perl_requires  filter-requires-perl-Pg.sh
+
 ################################################################################
 
-%define maj_ver         3.2
-%define lib_ver         3
-%define pg_ver          14
-%define pg_low_fullver  %{pg_ver}.6
-%define pg_dir          %{_prefix}/pgsql-%{pg_ver}
-%define realname        postgis
-%define pkgname         %{realname}-%{maj_ver}
-%define fullname        %{realname}32
+%define maj_ver   3.4
+%define lib_ver   3
+%define pg_ver    %{?_pg}%{!?_pg:99}
+%define pg_dir    %{_prefix}/pgsql-%{pg_ver}
+%define realname  postgis
+%define pkgname   %{realname}-%{maj_ver}
+%define fullname  %{realname}34
 
-%define min_geos_ver    3.11
-
-%define __perl_requires   filter-requires-perl-Pg.sh
+%define min_geos_ver  3.11
 
 ################################################################################
 
 Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:            %{fullname}_%{pg_ver}
-Version:         3.2.5
-Release:         1%{?dist}
+Version:         3.4.3
+Release:         0%{?dist}
 License:         GPLv2+
 Group:           Applications/Databases
 URL:             https://www.postgis.net
@@ -40,30 +39,19 @@ Source100:       checksum.sha512
 
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   postgresql%{pg_ver}-devel = %{pg_low_fullver}
-BuildRequires:   postgresql%{pg_ver}-libs = %{pg_low_fullver}
+BuildRequires:   postgresql%{pg_ver}-devel postgresql%{pg_ver}-libs
 BuildRequires:   geos-devel >= %{min_geos_ver}
 BuildRequires:   gcc-c++ chrpath make pcre-devel hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
 BuildRequires:   sqlite-devel libgeotiff-devel libpng-devel libtiff-devel
 
 %if %llvm
-%if 0%{?rhel} >= 8
-BuildRequires:   llvm-devel >= 6.0.0 clang-devel >= 6.0.0
-%endif
-%if 0%{?rhel} == 7
-BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
-%endif
+BuildRequires:   llvm-devel >= 13.0 clang-devel >= 13.0
 %endif
 
 %if %raster
-%if 0%{?rhel} == 7
-BuildRequires:   gdal3-devel
-Requires:        gdal3-libs
-%else
-BuildRequires:   gdal-devel >= 3
-Requires:        gdal-libs >= 3
-%endif
+BuildRequires:   gdal-devel
+Requires:        gdal-libs
 %endif
 
 Requires:        postgresql%{pg_ver} proj hdf5 json-c pcre
@@ -71,8 +59,6 @@ Requires:        %{fullname}_%{pg_ver}-client = %{version}-%{release}
 Requires:        geos >= %{min_geos_ver}
 
 Requires(post):  chkconfig
-
-Conflicts:       %{realname}30 %{realname}31 %{realname}33 %{realname}34
 
 Provides:        %{realname} = %{version}-%{release}
 
@@ -89,8 +75,8 @@ certified as compliant with the "Types and Functions" profile.
 ################################################################################
 
 %package client
-Summary:   Client tools and their libraries of PostGIS
-Group:     Applications/Databases
+Summary:  Client tools and their libraries of PostGIS
+Group:    Applications/Databases
 
 Requires:  %{name} = %{version}-%{release}
 
@@ -101,8 +87,8 @@ of PostGIS.
 ################################################################################
 
 %package scripts
-Summary:   Installing and upgrading scripts for PostGIS
-Group:     Applications/Databases
+Summary:  Installing and upgrading scripts for PostGIS
+Group:    Applications/Databases
 
 Requires:  %{name} = %{version}-%{release}
 
@@ -114,8 +100,8 @@ in a PostgreSQL database, and for upgrading from earlier PostGIS versions.
 
 %if %utils
 %package utils
-Summary:   The utils for PostGIS
-Group:     Applications/Databases
+Summary:  The utils for PostGIS
+Group:    Applications/Databases
 
 Requires:  %{name} = %{version}-%{release} perl-DBD-Pg
 
@@ -126,9 +112,13 @@ The postgis-utils package provides the utilities for PostGIS.
 ################################################################################
 
 %prep
-%{crc_check}
+%crc_check
+%autosetup -n %{realname}-%{version}
 
-%setup -qn %{realname}-%{version}
+if [[ -z "%{_pg}" ]] ; then
+  echo "PostgreSQL version is not set"
+  exit 1
+fi
 
 %build
 # We need the below for GDAL
@@ -140,6 +130,9 @@ export LIBGDAL_CFLAGS=""
            --with-gdalconfig=%{_bindir}/gdal-config \
 %if !%raster
            --without-raster \
+%endif
+%if %llvm
+           --with-llvm \
 %endif
            --without-protobuf \
            --disable-rpath \
@@ -162,13 +155,11 @@ rm -rf %{buildroot}%{pg_dir}/doc
 
 mkdir -p %{buildroot}%{pg_dir}/bin/%{pkgname}
 
-chrpath --delete %{buildroot}%{pg_dir}/bin/pgsql2shp
-chrpath --delete %{buildroot}%{pg_dir}/bin/shp2pgsql
-chrpath --delete %{buildroot}%{pg_dir}/bin/raster2pgsql
+chrpath --delete %{buildroot}%{_bindir}/pgsql2shp
+chrpath --delete %{buildroot}%{_bindir}/raster2pgsql
+chrpath --delete %{buildroot}%{_bindir}/shp2pgsql
 
-mv %{buildroot}%{pg_dir}/bin/pgsql2shp \
-   %{buildroot}%{pg_dir}/bin/shp2pgsql \
-   %{buildroot}%{pg_dir}/bin/raster2pgsql \
+mv %{buildroot}%{_bindir}/* \
    %{buildroot}%{pg_dir}/bin/%{pkgname}/
 
 %if %utils
@@ -179,38 +170,49 @@ install -pm 644 utils/*.pl %{buildroot}%{_datadir}/%{name}
 %post
 /sbin/ldconfig
 
-update-alternatives --install %{_bindir}/pgsql2shp    postgis-pgsql2shp    %{pg_dir}/bin/%{pkgname}/pgsql2shp    %{pg_ver}0
-update-alternatives --install %{_bindir}/shp2pgsql    postgis-shp2pgsql    %{pg_dir}/bin/%{pkgname}/shp2pgsql    %{pg_ver}0
-update-alternatives --install %{_bindir}/raster2pgsql postgis-raster2pgsql %{pg_dir}/bin/%{pkgname}/raster2pgsql %{pg_ver}0
+update-alternatives --install %{_bindir}/pgsql2shp       postgis-pgsql2shp       %{pg_dir}/bin/%{pkgname}/pgsql2shp       %{pg_ver}0
+update-alternatives --install %{_bindir}/pgtopo_export   postgis-pgtopo_export   %{pg_dir}/bin/%{pkgname}/pgtopo_export   %{pg_ver}0
+update-alternatives --install %{_bindir}/pgtopo_import   postgis-pgtopo_import   %{pg_dir}/bin/%{pkgname}/pgtopo_import   %{pg_ver}0
+update-alternatives --install %{_bindir}/postgis         postgis-postgis         %{pg_dir}/bin/%{pkgname}/postgis         %{pg_ver}0
+update-alternatives --install %{_bindir}/postgis_restore postgis-postgis_restore %{pg_dir}/bin/%{pkgname}/postgis_restore %{pg_ver}0
+update-alternatives --install %{_bindir}/raster2pgsql    postgis-raster2pgsql    %{pg_dir}/bin/%{pkgname}/raster2pgsql    %{pg_ver}0
+update-alternatives --install %{_bindir}/shp2pgsql       postgis-shp2pgsql       %{pg_dir}/bin/%{pkgname}/shp2pgsql       %{pg_ver}0
 
 %postun
 /sbin/ldconfig
 
 if [[ $1 -eq 0 ]] ; then
   # Only remove these links if the package is completely removed from the system
-  update-alternatives --remove postgis-pgsql2shp     %{pg_dir}/bin/%{pkgname}/pgsql2shp
-  update-alternatives --remove postgis-shp2pgsql     %{pg_dir}/bin/%{pkgname}/shp2pgsql
-  update-alternatives --remove postgis-raster2pgsql  %{pg_dir}/bin/%{pkgname}/raster2pgsql
+  update-alternatives --remove postgis-pgsql2shp       %{pg_dir}/bin/%{pkgname}/pgsql2shp
+  update-alternatives --remove postgis-pgtopo_export   %{pg_dir}/bin/%{pkgname}/pgtopo_export
+  update-alternatives --remove postgis-pgtopo_import   %{pg_dir}/bin/%{pkgname}/pgtopo_import
+  update-alternatives --remove postgis-postgis         %{pg_dir}/bin/%{pkgname}/postgis
+  update-alternatives --remove postgis-postgis_restore %{pg_dir}/bin/%{pkgname}/postgis_restore
+  update-alternatives --remove postgis-raster2pgsql    %{pg_dir}/bin/%{pkgname}/raster2pgsql
+  update-alternatives --remove postgis-shp2pgsql       %{pg_dir}/bin/%{pkgname}/shp2pgsql
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
 %files
 %defattr(-,root,root)
-%doc COPYING CREDITS NEWS TODO README.%{realname} doc/html loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
+%doc COPYING CREDITS NEWS TODO README.%{realname} doc/html
+%doc loader/README.* doc/%{realname}.xml doc/ZMSgeoms.txt
 %{pg_dir}/lib/address_standardizer-%{lib_ver}.so
 %{pg_dir}/lib/postgis-%{lib_ver}.so
 %{pg_dir}/lib/postgis_topology-%{lib_ver}.so
 %if %raster
 %{pg_dir}/lib/postgis_raster-%{lib_ver}.so
 %endif
+%{_mandir}/man1/*
 
 %files client
 %defattr(-,root,root)
 %{pg_dir}/bin/%{pkgname}/pgsql2shp
+%{pg_dir}/bin/%{pkgname}/pgtopo_export
+%{pg_dir}/bin/%{pkgname}/pgtopo_import
+%{pg_dir}/bin/%{pkgname}/postgis
+%{pg_dir}/bin/%{pkgname}/postgis_restore
 %{pg_dir}/bin/%{pkgname}/raster2pgsql
 %{pg_dir}/bin/%{pkgname}/shp2pgsql
 
@@ -220,7 +222,6 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{pkgname}/legacy_minimal.sql
 %{pg_dir}/share/contrib/%{pkgname}/legacy.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_comments.sql
-%{pg_dir}/share/contrib/%{pkgname}/postgis_restore.pl
 %{pg_dir}/share/contrib/%{pkgname}/postgis.sql
 %{pg_dir}/share/contrib/%{pkgname}/postgis_upgrade.sql
 %{pg_dir}/share/contrib/%{pkgname}/raster_comments.sql
@@ -242,17 +243,21 @@ rm -rf %{buildroot}
 %{pg_dir}/share/contrib/%{pkgname}/rtpostgis_upgrade.sql
 %{pg_dir}/share/contrib/%{pkgname}/uninstall_rtpostgis.sql
 %endif
+%if %llvm
 %{pg_dir}/lib/bitcode/*
+%endif
 
 %if %utils
 %files utils
 %defattr(-,root,root)
 %doc utils/README
 %attr(755,root,root) %{_datadir}/%{name}/create_extension_unpackage.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_or_replace_to_create.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_skip_signatures.pl
 %attr(755,root,root) %{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_undef.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_uninstall.pl
 %attr(755,root,root) %{_datadir}/%{name}/create_unpackaged.pl
-%attr(755,root,root) %{_datadir}/%{name}/postgis_proc_upgrade.pl
+%attr(755,root,root) %{_datadir}/%{name}/create_upgrade.pl
 %attr(755,root,root) %{_datadir}/%{name}/postgis_restore.pl
 %attr(755,root,root) %{_datadir}/%{name}/profile_intersects.pl
 %attr(755,root,root) %{_datadir}/%{name}/read_scripts_version.pl
@@ -266,8 +271,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Wed Nov 08 2023 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-1
+* Mon Sep 09 2024 Anton Novojilov <andy@essentialkaos.com> - 3.4.3-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.3/NEWS
+
+* Wed Nov 08 2023 Anton Novojilov <andy@essentialkaos.com> - 3.4.0-1
 - Minimal required version of GEOS set to 3.11
 
-* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.2.5-0
-- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.2.5/NEWS
+* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.4.0-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.0/NEWS

@@ -3,7 +3,8 @@
 
 ################################################################################
 
-pkg postgresql%PG_VERSION%-server postgis%SHORT_VERSION%_%PG_VERSION% postgis%SHORT_VERSION%_%PG_VERSION%-client postgis%SHORT_VERSION%_%PG_VERSION%-scripts postgis%SHORT_VERSION%_%PG_VERSION%-utils
+pkg postgresql%PG_VERSION%-server postgis%SHORT_VERSION%_%PG_VERSION% postgis%SHORT_VERSION%_%PG_VERSION%-client
+pkg postgis%SHORT_VERSION%_%PG_VERSION%-scripts postgis%SHORT_VERSION%_%PG_VERSION%-utils
 
 require-root yes
 unsafe-actions yes
