@@ -10,7 +10,7 @@ template="${extension}.template"
 main() {
   local pg
 
-  for pg in 10 11 12 13 14 15 16 ; do
+  for pg in 12 13 14 15 16 ; do
     generate "$pg"
   done
 }

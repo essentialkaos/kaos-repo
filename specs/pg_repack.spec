@@ -8,8 +8,7 @@
 
 ################################################################################
 
-%define pg_ver      14
-%define pg_fullver  %{pg_ver}.6
+%define pg_ver      %{?_pg}%{!?_pg:99}
 %define pg_dir      %{_prefix}/pgsql-%{pg_ver}
 %define realname    pg_repack
 
@@ -17,7 +16,7 @@
 
 Summary:         Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
 Name:            %{realname}%{pg_ver}
-Version:         1.4.8
+Version:         1.5.0
 Release:         0%{?dist}
 License:         BSD
 Group:           Applications/Databases
@@ -25,19 +24,15 @@ URL:             https://pgxn.org/dist/pg_repack/
 
 Source0:         https://api.pgxn.org/dist/%{realname}/%{version}/%{realname}-%{version}.zip
 
+Source100:       checksum.sha512
+
 BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc openssl-devel readline-devel zlib-devel
-BuildRequires:   postgresql%{pg_ver}-devel = %{pg_fullver}
-BuildRequires:   postgresql%{pg_ver}-libs = %{pg_fullver}
+BuildRequires:   make gcc openssl-devel readline-devel zlib-devel libzstd-devel
+BuildRequires:   postgresql%{pg_ver}-devel postgresql%{pg_ver}-libs
 
 %if %llvm
-%if 0%{?rhel} >= 8
-BuildRequires:   llvm-devel >= 6.0.0 clang-devel >= 6.0.0
-%endif
-%if 0%{?rhel} == 7
-BuildRequires:   llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
-%endif
+BuildRequires:   llvm-devel >= 13.0 clang-devel >= 13.0
 %endif
 
 Requires:        postgresql%{pg_ver}
@@ -56,17 +51,10 @@ The module is developed to be a better alternative of CLUSTER and VACUUM FULL.
 ################################################################################
 
 %prep
-%setup -qn %{realname}-%{version}
+%crc_check
+%autosetup -n %{realname}-%{version}
 
 %build
-%if %llvm
-%if 0%{?rhel} == 7
-# perfecto:ignore
-export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
-export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
-%endif
-%endif
-
 %{__make} %{?_smp_mflags} PG_CONFIG=%{pg_dir}/bin/pg_config
 
 %install
@@ -81,9 +69,6 @@ update-alternatives --install %{_bindir}/pg_repack pgrepack %{pg_dir}/bin/pg_rep
 if [[ $1 -eq 0 ]] ; then
   update-alternatives --remove pgrepack %{pg_dir}/bin/pg_repack
 fi
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -101,10 +86,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Sep 10 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
+- https://github.com/reorg/pg_repack/releases/tag/ver_1.5.0
+
 * Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 1.4.8-0
 - Added support for PostgreSQL 15
 - Fixed --parent-table on declarative partitioned tables
 - Removed connection info from error log
-
-* Thu Nov 18 2021 Anton Novojilov <andy@essentialkaos.com> - 1.4.7-0
-- Added support for PostgreSQL 14

@@ -7,7 +7,8 @@ require-root yes
 unsafe-actions yes
 
 var ext_name     pg_repack
-var ext_version  1.4.8
+var bin_name     pg_repack
+var ext_version  1.5.0
 
 var postgres_version 14
 
@@ -29,8 +30,8 @@ command "-" "Check library"
   mode {lib_dir}/{ext_name}.so 755
 
 command "-" "Check binary"
-  app {ext_name}
-  link /usr/bin/{ext_name} {bin_dir}/{ext_name}
+  app {bin_name}
+  link /usr/bin/{bin_name} {bin_dir}/{bin_name}
 
 command "-" "Check SQL files"
   exist {extension_dir}/{ext_name}--{ext_version}.sql
