@@ -1,5 +1,9 @@
 ################################################################################
 
+%define checksum  c7c0a6804538e083bcfbc49c2cecf07c5aaf9fc31fdcfb4449c787d3a40c980b
+
+################################################################################
+
 Summary:    An extremely fast Python package installer and resolver
 Name:       uv
 Version:    0.4.4
@@ -9,7 +13,6 @@ License:    MIT AND Apache 2.0
 URL:        https://github.com/astral-sh/uv
 
 Source0:    https://github.com/astral-sh/uv/releases/download/%{version}/%{name}-x86_64-unknown-linux-gnu.tar.gz
-Source1:    https://github.com/astral-sh/uv/releases/download/%{version}/%{name}-x86_64-unknown-linux-gnu.tar.gz.sha256
 
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -38,12 +41,14 @@ constraints, source distributions, HTML and JSON indexes, and more.
 ################################################################################
 
 %prep
-cd ../SOURCES ; sha256sum -c %{SOURCE1}
+if [[ $(sha256sum -b %{SOURCE0} | cut -f1 -d' ') != "%{checksum}" ]] ; then
+  echo "Invalid source checksum"
+  exit 1
+fi
 
-%setup -qn %{name}-x86_64-unknown-linux-gnu
+%autosetup -n %{name}-x86_64-unknown-linux-gnu
 
 %build
-
 %install
 rm -rf %{buildroot}
 
@@ -58,9 +63,6 @@ install -pm 755 %{name}x %{buildroot}%{_bindir}/
 ./%{name} --generate-shell-completion bash > %{buildroot}%{_datadir}/bash-completion/completions/%{name}
 ./%{name} --generate-shell-completion fish > %{buildroot}%{_datarootdir}/fish/vendor_completions.d/%{name}.fish
 ./%{name} --generate-shell-completion zsh > %{buildroot}%{_datadir}/zsh/site-functions/_%{name}
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

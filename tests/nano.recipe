@@ -10,4 +10,4 @@ command "-" "Check environment"
 
 command "nano --version" "Check version info"
   exit 0
-  output-contains "Compiled options: --disable-libmagic --enable-utf8"
+  output-contains "Compiled options: --enable-utf8"

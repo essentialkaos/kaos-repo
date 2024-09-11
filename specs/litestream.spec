@@ -25,7 +25,7 @@ Source0:        %{name}-%{version}.tar.bz2
 
 Source100:      checksum.sha512
 
-BuildRequires:  golang >= 1.21
+BuildRequires:  golang >= 1.22
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -60,10 +60,11 @@ install -dm 755 %{buildroot}%{_unitdir}
 
 install -pm 755 github.com/benbjohnson/%{name}/%{name} \
                 %{buildroot}%{_bindir}/
-# perfecto:ignore
+
+# perfecto:ignore 5
 install -pm 640 github.com/benbjohnson/%{name}/etc/%{name}.yml \
                 %{buildroot}%{_sysconfdir}/
-# perfecto:ignore
+
 install -pm 644 github.com/benbjohnson/%{name}/etc/%{name}.service \
                 %{buildroot}%{_unitdir}/
 

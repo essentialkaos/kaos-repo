@@ -4,7 +4,6 @@
 #include <orc-0.4/orc/orccompiler.h>
 #include <orc-0.4/orc/orcconstant.h>
 #include <orc-0.4/orc/orccpu.h>
-#include <orc-0.4/orc/orccpuinsn.h>
 #include <orc-0.4/orc/orcdebug.h>
 #include <orc-0.4/orc/orcemulateopcodes.h>
 #include <orc-0.4/orc/orcexecutor.h>
