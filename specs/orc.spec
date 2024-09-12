@@ -11,7 +11,7 @@
 
 Summary:        The Oil Run-time Compiler
 Name:           orc
-Version:        0.4.38
+Version:        0.4.39
 Release:        0%{?dist}
 Group:          System Environment/Libraries
 License:        BSD
@@ -79,9 +79,6 @@ rm -rf %{buildroot}
 
 rm -f %{buildroot}%{_libdir}/*.a
 
-sed -i 's#<orc/#<orc-0.4/orc/#g' %{buildroot}%{_includedir}/%{name}-0.4/orc/*.h
-sed -i 's#<orc/#<orc-0.4/orc/#g' %{buildroot}%{_includedir}/%{name}-0.4/orc-test/*.h
-
 %post
 /sbin/ldconfig
 
@@ -114,6 +111,26 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 0.4.39-0
+- Security: Fix error message printing buffer overflow leading to possible
+  code execution in orcc with specific input files (CVE-2024-40897). This
+  only affects developers and CI environments using orcc, not users of liborc
+- div255w: fix off-by-one error in the implementations
+- x86: only run AVX detection if xgetbv is available
+- x86: fix AVX detection by implementing the check recommended by Intel
+- Only enable JIT compilation on Apple arm64 if running on macOS, fixes crashes
+  on iOS
+- Fix potential crash in emulation mode if logging is enabled
+- Handle undefined TARGET_OS_OSX correctly
+- orconce: Fix typo in GCC __sync-based implementation
+- orconce: Fix usage of __STDC_NO_ATOMICS__
+- Fix build with MSVC 17.10 + C11
+- Support stack unwinding on Windows
+- Major opcode and instruction set code clean-ups and refactoring
+- Refactor allocation and chunk initialization of code regions
+- Fall back to emulation on Linux if JIT support is not available,
+  e.g. because of SELinux sandboxing or noexec mounting)
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 0.4.38-0
 - x86: account for XSAVE when checking for AVX support, fixing usage on
   hardened linux kernels where AVX support has been disabled

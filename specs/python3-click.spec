@@ -16,7 +16,7 @@
 
 Summary:        A simple wrapper around optparse for powerful command line utilities
 Name:           python3-click
-Version:        8.1.3
+Version:        8.1.7
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
@@ -71,6 +71,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 8.1.7-0
+- https://click.palletsprojects.com/en/8.1.x/changes/#version-8-1-7
+
 * Wed Feb 08 2023 Anton Novojilov <andy@essentialkaos.com> - 8.1.3-0
 - https://click.palletsprojects.com/en/8.1.x/changes/#version-8-1-3
 

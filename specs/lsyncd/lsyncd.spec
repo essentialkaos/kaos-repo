@@ -11,8 +11,8 @@
 Summary:        File change monitoring and synchronization daemon
 Name:           lsyncd
 Version:        2.3.1
-Release:        0%{?dist}
-License:        GPLv2+
+Release:        1%{?dist}
+License:        GPL-2.0-or-later AND CC-BY-3.0
 Group:          Applications/Internet
 URL:            https://github.com/axkibe/lsyncd
 
@@ -21,17 +21,24 @@ Source1:        %{name}.service
 Source2:        %{name}.sysconfig
 Source3:        %{name}.logrotate
 Source4:        %{name}.conf
+Source5:        %{name}.sysctl
 
 Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc gcc-c++ lua-devel >= 5.1.3 asciidoc
+BuildRequires:  make gcc gcc-c++ asciidoc
 
 %if 0%{?rhel} <= 7
 BuildRequires:  cmake3
 %else
 BuildRequires:  cmake
+%endif
+
+%if 0%{?rhel} >= 9
+BuildRequires:  lua-devel <= 5.4.2
+%else
+BuildRequires:  lua-devel
 %endif
 
 Requires:       lua rsync >= 3.1.0 systemd
@@ -77,6 +84,7 @@ install -pm 644 docs/manpage/%{name}.1 %{buildroot}%{_mandir}/man1/
 install -pDm 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/sysconfig/%{name}
 install -pDm 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 install -pDm 644 %{SOURCE4} %{buildroot}%{_sysconfdir}/
+install -pDm 644 %{SOURCE5} %{buildroot}%{_sysctldir}/50-lsyncd.conf
 
 install -pDm 644 %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 
@@ -111,6 +119,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{_sysctldir}/50-lsyncd.conf
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1*
 %{_unitdir}/%{name}.service
@@ -118,6 +127,11 @@ fi
 ################################################################################
 
 %changelog
+* Wed May 08 2024 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-1
+- Fixed path to binary in service file
+- Added sysctl configuration
+- Updated sysconfig
+
 * Wed Dec 14 2022 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
 - https://github.com/lsyncd/lsyncd/releases/tag/v2.3.1
 

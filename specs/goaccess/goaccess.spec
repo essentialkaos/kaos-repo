@@ -6,13 +6,14 @@
 
 Summary:        Real-time web log analyzer and interactive viewer
 Name:           goaccess
-Version:        1.9.2
+Version:        1.9.3
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        GPLv2+
 URL:            https://goaccess.io
 
 Source0:        https://tar.goaccess.io/goaccess-%{version}.tar.gz
+Source1:        extra-browsers.list
 Source100:      checksum.sha512
 
 Patch1:         webkaos-formats.patch
@@ -36,11 +37,8 @@ for system administrators that require a visual server report on the fly.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -q
-
-%patch1 -p1
+%crc_check
+%autosetup -p1
 
 %build
 %configure --enable-utf8 \
@@ -53,6 +51,8 @@ for system administrators that require a visual server report on the fly.
 %install
 rm -rf %{buildroot}
 %{make_install}
+
+cat %{SOURCE1} >> %{buildroot}%{_sysconfdir}/%{name}/browsers.list
 
 %clean
 rm -rf %{buildroot}
@@ -72,6 +72,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.9.3-0
+- https://goaccess.io/release-notes#release-1.9.3
+
+* Wed May 08 2024 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
+- Added extra user-agents for package managers and status check services
+
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 1.9.2-0
 - https://goaccess.io/release-notes#release-1.9.2
 

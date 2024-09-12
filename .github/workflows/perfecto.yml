@@ -31,7 +31,7 @@ jobs:
 
       - name: Show verion of Perfecto in docker image
         run: |
-          docker run ghcr.io/essentialkaos/perfecto:${{inputs.image}} --version
+          docker run ghcr.io/essentialkaos/perfecto:${{inputs.image}} -vv
 
       - name: Install perfecto-container
         run: |

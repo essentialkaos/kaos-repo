@@ -23,12 +23,12 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     26
 %define ver_min     2
-%define ver_patch   4
+%define ver_patch   5.2
 %define ver_suffix  %{ver_min}.%{ver_patch}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
-%define libre_ver   3.8.4
+%define libre_ver   3.9.2
 
 ################################################################################
 
@@ -466,14 +466,14 @@ a Web server.
 ################################################################################
 
 %package -n %{name}-megaco
-Summary:  Framework for building applications on top of the Megaco/H.248 protocol
+Summary:  Framework for building applications on top of the H.248 protocol
 License:  MPL
 Group:    Development/Tools
 
 Requires:  %{name}-base = %{version}-%{release}
 
 %description -n %{name}-megaco
-Megaco/H.248 is a protocol for control of elements in a physically decomposed
+H.248 is a protocol for control of elements in a physically decomposed
 multimedia gateway, enabling separation of call control from media conversion.
 
 ################################################################################
@@ -1033,6 +1033,13 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Aug 04 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.5.2-0
+- https://github.com/erlang/otp/releases/tag/OTP-26.2.5.2
+
+* Wed May 22 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.5-0
+- https://github.com/erlang/otp/releases/tag/OTP-26.2.5
+- LibreSSL updated to 3.9.2
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 26.2.4-0
 - https://github.com/erlang/otp/releases/tag/OTP-26.2.4
 - LibreSSL updated to 3.8.4

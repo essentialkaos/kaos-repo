@@ -4,23 +4,23 @@
 
 ################################################################################
 
-Summary:              Abstract asynchronous event notification library
-Name:                 libevent
-Version:              2.1.12
-Release:              0%{?dist}
-License:              BSD
-Group:                System Environment/Libraries
-URL:                  https://libevent.org
+Summary:        Abstract asynchronous event notification library
+Name:           libevent
+Version:        2.1.12
+Release:        0%{?dist}
+License:        BSD
+Group:          System Environment/Libraries
+URL:            https://libevent.org
 
-Source0:              https://github.com/%{name}/%{name}/archive/release-%{version}-stable.tar.gz
+Source0:        https://github.com/%{name}/%{name}/archive/release-%{version}-stable.tar.gz
 
-Source100:            checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:            %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:        gcc make automake libtool openssl-devel zlib-devel
+BuildRequires:  gcc make automake libtool openssl-devel zlib-devel
 
-Provides:             %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -33,11 +33,12 @@ timeouts.
 ################################################################################
 
 %package devel
-Group:                System Environment/Libraries
-Summary:              Development files for %{name}
-Requires:             %{name} = %{version}
+Group:     System Environment/Libraries
+Summary:   Development files for %{name}
 
-Provides:             %{name}-devel = %{version}-%{release}
+Requires:  %{name} = %{version}
+
+Provides:  %{name}-devel = %{version}-%{release}
 
 %description devel
 Development files for %{name}

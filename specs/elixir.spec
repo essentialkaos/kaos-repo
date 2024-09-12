@@ -10,7 +10,7 @@
 
 Summary:        A modern approach to programming for the Erlang VM
 Name:           elixir
-Version:        1.16.2
+Version:        1.17.2
 Release:        0%{?dist}
 License:        ASL 2.0 and ERPL
 Group:          Development/Tools
@@ -22,9 +22,9 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  erlang24 git
+BuildRequires:  erlang25 git
 
-Requires:       erlang >= 24
+Requires:       erlang >= 25
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{name}-lang = %{version}-%{release}
@@ -82,6 +82,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.17.2-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.17.2
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.17.1-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.17.1
+
+* Fri Jun 14 2024 Anton Novojilov <andy@essentialkaos.com> - 1.17.0-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.17.0
+
 * Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 1.16.2-0
 - https://github.com/elixir-lang/elixir/releases/tag/v1.16.2
 

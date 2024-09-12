@@ -8,7 +8,7 @@
 
 ################################################################################
 
-Summary:        Library for country/city/organization to IP address or hostname mapping
+Summary:        Library to find the country that any IP address originates from
 Name:           GeoIP
 Version:        1.6.12
 Release:        1%{?dist}

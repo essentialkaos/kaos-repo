@@ -1,0 +1,26 @@
+# Bibop recipe for litestream
+# See more: https://kaos.sh/bibop
+
+pkg litestream
+
+require-root yes
+
+var service_name litestream
+var service_config /etc/litestream.yml
+
+command "-" "Check environment"
+  app litestream
+
+  service-present {service_name}
+
+  exist {service_config}
+  mode {service_config} 640
+
+command "systemctl start {service_name}" "Start litestream daemon"
+  wait-service {service_name} 5
+
+command "systemctl status {service_name}" "Check status of litestream daemon"
+  expect "active (running)"
+
+command "systemctl stop {service_name}" "Stop litestream daemon"
+  !wait-service {service_name} 5

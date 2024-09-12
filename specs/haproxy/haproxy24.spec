@@ -16,8 +16,8 @@
 %define hp_confdir   %{_sysconfdir}/%{orig_name}
 %define hp_datadir   %{_datadir}/%{orig_name}
 
-%define lua_ver       5.4.6
-%define pcre_ver      10.43
+%define lua_ver       5.4.7
+%define pcre_ver      10.44
 %define openssl_ver   1.1.1w
 %define ncurses_ver   6.4
 %define readline_ver  8.2
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.26
+Version:        2.4.27
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -46,15 +46,9 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
 
-%if 0%{?rhel} <= 7
-BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-binutils
-%else
-BuildRequires:  gcc-c++
-%endif
-
-Conflicts:      haproxy haproxy22 haproxy26 haproxy28
+Conflicts:      haproxy haproxy22 haproxy26 haproxy28 haproxy30
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -85,11 +79,6 @@ tar xzvf %{SOURCE14}
 
 %build
 
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 11
-export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
-%endif
-
 ### DEPS BUILD START ###
 
 export BUILDDIR=$(pwd)
@@ -99,7 +88,7 @@ pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
   ./config --prefix=$(pwd)/build no-shared no-threads
-  %{__make}
+  %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
 
@@ -231,6 +220,54 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.27-0
+- BUG/MEDIUM: thread/sched: set proper scheduling context upon ha_set_tid()
+- BUG/MEDIUM: cli: fix once for all the problem of missing trailing LFs
+- MINOR: cli: Remove useless loop on commands to find unescaped semi-colon
+- BUG/MEDIUM: cli: Warn if pipelined commands are delimited by a \n
+- BUG/MINOR: log: fix lf_text_len() truncate inconsistency
+- BUG/MINOR: tools/log: invalid encode_{chunk,string} usage
+- BUG/MINOR: log: invalid snprintf() usage in sess_build_logline()
+- BUG/MEDIUM: http-ana: Deliver 502 on keep-alive for fressh server connection
+- BUG/MEDIUM: peers/trace: fix crash when listing event types
+- CI: revert kernel addr randomization introduced in 3a0fc864
+- BUG/MEDIUM: stconn: Don't forward channel data if input data must be filtered
+- BUG/MEDIUM: evports: do not clear returned events list on signal
+- BUG/MEDIUM: cache: Vary not working properly on anything other than
+  accept-encoding
+- BUG/MINOR: sock: handle a weird condition with connect()
+- BUG/MINOR: fd: my_closefrom() on Linux could skip contiguous series of sockets
+- BUG/MINOR: backend: use cum_sess counters instead of cum_conn
+- BUG/MINOR: h1: fix detection of upper bytes in the URI
+- BUG/MEDIUM: htx: mark htx_sl as packed since it may be realigned
+- BUG/MEDIUM: stick-tables: properly mark stktable_data as packed
+- BUILD: stick-tables: better mark the stktable_data as 32-bit aligned
+- BUG/MEDIUM: fd: prevent memory waste in fdtab array
+- BUG/MINOR: htpp-ana/stats: Specify that HTX redirect messages have
+  a C-L header
+- BUG/MINOR: stats: Don't state the 303 redirect response is chunked
+- CLEANUP: ssl/cli: remove unused code in dump_crtlist_conf
+- BUG/MINOR: connection: parse PROXY TLV for LOCAL mode
+- BUG/MINOR: server: Don't reset resolver options on a new default-server line
+- BUILD: fd: errno is also needed without poll()
+- BUG/MINOR: ssl/ocsp: init callback func ptr as NULL
+- BUG/MINOR: activity: fix Delta_calls and Delta_bytes count
+- BUG/MINOR: tcpcheck: report correct error in tcp-check rule parser
+- BUG/MINOR: tools: fix possible null-deref in env_expand() on out-of-memory
+- CLEANUP: hlua: use hlua_pusherror() where relevant
+- BUG/MINOR: hlua: don't use lua_pushfstring() when we don't expect LJMP
+- BUG/MINOR: hlua: fix unsafe hlua_pusherror() usage
+- MINOR: hlua: don't dump empty entries in hlua_traceback()
+- BUG/MINOR: hlua: prevent LJMP in hlua_traceback()
+- CLEANUP: hlua: simplify ambiguous lua_insert() usage in hlua_ctx_resume()
+- BUG/MEDIUM: ssl: wrong priority whem limiting ECDSA ciphers in ECDSA+RSA
+  configuration
+- BUG/MEDIUM: http_ana: ignore NTLM for reuse aggressive/always and no H1
+- BUG/MAJOR: connection: fix server used_conns with H2 + reuse safe
+- BUG/MINOR: haproxy: only tid 0 must not sleep if got signal
+- CI: introduce scripts/build-vtest.sh for installing VTest
+- CI: scripts: fix build of vtest regarding option -C
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.26-0
 - BUG/MINOR: sock: mark abns sockets as non-suspendable and always unbind them
 - BUG/MEDIUM: connection: report connection errors even when no mux is installed

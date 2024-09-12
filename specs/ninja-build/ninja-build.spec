@@ -10,7 +10,7 @@
 
 Summary:        Small build system with a focus on speed
 Name:           ninja-build
-Version:        1.12.0
+Version:        1.12.1
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
@@ -23,13 +23,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc-c++ asciidoc
-
-%if 0%{?rhel} <= 7
-BuildRequires:  cmake3
-%else
-BuildRequires:  cmake
-%endif
+BuildRequires:  cmake gcc-c++ asciidoc
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -49,13 +43,8 @@ fast as possible.
 %setup -qn ninja-%{version}
 
 %build
-%if 0%{?rhel} <= 7
-cmake3 -B build
-cmake3 --build build
-%else
 cmake -B build
 cmake --build build
-%endif
 
 %install
 rm -rf %{buildroot}
@@ -83,8 +72,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 20 2024 Anton Novojilov <andy@essentialkaos.com> - 1.12.1-0
+- https://github.com/ninja-build/ninja/releases/tag/v1.12.1
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
-- https://github.com/ninja-build/ninja/milestone/6?closed=1
+- https://github.com/ninja-build/ninja/releases/tag/v1.12.0
 
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 1.11.1-0
 - Initial build

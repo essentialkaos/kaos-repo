@@ -23,7 +23,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver      14
-%define minorver      10
+%define minorver      13
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        14
@@ -124,12 +124,7 @@ BuildRequires:     openldap-devel
 %endif
 
 %if %llvm
-%if 0%{?rhel} >= 8
-BuildRequires:     llvm-devel >= 6.0.0 clang-devel >= 6.0.0
-%endif
-%if 0%{?rhel} == 7
-BuildRequires:     llvm5.0-devel >= 5.0 llvm-toolset-7-clang >= 4.0.1
-%endif
+BuildRequires:     llvm-devel >= 13.0 clang-devel >= 13.0
 %endif
 
 BuildRequires:     systemd systemd-devel
@@ -263,12 +258,7 @@ Summary:   Just-in-time compilation support for PostgreSQL
 Group:     Applications/Databases
 
 Requires:  %{name}-server%{?_isa} = %{version}-%{release}
-
-%if 0%{?rhel} >= 8
-Requires:  llvm >= 6.0
-%else
-Requires:  llvm5.0 >= 5.0
-%endif
+Requires:  llvm >= 13.0
 
 Provides:  %{realname}-llvmjit = %{version}
 
@@ -356,14 +346,8 @@ system, including regression tests and benchmarks.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{realname}-%{version}
-
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
+%crc_check
+%autosetup -p0 -n %{realname}-%{version}
 
 # Copy pdf with documentation to build directory
 cp -p %{SOURCE7} .
@@ -386,14 +370,6 @@ LDFLAGS="-Wl,--as-needed" ; export LDFLAGS
 export CFLAGS
 export LIBNAME=%{_lib}
 export PYTHON=/usr/bin/python3
-
-%if %llvm
-%if 0%{?rhel} == 7
-# perfecto:ignore
-export CLANG=/opt/rh/llvm-toolset-7/root/usr/bin/clang
-export LLVM_CONFIG=%{_libdir}/llvm5.0/bin/llvm-config
-%endif
-%endif
 
 %{_configure} --disable-rpath \
   --prefix=%{install_dir} \
@@ -561,7 +537,7 @@ install -dm 755 %{buildroot}%{_tmpfilesdir}
 install -pm 644 %{SOURCE13} %{buildroot}%{_tmpfilesdir}/%{realname}-%{majorver}.conf
 
 # Create the directory for sockets
-install -dm 755 %{buildroot}%{_localstatedir}/run/%{realname}
+install -dm 755 %{buildroot}%{_rundir}/%{realname}
 
 # PGDATA needs removal of group and world permissions due to pg_pwd hole.
 install -dm 700 %{buildroot}%{_sharedstatedir}/%{shortname}/%{majorver}/data
@@ -843,9 +819,6 @@ if [[ $1 -eq 0 ]] ; then
   update-alternatives --remove %{shortname}-pkgconfig-libecpg_compat  %{install_dir}/lib/pkgconfig/libecpg_compat.pc
 fi
 
-%clean
-rm -rf %{buildroot}
-
 ################################################################################
 
 %files -f pg_main.lst
@@ -1041,7 +1014,7 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{service_name}
 %config(noreplace) %{_unitdir}/%{realname}-%{majorver}.service
 %config(noreplace) %{_tmpfilesdir}/%{realname}-%{majorver}.conf
-%attr(755,%{username},%{groupname}) %dir %{_localstatedir}/run/%{realname}
+%attr(755,%{username},%{groupname}) %dir %{_rundir}/%{realname}
 %{_initddir}/%{tinyname}%{majorver}
 %if %pam
 %config(noreplace) %{_sysconfdir}/pam.d/%{realname}%{majorver}
@@ -1080,6 +1053,7 @@ rm -rf %{buildroot}
 %{install_dir}/lib/pgoutput.so
 %{install_dir}/lib/plpgsql.so
 %{install_dir}/share/extension/plpgsql*
+%{install_dir}/share/fix-CVE-*.sql
 
 %config(noreplace) %attr(700,%{username},%{groupname}) %{install_dir}/share/bash_profile
 
@@ -1158,6 +1132,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 14.13-0
+- https://www.postgresql.org/docs/14/release-14-13.html
+
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 14.12-0
+- https://www.postgresql.org/docs/14/release-14-12.html
+
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 14.11-0
+- https://www.postgresql.org/docs/14/release-14-11.html
+
 * Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 14.10-0
 - https://www.postgresql.org/docs/14/release-14-10.html
 

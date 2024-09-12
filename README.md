@@ -1,4 +1,4 @@
-<p align="center"><a href="#readme"><img src="https://gh.kaos.st/kaos-repo.svg"/></a></p>
+<p align="center"><a href="#readme"><img src=".github/images/card.svg"/></a></p>
 
 <p align="center"><a href="#installation">Installation</a> • <a href="#contributing-guidelines">Contributing Guidelines</a> • <a href="#deletion-policy">Deletion Policy</a> • <a href="#end-of-support-schedule">EoS Schedule</a> • <a href="#perfecto-and-bibop-check-status">CI status</a> • <a href="#license">License</a></p>
 
@@ -9,16 +9,12 @@ This repository contains spec files and patches used for building RPM packages f
 ### Installation
 
 ```bash
-sudo yum install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
 ```
 
 Some packages have dependencies from [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by following commands:
 
 ```bash
-# CentOS 7 / Alma / Rocky
-sudo yum install -y epel-release
-# Oracle Linux 7
-sudo yum install -y oracle-epel-release-el7
 # Oracle Linux 8
 sudo dnf install -y oracle-epel-release-el8
 # Oracle Linux 9
@@ -36,12 +32,6 @@ sudo dnf config-manager --set-enabled ol8_codeready_builder
 sudo dnf config-manager --set-enabled ol9_codeready_builder
 ```
 
-Building some packages for EL 7 requires [Software Collection](https://wiki.centos.org/SpecialInterestGroup/SCLo) repository. You could add this repository by following command:
-
-```bash
-sudo yum install -y centos-release-scl
-```
-
 ### Contributing Guidelines
 
 If you want to add a new package to the repository, be ready to look after it. It's physically impossible to maintain and keep fresh a large number of packages, especially if you don't use them somewhere.
@@ -53,6 +43,8 @@ Please find a minute to check out our main [Contributing Guidelines](https://kao
 ### Deletion Policy
 
 Security is our first priority. We can't keep an outdated package in our repository for a long time. If a package spec were not updated for the several latest releases (_especially with known vulnerabilities_) of software, it would be deleted from the repository.
+
+We keep at least the last 5 minor versions (_with all releases_) of each package. In some cases (_e.g. programming languages_) we keep more versions of packages. If a version has a critical security vulnerability it may be removed from the repository at any time.
 
 ### End-of-Support Schedule
 

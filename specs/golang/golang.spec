@@ -25,13 +25,13 @@
 %global gohostarch  386
 %endif
 
-%global go_api  1.22
+%global go_api  1.23
 
 ################################################################################
 
 Summary:        The Go Programming Language
 Name:           golang
-Version:        1.22.2
+Version:        1.23.1
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
@@ -47,7 +47,7 @@ Patch0:         disable-google.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  golang >= 1.20
+BuildRequires:  golang >= 1.22
 
 Requires:       %{name}-bin = %{version}-%{release}
 Requires:       %{name}-src = %{version}-%{release}
@@ -127,11 +127,8 @@ for _,d in pairs({"api", "doc", "include", "lib", "src"}) do
 end
 
 %prep
-%{crc_check}
-
-%setup -qn go
-
-%patch0 -p1
+%crc_check
+%autosetup -p1 -n go
 
 %build
 export CC="gcc"
@@ -237,6 +234,24 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 1.23.1-0
+- https://github.com/golang/go/issues?q=milestone:Go1.23.1+label:CherryPickApproved
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.23.0-0
+- https://go.dev/doc/go1.23
+
+* Sun Aug 11 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.6-0
+- https://github.com/golang/go/issues?q=milestone:Go1.22.6+label:CherryPickApproved
+
+* Wed Jul 03 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.5-0
+- https://github.com/golang/go/issues?q=milestone:Go1.22.5+label:CherryPickApproved
+
+* Wed Jun 05 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.4-0
+- https://github.com/golang/go/issues?q=milestone:Go1.22.4+label:CherryPickApproved
+
+* Sun May 12 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.3-0
+- https://github.com/golang/go/issues?q=milestone:Go1.22.3+label:CherryPickApproved
+
 * Thu Apr 04 2024 Anton Novojilov <andy@essentialkaos.com> - 1.22.2-0
 - https://github.com/golang/go/issues?q=milestone:Go1.22.2+label:CherryPickApproved
 

@@ -6,7 +6,7 @@
 
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.10.0
+Version:        2.11.0
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -15,13 +15,11 @@ URL:            https://www.atoptool.nl
 Source0:        https://www.atoptool.nl/download/%{name}-%{version}.tar.gz
 Source1:        atopd
 
-Patch0:         atop-newer-gcc.patch
-
 Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc make zlib-devel ncurses-devel systemd
+BuildRequires:  gcc make zlib-devel ncurses-devel systemd glib2-devel
 
 Requires:       zlib ncurses systemd
 
@@ -48,8 +46,6 @@ as reports.
 %{crc_check}
 
 %setup -qn %{name}-%{version}
-
-%patch0 -p1
 
 # Set path to sysconfig file
 sed -i 's#/etc/default/atop#/etc/sysconfig/atop#' atop.daily
@@ -153,6 +149,36 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.11.0-0
+- Cgroups (version 2) support.
+- Show the hierarchical structure of cgroups and the related metrics with
+  key/option 'G', and define the cgroup depth with the keys/options 2 till 7.
+  Key/option 8 also shows the processes per cgroup level, except the kernel
+  processes in the root cgroup. Key/option 9 shows the related processes per
+  cgroup level including the kernel processes in the root cgroup. With
+  key/option 'C' the output is sorted on CPU consumption (default), with
+  key/option 'M' on memory consumption, and with key/option 'D' (requires
+  root privileges) on disk utilization.
+- Note: The collection of cgroup information per process is not supported any
+  more.
+- Twin mode: live measurement with review option.
+- In twin mode atop spawns into a lower level process that gathers the counters
+  and writes them to a temporary raw file, and an upper level process that reads
+  the counters from the temporary raw file and presents them to the user.
+- The reading of the upper level process keeps in pace with the written samples
+  of the lower level process for live measurements. However, when pressing the
+  'r' (reset to measurement begin), the 'b' (branch to time stamp), or the 'T'
+  (previous sample), the upper level process implicitly pauses with the
+  possibility to review previous samples. The 'z' (explicit pause) can also be
+  used to pause the live measurement. When pressing the 'z' again (continue
+  after pause) viewing of the live measurement will be continued.
+- Various corrections related to JSON output.
+- Improved gathering of current CPU frequency.
+- Support more than 500 CPUs.
+- The format of the raw file is incompatible with previous versions. Raw files
+  from previous versions can be converted to the new layout with the atopconvert
+  command.
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.10.0-0
 - Additional memory statistics on system level: amount of available memory,
   amount of memory used for Transparant Huge Pages, amount of memory used by two

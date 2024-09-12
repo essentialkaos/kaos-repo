@@ -10,7 +10,7 @@ unsafe-actions yes
 
 var postgis_lib_version    3
 var postgis_major_version  3.4
-var postgis_version        3.4.0
+var postgis_version        3.4.3
 var postgres_version       12
 var pkg_ver                34_{postgres_version}
 

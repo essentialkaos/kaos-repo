@@ -4,25 +4,25 @@
 
 ################################################################################
 
-Summary:         Library providing BSD-compatible functions for portability
-Name:            libbsd
-Version:         0.11.7
-Release:         0%{?dist}
-License:         MIT
-Group:           System Environment/Libraries
-URL:             https://libbsd.freedesktop.org
+Summary:        Library providing BSD-compatible functions for portability
+Name:           libbsd
+Version:        0.12.2
+Release:        0%{?dist}
+License:        MIT
+Group:          System Environment/Libraries
+URL:            https://libbsd.freedesktop.org
 
-Source0:         https://libbsd.freedesktop.org/releases/%{name}-%{version}.tar.xz
+Source0:        https://libbsd.freedesktop.org/releases/%{name}-%{version}.tar.xz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc gcc-c++ automake libtool autoconf >= 2.67 libmd-devel
+BuildRequires:  make gcc gcc-c++ automake libtool autoconf >= 2.67 libmd-devel
 
-Requires:        libmd
+Requires:       libmd
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -35,11 +35,11 @@ code over and over again on each project.
 ################################################################################
 
 %package devel
-Summary:        Header files for libbsd package
-Group:          Development/Libraries
+Summary:  Header files for libbsd package
+Group:    Development/Libraries
 
-Requires:       %{name} = %{version}
-Requires:       libmd-devel
+Requires:  %{name} = %{version}
+Requires:  libmd-devel
 
 %description devel
 Header files and package configs for libbsd package.
@@ -47,11 +47,11 @@ Header files and package configs for libbsd package.
 ################################################################################
 
 %package ctor-static
-Summary:        Development files for libbsd
-Group:          Development/Libraries
+Summary:  Development files for libbsd
+Group:    Development/Libraries
 
-Requires:       %{name} = %{version}
-Requires:       %{name}-devel = %{version}
+Requires:  %{name} = %{version}
+Requires:  %{name}-devel = %{version}
 
 %description ctor-static
 The libbsd-ctor static library is required if setproctitle() is to be used
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 0.12.2-0
+- https://gitlab.freedesktop.org/libbsd/libbsd/-/compare/0.11.7...0.12.2
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 0.11.7-0
 - https://gitlab.freedesktop.org/libbsd/libbsd/-/compare/0.11.6...0.11.7
 

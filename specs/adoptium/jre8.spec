@@ -8,15 +8,15 @@
 
 ################################################################################
 
-%define jdk_major  402
-%define jdk_minor  b06
+%define jdk_major  422
+%define jdk_minor  b05
 %define jdk_patch  %{nil}
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  816
+%define alt_priority  817
 
 ################################################################################
 
@@ -112,6 +112,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.422-b05
+- https://adoptium.net/en-GB/temurin/release-notes/?version=jdk8u422-b05
+
 * Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.402-b06
 - https://adoptium.net/en-GB/temurin/release-notes/?version=jdk8u402-b06
 

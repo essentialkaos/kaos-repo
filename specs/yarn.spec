@@ -1,13 +1,10 @@
 ################################################################################
 
-# perfecto:target el8 el9
-
-################################################################################
-
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
+# perfecto:ignore
 %global nodejs_sitelib  %{_prefix}/lib/node_modules
 
 ################################################################################
@@ -64,8 +61,8 @@ cp -pr package.json lib bin %{buildroot}%{nodejs_sitelib}/%{name}
 
 rm -f %{buildroot}%{nodejs_sitelib}/%{name}/bin/*.cmd
 
-ln -sf %{_prefix}/lib/node_modules/%{name}/bin/%{name}.js %{buildroot}%{_bindir}/%{name}
-ln -sf %{_prefix}/lib/node_modules/%{name}/bin/%{name}.js %{buildroot}%{_bindir}/yarnpkg
+ln -sf %{nodejs_sitelib}/%{name}/bin/%{name}.js %{buildroot}%{_bindir}/%{name}
+ln -sf %{nodejs_sitelib}/%{name}/bin/%{name}.js %{buildroot}%{_bindir}/yarnpkg
 
 %clean
 rm -rf %{buildroot}

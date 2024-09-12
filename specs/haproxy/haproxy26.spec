@@ -16,9 +16,9 @@
 %define hp_confdir   %{_sysconfdir}/%{orig_name}
 %define hp_datadir   %{_datadir}/%{orig_name}
 
-%define lua_ver       5.4.6
-%define pcre_ver      10.43
-%define openssl_ver   3.0.13
+%define lua_ver       5.4.7
+%define pcre_ver      10.44
+%define openssl_ver   3.0.14
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.17
+Version:        2.6.18
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -46,15 +46,9 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
 
-%if 0%{?rhel} <= 7
-BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-binutils
-%else
-BuildRequires:  gcc-c++
-%endif
-
-Conflicts:      haproxy haproxy22 haproxy24 haproxy28
+Conflicts:      haproxy haproxy22 haproxy24 haproxy28 haproxy30
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -84,11 +78,6 @@ tar xzvf %{SOURCE13}
 tar xzvf %{SOURCE14}
 
 %build
-
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 11
-export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
-%endif
 
 ### DEPS BUILD START ###
 
@@ -231,6 +220,96 @@ fi
 ################################################################################
 
 %changelog
+* Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.18-0
+- BUG/MEDIUM: cli: fix once for all the problem of missing trailing LFs
+- BUG/MEDIUM: mux-quic: report early error on stream
+- BUG/MEDIUM: quic: remove unsent data from qc_stream_desc buf
+- MINOR: ext-check: add an option to preserve environment variables
+- BUG/MINOR: ext-check: cannot use without preserve-env
+- MINOR: server: allow cookie for dynamic servers
+- MINOR: cli: Remove useless loop on commands to find unescaped semi-colon
+- BUG/MEDIUM: cli: Warn if pipelined commands are delimited by a \n
+- BUG/MINOR: log: fix lf_text_len() truncate inconsistency
+- BUG/MINOR: tools/log: invalid encode_{chunk,string} usage
+- BUG/MINOR: log: invalid snprintf() usage in sess_build_logline()
+- CLEANUP: log: lf_text_len() returns a pointer not an integer
+- BUG/MEDIUM: http-ana: Deliver 502 on keep-alive for fressh server connection
+- BUG/MINOR: http-ana: Fix TX_L7_RETRY and TX_D_L7_RETRY values
+- BUG/MINOR: debug: make sure DEBUG_STRICT=0 does work as documented
+- BUG/MEDIUM: peers/trace: fix crash when listing event types
+- CI: revert kernel addr randomization introduced in 3a0fc864
+- MINOR: net_helper: Add support for floats/doubles.
+- BUG/MEDIUM: grpc: Fix several unaligned 32/64 bits accesses
+- BUG/MEDIUM: stconn: Don't forward channel data if input data must be filtered
+- BUG/MEDIUM: evports: do not clear returned events list on signal
+- BUG/MEDIUM: peers: Fix exit condition when max-updates-at-once is reached
+- BUG/MINOR: server: fix slowstart behavior
+- BUG/MEDIUM: cache: Vary not working properly on anything other than
+  accept-encoding
+- BUG/MINOR: stconn: Fix sc_mux_strm() return value
+- BUG/MINOR: sock: handle a weird condition with connect()
+- BUG/MINOR: fd: my_closefrom() on Linux could skip contiguous series of sockets
+- BUG/MINOR: backend: use cum_sess counters instead of cum_conn
+- BUG/MINOR: h1: fix detection of upper bytes in the URI
+- BUG/MINOR: mworker: reintroduce way to disable seamless reload with
+  -x /dev/null
+- BUILD: clock: improve check for pthread_getcpuclockid()
+- DOC: lua: fix filters.txt file location
+- MINOR: log: add dup_logsrv() helper function
+- BUG/MINOR: log: keep the ref in dup_logger()
+- BUG/MINOR: log: smp_rgs array issues with inherited global log directives
+- BUG/MINOR: mux-quic: fix error code on shutdown for non HTTP/3
+- BUG/MINOR: qpack: fix error code reported on QPACK decoding failure
+- BUG/MEDIUM: htx: mark htx_sl as packed since it may be realigned
+- BUG/MEDIUM: stick-tables: properly mark stktable_data as packed
+- BUG/MINOR: h1: Check authority for non-CONNECT methods only if a scheme
+  is found
+- BUG/MEDIUM: h1: Reject CONNECT request if the target has a scheme
+- BUILD: stick-tables: better mark the stktable_data as 32-bit aligned
+- BUG/MEDIUM: fd: prevent memory waste in fdtab array
+- BUG/MINOR: htpp-ana/stats: Specify that HTX redirect messages have
+  a C-L header
+- BUG/MINOR: stats: Don't state the 303 redirect response is chunked
+- CLEANUP: ssl/cli: remove unused code in dump_crtlist_conf
+- BUG/MINOR: connection: parse PROXY TLV for LOCAL mode
+- BUG/MAJOR: quic: Crash with TLS_AES_128_CCM_SHA256 (libressl only)
+- BUG/MEDIUM: quic_tls: prevent LibreSSL < 4.0 from negotiating
+  CHACHA20_POLY1305
+- BUG/MEDIUM: mux-quic: Create sedesc in same time of the QUIC stream
+- MEDIUM: config: prevent communication with privileged ports
+- BUG/MINOR: quic: adjust restriction for stateless reset emission
+- BUG/MINOR: http-htx: Support default path during scheme based normalization
+- BUG/MINOR: server: Don't reset resolver options on a new default-server line
+- DOC: quic: specify that connection migration is not supported
+- DOC: config: fix incorrect section reference about custom log format
+- REGTESTS: acl_cli_spaces: avoid a warning caused by undefined logs
+- CI: scripts: fix build of vtest regarding option -C
+- BUILD: fd: errno is also needed without poll()
+- BUG/MINOR: ssl/ocsp: init callback func ptr as NULL
+- BUG/MINOR: activity: fix Delta_calls and Delta_bytes count
+- BUG/MINOR: cfgparse: remove the correct option on httpcheck send-state warning
+- BUG/MINOR: tcpcheck: report correct error in tcp-check rule parser
+- BUG/MINOR: tools: fix possible null-deref in env_expand() on out-of-memory
+- BUG/MINOR: hlua: use CertCache.set() from various hlua contexts
+- BUG/MINOR: quic: prevent crash on qc_kill_conn()
+- CLEANUP: hlua: use hlua_pusherror() where relevant
+- BUG/MINOR: hlua: don't use lua_pushfstring() when we don't expect LJMP
+- BUG/MINOR: hlua: fix unsafe hlua_pusherror() usage
+- MINOR: hlua: don't dump empty entries in hlua_traceback()
+- BUG/MINOR: hlua: prevent LJMP in hlua_traceback()
+- BUG/MINOR: hlua: fix leak in hlua_ckch_set() error path
+- CLEANUP: hlua: simplify ambiguous lua_insert() usage in hlua_ctx_resume()
+- BUG/MEDIUM: ssl: wrong priority whem limiting ECDSA ciphers in ECDSA+RSA
+  configuration
+- BUG/MEDIUM: server: fix dynamic servers initial settings
+- BUG/MEDIUM: quic: fix connection freeze on post handshake
+- MINOR: session: rename private conns elements
+- BUG/MAJOR: server: do not delete srv referenced by session
+- BUG/MEDIUM: http_ana: ignore NTLM for reuse aggressive/always and no H1
+- BUG/MAJOR: connection: fix server used_conns with H2 + reuse safe
+- BUG/MEDIUM: quic: don't blindly rely on unaligned accesses
+- BUG/MINOR: haproxy: only tid 0 must not sleep if got signal
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.17-0
 - BUG/MEDIUM: connection: report connection errors even when no mux is installed
 - BUG/MEDIUM: mworker: set the master variable earlier

@@ -10,7 +10,7 @@ jobs:
   Perfecto:
     strategy:
       matrix:
-        image: [ 'ol7', 'ol8', 'ol9']
+        image: [ 'ol8', 'ol9']
     uses: ./.github/workflows/perfecto.yml
     with:
       image: ${{ matrix.image }}

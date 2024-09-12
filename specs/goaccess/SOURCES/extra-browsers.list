@@ -1,0 +1,12 @@
+# Extra Crawlers
+ClaudeBot		Crawlers
+
+# Package managers
+libdnf		PkgManager
+urlgrabber		PkgManager
+Nexus		PkgManager
+bundler		PkgManager
+RubyGems		PkgManager
+
+# Status check services
+updown.io		StatusCheck

@@ -61,17 +61,8 @@ This package contains also a virtual file system for Midnight Commander.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{name}_%{version}
-
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
+%crc_check
+%autosetup -p1 -n %{name}_%{version}
 
 %build
 mkdir docs

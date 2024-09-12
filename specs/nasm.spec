@@ -6,7 +6,7 @@
 
 Summary:          A portable x86 assembler which uses Intel-like syntax
 Name:             nasm
-Version:          2.16.02
+Version:          2.16.03
 Release:          0%{?dist}
 License:          BSD
 Group:            Development/Languages
@@ -83,6 +83,13 @@ fi
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.16.03-0
+- Fix building from git in a separate directory from the source
+- Remove some irrelevant files from the source distribution
+- Make the documentation stronger that -O0 or -O1 are probably not what the
+  user wants
+- Fix configure --enable-lto build option
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.16.02-0
 - Fix building from the source distribution in a separate directory from
   the source.

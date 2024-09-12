@@ -1,7 +1,7 @@
-diff -urN rbenv-1.2.0-orig/libexec/rbenv-versions rbenv-1.2.0/libexec/rbenv-versions
---- rbenv-1.2.0-orig/libexec/rbenv-versions	2021-09-29 21:47:10.000000000 +0300
-+++ rbenv-1.2.0/libexec/rbenv-versions	2022-08-19 13:03:39.000000000 +0300
-@@ -102,7 +102,7 @@
+diff --color -urN rbenv-1.3.0-orig/libexec/rbenv-versions rbenv-1.3.0-arrow/libexec/rbenv-versions
+--- rbenv-1.3.0-orig/libexec/rbenv-versions	2024-07-05 16:02:25.000000000 +0300
++++ rbenv-1.3.0-arrow/libexec/rbenv-versions	2024-09-06 01:32:53.000000000 +0300
+@@ -76,7 +76,7 @@
  current_version="$(rbenv-version-name || true)"
  while read -r version; do
    if [ "$version" == "$current_version" ]; then

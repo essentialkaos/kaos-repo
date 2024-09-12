@@ -35,11 +35,8 @@ average packet sizes and more.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{name}-src-%{version}
-
-%patch0 -p1 -b .scotte-fixes
+%crc_check
+%autosetup -p1 -n %{name}-src-%{version}
 
 %build
 %ifarch %ix86
@@ -56,9 +53,6 @@ install -dm 755 %{buildroot}%{_mandir}/man1/
 
 install -pm 755 %{name} %{buildroot}%{_bindir}/
 install -pm 644 %{name}.1 %{buildroot}%{_mandir}/man1/
-
-%clean
-rm -rf %{buildroot}
 
 ################################################################################
 

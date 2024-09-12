@@ -13,7 +13,7 @@
 
 Name:           keepalived
 Summary:        High Availability monitor built upon LVS, VRRP and service pollers
-Version:        2.2.8
+Version:        2.3.1
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://www.keepalived.org
@@ -27,12 +27,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  gcc make openssl-devel kernel-devel popt-devel
 BuildRequires:  libnfnetlink-devel
-
-%if 0%{?rhel} <= 7
-BuildRequires:  libnl-devel
-%else
 BuildRequires:  libnl3-devel
-%endif
+
 
 %if %{with snmp}
 BuildRequires:  net-snmp-devel
@@ -132,6 +128,12 @@ fi
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
+- https://www.keepalived.org/release-notes/Release-2.3.1.html
+
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
+- https://www.keepalived.org/release-notes/Release-2.3.0.html
+
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.8-0
 - https://www.keepalived.org/release-notes/Release-2.2.8.html
 

@@ -10,7 +10,7 @@
 
 Summary:        GEOS is a C++ port of the Java Topology Suite
 Name:           geos
-Version:        3.12.0
+Version:        3.12.2
 Release:        0%{?dist}
 License:        LGPLv2
 Group:          Applications/Engineering
@@ -87,10 +87,10 @@ popd
 %endif
 
 %post
-%{_sbindir}/ldconfig
+/sbin/ldconfig
 
 %postun
-%{_sbindir}/ldconfig
+/sbin/ldconfig
 
 %clean
 rm -rf %{buildroot}
@@ -118,6 +118,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 3.12.2-0
+- https://github.com/libgeos/geos/blob/3.12.2/NEWS.md
+
 * Tue Sep 19 2023 Anton Novojilov <andy@essentialkaos.com> - 3.12.0-0
 - https://github.com/libgeos/geos/blob/3.12.0/NEWS.md
 

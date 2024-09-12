@@ -1,0 +1,54 @@
+From 204c580643f7c52364520926b9df3a621fab6df7 Mon Sep 17 00:00:00 2001
+From: Martin Sehnoutka <msehnout@redhat.com>
+Date: Tue, 24 Jul 2018 15:10:40 +0200
+Subject: [PATCH] fix covscan issues
+
+---
+ lib/libexpat_metalink_parser.c | 3 +++
+ lib/metalink_pctrl.c           | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/lib/libexpat_metalink_parser.c b/lib/libexpat_metalink_parser.c
+index 4e73aef..79b091c 100644
+--- a/lib/libexpat_metalink_parser.c
++++ b/lib/libexpat_metalink_parser.c
+@@ -29,6 +29,7 @@
+ 
+ #include <string.h>
+ #include <unistd.h>
++#include <stdlib.h>
+ #include <errno.h>
+ #include <assert.h>
+ 
+@@ -56,6 +57,8 @@ static void split_ns_name(const char** localname,
+     *localname = sep+1;
+     len = sep-src;
+     temp = malloc((len+1) * sizeof **ns_uri);
++    if (temp == NULL)
++        exit(EXIT_FAILURE);
+     memcpy(temp, src, len);
+     temp[len] = '\0';
+     *ns_uri = temp;
+diff --git a/lib/metalink_pctrl.c b/lib/metalink_pctrl.c
+index c25989b..e6fb8f8 100644
+--- a/lib/metalink_pctrl.c
++++ b/lib/metalink_pctrl.c
+@@ -469,6 +469,7 @@ metalink_error_t metalink_pctrl_file_set_language(metalink_pctrl_t* ctrl, const
+   l = strdup(language);
+   ctrl->languages = metalink_list_new();
+   if(!ctrl->languages || !l || metalink_list_append(ctrl->languages, l) != 0) {
++    if (l) free(l);
+     return METALINK_ERR_BAD_ALLOC;
+   }
+ 
+@@ -486,6 +487,7 @@ metalink_error_t metalink_pctrl_file_set_os(metalink_pctrl_t* ctrl, const char*
+   o = strdup(os);
+   ctrl->oses = metalink_list_new();
+   if(!ctrl->oses || !o || metalink_list_append(ctrl->oses, o) != 0) {
++    if (o) free(o);
+     return METALINK_ERR_BAD_ALLOC;
+   }
+ 
+-- 
+2.17.1
+

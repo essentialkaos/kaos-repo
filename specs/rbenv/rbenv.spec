@@ -11,7 +11,7 @@
 
 Summary:        Version manager tool for the Ruby programming language
 Name:           rbenv
-Version:        1.2.0
+Version:        1.3.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -42,15 +42,10 @@ correct Ruby version.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn %{name}-%{version}
-
-%patch0 -p1
-%patch1 -p1
+%crc_check
+%autosetup -p1 -n %{name}-%{version}
 
 %build
-
 pushd src
 %configure
 %{__make} %{?_smp_mflags}
@@ -72,9 +67,6 @@ install -pm 755 %{SOURCE1} %{buildroot}%{profile}
 
 ln -sf %{_prefix}/local/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 
-%clean
-rm -rf %{buildroot}
-
 ################################################################################
 
 %files
@@ -87,35 +79,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- https://github.com/rbenv/rbenv/releases/tag/v1.3.0
+
 * Fri Aug 19 2022 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
-- Have shims survive upgrades via Homebrew
-- Improve init: warn about missing shell and name the shell explicitly
-  in the template
-- Sort 'rbenv versions' output semantically
-- Remove misleading 'set by $(rbenv-version-origin)' message when system
-  ruby is in use
-- Output more information in RBENV_DEBUG mode
-- Improve compatibility with bash 'set -u' (nounset) mode
-- Remove fish completion script
-- Speed up rehash
-- Disallow path segments and directory traversal in .ruby-version files
-- Avoid 'type: write error: broken pipe' warning
-- Fix fish shell initialization
-- Avoid unintentional globbing in bash completion
-- Strip '-<suffix>' when detecting the shell
-- Supply 'head -n' flag explicitly
+- https://github.com/rbenv/rbenv/releases/tag/v1.2.0
 
 * Tue Jan 28 2020 Anton Novojilov <andy@essentialkaos.com> - 1.1.2-0
-- Fix rehash mechanism for versions of bash that complain about
-  clobbering /dev/null
-- Enforce absolute RBENV_DIR to avoid having to unset CDPATH
-- rbenv-version-file: ensure that the version file is a file
-- rbenv init -: fix output to work without args and set -u
-- rbenv shell: better error message when shell integration wasn't enabled
-- Enable freezing rbenv version via rbenv version-name > .ruby-version
-  in the shell
-- rbenv-which: avoid changing PATH unless necessary
-- rbenv-prefix: do not silence rbenv-which errors for system version
+- https://github.com/rbenv/rbenv/releases/tag/v1.1.2
 
 * Mon Aug 07 2017 Anton Novojilov <andy@essentialkaos.com> - 1.1.1-1
 - Improvements

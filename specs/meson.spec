@@ -26,7 +26,7 @@
 
 Summary:        High productivity build system
 Name:           meson
-Version:        1.4.0
+Version:        1.5.1
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
+- https://github.com/mesonbuild/meson/compare/1.4.0...1.5.1
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.4.0-0
 - https://github.com/mesonbuild/meson/compare/1.3.1...1.4.0
 
