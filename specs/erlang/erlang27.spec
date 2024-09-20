@@ -22,8 +22,7 @@
 %define elibdir     %{_libdir}/erlang/lib
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     27
-%define ver_min     0
-%define ver_patch   1
+%define ver_min     1
 %define ver_suffix  %{ver_min}%{?ver_patch:.%{ver_patch}}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
@@ -57,13 +56,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:  tk-devel flex bison gd-devel gd-devel libxslt
 BuildRequires:  valgrind-devel java-1.8.0-openjdk-devel
-BuildRequires:  lksctp-tools-devel autoconf
-
-%if 0%{?rhel} <= 7
-BuildRequires:  devtoolset-11-gcc-c++ devtoolset-11-binutils
-%else
-BuildRequires:  gcc-c++
-%endif
+BuildRequires:  lksctp-tools-devel autoconf gcc-c++
 
 Requires:       tk tcl
 
@@ -683,9 +676,8 @@ a few bugs in the scanner, and improves HTML export.
 ################################################################################
 
 %prep
-%{crc_check}
-
-%setup -qn otp-OTP-%{ver_string}
+%crc_check
+%autosetup -n otp-OTP-%{ver_string}
 
 tar xzvf %{SOURCE10}
 
@@ -693,11 +685,6 @@ tar xzvf %{SOURCE10}
 export CFLAGS="%{optflags} -fPIC"
 export CXXLAGS=$CFLAGS
 export BUILDDIR=$(pwd)
-
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 11
-export PATH="/opt/rh/devtoolset-11/root/usr/bin:$PATH"
-%endif
 
 ### Static LibreSSL build start ###
 
@@ -1015,6 +1002,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Sep 20 2024 Anton Novojilov <andy@essentialkaos.com> - 27.1-0
+- https://github.com/erlang/otp/releases/tag/OTP-27.1
+
 * Sun Aug 04 2024 Anton Novojilov <andy@essentialkaos.com> - 27.0.1-0
 - https://github.com/erlang/otp/releases/tag/OTP-27.0.1
 
