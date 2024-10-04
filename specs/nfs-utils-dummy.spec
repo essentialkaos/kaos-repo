@@ -9,7 +9,7 @@ License:        APLv2
 Group:          Applications/System
 URL:            https://github.com/essentialkaos
 
-Source0:        https://raw.githubusercontent.com/essentialkaos/.github/refs/heads/master/LICENSES/APLv2
+Source0:        https://raw.githubusercontent.com/essentialkaos/kaos-repo/refs/heads/master/LICENSE
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -25,9 +25,7 @@ This is a dummy package that replaces the outdated nfs-utils package.
 
 %prep
 %build
-
 %install
-rm -rf %{buildroot}
 
 ################################################################################
 
@@ -38,5 +36,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Fri Oct 04 2024 Anton Novojilov <andy@essentialkaos.com> - 0.0.0-0
+* Fri Oct 04 2024 Anton Novojilov <andy@essentialkaos.com> - 100.0.0-0
 - Initial build
