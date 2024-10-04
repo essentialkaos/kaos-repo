@@ -2,14 +2,14 @@
 
 Summary:        NFS utilities (Dummy Package)
 Name:           nfs-utils-dummy
-Version:        0.0.0
+Version:        100.0.0
 Release:        0%{?dist}
 Epoch:          99
-License:        Apache
+License:        APLv2
 Group:          Applications/System
 URL:            https://github.com/essentialkaos
 
-Source0:        LICENSE
+Source0:        https://raw.githubusercontent.com/essentialkaos/.github/refs/heads/master/LICENSES/APLv2
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
