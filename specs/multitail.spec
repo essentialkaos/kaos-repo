@@ -10,9 +10,9 @@
 
 Summary:        View one or multiple files like tail but with multiple windows
 Name:           multitail
-Version:        7.1.2
+Version:        7.1.5
 Release:        0%{?dist}
-License:        Apache-2.0
+License:        MIT
 Group:          Applications/Text
 URL:            https://www.vanheusden.com/multitail/
 
@@ -22,13 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc ncurses-devel
-
-%if 0%{?rhel} <= 7
-BuildRequires:  cmake3
-%else
-BuildRequires:  cmake
-%endif
+BuildRequires:  cmake gcc ncurses-devel
 
 Requires:       ncurses
 
@@ -62,7 +56,6 @@ external software, MultiTail can mimic the functionality of tools like
 
 %setup -q
 
-sed -i "s/6.4.3/%{version}/" CMakeLists.txt
 sed -i '/multitail.conf.new/d' CMakeLists.txt
 sed -i '/conversion-scripts/d' CMakeLists.txt
 
@@ -100,6 +93,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Oct 22 2024 Anton Novojilov <andy@essentialkaos.com> - 7.1.5-0
+- https://github.com/folkertvanheusden/multitail/compare/7.1.2...7.1.5
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 7.1.2-0
 - https://github.com/folkertvanheusden/multitail/compare/7.0.0...7.1.2
 
