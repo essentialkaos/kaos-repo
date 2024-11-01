@@ -12,6 +12,7 @@ var config_dir        /etc/pgbouncer
 var service_config    {config_dir}/pgbouncer.ini
 var users_list        {config_dir}/userlist.txt
 var logrotate_config  /etc/logrotate.d/pgbouncer
+var log_file          /var/log/pgbouncer/pgbouncer.log
 var default_port      6432
 
 var postgres_version   12
@@ -78,12 +79,26 @@ command "systemctl restart {service_name}" "Restart pgbouncer daemon"
   wait-service {service_name} 5
   connect tcp :{default_port}
 
+command "systemctl status {service_name}" "Check status of pgbouncer daemon"
+  expect "active (running)"
+
 command "psql 'postgresql://pgbtest:Test1234!@127.0.0.1:6432/pgbtest' -t -c 'SELECT * FROM test WHERE id = 2;'" "Select from DB using pgbouncer"
   exit 0
   output-contains "2 | 1234"
 
-command "systemctl status {service_name}" "Check status of pgbouncer daemon"
-  expect "active (running)"
+command "-" "Clean pgbouncer log before reloading configuration"
+  truncate {log_file}
+
+command "systemctl reload {service_name}" "Reload pgbouncer daemon configuration"
+  wait 1
+  connect tcp :{default_port}
+
+command "-" "Check if log file contains record about reloading configuration"
+  file-contains {log_file} "LOG got SIGHUP, re-reading config"
+
+command "psql 'postgresql://pgbtest:Test1234!@127.0.0.1:6432/pgbtest' -t -c 'SELECT * FROM test WHERE id = 2;'" "Select from DB using pgbouncer"
+  exit 0
+  output-contains "2 | 1234"
 
 command "systemctl stop {service_name}" "Stop pgbouncer daemon"
   !wait-service {service_name} 5
@@ -98,4 +113,5 @@ command "systemctl stop {postgres_service}" "Stop PostgreSQL server"
 command:teardown "-" "Data cleanup"
   backup-restore {service_config}
   backup-restore {users_list}
+  truncate {log_file}
   cleanup {postgres_data_dir}/data
