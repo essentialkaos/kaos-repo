@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.7
 %define pcre_ver      10.44
-%define openssl_ver   3.0.14
+%define openssl_ver   3.0.15
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.18
+Version:        2.6.19
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,75 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 01 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.19-0
+- BUG/MEDIUM: cli: fix cli_output_msg() regression
+- BUG/MINOR: quic: fix computed length of emitted STREAM frames
+- DOC/MINOR: management: add missed -dR and -dv options
+- DOC: management: rename show stats domain cli "dns" to "resolvers"
+- DOC: configuration: fix alphabetical order of bind options
+- SCRIPTS: git-show-backports: do not truncate git-show output
+- BUG/MINOR: mux-quic: fix crash on qcs SD alloc failure
+- BUG/MINOR: quic: fix BUG_ON() on Tx pkt alloc failure
+- BUG/MINOR: hlua: report proper context upon error in hlua_cli_io_handler_fct()
+- BUG/MEDIUM: h3: ensure the ":method" pseudo header is totally valid
+- BUG/MEDIUM: h3: ensure the ":scheme" pseudo header is totally valid
+- DOC: configuration: more details about the master-worker mode
+- MEDIUM: ssl: initialize the SSL stack explicitely
+- MINOR: mux-h2/traces: explicitly show the error/refused stream states
+- REGTESTS: add a test to ensure map-ordering is preserved
+- MINOR: quic: Add packet loss and maximum cc window to "show quic"
+- MINOR: quic: Add a counter for reordered packets
+- BUG/MINOR: quic: Lack of precision when computing K (cubic only cc)
+- BUG/MINOR: jwt: don't try to load files with HMAC algorithm
+- BUG/MINOR: jwt: fix variable initialisation
+- BUG/MEDIUM: jwt: Clear SSL error queue on error when checking the signature
+- BUG/MINOR: h1: Fail to parse empty transfer coding names
+- BUG/MINOR: h1: Reject empty coding name as last transfer-encoding value
+- BUG/MEDIUM: h1: Reject empty Transfer-encoding header
+- BUG/MEDIUM: spoe: Be sure to create a SPOE applet if none on the current
+  thread
+- BUG/MINOR: stick-table: fix crash for src_inc_gpc() without stkcounter
+- BUG/MINOR: server: Don't warn fallback IP is used during init-addr resolution
+- BUG/MINOR: cli: Atomically inc the global request counter between CLI commands
+- MINOR: queue: add a function to check for TOCTOU after queueing
+- BUG/MEDIUM: queue: deal with a rare TOCTOU in assign_server_and_queue()
+- MEDIUM: init: set default for fd_hard_limit via DEFAULT_MAXFD (take #2)
+- BUG/MEDIUM: init: fix fd_hard_limit default in compute_ideal_maxconn
+- DOC: configuration: update maxconn description
+- DOC: configuration: issuers-chain-path not compatible with OCSP
+- DOC: config: improve the http-keep-alive section
+- BUG/MEDIUM: stream: Prevent mux upgrades if client connection is no longer
+  ready
+- BUG/MEDIUM: cli: Always release back endpoint between two commands on the mcli
+- BUG/MEDIUM: quic: prevent conn freeze on 0RTT undeciphered content
+- BUG/MEDIUM: h2: Only report early HTX EOM for tunneled streams
+- BUG/MINOR: fcgi-app: handle a possible strdup() failure
+- BUG/MINOR: trace/quic: enable conn/session pointer recovery from quic_conn
+- CLEANUP: trace: remove the QUIC-specific ifdefs
+- BUG/MINOR: trace/quic: permit to lock on frontend/connect/session etc
+- BUG/MINOR: trace: automatically start in waiting mode with "start <evt>"
+- BUG/MINOR: trace/quic: make "qconn" selectable as a lockon criterion
+- BUG/MINOR: quic/trace: make quic_conn_enc_level_init() emit NEW not CLOSE
+- BUG/MINOR: proto_tcp: delete fd from fdtab if listen() fails
+- BUG/MINOR: proto_tcp: keep error msg if listen() fails
+- REGTESTS: mcli: test the pipelined commands on master CLI
+- BUG/MINOR: mux-quic: do not send too big MAX_STREAMS ID
+- BUG/MINOR: proto_uxst: delete fd from fdtab if listen() fails
+- BUG/MINOR: h3: properly reject too long header responses
+- DOC: config: correct the table for option tcplog
+- BUG/MINOR: pattern: pat_ref_set: fix UAF reported by coverity
+- BUG/MINOR: pattern: pat_ref_set: return 0 if err was found
+- BUG/MINOR: pattern: do not leave a leading comma on "set" error messages
+- REGTESTS: fix random failures with wrong_ip_port_logging.vtc under load
+- BUG/MINOR: pattern: prevent const sample from being tampered in
+  pat_match_beg()
+- BUG/MEDIUM: pattern: prevent UAF on reused pattern expr
+- BUG/MINOR: polling: fix time reporting when using busy polling
+- BUG/MEDIUM: queue: implement a flag to check for the dequeuing
+- BUG/MEDIUM: cache/stats: Wait to have the request before sending the response
+- BUG/MEDIUM: promex: Wait to have the request before sending the response
+- BUG/MINOR: cfgparse-listen: fix option httpslog override warning message
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.18-0
 - BUG/MEDIUM: cli: fix once for all the problem of missing trailing LFs
 - BUG/MEDIUM: mux-quic: report early error on stream

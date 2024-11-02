@@ -14,7 +14,7 @@
 
 %define lua_ver       5.4.7
 %define pcre_ver      10.44
-%define openssl_ver   3.2.2
+%define openssl_ver   3.2.3
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -22,7 +22,7 @@
 
 Name:           haproxy
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        3.0.3
+Version:        3.0.5
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -216,6 +216,129 @@ fi
 ################################################################################
 
 %changelog
+* Sat Nov 02 2024 Anton Novojilov <andy@essentialkaos.com> - 3.0.5-0
+- BUG/MEDIUM: server/addr: fix tune.events.max-events-at-once event miss and
+  leak
+- BUG/MEDIUM: stconn: Report error on SC on send if a previous SE error was set
+- BUG/MEDIUM: mux-pt/mux-h1: Release the pipe on connection error on sending
+  path
+- BUILD: mux-pt: Use the right name for the sedesc variable
+- BUG/MINOR: stconn: bs.id and fs.id had their dependencies incorrect
+- BUG/MEDIUM: ssl: reactivate 0-RTT for AWS-LC
+- BUG/MEDIUM: ssl: 0-RTT initialized at the wrong place for AWS-LC
+- BUG/MEDIUM: quic: prevent conn freeze on 0RTT undeciphered content
+- BUG/MEDIUM: http-ana: Report error on write error waiting for the response
+- BUG/MEDIUM: h2: Only report early HTX EOM for tunneled streams
+- BUG/MEDIUM: mux-h2: Propagate term flags to SE on error in h2s_wake_one_stream
+- BUG/MEDIUM: peer: Notify the applet won't consume data when it waits for sync
+- BUG/MINOR: fcgi-app: handle a possible strdup() failure
+- DOC: configuration: fix alphabetical ordering of {bs,fs}.aborted
+- BUG/MINOR: trace/quic: enable conn/session pointer recovery from quic_conn
+- BUG/MINOR: trace/quic: permit to lock on frontend/connect/session etc
+- BUG/MEDIUM: trace: fix null deref in lockon mechanism since TRACE_ENABLED()
+- BUG/MINOR: trace: automatically start in waiting mode with "start <evt>"
+- BUG/MINOR: trace/quic: make "qconn" selectable as a lockon criterion
+- BUG/MINOR: quic/trace: make quic_conn_enc_level_init() emit NEW not CLOSE
+- BUG/MINOR: proto_tcp: delete fd from fdtab if listen() fails
+- BUG/MINOR: proto_tcp: keep error msg if listen() fails
+- MINOR: channel: implement ci_insert() function
+- BUG/MEDIUM: mworker/cli: fix pipelined modes on master CLI
+- REGTESTS: mcli: test the pipelined commands on master CLI
+- BUG/MINOR: mux-quic: do not send too big MAX_STREAMS ID
+- BUG/MINOR: proto_uxst: delete fd from fdtab if listen() fails
+- BUG/MINOR: h3: properly reject too long header responses
+- BUG/MINOR: pattern: pat_ref_set: fix UAF reported by coverity
+- BUG/MINOR: pattern: pat_ref_set: return 0 if err was found
+- DOC: config: correct the table for option tcplog
+- BUG/MINOR: cfgparse-global: remove tune.fast-forward from common_kw_list
+- BUILD: quic: 32bits build broken by wrong integer conversions for printf()
+- BUG/MEDIUM: clock: also update the date offset on time jumps
+- MINOR: tools: Implement ipaddrcpy().
+- MINOR: quic: Implement quic_tls_derive_token_secret().
+- MEDIUM: ssl/quic: implement quic crypto with EVP_AEAD
+- MINOR: quic: Token for future connections implementation.
+- BUG/MINOR: quic: Missing incrementation in NEW_TOKEN frame builder
+- MINOR: quic: Modify NEW_TOKEN frame structure (qf_new_token struct)
+- MINOR: quic: Implement qc_ssl_eary_data_accepted().
+- MINOR: quic: Add trace for QUIC_EV_CONN_IO_CB event.
+- BUG/MEDIUM: quic: always validate sender address on 0-RTT
+- BUG/MINOR: quic: Crash from trace dumping SSL eary data status (AWS-LC)
+- BUG/MINOR: quic: Too short datagram during packet building failures
+  (aws-lc only)
+- DOC: configuration: place the HAPROXY_HTTP_LOG_FMT example on the correct line
+- REGTESTS: fix random failures with wrong_ip_port_logging.vtc under load
+- BUG/MEDIUM: clock: detect and cover jumps during execution
+- BUG/MINOR: pattern: prevent const sample from being tampered in
+  pat_match_beg()
+- BUG/MEDIUM: pattern: prevent UAF on reused pattern expr
+- BUG/MAJOR: mux-h1: Wake SC to perform 0-copy forwarding in CLOSING state
+- BUG/MINOR: h1-htx: Don't flag response as bodyless when a tunnel is
+ established
+- BUG/MINOR: pattern: do not leave a leading comma on "set" error messages
+- MEDIUM: h1: Accept invalid T-E values with accept-invalid-http-response option
+- BUG/MINOR: polling: fix time reporting when using busy polling
+- BUG/MINOR: clock: make time jump corrections a bit more accurate
+- BUG/MINOR: clock: validate that now_offset still applies to the current date
+- BUG/MEDIUM: queue: implement a flag to check for the dequeuing
+- BUG/MINOR: peers: local entries updates may not be advertised after resync
+- DOC: config: Explicitly list relaxing rules for accept-invalid-http-* options
+- BUG/MEDIUM: sc_strm/applet: Wake applet after a successfull synchronous send
+- BUG/MEDIUM: cache/stats: Wait to have the request before sending the response
+- BUG/MEDIUM: promex: Wait to have the request before sending the response
+- BUG/MINOR: cfgparse-listen: fix option httpslog override warning message
+- MINOR: quic: convert qc_stream_desc release field to flags
+- MINOR: quic: implement function to check if STREAM is fully acked
+- BUG/MEDIUM: quic: handle retransmit for standalone FIN STREAM
+- BUG/MINOR: quic: prevent freeze after early QCS closure
+
+* Sat Nov 02 2024 Anton Novojilov <andy@essentialkaos.com> - 3.0.4-0
+- MINOR: proto: extend connection thread rebind API
+- BUILD: listener: silence a build warning about unused value without threads
+- BUG/MEDIUM: quic: prevent crash on accept queue full
+- CLEANUP: proto: rename TID affinity callbacks
+- CLEANUP: quic: rename TID affinity elements
+- BUG/MINOR: session: Eval L4/L5 rules defined in the default section
+- BUG/MEDIUM: debug/cli: fix "show threads" crashing with low thread counts
+- DOC: install: don't reference removed CPU arg
+- BUG/MEDIUM: ssl_sock: fix deadlock in ssl_sock_load_ocsp() on error path
+- BUG/MAJOR: mux-h2: force a hard error upon short read with pending error
+- DOC: configuration: issuers-chain-path not compatible with OCSP
+- DOC: config: improve the http-keep-alive section
+- BUG/MINOR: stick-table: fix crash for src_inc_gpc() without stkcounter
+- BUG/MINOR: server: Don't warn fallback IP is used during init-addr resolution
+- BUG/MINOR: cli: Atomically inc the global request counter between CLI commands
+- BUG/MINOR: quic: Non optimal first datagram.
+- MEDIUM: sink: don't set NOLINGER flag on the outgoing stream interface
+- BUG/MINOR: quic: Lack of precision when computing K (cubic only cc)
+- BUG/MEDIUM: jwt: Clear SSL error queue on error when checking the signature
+- MINOR: quic: Dump TX in flight bytes vs window values ratio.
+- MINOR: quic: Add information to "show quic" for CUBIC cc.
+- MEDIUM: h1: allow to preserve keep-alive on T-E + C-L
+- MINOR: queue: add a function to check for TOCTOU after queueing
+- BUG/MEDIUM: queue: deal with a rare TOCTOU in assign_server_and_queue()
+- MEDIUM: init: set default for fd_hard_limit via DEFAULT_MAXFD (take #2)
+- BUG/MEDIUM: init: fix fd_hard_limit default in compute_ideal_maxconn
+- Revert "MEDIUM: sink: don't set NOLINGER flag on the outgoing stream
+  interface"
+- MEDIUM: log: relax some checks and emit diag warnings instead in
+  lf_expr_postcheck()
+- DOC: quic: fix default minimal value for max window size
+- MINOR: proxy: Add support of 429-Too-Many-Requests in retry-on status
+- BUG/MEDIUM: mux-h2: Set ES flag when necessary on 0-copy data forwarding
+- BUG/MEDIUM: stream: Prevent mux upgrades if client connection is no longer
+  ready
+- BUG/MINIR: proxy: Match on 429 status when trying to perform a L7 retry
+- BUG/MEDIUM: mux-pt: Never fully close the connection on shutdown
+- BUG/MEDIUM: cli: Always release back endpoint between two commands on the mcli
+- BUG/MINOR: quic: unexploited retransmission cases for Initial pktns.
+- BUG/MEDIUM: mux-h1: Properly handle empty message when an error is triggered
+- MINOR: mux-h2: try to clear DEM_MROOM and MUX_MFULL at more places
+- BUG/MAJOR: mux-h2: always clear MUX_MFULL and DEM_MROOM when clearing the mbuf
+- BUG/MINOR: quic: Too shord datagram during O-RTT handshakes (aws-lc only)
+- BUG/MINOR: Crash on O-RTT RX packet after dropping Initial pktns
+- BUG/MEDIUM: mux-pt: Fix condition to perform a shutdown for writes in
+  mux_pt_shut()
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 3.0.3-0
 - BUG/MINOR: log: fix broken '+bin' logformat node option
 - DEBUG: hlua: distinguish burst timeout errors from exec timeout errors

@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.7
 %define pcre_ver      10.44
-%define openssl_ver   3.1.6
+%define openssl_ver   3.1.7
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.10
+Version:        2.8.11
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,104 @@ fi
 ################################################################################
 
 %changelog
+* Sat Nov 02 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.11-0
+- BUG/MINOR: quic: fix computed length of emitted STREAM frames
+- BUG/MINOR: proxy: fix server_id_hdr_name leak on deinit()
+- BUG/MINOR: proxy: fix log_tag leak on deinit()
+- BUG/MINOR: proxy: fix check_{command,path} leak on deinit()
+- BUG/MINOR: proxy: fix dyncookie_key leak on deinit()
+- BUG/MINOR: proxy: fix source interface and usesrc leaks on deinit()
+- BUG/MINOR: proxy: fix header_unique_id leak on deinit()
+- DOC/MINOR: management: add missed -dR and -dv options
+- DOC: management: rename show stats domain cli "dns" to "resolvers"
+- DOC: configuration: fix alphabetical order of bind options
+- SCRIPTS: git-show-backports: do not truncate git-show output
+- DOC: api/event_hdl: small updates, fix an example and add some precisions
+- BUG/MINOR: h3: fix crash on STOP_SENDING receive after GOAWAY emission
+- BUG/MINOR: mux-quic: fix crash on qcs SD alloc failure
+- BUG/MINOR: quic: fix BUG_ON() on Tx pkt alloc failure
+- BUG/MINOR: hlua: report proper context upon error in hlua_cli_io_handler_fct()
+- MINOR: activity: make the memory profiling hash size configurable at build
+  time
+- BUG/MEDIUM: h3: ensure the ":method" pseudo header is totally valid
+- BUG/MEDIUM: h3: ensure the ":scheme" pseudo header is totally valid
+- BUG/MEDIUM: quic: fix race-condition in quic_get_cid_tid()
+- BUG/MINOR: quic: fix race condition in qc_check_dcid()
+- BUG/MINOR: quic: fix race-condition on trace for CID retrieval
+- BUG/MEDIUM: quic: fix possible exit from qc_check_dcid() without unlocking
+- DOC: configuration: more details about the master-worker mode
+- MEDIUM: ssl: initialize the SSL stack explicitely
+- BUG/MINOR: jwt: don't try to load files with HMAC algorithm
+- DOC: configuration: update maxconn description
+- BUG/MINOR: jwt: fix variable initialisation
+- BUG/MINOR: h1: Fail to parse empty transfer coding names
+- BUG/MINOR: h1: Reject empty coding name as last transfer-encoding value
+- BUG/MEDIUM: h1: Reject empty Transfer-encoding header
+- BUG/MEDIUM: spoe: Be sure to create a SPOE applet if none on the current
+  thread
+- BUG/MEDIUM: bwlim: Be sure to never set the analyze expiration date in past
+- BUG/MINOR: session: Eval L4/L5 rules defined in the default section
+- BUG/MEDIUM: debug/cli: fix "show threads" crashing with low thread counts
+- BUG/MEDIUM: ssl_sock: fix deadlock in ssl_sock_load_ocsp() on error path
+- DOC: configuration: issuers-chain-path not compatible with OCSP
+- DOC: config: improve the http-keep-alive section
+- BUG/MINOR: stick-table: fix crash for src_inc_gpc() without stkcounter
+- BUG/MINOR: server: Don't warn fallback IP is used during init-addr resolution
+- BUG/MINOR: cli: Atomically inc the global request counter between CLI commands
+- BUG/MINOR: quic: Lack of precision when computing K (cubic only cc)
+- BUG/MEDIUM: jwt: Clear SSL error queue on error when checking the signature
+- MINOR: queue: add a function to check for TOCTOU after queueing
+- BUG/MEDIUM: queue: deal with a rare TOCTOU in assign_server_and_queue()
+- MEDIUM: init: set default for fd_hard_limit via DEFAULT_MAXFD (take #2)
+- BUG/MEDIUM: init: fix fd_hard_limit default in compute_ideal_maxconn
+- BUG/MEDIUM: stream: Prevent mux upgrades if client connection is no longer
+  ready
+- BUG/MEDIUM: cli: Always release back endpoint between two commands on the mcli
+- BUG/MEDIUM: mux-h1: Properly handle empty message when an error is triggered
+- BUG/MEDIUM: stconn: Report error on SC on send if a previous SE error was set
+- BUG/MEDIUM: quic: prevent conn freeze on 0RTT undeciphered content
+- BUG/MEDIUM: http-ana: Report error on write error waiting for the response
+- BUG/MEDIUM: h2: Only report early HTX EOM for tunneled streams
+- BUG/MEDIUM: mux-h2: Propagate term flags to SE on error in h2s_wake_one_stream
+- BUG/MINOR: fcgi-app: handle a possible strdup() failure
+- BUG/MINOR: trace/quic: enable conn/session pointer recovery from quic_conn
+- BUG/MINOR: trace/quic: permit to lock on frontend/connect/session etc
+- BUG/MEDIUM: trace: fix null deref in lockon mechanism since TRACE_ENABLED()
+- BUG/MINOR: trace: automatically start in waiting mode with "start <evt>"
+- BUG/MINOR: trace/quic: make "qconn" selectable as a lockon criterion
+- BUG/MINOR: quic/trace: make quic_conn_enc_level_init() emit NEW not CLOSE
+- BUG/MINOR: proto_tcp: delete fd from fdtab if listen() fails
+- BUG/MINOR: proto_tcp: keep error msg if listen() fails
+- MINOR: channel: implement ci_insert() function
+- BUG/MEDIUM: mworker/cli: fix pipelined modes on master CLI
+- REGTESTS: mcli: test the pipelined commands on master CLI
+- BUG/MINOR: mux-quic: do not send too big MAX_STREAMS ID
+- BUG/MINOR: proto_uxst: delete fd from fdtab if listen() fails
+- BUG/MINOR: h3: properly reject too long header responses
+- DOC: config: correct the table for option tcplog
+- BUG/MEDIUM: clock: also update the date offset on time jumps
+- BUG/MEDIUM: mux-pt/mux-h1: Release the pipe on connection error on sending
+  path
+- BUG/MINOR: stconn: Request to send something to be woken up when the pipe is
+  full
+- BUG/MINOR: pattern: pat_ref_set: fix UAF reported by coverity
+- BUG/MINOR: pattern: pat_ref_set: return 0 if err was found
+- BUG/MINOR: pattern: do not leave a leading comma on "set" error messages
+- DOC: configuration: place the HAPROXY_HTTP_LOG_FMT example on the correct line
+- REGTESTS: fix random failures with wrong_ip_port_logging.vtc under load
+- BUG/MEDIUM: clock: detect and cover jumps during execution
+- BUG/MINOR: pattern: prevent const sample from being tampered in
+  pat_match_beg()
+- BUG/MEDIUM: pattern: prevent UAF on reused pattern expr
+- BUG/MAJOR: mux-h1: Wake SC to perform 0-copy forwarding in CLOSING state
+- BUG/MINOR: polling: fix time reporting when using busy polling
+- BUG/MINOR: clock: make time jump corrections a bit more accurate
+- BUG/MINOR: clock: validate that now_offset still applies to the current date
+- BUG/MEDIUM: queue: implement a flag to check for the dequeuing
+- BUG/MEDIUM: cache/stats: Wait to have the request before sending the response
+- BUG/MEDIUM: promex: Wait to have the request before sending the response
+- BUG/MINOR: cfgparse-listen: fix option httpslog override warning message
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.10-0
 - BUG/MINOR: cli: Report an error to user if command or payload is too big
 - BUG/MINOR: listener: always assign distinct IDs to shards
