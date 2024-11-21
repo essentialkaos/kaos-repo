@@ -559,7 +559,7 @@ install -dm 700 %{buildroot}%{_sysconfdir}/sysconfig/%{shortname}/%{majorver}
 # Install linker conf file under postgresql installation directory.
 # We will install the latest version via alternatives.
 install -dm 755 %{buildroot}%{install_dir}/share/
-install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
+echo "%{install_dir}/lib" > %{buildroot}%{install_dir}/share/%{realname}-%{majorver}-libs.conf
 
 %if %test
   # Tests. There are many files included here that are unnecessary,
