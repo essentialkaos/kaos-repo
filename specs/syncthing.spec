@@ -59,16 +59,17 @@ Syncthing Discovery Server and Syncthing Relay Server.
 %setup -qn %{name}
 
 %build
-go run build.go -no-upgrade -version=%{version} build syncthing
-go run build.go -no-upgrade -version=%{version} build strelaysrv
-go run build.go -no-upgrade -version=%{version} build stdiscosrv
-go run build.go -no-upgrade -version=%{version} build strelaypoolsrv
-go run build.go -no-upgrade -version=%{version} build stcrashreceiver
+go run build.go -no-upgrade -version=v%{version} build syncthing
+go run build.go -no-upgrade -version=v%{version} build strelaysrv
+go run build.go -no-upgrade -version=v%{version} build stdiscosrv
+go run build.go -no-upgrade -version=v%{version} build strelaypoolsrv
+go run build.go -no-upgrade -version=v%{version} build stcrashreceiver
 
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
+install -dm 755 %{buildroot}%{_sysctldir}
 install -dm 755 %{buildroot}%{_unitdir}
 install -dm 755 %{buildroot}%{_userunitdir}
 install -dm 755 %{buildroot}%{_mandir}/man1
@@ -88,14 +89,30 @@ install -pm 644 man/*.1 %{buildroot}%{_mandir}/man1/
 install -pm 644 man/*.5 %{buildroot}%{_mandir}/man5/
 install -pm 644 man/*.7 %{buildroot}%{_mandir}/man7/
 
+install -pm 644 etc/linux-sysctl/30-syncthing.conf %{buildroot}%{_sysctldir}/
+
 %clean
 rm -rf %{buildroot}
+
+%post
+%systemd_post 'syncthing@.service'
+%systemd_user_post syncthing.service
+%sysctl_apply 30-syncthing.conf
+
+%preun
+%systemd_preun 'syncthing@*.service'
+%systemd_user_preun syncthing.service
+
+%postun
+%systemd_postun_with_restart 'syncthing@*.service'
+%systemd_user_postun_with_restart syncthing.service
 
 ################################################################################
 
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS LICENSE README.md
+%config(noreplace) %{_sysctldir}/30-syncthing.conf
 %{_bindir}/syncthing
 %{_unitdir}/syncthing@.service
 %{_userunitdir}/syncthing.service
