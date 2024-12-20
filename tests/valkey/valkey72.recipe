@@ -1,0 +1,90 @@
+# Bibop recipe for Valkey 7.2.x
+# See more: https://kaos.sh/bibop
+
+pkg valkey72 valkey72-cli
+
+require-root yes
+unsafe-actions yes
+
+var service_user  valkey
+var service_group valkey
+var service_name  valkey
+
+var valkey_config /etc/valkey.conf
+var sentinel_config /etc/sentinel.conf
+var valkey_logrotate /etc/logrotate.d/valkey
+var sentinel_logrotate /etc/logrotate.d/sentinel
+
+var dump_file /var/lib/valkey/dump.rdb
+var log_file /var/log/valkey/valkey.log
+
+command "-" "Check environment"
+  app valkey-server
+  app valkey-sentinel
+  app valkey-benchmark
+  app valkey-check-aof
+  app valkey-check-rdb
+  app valkey-cli
+
+  service-present valkey
+  service-present sentinel
+
+  user-exist {service_user}
+  group-exist {service_group}
+
+  exist {valkey_config}
+  mode {valkey_config} 640
+  exist {sentinel_config}
+  mode {sentinel_config} 640
+
+  exist {valkey_logrotate}
+  mode {valkey_logrotate} 644
+  exist {sentinel_logrotate}
+  mode {sentinel_logrotate} 644
+
+  exist /var/lib/{service_name}
+  owner /var/lib/{service_name} {service_user}
+
+  exist /var/run/{service_name}
+  owner /var/run/{service_name} {service_user}
+
+  exist /var/log/{service_name}
+  owner /var/log/{service_name} {service_user}
+
+command "systemctl start {service_name}" "Start Valkey service"
+  wait-service {service_name} 5
+  connect tcp :6379
+
+command "systemctl status {service_name}" "Check status of Valkey service"
+  expect "active (running)"
+
+command "systemctl restart {service_name}" "Restart Valkey service"
+  wait-service {service_name} 5
+  connect tcp :6379
+
+command "valkey-cli SET TEST ACBD1234" "Set test key"
+  exit 0
+
+command "valkey-cli GET TEST" "Get test key"
+  exit 0
+  output-contains "ACBD1234"
+
+command "valkey-cli CONFIG GET logfile" "Check Valkey Client"
+  exit 0
+  output-contains "{log_file}"
+
+command "valkey-cli SAVE" "Create database dump"
+  exit 0
+
++command "-" "Check created dump file"
+  wait-fs {dump_file} 5
+  exist {dump_file}
+  mode {dump_file} 644
+  owner {dump_file} {service_user}
+
+command "systemctl stop {service_name}" "Stop Valkey service"
+  !wait-service {service_name} 5
+  !connect tcp :6379
+
+command "-" "Cleanup"
+  remove {dump_file}

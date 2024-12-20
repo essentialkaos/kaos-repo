@@ -1,0 +1,27 @@
+diff --color -urN valkey-7.2.7-orig/sentinel.conf valkey-7.2.7/sentinel.conf
+--- valkey-7.2.7-orig/sentinel.conf	2024-10-02 23:11:08.000000000 +0300
++++ valkey-7.2.7/sentinel.conf	2024-12-20 15:59:42.000000000 +0300
+@@ -1,5 +1,3 @@
+-# Example sentinel.conf
+-
+ # By default protected mode is disabled in sentinel mode. Sentinel is reachable
+ # from interfaces different than localhost. Make sure the sentinel instance is
+ # protected from the outside world via firewalling or other means.
+@@ -17,7 +15,7 @@
+ # When running daemonized, Valkey Sentinel writes a pid file in
+ # /var/run/valkey-sentinel.pid by default. You can specify a custom pid file
+ # location here.
+-pidfile /var/run/valkey-sentinel.pid
++pidfile /var/run/valkey/sentinel.pid
+ 
+ # Specify the server verbosity level.
+ # This can be one of:
+@@ -31,7 +29,7 @@
+ # Specify the log file name. Also the empty string can be used to force
+ # Sentinel to log on the standard output. Note that if you use standard
+ # output for logging but daemonize, logs will be sent to /dev/null
+-logfile ""
++logfile /var/log/valkey/sentinel.log
+ 
+ # To enable logging to the system logger, just set 'syslog-enabled' to yes,
+ # and optionally update the other syslog parameters to suit your needs.

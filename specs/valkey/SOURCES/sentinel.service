@@ -1,0 +1,14 @@
+[Unit]
+Description=Valkey Sentinel
+Documentation=https://valkey.io/docs
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/bin/valkey-sentinel /etc/sentinel.conf --daemonize no
+KillSignal=SIGTERM
+User=valkey
+Group=valkey
+PIDFile=/var/run/valkey/sentinel.pid
+
+[Install]
+WantedBy=multi-user.target
