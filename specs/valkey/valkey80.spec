@@ -16,7 +16,7 @@
 
 Summary:           A persistent key-value database
 Name:              %{realname}%{major_ver}%{minor_ver}
-Version:           8.0.1
+Version:           8.0.2
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -192,5 +192,8 @@ systemctl daemon-reload &>/dev/null || :
 ################################################################################
 
 %changelog
+* Mon Jan 13 2025 Anton Novojilov <andy@essentialkaos.com> - 8.0.2-0
+- https://github.com/valkey-io/valkey/releases/tag/8.0.2
+
 * Tue Dec 24 2024 Anton Novojilov <andy@essentialkaos.com> - 8.0.1-0
 - https://github.com/valkey-io/valkey/blob/8.0.1/00-RELEASENOTES

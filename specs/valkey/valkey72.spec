@@ -16,7 +16,7 @@
 
 Summary:           A persistent key-value database
 Name:              %{realname}%{major_ver}%{minor_ver}
-Version:           7.2.7
+Version:           7.2.8
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -192,5 +192,8 @@ systemctl daemon-reload &>/dev/null || :
 ################################################################################
 
 %changelog
+* Mon Jan 13 2025 Anton Novojilov <andy@essentialkaos.com> - 7.2.8-0
+- https://github.com/valkey-io/valkey/releases/tag/7.2.8
+
 * Fri Dec 20 2024 Anton Novojilov <andy@essentialkaos.com> - 7.2.7-0
 - https://github.com/valkey-io/valkey/blob/7.2.7/00-RELEASENOTES
