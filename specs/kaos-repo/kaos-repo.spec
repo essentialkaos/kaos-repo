@@ -4,42 +4,31 @@
 
 ################################################################################
 
-%define fm_config  %{_sysconfdir}/yum/pluginconf.d/fastestmirror.conf
-%define pr_config  %{_sysconfdir}/yum/pluginconf.d/priorities.conf
+Summary:    ESSENTIAL KAOS Public Repository
+Name:       kaos-repo
+Version:    12.1
+Release:    0%{?dist}
+License:    Apache License, Version 2.0
+Vendor:     ESSENTIAL KAOS
+Group:      Development/Tools
+URL:        https://kaos.sh/kaos-repo
 
-################################################################################
+Source0:    kaos-release.repo
+Source1:    kaos-testing.repo
+Source2:    RPM-GPG-KEY-ESSENTIALKAOS
 
-%define key_name RPM-GPG-KEY-ESSENTIALKAOS
+Source100:  checksum.sha512
 
-################################################################################
+BuildArch:  noarch
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Summary:         ESSENTIAL KAOS Public Repository
-Name:            kaos-repo
-Version:         12.0
-Release:         0%{?dist}
-License:         Apache License, Version 2.0
-Vendor:          ESSENTIAL KAOS
-Group:           Development/Tools
-URL:             https://kaos.sh/kaos-repo
-
-Source0:         kaos-release.repo
-Source1:         kaos-testing.repo
-
-Source10:        %{key_name}-SHA1
-Source11:        %{key_name}-SHA2
-
-Source100:       checksum.sha512
-
-BuildArch:       noarch
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Provides:        %{name} = %{version}-%{release}
+Provides:   %{name} = %{version}-%{release}
 
 ################################################################################
 
 %description
-This package contains yum/dnf configuration files for access to ESSENTIAL KAOS
-YUM repository.
+This package contains configuration files for access to ESSENTIAL KAOS Public
+repository.
 
 ################################################################################
 
@@ -58,31 +47,12 @@ install -pm 644 %{SOURCE0} \
 install -pm 644 %{SOURCE1} \
                 %{buildroot}%{_sysconfdir}/yum.repos.d/
 
-%if 0%{?rhel} >= 8
-install -pm 644 %{SOURCE11} \
-                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
-%else
-sed -i '/module_hotfixes/d' %{buildroot}%{_sysconfdir}/yum.repos.d/*.repo
-install -pm 644 %{SOURCE10} \
-                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/%{key_name}
-%endif
+install -pm 644 %{SOURCE2} \
+                %{buildroot}%{_sysconfdir}/pki/rpm-gpg/
 
 %post
-if [[ -f %{fm_config} ]] ; then
-  if ! grep -q 'kaos' %{fm_config} ; then
-    sed -i 's/^exclude.*/\0, kaos/g' %{fm_config}
-    sed -i 's/^#exclude.*/exclude=kaos/g' %{fm_config}
-  fi
-fi
-
-if [[ -f %{pr_config} ]] ; then
-  if ! grep -q 'check_obsoletes=1' ; then
-    echo 'check_obsoletes=1' >> %{pr_config}
-  fi
-fi
-
 if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
-  if ! grep -q 'ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys ; then
+  if ! grep -q 'RPM-GPG-KEY-ESSENTIALKAOS' %{_sysconfdir}/abrt/gpg_keys ; then
     echo "%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS" >> %{_sysconfdir}/abrt/gpg_keys
   fi
 fi
@@ -90,7 +60,7 @@ fi
 %postun
 if [[ $1 -eq 0 ]] ; then
   if [[ -e %{_sysconfdir}/abrt/gpg_keys ]] ; then
-    sed -i '/ESSENTIALKAOS/d' %{_sysconfdir}/abrt/gpg_keys
+    sed -i '/RPM-GPG-KEY-ESSENTIALKAOS/d' %{_sysconfdir}/abrt/gpg_keys
   fi
 fi
 
@@ -101,12 +71,15 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/yum.repos.d/*
-%{_sysconfdir}/pki/rpm-gpg/*
+%config(noreplace) %{_sysconfdir}/yum.repos.d/*.repo
+%{_sysconfdir}/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 
 ################################################################################
 
 %changelog
+* Thu Jan 16 2025 Anton Novojilov <andy@essentialkaos.com> - 12.1-0
+- Spec refactoring
+
 * Tue Jun 27 2023 Anton Novojilov <andy@essentialkaos.com> - 12.0-0
 - Migrate from yum.kaos.st to pkgs.kaos.st
 
