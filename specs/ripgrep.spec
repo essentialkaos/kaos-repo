@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:         Line-oriented search tool
-Name:            ripgrep
-Version:         14.1.0
-Release:         0%{?dist}
-Group:           Applications/Text
-License:         MIT or Unlicense
-URL:             https://github.com/BurntSushi/ripgrep
+Summary:        Line-oriented search tool
+Name:           ripgrep
+Version:        14.1.1
+Release:        0%{?dist}
+Group:          Applications/Text
+License:        MIT or Unlicense
+URL:            https://github.com/BurntSushi/ripgrep
 
-Source0:         https://github.com/BurntSushi/%{name}/archive/%{version}.tar.gz
+Source0:        https://github.com/BurntSushi/%{name}/archive/%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   cargo asciidoc libxslt-devel libxml2 docbook-style-xsl
+BuildRequires:  cargo asciidoc libxslt-devel libxml2 docbook-style-xsl
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 14.1.1-0
+- https://github.com/BurntSushi/ripgrep/releases/tag/14.1.1
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 14.1.0-0
 - https://github.com/BurntSushi/ripgrep/releases/tag/14.1.0
 
