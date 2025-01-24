@@ -6,9 +6,9 @@ Version:        1.3.0
 Release:        0%{?dist}
 License:        BSD and (GPLv2+ or Artistic or LGPLv2+) and LGPLv2
 Group:          Development/Languages
-URL:            https://yasm.tortall.net
+URL:            https://github.com/yasm/yasm
 
-Source0:        https://www.tortall.net/projects/%{name}/releases/%{name}-%{version}.tar.gz
+Source0:        https://github.com/yasm/yasm/releases/download/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
