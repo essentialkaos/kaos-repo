@@ -10,7 +10,7 @@
 
 Summary:        A cat(1) clone with wings
 Name:           bat
-Version:        0.24.0
+Version:        0.25.0
 Release:        0%{?dist}
 Group:          Applications/Text
 License:        MIT and Apache 2.0
@@ -86,6 +86,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 0.25.0-0
+- https://github.com/sharkdp/bat/releases/tag/v0.25.0
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.24.0-0
 - https://github.com/sharkdp/bat/releases/tag/v0.24.0
 
