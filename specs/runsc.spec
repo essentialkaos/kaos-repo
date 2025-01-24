@@ -2,7 +2,7 @@
 
 Summary:        The Container Security Platform
 Name:           runsc
-Version:        20240807
+Version:        20250120
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        MIT
@@ -73,6 +73,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 20250120-0
+- https://github.com/google/gvisor/releases/tag/release-20250120.0
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 20240807-0
 - https://github.com/google/gvisor/releases/tag/release-20240807.0
 
