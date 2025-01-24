@@ -43,7 +43,6 @@ regex pattern.
 %setup -qn %{name}-%{version}
 
 %build
-sed -i 's#rust-version = "1.72"#rust-version = "1.71"#' Cargo.toml
 cargo build --release --verbose
 
 %install
