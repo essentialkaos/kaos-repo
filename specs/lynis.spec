@@ -6,7 +6,7 @@
 
 Summary:    Security auditing and hardening tool
 Name:       lynis
-Version:    3.1.1
+Version:    3.1.3
 Release:    0%{?dist}
 License:    GPLv3
 Group:      Development/Tools
@@ -75,6 +75,57 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.3-0
+- Detection of Buildroot, Fedora Linux Asahi Remix, Garden Linux, Peppermint OS
+- Support for blog posts and articles to enhance suggestions
+- BOOT-5264 - Changed output of systemd-analyze test and added link
+- FILE-6398 - Test temporarily disabled as on modern kernels JDB support
+  is built-in
+- FIRE-4508 - Several changes to expand the test, make it more generic, resolve
+  minor issues
+- KRNL-5622 - Test if systemctl binary is set
+- Several improvements for busybox
+- Update of translations: Italian, Russian, Spanish
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.2-0
+- Detection of ALT Linux, Athena OS, Container-Optimized OS from Google,
+  Koozali SME Server, Nobara Linux, Open Source Media Center (OSMC),
+  PostmarketOS
+- CRYP-7932 - macOS FileVault encryption test
+- FILE-6398 - Check if JBD (Journal Block Device) driver is loaded
+- FINT-4344 - Wazuh system running state
+- PKGS-7305 - Query macOS Apps in /Applications and CoreServices
+- File added: .editorconfig, which is used by editors to standardize formatting
+- Update software EOL database, AIX entries
+- Support sysctl value perf_event_paranoid -> 2|3
+- Update translations
+- Grammar and spell improvements
+- Improved package detection (Alpine Linux)
+- Slackware support to check installed packges (functionPackageIsInstalled())
+- Added words prosecute/report to LEGAL_BANNER_STRINGS
+- Busybox support: Replace newer tr command syntax with older ascii specific
+  operations
+- Added Wazuh as a malware scanner/antivirus/rootkit detection tool
+- Updated PHP versions and removed PHP 5
+- AUTH-9262 - Corrected message with advised PAM libary (libpam-passwdqc)
+- CONT-8104 - Checking for errors, not only warning in docker info output
+- DBS-1826 - PostgreSQL detection improved for AlmaLinux, Rocky Linux,
+  and FreeBSD
+- FILE-6344 - Test kernel version (major/minor)
+- INSE-8000 - Added inetd package and service name (Ubuntu 24.04)
+- KRNL-5622 - Use systemctl get-default instead of following link
+- KRNL-5820 - Accept ulimit with -H parameter also
+- LOGG-2144 - Check wazuh-agent presence on Linux systems
+- MACF-6234 - Test if semanage binary is available
+- MALW-3200 - Add ESET Endpoint Antivirus
+- MALW-3280 - McAfee Antivirus for Linux deprecated
+- MALW-3291 - Check if Microsoft Defender Antivirus is installe
+- NETW-3200 - Add regex to allow /bin/true and /bin/false
+- PKGS-7303 - Added version numbers to brew packages
+- PKGS-7370 - Cron job check for debsums improved
+- PKGS-7392 - Improved filtering of apt-check output (Ubuntu 24.04)
+- PKGS-7410 - Add kernel name (Hardkernel odroid XU4)
+
 * Sun Mar 17 2024 Anton Novojilov <andy@essentialkaos.com> - 3.1.1-0
 - Detection of ArcoLinux
 - DBS-1882 - Redis configuration file path added for FreeBSD
