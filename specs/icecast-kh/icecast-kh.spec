@@ -1,7 +1,7 @@
 ################################################################################
 
-# rpmbuilder:github       karlheyes:icecast-kh
-# rpmbuilder:tag          icecast-2.4.0-kh22
+# rpmbuilder:github  karlheyes:icecast-kh
+# rpmbuilder:tag     icecast-2.4.0-kh22
 
 ################################################################################
 
