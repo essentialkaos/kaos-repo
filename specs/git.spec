@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.46.0
+Version:        2.48.1
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -275,6 +275,30 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.48.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.48.1.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.48.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.48.0.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.47.2-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.2.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.47.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.1.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.47.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.0.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.3-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.3.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.2-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.2.txt
+
+* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.1.txt
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.0.txt
 
