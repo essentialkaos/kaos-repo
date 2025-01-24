@@ -6,7 +6,7 @@
 
 Summary:        Meta-package that only requires libnghttp2
 Name:           nghttp2
-Version:        1.62.1
+Version:        1.64.0
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        MIT
@@ -120,6 +120,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.64.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.64.0
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.63.0-0
+- https://github.com/nghttp2/nghttp2/releases/tag/v1.63.0
+
 * Thu May 30 2024 Anton Novojilov <andy@essentialkaos.com> - 1.62.1-0
 - https://github.com/nghttp2/nghttp2/releases/tag/v1.62.1
 
