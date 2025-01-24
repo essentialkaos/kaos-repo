@@ -10,7 +10,7 @@
 
 Summary:        Open Source Continuous File Synchronization
 Name:           syncthing
-Version:        1.28.1
+Version:        1.29.2
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        MPL-2.0
@@ -133,5 +133,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.29.2-0
+- https://github.com/syncthing/syncthing/releases/tag/v1.29.2
+
 * Tue Dec 03 2024 Anton Novojilov <andy@essentialkaos.com> - 1.28.1-0
 - Initial build for kaos repo
