@@ -16,7 +16,7 @@
 
 Summary:         Reorganize tables in PostgreSQL %{pg_ver} databases without any locks
 Name:            %{realname}%{pg_ver}
-Version:         1.5.0
+Version:         1.5.2
 Release:         0%{?dist}
 License:         BSD
 Group:           Applications/Databases
@@ -86,6 +86,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.5.2-0
+- https://github.com/reorg/pg_repack/releases/tag/ver_1.5.2
+
 * Tue Sep 10 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.0-0
 - https://github.com/reorg/pg_repack/releases/tag/ver_1.5.0
 
