@@ -10,7 +10,7 @@
 
 Summary:        Command-line benchmarking tool
 Name:           hyperfine
-Version:        1.18.0
+Version:        1.19.0
 Release:        0%{?dist}
 Group:          Applications/Text
 License:        MIT or Unlicense
@@ -81,5 +81,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.19.0-0
+- https://github.com/sharkdp/hyperfine/releases/tag/v1.19.0
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.18.0-0
 - Initial build for kaos repository
