@@ -14,7 +14,7 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          8.1
+Version:          8.3
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
@@ -110,6 +110,15 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 8.3-0
+- A build failure with gcc-15 is fixed.
+- Several translations were updated.
+
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 8.2-0
+- At a Yes-No prompt, beside Y and the localized initial for "Yes",
+  also ^Y is accepted. Similarly, ^N for "No", and ^A for "All".
+- A text-highlighting bug with Alt+Home/Alt+End is fixed.
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 8.1-0
 - The idiom nano filename:linenumber is understood only when
   the option --colonparsing (or 'set colonparsing') is used.
