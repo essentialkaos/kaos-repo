@@ -11,8 +11,8 @@
 
 Summary:           Lightweight connection pooler for PostgreSQL
 Name:              pgbouncer
-Version:           1.23.1
-Release:           1%{?dist}
+Version:           1.24.0
+Release:           0%{?dist}
 License:           MIT and BSD
 Group:             Applications/Databases
 URL:               https://www.pgbouncer.org
@@ -145,6 +145,9 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 1.24.0-0
+- https://www.pgbouncer.org/changelog.html#pgbouncer-124x
+
 * Thu Oct 31 2024 Anton Novojilov <andy@essentialkaos.com> - 1.23.1-1
 - Improve systemd unit file
 
