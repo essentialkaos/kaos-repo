@@ -23,7 +23,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver      13
-%define minorver      16
+%define minorver      18
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        13
@@ -1121,6 +1121,12 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 13.18-0
+- https://www.postgresql.org/docs/13/release-13-18.html
+
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 13.17-0
+- https://www.postgresql.org/docs/13/release-13-17.html
+
 * Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 13.16-0
 - https://www.postgresql.org/docs/13/release-13-16.html
 

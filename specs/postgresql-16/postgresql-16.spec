@@ -24,7 +24,7 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      16
-%define minorver      4
+%define minorver      6
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        16
@@ -58,7 +58,6 @@ Source2:           Makefile.regress
 Source3:           pg_config.h
 Source4:           README.rpm-dist
 Source5:           ecpg_config.h
-Source6:           %{realname}-%{majorver}-libs.conf
 Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
@@ -1142,6 +1141,12 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 16.6-0
+- https://www.postgresql.org/docs/16/release-16-6.html
+
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 16.5-0
+- https://www.postgresql.org/docs/16/release-16-5.html
+
 * Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 16.4-0
 - https://www.postgresql.org/docs/16/release-16-4.html
 

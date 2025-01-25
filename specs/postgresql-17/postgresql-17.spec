@@ -24,7 +24,7 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      17
-%define minorver      0
+%define minorver      2
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        17
@@ -1153,5 +1153,11 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 17.2-0
+- https://www.postgresql.org/docs/17/release-17-2.html
+
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 17.1-0
+- https://www.postgresql.org/docs/17/release-17-1.html
+
 * Sat Nov 02 2024 Anton Novojilov <andy@essentialkaos.com> - 17.0-0
 - Initial build for kaos-repo
