@@ -15,14 +15,14 @@
 ################################################################################
 
 Summary:        Platform for server side programming on JavaScript
-Name:           nodejs
-Version:        20.16.0
+Name:           nodejs20
+Version:        20.18.2
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
 URL:            https://nodejs.org
 
-Source0:        https://nodejs.org/dist/v%{version}/node-v%{version}.tar.gz
+Source0:        https://nodejs.org/dist/v%{version}/node-v%{version}.tar.xz
 
 Source100:      checksum.sha512
 
@@ -35,7 +35,8 @@ Requires:       zlib
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{shortname} = %{version}-%{release}
-Provides:       %{name}(engine) = %{version}-%{release}
+Provides:       %{shortname}js = %{version}-%{release}
+Provides:       %{shortname}js(engine) = %{version}-%{release}
 Provides:       npm = %{version}-%{release}
 
 ################################################################################
@@ -106,32 +107,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 20.16.0-0
-- https://nodejs.org/en/blog/release/v20.16.0
-
-* Thu May 30 2024 Anton Novojilov <andy@essentialkaos.com> - 20.14.0-0
-- https://nodejs.org/en/blog/release/v20.14.0
-
-* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 20.12.2-0
-- https://nodejs.org/en/blog/release/v20.12.2
-
-* Fri Mar 22 2024 Anton Novojilov <andy@essentialkaos.com> - 20.11.1-0
-- https://nodejs.org/en/blog/release/v20.11.1
-
-* Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 20.11.0-0
-- https://nodejs.org/en/blog/release/v20.11.0
-
-* Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 20.10.0-0
-- https://nodejs.org/en/blog/release/v20.10.0
-
-* Sat Oct 14 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.2-0
-- https://nodejs.org/en/blog/release/v18.18.2
-
-* Fri Oct 13 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.1-0
-- https://nodejs.org/en/blog/release/v18.18.1
-
-* Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 18.18.0-0
-- https://nodejs.org/en/blog/release/v18.18.0
-
-* Thu Dec 15 2022 Anton Novojilov <andy@essentialkaos.com> - 18.12.1-0
-- https://nodejs.org/en/blog/release/v18.12.1
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 20.18.2-0
+- https://nodejs.org/en/blog/release/v20.18.2
