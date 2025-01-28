@@ -1,7 +1,7 @@
 # Bibop recipe for NodeJS 22.x
 # See more: https://kaos.sh/bibop
 
-pkg nodejs22 nodejs-devel22
+pkg nodejs22 nodejs22-devel
 
 fast-finish yes
 
