@@ -1,7 +1,7 @@
-# Bibop recipe for NodeJS
+# Bibop recipe for NodeJS 20.x
 # See more: https://kaos.sh/bibop
 
-pkg nodejs nodejs-devel
+pkg nodejs20 nodejs-devel20
 
 fast-finish yes
 
