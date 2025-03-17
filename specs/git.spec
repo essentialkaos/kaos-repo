@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.48.1
+Version:        2.49.0
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -34,10 +34,6 @@ Requires:       perl-Git = %{version}-%{release}
 Requires:       zlib rsync less openssh-clients expat expat-devel
 
 Provides:       git-core = %{version}-%{release}
-
-Obsoletes:      git-p4 <= 1.5.4.2
-Obsoletes:      git-core >= 1
-Obsoletes:      git-core-doc >= 1
 
 ################################################################################
 
@@ -65,7 +61,6 @@ Requires:   git-email = %{version}-%{release}
 Requires:   gitk = %{version}-%{release}
 Requires:   gitweb = %{version}-%{release}
 Requires:   git-gui = %{version}-%{release}
-Obsoletes:  git <= 1.5.4.2
 
 %description all
 Git is a fast, scalable, distributed revision control system with an
@@ -216,7 +211,7 @@ rm -rf %{buildroot}
 
 %files -f bin-man-doc-files
 %defattr(-,root,root)
-%doc COPYING Documentation/*.txt
+%doc COPYING Documentation/*.adoc
 %doc Documentation/howto
 %doc Documentation/technical
 %{_datadir}/git-core/
@@ -224,20 +219,20 @@ rm -rf %{buildroot}
 
 %files svn
 %defattr(-,root,root)
-%doc Documentation/*svn*.txt
+%doc Documentation/*svn*.adoc
 %{_libexecdir}/git-core/*svn*
 %{_mandir}/man1/*svn*.1*
 
 %files cvs
 %defattr(-,root,root)
-%doc Documentation/*git-cvs*.txt
+%doc Documentation/*git-cvs*.adoc
 %{_bindir}/git-cvsserver
 %{_libexecdir}/git-core/*cvs*
 %{_mandir}/man1/*cvs*.1*
 
 %files email
 %defattr(-,root,root)
-%doc Documentation/*email*.txt
+%doc Documentation/*email*.adoc
 %{_libexecdir}/git-core/*email*
 %{_mandir}/man1/*email*.1*
 
@@ -252,14 +247,14 @@ rm -rf %{buildroot}
 
 %files -n gitk
 %defattr(-,root,root)
-%doc Documentation/*gitk*.txt
+%doc Documentation/*gitk*.adoc
 %{_bindir}/*gitk*
 %{_datadir}/gitk/
 %{_mandir}/man1/*gitk*.1*
 
 %files -n gitweb
 %defattr(-,root,root)
-%doc gitweb/README gitweb/INSTALL Documentation/*gitweb*.txt
+%doc gitweb/README gitweb/INSTALL Documentation/*gitweb*.adoc
 %{_datadir}/gitweb
 %{_mandir}/man1/*gitweb*.1*
 %{_mandir}/man5/*gitweb*.5*
@@ -275,131 +270,134 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Mar 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.49.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.49.0.adoc
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.48.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.48.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.48.1.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.48.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.48.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.48.0.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.47.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.2.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.47.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.1.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.47.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.47.0.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.3-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.3.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.3.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.2.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.1.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.46.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.46.0.adoc
 
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.2.adoc
 
 * Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.1.adoc
 
 * Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.45.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.45.0.adoc
 
 * Wed May 29 2024 Anton Novojilov <andy@essentialkaos.com> - 2.44.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.44.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.44.1.adoc
 
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 2.44.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.44.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.44.0.adoc
 
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 2.43.3-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.3.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.3.adoc
 
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 2.43.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.2.adoc
 
 * Thu Apr 18 2024 Anton Novojilov <andy@essentialkaos.com> - 2.43.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.1.adoc
 
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.43.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.43.0.adoc
 
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.42.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.1.adoc
 
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.42.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.42.0.adoc
 
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.41.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.41.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.41.0.adoc
 
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.40.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.40.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.40.1.adoc
 
 * Fri Oct 06 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.3-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.3.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.3.adoc
 
 * Wed Feb 15 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.2.adoc
 
 * Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.1.adoc
 
 * Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.39.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.39.0.adoc
 
 * Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.38.3-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.3.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.3.adoc
 
 * Thu Feb 09 2023 Anton Novojilov <andy@essentialkaos.com> - 2.38.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.2.adoc
 
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.38.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.38.1.adoc
 
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.37.4-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.37.4.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.37.4.adoc
 
 * Fri Dec 09 2022 Anton Novojilov <andy@essentialkaos.com> - 2.36.3-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.36.3.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.36.3.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.35.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.1.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.35.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.35.0.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.34.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.34.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.34.1.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.34.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.34.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.34.0.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.33.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.33.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.33.1.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.33.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.33.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.33.0.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.32.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.32.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.32.0.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.31.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.31.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.31.1.adoc
 
 * Thu Apr 07 2022 Anton Novojilov <andy@essentialkaos.com> - 2.31.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.31.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.31.0.adoc
 
 * Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.30.2-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.2.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.2.adoc
 
 * Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.30.1-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.1.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.1.adoc
 
 * Wed Mar 10 2021 Anton Novojilov <andy@essentialkaos.com> - 2.30.0-0
-- https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.0.txt
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.30.0.adoc
