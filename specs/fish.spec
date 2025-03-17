@@ -6,7 +6,7 @@
 
 Summary:        Friendly interactive shell (FISh)
 Name:           fish
-Version:        3.7.1
+Version:        4.0.1
 Release:        0%{?dist}
 License:        GPL2
 Group:          System Environment/Shells
@@ -18,15 +18,8 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  ncurses-devel gettext autoconf pcre2-devel
-
-%if 0%{?rhel} <= 7
-BuildRequires:  cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils python-devel
-%else
-BuildRequires:  cmake gcc-c++ python3-devel
-%endif
-
-Requires:       bc which man
+BuildRequires:  cmake gcc-c++ cargo rust ninja-build
+BuildRequires:  python3-devel pcre2-devel ncurses-devel
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -45,15 +38,12 @@ is simple but incompatible with other shell languages.
 %setup -q
 
 %build
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 9
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
-%endif
-
-%cmake3 -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
-        -Dextra_completionsdir=%{_datadir}/%{name}/vendor_completions.d \
-        -Dextra_functionsdir=%{_datadir}/%{name}/vendor_functions.d \
-        -Dextra_confdir=%{_datadir}/%{name}/vendor_conf.d
+%cmake3 -GNinja \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DCMAKE_INSTALL_SYSCONFDIR=%{_sysconfdir} \
+    -Dextra_completionsdir=%{_datadir}/%{name}/vendor_completions.d \
+    -Dextra_functionsdir=%{_datadir}/%{name}/vendor_functions.d \
+    -Dextra_confdir=%{_datadir}/%{name}/vendor_conf.d
 
 %cmake3_build
 
@@ -94,6 +84,12 @@ fi
 ################################################################################
 
 %changelog
+* Tue Mar 18 2025 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.0.1
+
+* Tue Mar 18 2025 Anton Novojilov <andy@essentialkaos.com> - 4.0.0-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.0.0
+
 * Mon Mar 25 2024 Anton Novojilov <andy@essentialkaos.com> - 3.7.1-0
 - https://github.com/fish-shell/fish-shell/releases/tag/3.7.1
 
