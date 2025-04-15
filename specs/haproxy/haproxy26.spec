@@ -17,8 +17,8 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.7
-%define pcre_ver      10.44
-%define openssl_ver   3.0.15
+%define pcre_ver      10.45
+%define openssl_ver   3.0.16
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.19
+Version:        2.6.21
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,81 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.21-0
+- MEDIUM: h1: Accept invalid T-E values with accept-invalid-http-response option
+- BUG/MEDIUM: mux-pt: Never fully close the connection on shutdown
+- MINOR: task: define two new one-shot events for use with WOKEN_OTHER or MSG
+- BUG/MEDIUM: stream: make stream_shutdown() async-safe
+- BUG/MEDIUM: queue: always dequeue the backend when redistributing the last
+  server
+- BUG/MEDIUM: queue: make sure never to queue when there's no more served conns
+- BUG/MINOR: cli: don't show sockpairs in HAPROXY_CLI and HAPROXY_MASTER_CLI
+- BUG/MEDIUM: resolvers: Insert a non-executed resulution in front of the wait
+  list
+- BUG/MEDIUM: mux-h2: Don't send RST_STREAM frame for streams with no ID
+- BUG/MEDIUM: checks: make sure to always apply offsets to now_ms in expiration
+- BUG/MEDIUM: mailers: make sure to always apply offsets to now_ms in expiration
+- BUG/MINOR: peers: make sure to always apply offsets to now_ms in expiration
+- BUG/MINOR: http_ana: Report -1 for %%Tr for invalid response only
+- DOC: config: Slightly improve the %%Tr documentation
+- DOC: lua: fix yield-dependent methods expected contexts
+- DOC: configuration: explain quotes and spaces in conditional blocks
+- BUG/MINOR: http-ana: Adjust the server status before the L7 retries
+- BUG/MEDIUM: mux-h2: Increase max number of headers when encoding HEADERS
+  frames
+- BUG/MEDIUM: mux-h2: Check the number of headers in HEADERS frame after
+  decoding
+- BUG/MEDIUM: h3: Properly limit the number of headers received
+- BUG/MEDIUM: h3: Increase max number of headers when sending headers
+- BUG/MAJOR: quic: fix wrong packet building due to already acked frames
+- BUG/MEDIUM: http-ana: Don't release too early the L7 buffer
+- BUG/MEDIUM: sock: Remove FD_POLL_HUP during connect() if FD_POLL_ERR is
+  not set
+- BUG/MEDIUM: http-ana: Reset request flag about data sent to perform a L7 retry
+- BUG/MINOR: h1-htx: Use default reason if not set when formatting the response
+- BUG/MINOR: signal: register default handler for SIGINT in signal_init()
+- BUG/MINOR: server-state: Fix expiration date of srvrq_check tasks
+- BUG/MEDIUM: mux-h1: Fix how timeouts are applied on H1 connections
+- BUG/MEDIUM: pattern: prevent uninitialized reads in pat_match_{str,beg}
+- MINOR: quic: notify connection layer on handshake completion
+- BUG/MINOR: stream: unblock stream on wait-for-handshake completion
+- BUG/MEDIUM: stconn: Don't forward shut for SC in connecting state
+- BUG/MEDIUM: queues: Make sure we call process_srv_queue() when leaving
+- BUG/MEDIUM: queues: Do not use pendconn_grab_from_px().
+- BUG/MEDIUM: queue: Make process_srv_queue return the number of streams
+- MINOR: config: Alert about extra arguments for errorfile and errorloc
+- BUG/MINOR: stktable: fix big-endian compatiblity in smp_to_stkey()
+- BUG/MINOR: quic: reject NEW_TOKEN frames from clients
+- BUG/MEDIUM: stktable: fix missing lock on some table converters
+- BUG/MAJOR: quic: reject too large CRYPTO frames
+- BUG/MINOR: quic: ensure a detached coalesced packet can't access its
+  neighbours
+- MINOR: quic: Add a BUG_ON() on quic_tx_packet refcount
+- BUILD: quic: Move an ASSUME_NONNULL() for variable which is not null
+- BUG/MINOR: quic: do not increase congestion window if app limited
+- BUG/MINOR: ssl: put ssl_sock_load_ca under SSL_NO_GENERATE_CERTIFICATES
+- BUG/MINOR: stream: Properly handle "on-marked-up shutdown-backup-sessions"
+
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.20-0
+- BUG/MEDIUM: cli: Deadlock when setting frontend maxconn
+- BUG/MINOR: cfgparse-global: fix allowed args number for setenv
+- BUG/MEDIUM: server: server stuck in maintenance after FQDN change
+- BUG/MEDIUM: hlua: make hlua_ctx_renew() safe
+- BUG/MEDIUM: hlua: properly handle sample func errors in
+  hlua_run_sample_{fetch,conv}()
+- BUG/MINOR: http-ana: Don't report a server abort if response payload is
+  invalid
+- BUG/MINOR: mworker: fix mworker-max-reloads parser
+- BUG/MEDIUM: connection/http-reuse: fix address collision on unhandled address
+  families
+- BUG/MINOR: server: fix dynamic server leak with check on failed init
+- BUG/MEDIUM: server: fix race on servers_list during server deletion
+- BUG/MINOR: ssl/cli: 'set ssl cert' does not check the transaction name
+  correctly
+- BUG/MINOR: http-ana: Report internal error if an action yields on a final eval
+- MINOR: stream: Save last evaluated rule on invalid yield
+- CLEANUP: connection: properly name the CO_ER_SSL_FATAL enum entry
+
 * Fri Nov 01 2024 Anton Novojilov <andy@essentialkaos.com> - 2.6.19-0
 - BUG/MEDIUM: cli: fix cli_output_msg() regression
 - BUG/MINOR: quic: fix computed length of emitted STREAM frames

@@ -17,7 +17,7 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.7
-%define pcre_ver      10.44
+%define pcre_ver      10.45
 %define openssl_ver   1.1.1w
 %define ncurses_ver   6.4
 %define readline_ver  8.2
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.27
+Version:        2.4.28
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,54 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.4.28-0
+- BUG/MEDIUM: cli: fix cli_output_msg() regression
+- BUG/MINOR: cfgparse: remove the correct option on httpcheck send-state warning
+- DOC/MINOR: management: add missed -dR and -dv options
+- DOC: management: rename show stats domain cli "dns" to "resolvers"
+- DOC: configuration: fix alphabetical order of bind options
+- SCRIPTS: git-show-backports: do not truncate git-show output
+- BUG/MINOR: hlua: report proper context upon error in hlua_cli_io_handler_fct()
+- MINOR: session: rename private conns elements
+- BUG/MAJOR: server: do not delete srv referenced by session
+- MEDIUM: ssl: initialize the SSL stack explicitely
+- BUG/MEDIUM: spoe: Be sure to create a SPOE applet if none on the current
+  thread
+- BUG/MINOR: cli: Atomically inc the global request counter between CLI commands
+- BUG/MEDIUM: stream: Prevent mux upgrades if client connection is no longer
+  ready
+- BUG/MEDIUM: cli: Always release back endpoint between two commands on the mcli
+- BUG/MEDIUM: h2: Only report early HTX EOM for tunneled streams
+- BUG/MINOR: fcgi-app: handle a possible strdup() failure
+- BUG/MINOR: trace: automatically start in waiting mode with "start <evt>"
+- BUG/MINOR: proto_tcp: delete fd from fdtab if listen() fails
+- BUG/MINOR: proto_uxst: delete fd from fdtab if listen() fails
+- BUG/MINOR: pattern: pat_ref_set: fix UAF reported by coverity
+- BUG/MINOR: pattern: pat_ref_set: return 0 if err was found
+- BUG/MINOR: pattern: do not leave a leading comma on "set" error messages
+- REGTESTS: fix random failures with wrong_ip_port_logging.vtc under load
+- BUG/MINOR: pattern: prevent const sample from being tampered in
+  pat_match_beg()
+- BUG/MEDIUM: pattern: prevent UAF on reused pattern expr
+- BUG/MINOR: polling: fix time reporting when using busy polling
+- BUG/MINOR: server: Don't warn fallback IP is used during init-addr resolution
+- DOC: configuration: issuers-chain-path not compatible with OCSP
+- DOC: config: improve the http-keep-alive section
+- BUG/MEDIUM: cli: Deadlock when setting frontend maxconn
+- BUG/MINOR: cfgparse-global: fix allowed args number for setenv
+- BUG/MEDIUM: server: server stuck in maintenance after FQDN change
+- BUG/MEDIUM: hlua: make hlua_ctx_renew() safe
+- BUG/MEDIUM: hlua: properly handle sample func errors in
+  hlua_run_sample_{fetch,conv}()
+- BUG/MINOR: http-ana: Don't report a server abort if response payload
+  is invalid
+- BUG/MINOR: mworker: fix mworker-max-reloads parser
+- BUG/MEDIUM: connection/http-reuse: fix address collision on unhandled address
+  families
+- BUG/MINOR: ssl/cli: 'set ssl cert' does not check the transaction name
+  correctly
+- BUG/MINOR: http-ana: Report internal error if an action yields on a final eval
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.4.27-0
 - BUG/MEDIUM: thread/sched: set proper scheduling context upon ha_set_tid()
 - BUG/MEDIUM: cli: fix once for all the problem of missing trailing LFs
