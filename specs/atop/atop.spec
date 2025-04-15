@@ -6,7 +6,7 @@
 
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.11.0
+Version:        2.11.1
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -149,6 +149,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.11.1-0
+- Security fix for CVE-2025-31160
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.11.0-0
 - Cgroups (version 2) support.
 - Show the hierarchical structure of cgroups and the related metrics with
