@@ -11,7 +11,7 @@
 
 Summary:        A GNU tool for automatically creating Makefiles
 Name:           automake
-Version:        1.16.5
+Version:        1.17
 Release:        0%{?dist}
 License:        GPLv2+ and GFDL and Public Domain and MIT
 Group:          Development/Tools
@@ -92,6 +92,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 1.17-0
+- Update to the latest stable version
+
 * Fri Sep 30 2022 Anton Novojilov <andy@essentialkaos.com> - 1.16.5-0
 - PYTHON_PREFIX and PYTHON_EXEC_PREFIX are now set according to
   Python's sys.* values only if the new configure option
