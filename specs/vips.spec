@@ -6,7 +6,7 @@
 
 Name:           vips
 Summary:        C/C++ library for processing large images
-Version:        8.16.0
+Version:        8.16.1
 Release:        0%{?dist}
 License:        LGPLv2+
 Group:          System Environment/Libraries
@@ -155,6 +155,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 8.16.1-0
+- https://github.com/libvips/libvips/releases/tag/v8.16.1
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 8.16.0-0
 - https://github.com/libvips/libvips/releases/tag/v8.16.0
 
