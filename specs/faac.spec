@@ -5,19 +5,20 @@
 ################################################################################
 
 %define ver_major  1
-%define ver_minor  30
+%define ver_minor  31
+%define ver_patch  1
 
 ################################################################################
 
 Summary:        ISO/MPEG 2/4 AAC Encoder library
 Name:           faac
-Version:        %{ver_major}.%{ver_minor}
+Version:        %{ver_major}.%{ver_minor}.%{ver_patch}
 Release:        0%{?dist}
 License:        LGPL
 Group:          Applications/Multimedia
 URL:            https://github.com/knik0/faac
 
-Source0:        https://github.com/knik0/faac/archive/refs/tags/%{ver_major}_%{ver_minor}.tar.gz
+Source0:        https://github.com/knik0/faac/archive/refs/tags/%{name}-%{version}.tar.gz
 
 Source100:      checksum.sha512
 
@@ -53,7 +54,7 @@ to build programs that use it.
 %prep
 %{crc_check}
 
-%setup -qn %{name}-%{ver_major}_%{ver_minor}
+%setup -qn %{name}-%{name}-%{version}
 
 sed -e '/obj-type/d' \
     -e '/Long Term/d' \
@@ -98,10 +99,14 @@ rm -rf %{buildroot}
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/*.la
+%{_libdir}/pkgconfig/%{name}.pc
 
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.31.1-0
+- https://github.com/knik0/faac/releases/tag/faac-1.31.1
+
 * Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 1.30-0
 - https://github.com/knik0/faac/releases/tag/1_30
 
