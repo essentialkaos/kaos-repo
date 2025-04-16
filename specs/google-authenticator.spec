@@ -8,23 +8,23 @@
 
 ################################################################################
 
-Summary:         One-time passcode support using open standards
-Name:            google-authenticator
-Version:         1.09
-Release:         0%{?dist}
-License:         ASL 2.0
-Group:           Development/Tools
-URL:             https://github.com/google/google-authenticator-libpam
+Summary:        One-time passcode support using open standards
+Name:           google-authenticator
+Version:        1.11
+Release:        0%{?dist}
+License:        Apache-2.0
+Group:          Development/Tools
+URL:            https://github.com/google/google-authenticator-libpam
 
-Source0:         https://github.com/google/%{name}-libpam/archive/refs/tags/%{version}.tar.gz
+Source0:        https://github.com/google/%{name}-libpam/archive/refs/tags/%{version}.tar.gz
 
-Source100:       checksum.sha512
+Source100:      checksum.sha512
 
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:   make gcc libtool automake pam-devel
+BuildRequires:  make gcc libtool automake pam-devel
 
-Provides:        %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -50,6 +50,7 @@ algorithm specified in RFC 4226 and the Time-based One-time Password
 
 %build
 ./bootstrap.sh
+
 %{configure}
 %{__make} %{?_smp_mflags}
 
@@ -71,9 +72,6 @@ rm -f %{buildroot}%{_libdir}/security/*.la
 %postun
 /sbin/ldconfig
 
-%clean
-rm -rf %{buildroot}
-
 ################################################################################
 
 %files
@@ -88,6 +86,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.11-0
+- https://github.com/google/google-authenticator-libpam/releases/tag/1.11
+
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
+- https://github.com/google/google-authenticator-libpam/releases/tag/1.10
+
 * Wed Dec 07 2022 Anton Novojilov <andy@essentialkaos.com> - 1.09-0
 - Updated to the latest stable release
 
