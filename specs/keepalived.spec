@@ -13,7 +13,7 @@
 
 Name:           keepalived
 Summary:        High Availability monitor built upon LVS, VRRP and service pollers
-Version:        2.3.2
+Version:        2.3.3
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://www.keepalived.org
@@ -86,9 +86,6 @@ mv %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.sample \
   install -pm 644 doc/KEEPALIVED-MIB.txt %{buildroot}%{_datadir}/snmp/mibs/KEEPALIVED-MIB.txt
 %endif
 
-%clean
-rm -rf %{buildroot}
-
 %post
 if [[ $1 -eq 1 ]] ; then
   systemctl enable %{name}.service &>/dev/null || :
@@ -128,6 +125,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
+- https://www.keepalived.org/release-notes/Release-2.3.3.html
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
 - https://www.keepalived.org/release-notes/Release-2.3.2.html
 
