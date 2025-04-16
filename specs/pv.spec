@@ -6,7 +6,7 @@
 
 Summary:        Tool for monitoring the progress of data through a pipeline
 Name:           pv
-Version:        1.9.27
+Version:        1.9.31
 Release:        0%{?dist}
 License:        GPLv3+
 Group:          Applications/System
@@ -55,9 +55,6 @@ rm -rf %{buildroot}%{_docdir}/%{name}
 
 %find_lang %{name}
 
-%clean
-rm -rf %{buildroot}
-
 ################################################################################
 
 %files
@@ -70,6 +67,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.31-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.9.31
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.27-0
 - https://codeberg.org/a-j-wood/pv/releases/tag/v1.9.27
 
