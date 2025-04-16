@@ -10,7 +10,7 @@
 
 Summary:        Bidirectional data relay between two data channels ('netcat++')
 Name:           socat
-Version:        1.8.0.0
+Version:        1.8.0.3
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Applications/Internet
@@ -94,9 +94,6 @@ export OD_C=/usr/bin/od
 %{__make} test
 %endif
 
-%clean
-rm -rf %{buildroot}
-
 ################################################################################
 
 %files
@@ -115,6 +112,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.3-0
+- http://www.dest-unreach.org/socat/CHANGES
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 1.8.0.0-0
 - http://www.dest-unreach.org/socat/CHANGES
 
