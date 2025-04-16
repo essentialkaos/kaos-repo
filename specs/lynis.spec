@@ -6,7 +6,7 @@
 
 Summary:    Security auditing and hardening tool
 Name:       lynis
-Version:    3.1.3
+Version:    3.1.4
 Release:    0%{?dist}
 License:    GPLv3
 Group:      Development/Tools
@@ -75,6 +75,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.4-0
+- Update of translations: Portuguese
+- Add macOS Sequoia
+- Update of EOL database
+- Bugfix for using slashes in parameters (SafeInput function)
+- Simplified copyright line and meta data in files
+- Support for powerpc64le in authentication section
+- Don't show error "kadmin.local: unable to get default realm"
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.3-0
 - Detection of Buildroot, Fedora Linux Asahi Remix, Garden Linux, Peppermint OS
 - Support for blog posts and articles to enhance suggestions
