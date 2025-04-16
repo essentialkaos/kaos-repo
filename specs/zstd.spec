@@ -6,7 +6,7 @@
 
 Summary:        Zstandard (zstd) compression library
 Name:           zstd
-Version:        1.5.6
+Version:        1.5.7
 Release:        0%{?dist}
 License:        BSD and GPLv2
 Group:          Development/Libraries
@@ -126,6 +126,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.5.7-0
+- https://github.com/facebook/zstd/releases/tag/v1.5.7
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.6-0
 - https://github.com/facebook/zstd/releases/tag/v1.5.6
 
