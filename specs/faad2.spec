@@ -6,7 +6,7 @@
 
 Summary:        Freeware Advanced Audio (AAC) Decoder including SBR decoding
 Name:           faad2
-Version:        2.10.1
+Version:        2.11.2
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Applications/Multimedia
@@ -18,7 +18,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  autoconf automake libtool gcc gcc-c++
+BuildRequires:  gcc gcc-c++ cmake3
 BuildRequires:  libsndfile-devel >= 1.0.0 id3lib-devel zlib-devel
 
 Obsoletes:      faad2-libs <= %{version}
@@ -64,19 +64,13 @@ Header files from faad2 that are needed to build programs that use it.
 %setup -qn %{name}-%{version}
 
 %build
-autoreconf -fi
-
-%configure \
-  --without-xmms \
-  --with-mpeg4ip \
-  --with-drm
-
-%{__make} %{?_smp_mflags}
+%{cmake3} -DBUILD_SHARED_LIBS=true
+%{cmake3_build}
 
 %install
 rm -rf %{buildroot}
 
-%{make_install}
+%{cmake3_install}
 
 %clean
 rm -rf %{buildroot}
@@ -91,7 +85,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING ChangeLog NEWS README
+%doc AUTHORS COPYING ChangeLog README
 %{_bindir}/faad
 %{_mandir}/man1/faad.*
 
@@ -102,11 +96,8 @@ rm -rf %{buildroot}
 
 %files -n lib%{name}-devel
 %defattr(-,root,root,-)
-%exclude %{_libdir}/*.la
 %{_includedir}/faad.h
 %{_includedir}/neaacdec.h
-%{_libdir}/libfaad.a
-%{_libdir}/libfaad_drm.a
 %{_libdir}/libfaad.so
 %{_libdir}/libfaad_drm.so
 %{_libdir}/pkgconfig/%{name}.pc
@@ -114,6 +105,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 2.11.2-0
+- https://github.com/knik0/faad2/releases/tag/2.11.2
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 2.10.1-0
 - https://github.com/knik0/faad2/releases/tag/2.10.1
 
