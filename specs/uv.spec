@@ -1,12 +1,12 @@
 ################################################################################
 
-%define checksum  a0eb614f7fc38a6e14ef1c4819f1f187591db8e0d3c4218dae38b1bd663a00e2
+%define checksum  0aaf451c391d3913823bfb8ed354b446dcfd0553a32ed8266611e4181c61fd51
 
 ################################################################################
 
 Summary:    An extremely fast Python package installer and resolver
 Name:       uv
-Version:    0.5.24
+Version:    0.6.14
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    MIT AND Apache 2.0
