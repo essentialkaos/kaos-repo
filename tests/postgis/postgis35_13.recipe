@@ -1,18 +1,18 @@
-# Bibop recipe for PostGIS 3.4 for PostgreSQL 16
+# Bibop recipe for PostGIS 3.5 for PostgreSQL 13
 # See more: https://kaos.sh/bibop
 
 ################################################################################
 
-pkg postgresql16-server postgis34_16 postgis34_16-client postgis34_16-scripts postgis34_16-utils
+pkg postgresql13-server postgis35_13 postgis35_13-client postgis35_13-scripts postgis35_13-utils
 
 require-root yes
 unsafe-actions yes
 
 var postgis_lib_version    3
-var postgis_major_version  3.4
-var postgis_version        3.4.4
-var postgres_version       16
-var pkg_ver                34_{postgres_version}
+var postgis_major_version  3.5
+var postgis_version        3.5.2
+var postgres_version       13
+var pkg_ver                35_{postgres_version}
 
 var postgres_service   postgresql-{postgres_version}
 var postgres_port      5432

@@ -12,21 +12,21 @@
 
 ################################################################################
 
-%define maj_ver   3.4
+%define maj_ver   3.5
 %define lib_ver   3
 %define pg_ver    %{?_pg}%{!?_pg:99}
 %define pg_dir    %{_prefix}/pgsql-%{pg_ver}
 %define realname  postgis
 %define pkgname   %{realname}-%{maj_ver}
-%define fullname  %{realname}34
+%define fullname  %{realname}35
 
-%define min_geos_ver  3.11
+%define min_geos_ver  3.12
 
 ################################################################################
 
 Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:            %{fullname}_%{pg_ver}
-Version:         3.4.4
+Version:         3.5.2
 Release:         0%{?dist}
 License:         GPLv2+
 Group:           Applications/Databases
@@ -271,14 +271,11 @@ fi
 ################################################################################
 
 %changelog
-* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 3.4.4-0
-- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.4/NEWS
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 3.5.2-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.5.2/NEWS
 
-* Mon Sep 09 2024 Anton Novojilov <andy@essentialkaos.com> - 3.4.3-0
-- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.3/NEWS
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 3.5.1-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.5.1/NEWS
 
-* Wed Nov 08 2023 Anton Novojilov <andy@essentialkaos.com> - 3.4.0-1
-- Minimal required version of GEOS set to 3.11
-
-* Thu Sep 21 2023 Anton Novojilov <andy@essentialkaos.com> - 3.4.0-0
-- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.0/NEWS
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 3.5.0-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.5.0/NEWS
