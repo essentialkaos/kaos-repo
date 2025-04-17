@@ -11,13 +11,13 @@
 ################################################################################
 
 %define package_name  zstd
-%define zstd_version  1.5.5
+%define zstd_version  1.5.6
 
 ################################################################################
 
 Summary:        Zstd Bindings for Python
 Name:           python3-%{package_name}
-Version:        %{zstd_version}.1
+Version:        %{zstd_version}.7
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -73,6 +73,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 1.5.6.7-0
+- https://github.com/sergey-dryabzhinsky/python-zstd/releases/tag/v1.5.6.7
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.5.1-0
 - https://github.com/sergey-dryabzhinsky/python-zstd/releases/tag/v1.5.5.1
 
