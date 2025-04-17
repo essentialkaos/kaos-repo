@@ -73,7 +73,6 @@ associated technology for use across the Java™ ecosystem.
 
 %install
 rm -rf %{buildroot}
-
 rm -rf demo release
 
 mkdir -p %{buildroot}%{install_dir}
@@ -91,9 +90,11 @@ for bin in $(ls -1 %{jdk_bin_dir}) ; do
   deps="$deps --slave %{_bindir}/$bin $bin %{jdk_bin_dir}/$bin"
 done
 
-for doc in $(ls -1 %{jdk_man_dir}) ; do
-  deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
-done
+if [[ -d "%{jdk_man_dir}" ]] ; then
+  for doc in $(ls -1 %{jdk_man_dir}) ; do
+    deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
+  done
+fi
 
 deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}/java.sh"
 
