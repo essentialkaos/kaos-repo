@@ -6,7 +6,7 @@
 
 %define major_version  1
 %define minor_version  14
-%define patch_version  3
+%define patch_version  6
 
 ################################################################################
 
@@ -18,7 +18,7 @@ License:           BSD
 Group:             System Environment/Libraries
 URL:               https://www.hdfgroup.org/HDF5/
 
-Source:            https://support.hdfgroup.org/ftp/HDF5/releases/%{name}-%{major_version}.%{minor_version}/%{name}-%{version}/src/%{name}-%{version}.tar.bz2
+Source:            https://github.com/HDFGroup/hdf5/releases/download/%{name}_%{version}/%{name}-%{version}.tar.gz
 Source1:           h5comp
 
 Source100:         checksum.sha512
@@ -107,7 +107,6 @@ rm %{buildroot}%{_libdir}/*.la
 
 mkdir -p %{buildroot}%{_fmoddir}
 mv %{buildroot}%{_includedir}/*.mod %{buildroot}%{_fmoddir}
-find %{buildroot}%{_datadir} \( -name '*.[ch]*' -o -name '*.f90' \) -exec chmod -x {} +
 
 %ifarch x86_64
 sed -i -e s/H5pubconf.h/H5pubconf-64.h/ %{buildroot}%{_includedir}/H5public.h
@@ -132,9 +131,6 @@ done
 chrpath --delete $(find %{buildroot}%{_bindir} -type f -exec grep -IL . "{}" \;)
 chrpath --delete %{buildroot}%{_libdir}/*.so.*
 
-%clean
-rm -rf %{buildroot}
-
 %post
 /sbin/ldconfig
 
@@ -154,7 +150,7 @@ rm -rf %{buildroot}
 %{_bindir}/h5diff
 %{_bindir}/h5dump
 %{_bindir}/h5format_convert
-%{_bindir}/h5fuse.sh
+%{_bindir}/h5fuse
 %{_bindir}/h5import
 %{_bindir}/h5jam
 %{_bindir}/h5ls
@@ -173,12 +169,11 @@ rm -rf %{buildroot}
 %{_bindir}/h5cc*
 %{_bindir}/h5fc*
 %{_bindir}/h5redeploy
-%{_bindir}/h5tools_test_utils
 %{_includedir}/*.h
+%{_includedir}/*.inc
 %{_libdir}/*.so
 %{_libdir}/*.settings
 %{_fmoddir}/*.mod
-%{_datadir}/hdf5_examples/
 
 %files static
 %defattr(-,root,root,-)
@@ -187,8 +182,11 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 1.14.6-0
+- https://github.com/HDFGroup/hdf5/releases/tag/hdf5_1.14.6
+
 * Thu Dec 07 2023 Anton Novojilov <andy@essentialkaos.com> - 1.14.3-0
-- https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.3/src/hdf5-1.14.3-RELEASE.txt
+- https://github.com/HDFGroup/hdf5/releases/tag/hdf5_1.14.3
 
 * Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 1.10.10-0
 - https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.10/hdf5-1.10.10/src/hdf5-1.10.10-RELEASE.txt
