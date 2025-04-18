@@ -1,14 +1,12 @@
 #!/bin/bash
 
-pg_versions=("12" "13" "14" "15" "16" "17")
-
 main() {
   if [[ "$#" -eq 0 ]] ; then
     echo "Usage: ./generate.sh {postgis-version}"
     exit 0
   fi
 
-  for pg_ver in ${pg_versions[@]} ; do
+  for pg_ver in $(seq 13 17) ; do
     generate "$1" "$pg_ver"
   done
 }
