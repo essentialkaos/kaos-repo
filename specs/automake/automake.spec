@@ -83,10 +83,13 @@ rm -rf %{buildroot}
 %doc AUTHORS README THANKS NEWS README.aclocal README.multilib
 %doc %{_defaultdocdir}/%{name}/amhello-1.0.tar.gz
 %exclude %{_datadir}/aclocal
-%{_bindir}/*
+%{_bindir}/automake
+%{_bindir}/automake-%{version}
+%{_bindir}/aclocal
+%{_bindir}/aclocal-%{version}
 %{_infodir}/*.info*
-%{_datadir}/automake-*
-%{_datadir}/aclocal-*
+%{_datadir}/automake-%{version}
+%{_datadir}/aclocal-%{version}
 %{_mandir}/man1/*
 
 ################################################################################
