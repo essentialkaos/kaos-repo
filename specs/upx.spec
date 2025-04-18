@@ -6,7 +6,7 @@
 
 Summary:        Ultimate Packer for eXecutables
 Name:           upx
-Version:        4.2.4
+Version:        5.0.0
 Release:        0%{?dist}
 License:        GPLv2+ and Public Domain
 Group:          Applications/Archiving
@@ -18,11 +18,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-%if 0%{?rhel} <= 7
-BuildRequires:  cmake3 devtoolset-9-gcc-c++ devtoolset-9-binutils
-%else
 BuildRequires:  cmake gcc-c++
-%endif
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -42,25 +38,17 @@ executables suffer no memory overhead or other drawbacks.
 %setup -qn %{name}-%{version}-src
 
 %build
-%if 0%{?rhel} <= 7
-# Use gcc and gcc-c++ from DevToolSet 9
-export PATH="/opt/rh/devtoolset-9/root/usr/bin:$PATH"
-%endif
-
-%{cmake3}
-%{cmake3_build}
+mkdir build && pushd build
+%{cmake} ..
+%{cmake_build}
+popd
 
 %install
 rm -rf %{buildroot}
 
-%{cmake3_install}
-
-%if 0%{?rhel} <= 7
-rm -rf %{buildroot}%{_docdir}
-%endif
-
-%clean
-rm -rf %{buildroot}
+pushd build
+%{cmake_install}
+popd
 
 ################################################################################
 
@@ -73,6 +61,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 5.0.0-0
+- https://github.com/upx/upx/blob/v5.0.0/NEWS
+
 * Thu May 30 2024 Anton Novojilov <andy@essentialkaos.com> - 4.2.4-0
 - https://github.com/upx/upx/milestone/17
 

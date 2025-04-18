@@ -1,0 +1,17 @@
+[Unit]
+Description=Valkey
+Documentation=https://valkey.io/docs
+After=syslog.target network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/valkey-server /etc/valkey.conf --supervised systemd
+KillSignal=SIGTERM
+User=valkey
+Group=valkey
+PIDFile=/var/run/valkey/valkey.pid
+TimeoutStartSec=15
+TimeoutStopSec=90
+
+[Install]
+WantedBy=multi-user.target

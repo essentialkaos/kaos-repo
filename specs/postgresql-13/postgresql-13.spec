@@ -23,7 +23,7 @@
 %{!?llvm:%global llvm 1}
 
 %define majorver      13
-%define minorver      16
+%define minorver      18
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        13
@@ -57,7 +57,6 @@ Source2:           Makefile.regress
 Source3:           pg_config.h
 Source4:           README.rpm-dist
 Source5:           ecpg_config.h
-Source6:           %{realname}-%{majorver}-libs.conf
 Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
@@ -550,7 +549,7 @@ install -dm 700 %{buildroot}%{_sysconfdir}/sysconfig/%{shortname}/%{majorver}
 # Install linker conf file under postgresql installation directory.
 # We will install the latest version via alternatives.
 install -dm 755 %{buildroot}%{install_dir}/share/
-install -pm 700 %{SOURCE6} %{buildroot}%{install_dir}/share/
+echo "%{install_dir}/lib" > %{buildroot}%{install_dir}/share/%{realname}-%{majorver}-libs.conf
 
 %if %test
   # Tests. There are many files included here that are unnecessary,
@@ -1122,6 +1121,12 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 13.18-0
+- https://www.postgresql.org/docs/13/release-13-18.html
+
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 13.17-0
+- https://www.postgresql.org/docs/13/release-13-17.html
+
 * Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 13.16-0
 - https://www.postgresql.org/docs/13/release-13-16.html
 

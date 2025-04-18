@@ -17,8 +17,8 @@
 %define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.7
-%define pcre_ver      10.44
-%define openssl_ver   3.1.6
+%define pcre_ver      10.45
+%define openssl_ver   3.2.4
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.10
+Version:        2.8.14
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,243 @@ fi
 ################################################################################
 
 %changelog
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.14-0
+- BUG/MEDIUM: stconn: Really report blocked send if sends are blocked by
+  an error
+- BUG/MEDIUM: mux-h1: Fix how timeouts are applied on H1 connections
+- MINOR: debug: make mark_tainted() return the previous value
+- DEBUG: add a tainted flag when ha_panic() is called
+- MINOR: chunk: drop the global thread_dump_buffer
+- MINOR: debug: split ha_thread_dump() in two parts
+- MINOR: debug: slightly change the thread_dump_pointer signification
+- MINOR: debug: make ha_thread_dump_done() take the pointer to be used
+- MINOR: debug: replace ha_thread_dump() with its two components
+- MEDIUM: debug: on panic, make the target thread automatically allocate its buf
+- BUG/MEDIUM: pattern: prevent uninitialized reads in pat_match_{str,beg}
+- MINOR: quic: notify connection layer on handshake completion
+- BUG/MINOR: stream: unblock stream on wait-for-handshake completion
+- BUG/MEDIUM: quic: support wait-for-handshake
+- MINOR: quic: simplify qc_parse_pkt_frms() return path
+- MINOR: quic: use dynamically allocated frame on parsing
+- MINOR: quic: extend return value of CRYPTO parsing
+- BUG/MINOR: quic: repeat packet parsing to deal with fragmented CRYPTO
+- BUG/MEDIUM: quic: prevent crash due to CRYPTO parsing error
+- BUG/MEDIUM: stconn: Don't forward shut for SC in connecting state
+- BUG/MEDIUM: stconn: Only consider I/O timers to update stream's expiration
+  date
+- BUG/MEDIUM: queues: Make sure we call process_srv_queue() when leaving
+- BUG/MEDIUM: queues: Do not use pendconn_grab_from_px().
+- DOC: config: add example for server "track" keyword
+- BUG/MEDIUM: queue: Make process_srv_queue return the number of streams
+- MINOR: config: Alert about extra arguments for errorfile and errorloc
+- BUG/MINOR: stktable: fix big-endian compatiblity in smp_to_stkey()
+- BUG/MINOR: quic: reject NEW_TOKEN frames from clients
+- BUG/MEDIUM: stktable: fix missing lock on some table converters
+- BUG/MAJOR: quic: reject too large CRYPTO frames
+- BUG/MINOR: init: set HAPROXY_STARTUP_VERSION from the variable, not the macro
+- BUG/MINOR: quic: ensure a detached coalesced packet can't access its
+  neighbours
+- MINOR: quic: Add a BUG_ON() on quic_tx_packet refcount
+- BUILD: quic: Move an ASSUME_NONNULL() for variable which is not null
+- BUG/MEDIUM: mux-h1: Properly close H1C if an error is reported before sending
+  data
+- BUG/MINOR: quic: do not increase congestion window if app limited
+- BUG/MINOR: ssl: put ssl_sock_load_ca under SSL_NO_GENERATE_CERTIFICATES
+- BUG/MINOR: stream: Properly handle "on-marked-up shutdown-backup-sessions"
+
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.13-0
+- BUG/MINOR: ssl_sock: fix xprt_set_used() to properly clear the TASK_F_USR1 bit
+- BUG/MINOR: h1: do not forward h2c upgrade header token
+- BUG/MINOR: h2: reject extended connect for h2c protocol
+- MINOR: mux-h1: Set EOI on SE during demux when both side are in DONE state
+- BUG/MEDIUM: mux-h1/mux-h2: Reject upgrades with payload on H2 side only
+- REGTESTS: h1/h2: Update script testing H1/H2 protocol upgrades
+- REGTESTS: shorten a bit the delay for the h1/h2 upgrade test
+- MINOR: task: define two new one-shot events for use with WOKEN_OTHER or MSG
+- BUG/MEDIUM: stream: make stream_shutdown() async-safe
+- BUG/MEDIUM: queue: always dequeue the backend when redistributing the last
+  server
+- BUG/MINOR: http-ana: Disable fast-fwd for unfinished req waiting for upgrade
+- BUG/MEDIUM: queue: make sure never to queue when there's no more served conns
+- BUG/MINOR: cli: don't show sockpairs in HAPROXY_CLI and HAPROXY_MASTER_CLI
+- BUG/MEDIUM: resolvers: Insert a non-executed resulution in front of the wait
+  list
+- BUG/MEDIUM: mux-h2: Don't send RST_STREAM frame for streams with no ID
+- BUG/MINOR: Don't report early srv aborts on request forwarding in DONE state
+- BUG/MEDIUM: checks: make sure to always apply offsets to now_ms in expiration
+- BUG/MEDIUM: mailers: make sure to always apply offsets to now_ms in expiration
+- BUG/MINOR: mux_quic: make sure to always apply offsets to now_ms in expiration
+- BUG/MINOR: peers: make sure to always apply offsets to now_ms in expiration
+- BUG/MINOR: http_ana: Report -1 for %%Tr for invalid response only
+- DOC: config: Slightly improve the %%Tr documentation
+- DOC: config: Move wait_end in section about internal samples
+- DOC: lua: fix yield-dependent methods expected contexts
+- DOC: configuration: explain quotes and spaces in conditional blocks
+- DOC: configuration: wrap long line for "strstr()" conditional expression
+- BUG/MINOR: http-ana: Adjust the server status before the L7 retries
+- BUG/MEDIUM: mux-h2: Increase max number of headers when encoding HEADERS
+  frames
+- BUG/MEDIUM: mux-h2: Check the number of headers in HEADERS frame after
+  decoding
+- BUG/MEDIUM: h3: Properly limit the number of headers received
+- BUG/MEDIUM: h3: Increase max number of headers when sending headers
+- BUG/MEDIUM: debug: don't set the STUCK flag from debug_handler()
+- MINOR: activity/memprofile: offer a function to unregister stale info
+- BUG/MEDIUM: pools/memprofile: always clean stale pool info on pool_destroy()
+- MINOR: quic: convert qc_stream_desc release field to flags
+- MINOR: quic: implement function to check if STREAM is fully acked
+- BUG/MEDIUM: quic: handle retransmit for standalone FIN STREAM
+- BUG/MINOR: quic: prevent freeze after early QCS closure
+- BUG/MAJOR: quic: fix wrong packet building due to already acked frames
+- DEV: lags/show-sess-to-flags: Properly handle fd state on server side
+- BUG/MEDIUM: http-ana: Don't release too early the L7 buffer
+- BUG/MEDIUM: sock: Remove FD_POLL_HUP during connect() if FD_POLL_ERR is not
+  set
+- BUG/MEDIUM: event_hdl: fix uninitialized value in async mode when no data is
+  provided
+- BUG/MEDIUM: http-ana: Reset request flag about data sent to perform a L7 retry
+- BUG/MINOR: h1-htx: Use default reason if not set when formatting the response
+- BUG/MINOR: signal: register default handler for SIGINT in signal_init()
+- BUG/MINOR: quic: remove startup alert if conn socket-owner unsupported
+- BUG/MINOR: server-state: Fix expiration date of srvrq_check tasks
+
+* Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.12-0
+- BUG/MAJOR: ocsp: Separate refcount per instance and per store
+- BUG/MEDIUM: ssl: Fix crash when calling "update ssl ocsp-response" when an
+  update is ongoing
+- MEDIUM: h1: Accept invalid T-E values with accept-invalid-http-response option
+- DOC: config: Explicitly list relaxing rules for accept-invalid-http-* options
+- BUG/MEDIUM: mux-pt: Never fully close the connection on shutdown
+- BUG/MEDIUM: cli: Deadlock when setting frontend maxconn
+- BUG/MINOR: server: make sure the HMAINT state is part of MAINT
+- BUG/MINOR: cfgparse-global: fix allowed args number for setenv
+- BUG/MEDIUM: server: server stuck in maintenance after FQDN change
+- BUG/MEDIUM: hlua: make hlua_ctx_renew() safe
+- BUG/MEDIUM: hlua: properly handle sample func errors in
+  hlua_run_sample_{fetch,conv}()
+- BUG/MEDIUM: mux-quic: ensure timeout server is active for short requests
+- BUG/MINOR: httpclient: return NULL when no proxy available during
+  httpclient_new()
+- BUG/MINOR: http-ana: Don't report a server abort if response payload is
+  invalid
+- REGTESTS: Never reuse server connection in http-messaging/truncated.vtc
+- DOC: config: fix rfc7239 forwarded typo in desc
+- BUG/MINOR: mworker: fix mworker-max-reloads parser
+- BUG/MEDIUM: connection/http-reuse: fix address collision on unhandled address
+  families
+- MINOR: activity/memprofile: always return "other" bin on NULL return address
+- BUG/MINOR: mux-quic: do not close STREAM with empty FIN if no data sent
+- BUG/MINOR: server: fix dynamic server leak with check on failed init
+- BUG/MINOR: http-ana: Fix wrong client abort reports during responses
+  forwarding
+- BUG/MEDIUM: stconn: Report blocked send if sends are blocked by an error
+- BUG/MEDIUM: server: fix race on servers_list during server deletion
+- MINOR: pools: export the pools variable
+- MINOR: cli: remove non-printable characters from 'debug dev fd'
+- BUG/MINOR: ssl/cli: 'set ssl cert' does not check the transaction name
+  correctly
+- BUG/MINOR: http-ana: Report internal error if an action yields on a final eval
+- MINOR: stream: Save last evaluated rule on invalid yield
+- CLEANUP: connection: properly name the CO_ER_SSL_FATAL enum entry
+
+* Sat Nov 02 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.11-0
+- BUG/MINOR: quic: fix computed length of emitted STREAM frames
+- BUG/MINOR: proxy: fix server_id_hdr_name leak on deinit()
+- BUG/MINOR: proxy: fix log_tag leak on deinit()
+- BUG/MINOR: proxy: fix check_{command,path} leak on deinit()
+- BUG/MINOR: proxy: fix dyncookie_key leak on deinit()
+- BUG/MINOR: proxy: fix source interface and usesrc leaks on deinit()
+- BUG/MINOR: proxy: fix header_unique_id leak on deinit()
+- DOC/MINOR: management: add missed -dR and -dv options
+- DOC: management: rename show stats domain cli "dns" to "resolvers"
+- DOC: configuration: fix alphabetical order of bind options
+- SCRIPTS: git-show-backports: do not truncate git-show output
+- DOC: api/event_hdl: small updates, fix an example and add some precisions
+- BUG/MINOR: h3: fix crash on STOP_SENDING receive after GOAWAY emission
+- BUG/MINOR: mux-quic: fix crash on qcs SD alloc failure
+- BUG/MINOR: quic: fix BUG_ON() on Tx pkt alloc failure
+- BUG/MINOR: hlua: report proper context upon error in hlua_cli_io_handler_fct()
+- MINOR: activity: make the memory profiling hash size configurable at build
+  time
+- BUG/MEDIUM: h3: ensure the ":method" pseudo header is totally valid
+- BUG/MEDIUM: h3: ensure the ":scheme" pseudo header is totally valid
+- BUG/MEDIUM: quic: fix race-condition in quic_get_cid_tid()
+- BUG/MINOR: quic: fix race condition in qc_check_dcid()
+- BUG/MINOR: quic: fix race-condition on trace for CID retrieval
+- BUG/MEDIUM: quic: fix possible exit from qc_check_dcid() without unlocking
+- DOC: configuration: more details about the master-worker mode
+- MEDIUM: ssl: initialize the SSL stack explicitely
+- BUG/MINOR: jwt: don't try to load files with HMAC algorithm
+- DOC: configuration: update maxconn description
+- BUG/MINOR: jwt: fix variable initialisation
+- BUG/MINOR: h1: Fail to parse empty transfer coding names
+- BUG/MINOR: h1: Reject empty coding name as last transfer-encoding value
+- BUG/MEDIUM: h1: Reject empty Transfer-encoding header
+- BUG/MEDIUM: spoe: Be sure to create a SPOE applet if none on the current
+  thread
+- BUG/MEDIUM: bwlim: Be sure to never set the analyze expiration date in past
+- BUG/MINOR: session: Eval L4/L5 rules defined in the default section
+- BUG/MEDIUM: debug/cli: fix "show threads" crashing with low thread counts
+- BUG/MEDIUM: ssl_sock: fix deadlock in ssl_sock_load_ocsp() on error path
+- DOC: configuration: issuers-chain-path not compatible with OCSP
+- DOC: config: improve the http-keep-alive section
+- BUG/MINOR: stick-table: fix crash for src_inc_gpc() without stkcounter
+- BUG/MINOR: server: Don't warn fallback IP is used during init-addr resolution
+- BUG/MINOR: cli: Atomically inc the global request counter between CLI commands
+- BUG/MINOR: quic: Lack of precision when computing K (cubic only cc)
+- BUG/MEDIUM: jwt: Clear SSL error queue on error when checking the signature
+- MINOR: queue: add a function to check for TOCTOU after queueing
+- BUG/MEDIUM: queue: deal with a rare TOCTOU in assign_server_and_queue()
+- MEDIUM: init: set default for fd_hard_limit via DEFAULT_MAXFD (take #2)
+- BUG/MEDIUM: init: fix fd_hard_limit default in compute_ideal_maxconn
+- BUG/MEDIUM: stream: Prevent mux upgrades if client connection is no longer
+  ready
+- BUG/MEDIUM: cli: Always release back endpoint between two commands on the mcli
+- BUG/MEDIUM: mux-h1: Properly handle empty message when an error is triggered
+- BUG/MEDIUM: stconn: Report error on SC on send if a previous SE error was set
+- BUG/MEDIUM: quic: prevent conn freeze on 0RTT undeciphered content
+- BUG/MEDIUM: http-ana: Report error on write error waiting for the response
+- BUG/MEDIUM: h2: Only report early HTX EOM for tunneled streams
+- BUG/MEDIUM: mux-h2: Propagate term flags to SE on error in h2s_wake_one_stream
+- BUG/MINOR: fcgi-app: handle a possible strdup() failure
+- BUG/MINOR: trace/quic: enable conn/session pointer recovery from quic_conn
+- BUG/MINOR: trace/quic: permit to lock on frontend/connect/session etc
+- BUG/MEDIUM: trace: fix null deref in lockon mechanism since TRACE_ENABLED()
+- BUG/MINOR: trace: automatically start in waiting mode with "start <evt>"
+- BUG/MINOR: trace/quic: make "qconn" selectable as a lockon criterion
+- BUG/MINOR: quic/trace: make quic_conn_enc_level_init() emit NEW not CLOSE
+- BUG/MINOR: proto_tcp: delete fd from fdtab if listen() fails
+- BUG/MINOR: proto_tcp: keep error msg if listen() fails
+- MINOR: channel: implement ci_insert() function
+- BUG/MEDIUM: mworker/cli: fix pipelined modes on master CLI
+- REGTESTS: mcli: test the pipelined commands on master CLI
+- BUG/MINOR: mux-quic: do not send too big MAX_STREAMS ID
+- BUG/MINOR: proto_uxst: delete fd from fdtab if listen() fails
+- BUG/MINOR: h3: properly reject too long header responses
+- DOC: config: correct the table for option tcplog
+- BUG/MEDIUM: clock: also update the date offset on time jumps
+- BUG/MEDIUM: mux-pt/mux-h1: Release the pipe on connection error on sending
+  path
+- BUG/MINOR: stconn: Request to send something to be woken up when the pipe is
+  full
+- BUG/MINOR: pattern: pat_ref_set: fix UAF reported by coverity
+- BUG/MINOR: pattern: pat_ref_set: return 0 if err was found
+- BUG/MINOR: pattern: do not leave a leading comma on "set" error messages
+- DOC: configuration: place the HAPROXY_HTTP_LOG_FMT example on the correct line
+- REGTESTS: fix random failures with wrong_ip_port_logging.vtc under load
+- BUG/MEDIUM: clock: detect and cover jumps during execution
+- BUG/MINOR: pattern: prevent const sample from being tampered in
+  pat_match_beg()
+- BUG/MEDIUM: pattern: prevent UAF on reused pattern expr
+- BUG/MAJOR: mux-h1: Wake SC to perform 0-copy forwarding in CLOSING state
+- BUG/MINOR: polling: fix time reporting when using busy polling
+- BUG/MINOR: clock: make time jump corrections a bit more accurate
+- BUG/MINOR: clock: validate that now_offset still applies to the current date
+- BUG/MEDIUM: queue: implement a flag to check for the dequeuing
+- BUG/MEDIUM: cache/stats: Wait to have the request before sending the response
+- BUG/MEDIUM: promex: Wait to have the request before sending the response
+- BUG/MINOR: cfgparse-listen: fix option httpslog override warning message
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 2.8.10-0
 - BUG/MINOR: cli: Report an error to user if command or payload is too big
 - BUG/MINOR: listener: always assign distinct IDs to shards

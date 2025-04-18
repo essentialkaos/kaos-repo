@@ -26,7 +26,7 @@
 
 Summary:        High productivity build system
 Name:           meson
-Version:        1.5.1
+Version:        1.7.2
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
@@ -71,9 +71,6 @@ rm -rf %{buildroot}
 install -dm 0755 %{buildroot}%{rpmmacrodir}
 install -pm 0644 data/macros.%{name} %{buildroot}%{rpmmacrodir}/macros.%{name}
 
-%clean
-rm -rf %{buildroot}
-
 ################################################################################
 
 %files
@@ -91,6 +88,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
+- https://github.com/mesonbuild/meson/compare/1.6.1...1.7.2
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.1-0
+- https://github.com/mesonbuild/meson/compare/1.5.1...1.6.1
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.5.1-0
 - https://github.com/mesonbuild/meson/compare/1.4.0...1.5.1
 

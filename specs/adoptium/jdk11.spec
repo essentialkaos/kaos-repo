@@ -8,15 +8,15 @@
 
 ################################################################################
 
-%define jdk_major  11.0.24
-%define jdk_minor  8
+%define jdk_major  11.0.26
+%define jdk_minor  4
 %define jdk_patch  %{nil}
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  1169
+%define alt_priority  1170
 
 ################################################################################
 
@@ -73,7 +73,6 @@ associated technology for use across the Java™ ecosystem.
 
 %install
 rm -rf %{buildroot}
-
 rm -rf demo release
 
 mkdir -p %{buildroot}%{install_dir}
@@ -91,9 +90,11 @@ for bin in $(ls -1 %{jdk_bin_dir}) ; do
   deps="$deps --slave %{_bindir}/$bin $bin %{jdk_bin_dir}/$bin"
 done
 
-for doc in $(ls -1 %{jdk_man_dir}) ; do
-  deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
-done
+if [[ -d "%{jdk_man_dir}" ]] ; then
+  for doc in $(ls -1 %{jdk_man_dir}) ; do
+    deps="$deps --slave %{_mandir}/man1/$doc $doc %{jdk_man_dir}/$doc"
+  done
+fi
 
 deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}/java.sh"
 
@@ -111,6 +112,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 11.0.26-4
+- https://github.com/adoptium/temurin11-binaries/releases/tag/jdk-11.0.26%2B4
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 11.0.24-8
 - https://adoptium.net/en-GB/temurin/release-notes/?version=jdk-11.0.24+8
 

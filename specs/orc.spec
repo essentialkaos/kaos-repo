@@ -11,7 +11,7 @@
 
 Summary:        The Oil Run-time Compiler
 Name:           orc
-Version:        0.4.39
+Version:        0.4.41
 Release:        0%{?dist}
 Group:          System Environment/Libraries
 License:        BSD
@@ -111,6 +111,41 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 0.4.41-0
+- orccodemem: Don't modify the process umask, which caused race conditions
+  with other threads
+- Require glibc >= 2.07
+- x86: various SSE and MMX fixes
+- avx: Fix sqrtps encoding causing an illegal instruction crash
+- Hide internal symbols from ABI and do not install internal headers
+- Rename backend to target, including orc-backend meson option and ORC_BACKEND
+  environment variable
+- Testsuite, tools: Disambiguate OrcProgram naming conventions
+- Build: Fix _clear_cache call for Clang and error out on implicit function
+  declarations
+- opcodes: Use MIN instead of CLAMP for known unsigned values to fix
+  compiler warnings
+- Spelling fix in debug log message
+- ci improvements: Upload the generated .S and .bin and include Windows
+  artifacts
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 0.4.40-0
+- Security: Minor follow-up fixes for CVE-2024-40897
+- powerpc: fix div255w which still used the inexact substitution
+- x86: work around old GCC versions (pre 9.0) having broken xgetbv
+  implementations
+- x86: consider MSYS2/Cygwin as Windows for ABI purposes only
+- x86: handle unnatural and misaligned array pointers
+- orccodemem: Assorted memory mapping fixes
+- Fix include header use from C++
+- Some compatibility fixes for Musl
+- ppc: Disable VSX and ISA 2.07 for Apple targets
+- ppc: Allow detection of ppc64 in Mac OS
+- x86: Fix non-C11 typedefs
+- meson: Fix detecting XSAVE on older AppleClang
+- x86: try fixing AVX detection again by adding check for XSAVE
+- Check return values of malloc() and realloc()
+
 * Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 0.4.39-0
 - Security: Fix error message printing buffer overflow leading to possible
   code execution in orcc with specific input files (CVE-2024-40897). This

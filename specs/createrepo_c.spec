@@ -21,7 +21,7 @@
 
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
-Version:        1.1.4
+Version:        1.2.1
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Development/Tools
@@ -88,13 +88,13 @@ These development files are for easy manipulation with a repodata.
 
 %package -n %{python_base}-%{name}
 
-Summary:        Python bindings for the createrepo_c library
-Group:          Development/Languages
+Summary:  Python bindings for the createrepo_c library
+Group:    Development/Languages
 
 BuildRequires:  %{python_base}-devel %{python_base}-libs
 
-Requires:       %{python_base}
-Requires:       %{name} = %{version}-%{release}
+Requires:  %{python_base}
+Requires:  %{name} = %{version}-%{release}
 
 %description -n %{python_base}-%{name}
 Python bindings for the createrepo_c library.
@@ -188,6 +188,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.2.0...1.2.1
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.1.4...1.2.0
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.1.4-0
 - https://github.com/rpm-software-management/createrepo_c/compare/1.1.3...1.1.4
 

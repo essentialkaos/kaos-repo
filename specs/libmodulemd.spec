@@ -4,11 +4,6 @@
 
 ################################################################################
 
-%if 0%{?rhel} == 7
-%global python_base  python36
-%global __python3    %{_bindir}/python3.6
-%endif
-
 %if 0%{?rhel} >= 8
 %global python_base  python3
 %global __python3    %{_bindir}/python3

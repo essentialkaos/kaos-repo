@@ -5,7 +5,7 @@ pkg orc orc-compiler orc-devel
 
 fast-finish yes
 
-var lib_linking_flags "-lorc-0.4"
+var lib_linking_flags "-I/usr/include/orc-0.4 -lorc-0.4"
 
 command "-" "Check environment"
   app orc-bugreport

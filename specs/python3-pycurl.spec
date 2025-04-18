@@ -15,13 +15,13 @@
 ################################################################################
 
 %define package_name  pycurl
-%define pypi_path     c9/5a/e68b8abbc1102113b7839e708ba04ef4c4b8b8a6da392832bb166d09ea72
+%define pypi_path     71/35/fe5088d914905391ef2995102cf5e1892cf32cab1fa6ef8130631c89ec01
 
 ################################################################################
 
 Summary:        A Python 3 interface to libcurl
 Name:           python3-%{package_name}
-Version:        7.45.3
+Version:        7.45.6
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Libraries
@@ -80,6 +80,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 7.45.6-0
+- http://pycurl.io/docs/latest/release-notes.html#pycurl-7-45-6-2025-03-06
+
 * Sat Aug 17 2024 Anton Novojilov <andy@essentialkaos.com> - 7.45.3-0
 - http://pycurl.io/docs/latest/release-notes.html#pycurl-7-45-3-2024-02-17
 

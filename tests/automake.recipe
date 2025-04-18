@@ -7,9 +7,10 @@ pkg automake
 
 fast-finish yes
 
+var version 1.17
+
 command "-" "Check apps"
   app aclocal
-  app aclocal-1.16
+  app aclocal-{version}
   app automake
-  app automake-1.16
-
+  app automake-{version}

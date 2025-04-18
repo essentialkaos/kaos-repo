@@ -26,7 +26,7 @@
 
 Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:            %{fullname}_%{pg_ver}
-Version:         3.4.3
+Version:         3.4.4
 Release:         0%{?dist}
 License:         GPLv2+
 Group:           Applications/Databases
@@ -271,6 +271,9 @@ fi
 ################################################################################
 
 %changelog
+* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 3.4.4-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.4/NEWS
+
 * Mon Sep 09 2024 Anton Novojilov <andy@essentialkaos.com> - 3.4.3-0
 - https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.4.3/NEWS
 

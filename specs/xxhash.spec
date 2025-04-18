@@ -18,7 +18,7 @@
 
 Summary:        Extremely fast hash algorithm
 Name:           xxhash
-Version:        0.8.2
+Version:        0.8.3
 Release:        0%{?dist}
 License:        BSD-2-Clause AND GPL-2.0-or-later
 Group:          System Environment/Libraries
@@ -143,5 +143,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 0.8.3-0
+- https://github.com/Cyan4973/xxHash/releases/tag/v0.8.3
+
 * Sat Oct 28 2023 Anton Novojilov <andy@essentialkaos.com> - 0.8.2-0
 - Initial build for kaos repository

@@ -15,7 +15,7 @@
 
 Summary:           A persistent key-value database
 Name:              redis
-Version:           7.2.5
+Version:           7.2.7
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -90,7 +90,7 @@ Header file required for building loadable Redis modules.
 
 %prep
 %crc_check
-%autosetup -p1 -n %{realname}-%{version}
+%autosetup -p1 -n %{name}-%{version}
 
 %build
 export BUILD_WITH_SYSTEMD=yes
@@ -203,6 +203,12 @@ systemctl daemon-reload &>/dev/null || :
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 7.2.7-0
+- https://github.com/redis/redis/releases/tag/7.2.7
+
+* Sat Nov 02 2024 Anton Novojilov <andy@essentialkaos.com> - 7.2.6-0
+- https://github.com/redis/redis/blob/7.2.6/00-RELEASENOTES
+
 * Tue Aug 20 2024 Anton Novojilov <andy@essentialkaos.com> - 7.2.5-0
 - https://github.com/redis/redis/blob/7.2.5/00-RELEASENOTES
 

@@ -7,18 +7,15 @@ fast-finish yes
 
 var lib_linking_flags "-lfaad"
 
+command "-" "Check for app"
+  app faad
+
 command "-" "Check shared libs"
   lib-loaded libfaad.so.*
   lib-loaded libfaad_drm.so.*
 
-command "-" "Check static libs"
-  exist /usr/lib64/libfaad.a
-  mode /usr/lib64/libfaad.a 644
-
-  exist /usr/lib64/libfaad_drm.a
-  mode /usr/lib64/libfaad_drm.a 644
-
 command "-" "Check headers"
+  lib-config faad2
   lib-header faad.h
   lib-header neaacdec.h
 

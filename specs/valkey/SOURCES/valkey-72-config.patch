@@ -1,0 +1,57 @@
+diff --color -urN valkey-7.2.7-orig/valkey.conf valkey-7.2.7/valkey.conf
+--- valkey-7.2.7-orig/valkey.conf	2024-10-02 23:11:08.000000000 +0300
++++ valkey-7.2.7/valkey.conf	2024-12-20 15:56:04.000000000 +0300
+@@ -84,7 +84,7 @@
+ # You will also need to set a password unless you explicitly disable protected
+ # mode.
+ # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-bind 127.0.0.1 -::1
++# bind 127.0.0.1 -::1
+ 
+ # By default, outgoing connections (from replica to master, from Sentinel to
+ # instances, cluster bus, etc.) are not bound to a specific local address. In
+@@ -335,7 +335,7 @@
+ #
+ # Note that on modern Linux systems "/run/valkey.pid" is more conforming
+ # and should be used instead.
+-pidfile /var/run/valkey_6379.pid
++pidfile /var/run/valkey/valkey.pid
+ 
+ # Specify the server verbosity level.
+ # This can be one of:
+@@ -349,7 +349,7 @@
+ # Specify the log file name. Also the empty string can be used to force
+ # the server to log on the standard output. Note that if you use standard
+ # output for logging but daemonize, logs will be sent to /dev/null
+-logfile ""
++logfile /var/log/valkey/valkey.log
+ 
+ # To enable logging to the system logger, just set 'syslog-enabled' to yes,
+ # and optionally update the other syslog parameters to suit your needs.
+@@ -374,7 +374,7 @@
+ # Set the number of databases. The default database is DB 0, you can select
+ # a different one on a per-connection basis using SELECT <dbid> where
+ # dbid is a number between 0 and 'databases'-1
+-databases 16
++databases 96
+ 
+ # By default the server shows an ASCII art logo only when started to log to the
+ # standard output and if the standard output is a TTY and syslog logging is
+@@ -433,7 +433,7 @@
+ #
+ # You can set these explicitly by uncommenting the following line.
+ #
+-# save 3600 1 300 100 60 10000
++save 3600 1 300 100 60 10000
+ 
+ # By default the server will stop accepting writes if RDB snapshots are enabled
+ # (at least one save point) and the latest background save failed.
+@@ -504,7 +504,7 @@
+ # The Append Only File will also be created inside this directory.
+ #
+ # Note that you must specify a directory here, not a file name.
+-dir ./
++dir /var/lib/valkey/
+ 
+ ################################# REPLICATION #################################
+ 

@@ -6,7 +6,7 @@
 
 Summary:        A program for synchronizing files over a network
 Name:           rsync
-Version:        3.3.0
+Version:        3.4.1
 Release:        0%{?dist}
 License:        GPLv3+
 Group:          Applications/Internet
@@ -44,7 +44,7 @@ Group:    Applications/Internet
 
 BuildArch:  noarch
 
-Requires:  %{name} = %{version}-%{release}
+Requires:   %{name} = %{version}-%{release}
 
 %description daemon
 Rsync can be used to offer read only access to anonymous clients. This
@@ -72,9 +72,6 @@ install -dDm 755 %{buildroot}%{_unitdir}
 
 install -pDm 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/rsyncd.conf
 install -pDm 644 packaging/systemd/* %{buildroot}%{_unitdir}/
-
-%clean
-rm -rf %{buildroot}
 
 %post daemon
 if [[ $1 -eq 1 ]] ; then
@@ -115,6 +112,9 @@ fi
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
+- https://download.samba.org/pub/rsync/NEWS#3.4.1
+
 * Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 3.3.0-0
 - https://github.com/RsyncProject/rsync/blob/v3.3.0/NEWS.md
 

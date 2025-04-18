@@ -10,7 +10,7 @@
 
 Summary:        C library for the Publix Suffix List
 Name:           libpsl
-Version:        0.21.2
+Version:        0.21.5
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -100,6 +100,8 @@ find %{buildroot} -name '*.la' -delete -print
 
 chrpath --delete %{buildroot}%{_bindir}/psl
 
+sed -i 's#/usr/bin/env python#/usr/bin/env python3#' %{buildroot}%{_bindir}/psl-make-dafsa
+
 %check
 %if %{?_with_check:1}%{?_without_check:0}
 %{__make} check
@@ -128,6 +130,7 @@ rm -rf %{buildroot}
 %{_includedir}/libpsl.h
 %{_libdir}/libpsl.so
 %{_libdir}/pkgconfig/libpsl.pc
+%{_bindir}/psl-make-dafsa
 
 %files -n psl
 %defattr(-,root,root,-)
@@ -138,6 +141,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 0.21.5-0
+- https://github.com/rockdaboot/libpsl/releases/tag/0.21.5
+
 * Sat Oct 14 2023 Anton Novojilov <andy@essentialkaos.com> - 0.21.2-0
 - https://github.com/rockdaboot/libpsl/releases/tag/0.21.2
 

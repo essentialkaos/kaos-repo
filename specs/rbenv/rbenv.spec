@@ -11,7 +11,7 @@
 
 Summary:        Version manager tool for the Ruby programming language
 Name:           rbenv
-Version:        1.3.0
+Version:        1.3.2
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -79,6 +79,12 @@ ln -sf %{_prefix}/local/%{name}/libexec/rbenv %{buildroot}%{_bindir}/%{name}
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
+- https://github.com/rbenv/rbenv/releases/tag/v1.3.2
+
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
+- https://github.com/rbenv/rbenv/releases/tag/v1.3.1
+
 * Fri Sep 06 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
 - https://github.com/rbenv/rbenv/releases/tag/v1.3.0
 

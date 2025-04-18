@@ -8,7 +8,7 @@ unsafe-actions yes
 
 var ext_name     pg_repack
 var bin_name     pg_repack
-var ext_version  1.5.0
+var ext_version  1.5.2
 
 var postgres_version 16
 

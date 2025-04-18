@@ -1,24 +1,32 @@
 ################################################################################
 
-%define checksum  2198529bf8fbabf069dc232f106c2c474e29b9d7571611f64e04299e0899b33b
+%global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
 
-Summary:    A modern alternative to ls
-Name:       eza
-Version:    0.19.2
-Release:    0%{?dist}
-Group:      Development/Tools
-License:    MIT
-URL:        https://eza.rocks
+%{!?_without_check: %define _with_check 1}
 
-Source0:    https://github.com/eza-community/eza/releases/download/v%{version}/eza_x86_64-unknown-linux-gnu.tar.gz
-Source1:    https://github.com/eza-community/eza/releases/download/v%{version}/completions-%{version}.tar.gz
-Source2:    https://github.com/eza-community/eza/releases/download/v%{version}/man-%{version}.tar.gz
+################################################################################
 
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Summary:        A modern alternative to ls
+Name:           eza
+Version:        0.20.18
+Release:        0%{?dist}
+Group:          Development/Tools
+License:        MIT
+URL:            https://eza.rocks
 
-Provides:   %{name} = %{version}-%{release}
+Source0:        https://github.com/eza-community/eza/archive/refs/tags/v%{version}.tar.gz
+Source1:        https://github.com/eza-community/eza/releases/download/v%{version}/completions-%{version}.tar.gz
+Source2:        https://github.com/eza-community/eza/releases/download/v%{version}/man-%{version}.tar.gz
+
+Source100:      checksum.sha512
+
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  cargo
+
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -35,23 +43,22 @@ featureful, more user-friendly version of ls.
 ################################################################################
 
 %prep
-if [[ $(sha256sum -b %{SOURCE0} | cut -f1 -d' ') != "%{checksum}" ]] ; then
-  echo "Invalid source checksum"
-  exit 1
-fi
+%{crc_check}
 
-%autosetup -c
+%setup -qn %{name}-%{version}
 
 tar xzf %{SOURCE1}
 tar xzf %{SOURCE2}
 
 %build
+cargo build --release --verbose
+
 %install
 rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_bindir}
 
-install -pm 755 %{name} %{buildroot}%{_bindir}/
+install -pm 755 target/release/%{name} %{buildroot}%{_bindir}/
 
 install -pDm 644 target/completions-%{version}/%{name} \
                  %{buildroot}%{_datadir}/bash-completion/completions/%{name}
@@ -69,6 +76,14 @@ install -pDm 644 target/man-%{version}/%{name}_colors.5 \
 
 ln -s %{name} %{buildroot}%{_bindir}/exa
 
+%check
+%if %{?_with_check:1}%{?_without_check:0}
+cargo test
+%endif
+
+%clean
+rm -rf %{buildroot}
+
 ################################################################################
 
 %files
@@ -83,5 +98,8 @@ ln -s %{name} %{buildroot}%{_bindir}/exa
 ################################################################################
 
 %changelog
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 0.20.18-0
+- https://github.com/eza-community/eza/releases/tag/v0.20.18
+
 * Wed Sep 11 2024 Anton Novojilov <andy@essentialkaos.com> - 0.19.2-0
 - Initial build for kaos repository

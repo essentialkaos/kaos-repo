@@ -1,0 +1,15 @@
+# Bibop recipe for NodeJS 20.x
+# See more: https://kaos.sh/bibop
+
+pkg nodejs20 nodejs20-devel
+
+fast-finish yes
+
+command "-" "Check environment"
+  app node
+  app npm
+  app npx
+
+command "node test.js" "Execute basic script"
+  exit 0
+  output-contains "NODE WORKS"

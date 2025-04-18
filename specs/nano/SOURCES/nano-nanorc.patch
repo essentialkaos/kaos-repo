@@ -1,7 +1,7 @@
-diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
---- nano-6.0-orig/doc/sample.nanorc.in	2021-11-29 13:35:25.000000000 +0300
-+++ nano-6.0/doc/sample.nanorc.in	2022-10-11 00:12:45.000000000 +0300
-@@ -28,7 +28,7 @@
+diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.in
+--- nano-8.2-orig/doc/sample.nanorc.in	2024-09-05 12:29:01.000000000 +0300
++++ nano-8.2/doc/sample.nanorc.in	2025-01-25 22:05:25.000000000 +0300
+@@ -34,7 +34,7 @@
  # set backupdir ""
  
  ## Use bold text instead of reverse video text.
@@ -10,7 +10,7 @@ diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
  
  ## Treat any line with leading whitespace as the beginning of a paragraph.
  # set bookstyle
-@@ -62,13 +62,13 @@
+@@ -76,13 +76,13 @@
  # set historylog
  
  ## Display a "scrollbar" on the righthand side of the edit window.
@@ -26,7 +26,7 @@ diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
  
  ## Enable vim-style lock-files.  This is just to let a vim user know you
  ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -81,7 +81,7 @@
+@@ -95,7 +95,7 @@
  ## The opening and closing brackets that are found by a matching-bracket
  ## search.  This may not contain blank characters.  The opening brackets
  ## must come before the closing ones, and they must be in the same order.
@@ -35,7 +35,7 @@ diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
  
  ## Suppress the title bar and show the filename plus a cursor-position
  ## percentage in the space of the status bar.
-@@ -157,18 +157,18 @@
+@@ -170,18 +170,18 @@
  # set smarthome
  
  ## Spread overlong lines over multiple screen lines.
@@ -57,7 +57,7 @@ diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
  
  ## Convert each typed tab to the fitting number of spaces.
  # set tabstospaces
-@@ -228,6 +228,14 @@
+@@ -244,6 +244,14 @@
  # set keycolor lightmagenta
  # set functioncolor magenta
  
@@ -72,12 +72,12 @@ diff -urN nano-6.0-orig/doc/sample.nanorc.in nano-6.0/doc/sample.nanorc.in
  
  ## === Syntax coloring ===
  ## For all details, see 'man nanorc', section SYNTAX HIGHLIGHTING.
-@@ -235,6 +243,8 @@
- ## To include most of the existing syntax definitions, you can do:
- # include "@PKGDATADIR@/*.nanorc"
+@@ -256,6 +264,8 @@
+ # include @PKGDATADIR@/python.nanorc
+ # include @PKGDATADIR@/sh.nanorc
  
 +include "/usr/share/nano/*.nanorc"
 +
- ## Or you can select just the ones you need.  For example:
- # include "@PKGDATADIR@/html.nanorc"
- # include "@PKGDATADIR@/python.nanorc"
+ ## In @PKGDATADIR@/extra/ you can find some syntaxes that are
+ ## specific for certain distros or for some less common languages.
+ 

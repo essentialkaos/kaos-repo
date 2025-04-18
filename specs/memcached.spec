@@ -11,7 +11,7 @@
 
 Summary:        High Performance, Distributed Memory Object Cache
 Name:           memcached
-Version:        1.6.29
+Version:        1.6.38
 Release:        0%{?dist}
 Group:          System Environment/Daemons
 License:        BSD
@@ -138,6 +138,33 @@ fi
 ################################################################################
 
 %changelog
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.38-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1638
+
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.37-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1637
+
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.36-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1636
+
+* Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.35-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1635
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.34-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1634
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.33-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1633
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.32-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1632
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.31-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1631
+
+* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.6.30-0
+- https://github.com/memcached/memcached/wiki/ReleaseNotes1630
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 1.6.29-0
 - https://github.com/memcached/memcached/wiki/ReleaseNotes1629
 
