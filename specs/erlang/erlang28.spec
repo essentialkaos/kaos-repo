@@ -21,14 +21,13 @@
 
 %define elibdir     %{_libdir}/erlang/lib
 %define eprefix     %{_prefix}%{_lib32}
-%define ver_maj     25
-%define ver_min     3
-%define ver_patch   2.21
-%define ver_suffix  %{ver_min}.%{ver_patch}
+%define ver_maj     28
+%define ver_min     0
+%define ver_suffix  %{ver_min}%{?ver_patch:.%{ver_patch}}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
 
-%define libre_ver   3.9.2
+%define libre_ver   4.1.0
 
 ################################################################################
 
@@ -70,7 +69,6 @@ Requires:       %{name}-dialyzer = %{version}
 Requires:       %{name}-diameter = %{version}
 Requires:       %{name}-edoc = %{version}
 Requires:       %{name}-eldap = %{version}
-Requires:       %{name}-erl_docgen = %{version}
 Requires:       %{name}-erl_interface = %{version}
 Requires:       %{name}-et = %{version}
 Requires:       %{name}-eunit = %{version}
@@ -96,7 +94,7 @@ Provides:       %{name} = %{version}-%{release}
 Provides:       %{realname} = %{ver_string}-%{release}
 
 Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
-Conflicts:      erlang20 erlang21 erlang22 erlang23 erlang24 erlang26
+Conflicts:      erlang20 erlang21 erlang22 erlang23 erlang24 erlang25
 
 ################################################################################
 
@@ -125,7 +123,6 @@ Requires:  %{name}-diameter = %{version}
 Requires:  %{name}-edoc = %{version}
 Requires:  %{name}-eldap = %{version}
 Requires:  %{name}-emacs = %{version}
-Requires:  %{name}-erl_docgen = %{version}
 Requires:  %{name}-erl_interface = %{version}
 Requires:  %{name}-et = %{version}
 Requires:  %{name}-eunit = %{version}
@@ -367,18 +364,6 @@ Requires:  %{name}-base = %{version}-%{release}
 Debugger is a graphical tool which can be used for debugging and testing
 of Erlang programs. For example, breakpoints can be set, code can be single
 stepped and variable values can be displayed and changed.
-
-################################################################################
-
-%package -n %{name}-erl_docgen
-Summary:  Documentation generator
-License:  MPL
-Group:    Development/Tools
-
-Requires:  %{name}-base = %{version}-%{release}
-
-%description -n %{name}-erl_docgen
-Documentation generator for erlang.
 
 ################################################################################
 
@@ -914,10 +899,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_sysconfdir}/emacs/site-start.d/erlang.el
 
-%files -n %{name}-erl_docgen
-%defattr(-,root,root,-)
-%{elibdir}/erl_docgen-*
-
 %files -n %{name}-erl_interface
 %defattr(-,root,root,-)
 %{elibdir}/erl_interface-*
@@ -1021,50 +1002,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sun Jun 08 2025 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.21-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.21
-
-* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.20-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.20
-
-* Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.16-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.16
-
-* Tue Oct 22 2024 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.15-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.15
-
-* Sun Aug 04 2024 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.13-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.13
-
-* Wed May 22 2024 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.12-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.12
-- LibreSSL updated to 3.9.2
-
-* Tue Apr 16 2024 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.11-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.11
-- LibreSSL updated to 3.8.4
-
-* Thu Mar 21 2024 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.10-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.10
-- LibreSSL updated to 3.8.3
-
-* Thu Dec 21 2023 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.8-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.8
-- LibreSSL updated to 3.8.2
-
-* Sun Oct 15 2023 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.7-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.7
-
-* Wed Oct 04 2023 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.6-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.6
-- LibreSSL updated to 3.8.1
-
-* Wed Jun 21 2023 Anton Novojilov <andy@essentialkaos.com> - 25.3.2.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.3.2.2
-- LibreSSL updated to 3.7.3
-
-* Fri Dec 16 2022 Anton Novojilov <andy@essentialkaos.com> - 25.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.2
-
-* Thu Nov 03 2022 Anton Novojilov <andy@essentialkaos.com> - 25.1.2-0
-- https://github.com/erlang/otp/releases/tag/OTP-25.1.2
+* Sun Jun 08 2025 Anton Novojilov <andy@essentialkaos.com> - 28.0-0
+- https://github.com/erlang/otp/releases/tag/OTP-28.0
