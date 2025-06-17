@@ -14,7 +14,7 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          8.4
+Version:          8.5
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
@@ -110,6 +110,14 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 8.5-0
+- Anchors are now saved when a file is closed, and restored when
+  the file is reopened -- if and when --positionlog is active.
+- Nano exits with an error status upon keystrokes ^O^Q and ^X^Q.
+- Keystroke ^L just centers the cursor, while M-%% cycles it.
+- Option --whitespace is accepted, but left undocumented.
+- Syntax coloring now works correctly in more locales.
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 8.4-0
 - Bracketed pastes over a slow connection are more reliable.
 - Tabs in an external paste at a prompt are not dropped.
