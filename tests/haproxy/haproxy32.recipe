@@ -1,7 +1,7 @@
-# Bibop recipe for HAProxy 2.2
+# Bibop recipe for HAProxy 3.2
 # See more: https://kaos.sh/bibop
 
-pkg haproxy22
+pkg haproxy32
 
 require-root yes
 unsafe-actions yes
@@ -13,6 +13,7 @@ var logrotate_config /etc/logrotate.d/haproxy
 
 command "-" "Check environment"
   app haproxy
+  app halog
 
   service-present {service_name}
 
