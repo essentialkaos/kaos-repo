@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        3.0.9
+Version:        3.0.11
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -48,7 +48,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
 
-Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy28
+Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy28 haproxy32
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -220,6 +220,121 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 3.0.11-0
+- BUG/MEDIUM: mux-fcgi: Try to fully fill demux buffer on receive if not empty
+- BUG/MINOR: cli: Issue an error when too many args are passed for a command
+- BUG/MAJOR: listeners: transfer connection accounting when switching listeners
+- MINOR: applet: add appctx_schedule() macro
+- BUG/MINOR: dns: add tempo between 2 connection attempts for dns servers
+- CLEANUP: dns: remove unused dns_stream_server struct member
+- BUG/MINOR: dns: prevent ds accumulation within dss
+- BUG/MINOR: mux-h1: Don't pretend connection was released for TCP>H1>H2
+  upgrade
+- BUG/MINOR: mux-h1: Fix trace message in h1_detroy() to not relay on
+  connection
+- BUG/MINOR: proxy: only use proxy_inc_fe_cum_sess_ver_ctr() with frontends
+- MINOR: quic: extend return value during TP parsing
+- BUG/MINOR: quic: use proper error code on missing CID in TPs
+- BUG/MINOR: quic: use proper error code on invalid server TP
+- BUG/MINOR: quic: reject retry_source_cid TP on server side
+- BUG/MINOR: quic: use proper error code on invalid received TP value
+- BUG/MINOR: quic: fix TP reject on invalid max-ack-delay
+- BUG/MINOR: quic: reject invalid max_udp_payload size
+- BUG/MEDIUM: peers: hold the refcnt until updating ts->seen
+- BUG/MINOR: cli: fix too many args detection for commands
+- BUG/MINOR: ssl/ckch: always free() the previous entry during parsing
+- BUG/MINOR: threads: fix soft-stop without multithreading support
+- BUG/MINOR: hlua: Fix Channel:data() and Channel:line() to respect
+  documentation
+- BUG/MINOR: sink: detect and warn when using "send-proxy" options with ring
+  servers
+- DOC: ring: refer to newer RFC5424
+- DOC: config: restore default values for resolvers hold directive
+- DOC: config: recommend disabling libc-based resolution with resolvers
+- BUG/MINOR: h3: don't insert more than one Host header
+- CLEANUP: quic: Useless BIO_METHOD initialization
+- MINOR: quic: Add useful error traces about qc_ssl_sess_init() failures
+- MEDIUM: hlua: Add function to change the body length of an HTTP Message
+- BUG/MEDIUM: stconn: Disable 0-copy forwarding for filters altering the
+  payload
+- BUG/MINOR: mux-h2: Reset streams with NO_ERROR code if full response was
+  already sent
+- BUILD: makefile: enable backtrace by default on musl
+- BUG/MEDIUM: server: fix crash after duplicate GUID insertion
+- BUG/MEDIUM: server: fix potential null-deref after previous fix
+- BUG/MAJOR: cache: Crash because of wrong cache entry deleted
+- DOC: configuration: fix the example in crt-store
+- BUG/MINOR: h3: Set HTX flags corresponding to the scheme found in the request
+- BUG/MEDIUM: hlua: Properly detect shudowns for TCP applets based on the new
+  API
+- BUG/MEDIUM: hlua: Fix getline() for TCP applets to work with applet's buffers
+- REGTESTS: Make the script testing conditional set-var compatible with Vtest2
+- REGTESTS: Explicitly allow failing shell commands in some scripts
+- CI: vtest: Rely on VTest2 to run regression tests
+- CI: vtest: Fix the build script to properly work on MaOS
+- BUG/MINOR: limits: compute_ideal_maxconn: don't cap remain if fd_hard_limit=0
+- BUG/MEDIUM: httpclient: Throw an error if an lua httpclient instance is
+  reused
+- DOC: hlua: Add a note to warn user about httpclient object reuse
+- DOC: hlua: fix a few typos in HTTPMessage.set_body_len() documentation
+
+* Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 3.0.10-0
+- MINOR: log: support "raw" logformat node typecast
+- BUG/MINOR: peers: fix expire learned from a peer not converted from ms to
+  ticks
+- BUG/MEDIUM: peers: prevent learning expiration too far in futur from unsync
+  node
+- BUG/MEDIUM: mux-quic: fix crash on RS/SS emission if already close local
+- BUG/MINOR: mux-quic: remove extra BUG_ON() in _qcc_send_stream()
+- BUG/MINOR: log: fix gcc warn about truncating NUL terminator while init char
+  arrays
+- DOC: config: fix two missing "content" in "tcp-request" examples
+- BUILD: compiler: undefine the CONCAT() macro if already defined
+- BUG/MINOR: rhttp: fix incorrect dst/dst_port values
+- BUG/MINOR: backend: do not overwrite srv dst address on reuse
+- BUG/MEDIUM: backend: fix reuse with set-dst/set-dst-port
+- BUG/MEDIUM: stream: Fix a possible freeze during a forced shut on a stream
+- TESTS: Fix build for filltab25.c
+- MINOR: task: add thread safe notification_new and notification_wake variants
+- BUG/MINOR: hlua_fcn: fix potential UAF with Queue:pop_wait()
+- CLEANUP: log: adjust _lf_cbor_encode_byte() comment
+- BUG/MINOR: log: fix CBOR encoding with LOG_VARTEXT_START() + lf_encode_chunk
+  ()
+- BUG/MEDIUM: sample: fix risk of overflow when replacing multiple regex
+  back-refs
+- BUG/MINOR: backend: do not use the source port when hashing clientip
+- BUG/MINOR: hlua: fix invalid errmsg use in hlua_init()
+- DOC: config: add the missing "profiling.memory" to the global kw index
+- BUG/MINOR: http-ana: Properly detect client abort when forwarding the
+  response
+- BUG/MEDIUM: http-ana: Report 502 from req analyzer only during rsp forwarding
+- BUG/MINOR: sink: add tempo between 2 connection attempts for sft servers (2)
+- BUG/MEDIUM: h3: trim whitespaces when parsing headers value
+- BUG/MEDIUM: h3: trim whitespaces in header value prior to QPACK encoding
+- BUG/MINOR: h3: filter upgrade connection header
+- BUG/MINOR: h3: reject invalid :path in request
+- BUG/MINOR: h3: reject request URI with invalid characters
+- BUG/MEDIUM: hlua: fix hlua_applet_{http,tcp}_fct() yield regression
+  (lost data)
+- BUG/MINOR: quic: do not crash on CRYPTO ncbuf alloc failure
+- DEBUG: stream: Add debug counters to track some client/server aborts
+- BUG/MINOR: stktable: invalid use of stkctr_set_entry() with mixed table types
+- BUG/MEDIUM: mux-fcgi: Properly handle read0 on partial records
+- DEBUG: fd: add a counter of takeovers of an FD since it was last opened
+- MINOR: fd: add a generation number to file descriptors
+- MINOR: epoll: permit to mask certain specific events
+- DEBUG: epoll: store and compare the FD's generation count with reported event
+- MEDIUM: epoll: skip reports of stale file descriptors
+- IMPORT: plock: give higher precedence to W than S
+- IMPORT: plock: lower the slope of the exponential back-off
+- IMPORT: plock: use cpu_relax() for a shorter time in EBO
+- BUG/MINOR debug: fix !USE_THREAD_DUMP in ha_thread_dump_fill()
+- BUG/MINOR: mux-h2: prevent past scheduling with idle connections
+- BUG/MINOR: rhttp: fix reconnect if timeout connect unset
+- BUG/MINOR: rhttp: ensure GOAWAY can be emitted after reversal
+- MINOR: tools: also protect the library name resolution against concurrent
+  accesses
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 3.0.9-0
 - BUG/MEDIUM: ssl: chosing correct certificate using RSA-PSS with TLSv1.3
 - BUG/MEDIUM: mux-quic: do not attach on already closed stream

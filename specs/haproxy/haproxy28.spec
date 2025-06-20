@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.14
+Version:        2.8.15
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -48,7 +48,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
 
-Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy30
+Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy30 haproxy32
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -220,6 +220,116 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.15-0
+- BUG/MEDIUM: ssl: chosing correct certificate using RSA-PSS with TLSv1.3
+- BUG/MEDIUM: clock: make sure now_ms cannot be TICK_ETERNITY
+- BUG/MINOR: spoe: Check the shared waiting queue to shut applets during
+  stopping
+- BUG/MINOR: spoe: Allow applet creation when closing the last one during
+  stopping
+- BUG/MEDIUM: spoe: Don't wakeup idle applets in loop during stopping
+- BUG/MEDIUM: mux-quic: do not attach on already closed stream
+- MINOR: mux-quic: change return value of qcs_attach_sc()
+- BUG/MINOR: mux-quic: handle closure of uni-stream
+- DOC: config: reorder "tune.lua.*" keywords by alphabetical order
+- DOC: config: add "tune.lua.burst-timeout" to the list of global parameters
+- BUG/MEDIUM: fd: mark FD transferred to another process as FD_CLONED
+- REGTESTS: Fix truncated.vtc to send 0-CRLF
+- BUG/MEDIUM: htx: wrong count computation in htx_xfer_blks()
+- DOC: htx: clarify <mark> parameter for htx_xfer_blks()
+- DOC: option redispatch should mention persist options
+- TESTS: ist: fix wrong array size
+- BUG/MEDIUM: thread: use pthread_self() not ha_pthread[tid] in set_affinity
+- DOC: management: rename some last occurences from domain "dns" to "resolvers"
+- BUG/MINOR: server: fix the "server-template" prefix memory leak
+- BUG/MEDIUM: debug: close a possible race between thread dump and panic()
+- BUG/MINOR: quic: reserve length field for long header encoding
+- BUG/MINOR: quic: fix CRYPTO payload size calcul for encoding
+- BUG/MINOR: ssl/cli: "show ssl crt-list" lacks client-sigals
+- BUG/MINOR: ssl/cli: "show ssl crt-list" lacks sigals
+- BUG/MINOR: cli: Wait for the last ACK when FDs are xferred from the old
+  worker
+- BUG/MEDIUM: filters: Handle filters registered on data with no payload
+  callback
+- BUG/MINOR: fcgi: Don't set the status to 302 if it is already set
+- BUG/MINOR: quic: prevent crash on conn access after MUX init failure
+- BUG/MINOR: tcp-rules: Don't forward close during tcp-response content rules
+  eval
+- BUG/MINOR: cli: Fix memory leak on error for _getsocks command
+- BUG/MINOR: cli: Fix a possible infinite loop in _getsocks()
+- BUG/MINOR: config/userlist: Support one 'users' option for 'group' directive
+- BUG/MINOR: auth: Fix a leak on error path when parsing user's groups
+- BUG/MINOR: flt-trace: Support only one name option
+- BUG/MINOR: stats-json: Define JSON_INT_MAX as a signed integer
+- BUG/MINOR: cfgparse: fix NULL ptr dereference in cfg_parse_peers
+- BUG/MINOR: sink: add tempo between 2 connection attempts for sft servers
+- MINOR: clock: always use atomic ops for global_now_ms
+- BUG/MINOR: mux-h1: always make sure h1s->sd exists in h1_dump_h1s_info()
+- MINOR: tinfo: add a new thread flag to indicate a call from a sig handler
+- BUG/MINOR: h2: always trim leading and trailing LWS in header values
+- CLEANUP: h3: fix documentation of h3_rcv_buf()
+- BUG/MINOR: server: check for either proxy-protocol v1 or v2 to send hedaer
+- BUG/MEIDUM: startup: return to initial cwd only after check_config_validity()
+- BUG/MINOR: cfgparse/peers: fix inconsistent check for missing peer server
+- BUG/MINOR: cfgparse/peers: properly handle ignored local peer case
+- BUG/MINOR: server: dont return immediately from parse_server() when skipping
+  checks
+- MINOR: cfgparse/peers: provide more info when ignoring invalid "peer"
+  or "server" lines
+- BUG/MINOR: namespace: handle a possible strdup() failure
+- BUG/MEDIUM: hlua/cli: fix cli applet UAF in hlua_applet_wakeup()
+- MINOR: compiler: add a simple macro to concatenate resolved strings
+- BUILD: compiler: undefine the CONCAT() macro if already defined
+- MINOR: compiler: add a new __decl_thread_var() macro to declare local
+  variables
+- MINOR: tools: resolve main() only once in resolve_sym_name()
+- MINOR: tools: use only opportunistic symbols resolution
+- BUILD: tools: silence a build warning when USE_THREAD=0
+- MINOR: cli: export cli_io_handler() to ease symbol resolution
+- MINOR: tools: improve symbol resolution without dl_addr
+- MINOR: tools: ease the declaration of known symbols in resolve_sym_name()
+- MINOR: tools: teach resolve_sym_name() a few more common symbols
+- BUILD: tools: avoid a build warning on gcc-4.8 in resolve_sym_name()
+- BUG/MINOR: peers: fix expire learned from a peer not converted from ms to
+  ticks
+- BUG/MEDIUM: peers: prevent learning expiration too far in futur from unsync
+  node
+- BUG/MEDIUM: mux-quic: fix crash on RS/SS emission if already close local
+- BUG/MINOR: mux-quic: remove extra BUG_ON() in _qcc_send_stream()
+- BUG/MINOR: log: fix gcc warn about truncating NUL terminator while init char
+  arrays
+- DOC: config: fix two missing "content" in "tcp-request" examples
+- BUG/MINOR: backend: do not overwrite srv dst address on reuse
+- BUG/MEDIUM: backend: fix reuse with set-dst/set-dst-port
+- TESTS: Fix build for filltab25.c
+- MINOR: task: add thread safe notification_new and notification_wake variants
+- BUG/MINOR: hlua_fcn: fix potential UAF with Queue:pop_wait()
+- BUG/MEDIUM: sample: fix risk of overflow when replacing multiple regex
+  back-refs
+- BUG/MINOR: backend: do not use the source port when hashing clientip
+- BUG/MINOR: hlua: fix invalid errmsg use in hlua_init()
+- DOC: config: add the missing "profiling.memory" to the global kw index
+- BUG/MINOR: http-ana: Properly detect client abort when forwarding the
+  response
+- BUG/MEDIUM: http-ana: Report 502 from req analyzer only during rsp forwarding
+- BUG/MINOR: mux-h2: Properly handle full or truncated HTX messages on shut
+- BUG/MINOR: sink: add tempo between 2 connection attempts for sft servers (2)
+- BUG/MINOR: backend: fix reuse with set-dst/set-dst-port (2)
+- BUG/MEDIUM: backend: do not overwrite srv dst address on reuse (2)
+- BUG/MEDIUM: h3: trim whitespaces when parsing headers value
+- BUG/MEDIUM: h3: trim whitespaces in header value prior to QPACK encoding
+- BUG/MINOR: h3: filter upgrade connection header
+- BUG/MINOR: h3: reject invalid :path in request
+- BUG/MINOR: h3: reject request URI with invalid characters
+- BUG/MEDIUM: hlua: fix hlua_applet_{http,tcp}_fct() yield regression
+  (lost data)
+- BUG/MINOR: mux-quic: fix BUG_ON() crash on init failure after app-ops
+- BUG/MINOR: quic: do not crash on CRYPTO ncbuf alloc failure
+- BUG/MINOR debug: fix !USE_THREAD_DUMP in ha_thread_dump_fill()
+- BUG/MINOR: mux-h2: prevent past scheduling with idle connections
+- MINOR: tools: also protect the library name resolution against concurrent
+  accesses
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.14-0
 - BUG/MEDIUM: stconn: Really report blocked send if sends are blocked by
   an error

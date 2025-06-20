@@ -10,7 +10,7 @@
 
 Summary:        Utility for getting files from remote servers
 Name:           curl
-Version:        8.13.0
+Version:        8.14.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Applications/Internet
@@ -142,7 +142,9 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc CHANGES.md README docs/*.md
 %{_bindir}/%{name}
+%{_bindir}/w%{name}
 %{_mandir}/man1/%{name}.1*
+%{_mandir}/man1/w%{name}.1*
 
 %files -n libcurl
 %defattr(-,root,root,-)
@@ -164,6 +166,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Jun 17 2025 Anton Novojilov <andy@essentialkaos.com> - 8.14.1-0
+- https://curl.se/ch/8.14.1.html
+
+* Tue Jun 17 2025 Anton Novojilov <andy@essentialkaos.com> - 8.14.0-0
+- https://curl.se/ch/8.14.0.html
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 8.13.0-0
 - https://curl.se/ch/8.13.0.html
 
