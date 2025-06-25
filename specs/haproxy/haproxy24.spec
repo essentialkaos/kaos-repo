@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.28
+Version:        2.4.29
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,90 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.4.29-0
+- BUG/MINOR: ssl: can't load a separated key file with openssl > 3.0
+- BUG/MINOR: cli: don't show sockpairs in HAPROXY_CLI and HAPROXY_MASTER_CLI
+- BUG/MEDIUM: resolvers: Insert a non-executed resulution in front of the wait
+  list
+- BUG/MEDIUM: mux-h2: Don't send RST_STREAM frame for streams with no ID
+- BUG/MEDIUM: checks: make sure to always apply offsets to now_ms in expiration
+- BUG/MEDIUM: mailers: make sure to always apply offsets to now_ms in
+  expiration
+- BUG/MINOR: peers: make sure to always apply offsets to now_ms in expiration
+- BUG/MINOR: http_ana: Report -1 for %%Tr for invalid response only
+- DOC: config: Slightly improve the %%Tr documentation
+- DOC: lua: fix yield-dependent methods expected contexts
+- DOC: configuration: explain quotes and spaces in conditional blocks
+- BUG/MINOR: http-ana: Adjust the server status before the L7 retries
+- BUG/MEDIUM: mux-h2: Increase max number of headers when encoding HEADERS
+  frames
+- BUG/MEDIUM: mux-h2: Check the number of headers in HEADERS frame after
+  decoding
+- BUG/MEDIUM: http-ana: Don't release too early the L7 buffer
+- BUG/MEDIUM: sock: Remove FD_POLL_HUP during connect() if FD_POLL_ERR is not
+  set
+- BUG/MEDIUM: http-ana: Reset request flag about data sent to perform a L7
+  retry
+- BUG/MINOR: h1-htx: Use default reason if not set when formatting the response
+- BUG/MINOR: signal: register default handler for SIGINT in signal_init()
+- BUG/MINOR: server-state: Fix expiration date of srvrq_check tasks
+- BUG/MEDIUM: mux-h1: Fix how timeouts are applied on H1 connections
+- BUG/MEDIUM: pattern: prevent uninitialized reads in pat_match_{str,beg}
+- BUG/MINOR: stktable: fix big-endian compatiblity in smp_to_stkey()
+- BUG/MINOR: ssl: put ssl_sock_load_ca under SSL_NO_GENERATE_CERTIFICATES
+- BUG/MEDIUM: ssl: chosing correct certificate using RSA-PSS with TLSv1.3
+- BUG/MINOR: spoe: Check the shared waiting queue to shut applets during
+  stopping
+- BUG/MINOR: spoe: Allow applet creation when closing the last one during
+  stopping
+- BUG/MEDIUM: spoe: Don't wakeup idle applets in loop during stopping
+- BUG/MEDIUM: clock: make sure now_ms cannot be TICK_ETERNITY
+- BUG/MEDIUM: fd: mark FD transferred to another process as FD_CLONED
+- REGTESTS: Fix truncated.vtc to send 0-CRLF
+- BUG/MEDIUM: htx: wrong count computation in htx_xfer_blks()
+- DOC: htx: clarify <mark> parameter for htx_xfer_blks()
+- DOC: option redispatch should mention persist options
+- TESTS: ist: fix wrong array size
+- DOC: management: rename some last occurences from domain "dns" to "resolvers"
+- BUG/MINOR: cli: Wait for the last ACK when FDs are xferred from the old
+  worker
+- BUG/MEDIUM: filters: Handle filters registered on data with no payload
+  callback
+- BUG/MINOR: fcgi: Don't set the status to 302 if it is already set
+- BUG/MINOR: tcp-rules: Don't forward close during tcp-response content rules
+  eval
+- BUG/MINOR: server: fix the "server-template" prefix memory leak
+- BUG/MINOR: cli: Fix memory leak on error for _getsocks command
+- BUG/MINOR: cli: Fix a possible infinite loop in _getsocks()
+- BUG/MINOR: stats-json: Define JSON_INT_MAX as a signed integer
+- BUG/MINOR: cfgparse: fix NULL ptr dereference in cfg_parse_peers
+- BUG/MEIDUM: startup: return to initial cwd only after check_config_validity()
+- BUG/MINOR: cfgparse/peers: fix inconsistent check for missing peer server
+- BUG/MINOR: cfgparse/peers: properly handle ignored local peer case
+- BUG/MINOR: namespace: handle a possible strdup() failure
+- BUG/MEDIUM: hlua/cli: fix cli applet UAF in hlua_applet_wakeup()
+- MINOR: cli: export cli_io_handler() to ease symbol resolution
+- BUG/MINOR: peers: fix expire learned from a peer not converted from ms to
+  ticks
+- BUG/MEDIUM: peers: prevent learning expiration too far in futur from unsync
+  node
+- BUG/MINOR: log: fix gcc warn about truncating NUL terminator while init char
+  arrays
+- DOC: config: fix two missing "content" in "tcp-request" examples
+- BUG/MINOR: backend: do not overwrite srv dst address on reuse
+- TESTS: Fix build for filltab25.c
+- BUG/MEDIUM: sample: fix risk of overflow when replacing multiple regex
+  back-refs
+- BUG/MINOR: backend: do not use the source port when hashing clientip
+- BUG/MINOR: hlua: fix invalid errmsg use in hlua_init()
+- DOC: config: add the missing "profiling.memory" to the global kw index
+- DOC: config: correct the table for option tcplog
+- BUG/MINOR: h1: do not forward h2c upgrade header token
+- BUG/MINOR: h2: reject extended connect for h2c protocol
+- BUG/MINOR: h2: always trim leading and trailing LWS in header values
+- BUG/MINOR: server: check for either proxy-protocol v1 or v2 to send hedaer
+- BUILD: makefile: silence deprecated declarations when using OpenSSL
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.4.28-0
 - BUG/MEDIUM: cli: fix cli_output_msg() regression
 - BUG/MINOR: cfgparse: remove the correct option on httpcheck send-state warning
