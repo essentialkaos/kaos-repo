@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.50.0
+Version:        2.50.1
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -271,6 +271,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 09 2025 Anton Novojilov <andy@essentialkaos.com> - 2.50.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.50.1.adoc
+
 * Tue Jun 17 2025 Anton Novojilov <andy@essentialkaos.com> - 2.50.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.50.0.adoc
 
