@@ -6,7 +6,7 @@
 
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.11.1
+Version:        2.12.0
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -149,6 +149,21 @@ fi
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 2.12.0-0
+- Add PSI bar graphs for CPU, memory and disks
+- Improved handling of raw log files
+- Support of parallel output streams
+- Security-related improvements
+- Modified handling of UID/GID
+- Recognize fake NUMA
+- Consistent highlighting of current sort criterium
+- Network interface errors added to output of flags -P and -J
+- Branch to end of raw log file by pressing key 'Z'
+- Remove double wrefresh call for memory graph that caused screen flashing
+  in bar graph mode
+- Improved sanity check for number of threads versus number of processes
+- Various other bug solutions
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.11.1-0
 - Security fix for CVE-2025-31160
 
