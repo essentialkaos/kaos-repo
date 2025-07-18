@@ -10,7 +10,7 @@
 
 Summary:        A modern alternative to ls
 Name:           eza
-Version:        0.20.18
+Version:        0.23.0
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        MIT
@@ -98,6 +98,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 0.23.0-0
+- https://github.com/eza-community/eza/releases/tag/v0.23.0
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 0.20.18-0
 - https://github.com/eza-community/eza/releases/tag/v0.20.18
 
