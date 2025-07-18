@@ -7,7 +7,7 @@
 Summary:        A network diagnostic tool
 Name:           mtr
 Epoch:          10
-Version:        0.95
+Version:        0.96
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Applications/Internet
@@ -75,6 +75,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 0.96-0
+- https://github.com/traviscross/mtr/blob/v0.96/NEWS
+
 * Sat Dec 10 2022 Anton Novojilov <andy@essentialkaos.com> - 0.95-0
 - https://github.com/traviscross/mtr/compare/v0.94...v0.95
 
