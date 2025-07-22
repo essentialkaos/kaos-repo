@@ -1,0 +1,19 @@
+diff --color -urN keycloak-26.3.1-orig/bin/kc.sh keycloak-26.3.1/bin/kc.sh
+--- keycloak-26.3.1-orig/bin/kc.sh	2025-07-09 18:28:20.000000000 +0300
++++ keycloak-26.3.1/bin/kc.sh	2025-07-21 15:45:34.000000000 +0300
+@@ -34,12 +34,12 @@
+   fi
+ }
+ 
+-SERVER_OPTS="-Dkc.home.dir='$(abs_path '..')'"
+-SERVER_OPTS="$SERVER_OPTS -Djboss.server.config.dir='$(abs_path '../conf')'"
++SERVER_OPTS="-Dkc.home.dir=/var/lib/keycloak"
++SERVER_OPTS="$SERVER_OPTS -Djboss.server.config.dir=/etc/keycloak"
+ SERVER_OPTS="$SERVER_OPTS -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ SERVER_OPTS="$SERVER_OPTS -Dpicocli.disable.closures=true"
+ SERVER_OPTS="$SERVER_OPTS -Dquarkus-log-max-startup-records=10000"
+-CLASSPATH_OPTS="'$(abs_path "../lib/quarkus-run.jar")'"
++CLASSPATH_OPTS="/var/lib/keycloak/lib/quarkus-run.jar"
+ 
+ DEBUG_MODE="${DEBUG:-false}"
+ DEBUG_PORT="${DEBUG_PORT:-8787}"

@@ -1,0 +1,17 @@
+[Unit]
+Description=Keycloak service
+Documentation=https://www.keycloak.org/server/all-config
+After=network-online.target syslog.target
+
+[Service]
+Type=simple
+User=keycloak
+Group=keycloak
+WorkingDirectory=/var/lib/keycloak
+EnvironmentFile=-/etc/sysconfig/keycloak
+ExecStart=/var/lib/keycloak/bin/startup.sh start --optimized
+Restart=on-failure
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target
