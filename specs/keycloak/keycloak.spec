@@ -10,7 +10,7 @@
 
 Summary:        Open Source Identity and Access Management
 Name:           keycloak
-Version:        26.3.1
+Version:        26.3.2
 Release:        0%{?dist}
 Group:          System/Servers
 License:        Apache-2.0
@@ -105,5 +105,8 @@ systemctl daemon-reload &>/dev/null || :
 ################################################################################
 
 %changelog
+* Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 26.3.2-0
+- https://github.com/keycloak/keycloak/releases/tag/26.3.2
+
 * Mon Jul 21 2025 Anton Novojilov <andy@essentialkaos.com> - 26.3.1-0
 - https://github.com/keycloak/keycloak/releases/tag/26.3.1
