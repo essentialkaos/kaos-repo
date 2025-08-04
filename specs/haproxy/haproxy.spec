@@ -14,7 +14,7 @@
 
 %define lua_ver       5.4.7
 %define pcre_ver      10.45
-%define openssl_ver   3.4.1
+%define openssl_ver   3.5.1
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -22,13 +22,13 @@
 
 Name:           haproxy
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        3.2.1
+Version:        3.2.3
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
 Group:          System Environment/Daemons
 
-Source0:        https://www.haproxy.org/download/3.0/src/%{name}-%{version}.tar.gz
+Source0:        https://www.haproxy.org/download/3.2/src/%{name}-%{version}.tar.gz
 Source1:        %{name}.cfg
 Source2:        %{name}.logrotate
 
@@ -216,6 +216,55 @@ fi
 ################################################################################
 
 %changelog
+* Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 3.2.3-0
+- CI: enable USE_QUIC=1 for OpenSSL versions >= 3.5.0
+- CI: github: add an OpenSSL 3.5.0 job
+- CI: github: update the stable CI to ubuntu-24.04
+- BUILD: quic: QUIC build against OpenSSL 3.5 broken
+- BUG/MEDIUM: quic: SSL/TCP handshake failures with OpenSSL 3.5
+- CI: github: update to OpenSSL 3.5.1
+- BUG/MINOR: quic: Missing TLS 1.3 QUIC cipher suites and groups inits
+  (OpenSSL 3.5 QUIC API)
+- BUG/MINOR: ssl/ocsp: fix definition discrepancies with ocsp_update_init()
+- BUG/MINOR: ssl: crash in ssl_sock_io_cb() with SSL traces and idle
+  connections
+- BUG/MINOR: http-act: Fix parsing of the expression argument for pause action
+- BUILD/MEDIUM: deviceatlas: fix when installed in custom locations.
+
+* Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 3.2.2-0
+- BUG/MINOR: config/server: reject QUIC addresses
+- BUG/MINOR: http-ana: Properly handle keep-query redirect option if no QS
+- BUG/MINOR: quic: Fix OSSL_FUNC_SSL_QUIC_TLS_got_transport_params_fn
+  callback (OpenSSL3.5)
+- BUG/MEDIUM: cli: Don't consume data if outbuf is full or not available
+- MINOR: cli: handle EOS/ERROR first
+- BUG/MEDIUM: check: Set SOCKERR by default when a connection error is
+  reported
+- DOC: config: prefer-last-server: add notes for non-deterministic algorithms
+- BUG/MINOR: mux-quic/h3: properly handle too low peer fctl initial stream
+- BUG/MAJOR: fwlc: Count an avoided server as unusable.
+- MINOR: fwlc: Factorize code.
+- BUG/MINOR: tools: only reset argument start upon new argument
+- BUG/MINOR: stream: Avoid recursive evaluation for unique-id based on itself
+- BUG/MINOR: log: Be able to use %%ID alias at anytime of the stream's
+  evaluation
+- DOC: configuration: add details on prefer-client-ciphers
+- BUG/MINOR: quic: wrong QUIC_FT_CONNECTION_CLOSE(0x1c) frame encoding
+- MINOR: quic: Useless TX buffer size reduction in closing state
+- DOC: config: crt-list clarify default cert + cert-bundle
+- SCRIPTS: drop the HTML generation from announce-release
+- BUG/MINOR: tools: use my_unsetenv instead of unsetenv
+- MINOR: ssl: check TLS1.3 ciphersuites again in clienthello with recent
+  AWS-LC
+- BUG/MEDIUM: hlua: Forbid any L6/L7 sample fetche functions from lua
+  services
+- BUG/MEDIUM: mux-h2: Properly handle connection error during preface sending
+- BUG/MINOR: jwt: Copy input and parameters in dedicated buffers in jwt_verify
+  converter
+- DOC: Fix 'jwt_verify' converter doc
+- BUG/MINOR: httpclient: wrongly named httpproxy flag
+- BUILD: dev/phash: remove the accidentally committed a.out file
+
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 3.2.1-0
 - BUILD: tools: properly define ha_dump_backtrace() to avoid a build warning
 - DOC: config: Fix a typo in 2.7 (Name format for maps and ACLs)
