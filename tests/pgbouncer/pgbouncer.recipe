@@ -1,7 +1,7 @@
 # Bibop recipe for pgbouncer
 # See more: https://kaos.sh/bibop
 
-pkg pgbouncer pgbouncer-utils postgresql12-server
+pkg pgbouncer pgbouncer-utils postgresql13-server
 
 require-root yes
 unsafe-actions yes
