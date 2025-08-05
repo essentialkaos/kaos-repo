@@ -15,7 +15,7 @@ var logrotate_config  /etc/logrotate.d/pgbouncer
 var log_file          /var/log/pgbouncer/pgbouncer.log
 var default_port      6432
 
-var postgres_version   12
+var postgres_version   13
 var postgres_service   postgresql-{postgres_version}
 var postgres_port      5432
 var postgres_data_dir  /var/lib/pgsql/{postgres_version}
