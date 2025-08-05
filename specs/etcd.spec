@@ -10,7 +10,7 @@
 
 Summary:        A highly-available key value store for shared configuration
 Name:           etcd
-Version:        3.5.21
+Version:        3.6.2
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        APLv2
@@ -22,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  git golang >= 1.23
+BuildRequires:  git golang >= 1.24
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -83,7 +83,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE README.md ROADMAP.md GOVERNANCE.md Documentation
+%doc LICENSE README.md GOVERNANCE.md Documentation
 %{_bindir}/etcd
 %{_bindir}/etcdctl
 %{_bindir}/etcdutl
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 3.6.2-0
+- https://github.com/etcd-io/etcd/releases/tag/v3.6.2
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 3.5.21-0
 - https://github.com/etcd-io/etcd/releases/tag/v3.5.21
 

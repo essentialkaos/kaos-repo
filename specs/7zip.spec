@@ -4,8 +4,8 @@
 
 ################################################################################
 
-%define major_ver  24
-%define minor_ver  09
+%define major_ver  25
+%define minor_ver  00
 
 %define shortname  7z
 
@@ -78,6 +78,9 @@ ln -sf %{_bindir}/7zz %{buildroot}%{_bindir}/%{shortname}
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 25.00-0
+- https://sourceforge.net/p/sevenzip/discussion/45797/thread/4ed0e379f4/
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 24.09-0
 - https://sourceforge.net/p/sevenzip/discussion/45797/thread/b95432c7ac/
 

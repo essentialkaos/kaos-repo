@@ -9,31 +9,31 @@
 
 ################################################################################
 
-Summary:           Lightweight connection pooler for PostgreSQL
-Name:              pgbouncer
-Version:           1.24.1
-Release:           0%{?dist}
-License:           MIT and BSD
-Group:             Applications/Databases
-URL:               https://www.pgbouncer.org
+Summary:        Lightweight connection pooler for PostgreSQL
+Name:           pgbouncer
+Version:        1.24.1
+Release:        0%{?dist}
+License:        MIT and BSD
+Group:          Applications/Databases
+URL:            https://www.pgbouncer.org
 
-Source0:           https://www.pgbouncer.org/downloads/files/%{version}/%{name}-%{version}.tar.gz
-Source1:           %{name}.service
-Source2:           %{name}.logrotate
-Source3:           %{name}.pam
-Source4:           %{name}.tmpd
+Source0:        https://www.pgbouncer.org/downloads/files/%{version}/%{name}-%{version}.tar.gz
+Source1:        %{name}.service
+Source2:        %{name}.logrotate
+Source3:        %{name}.pam
+Source4:        %{name}.tmpd
 
-Source100:         checksum.sha512
+Source100:      checksum.sha512
 
-Patch0:            %{name}-ini.patch
+Patch0:         %{name}-ini.patch
 
-BuildRoot:         %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:     make gcc openssl-devel libevent-devel pam-devel systemd-devel
+BuildRequires:  make gcc openssl-devel libevent-devel pam-devel systemd-devel
 
-Requires:          openssl libevent
+Requires:       openssl libevent
 
-Provides:          %{name} = %{version}-%{release}
+Provides:       %{name} = %{version}-%{release}
 
 ################################################################################
 

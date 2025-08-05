@@ -16,7 +16,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs22
-Version:        22.14.0
+Version:        22.17.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -109,6 +109,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 30 2025 Anton Novojilov <andy@essentialkaos.com> - 22.17.1-0
+- https://nodejs.org/en/blog/release/v22.17.1
+
 * Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 22.14.0-0
 - https://nodejs.org/en/blog/release/v22.14.0
 

@@ -6,7 +6,7 @@
 
 Summary:        Friendly interactive shell (FISh)
 Name:           fish
-Version:        4.0.1
+Version:        4.0.2
 Release:        0%{?dist}
 License:        GPL2
 Group:          System Environment/Shells
@@ -77,13 +77,15 @@ fi
 %{_bindir}/*
 %{_datadir}/%{name}/
 %{_datadir}/doc/%{name}/
-%{_datadir}/locale/*
 %{_mandir}/man1/*
 %{_datadir}/pkgconfig/%{name}.pc
 
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.0.2
+
 * Tue Mar 18 2025 Anton Novojilov <andy@essentialkaos.com> - 4.0.1-0
 - https://github.com/fish-shell/fish-shell/releases/tag/4.0.1
 

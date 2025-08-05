@@ -26,7 +26,7 @@
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.21
+Version:        2.6.22
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://haproxy.1wt.eu
@@ -220,6 +220,89 @@ fi
 ################################################################################
 
 %changelog
+* Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.22-0
+- BUG/MEDIUM: ssl: chosing correct certificate using RSA-PSS with TLSv1.3
+- BUG/MINOR: ssl_sock: fix xprt_set_used() to properly clear the TASK_F_USR1
+  bit
+- BUG/MINOR: h1: do not forward h2c upgrade header token
+- BUG/MINOR: h2: reject extended connect for h2c protocol
+- MINOR: mux-h1: Set EOI on SE during demux when both side are in DONE state
+- BUG/MEDIUM: mux-h1/mux-h2: Reject upgrades with payload on H2 side only
+- REGTESTS: h1/h2: Update script testing H1/H2 protocol upgrades
+- REGTESTS: shorten a bit the delay for the h1/h2 upgrade test
+- BUG/MINOR: http-ana: Disable fast-fwd for unfinished req waiting for upgrade
+- BUG/MINOR: spoe: Check the shared waiting queue to shut applets during
+  stopping
+- BUG/MINOR: spoe: Allow applet creation when closing the last one during
+  stopping
+- BUG/MEDIUM: spoe: Don't wakeup idle applets in loop during stopping
+- BUG/MEDIUM: clock: make sure now_ms cannot be TICK_ETERNITY
+- BUG/MEDIUM: fd: mark FD transferred to another process as FD_CLONED
+- REGTESTS: Fix truncated.vtc to send 0-CRLF
+- BUG/MEDIUM: htx: wrong count computation in htx_xfer_blks()
+- DOC: htx: clarify <mark> parameter for htx_xfer_blks()
+- DOC: option redispatch should mention persist options
+- TESTS: ist: fix wrong array size
+- BUG/MEDIUM: thread: use pthread_self() not ha_pthread[tid] in set_affinity
+- DOC: management: rename some last occurences from domain "dns" to "resolvers"
+- BUG/MINOR: server: fix the "server-template" prefix memory leak
+- BUG/MINOR: quic: reserve length field for long header encoding
+- BUG/MINOR: quic: fix CRYPTO payload size calcul for encoding
+- BUG/MINOR: cli: Wait for the last ACK when FDs are xferred from the old
+  worker
+- BUG/MEDIUM: filters: Handle filters registered on data with no payload
+  callback
+- BUG/MINOR: fcgi: Don't set the status to 302 if it is already set
+- BUG/MINOR: quic: prevent crash on conn access after MUX init failure
+- BUG/MINOR: tcp-rules: Don't forward close during tcp-response content rules
+  eval
+- BUG/MINOR: cli: Fix memory leak on error for _getsocks command
+- BUG/MINOR: cli: Fix a possible infinite loop in _getsocks()
+- BUG/MINOR: config/userlist: Support one 'users' option for 'group' directive
+- BUG/MINOR: auth: Fix a leak on error path when parsing user's groups
+- BUG/MINOR: flt-trace: Support only one name option
+- BUG/MINOR: stats-json: Define JSON_INT_MAX as a signed integer
+- BUG/MINOR: cfgparse: fix NULL ptr dereference in cfg_parse_peers
+- BUG/MINOR: sink: add tempo between 2 connection attempts for sft servers
+- BUG/MINOR: h2: always trim leading and trailing LWS in header values
+- CLEANUP: h3: fix documentation of h3_rcv_buf()
+- BUG/MINOR: server: check for either proxy-protocol v1 or v2 to send hedaer
+- BUG/MEIDUM: startup: return to initial cwd only after check_config_validity()
+- BUG/MINOR: cfgparse/peers: fix inconsistent check for missing peer server
+- BUG/MINOR: cfgparse/peers: properly handle ignored local peer case
+- BUG/MINOR: server: dont return immediately from parse_server() when skipping
+  checks
+- MINOR: cfgparse/peers: provide more info when ignoring invalid "peer"
+  or "server" lines
+- BUG/MINOR: namespace: handle a possible strdup() failure
+- BUG/MEDIUM: hlua/cli: fix cli applet UAF in hlua_applet_wakeup()
+- MINOR: cli: export cli_io_handler() to ease symbol resolution
+- BUG/MINOR: peers: fix expire learned from a peer not converted from ms to
+  ticks
+- BUG/MEDIUM: peers: prevent learning expiration too far in futur from unsync
+  node
+- BUG/MINOR: log: fix gcc warn about truncating NUL terminator while init char
+  arrays
+- DOC: config: fix two missing "content" in "tcp-request" examples
+- BUG/MINOR: backend: do not overwrite srv dst address on reuse
+- BUG/MEDIUM: backend: fix reuse with set-dst/set-dst-port
+- TESTS: Fix build for filltab25.c
+- BUG/MEDIUM: sample: fix risk of overflow when replacing multiple regex
+  back-refs
+- BUG/MINOR: backend: do not use the source port when hashing clientip
+- BUG/MINOR: hlua: fix invalid errmsg use in hlua_init()
+- DOC: config: add the missing "profiling.memory" to the global kw index
+- BUG/MINOR: sink: add tempo between 2 connection attempts for sft servers (2)
+- MINOR: h3: check return values of htx_add_* on headers parsing
+- BUG/MEDIUM: h3: trim whitespaces when parsing headers value
+- BUG/MEDIUM: h3: trim whitespaces in header value prior to QPACK encoding
+- BUG/MINOR: h3: filter upgrade connection header
+- BUG/MINOR: h3: reject invalid :path in request
+- BUG/MINOR: h3: reject request URI with invalid characters
+- BUG/MINOR: quic: do not crash on CRYPTO ncbuf alloc failure
+- BUG/MINOR: mux-h2: prevent past scheduling with idle connections
+- BUG/MINOR: mux-quic: fix BUG_ON() crash on init failure after app-ops
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.21-0
 - MEDIUM: h1: Accept invalid T-E values with accept-invalid-http-response option
 - BUG/MEDIUM: mux-pt: Never fully close the connection on shutdown

@@ -4,13 +4,17 @@
 
 ################################################################################
 
-%define hp_user      %{name}
-%define hp_group     %{name}
+%define orig_name  haproxy
+%define major_ver  3.2
+%define comp_ver   32
+
+%define hp_user      %{orig_name}
+%define hp_group     %{orig_name}
 %define hp_user_id   188
 %define hp_group_id  188
-%define hp_homedir   %{_localstatedir}/lib/%{name}
-%define hp_confdir   %{_sysconfdir}/%{name}
-%define hp_datadir   %{_datadir}/%{name}
+%define hp_homedir   %{_localstatedir}/lib/%{orig_name}
+%define hp_confdir   %{_sysconfdir}/%{orig_name}
+%define hp_datadir   %{_datadir}/%{orig_name}
 
 %define lua_ver       5.4.7
 %define pcre_ver      10.45
@@ -20,7 +24,7 @@
 
 ################################################################################
 
-Name:           haproxy
+Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
 Version:        3.2.3
 Release:        0%{?dist}
@@ -28,9 +32,9 @@ License:        GPLv2+
 URL:            https://haproxy.1wt.eu
 Group:          System Environment/Daemons
 
-Source0:        https://www.haproxy.org/download/3.2/src/%{name}-%{version}.tar.gz
-Source1:        %{name}.cfg
-Source2:        %{name}.logrotate
+Source0:        https://www.haproxy.org/download/%{major_ver}/src/%{orig_name}-%{version}.tar.gz
+Source1:        %{orig_name}.cfg
+Source2:        %{orig_name}.logrotate
 
 Source10:       https://www.lua.org/ftp/lua-%{lua_ver}.tar.gz
 Source11:       https://github.com/PCRE2Project/pcre2/releases/download/pcre2-%{pcre_ver}/pcre2-%{pcre_ver}.tar.gz
@@ -44,7 +48,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
 
-Conflicts:      haproxy22 haproxy24 haproxy26 haproxy28 haproxy30 haproxy32
+Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy28 haproxy30
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -65,7 +69,7 @@ possibility not to expose fragile web servers to the net.
 %prep
 %{crc_check}
 
-%setup -qn %{name}-%{version}
+%setup -qn %{orig_name}-%{version}
 
 tar xzvf %{SOURCE10}
 tar xzvf %{SOURCE11}
@@ -152,8 +156,8 @@ use_regparm="USE_REGPARM=1"
 
 %{__make} admin/halog/halog
 
-sed "s#@SBINDIR@#%{_sbindir}#g" admin/systemd/%{name}.service.in > \
-                                admin/systemd/%{name}.service
+sed "s#@SBINDIR@#%{_sbindir}#g" admin/systemd/%{orig_name}.service.in > \
+                                admin/systemd/%{orig_name}.service
 
 %install
 rm -rf %{buildroot}
@@ -161,15 +165,15 @@ rm -rf %{buildroot}
 %{__make} install-bin DESTDIR=%{buildroot} PREFIX=%{_prefix}
 %{__make} install-man DESTDIR=%{buildroot} PREFIX=%{_prefix}
 
-install -pDm 0644 %{SOURCE1} %{buildroot}%{hp_confdir}/%{name}.cfg
-install -pDm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+install -pDm 0644 %{SOURCE1} %{buildroot}%{hp_confdir}/%{orig_name}.cfg
+install -pDm 0644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/%{orig_name}
 
 install -dm 0755 %{buildroot}%{hp_homedir}
 install -dm 0755 %{buildroot}%{hp_datadir}
 install -dm 0755 %{buildroot}%{_bindir}
 
 install -dm 755 %{buildroot}%{_unitdir}
-install -pm 644 admin/systemd/%{name}.service %{buildroot}%{_unitdir}/
+install -pm 644 admin/systemd/%{orig_name}.service %{buildroot}%{_unitdir}/
 
 install -pm 0755 ./admin/halog/halog %{buildroot}%{_bindir}/halog
 install -pm 0644 ./examples/errorfiles/* %{buildroot}%{hp_datadir}
@@ -185,13 +189,13 @@ fi
 
 %post
 if [[ $1 -eq 1 ]] ; then
-  systemctl enable %{name}.service &>/dev/null || :
+  systemctl enable %{orig_name}.service &>/dev/null || :
 fi
 
 %preun
 if [[ $1 -eq 0 ]]; then
-  systemctl --no-reload disable %{name}.service &>/dev/null || :
-  systemctl stop %{name}.service &>/dev/null || :
+  systemctl --no-reload disable %{orig_name}.service &>/dev/null || :
+  systemctl stop %{orig_name}.service &>/dev/null || :
 fi
 
 %postun
@@ -205,13 +209,13 @@ fi
 %defattr(-, root, root, -)
 %doc CHANGELOG LICENSE doc/* examples/*.cfg
 %attr(0755, %{hp_user}, %{hp_group}) %dir %{hp_homedir}
-%config(noreplace) %{hp_confdir}/%{name}.cfg
-%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %{hp_confdir}/%{orig_name}.cfg
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{orig_name}
 %{hp_datadir}/*
-%{_unitdir}/%{name}.service
-%{_sbindir}/%{name}
+%{_unitdir}/%{orig_name}.service
+%{_sbindir}/%{orig_name}
 %{_bindir}/halog
-%{_mandir}/man1/%{name}.1.gz
+%{_mandir}/man1/%{orig_name}.1.gz
 
 ################################################################################
 
@@ -279,4 +283,4 @@ fi
 - BUG/MINIR: h1: Fix doc of 'accept-unsafe-...-request' about URI parsing
 
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 3.2.0-0
-- Switched to 3.2.x version
+- Initial build for kaos repository

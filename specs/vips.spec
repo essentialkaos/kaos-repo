@@ -6,7 +6,7 @@
 
 Name:           vips
 Summary:        C/C++ library for processing large images
-Version:        8.16.1
+Version:        8.17.1
 Release:        0%{?dist}
 License:        LGPLv2+
 Group:          System Environment/Libraries
@@ -118,12 +118,6 @@ rm -rf %{buildroot}
 
 %{meson_install}
 
-%if 0%{?rhel} <= 8
-  sed -i "s#/usr/bin/python#/usr/bin/python2#" %{buildroot}%{_bindir}/vipsprofile
-%else
-  sed -i "s#/usr/bin/python#/usr/bin/python3#" %{buildroot}%{_bindir}/vipsprofile
-%endif
-
 %post
 /sbin/ldconfig
 
@@ -155,6 +149,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 8.17.1-0
+- https://github.com/libvips/libvips/releases/tag/v8.17.1
+
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 8.17.0-0
+- https://github.com/libvips/libvips/releases/tag/v8.17.0
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 8.16.1-0
 - https://github.com/libvips/libvips/releases/tag/v8.16.1
 

@@ -4,7 +4,7 @@ Documentation=https://www.postgresql.org/docs/{{MAJOR_VERSION}}/static/
 After=syslog.target network-online.target
 
 [Service]
-PIDFile=/var/run/postgresql{{PKG_VERSION}}.pid
+PIDFile=/run/postgresql{{PKG_VERSION}}.pid
 ExecStart=/etc/init.d/postgresql-{{MAJOR_VERSION}} start
 ExecStop=/etc/init.d/postgresql-{{MAJOR_VERSION}} stop
 ExecReload=/etc/init.d/postgresql-{{MAJOR_VERSION}} reload

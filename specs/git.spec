@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.49.0
+Version:        2.50.1
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -216,6 +216,7 @@ rm -rf %{buildroot}
 %doc Documentation/technical
 %{_datadir}/git-core/
 %{_sysconfdir}/bash_completion.d
+%{_datadir}/bash-completion/completions/git
 
 %files svn
 %defattr(-,root,root)
@@ -270,6 +271,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Jul 09 2025 Anton Novojilov <andy@essentialkaos.com> - 2.50.1-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.50.1.adoc
+
+* Tue Jun 17 2025 Anton Novojilov <andy@essentialkaos.com> - 2.50.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.50.0.adoc
+
 * Tue Mar 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.49.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.49.0.adoc
 

@@ -26,7 +26,7 @@
 
 Summary:        High productivity build system
 Name:           meson
-Version:        1.7.2
+Version:        1.8.2
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
@@ -88,6 +88,9 @@ install -pm 0644 data/macros.%{name} %{buildroot}%{rpmmacrodir}/macros.%{name}
 ################################################################################
 
 %changelog
+* Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 1.8.2-0
+- https://github.com/mesonbuild/meson/compare/1.7.2...1.8.2
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.7.2-0
 - https://github.com/mesonbuild/meson/compare/1.6.1...1.7.2
 
