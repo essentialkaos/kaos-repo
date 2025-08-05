@@ -11,14 +11,14 @@
 ################################################################################
 
 # The oldest supported PG version
-%define pg_short_ver  12
+%define pg_short_ver  13
 %define pg_lib_dir    %{_prefix}/pgsql-%{pg_short_ver}/lib
 
 ################################################################################
 
 Summary:        A translator library for raster and vector geospatial data formats
 Name:           gdal
-Version:        3.9.1
+Version:        3.10.3
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Libraries
@@ -145,6 +145,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 3.10.3-0
+- https://github.com/OSGeo/gdal/blob/v3.10.3/NEWS.md
+
 * Thu Aug 15 2024 Anton Novojilov <andy@essentialkaos.com> - 3.9.1-0
 - https://github.com/OSGeo/gdal/blob/v3.9.1/NEWS.md
 

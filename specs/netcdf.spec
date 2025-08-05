@@ -11,7 +11,7 @@
 Summary:        Libraries for the Unidata network Common Data Form
 Name:           netcdf
 Version:        4.9.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        NetCDF
 Group:          Applications/Engineering
 URL:            https://www.unidata.ucar.edu/software/netcdf/
@@ -24,7 +24,7 @@ BuildRequires:  make gcc chrpath doxygen gawk libxml2-devel
 BuildRequires:  libcurl-devel m4 zlib-devel openssh-clients libtirpc-devel
 BuildRequires:  hdf-static hdf5-devel
 
-Requires:       hdf5 = %{hdf5_ver}
+Requires:       hdf5 >= %{hdf5_ver}
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -145,6 +145,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 4.9.2-2
+- Improved spec
+
 * Sat Dec 09 2023 Anton Novojilov <andy@essentialkaos.com> - 4.9.2-1
 - Rebuilt with the latest version of HDF5
 
