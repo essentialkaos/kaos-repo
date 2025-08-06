@@ -7,16 +7,17 @@
 Summary:        Real-time web log analyzer and interactive viewer
 Name:           goaccess
 Version:        1.9.4
-Release:        0%{?dist}
+Release:        1%{?dist}
 Group:          Development/Tools
 License:        GPLv2+
 URL:            https://goaccess.io
 
 Source0:        https://tar.goaccess.io/goaccess-%{version}.tar.gz
 Source1:        extra-browsers.list
+
 Source100:      checksum.sha512
 
-Patch1:         webkaos-formats.patch
+Patch1:         %{name}-config.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -72,6 +73,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Aug 06 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-1
+- Improved default configuration
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-0
 - https://goaccess.io/release-notes#release-1.9.4
 
