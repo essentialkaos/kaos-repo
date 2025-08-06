@@ -1,6 +1,6 @@
 diff --color -urN goaccess-1.9.2-orig/config/goaccess.conf goaccess-1.9.2/config/goaccess.conf
 --- goaccess-1.9.2-orig/config/goaccess.conf	2024-04-09 02:11:20.000000000 +0300
-+++ goaccess-1.9.2/config/goaccess.conf	2025-08-06 15:31:44.000000000 +0300
++++ goaccess-1.9.2/config/goaccess.conf	2025-08-06 16:10:26.000000000 +0300
 @@ -118,6 +118,20 @@
  # Traefik CLF flavor
  #log-format %h - %e [%d:%t %^] "%r" %s %b "%R" "%u" %^ "%v" "%U" %Lms
@@ -31,3 +31,12 @@ diff --color -urN goaccess-1.9.2-orig/config/goaccess.conf goaccess-1.9.2/config
  
  # Date specificity. Possible values: `date` (default), or `hr` or `min`.
  #
+@@ -741,7 +755,7 @@
+ # Download the GeoLite2-Country.mmdb.gz
+ # gunzip GeoLite2-Country.mmdb.gz
+ #
+-#geoip-database /usr/local/share/GeoIP/GeoLiteCity.dat
++#geoip-database /etc/goaccess/geo.mmdb
+ 
+ ######################################
+ # Persistence Options
