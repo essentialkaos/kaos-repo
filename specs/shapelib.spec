@@ -97,7 +97,27 @@ rm -rf %{buildroot}
 %files tools
 %defattr(-,root,root,-)
 %doc contrib/doc/
-%{_bindir}/*
+%{_bindir}/csv2shp
+%{_bindir}/dbfadd
+%{_bindir}/dbfcat
+%{_bindir}/dbfcreate
+%{_bindir}/dbfdump
+%{_bindir}/dbfinfo
+%{_bindir}/Shape_PointInPoly
+%{_bindir}/shpadd
+%{_bindir}/shpcat
+%{_bindir}/shpcentrd
+%{_bindir}/shpcreate
+%{_bindir}/shpdata
+%{_bindir}/shpdump
+%{_bindir}/shpdxf
+%{_bindir}/shpfix
+%{_bindir}/shpinfo
+%{_bindir}/shprewind
+%{_bindir}/shpsort
+%{_bindir}/shptreedump
+%{_bindir}/shputils
+%{_bindir}/shpwkb
 
 ################################################################################
 

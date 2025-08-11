@@ -9,7 +9,7 @@
 %global __python3    %{_bindir}/python3.8
 %endif
 
-%if 0%{?rhel} == 9
+%if 0%{?rhel} >= 9
 %global python_base  python3
 %global __python3    %{_bindir}/python3
 %endif

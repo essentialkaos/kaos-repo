@@ -142,7 +142,10 @@ rm -rf %{buildroot}
 
 %files tools
 %defattr(-,root,root)
-%{_bindir}/*
+%{_bindir}/vips
+%{_bindir}/vipsedit
+%{_bindir}/vipsheader
+%{_bindir}/vipsthumbnail
 %{_mandir}/man1/*
 %{_datadir}/locale/*
 

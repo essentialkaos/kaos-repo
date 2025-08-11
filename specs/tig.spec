@@ -73,7 +73,7 @@ install -pm 644 contrib/tig-completion.bash %{buildroot}%{bashcompl}/%{name}
 %defattr(-,root,root,-)
 %doc README.adoc COPYING INSTALL.adoc NEWS.adoc
 %doc doc/*.html
-%{_bindir}/*
+%{_bindir}/%{name}
 %{_sysconfdir}/tigrc
 %{bashcompl}/%{name}
 %{_mandir}/man1/*.1*
