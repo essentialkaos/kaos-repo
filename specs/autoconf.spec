@@ -77,7 +77,13 @@ rm -rf %{buildroot}
 %{_infodir}/autoconf.info*
 %{_datadir}/autoconf/
 %{_mandir}/man1/*
-%{_bindir}/*
+%{_bindir}/autoconf
+%{_bindir}/autoheader
+%{_bindir}/autom4te
+%{_bindir}/autoreconf
+%{_bindir}/autoscan
+%{_bindir}/autoupdate
+%{_bindir}/ifnames
 
 ################################################################################
 

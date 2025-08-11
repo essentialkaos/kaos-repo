@@ -93,7 +93,8 @@ rm -rf %{buildroot}
 %{_datadir}/bash-completion/completions/%{name}
 %{_datarootdir}/fish/vendor_completions.d/%{name}.fish
 %{_datadir}/zsh/site-functions/_%{name}
-%{_mandir}/*
+%{_mandir}/man1/eza.*
+%{_mandir}/man5/eza_*
 
 ################################################################################
 
