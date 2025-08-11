@@ -200,14 +200,10 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc CONTRIBUTING.md README.md SECURITY.md LICENSE PATENTS
-%doc %{goroot}/VERSION
-%doc %{goroot}/doc/*
 
 %{goroot}/*
 
-%exclude %{goroot}/VERSION
 %exclude %{goroot}/bin/
-%exclude %{goroot}/doc/
 %exclude %{goroot}/pkg/tool/
 %exclude %{goroot}/src/
 
