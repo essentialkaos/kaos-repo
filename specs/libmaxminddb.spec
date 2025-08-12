@@ -24,8 +24,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc chrpath
 
-%if 0%{?rhel} == 9
-BuildRequires:  perl-FindBin
+%if 0%{?rhel} >= 9
+BuildRequires:  perl perl-FindBin
 %endif
 
 Provides:       %{name} = %{version}-%{release}
@@ -67,6 +67,8 @@ rm -rf %{buildroot}
 
 %{make_install}
 
+rm -rf %{buildroot}%{_libdir}/%{name}.la
+
 # Remove hardcoded rpath from binary
 chrpath --delete %{buildroot}%{_bindir}/mmdblookup
 
@@ -101,7 +103,6 @@ rm -rf %{buildroot}
 %{_includedir}/maxminddb.h
 %{_includedir}/maxminddb_config.h
 %{_libdir}/%{name}.a
-%{_libdir}/%{name}.la
 %{_libdir}/%{name}.so
 %{_libdir}/pkgconfig/%{name}.pc
 
