@@ -18,7 +18,7 @@
 
 %define lua_ver       5.4.7
 %define pcre_ver      10.45
-%define openssl_ver   3.5.1
+%define openssl_ver   3.5.2
 %define ncurses_ver   6.4
 %define readline_ver  8.2
 
@@ -46,7 +46,13 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ systemd-devel perl perl-IPC-Cmd
+
+%if 0%{?rhel} == 10
+BuildRequires:  zlib-ng-compat-devel
+%else
+BuildRequires:  zlib-devel
+%endif
 
 Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy28 haproxy30
 
@@ -87,7 +93,7 @@ export BUILDDIR=$(pwd)
 pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
-  ./config --prefix=$(pwd)/build no-shared no-threads
+  ./config --prefix=$(pwd)/build no-shared no-threads no-tests
   %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
@@ -133,10 +139,6 @@ popd
 
 ### DEPS BUILD END ###
 
-%ifarch %ix86 x86_64
-use_regparm="USE_REGPARM=1"
-%endif
-
 %{__make} %{?_smp_mflags} CPU="generic" \
                           TARGET="linux-glibc" \
                           USE_OPENSSL=1 \
@@ -150,9 +152,7 @@ use_regparm="USE_REGPARM=1"
                           LUA_INC=lua-%{lua_ver}/build/include \
                           LUA_LIB=lua-%{lua_ver}/build/lib \
                           USE_ZLIB=1 \
-                          USE_SYSTEMD=1 \
-                          ADDLIB="-ldl -lrt -lpthread" \
-                          ${use_regparm}
+                          ADDLIB="-ldl -lrt -lpthread"
 
 %{__make} admin/halog/halog
 

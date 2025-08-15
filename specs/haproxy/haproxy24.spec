@@ -46,7 +46,13 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ systemd-devel perl perl-IPC-Cmd
+
+%if 0%{?rhel} == 10
+BuildRequires:  zlib-ng-compat-devel
+%else
+BuildRequires:  zlib-devel
+%endif
 
 Conflicts:      haproxy haproxy22 haproxy26 haproxy28 haproxy30
 
@@ -87,7 +93,7 @@ export BUILDDIR=$(pwd)
 pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
-  ./config --prefix=$(pwd)/build no-shared no-threads
+  ./config --prefix=$(pwd)/build no-shared no-threads no-tests
   %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
