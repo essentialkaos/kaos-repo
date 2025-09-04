@@ -31,7 +31,7 @@
 
 Summary:        The Go Programming Language
 Name:           golang
-Version:        1.25.0
+Version:        1.25.1
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
@@ -47,7 +47,7 @@ Patch0:         disable-google.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  golang >= 1.23
+BuildRequires:  golang >= 1.24
 
 Requires:       %{name}-bin = %{version}-%{release}
 Requires:       %{name}-src = %{version}-%{release}
@@ -230,6 +230,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Sep 04 2025 Anton Novojilov <andy@essentialkaos.com> - 1.25.1-0
+- https://github.com/golang/go/issues?q=milestone:Go1.25.1+label:CherryPickApproved
+
 * Fri Aug 15 2025 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
 - https://go.dev/doc/go1.25
 
