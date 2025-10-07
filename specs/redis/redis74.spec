@@ -16,7 +16,7 @@
 
 Summary:           A persistent key-value database
 Name:              redis%{major_ver}%{minor_ver}
-Version:           7.4.2
+Version:           7.4.6
 Release:           0%{?dist}
 License:           RSALv2 and SSPLv1
 Group:             Applications/Databases
@@ -204,6 +204,18 @@ systemctl daemon-reload &>/dev/null || :
 ################################################################################
 
 %changelog
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.6-0
+- https://github.com/redis/redis/releases/tag/7.4.6
+
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.5-0
+- https://github.com/redis/redis/releases/tag/7.4.5
+
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.4-0
+- https://github.com/redis/redis/releases/tag/7.4.4
+
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.3-0
+- https://github.com/redis/redis/releases/tag/7.4.3
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.2-0
 - https://github.com/redis/redis/releases/tag/7.4.2
 
