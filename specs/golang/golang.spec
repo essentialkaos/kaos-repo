@@ -31,7 +31,7 @@
 
 Summary:        The Go Programming Language
 Name:           golang
-Version:        1.25.2
+Version:        1.25.3
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
@@ -230,6 +230,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Oct 14 2025 Anton Novojilov <andy@essentialkaos.com> - 1.25.3-0
+- https://github.com/golang/go/issues?q=milestone:Go1.25.3+label:CherryPickApproved
+
 * Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 1.25.2-0
 - https://github.com/golang/go/issues?q=milestone:Go1.25.2+label:CherryPickApproved
 
