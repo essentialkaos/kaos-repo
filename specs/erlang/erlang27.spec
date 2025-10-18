@@ -1,7 +1,6 @@
 ################################################################################
 
 # rpmbuilder:qa-rpaths 0x0001,0x0002
-# rpmbuilder:exclude-package jre* jdk*
 
 ################################################################################
 
@@ -23,7 +22,7 @@
 %define eprefix     %{_prefix}%{_lib32}
 %define ver_maj     27
 %define ver_min     3
-%define ver_patch   4.2
+%define ver_patch   4.3
 %define ver_suffix  %{ver_min}%{?ver_patch:.%{ver_patch}}
 %define ver_string  %{ver_maj}.%{ver_suffix}
 %define realname    erlang
@@ -56,8 +55,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  ncurses-devel unixODBC-devel tcl-devel make
 BuildRequires:  tk-devel flex bison gd-devel gd-devel libxslt
-BuildRequires:  valgrind-devel java-1.8.0-openjdk-devel
-BuildRequires:  lksctp-tools-devel autoconf gcc-c++
+BuildRequires:  valgrind-devel lksctp-tools-devel autoconf gcc-c++
 
 Requires:       tk tcl
 
@@ -94,8 +92,8 @@ Requires:       %{name}-xmerl = %{version}
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{realname} = %{ver_string}-%{release}
 
-Conflicts:      erlang erlangR15 erlangR16 erlang17 erlang18 erlang19
 Conflicts:      erlang20 erlang21 erlang22 erlang23 erlang24 erlang25
+Conflicts:      erlang26 erlang28
 
 ################################################################################
 
@@ -129,7 +127,6 @@ Requires:  %{name}-et = %{version}
 Requires:  %{name}-eunit = %{version}
 Requires:  %{name}-ftp = %{version}
 Requires:  %{name}-inets = %{version}
-Requires:  %{name}-jinterface = %{version}
 Requires:  %{name}-megaco = %{version}
 Requires:  %{name}-mnesia = %{version}
 Requires:  %{name}-observer = %{version}
@@ -286,21 +283,6 @@ Requires:  emacs
 
 %description -n %{name}-emacs
 This module provides Erlang support to Emacs.
-
-################################################################################
-
-%package -n %{name}-jinterface
-Summary:  Low level interface to Java
-License:  MPL
-Group:    Development/Tools
-
-Requires:  %{name}-base = %{version}-%{release}
-
-%description -n %{name}-jinterface
-The Jinterface package provides a set of tools for communication with
-Erlang processes. It can also be used for communication with other Java
-processes using the same package, as well as C processes using the
-Erl_Interface library.
 
 ################################################################################
 
@@ -827,7 +809,15 @@ rm -rf %{buildroot}
 %{_unitdir}/epmd.socket
 %{_unitdir}/epmd@.service
 %{_unitdir}/epmd@.socket
-%{_bindir}/*
+%{_bindir}/ct_run
+%{_bindir}/dialyzer
+%{_bindir}/epmd
+%{_bindir}/erl
+%{_bindir}/erlc
+%{_bindir}/escript
+%{_bindir}/run_erl
+%{_bindir}/to_erl
+%{_bindir}/typer
 %{_libdir}/erlang/Install
 %{_libdir}/erlang/bin/ct_run
 %{_libdir}/erlang/bin/epmd
@@ -854,10 +844,8 @@ rm -rf %{buildroot}
 
 %files -n %{name}-devel
 %defattr(-,root,root,-)
-%dir %{_libdir}/%{realname}/%{_includedir}
-%dir %{_libdir}/%{realname}/%{eprefix}
-%{_libdir}/%{realname}/%{_includedir}/*
-%{_libdir}/%{realname}/%{eprefix}/*
+%{_libdir}/%{realname}/%{_includedir}
+%{_libdir}/%{realname}/%{eprefix}
 
 %files -n %{name}-asn1
 %defattr(-,root,root,-)
@@ -919,10 +907,6 @@ rm -rf %{buildroot}
 %files -n %{name}-inets
 %defattr(-,root,root,-)
 %{elibdir}/inets-*
-
-%files -n %{name}-jinterface
-%defattr(-,root,root,-)
-%{elibdir}/jinterface-*
 
 %files -n %{name}-manpages
 %defattr(-,root,root,-)
@@ -1003,6 +987,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Oct 18 2025 Anton Novojilov <andy@essentialkaos.com> - 27.3.4.3-0
+- https://github.com/erlang/otp/releases/tag/OTP-27.3.4.3
+
 * Wed Jul 30 2025 Anton Novojilov <andy@essentialkaos.com> - 27.3.4.2-0
 - https://github.com/erlang/otp/releases/tag/OTP-27.3.4.2
 
