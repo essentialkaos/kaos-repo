@@ -6,13 +6,13 @@
 
 Summary:        Tool for monitoring the progress of data through a pipeline
 Name:           pv
-Version:        1.9.31
+Version:        1.9.44
 Release:        0%{?dist}
 License:        GPLv3+
 Group:          Applications/System
 URL:            https://www.ivarch.com/programs/pv.shtml
 
-Source0:        https://www.ivarch.com/programs/sources/%{name}-%{version}.tar.gz
+Source0:        https://www.ivarch.com/s/%{name}-%{version}.tar.gz
 
 Source100:      checksum.sha512
 
@@ -67,6 +67,9 @@ rm -rf %{buildroot}%{_docdir}/%{name}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.44-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.9.44
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.31-0
 - https://codeberg.org/a-j-wood/pv/releases/tag/v1.9.31
 
