@@ -10,13 +10,13 @@
 
 Summary:        Utility for getting files from remote servers
 Name:           curl
-Version:        8.15.0
+Version:        8.16.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Applications/Internet
-URL:            https://curl.haxx.se
+URL:            https://curl.se
 
-Source0:        https://curl.haxx.se/download/%{name}-%{version}.tar.xz
+Source0:        https://curl.se/download/%{name}-%{version}.tar.xz
 
 Source100:      checksum.sha512
 
@@ -166,6 +166,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 8.16.0-0
+- https://curl.se/ch/8.16.0.html
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 8.15.0-0
 - https://curl.se/ch/8.15.0.html
 
