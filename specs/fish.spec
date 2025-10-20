@@ -6,7 +6,7 @@
 
 Summary:        Friendly interactive shell (FISh)
 Name:           fish
-Version:        4.0.2
+Version:        4.1.2
 Release:        0%{?dist}
 License:        GPL2
 Group:          System Environment/Shells
@@ -74,7 +74,9 @@ fi
 %defattr(-,root,root,-)
 %dir %{_sysconfdir}/%{name}/
 %config(noreplace) %{_sysconfdir}/%{name}/config.fish
-%{_bindir}/*
+%{_bindir}/fish
+%{_bindir}/fish_indent
+%{_bindir}/fish_key_reader
 %{_datadir}/%{name}/
 %{_datadir}/doc/%{name}/
 %{_mandir}/man1/*
@@ -83,6 +85,9 @@ fi
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 4.1.2-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.1.2
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 4.0.2-0
 - https://github.com/fish-shell/fish-shell/releases/tag/4.0.2
 
