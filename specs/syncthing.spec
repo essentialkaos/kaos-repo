@@ -10,7 +10,7 @@
 
 Summary:        Open Source Continuous File Synchronization
 Name:           syncthing
-Version:        2.0.0
+Version:        2.0.10
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        MPL-2.0
@@ -22,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  golang >= 1.23
+BuildRequires:  golang >= 1.24
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -133,6 +133,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 2.0.10-0
+- https://github.com/syncthing/syncthing/releases/tag/v2.0.10
+
 * Tue Aug 12 2025 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
 - https://github.com/syncthing/syncthing/releases/tag/v2.0.0
 

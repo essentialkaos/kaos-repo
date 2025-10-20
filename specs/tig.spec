@@ -10,7 +10,7 @@
 
 Summary:        Tig is an ncurses-based text-mode interface for git
 Name:           tig
-Version:        2.5.12
+Version:        2.6.0
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -83,6 +83,9 @@ install -pm 644 contrib/tig-completion.bash %{buildroot}%{bashcompl}/%{name}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.0-0
+- https://github.com/jonas/tig/releases/tag/tig-2.6.0
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 2.5.12-0
 - https://github.com/jonas/tig/releases/tag/tig-2.5.12
 
