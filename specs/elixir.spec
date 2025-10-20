@@ -10,7 +10,7 @@
 
 Summary:        A modern approach to programming for the Erlang VM
 Name:           elixir
-Version:        1.18.4
+Version:        1.19.0
 Release:        0%{?dist}
 License:        ASL 2.0 and ERPL
 Group:          Development/Tools
@@ -22,9 +22,9 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  erlang25 git
+BuildRequires:  erlang26 git
 
-Requires:       erlang >= 25
+Requires:       erlang >= 26
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{name}-lang = %{version}-%{release}
@@ -57,6 +57,10 @@ install -pm 644 man/*.1 %{buildroot}%{_mandir}/man1/
 
 cp -ra bin lib %{buildroot}%{_datadir}/%{name}/%{version}/
 
+rm -f %{buildroot}%{_datadir}/%{name}/%{version}/bin/*.ps1
+
+chmod 0600 %{buildroot}%{_datadir}/%{name}/%{version}/lib/elixir/scripts/*.exs
+
 ln -sf %{_datadir}/%{name}/%{version}/bin/{elixir,elixirc,iex,mix} %{buildroot}%{_bindir}/
 
 %check
@@ -82,6 +86,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 1.19.0-0
+- https://github.com/elixir-lang/elixir/releases/tag/v1.19.0
+
 * Tue Jun 17 2025 Anton Novojilov <andy@essentialkaos.com> - 1.18.4-0
 - https://github.com/elixir-lang/elixir/releases/tag/v1.18.4
 
