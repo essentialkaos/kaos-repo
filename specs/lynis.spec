@@ -6,7 +6,7 @@
 
 Summary:    Security auditing and hardening tool
 Name:       lynis
-Version:    3.1.4
+Version:    3.1.5
 Release:    0%{?dist}
 License:    GPLv3
 Group:      Development/Tools
@@ -75,6 +75,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.5-0
+- Support for OpenWrt
+- Bitdefender detection on Linux
+- Detection of openSUSE Tumbleweed-Slowroll
+- Corrected detection of service manager SMF
+- Extended GetHostID function to allow HostID and HostID2 creation on OpenWrt
+- Check modules also under /usr/lib/modules.d
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.4-0
 - Update of translations: Portuguese
 - Add macOS Sequoia
