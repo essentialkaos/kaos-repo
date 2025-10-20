@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack  github.com/muesli/duf
-# rpmbuilder:tag     v0.8.1
+# rpmbuilder:tag     v0.9.1
 
 ################################################################################
 
@@ -15,8 +15,8 @@
 
 Summary:        Disk usage utility
 Name:           duf
-Version:        0.8.1
-Release:        1%{?dist}
+Version:        0.9.1
+Release:        0%{?dist}
 Group:          Development/Tools
 License:        MIT
 URL:            https://github.com/muesli/duf
@@ -25,7 +25,7 @@ Source0:        %{name}-%{version}.tar.bz2
 
 Source100:      checksum.sha512
 
-BuildRequires:  golang >= 1.20
+BuildRequires:  golang >= 1.24
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -73,6 +73,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
+- https://github.com/muesli/duf/releases/tag/v0.9.1
+
 * Wed Dec 06 2023 Anton Novojilov <andy@essentialkaos.com> - 0.8.1-1
 - Rebuilt with the latest version of Go
 
