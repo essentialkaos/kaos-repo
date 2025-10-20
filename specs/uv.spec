@@ -1,12 +1,12 @@
 ################################################################################
 
-%define checksum  6dcb28a541868a455aefb2e8d4a1283dd6bf888605a2db710f0530cec888b0ad
+%define checksum  e02f7fc102d6a1ebfa3b260b788e9adf35802be28c8d85640e83246e61519c1e
 
 ################################################################################
 
 Summary:    An extremely fast Python package installer and resolver
 Name:       uv
-Version:    0.8.2
+Version:    0.9.4
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    MIT AND Apache 2.0
@@ -77,6 +77,9 @@ install -pm 755 %{name}x %{buildroot}%{_bindir}/
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
+- https://github.com/astral-sh/uv/releases/tag/0.9.4
+
 * Tue Jul 22 2025 Anton Novojilov <andy@essentialkaos.com> - 0.8.2-0
 - https://github.com/astral-sh/uv/releases/tag/0.8.2
 
