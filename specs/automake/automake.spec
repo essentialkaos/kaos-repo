@@ -9,9 +9,13 @@
 
 ################################################################################
 
+%define major_version  1.18
+
+################################################################################
+
 Summary:        A GNU tool for automatically creating Makefiles
 Name:           automake
-Version:        1.17
+Version:        %{major_version}.1
 Release:        0%{?dist}
 License:        GPLv2+ and GFDL and Public Domain and MIT
 Group:          Development/Tools
@@ -84,17 +88,58 @@ rm -rf %{buildroot}
 %doc %{_defaultdocdir}/%{name}/amhello-1.0.tar.gz
 %exclude %{_datadir}/aclocal
 %{_bindir}/automake
-%{_bindir}/automake-%{version}
+%{_bindir}/automake-%{major_version}
 %{_bindir}/aclocal
-%{_bindir}/aclocal-%{version}
+%{_bindir}/aclocal-%{major_version}
 %{_infodir}/*.info*
-%{_datadir}/automake-%{version}
-%{_datadir}/aclocal-%{version}
+%{_datadir}/automake-%{major_version}
+%{_datadir}/aclocal-%{major_version}
 %{_mandir}/man1/*
 
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 1.18.1-0
+- Undo change to mdate-sh; once again, it does not look at
+  SOURCE_DATE_EPOCH. This change was a misunderstanding that causes
+  problems, not fixes, for reproducible builds.
+- Improve debuggability of installcheck failures.
+
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 1.18-0
+- Default tar format is now ustar, mainly to support longer filenames;
+  the tar-v7 and other explicit options to force a particular tar
+  format are unchanged and still override the default.
+- The mdate-sh auxiliary script generally used with Texinfo now uses
+  SOURCE_DATE_EPOCH, if set, instead of the source file's mtime.
+- New option dist-bzip3 for bzip3 compression of distributions.
+- New option --stderr-prefix for tap-driver.sh, to prefix each line of
+  stderr from a test script with a given string.
+- Support for Algol 68 added, based on the GNU Algol 68 compiler.
+- Do not make Perl warnings fatal, per Perl's recommendation.
+- Avoid Perl 5.41.8+ precedence warning for use of !!.
+- a Perl path containing whitespace now emits a warning instead of
+  an error, so ./configure PERL='/usr/bin/env perl' can work.
+- The py-compile script once again does nothing (successfully) if the
+  PYTHON environment variable is set to ":", or anything that isn't a
+  Python interpreter (according to $PYTHON -V). Exception: if PYTHON
+  is set to "false", do nothing but exit unsuccessfully, also to match
+  previous behavior.
+- The no-dist-built-sources Automake option now operates (hopefully) as
+  intended, i.e., omits the dependency on $(BUILT_SOURCES) for the
+  distdir target.
+- Only warn about install.sh being found, instead of it being a fatal
+  error.
+- The compile script is more robust to Windows configurations;
+  specifically, avoids double-path translation on MSYS.
+- The test infrastructure sets the CONFIG_SITE environment variable to
+  /dev/null, to avoid the local system's Autoconf site defaults from
+  breaking the test environment.
+- AM_SILENT_RULES once again always ends with a newline.
+- AM_SANITY_CHECK now outputs "no" on failure, so that a complete line
+  is written to stdout before the error message is written to stderr.
+- Only require the presence of an ABOUT-NLS file at the 'gnits'
+  strictness level.
+
 * Tue Apr 15 2025 Anton Novojilov <andy@essentialkaos.com> - 1.17-0
 - Update to the latest stable version
 
