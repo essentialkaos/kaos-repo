@@ -189,7 +189,7 @@ Group:     Applications/Databases
 
 Requires:  %{name} = %{version}-%{release}
 Requires:  %{name}-libs = %{version}-%{release}
-Requires:  glibc util-linux kaosv >= 2.16
+Requires:  glibc util-linux numactl kaosv >= 2.16
 Requires:  %{_sbindir}/useradd %{_sbindir}/chkconfig
 
 %if %uring
@@ -523,7 +523,6 @@ install -dm 755 %{buildroot}%{install_dir}/share/
 echo "%{install_dir}/lib" > %{buildroot}%{install_dir}/share/%{realname}-%{majorver}-libs.conf
 
 # Fix some more documentation
-# gzip doc/internals.ps
 mkdir -p %{buildroot}%{install_dir}/share/doc/html
 mv doc/src/sgml/html doc
 mkdir -p %{buildroot}%{install_dir}/share/man/

@@ -1,7 +1,7 @@
 # Bibop recipe for PostgreSQL 17
 # See more: https://kaos.sh/bibop
 
-pkg postgresql17-contrib postgresql17-devel postgresql17-docs postgresql17-libs postgresql17-llvmjit postgresql17-plperl postgresql17-plpython3 postgresql17-pltcl postgresql17-server postgresql17-test
+pkg postgresql17-contrib postgresql17-devel postgresql17-docs postgresql17-libs postgresql17-llvmjit postgresql17-plperl postgresql17-plpython3 postgresql17-pltcl postgresql17-server
 
 require-root yes
 unsafe-actions yes
