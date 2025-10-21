@@ -8,29 +8,29 @@
 
 ################################################################################
 
-Summary:        Open Source Identity and Access Management
-Name:           keycloak
-Version:        26.3.2
-Release:        0%{?dist}
-Group:          System/Servers
-License:        Apache-2.0
-URL:            https://www.keycloak.org
+Summary:    Open Source Identity and Access Management
+Name:       keycloak
+Version:    26.4.1
+Release:    0%{?dist}
+Group:      System/Servers
+License:    Apache-2.0
+URL:        https://www.keycloak.org
 
-Source0:        https://github.com/keycloak/keycloak/releases/download/%{version}/%{name}-%{version}.tar.gz
-Source1:        %{name}.service
-Source2:        %{name}.sysconfig
-Source3:        bootstrap.sh
-Source4:        startup.sh
+Source0:    https://github.com/keycloak/keycloak/releases/download/%{version}/%{name}-%{version}.tar.gz
+Source1:    %{name}.service
+Source2:    %{name}.sysconfig
+Source3:    bootstrap.sh
+Source4:    startup.sh
 
-Source100:      checksum.sha512
+Source100:  checksum.sha512
 
-Patch1:         keycloak-paths.patch
+Patch1:     keycloak-paths.patch
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-Requires:       jre21
+Requires:   jre21
 
-Provides:       %{name} = %{version}-%{release}
+Provides:   %{name} = %{version}-%{release}
 
 ################################################################################
 
@@ -105,6 +105,9 @@ systemctl daemon-reload &>/dev/null || :
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 26.4.1-0
+- https://github.com/keycloak/keycloak/releases/tag/26.4.1
+
 * Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 26.3.2-0
 - https://github.com/keycloak/keycloak/releases/tag/26.3.2
 
