@@ -16,20 +16,20 @@
 %define hp_confdir   %{_sysconfdir}/%{orig_name}
 %define hp_datadir   %{_datadir}/%{orig_name}
 
-%define lua_ver       5.4.7
-%define pcre_ver      10.45
-%define openssl_ver   3.2.5
-%define ncurses_ver   6.4
-%define readline_ver  8.2
+%define lua_ver       5.4.8
+%define pcre_ver      10.47
+%define openssl_ver   3.2.6
+%define ncurses_ver   6.5
+%define readline_ver  8.3
 
 ################################################################################
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.8.15
+Version:        2.8.16
 Release:        0%{?dist}
 License:        GPLv2+
-URL:            https://haproxy.1wt.eu
+URL:            https://www.haproxy.org
 Group:          System Environment/Daemons
 
 Source0:        https://www.haproxy.org/download/%{major_ver}/src/%{orig_name}-%{version}.tar.gz
@@ -226,6 +226,148 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.16-0
+- BUG/MINOR: cli: Issue an error when too many args are passed for a command
+- BUG/MAJOR: listeners: transfer connection accounting when switching
+  listeners
+- MINOR: applet: add appctx_schedule() macro
+- BUG/MINOR: dns: add tempo between 2 connection attempts for dns servers
+- CLEANUP: dns: remove unused dns_stream_server struct member
+- BUG/MINOR: dns: prevent ds accumulation within dss
+- BUG/MINOR: mux-h1: Don't pretend connection was released for TCP>H1>H2
+  upgrade
+- BUG/MINOR: mux-h1: Fix trace message in h1_detroy() to not relay on
+  connection
+- BUG/MINOR: proxy: only use proxy_inc_fe_cum_sess_ver_ctr() with frontends
+- MINOR: quic: extend return value during TP parsing
+- BUG/MINOR: quic: use proper error code on missing CID in TPs
+- BUG/MINOR: quic: use proper error code on invalid server TP
+- BUG/MINOR: quic: reject retry_source_cid TP on server side
+- BUG/MINOR: quic: use proper error code on invalid received TP value
+- BUG/MINOR: quic: fix TP reject on invalid max-ack-delay
+- BUG/MINOR: quic: reject invalid max_udp_payload size
+- BUG/MINOR: cli: fix too many args detection for commands
+- BUG/MINOR: threads: fix soft-stop without multithreading support
+- BUG/MINOR: hlua: Fix Channel:data() and Channel:line() to respect
+  documentation
+- BUG/MINOR: sink: detect and warn when using "send-proxy" options with ring
+  servers
+- DOC: ring: refer to newer RFC5424
+- DOC: config: restore default values for resolvers hold directive
+- DOC: config: recommend disabling libc-based resolution with resolvers
+- BUG/MINOR: h3: don't insert more than one Host header
+- CLEANUP: quic: Useless BIO_METHOD initialization
+- MINOR: quic: Add useful error traces about qc_ssl_sess_init() failures
+- MEDIUM: hlua: Add function to change the body length of an HTTP Message
+- BUG/MINOR: mux-h2: Reset streams with NO_ERROR code if full response was
+  already sent
+- BUILD: makefile: enable backtrace by default on musl
+- BUG/MINOR: h3: Set HTX flags corresponding to the scheme found in the
+  request
+- REGTESTS: Make the script testing conditional set-var compatible with
+  Vtest2
+- CI: vtest: Rely on VTest2 to run regression tests
+- REGTESTS: Explicitly allow failing shell commands in some scripts
+- BUG/MINOR: limits: compute_ideal_maxconn: don't cap remain if
+  fd_hard_limit=0
+- BUG/MINOR: init: relax LSTCHK_NETADM checks for non root
+- MINOR: compiler: add __nonstring macro
+- BUG/MEDIUM: httpclient: Throw an error if an lua httpclient instance is
+  reused
+- DOC: hlua: Add a note to warn user about httpclient object reuse
+- DOC: hlua: fix a few typos in HTTPMessage.set_body_len() documentation
+- BUG/MINOR: mux-quic: do not decode if conn in error
+- BUG/MEDIUM: check: Requeue healthchecks on I/O events to handle check
+  timeout
+- BUG/MEDIUM: fd: Use the provided tgid in fd_insert() to get tgroup_info
+- BUG/MINOR: config/server: reject QUIC addresses
+- BUG/MEDIUM: check: Set SOCKERR by default when a connection error is
+  reported
+- BUG/MEDIUM: ssl/clienthello: ECDSA with ssl-max-ver TLSv1.2 and no ECDSA
+  ciphers
+- MINOR: http: add a function to validate characters of :authority
+- BUG/MEDIUM: h2/h3: reject some forbidden chars in :authority before
+  reassembly
+- BUG/MEDIUM: h1/h2/h3: reject forbidden chars in the Host header field
+- DOC: config: prefer-last-server: add notes for non-deterministic algorithms
+- BUG/MINOR: stream: Avoid recursive evaluation for unique-id based on itself
+- BUG/MINOR: log: Be able to use %%ID alias at anytime of the stream's
+  evaluation
+- DOC: configuration: add details on prefer-client-ciphers
+- BUG/MINOR: quic: wrong QUIC_FT_CONNECTION_CLOSE(0x1c) frame encoding
+- SCRIPTS: drop the HTML generation from announce-release
+- BUG/MEDIUM: hlua: Forbid any L6/L7 sample fetche functions from lua
+  services
+- BUG/MEDIUM: mux-h2: Properly handle connection error during preface sending
+- BUG/MINOR: jwt: Copy input and parameters in dedicated buffers in jwt_verify
+  converter
+- DOC: Fix 'jwt_verify' converter doc
+- BUG/MINOR: hlua: Skip headers when a receive is performed on an HTTP applet
+- BUG/MEDIUM: hlua: Report to SC when data were consumed on a lua socket
+- BUG/MEDIUM: hlua: Report to SC when output data are blocked on a lua socket
+- BUG/MEDIUM: dns: Reset reconnect tempo when connection is finally
+  established
+- BUG/MINOR: hlua: take default-path into account with lua-load-per-thread
+- DOC: management: clarify usage of -V with -c
+- BUG/MINOR: listener: really assign distinct IDs to shards
+- BUG/MEDIUM: http-client: Don't wake http-client applet if nothing was
+  xferred
+- BUG/MEDIUM: http-client: Properly inc input data when HTX blocks are
+  xferred
+- BUG/MEDIUM: http-client: Ask for more room when request data cannot be
+  xferred
+- BUG/MINOR: http-client: Ignore 1XX interim responses in non-HTX mode
+- BUG/MINOR: http-client: Reject any 101-switching-protocols response
+- BUG/MEDIUM: http-client: Drain the request if an early response is received
+- BUG/MEDIUM: http-client: Notify applet has more data to deliver until the
+  EOM
+- BUG/MINOR: applet: Don't trigger BUG_ON if the tid is not on appctx init
+- BUG/MINOR: halog: exit with error when some output filters are set
+  simultaneosly
+- BUG/MEDIUM: threads: Disable the workaround to load libgcc_s on macOS
+- DOC: list missing global QUIC settings
+- BUILD: compat: always set _POSIX_VERSION to ease comparisons
+- BUG/MINOR: stick-table: cap sticky counter idx with tune.nb_stk_ctr instead
+  of MAX_SESS_STKCTR
+- BUG/MEDIUM: ssl: Fix 0rtt to the server
+- BUG/MEDIUM: ssl: fix build with AWS-LC
+- BUG/MINOR: init: Initialize random seed earlier in the init process
+- DOC: management: fix typo in commit f4f93c56
+- DOC: config: recommend single quoting passwords
+- BUG/MEDIUM: http-client: Test HTX_FL_EOM flag before commiting the HTX
+  buffer
+- BUG/MINOR: mux-h1: fix wrong lock label
+- BUG/MINOR: quic: do not emit probe data if CONNECTION_CLOSE requested
+- BUG/MINOR: acl: set arg_list->kw to aclkw->kw string literal if aclkw is
+  found
+- DOC: unreliable sockpair@ on macOS
+- DOC: configuration: confuse "strict-mode" with "zero-warning"
+- MINOR: doc: add missing statistics column
+- MINOR: doc: add missing statistics column
+- BUG/MEDIUM: server: Duplicate healthcheck's alpn inherited from default
+  server
+- BUG/MINOR: quic: fix room check if padding requested
+- BUG/MINOR: haproxy: be sure not to quit too early on soft stop
+- BUILD: acl: silence a possible null deref warning in parse_acl_expr()
+- OPTIM: check: do not delay MUX for ALPN if SSL not active
+- BUG/MEDIUM: checks: fix ALPN inheritance from server
+- BUG/MEDIUM: h1: Allow reception if we have early data
+- BUG/MEDIUM: ssl: create the mux immediately on early data
+- BUG/MINOR: activity: fix reporting of task latency
+- BUG/MINOR: ocsp: Crash when updating CA during ocsp updates
+- BUG/MINOR: resolvers: always normalize FQDN from response
+- BUG/MINOR: server: Update healthcheck when server settings are changed via
+  CLI
+- BUG/MEDIUM: ssl: ca-file directory mode must read every certificates of a
+  file
+- BUG/MINOR: h3: Fix errors introduced because of failed backport
+- Revert "BUG/MINOR: config/server: reject QUIC addresses"
+- DOC: config: clarify some known limitations of the json_query() converter
+- BUG/CRITICAL: mjson: fix possible DoS when parsing numbers
+- BUG/MINOR: h2: forbid 'Z' as well in header field names checks
+- BUG/MINOR: h3: forbid 'Z' as well in header field names checks
+- Revert "BUILD: makefile: enable backtrace by default on musl"
+
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.8.15-0
 - BUG/MEDIUM: ssl: chosing correct certificate using RSA-PSS with TLSv1.3
 - BUG/MEDIUM: clock: make sure now_ms cannot be TICK_ETERNITY
