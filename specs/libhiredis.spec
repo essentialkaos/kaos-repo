@@ -10,7 +10,7 @@
 
 Summary:        Minimalistic C client for Redis
 Name:           lib%{realname}
-Version:        1.2.0
+Version:        1.3.0
 Release:        0%{?dist}
 License:        BSD
 Group:          System Environment/Libraries
@@ -84,6 +84,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 1.3.0-0
+- https://github.com/redis/hiredis/releases/tag/v1.3.0
+
 * Wed Jan 17 2024 Anton Novojilov <andy@essentialkaos.com> - 1.2.0-0
 - https://github.com/redis/hiredis/releases/tag/v1.2.0
 
