@@ -17,7 +17,7 @@
 
 Summary:    Java project management and project comprehension tool
 Name:       maven
-Version:    3.9.9
+Version:    3.9.11
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    ASL 2.0 and MIT
@@ -110,7 +110,10 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc LICENSE NOTICE README.txt
-%{_bindir}/*
+%{_bindir}/mvn
+%{_bindir}/m2.conf
+%{_bindir}/mvnDebug
+%{_bindir}/mvnyjp
 %{_datadir}/bash-completion
 
 %files lib
@@ -125,6 +128,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 3.9.11-0
+- https://maven.apache.org/docs/3.9.11/release-notes.html
+
 * Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 3.9.9-0
 - https://maven.apache.org/docs/3.9.9/release-notes.html
 
