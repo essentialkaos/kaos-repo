@@ -10,8 +10,8 @@
 
 Summary:        Libraries for the Unidata network Common Data Form
 Name:           netcdf
-Version:        4.9.2
-Release:        2%{?dist}
+Version:        4.9.3
+Release:        0%{?dist}
 License:        NetCDF
 Group:          Applications/Engineering
 URL:            https://www.unidata.ucar.edu/software/netcdf/
@@ -22,7 +22,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc chrpath doxygen gawk libxml2-devel
 BuildRequires:  libcurl-devel m4 zlib-devel openssh-clients libtirpc-devel
-BuildRequires:  hdf-static hdf5-devel
+BuildRequires:  hdf-static hdf5-devel libzstd-devel
 
 Requires:       hdf5 >= %{hdf5_ver}
 
@@ -84,7 +84,8 @@ pushd build
              --enable-hdf4 \
              --disable-dap-remote-tests \
              --enable-extra-example-tests \
-             CPPFLAGS="-I%{_includedir}/hdf -DH5_USE_110_API" \
+             --with-plugin-dir=%{_libdir}/hdf5/plugin \
+             CPPFLAGS="-I%{_includedir}/hdf" \
              LIBS="-ltirpc"
 
   %{__make} %{?_smp_mflags}
@@ -93,11 +94,13 @@ popd
 %install
 rm -rf %{buildroot}
 
-%{make_install} -C build
+%{make_install} -C build install DESTDIR=%{buildroot}
 
 chrpath --delete --keepgoing %{buildroot}%{_bindir}/* || :
+chrpath --delete --keepgoing %{buildroot}%{_libdir}/hdf5/plugin/lib__*.so || :
 
 rm -f %{buildroot}%{_libdir}/*.la
+rm -f %{buildroot}%{_libdir}/hdf5/plugin/lib__*.la
 rm -f %{buildroot}%{_infodir}/dir
 
 %check
@@ -126,6 +129,7 @@ rm -rf %{buildroot}
 %{_bindir}/ncgen3
 %{_bindir}/ocprint
 %{_libdir}/*.so.*
+%{_libdir}/hdf5/plugin/lib__*.so
 %{_mandir}/man1/*
 
 %files devel
@@ -145,6 +149,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 22 2025 Anton Novojilov <andy@essentialkaos.com> - 4.9.3-0
+- https://github.com/Unidata/netcdf-c/releases/tag/v4.9.3
+
 * Tue Aug 05 2025 Anton Novojilov <andy@essentialkaos.com> - 4.9.2-2
 - Improved spec
 
