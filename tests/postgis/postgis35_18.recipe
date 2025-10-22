@@ -1,9 +1,9 @@
-# Bibop recipe for PostGIS 3.5 for PostgreSQL 13
+# Bibop recipe for PostGIS 3.5 for PostgreSQL 18
 # See more: https://kaos.sh/bibop
 
 ################################################################################
 
-pkg postgresql13-server postgis35_13 postgis35_13-client postgis35_13-scripts postgis35_13-utils
+pkg postgresql18-server postgis35_18 postgis35_18-client postgis35_18-scripts postgis35_18-utils
 
 require-root yes
 unsafe-actions yes
@@ -11,7 +11,7 @@ unsafe-actions yes
 var postgis_lib_version    3
 var postgis_major_version  3.5
 var postgis_version        3.5.3
-var postgres_version       13
+var postgres_version       18
 var pkg_ver                35_{postgres_version}
 
 var postgres_service   postgresql-{postgres_version}

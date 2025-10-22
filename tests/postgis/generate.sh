@@ -6,7 +6,7 @@ main() {
     exit 0
   fi
 
-  for pg_ver in $(seq 13 17) ; do
+  for pg_ver in $(seq 13 18) ; do
     generate "$1" "$pg_ver"
   done
 }
