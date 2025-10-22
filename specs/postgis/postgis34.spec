@@ -41,7 +41,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   postgresql%{pg_ver}-devel postgresql%{pg_ver}-libs
 BuildRequires:   geos-devel >= %{min_geos_ver}
-BuildRequires:   gcc-c++ chrpath make pcre-devel hdf5-devel
+BuildRequires:   gcc-c++ chrpath make hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
 BuildRequires:   sqlite-devel libgeotiff-devel libpng-devel libtiff-devel
 
@@ -52,6 +52,12 @@ BuildRequires:   llvm-devel >= 13.0 clang-devel >= 13.0
 %if %raster
 BuildRequires:   gdal-devel
 Requires:        gdal-libs
+%endif
+
+%if 0%{?rhel} == 10
+BuildRequires:   pcre2-devel
+%else
+BuildRequires:   pcre-devel
 %endif
 
 Requires:        postgresql%{pg_ver} proj hdf5 json-c pcre
