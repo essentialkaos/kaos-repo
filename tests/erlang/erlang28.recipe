@@ -3,7 +3,7 @@
 
 pkg erlang28
 
-var libressl_ver 4.1.0
+var libressl_ver 4.2.0
 
 var epmd_service epmd
 var epmd_port    4369
