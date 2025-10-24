@@ -6,7 +6,7 @@
 
 Summary:    ESSENTIAL KAOS Public Repository
 Name:       kaos-repo
-Version:    12.1
+Version:    12.2
 Release:    0%{?dist}
 License:    Apache License, Version 2.0
 Vendor:     ESSENTIAL KAOS
@@ -77,6 +77,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 24 2025 Anton Novojilov <andy@essentialkaos.com> - 12.2-0
+- Removed unsupported configuration options
+
 * Thu Jan 16 2025 Anton Novojilov <andy@essentialkaos.com> - 12.1-0
 - Spec refactoring
 

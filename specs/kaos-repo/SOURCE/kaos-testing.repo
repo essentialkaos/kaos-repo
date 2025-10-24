@@ -6,7 +6,6 @@ enabled=0
 gpgcheck=1
 module_hotfixes=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
-bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues
 
 [kaos-testing-src]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for EL$releasever - $basearch
@@ -16,4 +15,3 @@ enabled=0
 gpgcheck=1
 module_hotfixes=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
-bugtracker_url=https://github.com/essentialkaos/kaos-repo/issues
