@@ -15,10 +15,17 @@ sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /e
 Some packages have dependencies from [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by following commands:
 
 ```bash
+# Alma Linux / Rocky Linux
+sudo dnf install -y epel-release
+
 # Oracle Linux 8
 sudo dnf install -y oracle-epel-release-el8
+
 # Oracle Linux 9
 sudo dnf install -y oracle-epel-release-el9
+
+# Oracle Linux 10
+sudo dnf install -y oracle-epel-release-el10
 ```
 
 Some packages have dependencies from [CodeReady Builder](https://developers.redhat.com/blog/2018/11/15/introducing-codeready-linux-builder) repository. You can enable this repository by following commands:
@@ -26,10 +33,13 @@ Some packages have dependencies from [CodeReady Builder](https://developers.redh
 ```bash
 # Alma Linux / Rocky Linux
 sudo dnf config-manager --set-enabled crb
+
 # Oracle Linux 8
 sudo dnf config-manager --set-enabled ol8_codeready_builder
+
 # Oracle Linux 9
 sudo dnf config-manager --set-enabled ol9_codeready_builder
+
 # Oracle Linux 10
 sudo dnf config-manager --set-enabled ol10_codeready_builder
 ```
