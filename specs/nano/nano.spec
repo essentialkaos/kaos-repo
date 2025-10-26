@@ -14,7 +14,7 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          8.5
+Version:          8.6
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
@@ -110,6 +110,12 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 8.6-0
+- The GotoLine menu accepts the prefixes ++ and -- for jumping
+  a number of lines forward or backward.
+- Anchors are not forgotten when a line number is given on the
+  command line.
+
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 8.5-0
 - Anchors are now saved when a file is closed, and restored when
   the file is reopened -- if and when --positionlog is active.

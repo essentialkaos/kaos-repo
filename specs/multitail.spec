@@ -106,16 +106,16 @@ rm -rf %{buildroot}
 - Fixed path to configuration file
 
 * Fri Dec 20 2019 Anton Novojilov <andy@essentialkaos.com> - 6.5.0-0
-- Updated to the lastes stable release
+- Updated to the latest stable release
 
 * Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.2-0
-- Updated to the lastes stable release
+- Updated to the latest stable release
 
 * Thu Mar 05 2015 Anton Novojilov <andy@essentialkaos.com> - 6.4.1-0
-- Updated to the lastes stable release
+- Updated to the latest stable release
 
 * Tue Apr 01 2014 Anton Novojilov <andy@essentialkaos.com> - 6.2.1-0
-- Updated to the lastes stable release
+- Updated to the latest stable release
 
 * Tue Jan 14 2014 Anton Novojilov <andy@essentialkaos.com> - 6.0-0
 - Updated to release 6.0

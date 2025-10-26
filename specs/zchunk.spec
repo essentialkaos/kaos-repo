@@ -22,7 +22,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc meson epel-rpm-macros
+BuildRequires:  gcc meson
 BuildRequires:  libcurl-devel openssl-devel libzstd-devel
 
 Provides:       %{name} = %{version}-%{release}

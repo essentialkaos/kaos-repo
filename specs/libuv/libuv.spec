@@ -6,7 +6,7 @@
 
 Summary:        Cross-platform asychronous I/O
 Name:           libuv
-Version:        1.50.0
+Version:        1.51.0
 Release:        0%{?dist}
 License:        MIT, BSD and ISC
 Group:          Development/Tools
@@ -66,6 +66,8 @@ rm -rf %{buildroot}
 
 install -dm 755 %{buildroot}%{_libdir}/pkgconfig
 
+rm -f %{buildroot}%{_libdir}/*.la
+
 sed -e "s#@prefix@#%{_prefix}#g" \
     -e "s#@exec_prefix@#%{_exec_prefix}#g" \
     -e "s#@libdir@#%{_libdir}#g" \
@@ -95,13 +97,15 @@ rm -rf %{buildroot}
 %doc README.md AUTHORS LICENSE
 %{_includedir}/*.h
 %{_libdir}/*.a
-%{_libdir}/*.la
 %{_includedir}/uv/*.h
 %{_libdir}/pkgconfig/*.pc
 
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 1.51.0-0
+- https://github.com/libuv/libuv/releases/tag/v1.51.0
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 1.50.0-0
 - https://github.com/libuv/libuv/releases/tag/v1.50.0
 

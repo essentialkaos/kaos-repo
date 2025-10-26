@@ -6,7 +6,7 @@
 
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.12.0
+Version:        2.12.1
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -149,6 +149,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 2.12.1-0
+- Bug solution: tests during append of existing raw log are less strict now
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 2.12.0-0
 - Add PSI bar graphs for CPU, memory and disks
 - Improved handling of raw log files

@@ -10,7 +10,7 @@ jobs:
   Perfecto:
     strategy:
       matrix:
-        image: [ 'ol8', 'ol9']
+        image: [ 'ol8', 'ol9', 'ol10' ]
     uses: ./.github/workflows/perfecto.yml
     with:
       image: ${{ matrix.image }}
@@ -25,7 +25,7 @@ jobs:
           echo "${{ github.workspace }}" >> "$GITHUB_PATH"
 
       - name: Code checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install bibop and bibop-massive
         run: |

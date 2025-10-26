@@ -9,7 +9,7 @@
 %global __python3    %{_bindir}/python3.8
 %endif
 
-%if 0%{?rhel} == 9
+%if 0%{?rhel} >= 9
 %global python_base  python3
 %global __python3    %{_bindir}/python3
 %endif
@@ -39,6 +39,7 @@ Source100:      checksum.sha512
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  %{python_base}-devel %{python_base}-setuptools
+BuildRequires:  %{python_base}-wheel pyproject-rpm-macros
 
 Requires:       %{python_base}-setuptools
 Requires:       ninja-build
@@ -61,12 +62,12 @@ Valgrind, CCache and the like.
 %setup -q
 
 %build
-%{py3_build}
+%{pyproject_wheel}
 
 %install
 rm -rf %{buildroot}
 
-%{py3_install}
+%{pyproject_install}
 
 install -dm 0755 %{buildroot}%{rpmmacrodir}
 install -pm 0644 data/macros.%{name} %{buildroot}%{rpmmacrodir}/macros.%{name}
@@ -78,7 +79,7 @@ install -pm 0644 data/macros.%{name} %{buildroot}%{rpmmacrodir}/macros.%{name}
 %doc COPYING
 %{_bindir}/%{name}
 %{python3_sitelib}/mesonbuild/
-%{python3_sitelib}/%{name}-*.egg-info/
+%{python3_sitelib}/%{name}-*.dist-info/
 %{_mandir}/man1/%{name}.1*
 %dir %{_datadir}/polkit-1
 %dir %{_datadir}/polkit-1/actions

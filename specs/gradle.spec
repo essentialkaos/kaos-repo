@@ -14,7 +14,7 @@
 
 Summary:    A powerful build system for the JVM
 Name:       gradle
-Version:    8.14.3
+Version:    9.1.0
 Release:    0%{?dist}
 License:    ASL 2.0
 Group:      Development/Tools
@@ -77,6 +77,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 9.1.0-0
+- https://docs.gradle.org/9.1.0/release-notes.html
+
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 9.0.0-0
+- https://docs.gradle.org/9.0.0/release-notes.html
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 8.14.3-0
 - https://docs.gradle.org/8.14/release-notes.html
 

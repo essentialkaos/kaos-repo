@@ -16,42 +16,20 @@ command "-" "Check environment"
   app gofmt
 
 command "-" "Check tools"
-  exist {tools_dir}/addr2line
   exist {tools_dir}/asm
-  exist {tools_dir}/buildid
   exist {tools_dir}/cgo
   exist {tools_dir}/compile
-  exist {tools_dir}/covdata
   exist {tools_dir}/cover
-  exist {tools_dir}/dist
-  exist {tools_dir}/doc
-  exist {tools_dir}/fix
   exist {tools_dir}/link
-  exist {tools_dir}/nm
-  exist {tools_dir}/objdump
-  exist {tools_dir}/pack
-  exist {tools_dir}/pprof
-  exist {tools_dir}/test2json
-  exist {tools_dir}/trace
+  exist {tools_dir}/preprofile
   exist {tools_dir}/vet
 
-  mode {tools_dir}/addr2line 755
   mode {tools_dir}/asm 755
-  mode {tools_dir}/buildid 755
   mode {tools_dir}/cgo 755
   mode {tools_dir}/compile 755
-  mode {tools_dir}/covdata 755
   mode {tools_dir}/cover 755
-  mode {tools_dir}/dist 755
-  mode {tools_dir}/doc 755
-  mode {tools_dir}/fix 755
   mode {tools_dir}/link 755
-  mode {tools_dir}/nm 755
-  mode {tools_dir}/objdump 755
-  mode {tools_dir}/pack 755
-  mode {tools_dir}/pprof 755
-  mode {tools_dir}/test2json 755
-  mode {tools_dir}/trace 755
+  mode {tools_dir}/preprofile 755
   mode {tools_dir}/vet 755
 
 command "-" "Check sources"

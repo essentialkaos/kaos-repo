@@ -16,20 +16,20 @@
 %define hp_confdir   %{_sysconfdir}/%{orig_name}
 %define hp_datadir   %{_datadir}/%{orig_name}
 
-%define lua_ver       5.4.7
-%define pcre_ver      10.45
-%define openssl_ver   3.3.3
-%define ncurses_ver   6.4
-%define readline_ver  8.2
+%define lua_ver       5.4.8
+%define pcre_ver      10.47
+%define openssl_ver   3.3.5
+%define ncurses_ver   6.5
+%define readline_ver  8.3
 
 ################################################################################
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        3.0.11
+Version:        3.0.12
 Release:        0%{?dist}
 License:        GPLv2+
-URL:            https://haproxy.1wt.eu
+URL:            https://www.haproxy.org
 Group:          System Environment/Daemons
 
 Source0:        https://www.haproxy.org/download/%{major_ver}/src/%{orig_name}-%{version}.tar.gz
@@ -46,7 +46,13 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ systemd-devel perl perl-IPC-Cmd
+
+%if 0%{?rhel} == 10
+BuildRequires:  zlib-ng-compat-devel
+%else
+BuildRequires:  zlib-devel
+%endif
 
 Conflicts:      haproxy haproxy22 haproxy24 haproxy26 haproxy28 haproxy32
 
@@ -87,7 +93,7 @@ export BUILDDIR=$(pwd)
 pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
-  ./config --prefix=$(pwd)/build no-shared no-threads
+  ./config --prefix=$(pwd)/build no-shared no-threads no-tests
   %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
@@ -133,10 +139,6 @@ popd
 
 ### DEPS BUILD END ###
 
-%ifarch %ix86 x86_64
-use_regparm="USE_REGPARM=1"
-%endif
-
 %{__make} %{?_smp_mflags} CPU="generic" \
                           TARGET="linux-glibc" \
                           USE_OPENSSL=1 \
@@ -151,8 +153,7 @@ use_regparm="USE_REGPARM=1"
                           LUA_LIB=lua-%{lua_ver}/build/lib \
                           USE_ZLIB=1 \
                           USE_SYSTEMD=1 \
-                          ADDLIB="-ldl -lrt -lpthread" \
-                          ${use_regparm}
+                          ADDLIB="-ldl -lrt -lpthread"
 
 %{__make} admin/halog/halog
 
@@ -220,6 +221,169 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 3.0.12-0
+- BUG/MEDIUM: peers: also limit the number of incoming updates
+- BUG/MINOR: mux-quic: do not decode if conn in error
+- MINOR: quic: rename min/max fields for congestion window algo
+- BUG/MINOR: quic: ensure cwnd limits are always enforced
+- BUILD: tools: properly define ha_dump_backtrace() to avoid a build warning
+- DOC: config: Fix a typo in 2.7 (Name format for maps and ACLs)
+- BUG/MEDIUM: check: Requeue healthchecks on I/O events to handle check
+  timeout
+- BUG/MINOR: quic: Missing SSL session object freeing
+- BUG/MEDIUM: fd: Use the provided tgid in fd_insert() to get tgroup_info
+- BUG/MINIR: h1: Fix doc of 'accept-unsafe-...-request' about URI parsing
+- BUG/MINOR: config/server: reject QUIC addresses
+- BUG/MEDIUM: cli: Don't consume data if outbuf is full or not available
+- MINOR: cli: handle EOS/ERROR first
+- BUG/MEDIUM: check: Set SOCKERR by default when a connection error is
+  reported
+- BUG/MEDIUM: ssl/clienthello: ECDSA with ssl-max-ver TLSv1.2 and no ECDSA
+  ciphers
+- BUG/MINOR: hlua_fcn: restore server pairs iterator pointer consistency
+- BUG/MEDIUM: hlua_fcn: ensure systematic watcher cleanup for server list
+  iterator
+- MINOR: compiler: add __nonstring macro
+- MINOR: http: add a function to validate characters of :authority
+- BUG/MEDIUM: h2/h3: reject some forbidden chars in :authority before
+  reassembly
+- BUG/MEDIUM: h1/h2/h3: reject forbidden chars in the Host header field
+- DOC: config: prefer-last-server: add notes for non-deterministic algorithms
+- BUG/MINOR: mux-quic/h3: properly handle too low peer fctl initial stream
+- BUG/MINOR: stream: Avoid recursive evaluation for unique-id based on itself
+- BUG/MINOR: log: Be able to use %%ID alias at anytime of the stream's
+  evaluation
+- DOC: configuration: add details on prefer-client-ciphers
+- BUG/MINOR: quic: wrong QUIC_FT_CONNECTION_CLOSE(0x1c) frame encoding
+- MINOR: quic: Useless TX buffer size reduction in closing state
+- SCRIPTS: drop the HTML generation from announce-release
+- BUG/MEDIUM: hlua: Forbid any L6/L7 sample fetche functions from lua
+  services
+- BUG/MEDIUM: mux-h2: Properly handle connection error during preface sending
+- BUG/MINOR: jwt: Copy input and parameters in dedicated buffers in jwt_verify
+  converter
+- DOC: Fix 'jwt_verify' converter doc
+- BUG/MINOR: httpclient: wrongly named httpproxy flag
+- BUILD/MEDIUM: deviceatlas: fix when installed in custom locations.
+- DOC: deviceatlas build clarifications
+- BUG/MINOR: hlua: Skip headers when a receive is performed on an HTTP applet
+- BUG/MEDIUM: hlua: Report to SC when data were consumed on a lua socket
+- BUG/MEDIUM: hlua: Report to SC when output data are blocked on a lua socket
+- BUG/MEDIUM: dns: Reset reconnect tempo when connection is finally
+  established
+- BUG/MEDIUM: logs: fix sess_build_logline_orig() recursion with options
+- BUG/MINOR: hlua: take default-path into account with lua-load-per-thread
+- DOC: management: clarify usage of -V with -c
+- MEDIUM: ssl/cli: relax crt insertion in crt-list of type directory
+- BUG/MINOR: listener: really assign distinct IDs to shards
+- BUG/MEDIUM: http-client: Don't wake http-client applet if nothing was
+  xferred
+- BUG/MEDIUM: http-client: Properly inc input data when HTX blocks are
+  xferred
+- BUG/MEDIUM: http-client: Ask for more room when request data cannot be
+  xferred
+- BUG/MINOR: http-client: Ignore 1XX interim responses in non-HTX mode
+- BUG/MINOR: http-client: Reject any 101-switching-protocols response
+- BUG/MEDIUM: http-client: Drain the request if an early response is received
+- BUG/MEDIUM: http-client: Notify applet has more data to deliver until the
+  EOM
+- BUG/MINOR: quic: Wrong source address use on FreeBSD
+- BUG/MINOR: applet: Don't trigger BUG_ON if the tid is not on appctx init
+- BUG/MINOR: halog: exit with error when some output filters are set
+  simultaneosly
+- BUG/MEDIUM: threads: Disable the workaround to load libgcc_s on macOS
+- DOC: list missing global QUIC settings
+- BUILD: compat: provide relaxed versions of the MIN/MAX macros
+- BUILD: compat: always set _POSIX_VERSION to ease comparisons
+- BUG/MINOR: stick-table: cap sticky counter idx with tune.nb_stk_ctr instead
+  of MAX_SESS_STKCTR
+- BUG/MEDIUM: ssl: Fix 0rtt to the server
+- BUG/MEDIUM: ssl: fix build with AWS-LC
+- BUG/MINOR: init: Initialize random seed earlier in the init process
+- DOC: management: fix typo in commit f4f93c56
+- DOC: config: recommend single quoting passwords
+- BUG/MEDIUM: http-client: Test HTX_FL_EOM flag before commiting the HTX
+  buffer
+- BUG/MINOR: mux-h1: fix wrong lock label
+- BUG/MINOR: quic: do not emit probe data if CONNECTION_CLOSE requested
+- BUG/MAJOR: quic: fix INITIAL padding with probing packet only
+- MINOR: quic: centralize padding for HP sampling on packet building
+- BUG/MEDIUM: stconn: Fix conditions to know an applet can get data from
+  stream
+- BUG/MEDIUM: Remove sync sends from streams to applets
+- BUG/MINOR: quic: reorder fragmented RX CRYPTO frames by their offsets
+- MINOR: quic: remove ->offset qf_crypto struct field
+- BUG/MINOR: mux-quic: trace with non initialized qcc
+- BUG/MINOR: acl: set arg_list->kw to aclkw->kw string literal if aclkw is
+  found
+- BUG/MINOR: connection: rearrange union list members
+- BUG/MINOR: connection: remove extra session_unown_conn() on reverse
+- BUG/MINOR: server: decrement session idle_conns on del server
+- DOC: unreliable sockpair@ on macOS
+- DOC: configuration: confuse "strict-mode" with "zero-warning"
+- MINOR: doc: add missing statistics column
+- MINOR: doc: add missing statistics column
+- CLEANUP: quic: remove a useless CRYPTO frame variable assignment
+- BUG/MEDIUM: quic: CRYPTO frame freeing without eb_delete()
+- BUG/MAJOR: mux-quic: fix crash on reload during emission
+- REG-TESTS: map_redirect: Don't use hdr_dom in ACLs with "-m end" matching
+  method
+- BUG/MEDIUM: server: Duplicate healthcheck's alpn inherited from default
+  server
+- BUG/MINOR: halog: Add OOM checks for calloc() in filter_count_srv_status
+  () and filter_count_url()
+- BUG/MINOR: log: Add OOM checks for calloc() and malloc() in logformat parser
+  and dup_logger()
+- BUG/MINOR: acl: Add OOM check for calloc() in smp_fetch_acl_parse()
+- BUG/MINOR: cfgparse: Add OOM check for calloc() in cfg_parse_listen()
+- BUG/MINOR: compression: Add OOM check for calloc() in
+  parse_compression_options()
+- BUG/MINOR: tools: Add OOM check for malloc() in indent_msg()
+- BUG/MINOR: quic: ignore AGAIN ncbuf err when parsing CRYPTO frames
+- BUG/MINOR: quic: fix room check if padding requested
+- BUG/MINOR: quic: fix padding issue on INITIAL retransmit
+- BUG/MINOR: haproxy: be sure not to quit too early on soft stop
+- BUILD: acl: silence a possible null deref warning in parse_acl_expr()
+- MINOR: quic: Add more information about RX packets
+- REGTESTS: explicitly use "balance roundrobin" where RR is needed
+- BUG/MEDIUM: conn: fix UAF on connection after reversal on edge
+- BUG/MINOR: connection: streamline conn detach from lists
+- BUG/MINOR: log: fix potential memory leak upon error in
+  add_to_logformat_list()
+- BUILD: trace: silence a bogus build warning at -Og
+- BUG/MINOR: cpu_topo: work around a small bug in musl's CPU_ISSET()
+- CLEANUP: quic: fix typo in quic_tx trace
+- OPTIM: check: do not delay MUX for ALPN if SSL not active
+- BUG/MEDIUM: checks: fix ALPN inheritance from server
+- BUG/MEDIUM: h1: Allow reception if we have early data
+- BUG/MEDIUM: ssl: create the mux immediately on early data
+- BUG/MINOR: activity: fix reporting of task latency
+- BUG/MAJOR: stream: Remove READ/WRITE events on channels after analysers
+  eval
+- BUG/MAJOR: stream: Force channel analysis on successful synchronous send
+- BUG/MINOR: ocsp: Crash when updating CA during ocsp updates
+- BUG/MINOR: resolvers: always normalize FQDN from response
+- BUG/MEDIUM: ring: invert the length check to avoid an int overflow
+- MINOR: server: Parse sni and pool-conn-name expressions in a dedicated
+  function
+- BUG/MEDIUM: server: Use sni as pool connection name for SSL server only
+- BUG/MINOR: server: Update healthcheck when server settings are changed via
+  CLI
+- OPTIM: sink: reduce contention on sink_announce_dropped()
+- BUG/MEDIUM: stick-tables: Don't let table_process_entry() handle refcnt
+- BUILD: halog: misleading indentation in halog.c
+- MINOR: ssl: add the ssl_bc_sni sample fetch function to retrieve backend
+  SNI
+- BUG/MINOR: pattern: Properly flag virtual maps as using samples
+- BUG/MINOR: pattern: Fix pattern lookup for map with opt@ prefix
+- BUG/MEDIUM: ssl: ca-file directory mode must read every certificates of a
+  file
+- DOC: config: clarify some known limitations of the json_query() converter
+- BUG/CRITICAL: mjson: fix possible DoS when parsing numbers
+- BUG/MINOR: h2: forbid 'Z' as well in header field names checks
+- BUG/MINOR: h3: forbid 'Z' as well in header field names checks
+- Revert "MINOR: quic: Useless TX buffer size reduction in closing state"
+
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 3.0.11-0
 - BUG/MEDIUM: mux-fcgi: Try to fully fill demux buffer on receive if not empty
 - BUG/MINOR: cli: Issue an error when too many args are passed for a command

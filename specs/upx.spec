@@ -6,7 +6,7 @@
 
 Summary:        Ultimate Packer for eXecutables
 Name:           upx
-Version:        5.0.1
+Version:        5.0.2
 Release:        0%{?dist}
 License:        GPLv2+ and Public Domain
 Group:          Applications/Archiving
@@ -61,6 +61,9 @@ popd
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 5.0.2-0
+- https://github.com/upx/upx/blob/v5.0.2/NEWS
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 5.0.1-0
 - https://github.com/upx/upx/blob/v5.0.1/NEWS
 

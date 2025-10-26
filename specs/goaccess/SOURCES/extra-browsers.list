@@ -1,5 +1,7 @@
+
 # Extra Crawlers
 ClaudeBot		Crawlers
+DotBot    Crawlers
 
 # Package managers
 libdnf		PkgManager

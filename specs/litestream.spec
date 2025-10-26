@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack  github.com/benbjohnson/litestream
-# rpmbuilder:tag     v0.3.13
+# rpmbuilder:tag     v0.5.2
 
 ################################################################################
 
@@ -15,7 +15,7 @@
 
 Summary:        Tool for real-time replication of SQLite databases
 Name:           litestream
-Version:        0.3.13
+Version:        0.5.2
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        Apache-2.0
@@ -25,7 +25,7 @@ Source0:        %{name}-%{version}.tar.bz2
 
 Source100:      checksum.sha512
 
-BuildRequires:  golang >= 1.22
+BuildRequires:  golang >= 1.24
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -82,5 +82,14 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 0.5.2-0
+- https://github.com/benbjohnson/litestream/releases/tag/v0.5.2
+
+* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 0.5.1-0
+- https://github.com/benbjohnson/litestream/releases/tag/v0.5.1
+
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 0.5.0-0
+- https://github.com/benbjohnson/litestream/releases/tag/v0.5.0
+
 * Mon May 27 2024 Anton Novojilov <andy@essentialkaos.com> - 0.3.13-0
 - Initial build for kaos-repo

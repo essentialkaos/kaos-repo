@@ -1,7 +1,7 @@
 # Bibop recipe for PostgreSQL 13
 # See more: https://kaos.sh/bibop
 
-pkg postgresql13-contrib postgresql13-devel postgresql13-docs postgresql13-libs postgresql13-llvmjit postgresql13-plperl postgresql13-plpython3 postgresql13-pltcl postgresql13-server postgresql13-test
+pkg postgresql13-contrib postgresql13-devel postgresql13-docs postgresql13-libs postgresql13-llvmjit postgresql13-plperl postgresql13-plpython3 postgresql13-pltcl postgresql13-server
 
 require-root yes
 unsafe-actions yes

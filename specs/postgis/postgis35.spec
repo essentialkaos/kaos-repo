@@ -26,7 +26,7 @@
 
 Summary:         Geographic Information Systems Extensions to PostgreSQL %{pg_ver}
 Name:            %{fullname}_%{pg_ver}
-Version:         3.5.2
+Version:         3.5.3
 Release:         0%{?dist}
 License:         GPLv2+
 Group:           Applications/Databases
@@ -41,7 +41,7 @@ BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:   postgresql%{pg_ver}-devel postgresql%{pg_ver}-libs
 BuildRequires:   geos-devel >= %{min_geos_ver}
-BuildRequires:   gcc-c++ chrpath make pcre-devel hdf5-devel
+BuildRequires:   gcc-c++ chrpath make hdf5-devel
 BuildRequires:   proj-devel libtool flex json-c-devel libxml2-devel
 BuildRequires:   sqlite-devel libgeotiff-devel libpng-devel libtiff-devel
 
@@ -52,6 +52,12 @@ BuildRequires:   llvm-devel >= 13.0 clang-devel >= 13.0
 %if %raster
 BuildRequires:   gdal-devel
 Requires:        gdal-libs
+%endif
+
+%if 0%{?rhel} == 10
+BuildRequires:   pcre2-devel
+%else
+BuildRequires:   pcre-devel
 %endif
 
 Requires:        postgresql%{pg_ver} proj hdf5 json-c pcre
@@ -249,28 +255,31 @@ fi
 
 %if %utils
 %files utils
-%defattr(-,root,root)
+%defattr(755,root,root)
 %doc utils/README
-%attr(755,root,root) %{_datadir}/%{name}/create_extension_unpackage.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_or_replace_to_create.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_skip_signatures.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_uninstall.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_unpackaged.pl
-%attr(755,root,root) %{_datadir}/%{name}/create_upgrade.pl
-%attr(755,root,root) %{_datadir}/%{name}/postgis_restore.pl
-%attr(755,root,root) %{_datadir}/%{name}/profile_intersects.pl
-%attr(755,root,root) %{_datadir}/%{name}/read_scripts_version.pl
-%attr(755,root,root) %{_datadir}/%{name}/repo_revision.pl
-%attr(755,root,root) %{_datadir}/%{name}/test_estimation.pl
-%attr(755,root,root) %{_datadir}/%{name}/test_geography_estimation.pl
-%attr(755,root,root) %{_datadir}/%{name}/test_geography_joinestimation.pl
-%attr(755,root,root) %{_datadir}/%{name}/test_joinestimation.pl
+%{_datadir}/%{name}/create_extension_unpackage.pl
+%{_datadir}/%{name}/create_or_replace_to_create.pl
+%{_datadir}/%{name}/create_skip_signatures.pl
+%{_datadir}/%{name}/create_spatial_ref_sys_config_dump.pl
+%{_datadir}/%{name}/create_uninstall.pl
+%{_datadir}/%{name}/create_unpackaged.pl
+%{_datadir}/%{name}/create_upgrade.pl
+%{_datadir}/%{name}/postgis_restore.pl
+%{_datadir}/%{name}/profile_intersects.pl
+%{_datadir}/%{name}/read_scripts_version.pl
+%{_datadir}/%{name}/repo_revision.pl
+%{_datadir}/%{name}/test_estimation.pl
+%{_datadir}/%{name}/test_geography_estimation.pl
+%{_datadir}/%{name}/test_geography_joinestimation.pl
+%{_datadir}/%{name}/test_joinestimation.pl
 %endif
 
 ################################################################################
 
 %changelog
+* Wed Oct 22 2025 Anton Novojilov <andy@essentialkaos.com> - 3.5.3-0
+- https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.5.3/NEWS
+
 * Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 3.5.2-0
 - https://git.osgeo.org/gitea/postgis/postgis/raw/tag/3.5.2/NEWS
 

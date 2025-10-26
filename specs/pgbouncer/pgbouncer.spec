@@ -130,7 +130,7 @@ fi
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/pam.d/%{name}
 %config(noreplace) %{_tmpfilesdir}/%{name}.conf
-%{_bindir}/*
+%{_bindir}/%{name}
 %{_unitdir}/%{name}.service
 %{_mandir}/man1/%{name}.*
 %{_mandir}/man5/%{name}.*

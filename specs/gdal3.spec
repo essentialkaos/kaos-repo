@@ -123,7 +123,34 @@ rm -rf %{buildroot}
 %exclude %{_mandir}/man1/%{name}-config.1*
 %exclude %{_bindir}/%{name}-config*
 %exclude %{_datadir}/bash-completion/completions/*.py
-%{_bindir}/*
+%{_bindir}/gdal_contour
+%{_bindir}/gdal_create
+%{_bindir}/gdal_footprint
+%{_bindir}/gdal_grid
+%{_bindir}/gdal_rasterize
+%{_bindir}/gdal_translate
+%{_bindir}/gdal_viewshed
+%{_bindir}/gdaladdo
+%{_bindir}/gdalbuildvrt
+%{_bindir}/gdaldem
+%{_bindir}/gdalenhance
+%{_bindir}/gdalinfo
+%{_bindir}/gdallocationinfo
+%{_bindir}/gdalmanage
+%{_bindir}/gdalmdiminfo
+%{_bindir}/gdalmdimtranslate
+%{_bindir}/gdalsrsinfo
+%{_bindir}/gdaltindex
+%{_bindir}/gdaltransform
+%{_bindir}/gdalwarp
+%{_bindir}/gnmanalyse
+%{_bindir}/gnmmanage
+%{_bindir}/nearblack
+%{_bindir}/ogr2ogr
+%{_bindir}/ogrinfo
+%{_bindir}/ogrlineref
+%{_bindir}/ogrtindex
+%{_bindir}/sozip
 %{_mandir}/man1/*
 %{_datadir}/bash-completion/completions/*
 

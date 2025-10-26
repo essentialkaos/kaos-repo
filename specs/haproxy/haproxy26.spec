@@ -16,20 +16,20 @@
 %define hp_confdir   %{_sysconfdir}/%{orig_name}
 %define hp_datadir   %{_datadir}/%{orig_name}
 
-%define lua_ver       5.4.7
-%define pcre_ver      10.45
-%define openssl_ver   3.0.16
-%define ncurses_ver   6.4
-%define readline_ver  8.2
+%define lua_ver       5.4.8
+%define pcre_ver      10.47
+%define openssl_ver   3.0.18
+%define ncurses_ver   6.5
+%define readline_ver  8.3
 
 ################################################################################
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.6.22
+Version:        2.6.23
 Release:        0%{?dist}
 License:        GPLv2+
-URL:            https://haproxy.1wt.eu
+URL:            https://www.haproxy.org
 Group:          System Environment/Daemons
 
 Source0:        https://www.haproxy.org/download/%{major_ver}/src/%{orig_name}-%{version}.tar.gz
@@ -46,7 +46,13 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ systemd-devel perl perl-IPC-Cmd
+
+%if 0%{?rhel} == 10
+BuildRequires:  zlib-ng-compat-devel
+%else
+BuildRequires:  zlib-devel
+%endif
 
 Conflicts:      haproxy haproxy22 haproxy24 haproxy28 haproxy30
 
@@ -87,7 +93,7 @@ export BUILDDIR=$(pwd)
 pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
-  ./config --prefix=$(pwd)/build no-shared no-threads
+  ./config --prefix=$(pwd)/build no-shared no-threads no-tests
   %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
@@ -220,6 +226,51 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.23-0
+- BUG/MINOR: cli: Issue an error when too many args are passed for a command
+- MINOR: applet: add appctx_schedule() macro
+- BUG/MINOR: dns: add tempo between 2 connection attempts for dns servers
+- BUG/MINOR: mux-h1: Don't pretend connection was released for TCP>H1>H2
+  upgrade
+- BUG/MINOR: mux-h1: Fix trace message in h1_detroy() to not relay on
+  connection
+- MINOR: quic: extend return value during TP parsing
+- BUG/MINOR: quic: use proper error code on missing CID in TPs
+- BUG/MINOR: quic: use proper error code on invalid server TP
+- BUG/MINOR: quic: reject retry_source_cid TP on server side
+- BUG/MINOR: quic: use proper error code on invalid received TP value
+- BUG/MINOR: quic: fix TP reject on invalid max-ack-delay
+- BUG/MINOR: quic: reject invalid max_udp_payload size
+- BUG/MINOR: cli: fix too many args detection for commands
+- BUG/MINOR: hlua: Fix Channel:data() and Channel:line() to respect
+  documentation
+- BUG/MINOR: sink: detect and warn when using "send-proxy" options with ring
+  servers
+- DOC: ring: refer to newer RFC5424
+- DOC: config: restore default values for resolvers hold directive
+- DOC: config: recommend disabling libc-based resolution with resolvers
+- CLEANUP: quic: Useless BIO_METHOD initialization
+- MINOR: quic: Add useful error traces about qc_ssl_sess_init() failures
+- MEDIUM: hlua: Add function to change the body length of an HTTP Message
+- BUG/MINOR: mux-h2: Reset streams with NO_ERROR code if full response was
+  already sent
+- BUG/MINOR: h3: Set HTX flags corresponding to the scheme found in the
+  request
+- REGTESTS: Make the script testing conditional set-var compatible with
+  Vtest2
+- CI: vtest: Rely on VTest2 to run regression tests
+- REGTESTS: Explicitly allow failing shell commands in some scripts
+- BUG/MINOR: limits: compute_ideal_maxconn: don't cap remain if
+  fd_hard_limit=0
+- DOC: config: clarify some known limitations of the json_query() converter
+- BUG/CRITICAL: mjson: fix possible DoS when parsing numbers
+- BUILD: compiler: add a macro to detect if another one is set and equals 1
+- BUILD: compiler: fix __equals_1() on older compilers
+- BUILD: compiler: add a default definition for __has_attribute()
+- MINOR: compiler: add __nonstring macro
+- BUG/MINOR: h2: forbid 'Z' as well in header field names checks
+- BUG/MINOR: h3: forbid 'Z' as well in header field names checks
+
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.6.22-0
 - BUG/MEDIUM: ssl: chosing correct certificate using RSA-PSS with TLSv1.3
 - BUG/MINOR: ssl_sock: fix xprt_set_used() to properly clear the TASK_F_USR1

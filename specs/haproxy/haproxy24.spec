@@ -16,20 +16,20 @@
 %define hp_confdir   %{_sysconfdir}/%{orig_name}
 %define hp_datadir   %{_datadir}/%{orig_name}
 
-%define lua_ver       5.4.7
-%define pcre_ver      10.45
+%define lua_ver       5.4.8
+%define pcre_ver      10.47
 %define openssl_ver   1.1.1w
-%define ncurses_ver   6.4
-%define readline_ver  8.2
+%define ncurses_ver   6.5
+%define readline_ver  8.3
 
 ################################################################################
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        2.4.29
+Version:        2.4.30
 Release:        0%{?dist}
 License:        GPLv2+
-URL:            https://haproxy.1wt.eu
+URL:            https://www.haproxy.org
 Group:          System Environment/Daemons
 
 Source0:        https://www.haproxy.org/download/%{major_ver}/src/%{orig_name}-%{version}.tar.gz
@@ -46,7 +46,13 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc-c++ zlib-devel systemd-devel perl perl-IPC-Cmd
+BuildRequires:  make gcc-c++ systemd-devel perl perl-IPC-Cmd
+
+%if 0%{?rhel} == 10
+BuildRequires:  zlib-ng-compat-devel
+%else
+BuildRequires:  zlib-devel
+%endif
 
 Conflicts:      haproxy haproxy22 haproxy26 haproxy28 haproxy30
 
@@ -87,7 +93,7 @@ export BUILDDIR=$(pwd)
 pushd openssl-%{openssl_ver}
   mkdir build
   # perfecto:ignore
-  ./config --prefix=$(pwd)/build no-shared no-threads
+  ./config --prefix=$(pwd)/build no-shared no-threads no-tests
   %{__make} %{?_smp_mflags}
   %{__make} install_sw
 popd
@@ -220,6 +226,15 @@ fi
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 2.4.30-0
+- DOC: config: clarify some known limitations of the json_query() converter
+- BUG/CRITICAL: mjson: fix possible DoS when parsing numbers
+- BUILD: compiler: add a macro to detect if another one is set and equals 1
+- BUILD: compiler: fix __equals_1() on older compilers
+- BUILD: compiler: add a default definition for __has_attribute()
+- MINOR: compiler: add __nonstring macro
+- BUG/MINOR: h2: forbid 'Z' as well in header field names checks
+
 * Wed Jun 18 2025 Anton Novojilov <andy@essentialkaos.com> - 2.4.29-0
 - BUG/MINOR: ssl: can't load a separated key file with openssl > 3.0
 - BUG/MINOR: cli: don't show sockpairs in HAPROXY_CLI and HAPROXY_MASTER_CLI

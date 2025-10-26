@@ -1,6 +1,6 @@
-diff --color -urN keycloak-26.3.1-orig/bin/kc.sh keycloak-26.3.1/bin/kc.sh
---- keycloak-26.3.1-orig/bin/kc.sh	2025-07-09 18:28:20.000000000 +0300
-+++ keycloak-26.3.1/bin/kc.sh	2025-07-21 15:45:34.000000000 +0300
+diff --color -urN keycloak-26.4.1-orig/bin/kc.sh keycloak-26.4.1/bin/kc.sh
+--- keycloak-26.4.1-orig/bin/kc.sh	2025-10-16 09:45:57.000000000 +0300
++++ keycloak-26.4.1/bin/kc.sh	2025-10-21 15:07:56.000000000 +0300
 @@ -34,12 +34,12 @@
    fi
  }
@@ -15,5 +15,5 @@ diff --color -urN keycloak-26.3.1-orig/bin/kc.sh keycloak-26.3.1/bin/kc.sh
 -CLASSPATH_OPTS="'$(abs_path "../lib/quarkus-run.jar")'"
 +CLASSPATH_OPTS="/var/lib/keycloak/lib/quarkus-run.jar"
  
- DEBUG_MODE="${DEBUG:-false}"
- DEBUG_PORT="${DEBUG_PORT:-8787}"
+ DEBUG_MODE="${KC_DEBUG:-${DEBUG:-false}}"
+ DEBUG_PORT="${KC_DEBUG_PORT:-${DEBUG_PORT:-8787}}"

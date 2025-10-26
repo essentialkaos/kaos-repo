@@ -4,27 +4,25 @@
 
 ################################################################################
 
-%{!?kerbdir:%define kerbdir "/usr"}
-%{!?test:%define test 1}
-%{!?plpython:%define plpython 1}
-%{!?pltcl:%define pltcl 1}
-%{!?plperl:%define plperl 1}
-%{!?ssl:%define ssl 1}
-%{!?intdatetimes:%define intdatetimes 1}
-%{!?icu:%define icu 1}
-%{!?kerberos:%define kerberos 1}
-%{!?nls:%define nls 1}
-%{!?xml:%define xml 1}
-%{!?pam:%define pam 1}
-%{!?disablepgfts:%define disablepgfts 0}
-%{!?runselftest:%define runselftest 0}
-%{!?uuid:%define uuid 1}
-%{!?ldap:%define ldap 1}
+%{!?disablepgfts:%global disablepgfts 0}
+%{!?icu:%global icu 1}
+%{!?intdatetimes:%global intdatetimes 1}
+%{!?kerbdir:%global kerbdir "/usr"}
+%{!?kerberos:%global kerberos 1}
+%{!?ldap:%global ldap 1}
 %{!?llvm:%global llvm 1}
+%{!?nls:%global nls 1}
+%{!?pam:%global pam 1}
+%{!?plperl:%global plperl 1}
+%{!?plpython:%global plpython 1}
+%{!?pltcl:%global pltcl 1}
+%{!?ssl:%global ssl 1}
+%{!?uuid:%global uuid 1}
+%{!?xml:%global xml 1}
 %{!?zstd:%global zstd 1}
 
 %define majorver      16
-%define minorver      9
+%define minorver      10
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        16
@@ -56,9 +54,7 @@ Source0:           https://download.postgresql.org/pub/source/v%{version}/%{real
 Source1:           %{realname}.init
 Source2:           Makefile.regress
 Source3:           pg_config.h
-Source4:           README.rpm-dist
 Source5:           ecpg_config.h
-Source7:           https://www.postgresql.org/files/documentation/pdf/%{majorver}/%{realname}-%{majorver}-A4.pdf
 Source8:           %{realname}.pam
 Source9:           filter-requires-perl-Pg.sh
 Source10:          %{realname}.sysconfig
@@ -333,29 +329,9 @@ for the backend.
 
 ################################################################################
 
-%if %test
-%package test
-Summary:   The test suite distributed with PostgreSQL
-Group:     Applications/Databases
-
-Requires:  %{name}-server = %{version}
-Provides:  %{realname}-test = %{version}-%{release}
-
-%description test
-PostgreSQL is an advanced Object-Relational database management
-system. The postgresql-test package includes the sources and pre-built
-binaries of various tests for the PostgreSQL database management
-system, including regression tests and benchmarks.
-%endif
-
-################################################################################
-
 %prep
 %crc_check
 %autosetup -p0 -n %{realname}-%{version}
-
-# Copy pdf with documentation to build directory
-cp -p %{SOURCE7} .
 
 %build
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS
@@ -447,41 +423,6 @@ sed "s|C=\`pwd\`;|C=%{install_dir}/lib/tutorial;|" < src/tutorial/Makefile > src
 %{__make} %{?_smp_mflags} -C src/tutorial NO_PGXS=1 all
 rm -f src/tutorial/GNUmakefile
 
-# run_testsuite WHERE
-# -------------------
-# Run 'make check' in WHERE path.  When that command fails, return the logs
-# given by PostgreSQL build system and set 'test_failure=1'.
-
-run_testsuite()
-{
-  %{__make} -C "$1" MAX_CONNECTIONS=5 check && return 0
-
-  test_failure=1
-
-  (
-    set +x
-    echo "=== trying to find all regression.diffs files in build directory ==="
-    find -name 'regression.diffs' | \
-    while read line; do
-      echo "=== make failure: $line ==="
-      cat "$line"
-    done
-  )
-}
-
-%if %runselftest
-  run_testsuite "src/test/regress"
-  %{__make} %{?_smp_mflags} clean -C "src/test/regress"
-  run_testsuite "src/pl"
-  run_testsuite "contrib"
-%endif
-
-%if %test
-  pushd src/test/regress
-    %{__make} %{?_smp_mflags} all
-  popd
-%endif
-
 %install
 rm -rf %{buildroot}
 
@@ -560,26 +501,8 @@ install -dm 700 %{buildroot}%{_sysconfdir}/sysconfig/%{shortname}/%{majorver}
 install -dm 755 %{buildroot}%{install_dir}/share/
 echo "%{install_dir}/lib" > %{buildroot}%{install_dir}/share/%{realname}-%{majorver}-libs.conf
 
-%if %test
-  # Tests. There are many files included here that are unnecessary,
-  # but include them anyway for completeness.  We replace the original
-  # Makefiles, however.
-  mkdir -p %{buildroot}%{install_dir}/lib/test
-  cp -a src/test/regress %{buildroot}%{install_dir}/lib/test
-  install -pm 0755 contrib/spi/refint.so %{buildroot}%{install_dir}/lib/test/regress
-  install -pm 0755 contrib/spi/autoinc.so %{buildroot}%{install_dir}/lib/test/regress
-  pushd  %{buildroot}%{install_dir}/lib/test/regress
-    strip *.so
-    rm -f GNUmakefile Makefile *.o
-    chmod 0755 pg_regress regress.so
-  popd
-  cp %{SOURCE2} %{buildroot}%{install_dir}/lib/test/regress/Makefile
-  chmod 0644 %{buildroot}%{install_dir}/lib/test/regress/Makefile
-%endif
-
 # Fix some more documentation
 # gzip doc/internals.ps
-cp %{SOURCE4} README.rpm-dist
 mkdir -p %{buildroot}%{install_dir}/share/doc/html
 mv doc/src/sgml/html doc
 mkdir -p %{buildroot}%{install_dir}/share/man/
@@ -730,11 +653,6 @@ systemctl daemon-reload &>/dev/null || :
 /sbin/ldconfig
 %endif
 
-%if %test
-%post test
-chown -R -h %{username}:%{groupname} %{_datarootdir}/%{shortname}/test &>/dev/null || :
-%endif
-
 # Create alternatives entries for common binaries and man files
 %post
 update-alternatives --install %{_bindir}/psql          %{shortname}-psql          %{install_dir}/bin/psql          %{pkgver}00
@@ -830,7 +748,7 @@ fi
 
 %files -f pg_main.lst
 %defattr(-,root,root)
-%doc doc/KNOWN_BUGS doc/MISSING_FEATURES COPYRIGHT README.rpm-dist
+%doc doc/KNOWN_BUGS doc/MISSING_FEATURES COPYRIGHT
 %dir %{install_dir}/lib/bitcode
 %{install_dir}/bin/clusterdb
 %{install_dir}/bin/createdb
@@ -884,7 +802,7 @@ fi
 
 %files docs
 %defattr(-,root,root)
-%doc doc/src/* *-A4.pdf src/tutorial doc/html
+%doc doc/src/* src/tutorial doc/html
 
 %files contrib
 %defattr(-,root,root)
@@ -1131,16 +1049,12 @@ fi
 %{install_dir}/share/extension/plpython3u*
 %endif
 
-%if %test
-%files test
-%defattr(-,%{username},%{groupname})
-%attr(-,%{username},%{groupname}) %{install_dir}/lib/test/*
-%attr(-,%{username},%{groupname}) %dir %{install_dir}/lib/test
-%endif
-
 ################################################################################
 
 %changelog
+* Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 16.10-0
+- https://www.postgresql.org/docs/16/release-16-10.html
+
 * Tue Jun 17 2025 Anton Novojilov <andy@essentialkaos.com> - 16.9-0
 - https://www.postgresql.org/docs/16/release-16-9.html
 

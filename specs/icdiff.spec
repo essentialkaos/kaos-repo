@@ -26,9 +26,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 
-Requires:       python3-setuptools
-
 BuildRequires:  python3-devel python3-setuptools
+BuildRequires:  python3-wheel pyproject-rpm-macros
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -46,12 +45,12 @@ Improved colored diff.
 %setup -qn %{name}-release-%{version}
 
 %build
-%{py3_build}
+%{pyproject_wheel}
 
 %install
 rm -rf %{buildroot}
 
-%{py3_install}
+%{pyproject_install}
 
 %clean
 rm -rf %{buildroot}

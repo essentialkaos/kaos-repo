@@ -9,13 +9,13 @@
 ################################################################################
 
 %define major_ver  7
-%define minor_ver  2
+%define minor_ver  4
 
 ################################################################################
 
 Summary:           A persistent key-value database
 Name:              redis
-Version:           7.2.7
+Version:           7.4.6
 Release:           0%{?dist}
 License:           BSD
 Group:             Applications/Databases
@@ -170,7 +170,7 @@ systemctl daemon-reload &>/dev/null || :
 
 %files
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS COPYING README.md
+%doc 00-RELEASENOTES BUGS LICENSE.txt README.md
 %attr(-,%{name},%{name}) %config(noreplace) %{_sysconfdir}/*.conf
 %config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %config(noreplace) %{_sysconfdir}/logrotate.d/sentinel
@@ -192,17 +192,26 @@ systemctl daemon-reload &>/dev/null || :
 
 %files cli
 %defattr(-,root,root,-)
-%doc 00-RELEASENOTES BUGS COPYING README.md
+%doc 00-RELEASENOTES BUGS LICENSE.txt README.md
 %{_bindir}/%{name}-cli
 
 %files devel
-%doc COPYING
+%doc LICENSE.txt
 %defattr(-,root,root,-)
 %{_includedir}/%{name}module.h
 
 ################################################################################
 
 %changelog
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.6-0
+- https://github.com/redis/redis/releases/tag/7.4.6
+
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.5-0
+- https://github.com/redis/redis/releases/tag/7.4.5
+
+* Tue Oct 07 2025 Anton Novojilov <andy@essentialkaos.com> - 7.4.4-0
+- https://github.com/redis/redis/releases/tag/7.4.4
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 7.2.7-0
 - https://github.com/redis/redis/releases/tag/7.2.7
 

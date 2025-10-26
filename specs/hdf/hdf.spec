@@ -8,15 +8,20 @@
 
 ################################################################################
 
+%global ver_base   4.2.16
+%global ver_patch  2
+
+################################################################################
+
 Summary:        A general purpose library and file format for storing scientific data
 Name:           hdf
-Version:        4.2.16
+Version:        %{ver_base}.%{ver_patch}
 Release:        0%{?dist}
 License:        BSD
 Group:          System Environment/Libraries
 URL:            https://portal.hdfgroup.org/display/HDF4/HDF4
 
-Source0:        https://support.hdfgroup.org/ftp/HDF/releases/HDF%{version}/src/%{name}-%{version}.tar.bz2
+Source0:        https://hdf-wordpress-1.s3.amazonaws.com/wp-content/uploads/manual/HDF4/HDF%{ver_base}-%{ver_patch}/src/hdf-%{ver_base}-%{ver_patch}.tar.bz2
 
 Source100:      checksum.sha512
 
@@ -78,7 +83,7 @@ HDF4 static libraries.
 
 %prep
 %crc_check
-%autosetup -p1
+%autosetup -p1 -n %{name}-%{ver_base}-%{ver_patch}
 
 # perfecto:ignore
 chmod a-x *hdf/*/*.c hdf/*/*.h
@@ -177,14 +182,37 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc COPYING README.md release_notes/*.txt
 %exclude %{_defaultdocdir}/%{name}/examples
-%{_bindir}/*
-%exclude %{_bindir}/h4?c*
+%{_bindir}/gif2hdf
+%{_bindir}/h4redeploy
+%{_bindir}/hdf24to8
+%{_bindir}/hdf2gif
+%{_bindir}/hdf2jpeg
+%{_bindir}/hdf8to24
+%{_bindir}/hdfcomp
+%{_bindir}/hdfed
+%{_bindir}/hdfimport
+%{_bindir}/hdfls
+%{_bindir}/hdfpack
+%{_bindir}/hdftopal
+%{_bindir}/hdftor8
+%{_bindir}/hdfunpac
+%{_bindir}/hdiff
+%{_bindir}/hdp
+%{_bindir}/hncdump
+%{_bindir}/hncgen
+%{_bindir}/hrepack
+%{_bindir}/jpeg2hdf
+%{_bindir}/paltohdf
+%{_bindir}/r8tohdf
+%{_bindir}/ristosds
+%{_bindir}/vmake
+%{_bindir}/vshow
 %{_libdir}/*.so.0*
 %{_mandir}/man1/*.gz
 
 %files devel
 %defattr(-,root,root,-)
-%{_bindir}/h4?c*
+%{_bindir}/h4cc
 %{_includedir}/%{name}/
 %{_libdir}/*.so
 %{_libdir}/*.settings
@@ -201,6 +229,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 22 2025 Anton Novojilov <andy@essentialkaos.com> - 4.2.16.2-0
+- Updated to latest stable release
+
 * Wed Sep 27 2023 Anton Novojilov <andy@essentialkaos.com> - 4.2.16-0
 - https://support.hdfgroup.org/ftp/HDF/releases/HDF4.2.16/src/hdf-4.2.16-RELEASE.txt
 

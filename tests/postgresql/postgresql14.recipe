@@ -1,7 +1,7 @@
 # Bibop recipe for PostgreSQL 14
 # See more: https://kaos.sh/bibop
 
-pkg postgresql14-contrib postgresql14-devel postgresql14-docs postgresql14-libs postgresql14-llvmjit postgresql14-plperl postgresql14-plpython3 postgresql14-pltcl postgresql14-server postgresql14-test
+pkg postgresql14-contrib postgresql14-devel postgresql14-docs postgresql14-libs postgresql14-llvmjit postgresql14-plperl postgresql14-plpython3 postgresql14-pltcl postgresql14-server
 
 require-root yes
 unsafe-actions yes
