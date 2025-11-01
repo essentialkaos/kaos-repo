@@ -6,18 +6,18 @@ diff --color -urN goaccess-1.9.2-orig/config/goaccess.conf goaccess-1.9.2/config
  #log-format %h - %e [%d:%t %^] "%r" %s %b "%R" "%u" %^ "%v" "%U" %Lms
  
 +# WEBKAOS basic formats
-+#time-format %T
++#time-format %T %z
 +#date-format %d/%b/%Y
 +# -- WEBKAOS | main
-+#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%R" "%u" "%~h"
++#log-format [%^] %h - %e [%d:%t] "%r" %s %b "%R" "%u" "%~h"
 +# -- WEBKAOS | extended
-+#log-format [%^] %h - [%d:%t %^] "%r" %s %b "%~h" "%R" %v %T %^ %^ - %^
++#log-format [%^] %h - [%d:%t] "%r" %s %b "%~h" "%R" %v %T %^ %^ - %^
 +# -- WEBKAOS | reflog
-+#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%R" "%u"
++#log-format [%^] %h - %e [%d:%t] "%r" %s %b "%R" "%u"
 +# -- WEBKAOS | timed_combined
-+#log-format [%^] %h - %e [%d:%t %^] "%r" %s %b "%^" %v "%R" "%u" %T %^
++#log-format [%^] %h - %e [%d:%t] "%r" %s %b "%^" %v "%R" "%u" %T %^
 +# -- WEBKAOS | vhost_ip_full_format
-+#log-format [%^] %h - %e [%d:%t %^] %v %^ %r %s %b "%R" "%u" "%~h" %T %^
++#log-format [%^] %h - %e [%d:%t] %v %^ %r %s %b "%R" "%u" "%~h" %T %^
 +
  # In addition to specifying the raw log/date/time formats, for
  # simplicity, any of the following predefined log format names can be
