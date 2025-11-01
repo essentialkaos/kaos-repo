@@ -1,6 +1,7 @@
 [kaos-testing]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for EL$releasever - $basearch
 baseurl=https://pkgs.kaos.st/$releasever/testing/$basearch
+username=anonymous
 priority=1
 enabled=0
 gpgcheck=1
@@ -10,6 +11,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 [kaos-testing-src]
 name=ESSENTIAL KAOS Testing (Unstable) Repo for EL$releasever - $basearch
 baseurl=https://pkgs.kaos.st/$releasever/testing/SRPMS
+username=anonymous
 priority=1
 enabled=0
 gpgcheck=1
