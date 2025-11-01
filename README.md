@@ -6,6 +6,9 @@
 
 This repository contains spec files and patches used for building RPM packages for [EK Public Repository](https://pkgs.kaos.st).
 
+> [!IMPORTANT]
+> **Due to the malicious actions of some users, crawlers and AI scrapers, bandwidth to the public repository is limited. However, if you wish to use the repository in your infrastructure, please create a [new issue ticket](https://github.com/essentialkaos/kaos-repo/issues/new) and we will provide you with unique credentials for repository access with higher bandwidth limits.**
+
 ### Installation
 
 ```bash

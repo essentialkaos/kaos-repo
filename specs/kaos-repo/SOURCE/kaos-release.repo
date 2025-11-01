@@ -1,6 +1,7 @@
 [kaos-release]
 name=ESSENTIAL KAOS Release (Stable) Repo for EL$releasever - $basearch
 baseurl=https://pkgs.kaos.st/$releasever/release/$basearch
+username=anonymous
 priority=1
 enabled=1
 gpgcheck=1
@@ -10,6 +11,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ESSENTIALKAOS
 [kaos-release-src]
 name=ESSENTIAL KAOS Release (Stable) Repo for EL$releasever - $basearch
 baseurl=https://pkgs.kaos.st/$releasever/release/SRPMS
+username=anonymous
 priority=1
 enabled=0
 gpgcheck=1
