@@ -47,6 +47,13 @@ sudo dnf config-manager --set-enabled ol9_codeready_builder
 sudo dnf config-manager --set-enabled ol10_codeready_builder
 ```
 
+#### Update credentials using `config-manager`
+
+```bash
+sudo dnf config-manager --save --setopt=kaos-release.username=my_unique_credentials
+sudo dnf config-manager --save --setopt=kaos-testing.username=my_unique_credentials
+```
+
 ### Contributing Guidelines
 
 If you want to add a new package to the repository, be ready to look after it. It's physically impossible to maintain and keep fresh a large number of packages, especially if you don't use them somewhere.
