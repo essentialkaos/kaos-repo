@@ -31,13 +31,13 @@
 
 Summary:        The Go Programming Language
 Name:           golang
-Version:        1.25.4
+Version:        1.25.5
 Release:        0%{?dist}
 License:        BSD
 Group:          Development/Languages
 URL:            https://go.dev
 
-Source0:        https://storage.googleapis.com/%{name}/go%{version}.src.tar.gz
+Source0:        https://go.dev/dl/go%{version}.src.tar.gz
 Source10:       %{name}-gdbinit
 Source11:       %{name}-prelink.conf
 
@@ -230,6 +230,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Tue Dec 02 2025 Anton Novojilov <andy@essentialkaos.com> - 1.25.5-0
+- https://github.com/golang/go/issues?q=milestone:Go1.25.5+label:CherryPickApproved
+
 * Thu Nov 06 2025 Anton Novojilov <andy@essentialkaos.com> - 1.25.4-0
 - https://github.com/golang/go/issues?q=milestone:Go1.25.4+label:CherryPickApproved
 
