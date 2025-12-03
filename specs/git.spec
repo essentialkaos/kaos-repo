@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.51.1
+Version:        2.52.0
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -242,6 +242,7 @@ rm -rf %{buildroot}
 %{_libexecdir}/git-core/git-gui
 %{_libexecdir}/git-core/git-citool
 %{_libexecdir}/git-core/git-gui--askpass
+%{_libexecdir}/git-core/git-gui--askyesno
 %{_datadir}/git-gui/
 %{_mandir}/man1/git-gui.1*
 %{_mandir}/man1/git-citool.1*
@@ -271,6 +272,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Dec 03 2025 Anton Novojilov <andy@essentialkaos.com> - 2.52.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.52.0.adoc
+
+* Wed Dec 03 2025 Anton Novojilov <andy@essentialkaos.com> - 2.51.2-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.51.2.adoc
+
 * Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 2.51.1-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.51.1.adoc
 
