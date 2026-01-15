@@ -6,7 +6,7 @@
 
 Summary:    Security auditing and hardening tool
 Name:       lynis
-Version:    3.1.5
+Version:    3.1.6
 Release:    0%{?dist}
 License:    GPLv3
 Group:      Development/Tools
@@ -75,6 +75,20 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Jan 15 2026 Anton Novojilov <andy@essentialkaos.com> - 3.1.6-0
+- Add notice to screen output if end-of-life state is unclear
+- Support for CachyOS, macOS Tahoe, and OpenMandriva Lx
+- Releases are now considered to be old if they are 6 months or older
+- Removed generic suggestion for outdated/old Lynis release, instead show to
+  screen output
+- Generic clarifications on variable usage for operating system and its version
+- Updated end-of-life database
+- Updated Japanese translation
+- For Debian and similar systems ignore kernel packages with 'rc' state
+- ACCT-9634 - Define default auditd log file location
+- FIRE-4586 - Also accept NFLOG as a logging target for iptables
+- MALW-3280 - Adjusted detection of Wazuh agent
+
 * Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 3.1.5-0
 - Support for OpenWrt
 - Bitdefender detection on Linux
