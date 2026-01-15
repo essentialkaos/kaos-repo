@@ -10,7 +10,7 @@
 
 Summary:        A highly-available key value store for shared configuration
 Name:           etcd
-Version:        3.6.2
+Version:        3.6.7
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        APLv2
@@ -91,6 +91,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jan 16 2026 Anton Novojilov <andy@essentialkaos.com> - 3.6.7-0
+- https://github.com/etcd-io/etcd/releases/tag/v3.6.7
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 3.6.2-0
 - https://github.com/etcd-io/etcd/releases/tag/v3.6.2
 
