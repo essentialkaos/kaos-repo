@@ -6,8 +6,8 @@
 
 Summary:        Real-time web log analyzer and interactive viewer
 Name:           goaccess
-Version:        1.9.4
-Release:        1%{?dist}
+Version:        1.10.1
+Release:        0%{?dist}
 Group:          Development/Tools
 License:        GPLv2+
 URL:            https://goaccess.io
@@ -23,6 +23,12 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc libmaxminddb-devel glib2-devel ncurses-devel
 BuildRequires:  openssl-devel gettext-devel gettext-devel
+
+%if 0%{?rhel} == 10
+BuildRequires:  zlib-ng-compat-devel
+%else
+BuildRequires:  zlib-devel
+%endif
 
 Requires:       openssl libmaxminddb
 
@@ -45,6 +51,7 @@ for system administrators that require a visual server report on the fly.
 %configure --enable-utf8 \
            --with-openssl \
            --with-getline \
+           --with-zlib \
            --enable-geoip=mmdb
 
 %{__make} %{?_smp_mflags}
@@ -73,6 +80,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
+- https://goaccess.io/release-notes#release-1.10.1
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10-0
+- https://goaccess.io/release-notes#release-1.10
+
 * Wed Aug 06 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.4-1
 - Improved default configuration
 
