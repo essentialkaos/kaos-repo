@@ -10,7 +10,7 @@
 
 Summary:        Small build system with a focus on speed
 Name:           ninja-build
-Version:        1.13.1
+Version:        1.13.2
 Release:        0%{?dist}
 License:        ASL 2.0
 Group:          Development/Tools
@@ -44,7 +44,7 @@ fast as possible.
 
 %build
 cmake -B build
-cmake --build build
+cmake --build build --parallel %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
@@ -72,6 +72,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 1.13.2-0
+- https://github.com/ninja-build/ninja/releases/tag/v1.13.2
+
 * Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 1.13.1-0
 - https://github.com/ninja-build/ninja/releases/tag/v1.13.1
 
