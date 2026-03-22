@@ -17,13 +17,13 @@
 
 Summary:    Java project management and project comprehension tool
 Name:       maven
-Version:    3.9.11
+Version:    3.9.14
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    ASL 2.0 and MIT
 URL:        https://maven.apache.org
 
-Source0:    https://mirror.linux-ia64.org/apache/%{name}/%{name}-%{pkg_major_ver}/%{version}/binaries/apache-%{name}-%{version}-bin.tar.gz
+Source0:    https://dlcdn.apache.org/maven/maven-3/%{version}/binaries/apache-maven-%{version}-bin.tar.gz
 Source1:    %{name}-bash-completion
 
 Source100:  checksum.sha512
@@ -128,6 +128,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.9.14-0
+- https://maven.apache.org/docs/3.9.14/release-notes.html
+
 * Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 3.9.11-0
 - https://maven.apache.org/docs/3.9.11/release-notes.html
 
