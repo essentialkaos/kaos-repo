@@ -18,15 +18,15 @@
 
 %define lua_ver       5.4.8
 %define pcre_ver      10.47
-%define openssl_ver   3.3.5
-%define ncurses_ver   6.5
+%define openssl_ver   3.4.4
+%define ncurses_ver   6.6
 %define readline_ver  8.3
 
 ################################################################################
 
 Name:           haproxy%{comp_ver}
 Summary:        TCP/HTTP reverse proxy for high availability environments
-Version:        3.0.12
+Version:        3.0.19
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://www.haproxy.org
@@ -105,6 +105,8 @@ pushd ncurses-%{ncurses_ver}
   ./configure --prefix=$(pwd)/build --enable-shared=no
   %{__make} %{?_smp_mflags}
   %{__make} install
+  ln -sf libncursesw.a build/lib/libncurses.a
+  ln -sf libncursesw.a build/lib/libtinfo.a
 popd
 
 # Static readline build
@@ -221,6 +223,249 @@ fi
 ################################################################################
 
 %changelog
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.19-0
+- MINOR: mworker/cli: extract worker "show proc" row printer
+- BUG/MINOR: mworker/cli: fix show proc pagination losing entries on resume
+- CI: github: treat vX.Y.Z release tags as stable like haproxy-* branches
+- BUG/MINOR: tcpcheck: Fix typo in error error message for `http-check
+  expect`
+- DOC: configuration: http-check expect example typo
+- BUG/MINOR: memprof: avoid a small memory leak in "show profiling"
+- MINOR: tools: extend the pointer hashing code to ease manipulations
+- MINOR: memprof: attempt different retry slots for different hashes on
+  collision
+- BUG/MINOR: mworker: fix typo &= instead of & in proc list serialization
+- BUG/MINOR: sockpair: set FD_CLOEXEC on fd received via SCM_RIGHTS
+- BUG/MINOR: h2/h3: Only test number of trailers inserted in HTX message
+- MINOR: htx: Add function to truncate all blocks after a specific block
+- BUG/MINOR: h2/h3: Never insert partial headers/trailers in an HTX message
+- BUG/MINOR: http-ana: Swap L7 buffer with request buffer by hand
+- BUG/MINOR: stream: Fix crash in stream dump if the current rule has no
+  keyword
+- BUG/MINOR: mjson: make mystrtod() length-aware to prevent out-of-bounds
+  reads
+- BUG/MEDIUM: peers: enforce check on incoming table key type
+- BUG/MINOR: mux-h2: properly ignore R bit in GOAWAY stream ID
+- BUG/MINOR: mux-h2: properly ignore R bit in WINDOW_UPDATE increments
+- BUG/MAJOR: h3: check body size with content-length on empty FIN
+- BUG/MEDIUM: h3: reject unaligned frames except DATA
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.18-0
+- BUG/MEDIUM: mux-h2: make sure to always report pending errors to the stream
+- BUG/MINOR: promex: fix server iteration when last server is deleted
+- BUG/MEDIUM: hpack: correctly deal with too large decoded numbers
+- BUG/MAJOR: qpack: unchecked length passed to huffman decoder
+- BUG/MINOR: qpack: fix 1-byte OOB read in qpack_decode_fs_pfx()
+- BUG/MEDIUM: qpack: correctly deal with too large decoded numbers
+- BUG/MINOR: h1-htx: Be sure that H1 response version starts by "HTTP/"
+- BUG/MAJOR: fcgi: Fix param decoding by properly checking its size
+- BUG/MAJOR: resolvers: Properly lowered the names found in DNS response
+- BUG/MEDIUM: mux-fcgi: Use a safe loop to resume each stream eligible for
+  sending
+- BUG/MINOR: ssl-sample: Fix sample_conv_sha2() by checking EVP_Digest*
+  failures
+- BUG/MINOR: backend: Don't get proto to use for webscoket if there is no
+  server
+- SCRIPTS: git-show-backports: hide the common ancestor warning in quiet mode
+- SCRIPTS: git-show-backports: add a restart-from-last option
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.17-0
+- DOC: proxy-proto: underline the packed attribute for struct pp2_tlv_ssl
+- BUG/MINOR: deviceatlas: add missing return on error in config parsers
+- BUG/MINOR: deviceatlas: add NULL checks on strdup() results in config
+  parsers
+- BUG/MEDIUM: deviceatlas: fix resource leaks on init error paths
+- BUG/MINOR: deviceatlas: fix off-by-one in da_haproxy_conv()
+- BUG/MINOR: deviceatlas: fix cookie vlen using wrong length after extraction
+- BUG/MINOR: deviceatlas: fix double-checked locking race in checkinst
+- BUG/MINOR: deviceatlas: fix resource leak on hot-reload compile failure
+- BUG/MINOR: deviceatlas: fix deinit to only finalize when initialized
+- BUG/MINOR: deviceatlas: set cache_size on hot-reloaded atlas instance
+- BUG/MAJOR: Revert "MEDIUM: mux-quic: add BUG_ON if sending on locally closed
+  QCS"
+- BUG/MEDIUM: h3: reject frontend CONNECT as currently not implemented
+- BUG/MEDIUM: mux-h2/quic: Stop sending via fast-forward if stream is closed
+- BUG/MEDIUM: mux-h1: Stop sending vi fast-forward for unexpected states
+- BUG/MEDIUM: applet: Fix test on shut flags for legacy applets (v2)
+- BUG/MINOR: flt-trace: Properly compute length of the first DATA block
+- BUG/MINOR: http-ana: Stop to wait for body on client error/abort
+- MINOR: stconn: Add missing SC_FL_NO_FASTFWD flag in sc_show_flags
+- CI: vtest: move the vtest2 URL to vinyl-cache.org
+- CI: github: disable windows.yml by default on unofficials repo
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.16-0
+- MINOR: ssl: Add a function to hash SNIs
+- MINOR: ssl: Store hash of the SNI for cached TLS sessions
+- MINOR: ssl: Compare hashes instead of SNIs when a session is cached
+- MINOR: connection/ssl: Store the SNI hash value in the connection itself
+- MEDIUM: tcpcheck/backend: Get the connection SNI before initializing SSL
+  ctx
+- BUG/MEDIUM: ssl: Don't reuse TLS session if the connection's SNI differs
+- MEDIUM: ssl/server: No longer store the SNI of cached TLS sessions
+- MINOR: connections: Add a new CO_FL_SSL_NO_CACHED_INFO flag
+- BUG/MEDIUM: ssl: Don't resume session for check connections
+- BUG/MINOR: sock-inet: ignore conntrack for transparent sockets on Linux
+- BUG/MEDIUM: mux-h2: synchronize all conditions to create a new backend
+  stream
+- BUG/MAJOR: applet: Don't call I/O handler if the applet was shut
+- BUG/MEDIUM: applet: Fix test on shut flags for legacy applets
+- BUG/MEDIUM: threads: Atomically set TH_FL_SLEEPING and clr FL_NOTIFIED
+- CLEANUP: haproxy: fix bad line wrapping in run_poll_loop()
+- BUG/MEDIUM: lb-chash: always properly initialize lb_nodes with dynamic
+  servers
+- DOC: config: mention the limitation on server id range for consistent hash
+- BUG/MAJOR: quic: reject invalid token
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.15-0
+- BUG/MEDIUM: http-ana: Properly detect client abort when forwarding response
+  (v2)
+- BUG/MEDIUM: stconn: Don't report abort from SC if read0 was already
+  received
+- BUG/MEDIUM: resolvers: Properly cache do-resolv resolution
+- BUG/MINOR: resolvers: Restore round-robin selection on records in DNS
+  answers
+- BUG/MEDIUM: resolvers: Test for empty tree when getting a record from DNS
+  answer
+- BUG/MEDIUM: resolvers: Make resolution owns its hostname_dn value
+- BUG/MEDIUM: resolvers: Accept to create resolution without hostname
+- BUG/MEDIUM: resolvers: Wake resolver task up whne unlinking a stream
+  requester
+- MINOR: muxes: Support an optional ALPN string when defining mux protocols
+- MINOR: config: Do proto detection for listeners before checks about ALPN
+- BUG/MEDIUM: config: Use the mux protocol ALPN by default for listeners if
+  forced
+- BUG/MEDIUM: resolvers: break an infinite loop in resolv_get_ip_from_response
+  ()
+- BUG/MINOR: resolvers: ensure fair round robin iteration
+- MEDIUM: h1: Immediately try to read data for frontend
+- BUG/MINOR: backend: fix the conn_retries check for TFO
+- BUG/MINOR: backend: inspect request not response buffer to check for TFO
+- BUILD: ssl: strchr definition changed in C23
+- BUG/MINOR: cfgparse: wrong section name upon error
+- BUG/MINOR: cli/stick-tables: argument to "show table" is optional
+- REGTESTS: ssl: Fix reg-tests curve check
+- MINOR: cfgparse: remove duplicate "force-persist" in common kw list
+- BUG/MEDIUM: quic: fix ACK ECN frame parsing
+- BUG/MINOR: http_act: fix deinit performed on uninitialized lf_expr in
+  release_http_map()
+- BUG/MINOR: proxy: free persist_rules
+- BUG/MINOR: cfgparse: fix "default" prefix parsing
+- BUG/MEDIUM: promex: server iteration may rely on stale server
+- BUG/MEDIUM: ssl: fix error path on generate-certificates
+- BUG/MEDIUM: ssl: fix generate-certificates option when SNI greater than
+  64bytes
+- REGTESTS: ssl: fix generate-certificates w/ LibreSSL
+- BUG/MEDIUM: hlua: fix invalid lua_pcall() usage in hlua_traceback()
+- BUG/MINOR: hlua: consume error object if ignored after a failing lua_pcall
+  ()
+- BUG/MINOR: promex: Detach promex from the server on error dump its metrics
+  dump
+- BUG/MEDIUM: mux-h1: Skip UNUSED htx block when formating the start line
+- MINOR: ssl: allow to disable certificate compression
+- BUG/MINOR: ssl: fix error message of tune.ssl.certificate-compression
+- CLEANUP: mworker/cli: remove useless variable
+- MINOR: mworker/cli: add 'debug' to 'show proc'
+- MINOR: mworker/cli: remove comment line for program when useless
+- MINOR: mworker/cli: 'show proc debug' for old workers
+- BUG/MINOR: mworker/cli: 'show proc' is limited by buffer size
+- BUG/MINOR: mworker/cli: fix show proc pagination using reload counter
+- DOC: reg-tests: update VTest upstream link in the starting guide
+- BUG/MINOR: config: check capture pool creations for failures
+- BUG/MEDIUM: debug: only dump Lua state when panicking
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.14-0
+- Revert "BUG/MEDIUM: cli: State the cli have no more data to deliver if it
+  yields"
+
+* Sat Mar 21 2026 Anton Novojilov <andy@essentialkaos.com> - 3.0.13-0
+- MINOR: ssl: diagnostic warning when both 'default-crt' and 'strict-sni' are
+  used
+- BUG/MINOr: hlua: Fix receive from HTTP applet by properly accounting data
+- BUG/MEDIUM: ssl: take care of second client hello
+- BUG/MINOR: ssl: always clear the remains of the first hello for the second
+  one
+- BUILD: makefile: disable tail calls optimizations with memory profiling
+- BUG/MEDIUM: apppet: Improve spinning loop detection with the new API
+- MINOR: sink: Remove useless test on SE_FL_SHR/SHW flags
+- BUG/MINOR: sink: retry attempt for sft server may never occur
+- BUG/MINOR: ssl: Free global_ssl structure contents during deinit
+- BUG/MINOR: ssl: Free key_base from global_ssl structure during deinit
+- BUG/MAJOR: lb-chash: fix key calculation when using default hash-key id
+- BUILD: ssl: can't build when using -DLISTEN_DEFAULT_CIPHERS
+- BUG/MINOR: quic: too short PADDING frame for too short packets
+- MINOR: quic: restore QUIC_HP_SAMPLE_LEN constant
+- BUG/MEDIUM: h3: do not overwrite interim with final response
+- BUG/MINOR: h3: ensure that invalid status code are not encoded (FE side)
+- MINOR: qmux: change API for snd_buf FIN transmission
+- BUG/MEDIUM: h3: handle interim response properly on FE side
+- BUG/MINOR: quic: don't coalesce probing and ACK packet of same type
+- BUG/MINOR mux-quic: apply correctly timeout on output pending data
+- BUG/MEDIUM: stick-tables: Don't forget to dec count on failure.
+- BUG/MINOR: quic: check applet_putchk() for 'show quic' first line
+- BUG/MAJOR: quic: uninitialized quic_conn_closed struct members
+- BUG/MEDIUM: h3: properly encode response after interim one in same buf
+- MINOR: ncbuf: extract common types
+- MINOR: ncbmbuf: define new ncbmbuf type
+- MINOR: ncbmbuf: implement add
+- MINOR: ncbmbuf: implement iterator bitmap utilities functions
+- MINOR: ncbmbuf: implement ncbmb_data()
+- MINOR: ncbmbuf: implement advance operation
+- MINOR: ncbmbuf: add tests as standalone mode
+- BUG/MAJOR: quic: use ncbmbuf for CRYPTO handling
+- BUG/MEDIUM: build: limit excessive and counter-productive gcc-15
+  vectorization
+- BUG/MEDIUM: applet: Improve again spinning loops detection with the new API
+- BUG/MINOR: stick-tables: properly index string-type keys
+- MINOR: applet: do not put SE_FL_WANT_ROOM on rcv_buf() if the channel is
+  empty
+- MINOR: cli: create cli_raw_rcv_buf() from the generic applet_raw_rcv_buf()
+- BUG/MEDIUM: cli: do not return ACKs one char at a time
+- BUG/MEDIUM: mworker/listener: ambiguous use of RX_F_INHERITED with shards
+- BUG/MEDIUM: ssl: Crash because of dangling ckch_store reference in a ckch
+  instance
+- DOC: config: slightly clarify the ssl_fc_has_early() behavior
+- MINOR: http: fix 405,431,501 default errorfile
+- BUG/MINOR: init: Do not close previously created fd in stdio_quiet
+- BUG/MINOR: ssl: returns when SSL_CTX_new failed during init
+- BUG/MEDIUM: mux-h2: make sure not to move a dead connection to idle
+- BUG/MEDIUM: connection: do not reinsert a purgeable conn in idle list
+- BUG/MEDIUM: connection/ssl: also fix the ssl_sock_io_cb() regarding idle
+  list
+- BUG/MINOR: config: Limit "tune.maxpollevents" parameter to 1000000
+- BUG/MINOR: quic: close connection on CID alloc failure
+- DOC: configuration: add missing ssllib_name_startswith()
+- DOC: configuration: add missing openssl_version predicates
+- BUG/MEDIUM: stick-tables: Always return the good stksess from
+  stktable_set_entry
+- BUG/MINOR: stick-tables: Fix return value for __stksess_kill()
+- MINOR: h1: h1_release() should return if it destroyed the connection
+- BUG/MEDIUM: h1: prevent a crash on HTTP/2 upgrade
+- BUG/MINOR: ssl: remove dead code in ssl_sock_from_buf()
+- DOC: http: document 413 response code
+- MEDIUM: dns: bind the nameserver sockets to the initiating thread
+- MEDIUM: resolvers: make the process_resolvers() task single-threaded
+- MINOR: mux-quic: refactor wait-for-handshake support
+- BUG/MEDIUM: mux-quic: ensure Early-data header is set
+- BUG/MINOR: mux-quic: ensure close-spread-time is properly applied
+- BUG/MEDIUM: mux-quic: adjust wakeup behavior
+- BUG/MEDIUM: h1-htx: Don't set HTX_FL_EOM flag on 1xx informational messages
+- BUG/MINOR: http-ana: Reset analyse_exp date after 'wait-for-body' action
+- BUG/MEDIUM: applet: Fix conditions to detect spinning loop with the new API
+- BUG/MEDIUM: cli: State the cli have no more data to deliver if it yields
+- BUG/MINOR: jwt: Missing "case" in switch statement
+- BUG/MEDIUM: connection: fix "bc_settings_streams_limit" typo
+- DOC: config: mention clearer that the cache's total-max-size is mandatory
+- DOC: config: reorder the cache section's keywords
+- MINOR: quic: Add useful debugging traces in qc_idle_timer_do_rearm()
+- BUG/MINOR: ssl: Don't allow to set NULL sni
+- BUG/MEDIUM: http-ana: Don't close server connection on read0 in TUNNEL mode
+- BUG/MINOR: quic: do not set first the default QUIC curves
+- MINOR: ssl: change visibility of ssl_stats_module
+- BUG/MINOR: quic: SSL counters not handled
+- BUG/MINOR: cfgparse-listen: update err_code for fatal error on proxy
+  directive
+- BUG/MEDIUM: quic: Don't try to use hystart if not implemented
+
 * Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 3.0.12-0
 - BUG/MEDIUM: peers: also limit the number of incoming updates
 - BUG/MINOR: mux-quic: do not decode if conn in error
