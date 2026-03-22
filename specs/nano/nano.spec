@@ -14,7 +14,7 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          8.6
+Version:          8.7.1
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
@@ -110,6 +110,14 @@ fi
 ################################################################################
 
 %changelog
+* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 8.7.1-0
+- A build failure when compiling against glibc-2.43 is fixed
+
+* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 8.7-0
+- At the Execute prompt, preceding the command with two pipe symbols
+  allows implementing a copy-to-clipboard feature in your nanorc (on
+  terminals that support OSC 52). See the doc/sample.nanorc file.
+
 * Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 8.6-0
 - The GotoLine menu accepts the prefixes ++ and -- for jumping
   a number of lines forward or backward.
