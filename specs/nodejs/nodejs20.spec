@@ -16,7 +16,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs20
-Version:        20.19.5
+Version:        20.20.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -109,6 +109,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 20.20.1-0
+- https://nodejs.org/en/blog/release/v20.20.1
+
 * Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 20.19.5-0
 - https://nodejs.org/en/blog/release/v20.19.5
 

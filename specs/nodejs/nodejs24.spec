@@ -17,8 +17,8 @@
 ################################################################################
 
 Summary:        Platform for server side programming on JavaScript
-Name:           nodejs22
-Version:        22.22.1
+Name:           nodejs24
+Version:        24.14.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -35,7 +35,7 @@ BuildRequires:  gcc-c++ libstdc++-devel
 
 Requires:       zlib
 
-Conflicts:      nodejs20 nodejs24
+Conflicts:      nodejs20 nodejs22
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{shortname} = %{version}-%{release}
@@ -111,20 +111,5 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
-* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 22.22.1-0
-- https://nodejs.org/en/blog/release/v22.22.1
-
-* Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 22.20.0-0
-- https://nodejs.org/en/blog/release/v22.20.0
-
-* Tue Aug 26 2025 Anton Novojilov <andy@essentialkaos.com> - 22.18.0-0
-- https://nodejs.org/en/blog/release/v22.18.0
-
-* Wed Jul 30 2025 Anton Novojilov <andy@essentialkaos.com> - 22.17.1-0
-- https://nodejs.org/en/blog/release/v22.17.1
-
-* Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 22.14.0-0
-- https://nodejs.org/en/blog/release/v22.14.0
-
-* Sat Jan 25 2025 Anton Novojilov <andy@essentialkaos.com> - 22.13.1-0
-- https://nodejs.org/en/blog/release/v22.13.1
+* Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 24.14.0-0
+- https://nodejs.org/en/blog/release/v24.14.0
