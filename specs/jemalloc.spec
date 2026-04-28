@@ -10,7 +10,7 @@
 
 Summary:        General-purpose scalable concurrent malloc implementation
 Name:           jemalloc
-Version:        5.3.0
+Version:        5.3.1
 Release:        0%{?dist}
 Group:          System Environment/Libraries
 License:        BSD
@@ -115,6 +115,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Apr 15 2026 Anton Novojilov <andy@essentialkaos.com> - 5.3.1-0
+- https://github.com/jemalloc/jemalloc/releases/tag/5.3.1
+
 * Sun Dec 11 2022 Anton Novojilov <andy@essentialkaos.com> - 5.3.0-0
 - https://github.com/jemalloc/jemalloc/releases/tag/5.3.0
 
