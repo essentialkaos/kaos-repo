@@ -12,7 +12,7 @@ This repository contains spec files and patches used for building RPM packages f
 ### Installation
 
 ```bash
-sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(grep 'CPE_NAME' /etc/os-release | tr -d '"' | cut -d':' -f5).noarch.rpm
+sudo dnf install -y https://pkgs.kaos.st/kaos-repo-latest.el$(rpm -E '%{rhel}').noarch.rpm
 ```
 
 Some packages have dependencies from [EPEL](https://fedoraproject.org/wiki/EPEL) repository. You could add this repository by following commands:
