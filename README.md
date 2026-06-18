@@ -72,7 +72,7 @@ We keep at least the last 5 minor versions (_with all releases_) of each package
 
 | EL version | Updates     | Repository removal |
 |------------|-------------|--------------------|
-| `8.x`      | 1 Jun 2025  | 31 Dec 2025        |
+| `8.x`      | 1 Jun 2026  | 31 Dec 2026        |
 | `9.x`      | 1 Sep 2027  | 31 Dec 2027        |
 | `10.x`     | 1 Sep 2030  | 31 Dec 2030        |
 
