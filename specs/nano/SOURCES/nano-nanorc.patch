@@ -1,7 +1,7 @@
-diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.in
---- nano-8.2-orig/doc/sample.nanorc.in	2024-09-05 12:29:01.000000000 +0300
-+++ nano-8.2/doc/sample.nanorc.in	2025-01-25 22:05:25.000000000 +0300
-@@ -34,7 +34,7 @@
+diff --color -urN nano-9.0-orig/doc/sample.nanorc.in nano-9.0/doc/sample.nanorc.in
+--- nano-9.0-orig/doc/sample.nanorc.in	2026-03-15 13:31:07.000000000 +0300
++++ nano-9.0/doc/sample.nanorc.in	2026-06-18 13:03:18.000000000 +0300
+@@ -38,7 +38,7 @@
  # set backupdir ""
  
  ## Use bold text instead of reverse video text.
@@ -10,7 +10,7 @@ diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.
  
  ## Treat any line with leading whitespace as the beginning of a paragraph.
  # set bookstyle
-@@ -76,13 +76,13 @@
+@@ -80,13 +80,13 @@
  # set historylog
  
  ## Display a "scrollbar" on the righthand side of the edit window.
@@ -24,9 +24,9 @@ diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.
 -# set linenumbers
 +set linenumbers
  
- ## Enable vim-style lock-files.  This is just to let a vim user know you
- ## are editing a file [s]he is trying to edit and vice versa.  There are
-@@ -95,7 +95,7 @@
+ ## Let other users (of nano or vim) know that you are editing the file
+ ## they are trying to edit, and the other way around.
+@@ -98,7 +98,7 @@
  ## The opening and closing brackets that are found by a matching-bracket
  ## search.  This may not contain blank characters.  The opening brackets
  ## must come before the closing ones, and they must be in the same order.
@@ -35,12 +35,15 @@ diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.
  
  ## Suppress the title bar and show the filename plus a cursor-position
  ## percentage in the space of the status bar.
-@@ -170,18 +170,18 @@
+@@ -173,21 +173,21 @@
  # set smarthome
  
  ## Spread overlong lines over multiple screen lines.
 -# set softwrap
 +set softwrap
+ 
+ ## Scroll only the current line sideways (instead of all lines).
+ # set solosidescroll
  
  ## Use this spelling checker instead of the internal one.  This option
  ## does not have a default value.
@@ -57,7 +60,7 @@ diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.
  
  ## Convert each typed tab to the fitting number of spaces.
  # set tabstospaces
-@@ -244,6 +244,14 @@
+@@ -250,6 +250,14 @@
  # set keycolor lightmagenta
  # set functioncolor magenta
  
@@ -72,7 +75,7 @@ diff --color -urN nano-8.2-orig/doc/sample.nanorc.in nano-8.2/doc/sample.nanorc.
  
  ## === Syntax coloring ===
  ## For all details, see 'man nanorc', section SYNTAX HIGHLIGHTING.
-@@ -256,6 +264,8 @@
+@@ -262,6 +270,8 @@
  # include @PKGDATADIR@/python.nanorc
  # include @PKGDATADIR@/sh.nanorc
  

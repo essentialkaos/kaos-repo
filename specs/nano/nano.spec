@@ -14,13 +14,13 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          8.7.1
+Version:          9.0
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
 URL:              https://www.nano-editor.org
 
-Source0:          https://www.nano-editor.org/dist/v8/%{name}-%{version}.tar.xz
+Source0:          https://www.nano-editor.org/dist/v9/%{name}-%{version}.tar.xz
 Source1:          https://kaos.sh/blackhole-theme-nano/%{ek_theme_version}.tar.gz
 
 Source100:        checksum.sha512
@@ -110,6 +110,22 @@ fi
 ################################################################################
 
 %changelog
+* Thu Jun 18 2026 Anton Novojilov <andy@essentialkaos.com> - 9.0-0
+- When the cursor almost goes offscreen to the right, all lines are
+  now scrolled sideways together, by just the amount needed to keep
+  the cursor in view. Use --solosidescroll or 'set solosidescroll'
+  to get back the old, jerky, single-line horizontal scrolling.
+- The viewport can be scrolled sideways (in steps of one tabsize)
+  with M-< and M->. See `man nanorc` if M-< and M-> should switch
+  between buffers (as they did earlier).
+- M-Left, M-Right, M-Up, and M-Down have become rebindable.
+- Stopping the recording of a macro immediately after starting it
+  cancels the recording and leaves an existing macro in place.
+- Feature toggles no longer break a chain of ^K cuts or M-6 copies,
+  except the M-K cut-from-cursor toggle.
+- With --mouse plus --indicator, one can click in the scrollbar area
+  to roughly navigate within the buffer.
+
 * Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 8.7.1-0
 - A build failure when compiling against glibc-2.43 is fixed
 
