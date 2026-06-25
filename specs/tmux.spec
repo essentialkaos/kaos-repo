@@ -6,7 +6,7 @@
 
 Summary:        A terminal multiplexer
 Name:           tmux
-Version:        3.6a
+Version:        3.6b
 Release:        0%{?dist}
 License:        ISC and BSD
 Group:          Applications/System
@@ -71,6 +71,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 3.6b-0
+- https://raw.githubusercontent.com/tmux/tmux/3.6b/CHANGES
+
 * Thu Jan 15 2026 Anton Novojilov <andy@essentialkaos.com> - 3.6a-0
 - https://raw.githubusercontent.com/tmux/tmux/3.6a/CHANGES
 
