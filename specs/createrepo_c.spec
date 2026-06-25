@@ -11,17 +11,13 @@
 %global python_base  python3
 %global __python3  %{_bindir}/python3
 
-%global python_ver %(%{__python3} -c "import sys; print('{0}.{1}'.format(sys.version_info.major,sys.version_info.minor))" 2>/dev/null || echo 0.0)
 %{!?python3_sitearch: %global python3_sitearch %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(plat_specific=True))" 2>/dev/null)}
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())" 2>/dev/null)}
-%{!?python3_lib: %global python3_lib %(%{__python3} -c "import distutils.sysconfig as sysconfig; print(sysconfig.get_config_var('LIBDIR'))" 2>/dev/null)}
-%{!?python3_inc: %global python3_inc %(%{__python3} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())" 2>/dev/null)}
 
 ################################################################################
 
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
-Version:        1.2.1
+Version:        1.2.4
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Development/Tools
@@ -119,8 +115,6 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
       -DLIB_INSTALL_DIR:PATH=%{_libdir} \
       -DSYSCONF_INSTALL_DIR:PATH=%{_sysconfdir} \
       -DSHARE_INSTALL_PREFIX:PATH=%{_datadir} \
-      -DPYTHON_LIBRARY:PATH=%{python3_lib} \
-      -DPYTHON_INCLUDE_DIR:PATH=%{python3_inc} \
       -DENABLE_DRPM:BOOL=ON \
       -DWITH_ZCHUNK:BOOL=ON \
 %if %{?_with_sanitizers:1}%{?_without_sanitizers:0}
@@ -182,12 +176,21 @@ rm -rf %{buildroot}
 
 %files -n %{python_base}-%{name}
 %defattr(-,root,root,-)
-%{python3_sitearch}/*.egg-info
+%{python3_sitearch}/*.dist-info/*
 %{python3_sitearch}/createrepo_c/
 
 ################################################################################
 
 %changelog
+* Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 1.2.4-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.2.3...1.2.4
+
+* Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 1.2.3-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.2.2...1.2.3
+
+* Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 1.2.2-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.2.1...1.2.2
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 1.2.1-0
 - https://github.com/rpm-software-management/createrepo_c/compare/1.2.0...1.2.1
 
