@@ -6,7 +6,7 @@
 
 Summary:        Friendly interactive shell (FISh)
 Name:           fish
-Version:        4.3.3
+Version:        4.8.0
 Release:        0%{?dist}
 License:        GPL2
 Group:          System Environment/Shells
@@ -84,6 +84,24 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 4.8.0-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.8.0
+
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 4.7.1-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.7.1
+
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 4.7.0-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.7.0
+
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 4.6.0-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.6.0
+
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 4.5.0-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.5.0
+
+* Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 4.4.0-0
+- https://github.com/fish-shell/fish-shell/releases/tag/4.4.0
+
 * Fri Jan 16 2026 Anton Novojilov <andy@essentialkaos.com> - 4.3.3-0
 - https://github.com/fish-shell/fish-shell/releases/tag/4.3.3
 
