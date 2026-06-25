@@ -13,7 +13,7 @@
 
 Name:           keepalived
 Summary:        High Availability monitor built upon LVS, VRRP and service pollers
-Version:        2.3.4
+Version:        2.4.0
 Release:        0%{?dist}
 License:        GPLv2+
 URL:            https://www.keepalived.org
@@ -125,23 +125,26 @@ fi
 ################################################################################
 
 %changelog
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 2.4.0-0
+- https://www.keepalived.org/release-notes/Release-2.4.0/
+
 * Sat Jul 19 2025 Anton Novojilov <andy@essentialkaos.com> - 2.3.4-0
-- https://www.keepalived.org/release-notes/Release-2.3.4.html
+- https://www.keepalived.org/release-notes/Release-2.3.4/
 
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 2.3.3-0
-- https://www.keepalived.org/release-notes/Release-2.3.3.html
+- https://www.keepalived.org/release-notes/Release-2.3.3/
 
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 2.3.2-0
-- https://www.keepalived.org/release-notes/Release-2.3.2.html
+- https://www.keepalived.org/release-notes/Release-2.3.2/
 
 * Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.3.1-0
-- https://www.keepalived.org/release-notes/Release-2.3.1.html
+- https://www.keepalived.org/release-notes/Release-2.3.1/
 
 * Fri Aug 16 2024 Anton Novojilov <andy@essentialkaos.com> - 2.3.0-0
-- https://www.keepalived.org/release-notes/Release-2.3.0.html
+- https://www.keepalived.org/release-notes/Release-2.3.0/
 
 * Sat Jul 08 2023 Anton Novojilov <andy@essentialkaos.com> - 2.2.8-0
-- https://www.keepalived.org/release-notes/Release-2.2.8.html
+- https://www.keepalived.org/release-notes/Release-2.2.8/
 
 * Tue Dec 17 2019 Anton Novojilov <andy@essentialkaos.com> - 2.0.19-0
 - Allow persistence, scheduler and flags of VS to be changed on reload
