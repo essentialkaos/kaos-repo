@@ -6,7 +6,7 @@
 
 Summary:    An extremely fast Python package installer and resolver
 Name:       uv
-Version:    0.9.25
+Version:    0.11.24
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    MIT AND Apache 2.0
@@ -77,6 +77,9 @@ install -pm 755 %{name}x %{buildroot}%{_bindir}/
 ################################################################################
 
 %changelog
+* Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 0.11.24-0
+- https://github.com/astral-sh/uv/releases/tag/0.11.24
+
 * Thu Jan 15 2026 Anton Novojilov <andy@essentialkaos.com> - 0.9.25-0
 - https://github.com/astral-sh/uv/releases/tag/0.9.25
 
