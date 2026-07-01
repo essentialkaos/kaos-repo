@@ -18,7 +18,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs22
-Version:        22.22.1
+Version:        22.23.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -35,7 +35,7 @@ BuildRequires:  gcc-c++ libstdc++-devel
 
 Requires:       zlib
 
-Conflicts:      nodejs20 nodejs24
+Conflicts:      nodejs24
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{shortname} = %{version}-%{release}
@@ -111,6 +111,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 22.23.1-0
+- https://nodejs.org/en/blog/release/v22.23.1
+
 * Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 22.22.1-0
 - https://nodejs.org/en/blog/release/v22.22.1
 

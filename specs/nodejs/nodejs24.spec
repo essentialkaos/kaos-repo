@@ -18,7 +18,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs24
-Version:        24.14.0
+Version:        24.18.0
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -35,7 +35,7 @@ BuildRequires:  gcc-c++ libstdc++-devel
 
 Requires:       zlib
 
-Conflicts:      nodejs20 nodejs22
+Conflicts:      nodejs22
 
 Provides:       %{name} = %{version}-%{release}
 Provides:       %{shortname} = %{version}-%{release}
@@ -111,5 +111,8 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 24.18.0-0
+- https://nodejs.org/en/blog/release/v24.18.0
+
 * Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 24.14.0-0
 - https://nodejs.org/en/blog/release/v24.14.0
