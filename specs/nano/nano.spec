@@ -14,7 +14,7 @@
 
 Summary:          A small text editor
 Name:             nano
-Version:          9.0
+Version:          9.3
 Release:          0%{?dist}
 License:          GPLv3+
 Group:            Applications/Editors
@@ -110,6 +110,27 @@ fi
 ################################################################################
 
 %changelog
+* Wed Oct 21 2026 Anton Novojilov <andy@essentialkaos.com> - 9.3-0
+- On the mini bar, an overlong filename gets properly clipped.
+- The keypad operator keys produce their inscribed characters.
+
+* Wed Oct 21 2026 Anton Novojilov <andy@essentialkaos.com> - 9.2-0
+- Nano refuses to start when standard output is not a terminal.
+- Options --newbuffer and 'set newbuffer' were added as better synonyms
+  of --multibuffer and 'set multibuffer'.
+- Legacy keystroke pairs ^W^T and ^/^T are recognized again.
+
+* Wed Oct 21 2026 Anton Novojilov <andy@essentialkaos.com> - 9.1-0
+- When searching, the viewport is placed snug left where possible.
+- The ability to read and write files in old Mac format was removed (that is:
+  files that use a lone carriage return as line ending).
+- The ^T toggle between WhereIs and GotoLine has been dropped.
+- When --backup is active, in some situations no backup was made, or it had a
+  wrong timestamp. Both issues are fixed now.
+- When nano is killed or crashes, any .save file is not chmodded to the
+  permissions of the base file, nor chowned to its owner.
+- M-Ins and M-Del have become rebindable.
+
 * Thu Jun 18 2026 Anton Novojilov <andy@essentialkaos.com> - 9.0-0
 - When the cursor almost goes offscreen to the right, all lines are
   now scrolled sideways together, by just the amount needed to keep
