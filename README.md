@@ -47,6 +47,13 @@ sudo dnf config-manager --set-enabled ol9_codeready_builder
 sudo dnf config-manager --set-enabled ol10_codeready_builder
 ```
 
+#### Update credentials using `config-manager`
+
+```bash
+sudo dnf config-manager --save --setopt=kaos-release.username=my_unique_credentials
+sudo dnf config-manager --save --setopt=kaos-testing.username=my_unique_credentials
+```
+
 ### Contributing Guidelines
 
 If you want to add a new package to the repository, be ready to look after it. It's physically impossible to maintain and keep fresh a large number of packages, especially if you don't use them somewhere.
@@ -65,7 +72,7 @@ We keep at least the last 5 minor versions (_with all releases_) of each package
 
 | EL version | Updates     | Repository removal |
 |------------|-------------|--------------------|
-| `8.x`      | 1 Jun 2025  | 31 Dec 2025        |
+| `8.x`      | 1 Jun 2026  | 31 Dec 2026        |
 | `9.x`      | 1 Sep 2027  | 31 Dec 2027        |
 | `10.x`     | 1 Sep 2030  | 31 Dec 2030        |
 
@@ -80,4 +87,4 @@ We keep at least the last 5 minor versions (_with all releases_) of each package
 
 [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-<p align="center"><a href="https://essentialkaos.com"><img src="https://gh.kaos.st/ekgh.svg"/></a></p>
+<p align="center"><a href="https://kaos.dev"><img src="https://raw.githubusercontent.com/essentialkaos/.github/refs/heads/master/images/ekgh.svg"/></a></p>
