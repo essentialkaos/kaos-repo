@@ -6,7 +6,7 @@
 
 Summary:        Interactive process viewer
 Name:           htop
-Version:        3.5.1
+Version:        3.5.3
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Applications/System
@@ -68,6 +68,59 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.5.3-0
+- docs: document CPU meter segments in the man page
+- Improve the settings parser (htoprc) to avoid segfaults on tampered files
+  includes fixing CVE-2024-37676
+- Fix Clang MSan sanitizer security issue
+- linux: fix out-of-bounds access when parsing power supply type
+- linux: mark a CPU offline when it is unplugged from the middle
+- linux: release CPU data when a CPU is hot-unplugged
+- XUtils: use strchr instead strstr
+- darwin: fix blank STARTTIME and wrong ELAPSED for threads
+- Exit follow mode when search or filter is cancelled
+- Extend man page to include a External Libraries section on libnl-3 /
+  libnl-genl-3
+- Add zswap pool usage meters
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.5.2-0
+- Scheduling: OR in SCHED_RESET_ON_FORK instead of ANDing it
+- linux: fix reading zram values
+- systemd: fix SystemdMeter parsing when falling back to systemctl show
+- freebsd: unifying buffer/cache memory usage for all filesystem cache
+- desktop: add trailing semicolon to Keywords and expand keyword list
+- Remove obsolete OpenVZ and VServer support
+- linux: add M_EPSS column (effective proportional set size)
+- Fix segfault when vCPUs are hot-added: resize AllCPUsMeter data->meters
+  array on CPU count change
+- Introduce sticky_follow setting / Unfollow when moving cursor
+- Show error message when trace feature fails on fork
+- Avoid memory leak on error when listing open files
+- Simplify interrupted waitpid handling
+- Properly terminate forked process for TraceScreen
+- Avoid running atexit handlers for forked children
+- Split runlevel and service count queries
+- Skip displaying service counts if both values are missing
+- darwin: fix Mach port leak in DarwinProcess_scanThreads()
+- linux: resolve actual executable path for Flatpak processes
+- Handle unavailable OOM scores as N/A
+- pcp: NULL-guard Metric_instanceCount/Offset
+- Keep search selection followed on confirm
+- darwin: fix used memory calculation to match Activity Monitor
+- Strip control characters from info screen titles
+- Guard title truncation against narrow terminal widths
+- Cap VLA length in RichString wide-character functions
+- Prevent integer overflow in drawScreenTab()
+- linux: fix core ID normalization
+- Make Shift (or Alt)-UP / Shift (or Alt)-DOWN scroll the Panel without
+  changing the selection
+- Add optional stable tree mode argument to -t, document in man page
+- Implement stable tree view
+- Improve following function to work across screens and to be reset with F on
+  an already followed process
+- SELinuxMeter: improve SELinux detection in constrained environments
+- linux: avoid repeated zram ENOENT probes
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 3.5.1-0
 - Consolidate ClockMeter code into DateTimeMeter code
 - Darwin: Fix unsigned underflow in memory meter on ARM64 (Apple Silicon 16K
