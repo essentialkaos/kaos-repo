@@ -6,7 +6,7 @@
 
 Summary:    Security auditing and hardening tool
 Name:       lynis
-Version:    3.1.6
+Version:    3.1.7
 Release:    0%{?dist}
 License:    GPLv3
 Group:      Development/Tools
@@ -75,6 +75,10 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.1.7-0
+- Detection of CachyOS
+- Updated end-of-life database entries
+
 * Thu Jan 15 2026 Anton Novojilov <andy@essentialkaos.com> - 3.1.6-0
 - Add notice to screen output if end-of-life state is unclear
 - Support for CachyOS, macOS Tahoe, and OpenMandriva Lx
