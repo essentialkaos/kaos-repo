@@ -1,7 +1,7 @@
 ################################################################################
 
 # rpmbuilder:gopack  github.com/benbjohnson/litestream
-# rpmbuilder:tag     v0.5.12
+# rpmbuilder:tag     v0.5.17
 
 ################################################################################
 
@@ -15,7 +15,7 @@
 
 Summary:        Tool for real-time replication of SQLite databases
 Name:           litestream
-Version:        0.5.12
+Version:        0.5.17
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        Apache-2.0
@@ -25,7 +25,7 @@ Source0:        %{name}-%{version}.tar.bz2
 
 Source100:      checksum.sha512
 
-BuildRequires:  golang >= 1.25
+BuildRequires:  golang >= 1.26
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -82,6 +82,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 0.5.17-0
+- https://github.com/benbjohnson/litestream/releases/tag/v0.5.17
+
 * Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 0.5.12-0
 - https://github.com/benbjohnson/litestream/releases/tag/v0.5.12
 
