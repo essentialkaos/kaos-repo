@@ -6,7 +6,7 @@
 
 Summary:        A terminal multiplexer
 Name:           tmux
-Version:        3.6b
+Version:        3.8
 Release:        0%{?dist}
 License:        ISC and BSD
 Group:          Applications/System
@@ -64,13 +64,28 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README README.ja CHANGES COPYING
+%doc README CHANGES COPYING
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}.1.*
 
 ################################################################################
 
 %changelog
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.8-0
+- https://raw.githubusercontent.com/tmux/tmux/3.8/CHANGES
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.7c-0
+- https://raw.githubusercontent.com/tmux/tmux/3.7c/CHANGES
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.7b-0
+- https://raw.githubusercontent.com/tmux/tmux/3.7b/CHANGES
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.7a-0
+- https://raw.githubusercontent.com/tmux/tmux/3.7a/CHANGES
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.7-0
+- https://raw.githubusercontent.com/tmux/tmux/3.7/CHANGES
+
 * Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 3.6b-0
 - https://raw.githubusercontent.com/tmux/tmux/3.6b/CHANGES
 
