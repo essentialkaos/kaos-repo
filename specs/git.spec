@@ -15,7 +15,7 @@
 
 Summary:        Core git tools
 Name:           git
-Version:        2.54.0
+Version:        2.56.0
 Release:        0%{?dist}
 License:        GPL
 Group:          Development/Tools
@@ -27,7 +27,7 @@ Source100:      checksum.sha512
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  gcc make gettext xmlto asciidoc > 6.0.3
+BuildRequires:  gcc make gettext xmlto asciidoc > 6.0.3 cargo
 BuildRequires:  libcurl-devel expat-devel openssl-devel zlib-devel
 
 Requires:       perl-Git = %{version}-%{release}
@@ -272,6 +272,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Wed Oct 21 2026 Anton Novojilov <andy@essentialkaos.com> - 2.56.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.56.0.adoc
+
+* Wed Oct 21 2026 Anton Novojilov <andy@essentialkaos.com> - 2.55.0-0
+- https://github.com/git/git/blob/master/Documentation/RelNotes/2.55.0.adoc
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 2.54.0-0
 - https://github.com/git/git/blob/master/Documentation/RelNotes/2.54.0.adoc
 
