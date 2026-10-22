@@ -10,7 +10,7 @@
 
 Summary:        Line-oriented search tool
 Name:           ripgrep
-Version:        14.1.1
+Version:        15.2.0
 Release:        0%{?dist}
 Group:          Applications/Text
 License:        MIT or Unlicense
@@ -85,6 +85,15 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 15.2.0-0
+- https://github.com/BurntSushi/ripgrep/releases/tag/15.2.0
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 15.1.0-0
+- https://github.com/BurntSushi/ripgrep/releases/tag/15.1.0
+
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 15.0.0-0
+- https://github.com/BurntSushi/ripgrep/releases/tag/15.0.0
+
 * Fri Jan 24 2025 Anton Novojilov <andy@essentialkaos.com> - 14.1.1-0
 - https://github.com/BurntSushi/ripgrep/releases/tag/14.1.1
 
