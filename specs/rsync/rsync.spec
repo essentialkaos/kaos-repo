@@ -6,7 +6,7 @@
 
 Summary:        A program for synchronizing files over a network
 Name:           rsync
-Version:        3.4.1
+Version:        3.5.1
 Release:        0%{?dist}
 License:        GPLv3+
 Group:          Applications/Internet
@@ -21,7 +21,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  make gcc autoconf
 BuildRequires:  libacl-devel libattr-devel popt-devel libzstd-devel
-BuildRequires:  openssl-devel lz4-devel xxhash-devel
+BuildRequires:  openssl-devel lz4-devel xxhash-devel libidn2-devel
 
 Provides:       %{name} = %{version}-%{release}
 
@@ -112,6 +112,12 @@ fi
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 3.5.1-0
+- https://download.samba.org/pub/rsync/NEWS#3.5.1
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 3.5.0-0
+- https://download.samba.org/pub/rsync/NEWS#3.5.0
+
 * Wed Apr 16 2025 Anton Novojilov <andy@essentialkaos.com> - 3.4.1-0
 - https://download.samba.org/pub/rsync/NEWS#3.4.1
 
