@@ -33,7 +33,7 @@ jobs:
 
       - name: Cache bibop tools
         id: cache-bibop
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.local/share/bibop-bin
           key: bibop-${{ runner.os }}-x86_64-${{ steps.cache-date.outputs.date }}
