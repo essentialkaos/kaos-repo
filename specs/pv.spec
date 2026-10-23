@@ -6,7 +6,7 @@
 
 Summary:        Tool for monitoring the progress of data through a pipeline
 Name:           pv
-Version:        1.9.44
+Version:        1.12.0
 Release:        0%{?dist}
 License:        GPLv3+
 Group:          Applications/System
@@ -67,6 +67,30 @@ rm -rf %{buildroot}%{_docdir}/%{name}
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.12.0-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.12.0
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.11.0-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.11.0
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.5-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.10.5
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.4-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.10.4
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.3-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.10.3
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.2-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.10.2
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.1-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.10.1
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.10.0-0
+- https://codeberg.org/a-j-wood/pv/releases/tag/v1.10.0
+
 * Mon Oct 20 2025 Anton Novojilov <andy@essentialkaos.com> - 1.9.44-0
 - https://codeberg.org/a-j-wood/pv/releases/tag/v1.9.44
 
