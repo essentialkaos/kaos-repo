@@ -10,7 +10,7 @@
 
 Summary:        Command-line benchmarking tool
 Name:           hyperfine
-Version:        1.20.0
+Version:        2.0.0
 Release:        0%{?dist}
 Group:          Applications/Text
 License:        MIT or Unlicense
@@ -39,6 +39,7 @@ A command-line benchmarking tool.
 %setup -qn %{name}-%{version}
 
 %build
+sed -i 's/"1.97.0"/"1.92.0"/' Cargo.toml
 cargo build --release --verbose
 
 %install
@@ -81,6 +82,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Thu Oct 22 2026 Anton Novojilov <andy@essentialkaos.com> - 2.0.0-0
+- https://github.com/sharkdp/hyperfine/releases/tag/v2.0.0
+
 * Fri Jan 16 2026 Anton Novojilov <andy@essentialkaos.com> - 1.20.0-0
 - https://github.com/sharkdp/hyperfine/releases/tag/v1.20.0
 
