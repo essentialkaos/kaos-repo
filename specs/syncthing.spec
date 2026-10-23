@@ -10,7 +10,7 @@
 
 Summary:        Open Source Continuous File Synchronization
 Name:           syncthing
-Version:        2.1.1
+Version:        2.1.7
 Release:        0%{?dist}
 Group:          Applications/Internet
 License:        MPL-2.0
@@ -133,6 +133,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 2.1.7-0
+- https://github.com/syncthing/syncthing/releases/tag/v2.1.7
+
 * Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 2.1.1-0
 - https://github.com/syncthing/syncthing/releases/tag/v2.1.1
 
