@@ -27,11 +27,35 @@ jobs:
       - name: Code checkout
         uses: actions/checkout@v7
 
+      - name: Get cache date
+        id: cache-date
+        run: echo "date=$(date -u +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache bibop tools
+        id: cache-bibop
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/bibop-bin
+          key: bibop-${{ runner.os }}-x86_64-${{ steps.cache-date.outputs.date }}
+
       - name: Install bibop and bibop-massive
+        if: steps.cache-bibop.outputs.cache-hit != 'true'
         run: |
-          wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
-          wget https://raw.githubusercontent.com/essentialkaos/bibop/master/scripts/bibop-massive
-          chmod +x bibop bibop-massive
+          mkdir -p "$HOME/.local/share/bibop-bin"
+
+          wget -q -O "$HOME/.local/share/bibop-bin/bibop" \
+            https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
+
+          wget -q -O "$HOME/.local/share/bibop-bin/bibop-massive" \
+            https://raw.githubusercontent.com/essentialkaos/bibop/master/scripts/bibop-massive
+
+          chmod +x "$HOME/.local/share/bibop-bin/"*
+
+      - name: Add bibop tools to PATH and check versions
+        run: |
+          echo "$HOME/.local/share/bibop-bin" >> "$GITHUB_PATH"
+          export PATH="$HOME/.local/share/bibop-bin:$PATH"
+
           bibop -v
           bibop-massive -v
 
