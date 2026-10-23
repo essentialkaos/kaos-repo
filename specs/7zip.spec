@@ -4,8 +4,8 @@
 
 ################################################################################
 
-%define major_ver  25
-%define minor_ver  01
+%define major_ver  26
+%define minor_ver  05
 
 %define shortname  7z
 
@@ -19,7 +19,7 @@ License:        LGPL 2.0
 Group:          Applications/Archiving
 URL:            https://7-zip.org
 
-Source0:        https://7-zip.org/a/7z%{major_ver}%{minor_ver}-src.tar.xz
+Source0:        https://github.com/ip7z/7zip/releases/download/%{major_ver}.%{minor_ver}/7z%{major_ver}%{minor_ver}-src.tar.xz
 
 Source100:      checksum.sha512
 
@@ -78,6 +78,9 @@ ln -sf %{_bindir}/7zz %{buildroot}%{_bindir}/%{shortname}
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 26.05-0
+- https://sourceforge.net/p/sevenzip/discussion/45797/thread/4bf60c7c37/
+
 * Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 25.01-0
 - https://sourceforge.net/p/sevenzip/discussion/45797/thread/da14cd780b/
 
