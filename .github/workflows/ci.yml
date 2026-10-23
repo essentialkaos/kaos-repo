@@ -30,7 +30,7 @@ jobs:
       - name: Install bibop and bibop-massive
         run: |
           wget https://apps.kaos.st/bibop/latest/linux/x86_64/bibop
-          wget https://kaos.sh/bibop/scripts/bibop-massive
+          wget https://raw.githubusercontent.com/essentialkaos/bibop/master/scripts/bibop-massive
           chmod +x bibop bibop-massive
           bibop -v
           bibop-massive -v
