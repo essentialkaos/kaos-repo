@@ -10,7 +10,7 @@
 
 Summary:        The compression and decompression library
 Name:           zlib
-Version:        1.3.1
+Version:        1.3.2
 Release:        0%{?dist}
 License:        zlib and Boost
 Group:          System Environment/Libraries
@@ -180,6 +180,27 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.3.2-0
+- Check for negative lengths in crc32_combine functions
+- Copy only the initialized window contents in inflateCopy
+- Prevent the use of insecure functions without an explicit request
+- Add compressBound_z and deflateBound_z functions for large values
+- Use atomics to build inflate fixed tables once
+- Add --undefined option to ./configure for UBSan checker
+- Copy only the initialized deflate state in deflateCopy
+- Zero inflate state on allocation
+- Add compress_z and uncompress_z functions
+- Complete rewrite of cmake support
+- Remove untgz from contrib
+- Vectorize the CRC-32 calculation on the s390x
+- Remove vstudio projects in lieu of cmake-generated projects
+- Add zipAlreadyThere() to minizip zip.c to help avoid duplicates
+- Add deflateUsed() function to get the used bits in the last byte
+- Fix bug in inflatePrime() for 16-bit ints
+- Add a "G" option to force gzip, disabling transparency in gzread()
+- Return all available uncompressed data on error in gzread.c
+- Support non-blocking devices in the gz* routines
+
 * Thu Jan 25 2024 Anton Novojilov <andy@essentialkaos.com> - 1.3.1-0
 - Reject overflows of zip header fields in minizip
 - Fix bug in inflateSync() for data held in bit buffer
