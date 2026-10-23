@@ -6,7 +6,7 @@
 
 Summary:        Real-time web log analyzer and interactive viewer
 Name:           goaccess
-Version:        1.11
+Version:        1.12
 Release:        0%{?dist}
 Group:          Development/Tools
 License:        GPLv2+
@@ -80,6 +80,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.12-0
+- https://goaccess.io/release-notes#release-1.12
+
 * Tue Jul 28 2026 Anton Novojilov <andy@essentialkaos.com> - 1.11-0
 - https://goaccess.io/release-notes#release-1.11
 
@@ -193,33 +196,3 @@ rm -rf %{buildroot}
 
 * Fri Jun 17 2016 Anton Novojilov <andy@essentialkaos.com> - 1.0-0
 - https://goaccess.io/release-notes#release-1.0
-
-* Wed Mar 09 2016 Gleb Goncharov <yum@gongled.ru> - 0.9.8-0
-- https://goaccess.io/release-notes#release-0.9.8
-
-* Tue Dec 29 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.7-0
-- https://goaccess.io/release-notes#release-0.9.7
-
-* Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.6-0
-- https://goaccess.io/release-notes#release-0.9.6
-
-* Tue Oct 27 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.5-0
-- https://goaccess.io/release-notes#release-0.9.5
-
-* Thu Oct 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.4-0
-- https://goaccess.io/release-notes#release-0.9.4
-
-* Fri Sep 04 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.3-0
-- https://goaccess.io/release-notes#release-0.9.3
-
-* Mon Jul 06 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.2-0
-- https://goaccess.io/release-notes#release-0.9.2
-
-* Wed Jul 01 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9.1-0
-- https://goaccess.io/release-notes#release-0.9.1
-
-* Thu Mar 19 2015 Anton Novojilov <andy@essentialkaos.com> - 0.9-0
-- https://goaccess.io/release-notes#release-0.9
-
-* Fri Feb 20 2015 Anton Novojilov <andy@essentialkaos.com> - 0.8.5-0
-- Initial build
