@@ -17,7 +17,7 @@
 
 Summary:    Java project management and project comprehension tool
 Name:       maven
-Version:    3.9.14
+Version:    3.10.0
 Release:    0%{?dist}
 Group:      Development/Tools
 License:    ASL 2.0 and MIT
@@ -128,6 +128,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 3.10.0-0
+- https://maven.apache.org/docs/3.10.0/release-notes.html
+
 * Sun Mar 22 2026 Anton Novojilov <andy@essentialkaos.com> - 3.9.14-0
 - https://maven.apache.org/docs/3.9.14/release-notes.html
 
