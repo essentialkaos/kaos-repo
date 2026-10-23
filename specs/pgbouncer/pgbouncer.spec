@@ -11,7 +11,7 @@
 
 Summary:        Lightweight connection pooler for PostgreSQL
 Name:           pgbouncer
-Version:        1.24.1
+Version:        1.26.1
 Release:        0%{?dist}
 License:        MIT and BSD
 Group:          Applications/Databases
@@ -29,7 +29,8 @@ Patch0:         %{name}-ini.patch
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  make gcc openssl-devel libevent-devel pam-devel systemd-devel
+BuildRequires:  make gcc pandoc
+BuildRequires:  openssl-devel libevent-devel pam-devel systemd-devel
 
 Requires:       openssl libevent
 
@@ -145,6 +146,21 @@ fi
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.26.1-0
+- https://www.pgbouncer.org/2026/09/pgbouncer-1-26-1
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.26.0-0
+- https://www.pgbouncer.org/2026/09/pgbouncer-1-26-0
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.25.2-0
+- https://www.pgbouncer.org/2026/05/pgbouncer-1-25-2
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.25.1-0
+- https://www.pgbouncer.org/2025/12/pgbouncer-1.25-1
+
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 1.25.0-0
+- https://www.pgbouncer.org/2025/11/pgbouncer-1.25-0
+
 * Thu Apr 17 2025 Anton Novojilov <andy@essentialkaos.com> - 1.24.1-0
 - https://www.pgbouncer.org/changelog.html#pgbouncer-124x
 
