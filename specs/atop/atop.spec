@@ -6,7 +6,7 @@
 
 Summary:        Advanced System and Process Monitor
 Name:           atop
-Version:        2.12.1
+Version:        2.13.0
 Release:        0%{?dist}
 License:        GPLv2+
 Group:          Development/System
@@ -149,6 +149,45 @@ fi
 ################################################################################
 
 %changelog
+* Fri Oct 23 2026 Anton Novojilov <andy@essentialkaos.com> - 2.13.0-0
+- Allow sorting of process list on any column.
+- With the key O a column name can be entered (case insensitive) that is part
+  of the current process view and a choice can be made to sort
+  ascending/descending. The current sort column (if visible) will be
+  highlighted.
+- The keys C (CPU sorting), M (memory sorting), D (disk sorting), N (network
+  sorting) and E (GPU sorting) can still be used. However, key A (automatic
+  sort on the most utilized resource) is not supported any more.
+- The 'oom_score' and 'oom_score_adj' values are added per process.
+- Show system-wide available memory per category in bar graph.
+- A vertical green line at the left of the memory column shows the
+  available (i.e. reclaimable) memory for the categories 'free', 'pagecache'
+  and 'slab' in bar graph mode. This is a best-effort categorized breakdown
+  of the available memory value that is available on system level.
+- Proper handling of offline/online CPUs.
+- The detection of offline and online CPUs as well as the detection of
+  hotpluggable CPUs has been improved. A CPU will dissapear from the list or
+  bar graph when disabling the CPU and appears again when enabling the CPU.
+- The maximum number of CPUs is raised from 2048 to 4096.
+- Show full user names and group names.
+- When using the flag -i it is possible to show full user names and full group
+  names for the columns EUID (effective UID), RUID (real UID),
+  EGID (effective GID) and RGID (real GID) on process level. When this flag
+  is not used, the mentioned columns have a fixed width of 8 characters.
+- Support longer pod and container names for parsable/json output
+- Solution for race condition in twin mode.
+- Various other bug solutions.
+- Improved GPU statistics gathering.
+- The statistics collector for NVIDIA GPUs atopgpud also gathers statistics
+  for graphical use by processes instead of only for computational use.
+- The daemon atopgpud can be executed without root privileges (i.e. special
+  capabilities).
+- UNIX domain sockets are used for communication between atop and atopgpud
+  instead of TCP sockets.
+- The format of the raw file is incompatible with previous versions. Raw files
+  from previous versions can be converted to the new layout with the
+  atopconvert command.
+
 * Tue Oct 21 2025 Anton Novojilov <andy@essentialkaos.com> - 2.12.1-0
 - Bug solution: tests during append of existing raw log are less strict now
 
