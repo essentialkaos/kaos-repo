@@ -18,7 +18,7 @@
 
 Summary:        Platform for server side programming on JavaScript
 Name:           nodejs24
-Version:        24.18.0
+Version:        24.22.1
 Release:        0%{?dist}
 License:        MIT
 Group:          Development/Tools
@@ -111,6 +111,9 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Sat Oct 24 2026 Anton Novojilov <andy@essentialkaos.com> - 24.22.1-0
+- https://nodejs.org/en/blog/release/v24.22.1
+
 * Fri Jun 26 2026 Anton Novojilov <andy@essentialkaos.com> - 24.18.0-0
 - https://nodejs.org/en/blog/release/v24.18.0
 
