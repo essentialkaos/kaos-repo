@@ -22,7 +22,7 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      17
-%define minorver      10
+%define minorver      11
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        17
@@ -1063,6 +1063,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Nov 03 2026 Anton Novojilov <andy@essentialkaos.com> - 17.11-0
+- https://www.postgresql.org/docs/17/release-17-11.html
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 17.10-0
 - https://www.postgresql.org/docs/17/release-17-10.html
 

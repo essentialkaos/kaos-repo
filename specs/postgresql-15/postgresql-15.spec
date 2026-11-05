@@ -22,7 +22,7 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      15
-%define minorver      18
+%define minorver      19
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        15
@@ -1053,6 +1053,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Nov 03 2026 Anton Novojilov <andy@essentialkaos.com> - 15.19-0
+- https://www.postgresql.org/docs/15/release-15-19.html
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 15.18-0
 - https://www.postgresql.org/docs/15/release-15-18.html
 

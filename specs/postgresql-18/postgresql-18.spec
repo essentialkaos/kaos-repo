@@ -29,7 +29,7 @@
 %endif
 
 %define majorver      18
-%define minorver      4
+%define minorver      6
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        18
@@ -1092,6 +1092,9 @@ fi
 ################################################################################
 
 %changelog
+* Tue Nov 03 2026 Anton Novojilov <andy@essentialkaos.com> - 18.6-0
+- https://www.postgresql.org/docs/18/release-18-6.html
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 18.4-0
 - https://www.postgresql.org/docs/18/release-18-4.html
 
