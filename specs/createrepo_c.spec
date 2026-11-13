@@ -17,7 +17,7 @@
 
 Summary:        Creates a common metadata repository
 Name:           createrepo_c
-Version:        1.2.4
+Version:        1.2.6
 Release:        0%{?dist}
 License:        GPLv2
 Group:          Development/Tools
@@ -182,6 +182,12 @@ rm -rf %{buildroot}
 ################################################################################
 
 %changelog
+* Fri Nov 13 2026 Anton Novojilov <andy@essentialkaos.com> - 1.2.6-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.2.5...1.2.6
+
+* Fri Nov 13 2026 Anton Novojilov <andy@essentialkaos.com> - 1.2.5-0
+- https://github.com/rpm-software-management/createrepo_c/compare/1.2.4...1.2.5
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 1.2.4-0
 - https://github.com/rpm-software-management/createrepo_c/compare/1.2.3...1.2.4
 
