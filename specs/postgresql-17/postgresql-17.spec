@@ -1,5 +1,9 @@
 ################################################################################
 
+# rpmbuilder:qa-rpaths 0x0001,0x0002
+
+################################################################################
+
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
@@ -22,7 +26,7 @@
 %{!?zstd:%global zstd 1}
 
 %define majorver      17
-%define minorver      11
+%define minorver      12
 %define rel           0
 %define fullver       %{majorver}.%{minorver}
 %define pkgver        17
@@ -345,7 +349,7 @@ export CFLAGS
 export LIBNAME=%{_lib}
 export PYTHON=/usr/bin/python3
 
-%{_configure} --disable-rpath \
+%{_configure} --enable-rpath \
   --prefix=%{install_dir} \
   --includedir=%{install_dir}/include \
   --mandir=%{install_dir}/share/man \
@@ -1063,6 +1067,9 @@ fi
 ################################################################################
 
 %changelog
+* Fri Nov 20 2026 Anton Novojilov <andy@essentialkaos.com> - 17.12-0
+- https://www.postgresql.org/docs/17/release-17-12.html
+
 * Tue Nov 03 2026 Anton Novojilov <andy@essentialkaos.com> - 17.11-0
 - https://www.postgresql.org/docs/17/release-17-11.html
 

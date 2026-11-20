@@ -1,5 +1,9 @@
 ################################################################################
 
+# rpmbuilder:qa-rpaths 0x0001,0x0002
+
+################################################################################
+
 %global crc_check pushd ../SOURCES ; sha512sum -c %{SOURCE100} ; popd
 
 ################################################################################
@@ -442,7 +446,7 @@ export CFLAGS
 export LIBNAME=%{_lib}
 export PYTHON=/usr/bin/python3
 
-%{_configure} --disable-rpath \
+%{_configure} --enable-rpath \
   --prefix=%{install_dir} \
   --includedir=%{install_dir}/include \
   --mandir=%{install_dir}/share/man \
@@ -674,10 +678,10 @@ cp /dev/null plpython.lst
     %find_lang pltcl-%{majorver}
     cat pltcl-%{majorver}.lang > pg_pltcl.lst
   %endif
-
-  %find_lang postgres-%{majorver}
-  %find_lang psql-%{majorver}
 %endif
+
+%find_lang postgres-%{majorver}
+%find_lang psql-%{majorver}
 
 cat libpq5-%{majorver}.lang > pg_libpq5.lst
 
