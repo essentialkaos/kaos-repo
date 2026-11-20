@@ -8,15 +8,15 @@
 
 ################################################################################
 
-%define jdk_major  25.0.3
-%define jdk_minor  9
+%define jdk_major  25.0.5.1
+%define jdk_minor  2
 %define jdk_patch  %{nil}
 
 %define install_dir  %{_prefix}/java/%{name}-%{version}
 %define jdk_bin_dir  %{install_dir}/bin
 %define jdk_man_dir  %{install_dir}/man/man1
 
-%define alt_priority  2551
+%define alt_priority  2552
 
 ################################################################################
 
@@ -113,6 +113,9 @@ deps="$deps --slave %{_sysconfdir}/profile.d/java.sh java-profile %{install_dir}
 ################################################################################
 
 %changelog
+* Fri Nov 20 2026 Anton Novojilov <andy@essentialkaos.com> - 25.0.5.1-2
+- https://adoptium.net/en-GB/temurin/release-notes?version=jdk-25.0.5.1+2
+
 * Thu Jun 25 2026 Anton Novojilov <andy@essentialkaos.com> - 25.0.3-9
 - https://adoptium.net/en-GB/temurin/release-notes?version=jdk-25.0.3+9
 
