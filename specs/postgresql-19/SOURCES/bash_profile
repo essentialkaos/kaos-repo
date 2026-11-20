@@ -1,0 +1,12 @@
+if [[ -f /etc/profile ]] ; then
+  source /etc/profile
+fi
+
+export PGDATA={{PGDATA}}
+
+# If you want to customize your settings use the file below. 
+# This file is not overridden by PostgreSQL packages.
+
+if [[ -f /var/lib/pgsql/.pgsql_profile ]] ; then
+  source /var/lib/pgsql/.pgsql_profile
+fi
